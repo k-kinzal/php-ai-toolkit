@@ -9,11 +9,13 @@ use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\NoClassConstantInTestClassRule;
 use PhpStanAiRules\Support\TestClassScope;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<NoClassConstantInTestClassRule>
  */
 #[CoversClass(NoClassConstantInTestClassRule::class)]
+#[Medium]
 final class NoClassConstantInTestClassRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

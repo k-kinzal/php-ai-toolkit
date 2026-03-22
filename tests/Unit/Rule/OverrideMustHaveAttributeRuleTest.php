@@ -8,11 +8,13 @@ use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\OverrideMustHaveAttributeRule;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<OverrideMustHaveAttributeRule>
  */
 #[CoversClass(OverrideMustHaveAttributeRule::class)]
+#[Medium]
 final class OverrideMustHaveAttributeRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

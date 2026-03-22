@@ -8,11 +8,13 @@ use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\ForbidNonDocCommentRule;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<ForbidNonDocCommentRule>
  */
 #[CoversClass(ForbidNonDocCommentRule::class)]
+#[Medium]
 final class ForbidNonDocCommentRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

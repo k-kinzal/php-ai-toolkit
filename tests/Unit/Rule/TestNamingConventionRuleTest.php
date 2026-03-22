@@ -9,11 +9,13 @@ use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\TestNamingConventionRule;
 use PhpStanAiRules\Support\TestClassScope;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<TestNamingConventionRule>
  */
 #[CoversClass(TestNamingConventionRule::class)]
+#[Medium]
 final class TestNamingConventionRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

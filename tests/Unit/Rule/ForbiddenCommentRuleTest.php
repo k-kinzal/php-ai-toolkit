@@ -8,11 +8,13 @@ use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\ForbiddenCommentRule;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<ForbiddenCommentRule>
  */
 #[CoversClass(ForbiddenCommentRule::class)]
+#[Medium]
 final class ForbiddenCommentRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

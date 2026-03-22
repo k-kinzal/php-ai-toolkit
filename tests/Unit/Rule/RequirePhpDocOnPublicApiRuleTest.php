@@ -8,11 +8,13 @@ use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\RequirePhpDocOnPublicApiRule;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<RequirePhpDocOnPublicApiRule>
  */
 #[CoversClass(RequirePhpDocOnPublicApiRule::class)]
+#[Medium]
 final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

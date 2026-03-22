@@ -8,11 +8,13 @@ use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\ForbiddenMagicMethodCallRule;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<ForbiddenMagicMethodCallRule>
  */
 #[CoversClass(ForbiddenMagicMethodCallRule::class)]
+#[Medium]
 final class ForbiddenMagicMethodCallRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

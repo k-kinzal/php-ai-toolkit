@@ -9,11 +9,13 @@ use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\NoControlFlowInTestMethodRule;
 use PhpStanAiRules\Support\TestClassScope;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<NoControlFlowInTestMethodRule>
  */
 #[CoversClass(NoControlFlowInTestMethodRule::class)]
+#[Medium]
 final class NoControlFlowInTestMethodRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

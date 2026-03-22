@@ -8,11 +8,13 @@ use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\SrcUnitTestPairRule;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<SrcUnitTestPairRule>
  */
 #[CoversClass(SrcUnitTestPairRule::class)]
+#[Medium]
 final class SrcUnitTestPairRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

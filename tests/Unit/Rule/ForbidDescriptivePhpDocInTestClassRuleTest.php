@@ -8,11 +8,13 @@ use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\ForbidDescriptivePhpDocInTestClassRule;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<ForbidDescriptivePhpDocInTestClassRule>
  */
 #[CoversClass(ForbidDescriptivePhpDocInTestClassRule::class)]
+#[Medium]
 final class ForbidDescriptivePhpDocInTestClassRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

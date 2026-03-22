@@ -9,11 +9,13 @@ use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\NoPrivateMethodInTestClassRule;
 use PhpStanAiRules\Support\TestClassScope;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<NoPrivateMethodInTestClassRule>
  */
 #[CoversClass(NoPrivateMethodInTestClassRule::class)]
+#[Medium]
 final class NoPrivateMethodInTestClassRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

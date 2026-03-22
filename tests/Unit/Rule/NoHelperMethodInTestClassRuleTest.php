@@ -9,11 +9,13 @@ use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\NoHelperMethodInTestClassRule;
 use PhpStanAiRules\Support\TestClassScope;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<NoHelperMethodInTestClassRule>
  */
 #[CoversClass(NoHelperMethodInTestClassRule::class)]
+#[Medium]
 final class NoHelperMethodInTestClassRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

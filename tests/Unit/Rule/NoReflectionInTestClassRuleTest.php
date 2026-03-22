@@ -9,11 +9,13 @@ use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\NoReflectionInTestClassRule;
 use PhpStanAiRules\Support\TestClassScope;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<NoReflectionInTestClassRule>
  */
 #[CoversClass(NoReflectionInTestClassRule::class)]
+#[Medium]
 final class NoReflectionInTestClassRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

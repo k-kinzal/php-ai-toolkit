@@ -8,11 +8,13 @@ use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\ForbidSingleLinePhpDocRule;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<ForbidSingleLinePhpDocRule>
  */
 #[CoversClass(ForbidSingleLinePhpDocRule::class)]
+#[Medium]
 final class ForbidSingleLinePhpDocRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

@@ -1,6 +1,6 @@
-# phpstan-ai-rules
+# php-ai-toolkit
 
-PHPStan custom rules optimized for AI-assisted development workflows.
+A comprehensive toolkit for AI-assisted PHP development — PHPStan rules, PHPUnit reporters, config templates, and more.
 
 Detects anti-patterns commonly introduced by AI code generation, such as suppressing static analysis, bloated test classes, and direct magic method calls.
 

@@ -12,7 +12,7 @@ The error formatter is not included automatically. Add `error-formatter.neon` to
 
 ```neon
 includes:
-    - vendor/k-kinzal/phpstan-ai-rules/error-formatter.neon
+    - vendor/k-kinzal/php-ai-toolkit/error-formatter.neon
 ```
 
 ## Overview

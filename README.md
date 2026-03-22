@@ -7,7 +7,7 @@ Detects anti-patterns commonly introduced by AI code generation, such as suppres
 ## Installation
 
 ```bash
-composer require --dev k-kinzal/phpstan-ai-rules
+composer require --dev k-kinzal/php-ai-toolkit
 ```
 
 Rules are automatically enabled via PHPStan's extension installer.
@@ -30,7 +30,7 @@ Rules are automatically enabled via PHPStan's extension installer.
 
 ### Test Class
 
-Rules applied to test classes in `Tests\Unit` / `Tests\Integration` namespaces.
+Rules applied to test classes. Most rules target `Tests\Unit` / `Tests\Integration` namespaces; rules marked with `*` apply to all `Tests\` namespaces.
 
 | Rule | Identifier | Description |
 |------|-----------|-------------|
@@ -40,9 +40,10 @@ Rules applied to test classes in `Tests\Unit` / `Tests\Integration` namespaces.
 | [NoHelperMethodInTestClassRule](docs/rules/NoHelperMethodInTestClassRule.md) | `customRules.testClassNonOverrideMethod` | Forbids methods other than test/provider/override in test classes |
 | [NoControlFlowInTestMethodRule](docs/rules/NoControlFlowInTestMethodRule.md) | `customRules.testMethodControlFlow` | Forbids control flow statements in test methods |
 | [NoTraitUseInTestClassRule](docs/rules/NoTraitUseInTestClassRule.md) | `customRules.testClassTraitUse` | Forbids trait usage in test classes |
-| [NoReflectionInTestClassRule](docs/rules/NoReflectionInTestClassRule.md) | `customRules.noReflectionInTestClass` | Forbids Reflection usage in test classes |
-| [PhpUnitMockApiRule](docs/rules/PhpUnitMockApiRule.md) | `customRules.testClassPhpUnitMockProhibitedApi` / `customRules.testClassPhpUnitMockRequiresInterface` / `customRules.testClassPhpUnitMockRequiresLiteralInterface` / `customRules.testClassPhpUnitMockProhibitedInstantiation` | Restricts PHPUnit mock API usage and enforces interface-only mocking |
+| [NoReflectionInTestClassRule](docs/rules/NoReflectionInTestClassRule.md) `*` | `customRules.noReflectionInTestClass` | Forbids Reflection usage in test classes |
+| [PhpUnitMockApiRule](docs/rules/PhpUnitMockApiRule.md) `*` | `customRules.testClassPhpUnitMockProhibitedApi` / `customRules.testClassPhpUnitMockRequiresInterface` / `customRules.testClassPhpUnitMockRequiresLiteralInterface` / `customRules.testClassPhpUnitMockProhibitedInstantiation` | Restricts PHPUnit mock API usage and enforces interface-only mocking |
 | [ForbidDescriptivePhpDocInTestClassRule](docs/rules/ForbidDescriptivePhpDocInTestClassRule.md) | `customRules.testClassDescriptivePhpDoc` | Forbids descriptive PHPDoc text in test classes |
+| [TestNamingConventionRule](docs/rules/TestNamingConventionRule.md) | `customRules.testMethodNamingConvention` / `customRules.providerNamingConvention` / `customRules.testMethodProhibitedConstructorDestructor` / `customRules.publicMethodWithoutTest` | Enforces PascalCase naming for test methods and data providers, prohibits constructor/destructor tests, and requires test coverage for public methods |
 
 ## Error Formatter
 
@@ -52,7 +53,7 @@ To enable it, add `error-formatter.neon` to your `phpstan.neon`:
 
 ```neon
 includes:
-    - vendor/k-kinzal/phpstan-ai-rules/error-formatter.neon
+    - vendor/k-kinzal/php-ai-toolkit/error-formatter.neon
 ```
 
 Then use it with:
@@ -63,9 +64,44 @@ vendor/bin/phpstan analyse --error-format aiRules
 
 When run inside an AI agent (Claude Code, Cursor, Devin, etc.), it outputs structured plain text optimized for LLM context windows — with deduplication, self-contained error blocks, and no decorative formatting. When run by a human, it outputs rich, grouped output with code context, caret pointers, and color.
 
-Agent detection is automatic via environment variables. For unlisted agents, set `AI_AGENT=1`.
+Agent detection is automatic via environment variables and filesystem markers. For unlisted agents, set `AI_AGENT=1`.
 
 See [docs/error-formatter.md](docs/error-formatter.md) for full details.
+
+## Test Reporter
+
+This package includes an optional PHPUnit extension that provides dual-mode test result reporting with the same auto-detection as the error formatter.
+
+To enable it, add the extension to your `phpunit.xml.dist`:
+
+```xml
+<extensions>
+    <bootstrap class="PhpStanAiRules\TestReporter\AiTestReporterExtension"/>
+</extensions>
+```
+
+When run inside an AI agent, it outputs structured plain text optimized for LLM context windows — with self-contained failure blocks, code context, and source locations pointing to where the bug is (not just where the test failed). When run by a human, it outputs rich, grouped output with code context, caret pointers, and color.
+
+See [docs/test-reporter.md](docs/test-reporter.md) for full details.
+
+## CLI
+
+The package provides a CLI tool for installing skills into your project:
+
+```bash
+vendor/bin/php-ai-toolkit install
+```
+
+The `install` command auto-detects AI agent directories (`.claude`, `.agents`, `.continue`, `.openhands`, `.windsurf`, `.factory`) in your project root and installs skills from the package into the corresponding skills directories.
+
+Options:
+
+| Flag | Description |
+|------|-------------|
+| `--force`, `-f` | Overwrite existing skills |
+| `--copy` | Copy files instead of creating symlinks |
+| `--help`, `-h` | Show help message |
+| `--version`, `-V` | Show version |
 
 ## Configuration
 

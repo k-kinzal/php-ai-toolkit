@@ -1,0 +1,139 @@
+parametersSchema:
+    customRules: structure([
+        testNamespacePrefixes: listOf(string())
+        restrictedTestNamespacePrefixes: listOf(string())
+        srcUnitTestPairExcludePatterns: listOf(string())
+        srcMarker: string()
+        unitTestMarker: string()
+    ])
+
+parameters:
+    customRules:
+        testNamespacePrefixes:
+            - 'Tests'
+        restrictedTestNamespacePrefixes:
+            - 'Tests\Unit'
+            - 'Tests\Integration'
+        srcUnitTestPairExcludePatterns: []
+        srcMarker: '/src/'
+        unitTestMarker: '/tests/Unit/'
+
+services:
+    aiRules.support.testClassScope:
+        class: PhpStanAiRules\Support\TestClassScope
+        arguments:
+            testNamespacePrefixes: %customRules.testNamespacePrefixes%
+            restrictedTestNamespacePrefixes: %customRules.restrictedTestNamespacePrefixes%
+
+    aiRules.rule.forbiddenComment:
+        class: PhpStanAiRules\Rule\ForbiddenCommentRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.noPropertyInTestClass:
+        class: PhpStanAiRules\Rule\NoPropertyInTestClassRule
+        arguments:
+            testClassScope: @aiRules.support.testClassScope
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.noClassConstantInTestClass:
+        class: PhpStanAiRules\Rule\NoClassConstantInTestClassRule
+        arguments:
+            testClassScope: @aiRules.support.testClassScope
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.noPrivateMethodInTestClass:
+        class: PhpStanAiRules\Rule\NoPrivateMethodInTestClassRule
+        arguments:
+            testClassScope: @aiRules.support.testClassScope
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.phpUnitMockApi:
+        class: PhpStanAiRules\Rule\PhpUnitMockApiRule
+        arguments:
+            testClassScope: @aiRules.support.testClassScope
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbiddenMagicMethodCall:
+        class: PhpStanAiRules\Rule\ForbiddenMagicMethodCallRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.noHelperMethodInTestClass:
+        class: PhpStanAiRules\Rule\NoHelperMethodInTestClassRule
+        arguments:
+            testClassScope: @aiRules.support.testClassScope
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.overrideMustHaveAttribute:
+        class: PhpStanAiRules\Rule\OverrideMustHaveAttributeRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.noControlFlowInTestMethod:
+        class: PhpStanAiRules\Rule\NoControlFlowInTestMethodRule
+        arguments:
+            testClassScope: @aiRules.support.testClassScope
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.noReflectionInTestClass:
+        class: PhpStanAiRules\Rule\NoReflectionInTestClassRule
+        arguments:
+            testClassScope: @aiRules.support.testClassScope
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.noTraitUseInTestClass:
+        class: PhpStanAiRules\Rule\NoTraitUseInTestClassRule
+        arguments:
+            testClassScope: @aiRules.support.testClassScope
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.srcUnitTestPair:
+        class: PhpStanAiRules\Rule\SrcUnitTestPairRule
+        arguments:
+            excludePatterns: %customRules.srcUnitTestPairExcludePatterns%
+            srcMarker: %customRules.srcMarker%
+            unitTestMarker: %customRules.unitTestMarker%
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.requirePhpDocOnPublicApi:
+        class: PhpStanAiRules\Rule\RequirePhpDocOnPublicApiRule
+        arguments:
+            restrictedTestNamespacePrefixes: %customRules.restrictedTestNamespacePrefixes%
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidSingleLinePhpDoc:
+        class: PhpStanAiRules\Rule\ForbidSingleLinePhpDocRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidNonDocComment:
+        class: PhpStanAiRules\Rule\ForbidNonDocCommentRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidDescriptivePhpDocInTestClass:
+        class: PhpStanAiRules\Rule\ForbidDescriptivePhpDocInTestClassRule
+        arguments:
+            restrictedTestNamespacePrefixes: %customRules.restrictedTestNamespacePrefixes%
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.testNamingConvention:
+        class: PhpStanAiRules\Rule\TestNamingConventionRule
+        arguments:
+            testClassScope: @aiRules.support.testClassScope
+            srcMarker: %customRules.srcMarker%
+            unitTestMarker: %customRules.unitTestMarker%
+        tags:
+            - phpstan.rules.rule

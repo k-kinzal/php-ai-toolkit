@@ -1,0 +1,55 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use PhpStanAiRules\Cli\Application;
+
+if (PHP_VERSION_ID < 80000) {
+    fwrite(
+        STDERR,
+        'php-ai-toolkit requires PHP 8.0 or later.' . PHP_EOL,
+    );
+
+    exit(1);
+}
+
+$autoloadPaths = [];
+
+if (isset($GLOBALS['_composer_autoload_path'])) {
+    $autoloadPaths[] = $GLOBALS['_composer_autoload_path'];
+}
+
+$autoloadPaths[] = __DIR__ . '/../vendor/autoload.php';
+$autoloadPaths[] = __DIR__ . '/../../../autoload.php';
+
+$autoloaderFound = false;
+
+foreach ($autoloadPaths as $autoloadPath) {
+    if (file_exists($autoloadPath)) {
+        require_once $autoloadPath;
+        $autoloaderFound = true;
+        break;
+    }
+}
+
+if (!$autoloaderFound) {
+    fwrite(
+        STDERR,
+        'Could not find Composer autoloader. Run "composer install" first.' . PHP_EOL,
+    );
+
+    exit(1);
+}
+
+if (isset($GLOBALS['_composer_bin_dir'])) {
+    $projectRoot = dirname($GLOBALS['_composer_bin_dir'], 2);
+} else {
+    $projectRoot = dirname(__DIR__);
+}
+
+$packageRoot = dirname(__DIR__);
+
+$app = new Application($projectRoot, $packageRoot);
+
+exit($app->run($argv));

@@ -1,0 +1,34 @@
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - extension.neon
+    - error-formatter.neon
+
+parameters:
+    level: max
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - tests/Fixture
+    ignoreErrors:
+        # PHPStan's ErrorFormatterTestCase and related internal classes
+        # (ErrorsConsoleStyle, SymfonyOutput, SymfonyStyle) are not marked
+        # with @api, unlike RuleTestCase which is BC-promised.
+        #
+        # However, ErrorFormatterTestCase is the ONLY way to construct a
+        # valid Output object for testing. PHPStan bundles Symfony Console
+        # under a vendor-prefixed namespace (_PHPStan_*\Symfony\...), so
+        # the standard Symfony classes cannot satisfy the type requirements
+        # of ErrorsConsoleStyle::__construct(). Attempting to construct
+        # Output manually results in a TypeError.
+        #
+        # See: https://github.com/phpstan/phpstan/discussions (no @api on ErrorFormatterTestCase)
+        -
+            identifier: phpstanApi.class
+            path: tests/Unit/ErrorFormatter/AiRulesErrorFormatterTest.php
+        -
+            identifier: phpstanApi.method
+            path: tests/Unit/ErrorFormatter/AiRulesErrorFormatterTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/ErrorFormatter/AiRulesErrorFormatterTest.php

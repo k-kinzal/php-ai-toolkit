@@ -1,0 +1,49 @@
+{
+    "name": "k-kinzal/php-ai-toolkit",
+    "description": "A comprehensive toolkit for AI-assisted PHP development — PHPStan rules, PHPUnit reporters, config templates, and more",
+    "type": "phpstan-extension",
+    "license": "MIT",
+    "keywords": ["phpstan", "phpunit", "ai", "toolkit", "static analysis", "custom rules", "templates"],
+    "require": {
+        "php": "^8.0",
+        "phpstan/phpstan": "^1.12 || ^2.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.92",
+        "brianium/paratest": "^6.11 || ^7",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpunit/phpunit": "^10.5 || ^11 || ^12 || ^13"
+    },
+    "autoload": {
+        "psr-4": {
+            "PhpStanAiRules\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        },
+        "classmap": ["tests/Fixture/"]
+    },
+    "extra": {
+        "phpstan": {
+            "includes": [
+                "extension.neon"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "if [ -n \"${CLAUDE_CODE:-}${CLAUDECODE:-}${CURSOR_TRACE_ID:-}${CURSOR_AGENT:-}${GEMINI_CLI:-}${CODEX_SANDBOX:-}${AI_AGENT:-}${DEVIN:-}${AIDER:-}${CLINE:-}\" ]; then phpunit tests/Unit/; else paratest --processes=auto; fi",
+        "test:unit": "phpunit tests/Unit/",
+        "lint": [
+            "@format:check",
+            "phpstan analyse --memory-limit=512M"
+        ],
+        "format": "php-cs-fixer fix --allow-risky=yes",
+        "format:check": "php-cs-fixer fix --dry-run --diff --allow-risky=yes"
+    },
+    "bin": ["bin/php-ai-toolkit"],
+    "config": {
+        "sort-packages": true
+    }
+}

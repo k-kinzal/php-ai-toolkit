@@ -19,51 +19,7 @@ AGENTS.md is a convention for providing AI coding agents (Claude Code, Cursor, C
 
 ## Template
 
-Read the template from `vendor/k-kinzal/php-ai-toolkit/templates/AGENTS.md`.
-
-```markdown
-<!-- NOTE: You do not have permission to overwrite this file. Please ask a human operator to perform the changes for you. -->
-
-# AGENTS
-
-{{PROJECT_DESCRIPTION}}
-
-## Project Tradeoff Sliders
-
-- Scope     ●————————→ HIGH — Deliver the full intended scope; do not cut corners or skip requirements.
-- Quality   ●————————→ HIGH — Quality is the top priority. Correctness, test coverage, and strict static analysis come first.
-- Time      ←————————● LOW — There is no deadline pressure. Take the time needed to get it right.
-- Cost      ←————————● LOW — Resource constraints are not a concern. Invest in doing things properly.
-
-When in doubt, prioritize quality over everything else. It is better to ship less with confidence than to ship more with uncertainty.
-
-## Tech Stack
-
-{{TECH_STACK}}
-
-## Coding Rules
-
-- All code MUST pass PHPStan at level max with strict rules before committing
-- All code MUST pass PHP-CS-Fixer checks before committing
-- All test classes MUST have `#[CoversClass(...)]` attribute
-- When lint errors include fix instructions (Tip:), follow them exactly
-- Every public class in `src/` must have a corresponding test in `tests/Unit/`
-- No `@phpstan-ignore` comments — fix the underlying type issue instead
-- No `//` inline comments — use PHPDoc comments when documentation is needed
-- No suppression of errors, warnings, or notices with `@` operator
-
-{{ADDITIONAL_CODING_RULES}}
-
-## Directory Structure
-
-\`\`\`
-{{DIRECTORY_STRUCTURE}}
-\`\`\`
-
-## Document References
-
-{{DOCUMENT_REFERENCES}}
-```
+Read the template from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-agents-md/AGENTS.md`.
 
 ## Section Explanations
 
@@ -71,58 +27,69 @@ When in doubt, prioritize quality over everything else. It is better to ship les
 The `<!-- NOTE -->` comment at the top tells AI agents that this file is human-managed and should not be modified by agents. This prevents accidental overwrites.
 
 ### Project Description
-Replace `{{PROJECT_DESCRIPTION}}` with a 1-3 sentence summary of what the project does. Example:
-> A REST API for managing inventory data. Built on Laravel 11 with PostgreSQL. Serves the mobile app and admin dashboard.
+Replace `{{PROJECT_DESCRIPTION}}` with a description that covers:
+
+1. What the project does (1-3 sentences)
+2. The project's goal — why it exists and what it is trying to achieve
+3. Core concepts — key ideas or domain terms that AI agents need to understand to work on the project
+
+Write in prose, not bullet points. Example (from a dependency analysis CLI tool):
+> A CLI tool that analyzes PHP code dependencies and visualizes the blast radius of changes. Its primary goal is impact analysis — automatically identifying what breaks when a class, method, or function changes. The tool builds a bidirectional graph model where nodes represent code elements (classes, methods, functions) and edges represent relationships (calls, extends, implements). Inverse edges are generated automatically, enabling traversal in both directions: what the target depends on, and what depends on the target. Output is available in two formats: a tree display for humans and structured data for AI agents.
 
 ### Tradeoff Sliders
 These calibrate AI behavior. The defaults are set to HIGH scope/quality, LOW time/cost — meaning the agent should prioritize correctness over speed. Adjust if the project has different priorities:
 - For prototypes/MVPs: reduce Quality to MEDIUM, increase Time to HIGH
 - For production services: keep defaults (HIGH quality, LOW time)
 
-### Tech Stack
-Replace `{{TECH_STACK}}` with a bulleted list. Derive this from `composer.json`. Example:
+### Supported Versions
+Replace `{{SUPPORTED_VERSIONS}}` with the versions that the project guarantees to work on. Determine what to list from the project's own requirements — `composer.json`, CI matrix, documentation, etc. Only list what the project explicitly supports.
+
+Example:
 ```markdown
-- PHP 8.3
-- Laravel 11
-- PostgreSQL 16
-- PHPStan (Level Max)
-- PHP-CS-Fixer
-- PHPUnit
+- **PHP**: 8.1 / 8.2 / 8.3 / 8.4 / 8.5
 ```
 
-### Coding Rules
-The preset rules enforce php-ai-toolkit standards. Replace `{{ADDITIONAL_CODING_RULES}}` with project-specific rules or remove the placeholder if none. Examples of project-specific rules:
-- "All database queries must use Eloquent; no raw SQL"
-- "API responses must follow JSON:API specification"
-- "Service classes must implement an interface"
+### Architecture
+Replace `{{ARCHITECTURE}}` with a description of the project's layering and responsibility boundaries. This is NOT a directory listing — it describes how the layers relate to each other and what each layer is responsible for.
 
-### Directory Structure
-Replace `{{DIRECTORY_STRUCTURE}}` with the actual tree. Generate it by scanning the project:
-```bash
-find . -type d -not -path '*/vendor/*' -not -path '*/.git/*' -not -path '*/node_modules/*' | head -30 | sort
+Include:
+1. A one-line pipeline or flow summary showing how data/control moves through the system
+2. A table mapping each layer to its responsibility and key entry point
+
+Example (from a CLI tool):
+```markdown
+Pipeline: `CLI input → Config stacking → Action → Analyzer → Graph → Traversal → Reporter → output`
+
+| Layer | Responsibility | Key file |
+|-------|---------------|----------|
+| **Command** | IO only — parse arguments, delegate output | `src/Command/InspectCommand.php` |
+| **Config** | Merge 4 layers: Default → Env → YAML → CLI | `src/Config/ConfigLoader.php` |
+| **Action** | Orchestrate Analyzer and Reporter | `src/Action/Inspect/InspectAction.php` |
+| **Analyzer** | Parse source code → build Graph | `src/Analyzer/` |
+| **Reporter** | Format graph into output | `src/Reporter/` |
+
+Dependencies between layers flow top-down only. Command never calls Analyzer directly.
 ```
 
-Include descriptions for key directories. Example:
+After the architecture description, replace `{{DIRECTORY_STRUCTURE}}` with the actual project directory tree. This is the physical structure that corresponds to the layers above. Example:
 ```
 src/
-  Controller/     # HTTP request handlers
-  Service/        # Business logic
-  Repository/     # Data access layer
-  Entity/         # Domain models
-tests/
-  Unit/           # Unit tests (mirrors src/ structure)
-  Integration/    # Integration tests with database
+├── Command/    # CLI commands (IO only)
+├── Action/     # Use-case orchestration
+├── Analyzer/   # Analysis engine and graph model
+├── Config/     # Layered configuration readers
+└── Reporter/   # Output formatters
+tests/          # Mirrors src/ namespaces
 ```
 
 ### Document References
-Replace `{{DOCUMENT_REFERENCES}}` with links to key docs. Example:
+Replace `{{DOCUMENT_REFERENCES}}` with links to project-specific documentation that AI agents should read. Example:
 ```markdown
 - [API Specification](docs/api-spec.md)
 - [Database Schema](docs/schema.md)
-- [Deployment Guide](docs/deploy.md)
 ```
 
-If the project has no docs, remove this section entirely.
+If the project has no documentation, remove this section entirely.
 
 ## Adaptation Workflow
 
@@ -162,5 +129,6 @@ Also create `CLAUDE.md` in the project root that references AGENTS.md:
 
 After creating AGENTS.md:
 1. Read the file and confirm all `{{PLACEHOLDER}}` values have been replaced
-2. Verify the directory structure matches the actual project
-3. Verify the tech stack matches `composer.json`
+2. Verify the supported versions match `composer.json` constraints
+3. Verify the architecture describes actual layering and dependency direction
+4. Verify the directory structure matches the actual project

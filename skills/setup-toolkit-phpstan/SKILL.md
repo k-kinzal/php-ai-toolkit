@@ -19,133 +19,77 @@ composer require --dev phpstan/phpstan phpstan/phpstan-strict-rules k-kinzal/php
 
 ## Template
 
-Read the template from `vendor/k-kinzal/php-ai-toolkit/templates/phpstan.neon` and apply it to the project root as `phpstan.neon`.
+Read the template from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-phpstan/phpstan.neon` and apply it to the project root as `phpstan.neon`.
 
+## Merging with Existing Configuration
+
+If the project already has `phpstan.neon`, merge as follows rather than overwriting.
+
+### `includes`
+
+Union both lists. Never remove existing includes. Add the toolkit's three includes:
 ```neon
 includes:
-    - vendor/phpstan/phpstan-strict-rules/rules.neon
-    - vendor/k-kinzal/php-ai-toolkit/extension.neon
-    - vendor/k-kinzal/php-ai-toolkit/error-formatter.neon
-
-parameters:
-    level: max
-    paths:
-        - src
-        - tests
-    excludePaths:
-        - tests/Fixture
+    - existing/extension.neon          # keep
+    - vendor/phpstan/phpstan-strict-rules/rules.neon  # add
+    - vendor/k-kinzal/php-ai-toolkit/extension.neon   # add
+    - vendor/k-kinzal/php-ai-toolkit/error-formatter.neon  # add
 ```
 
-## Setting Explanations
+### `level`
 
-### Level
+Always set to `max`. If the existing level is lower, override it. There is no case where a lower level is acceptable — raising the level mid-project is harder than starting at max.
 
-`level: max` is the strictest analysis level. It enables all type checks including union types, intersection types, generics, and strict mixed-type handling.
+### `paths`
 
-### Included Extensions
+Keep the existing paths. If the existing config already lists `src` and `tests` (or equivalent), leave them. Only adjust if the project uses different directory names.
 
-| Include | Purpose |
-|---------|---------|
-| `phpstan-strict-rules` | Enforces strict comparisons (`===`), disallows empty(), requires explicit boolean conditions, and more |
-| `extension.neon` (php-ai-toolkit) | Registers 17 AI-specific rules: forbidden comments, test class restrictions, src/test pairing, naming conventions, etc. |
-| `error-formatter.neon` (php-ai-toolkit) | Registers the `aiRules` error formatter for dual-mode output (AI-optimized vs human-readable) |
+### `excludePaths`
 
-### AI Error Formatter
+Keep existing excludes as-is. These are project-specific (fixture directories, generated code, etc.) and the toolkit has no opinion on them.
 
-The `aiRules` formatter provides:
-- **AI mode**: Flat format with `path:line` leading, deduplication of repeated errors, plain text — optimized for token efficiency
-- **Human mode**: Grouped by file, code context with caret pointers, colored output
+### `ignoreErrors`
 
-The formatter auto-detects the execution environment (Claude Code, Cursor, Gemini CLI, etc.).
-
-### AI Rules (17 Total)
-
-The extension.neon registers these rules (all auto-enabled):
-
-**General Rules:**
-- ForbiddenCommentRule — Bans `@phpstan-ignore`, `@infection-ignore-all`, `// ` comments
-- ForbiddenMagicMethodCallRule — Reports direct calls to magic methods
-- OverrideMustHaveAttributeRule — Requires `#[Override]` on overriding methods
-- SrcUnitTestPairRule — Every src/ class must have a test, and vice versa
-- RequirePhpDocOnPublicApiRule — PHPDoc required on all public API
-- ForbidNonDocCommentRule — Bans `//`, `/* */`, `#` comments (use PHPDoc)
-- ForbidSingleLinePhpDocRule — Bans single-line `/** */` on public API
-
-**Test Class Rules:**
-- NoPropertyInTestClassRule, NoClassConstantInTestClassRule
-- NoPrivateMethodInTestClassRule, NoHelperMethodInTestClassRule
-- NoControlFlowInTestMethodRule, NoTraitUseInTestClassRule
-- NoReflectionInTestClassRule, PhpUnitMockApiRule
-- ForbidDescriptivePhpDocInTestClassRule, TestNamingConventionRule
-
-## Customizable Parameters
-
-The extension accepts these parameters for project-specific tuning:
-
+Keep existing ignores as-is. These are project-specific suppressions for unavoidable violations. Do not add new ignores unless the violation is genuinely unfixable and well-documented:
 ```neon
 parameters:
-    customRules:
-        # Namespace prefixes that identify test classes (default: ['Tests'])
-        testNamespacePrefixes:
-            - 'Tests'
-
-        # Subset of test namespaces where stricter rules apply (default: ['Tests\Unit', 'Tests\Integration'])
-        restrictedTestNamespacePrefixes:
-            - 'Tests\Unit'
-            - 'Tests\Integration'
-
-        # Glob patterns for classes excluded from src/test pair checks
-        srcUnitTestPairExcludePatterns: []
-
-        # Path markers for matching src classes to test classes
-        srcMarker: '/src/'
-        unitTestMarker: '/tests/Unit/'
+    ignoreErrors:
+        -
+            identifier: some.specific.identifier
+            path: path/to/specific/file.php
 ```
 
-## Adaptation Guide
+### `parameters.customRules`
 
-When applying this template to a project:
+Only add if the project uses non-standard conventions:
 
-1. **Paths**: Change `paths` to match the project's actual source and test directories.
+- **Test namespace prefixes**: If the project uses `App\Tests` instead of `Tests`:
+  ```neon
+  parameters:
+      customRules:
+          testNamespacePrefixes:
+              - 'App\Tests'
+          restrictedTestNamespacePrefixes:
+              - 'App\Tests\Unit'
+              - 'App\Tests\Integration'
+  ```
 
-2. **Exclude paths**: Change `excludePaths` to match fixture/stub directories.
+- **Src/test markers**: If the project has a non-standard directory layout:
+  ```neon
+  parameters:
+      customRules:
+          srcMarker: '/app/'
+          unitTestMarker: '/tests/Unit/'
+  ```
 
-3. **Test namespace prefixes**: If the project uses a different test namespace (e.g., `App\Tests`), configure:
-   ```neon
-   parameters:
-       customRules:
-           testNamespacePrefixes:
-               - 'App\Tests'
-           restrictedTestNamespacePrefixes:
-               - 'App\Tests\Unit'
-               - 'App\Tests\Integration'
-   ```
-
-4. **Src/test markers**: If the project has a non-standard directory layout:
-   ```neon
-   parameters:
-       customRules:
-           srcMarker: '/app/'
-           unitTestMarker: '/tests/Unit/'
-   ```
-
-5. **Exclude patterns**: To exclude certain classes from src/test pairing:
-   ```neon
-   parameters:
-       customRules:
-           srcUnitTestPairExcludePatterns:
-               - '#/Migration/#'
-               - '#/DataFixtures/#'
-   ```
-
-6. **ignoreErrors**: Add project-specific error ignores ONLY when the violation is unavoidable and well-documented:
-   ```neon
-   parameters:
-       ignoreErrors:
-           -
-               identifier: some.specific.identifier
-               path: path/to/specific/file.php
-   ```
+- **Exclude patterns**: To exclude certain classes from src/test pairing:
+  ```neon
+  parameters:
+      customRules:
+          srcUnitTestPairExcludePatterns:
+              - '#/Migration/#'
+              - '#/DataFixtures/#'
+  ```
 
 ## Recommended Composer Scripts
 
@@ -173,3 +117,8 @@ vendor/bin/phpstan analyse --error-format=aiRules --memory-limit=512M
 ```
 
 Fix all reported errors before committing. Every error message includes specific fix instructions.
+
+## References
+
+- [PHPStan Configuration](vendor/k-kinzal/php-ai-toolkit/docs/phpstan.md) — Settings and why each is needed
+- [PHPStan Rules](vendor/k-kinzal/php-ai-toolkit/docs/phpstan-rules.md) — Custom rules and their error identifiers

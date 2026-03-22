@@ -7,7 +7,7 @@ description: >-
 
 # Setup PHP-CS-Fixer (Strict Standards)
 
-This skill configures PHP-CS-Fixer with strict coding standards optimized for quality-focused PHP projects.
+This skill configures PHP-CS-Fixer with strict coding standards optimized for AI-assisted PHP development.
 
 ## Prerequisites
 
@@ -19,113 +19,59 @@ composer require --dev friendsofphp/php-cs-fixer
 
 ## Template
 
-Read the template from `vendor/k-kinzal/php-ai-toolkit/templates/.php-cs-fixer.dist.php` and apply it to the project root as `.php-cs-fixer.dist.php`.
+Read the template from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-php-cs-fixer/.php-cs-fixer.dist.php` and apply it to the project root as `.php-cs-fixer.dist.php`.
 
+## Merging with Existing Configuration
+
+If the project already has `.php-cs-fixer.dist.php`, merge as follows rather than overwriting.
+
+### `setRiskyAllowed`
+
+Must be `true`. If the existing config has `setRiskyAllowed(false)`, override to `true`. Without it, `declare_strict_types`, `strict_param`, `strict_comparison`, `void_return`, and `no_alias_functions` cannot be applied.
+
+### Rules — toolkit rules always win
+
+Merge `setRules()` arrays. When the same rule key exists in both, the toolkit value takes precedence. The toolkit rules are the minimum bar and must not be weakened.
+
+| Conflict type | Example | Resolution |
+|--------------|---------|------------|
+| Existing disables a toolkit rule | `'strict_comparison' => false` | Override to `true`. There is no use case for `==` in PHP. |
+| Existing has a weaker setting | `'ordered_imports' => ['sort_algorithm' => 'none']` | Override to `['sort_algorithm' => 'alpha']`. |
+| Existing has a different setting | `'ordered_imports' => ['sort_algorithm' => 'length']` | Override to `alpha`. `alpha` is deterministic and AI agents can always compute the correct insertion position. |
+| Existing has rules not in toolkit | `'no_trailing_whitespace' => true` | Keep. Additional rules are fine. |
+| Existing uses a preset that conflicts | `'@PhpCsFixer:risky' => true` | Keep the preset, but add toolkit rules after it so they override any conflicting preset values. |
+
+Example merge:
 ```php
-<?php
-
-declare(strict_types=1);
-
-$finder = (new PhpCsFixer\Finder())
-    ->in(__DIR__)
-    ->exclude('vendor');
-
 return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
+        '@PhpCsFixer:risky' => true,       // existing preset — keep
+        'no_trailing_whitespace' => true,   // existing extra rule — keep
+        // toolkit rules below — these override any conflicting preset values
         '@PSR12' => true,
         'declare_strict_types' => true,
         'strict_param' => true,
         'strict_comparison' => true,
-        'array_syntax' => ['syntax' => 'short'],
-        'no_unused_imports' => true,
-        'ordered_imports' => ['sort_algorithm' => 'alpha'],
-        'single_quote' => true,
-        'trailing_comma_in_multiline' => true,
-        'no_empty_statement' => true,
-        'no_superfluous_elseif' => true,
-        'no_useless_else' => true,
-        'void_return' => true,
-        'no_alias_functions' => true,
-        'no_mixed_echo_print' => ['use' => 'echo'],
-        'global_namespace_import' => [
-            'import_classes' => true,
-            'import_constants' => true,
-            'import_functions' => true,
-        ],
-        'fully_qualified_strict_types' => true,
+        // ... all other toolkit rules
     ])
     ->setFinder($finder);
 ```
 
-## Rule Explanations
+### Finder
 
-### Base Standard
+Keep existing Finder configuration. The project may have specific `->in()` paths and `->exclude()` directories. Only use the toolkit's default Finder if no existing config exists. If needed, add additional excludes:
+```php
+->exclude(['vendor', 'var', 'cache', 'build'])
+```
 
-| Rule | Purpose |
-|------|---------|
-| `@PSR12` | Full PSR-12 coding standard compliance |
+### Framework-specific rules
 
-### Type Safety
+For Laravel or Symfony projects, their rule sets can be added alongside toolkit rules. Place toolkit rules after framework presets so they take precedence on conflicts.
 
-| Rule | Purpose |
-|------|---------|
-| `declare_strict_types` | Adds `declare(strict_types=1);` to every PHP file |
-| `strict_param` | Native PHP functions use strict parameter types |
-| `strict_comparison` | Forces `===` and `!==` instead of `==` and `!=` |
+### Initial application
 
-### Import Hygiene
-
-| Rule | Purpose |
-|------|---------|
-| `no_unused_imports` | Removes unused `use` statements |
-| `ordered_imports` | Alphabetically sorts `use` statements |
-| `global_namespace_import` | Converts `\strlen()` to `use function strlen;` — explicit imports for all global symbols |
-| `fully_qualified_strict_types` | Uses short names in code when the symbol is imported |
-
-### Style Consistency
-
-| Rule | Purpose |
-|------|---------|
-| `single_quote` | Uses single quotes for strings without interpolation |
-| `trailing_comma_in_multiline` | Adds trailing commas in multiline arrays/arguments — cleaner git diffs |
-| `array_syntax` | Uses short array syntax `[]` instead of `array()` |
-
-### Dead Code Removal
-
-| Rule | Purpose |
-|------|---------|
-| `no_empty_statement` | Removes stray semicolons (e.g., `;;`) |
-| `no_superfluous_elseif` | Converts `elseif` after `return`/`throw`/`continue` to `if` |
-| `no_useless_else` | Removes `else` after `return`/`throw`/`continue` |
-| `no_alias_functions` | Replaces aliases (`sizeof` → `count`, `join` → `implode`) |
-| `no_mixed_echo_print` | Enforces consistent `echo` usage (no `print`) |
-
-### Explicitness
-
-| Rule | Purpose |
-|------|---------|
-| `void_return` | Adds explicit `: void` return type to functions that return nothing |
-
-## Adaptation Guide
-
-When applying this template to a project:
-
-1. **Source directories**: If the project has source in a subdirectory:
-   ```php
-   $finder = (new PhpCsFixer\Finder())
-       ->in([__DIR__ . '/src', __DIR__ . '/tests'])
-       ->exclude('vendor');
-   ```
-
-2. **Additional excludes**: Add directories to exclude:
-   ```php
-   ->exclude(['vendor', 'var', 'cache', 'build'])
-   ```
-
-3. **Framework-specific rules**: For Laravel or Symfony projects, consider adding their rule sets. However, do NOT weaken the strict rules above.
-
-4. **Initial application**: The first run will likely fix many files. Run `composer format` and commit all changes in a single "Apply strict coding standards" commit before doing other work.
+The first run will likely fix many files. Run `composer format` and commit all changes in a single "Apply strict coding standards" commit before doing other work.
 
 ## Recommended Composer Scripts
 
@@ -161,3 +107,7 @@ To auto-fix all violations:
 ```bash
 vendor/bin/php-cs-fixer fix --allow-risky=yes
 ```
+
+## References
+
+- [PHP-CS-Fixer Configuration](vendor/k-kinzal/php-ai-toolkit/docs/php-cs-fixer.md) — Settings and why each is needed

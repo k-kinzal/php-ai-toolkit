@@ -1,5 +1,4 @@
 <!-- NOTE: You do not have permission to overwrite this file. Please ask a human operator to perform the changes for you. -->
-
 # AGENTS
 
 {{PROJECT_DESCRIPTION}}
@@ -13,24 +12,17 @@
 
 When in doubt, prioritize quality over everything else. It is better to ship less with confidence than to ship more with uncertainty.
 
+## Supported Versions
+
+{{SUPPORTED_VERSIONS}}
+
 ## Tech Stack
 
 {{TECH_STACK}}
 
-## Coding Rules
+## Architecture
 
-- All code MUST pass PHPStan at level max with strict rules before committing
-- All code MUST pass PHP-CS-Fixer checks before committing
-- All test classes MUST have `#[CoversClass(...)]` attribute
-- When lint errors include fix instructions (Tip:), follow them exactly
-- Every public class in `src/` must have a corresponding test in `tests/Unit/`
-- No `@phpstan-ignore` comments — fix the underlying type issue instead
-- No `//` inline comments — use PHPDoc comments when documentation is needed
-- No suppression of errors, warnings, or notices with `@` operator
-
-{{ADDITIONAL_CODING_RULES}}
-
-## Directory Structure
+{{ARCHITECTURE}}
 
 ```
 {{DIRECTORY_STRUCTURE}}

@@ -19,7 +19,6 @@ When in doubt, prioritize quality over everything else. It is better to ship les
 ## Supported Versions
 
 - PHP 8.0 or later
-- PHPStan 1.12 or later (including 2.x)
 
 ## Directory Structure
 
@@ -42,13 +41,17 @@ extension.neon       # PHPStan extension — registers all rules and services
 error-formatter.neon # Optional error formatter (not auto-included)
 phpstan.neon         # Self-analysis config (level max + strict-rules)
 phpunit.xml.dist     # PHPUnit config (strict mode + test reporter extension)
-docs/
-  error-formatter.md # Error formatter documentation
-  test-reporter.md   # Test reporter documentation
-  rules/             # Rule documentation (one file per rule)
+docs/                # Documentation
 ```
 
-## Rule Documentation Index
+## Document Index
+
+- [PHPStan Rules](docs/phpstan-rules.md): Custom rules and their error identifiers
+- [PHPStan Configuration](docs/phpstan.md): PHPStan settings and why each is needed
+- [PHPUnit Configuration](docs/phpunit.md): PHPUnit settings and why each is needed
+- [PHP-CS-Fixer Configuration](docs/php-cs-fixer.md): PHP-CS-Fixer settings and why each is needed
+
+**Rule Documentation**
 
 - [ForbidDescriptivePhpDocInTestClassRule.md](docs/rules/ForbidDescriptivePhpDocInTestClassRule.md): Forbids descriptive PHPDoc text in test classes
 - [ForbiddenCommentRule.md](docs/rules/ForbiddenCommentRule.md): Forbids suppression comments such as `@phpstan-ignore` and `@infection-ignore-all`

@@ -33,7 +33,7 @@
         }
     },
     "scripts": {
-        "test": "if [ -n \"${CLAUDE_CODE:-}${CLAUDECODE:-}${CURSOR_TRACE_ID:-}${CURSOR_AGENT:-}${GEMINI_CLI:-}${CODEX_SANDBOX:-}${AI_AGENT:-}${DEVIN:-}${AIDER:-}${CLINE:-}\" ]; then phpunit tests/Unit/; else paratest --processes=auto; fi",
+        "test": "paratest --processes=auto",
         "test:unit": "phpunit tests/Unit/",
         "lint": [
             "@format:check",

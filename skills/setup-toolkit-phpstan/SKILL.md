@@ -100,20 +100,20 @@ Add to the target project's `composer.json`:
     "scripts": {
         "lint": [
             "@format:check",
-            "phpstan analyse --error-format=aiRules --memory-limit=512M"
+            "phpstan analyse --memory-limit=512M"
         ]
     }
 }
 ```
 
-The `--error-format=aiRules` flag activates the dual-mode formatter. When run by an AI agent, output is optimized for token efficiency; when run by a human, output includes code context and colors.
+The `error-formatter.neon` include sets `aiRules` as the default error format. When run by an AI agent, output is optimized for token efficiency; when run by a human, output includes code context and colors.
 
 ## Verification
 
 After applying:
 
 ```bash
-vendor/bin/phpstan analyse --error-format=aiRules --memory-limit=512M
+vendor/bin/phpstan analyse --memory-limit=512M
 ```
 
 Fix all reported errors before committing. Every error message includes specific fix instructions.

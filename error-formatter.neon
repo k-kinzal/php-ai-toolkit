@@ -1,3 +1,6 @@
+parameters:
+    errorFormat: aiRules
+
 services:
     aiRules.support.agentDetector:
         class: PhpStanAiRules\Support\AgentDetector

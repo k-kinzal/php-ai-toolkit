@@ -8,8 +8,10 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Testing\PHPStanTestCase;
 use PhpStanAiRules\Support\TestClassScope;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 #[CoversClass(TestClassScope::class)]
+#[Medium]
 final class TestClassScopeTest extends PHPStanTestCase
 {
     public function testIsTestClassReturnsTrueForTestNamespace(): void

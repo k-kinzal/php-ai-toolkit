@@ -16,10 +16,6 @@ When in doubt, prioritize quality over everything else. It is better to ship les
 
 {{SUPPORTED_VERSIONS}}
 
-## Tech Stack
-
-{{TECH_STACK}}
-
 ## Architecture
 
 {{ARCHITECTURE}}

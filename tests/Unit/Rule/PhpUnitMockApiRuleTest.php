@@ -9,11 +9,13 @@ use PHPStan\Testing\RuleTestCase;
 use PhpStanAiRules\Rule\PhpUnitMockApiRule;
 use PhpStanAiRules\Support\TestClassScope;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<PhpUnitMockApiRule>
  */
 #[CoversClass(PhpUnitMockApiRule::class)]
+#[Medium]
 final class PhpUnitMockApiRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule

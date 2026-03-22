@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace PhpStanAiRules\TestReporter;
 
-use PhpStanAiRules\Support\AgentDetector;
-use PhpStanAiRules\Support\FormatMode;
-
 use function array_key_exists;
 use function count;
 use function explode;
@@ -16,16 +13,21 @@ use function is_array;
 use function is_file;
 use function ltrim;
 use function max;
+
+use PhpStanAiRules\Support\AgentDetector;
+use PhpStanAiRules\Support\FormatMode;
+
 use function rtrim;
 use function sprintf;
 use function str_pad;
+
+use const STR_PAD_LEFT;
+
 use function str_repeat;
 use function str_starts_with;
 use function strlen;
 use function substr;
 use function trim;
-
-use const STR_PAD_LEFT;
 
 /**
  * Dual-mode formatter for PHPUnit test issues.

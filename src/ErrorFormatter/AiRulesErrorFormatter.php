@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace PhpStanAiRules\ErrorFormatter;
 
+use function array_key_exists;
+use function count;
+use function file;
+use function is_array;
+use function is_file;
+use function ltrim;
+use function max;
+
 use PHPStan\Analyser\Error;
 use PHPStan\Command\AnalysisResult;
 use PHPStan\Command\ErrorFormatter\ErrorFormatter;
@@ -12,13 +20,6 @@ use PHPStan\File\RelativePathHelper;
 use PhpStanAiRules\Support\AgentDetector;
 use PhpStanAiRules\Support\FormatMode;
 
-use function array_key_exists;
-use function count;
-use function file;
-use function is_array;
-use function is_file;
-use function ltrim;
-use function max;
 use function rtrim;
 use function sprintf;
 use function str_pad;

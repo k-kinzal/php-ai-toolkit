@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use SplFileInfo;
-
 use function is_dir;
 use function mkdir;
+
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+
 use function rmdir;
+
+use SplFileInfo;
+
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cli;
 
+use function file_put_contents;
+use function implode;
+use function mkdir;
+
 use PhpStanAiRules\Cli\Application;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Tests\Support\TempDir;
-
-use function file_put_contents;
-use function implode;
-use function mkdir;
 
 #[CoversClass(Application::class)]
 final class ApplicationTest extends TestCase

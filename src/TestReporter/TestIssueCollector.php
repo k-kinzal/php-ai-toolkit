@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace PhpStanAiRules\TestReporter;
 
+use function count;
+
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 
-use function count;
 use function preg_match_all;
 use function preg_quote;
 use function str_contains;

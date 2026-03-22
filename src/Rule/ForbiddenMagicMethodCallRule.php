@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PhpStanAiRules\Rule;
 
 use PHPStan\Analyser\Scope;
-use PHPStan\Rules\Rule;
 use PHPStan\Rules\IdentifierRuleError;
+use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
 /**

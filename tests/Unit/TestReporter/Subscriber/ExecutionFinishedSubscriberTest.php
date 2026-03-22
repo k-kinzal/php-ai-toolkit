@@ -14,9 +14,10 @@ use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\PhpUnitEventFactory;
 
 use function putenv;
+
+use Tests\Support\PhpUnitEventFactory;
 
 #[CoversClass(ExecutionFinishedSubscriber::class)]
 final class ExecutionFinishedSubscriberTest extends TestCase

@@ -6,8 +6,8 @@ namespace PhpStanAiRules\Rule;
 
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\FileNode;
-use PHPStan\Rules\Rule;
 use PHPStan\Rules\IdentifierRuleError;
+use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
 /**

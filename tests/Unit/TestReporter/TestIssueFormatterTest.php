@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TestReporter;
 
+use function dirname;
+
 use Override;
 use PhpStanAiRules\Support\AgentDetector;
 use PhpStanAiRules\TestReporter\TestIssue;
@@ -11,7 +13,6 @@ use PhpStanAiRules\TestReporter\TestIssueFormatter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-use function dirname;
 use function putenv;
 
 #[CoversClass(TestIssueFormatter::class)]
@@ -122,7 +123,7 @@ final class TestIssueFormatterTest extends TestCase
         ]);
 
         self::assertStringContainsString('--- Expected', $output);
-        self::assertStringContainsString("+++ Actual", $output);
+        self::assertStringContainsString('+++ Actual', $output);
         self::assertStringContainsString("-'John'", $output);
         self::assertStringContainsString("+'Jane'", $output);
     }

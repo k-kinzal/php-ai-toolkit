@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace PhpStanAiRules\Rule;
 
+use ParseError;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\FileNode;
-use PHPStan\Rules\Rule;
 use PHPStan\Rules\IdentifierRuleError;
+use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
 /**
@@ -47,7 +48,7 @@ final class ForbidNonDocCommentRule implements Rule
 
         try {
             $tokens = token_get_all($source, TOKEN_PARSE);
-        } catch (\ParseError) {
+        } catch (ParseError) {
             return [];
         }
 

@@ -4,19 +4,24 @@ declare(strict_types=1);
 
 namespace PhpStanAiRules\Cli\Command;
 
-use Closure;
-use PhpStanAiRules\Cli\PathHelper;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use SplFileInfo;
-
 use function array_diff;
+
+use Closure;
+
 use function copy;
 use function is_dir;
 use function is_link;
 use function mkdir;
+
+use PhpStanAiRules\Cli\PathHelper;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+
 use function rmdir;
 use function scandir;
+
+use SplFileInfo;
+
 use function sprintf;
 use function symlink;
 use function unlink;

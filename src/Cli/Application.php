@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace PhpStanAiRules\Cli;
 
-use Closure;
-use PhpStanAiRules\Cli\Command\InstallCommand;
-
 use function array_shift;
+
+use Closure;
+
 use function fwrite;
-use function in_array;
-use function sprintf;
 
 use const PHP_EOL;
+
+use PhpStanAiRules\Cli\Command\InstallCommand;
+
+use function sprintf;
+
 use const STDOUT;
 
 /**

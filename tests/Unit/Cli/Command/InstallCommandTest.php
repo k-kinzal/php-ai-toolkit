@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cli\Command;
 
-use PhpStanAiRules\Cli\Command\InstallCommand;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
-use Tests\Support\TempDir;
-
 use function file_get_contents;
 use function file_put_contents;
 use function implode;
 use function is_dir;
 use function is_link;
 use function mkdir;
+
+use PhpStanAiRules\Cli\Command\InstallCommand;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
+use Tests\Support\TempDir;
 
 #[CoversClass(InstallCommand::class)]
 final class InstallCommandTest extends TestCase

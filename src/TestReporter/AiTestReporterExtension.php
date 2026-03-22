@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace PhpStanAiRules\TestReporter;
 
 use Closure;
+
+use function fwrite;
+use function getcwd;
+use function getenv;
+
 use Override;
 use PhpStanAiRules\Support\AgentDetector;
 use PhpStanAiRules\Support\FormatMode;
@@ -16,10 +21,6 @@ use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Configuration;
-
-use function fwrite;
-use function getenv;
-use function getcwd;
 
 use const STDERR;
 

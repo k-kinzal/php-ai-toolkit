@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Rule;
 
-use PhpStanAiRules\Rule\ForbidSingleLinePhpDocRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
+use PhpStanAiRules\Rule\ForbidSingleLinePhpDocRule;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**

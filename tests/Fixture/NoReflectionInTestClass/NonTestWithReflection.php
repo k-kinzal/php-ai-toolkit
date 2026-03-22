@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Fixture\NoReflectionInTestClass;
 
 use ReflectionClass;
+use ReflectionMethod;
 
 class NonTestWithReflection
 {
@@ -16,8 +17,8 @@ class NonTestWithReflection
         $reflection = new ReflectionClass($className);
 
         return array_map(
-            static fn (\ReflectionMethod $method): string => $method->getName(),
-            $reflection->getMethods(\ReflectionMethod::IS_PUBLIC),
+            static fn (ReflectionMethod $method): string => $method->getName(),
+            $reflection->getMethods(ReflectionMethod::IS_PUBLIC),
         );
     }
 }

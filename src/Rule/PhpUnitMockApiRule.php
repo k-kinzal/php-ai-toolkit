@@ -6,12 +6,12 @@ namespace PhpStanAiRules\Rule;
 
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ReflectionProvider;
-use PHPStan\Rules\Rule;
 use PHPStan\Rules\IdentifierRuleError;
+use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+use PhpStanAiRules\Support\TestClassScope;
 use PHPUnit\Framework\MockObject\Generator\Generator as MockGenerator;
 use PHPUnit\Framework\MockObject\MockBuilder;
-use PhpStanAiRules\Support\TestClassScope;
 
 /**
  * @implements Rule<\PhpParser\Node\Expr>

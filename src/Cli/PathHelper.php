@@ -8,9 +8,9 @@ use function array_slice;
 use function count;
 use function explode;
 use function implode;
+use function rtrim;
 use function str_repeat;
 use function str_replace;
-use function rtrim;
 
 /**
  * Computes relative paths between directories for symlink creation.

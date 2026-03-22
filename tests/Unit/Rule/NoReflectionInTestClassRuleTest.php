@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Rule;
 
-use PhpStanAiRules\Rule\NoReflectionInTestClassRule;
-use PhpStanAiRules\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
+use PhpStanAiRules\Rule\NoReflectionInTestClassRule;
+use PhpStanAiRules\Support\TestClassScope;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
@@ -31,11 +31,11 @@ final class NoReflectionInTestClassRuleTest extends RuleTestCase
         $this->analyse([__DIR__ . '/../../Fixture/NoReflectionInTestClass/WithReflection.php'], [
             [
                 'Using ReflectionClass in test classes is prohibited. If you need Reflection to test something, it is a sign that you are not testing behavior. Redesign the code or the test to verify observable behavior instead.',
-                15,
+                17,
             ],
             [
                 'Using ReflectionMethod in test classes is prohibited. If you need Reflection to test something, it is a sign that you are not testing behavior. Redesign the code or the test to verify observable behavior instead.',
-                21,
+                23,
             ],
         ]);
     }

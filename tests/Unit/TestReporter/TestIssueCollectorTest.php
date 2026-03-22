@@ -75,7 +75,7 @@ final class TestIssueCollectorTest extends TestCase
                 'PHPUnit\Framework\ExpectationFailedException',
                 'Some assertion failed.',
                 'Some assertion failed.',
-                "/path/to/tests/Unit/FooTest.php:42",
+                '/path/to/tests/Unit/FooTest.php:42',
                 null,
             ),
             null,

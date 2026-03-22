@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ErrorFormatter;
 
+use function dirname;
+
 use Override;
-use PhpStanAiRules\ErrorFormatter\AiRulesErrorFormatter;
-use PhpStanAiRules\Support\AgentDetector;
 use PHPStan\Analyser\Error;
 use PHPStan\Command\AnalysisResult;
 use PHPStan\File\SimpleRelativePathHelper;
 use PHPStan\Testing\ErrorFormatterTestCase;
+use PhpStanAiRules\ErrorFormatter\AiRulesErrorFormatter;
+use PhpStanAiRules\Support\AgentDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
 
-use function dirname;
 use function putenv;
 
 #[CoversClass(AiRulesErrorFormatter::class)]

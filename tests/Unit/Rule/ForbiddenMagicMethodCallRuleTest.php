@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Rule;
 
-use PhpStanAiRules\Rule\ForbiddenMagicMethodCallRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
+use PhpStanAiRules\Rule\ForbiddenMagicMethodCallRule;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**

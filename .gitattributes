@@ -2,14 +2,11 @@
 
 *.php diff=php
 
-/.claude/         export-ignore
 /.github/         export-ignore
 /.gitattributes   export-ignore
 /.gitignore       export-ignore
 /.php-cs-fixer.dist.php export-ignore
 /docs/            export-ignore
-/skills/          export-ignore
-/templates/       export-ignore
 /tests/           export-ignore
 /phpstan.neon     export-ignore
 /phpunit.xml.dist export-ignore

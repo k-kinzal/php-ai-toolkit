@@ -11,6 +11,7 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.92",
         "brianium/paratest": "^6.11 || ^7",
+        "deptrac/deptrac": "^4.6",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpunit/phpunit": "^10.5 || ^11 || ^12 || ^13"
     },
@@ -37,8 +38,10 @@
         "test:unit": "phpunit tests/Unit/",
         "lint": [
             "@format:check",
-            "phpstan analyse --memory-limit=512M"
+            "phpstan analyse --memory-limit=512M",
+            "@deptrac"
         ],
+        "deptrac": "deptrac analyse --config-file=deptrac.yaml",
         "format": "php-cs-fixer fix --allow-risky=yes",
         "format:check": "php-cs-fixer fix --dry-run --diff --allow-risky=yes"
     },

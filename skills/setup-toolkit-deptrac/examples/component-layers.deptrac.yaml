@@ -1,0 +1,34 @@
+# EXAMPLE ONLY: use for tools/libraries where top-level directories are real components.
+deptrac:
+  paths:
+    - ./src
+  exclude_files:
+    - '#.*/tests?/.*#'
+    - '#.*/vendor/.*#'
+  layers:
+    - name: Command
+      collectors:
+        - type: directory
+          value: src/Command/.*
+    - name: Analyzer
+      collectors:
+        - type: directory
+          value: src/Analyzer/.*
+    - name: Reporter
+      collectors:
+        - type: directory
+          value: src/Reporter/.*
+    - name: Config
+      collectors:
+        - type: directory
+          value: src/Config/.*
+  ruleset:
+    Command:
+      - Config
+      - Analyzer
+      - Reporter
+    Reporter:
+      - Analyzer
+    Analyzer:
+      - Config
+    Config: ~

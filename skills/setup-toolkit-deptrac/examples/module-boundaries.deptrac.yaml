@@ -1,0 +1,26 @@
+# EXAMPLE ONLY: use for modular codebases where modules should stay independent.
+deptrac:
+  paths:
+    - ./src
+  exclude_files:
+    - '#.*/tests?/.*#'
+    - '#.*/vendor/.*#'
+  layers:
+    - name: Billing
+      collectors:
+        - type: directory
+          value: src/Billing/.*
+    - name: Catalog
+      collectors:
+        - type: directory
+          value: src/Catalog/.*
+    - name: Shared
+      collectors:
+        - type: directory
+          value: src/Shared/.*
+  ruleset:
+    Billing:
+      - Shared
+    Catalog:
+      - Shared
+    Shared: ~

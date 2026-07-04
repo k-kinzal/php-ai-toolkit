@@ -1,0 +1,32 @@
+# EXAMPLE ONLY: use for apps that really have these directories.
+deptrac:
+  paths:
+    - ./app
+  exclude_files:
+    - '#.*/tests?/.*#'
+    - '#.*/vendor/.*#'
+  layers:
+    - name: Http
+      collectors:
+        - type: directory
+          value: app/Http/.*
+    - name: UseCase
+      collectors:
+        - type: directory
+          value: app/UseCase/.*
+    - name: Domain
+      collectors:
+        - type: directory
+          value: app/Domain/.*
+    - name: Infrastructure
+      collectors:
+        - type: directory
+          value: app/Infrastructure/.*
+  ruleset:
+    Http:
+      - UseCase
+    UseCase:
+      - Domain
+    Infrastructure:
+      - Domain
+    Domain: ~

@@ -1,0 +1,34 @@
+# EXAMPLE ONLY: use for libraries with explicit contracts, core code, internals, and adapters.
+deptrac:
+  paths:
+    - ./src
+  exclude_files:
+    - '#.*/tests?/.*#'
+    - '#.*/vendor/.*#'
+  layers:
+    - name: Contract
+      collectors:
+        - type: directory
+          value: src/Contract/.*
+    - name: Core
+      collectors:
+        - type: directory
+          value: src/Core/.*
+    - name: Internal
+      collectors:
+        - type: directory
+          value: src/Internal/.*
+    - name: Adapter
+      collectors:
+        - type: directory
+          value: src/Adapter/.*
+  ruleset:
+    Adapter:
+      - Contract
+      - Core
+    Internal:
+      - Contract
+      - Core
+    Core:
+      - Contract
+    Contract: ~

@@ -1,0 +1,37 @@
+# EXAMPLE ONLY: use for PHPStan extension/toolkit packages with these components.
+deptrac:
+  paths:
+    - ./src
+  exclude_files:
+    - '#.*/tests?/.*#'
+    - '#.*/vendor/.*#'
+  layers:
+    - name: Cli
+      collectors:
+        - type: directory
+          value: src/Cli/.*
+    - name: Rule
+      collectors:
+        - type: directory
+          value: src/Rule/.*
+    - name: Support
+      collectors:
+        - type: directory
+          value: src/Support/.*
+    - name: ErrorFormatter
+      collectors:
+        - type: directory
+          value: src/ErrorFormatter/.*
+    - name: TestReporter
+      collectors:
+        - type: directory
+          value: src/TestReporter/.*
+  ruleset:
+    Cli: ~
+    Rule:
+      - Support
+    ErrorFormatter:
+      - Support
+    TestReporter:
+      - Support
+    Support: ~

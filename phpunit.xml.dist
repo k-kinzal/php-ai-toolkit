@@ -23,7 +23,7 @@
         </testsuite>
     </testsuites>
     <extensions>
-        <bootstrap class="PhpStanAiRules\TestReporter\AiTestReporterExtension"/>
+        <bootstrap class="PhpAiToolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>
     </extensions>
     <source restrictNotices="true"
             restrictWarnings="true"

@@ -1,0 +1,54 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\PhpUnit\TestReporter\Subscriber;
+
+use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\TestConsideredRiskySubscriber;
+use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
+use PHPUnit\Event\Code\TestDox;
+use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Telemetry\Duration;
+use PHPUnit\Event\Telemetry\GarbageCollectorStatus;
+use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event\Telemetry\Info;
+use PHPUnit\Event\Telemetry\MemoryUsage;
+use PHPUnit\Event\Telemetry\Snapshot;
+use PHPUnit\Event\Test\ConsideredRisky;
+use PHPUnit\Event\TestData\TestDataCollection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\MetadataCollection;
+
+#[CoversClass(TestConsideredRiskySubscriber::class)]
+final class TestConsideredRiskySubscriberTest extends TestCase
+{
+    public function testNotifyDelegatesToCollector(): void
+    {
+        $collector = new TestIssueCollector();
+        $subscriber = new TestConsideredRiskySubscriber($collector);
+        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
+        $memory = MemoryUsage::fromBytes(0);
+        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
+        $snapshot = new Snapshot($time, $memory, $memory, $gc);
+        $duration = Duration::fromSecondsAndNanoseconds(0, 0);
+        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
+        $testMethod = new TestMethod(
+            self::class,
+            'testBar',
+            '/foo.php',
+            1,
+            new TestDox('', '', ''),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([]),
+        );
+
+        $subscriber->notify(new ConsideredRisky(
+            $telemetryInfo,
+            $testMethod,
+            'No assertions',
+        ));
+
+        self::assertTrue($collector->hasIssues());
+    }
+}

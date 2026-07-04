@@ -3,10 +3,10 @@ parameters:
 
 services:
     aiRules.support.agentDetector:
-        class: PhpStanAiRules\Support\AgentDetector
+        class: PhpAiToolkit\Shared\AgentDetector
 
     errorFormatter.aiRules:
-        class: PhpStanAiRules\ErrorFormatter\AiRulesErrorFormatter
+        class: PhpAiToolkit\PhpStan\ErrorFormatter\AiRulesErrorFormatter
         arguments:
             relativePathHelper: @simpleRelativePathHelper
             agentDetector: @aiRules.support.agentDetector

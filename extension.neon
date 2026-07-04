@@ -78,105 +78,105 @@ parameters:
 
 services:
     aiRules.support.testClassScope:
-        class: PhpStanAiRules\Support\TestClassScope
+        class: PhpAiToolkit\PhpStan\Support\TestClassScope
         arguments:
             testNamespacePrefixes: %customRules.testNamespacePrefixes%
             restrictedTestNamespacePrefixes: %customRules.restrictedTestNamespacePrefixes%
 
     aiRules.rule.forbiddenComment:
-        class: PhpStanAiRules\Rule\ForbiddenCommentRule
+        class: PhpAiToolkit\PhpStan\Rule\ForbiddenCommentRule
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.noPropertyInTestClass:
-        class: PhpStanAiRules\Rule\NoPropertyInTestClassRule
+        class: PhpAiToolkit\PhpStan\Rule\NoPropertyInTestClassRule
         arguments:
             testClassScope: @aiRules.support.testClassScope
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.noClassConstantInTestClass:
-        class: PhpStanAiRules\Rule\NoClassConstantInTestClassRule
+        class: PhpAiToolkit\PhpStan\Rule\NoClassConstantInTestClassRule
         arguments:
             testClassScope: @aiRules.support.testClassScope
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.noPrivateMethodInTestClass:
-        class: PhpStanAiRules\Rule\NoPrivateMethodInTestClassRule
+        class: PhpAiToolkit\PhpStan\Rule\NoPrivateMethodInTestClassRule
         arguments:
             testClassScope: @aiRules.support.testClassScope
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.phpUnitMockApi:
-        class: PhpStanAiRules\Rule\PhpUnitMockApiRule
+        class: PhpAiToolkit\PhpStan\Rule\PhpUnitMockApiRule
         arguments:
             testClassScope: @aiRules.support.testClassScope
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.forbiddenMagicMethodCall:
-        class: PhpStanAiRules\Rule\ForbiddenMagicMethodCallRule
+        class: PhpAiToolkit\PhpStan\Rule\ForbiddenMagicMethodCallRule
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.forbiddenNamespace:
-        class: PhpStanAiRules\Rule\ForbiddenNamespaceRule
+        class: PhpAiToolkit\PhpStan\Rule\ForbiddenNamespaceRule
         arguments:
             forbiddenNamespacePrefixes: %customRules.forbiddenNamespacePrefixes%
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.forbidClassLikeNameSuffix:
-        class: PhpStanAiRules\Rule\ForbidClassLikeNameSuffixRule
+        class: PhpAiToolkit\PhpStan\Rule\ForbidClassLikeNameSuffixRule
         arguments:
             forbiddenSuffixes: %customRules.forbiddenClassLikeNameSuffixes%
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.noHelperMethodInTestClass:
-        class: PhpStanAiRules\Rule\NoHelperMethodInTestClassRule
+        class: PhpAiToolkit\PhpStan\Rule\NoHelperMethodInTestClassRule
         arguments:
             testClassScope: @aiRules.support.testClassScope
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.overrideMustHaveAttribute:
-        class: PhpStanAiRules\Rule\OverrideMustHaveAttributeRule
+        class: PhpAiToolkit\PhpStan\Rule\OverrideMustHaveAttributeRule
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.noControlFlowInTestMethod:
-        class: PhpStanAiRules\Rule\NoControlFlowInTestMethodRule
+        class: PhpAiToolkit\PhpStan\Rule\NoControlFlowInTestMethodRule
         arguments:
             testClassScope: @aiRules.support.testClassScope
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.noReflectionInTestClass:
-        class: PhpStanAiRules\Rule\NoReflectionInTestClassRule
+        class: PhpAiToolkit\PhpStan\Rule\NoReflectionInTestClassRule
         arguments:
             testClassScope: @aiRules.support.testClassScope
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.noRedundantAssertInstanceOf:
-        class: PhpStanAiRules\Rule\NoRedundantAssertInstanceOfRule
+        class: PhpAiToolkit\PhpStan\Rule\NoRedundantAssertInstanceOfRule
         arguments:
             testClassScope: @aiRules.support.testClassScope
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.noTraitUseInTestClass:
-        class: PhpStanAiRules\Rule\NoTraitUseInTestClassRule
+        class: PhpAiToolkit\PhpStan\Rule\NoTraitUseInTestClassRule
         arguments:
             testClassScope: @aiRules.support.testClassScope
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.srcUnitTestPair:
-        class: PhpStanAiRules\Rule\SrcUnitTestPairRule
+        class: PhpAiToolkit\PhpStan\Rule\SrcUnitTestPairRule
         arguments:
             excludePatterns: %customRules.srcUnitTestPairExcludePatterns%
             srcMarker: %customRules.srcMarker%
@@ -185,31 +185,31 @@ services:
             - phpstan.rules.rule
 
     aiRules.rule.requirePhpDocOnPublicApi:
-        class: PhpStanAiRules\Rule\RequirePhpDocOnPublicApiRule
+        class: PhpAiToolkit\PhpStan\Rule\RequirePhpDocOnPublicApiRule
         arguments:
             restrictedTestNamespacePrefixes: %customRules.restrictedTestNamespacePrefixes%
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.forbidSingleLinePhpDoc:
-        class: PhpStanAiRules\Rule\ForbidSingleLinePhpDocRule
+        class: PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDocRule
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.forbidNonDocComment:
-        class: PhpStanAiRules\Rule\ForbidNonDocCommentRule
+        class: PhpAiToolkit\PhpStan\Rule\ForbidNonDocCommentRule
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.forbidDescriptivePhpDocInTestClass:
-        class: PhpStanAiRules\Rule\ForbidDescriptivePhpDocInTestClassRule
+        class: PhpAiToolkit\PhpStan\Rule\ForbidDescriptivePhpDocInTestClassRule
         arguments:
             restrictedTestNamespacePrefixes: %customRules.restrictedTestNamespacePrefixes%
         tags:
             - phpstan.rules.rule
 
     aiRules.rule.testNamingConvention:
-        class: PhpStanAiRules\Rule\TestNamingConventionRule
+        class: PhpAiToolkit\PhpStan\Rule\TestNamingConventionRule
         arguments:
             testClassScope: @aiRules.support.testClassScope
             srcMarker: %customRules.srcMarker%

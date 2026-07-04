@@ -25,10 +25,10 @@ parameters:
         # See: https://github.com/phpstan/phpstan/discussions (no @api on ErrorFormatterTestCase)
         -
             identifier: phpstanApi.class
-            path: tests/Unit/ErrorFormatter/AiRulesErrorFormatterTest.php
+            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesErrorFormatterTest.php
         -
             identifier: phpstanApi.method
-            path: tests/Unit/ErrorFormatter/AiRulesErrorFormatterTest.php
+            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesErrorFormatterTest.php
         -
             identifier: phpstanApi.constructor
-            path: tests/Unit/ErrorFormatter/AiRulesErrorFormatterTest.php
+            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesErrorFormatterTest.php

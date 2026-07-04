@@ -5,32 +5,42 @@ deptrac:
     - '#.*/tests?/.*#'
     - '#.*/vendor/.*#'
   layers:
-    - name: Cli
+    - name: Installer
       collectors:
         - type: directory
-          value: src/Cli/.*
-    - name: Rule
+          value: src/Installer/.*
+    - name: LocGuard
       collectors:
         - type: directory
-          value: src/Rule/.*
-    - name: Support
+          value: src/LocGuard/.*
+    - name: PhpStanRule
       collectors:
         - type: directory
-          value: src/Support/.*
-    - name: ErrorFormatter
+          value: src/PhpStan/Rule/.*
+    - name: PhpStanSupport
       collectors:
         - type: directory
-          value: src/ErrorFormatter/.*
-    - name: TestReporter
+          value: src/PhpStan/Support/.*
+    - name: PhpStanErrorFormatter
       collectors:
         - type: directory
-          value: src/TestReporter/.*
+          value: src/PhpStan/ErrorFormatter/.*
+    - name: PhpUnitTestReporter
+      collectors:
+        - type: directory
+          value: src/PhpUnit/TestReporter/.*
+    - name: Shared
+      collectors:
+        - type: directory
+          value: src/Shared/.*
   ruleset:
-    Cli: ~
-    Rule:
-      - Support
-    ErrorFormatter:
-      - Support
-    TestReporter:
-      - Support
-    Support: ~
+    Installer: ~
+    LocGuard: ~
+    PhpStanRule:
+      - PhpStanSupport
+    PhpStanSupport: ~
+    PhpStanErrorFormatter:
+      - Shared
+    PhpUnitTestReporter:
+      - Shared
+    Shared: ~

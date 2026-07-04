@@ -76,7 +76,7 @@ Add the toolkit extension alongside existing extensions. Do not remove existing 
 ```xml
 <extensions>
     <bootstrap class="Existing\Extension"/>                              <!-- keep -->
-    <bootstrap class="PhpStanAiRules\TestReporter\AiTestReporterExtension"/>  <!-- add -->
+    <bootstrap class="PhpAiToolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>  <!-- add -->
 </extensions>
 ```
 

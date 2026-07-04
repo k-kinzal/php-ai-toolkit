@@ -12,6 +12,21 @@ A PHPStan extension that detects anti-patterns commonly introduced by AI code ge
 
 ### 1. Install
 
+This package is not published on Packagist. Install it from the VCS repository by adding the repository to your `composer.json`:
+
+```json
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/k-kinzal/php-ai-toolkit.git"
+        }
+    ]
+}
+```
+
+Then require it as a dev dependency:
+
 ```bash
 composer require --dev k-kinzal/php-ai-toolkit
 ```

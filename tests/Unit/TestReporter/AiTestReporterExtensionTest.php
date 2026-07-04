@@ -4,28 +4,55 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TestReporter;
 
+use Override;
 use PhpStanAiRules\TestReporter\AiTestReporterExtension;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\Extension\Extension;
+use PHPUnit\Runner\Extension\Facade;
+use PHPUnit\Runner\Extension\ParameterCollection;
+use PHPUnit\TextUI\Configuration\Registry;
+
+use function putenv;
 
 #[CoversClass(AiTestReporterExtension::class)]
 final class AiTestReporterExtensionTest extends TestCase
 {
-    public function testImplementsExtensionInterface(): void
+    #[Override]
+    protected function setUp(): void
     {
-        $extension = new AiTestReporterExtension();
-
-        self::assertInstanceOf(Extension::class, $extension);
+        parent::setUp();
+        putenv('PARATEST');
     }
 
-    public function testBootstrapAcceptsCustomWriter(): void
+    #[Override]
+    protected function tearDown(): void
     {
+        putenv('PARATEST');
+        parent::tearDown();
+    }
+
+    public function testBootstrapSkipsParatestWorkerOutputReplacement(): void
+    {
+        putenv('PARATEST=1');
+        $facade = new Facade();
+        $extension = new AiTestReporterExtension();
+
+        $extension->bootstrap(Registry::get(), $facade, ParameterCollection::fromArray([]));
+
+        self::assertFalse($facade->replacesProgressOutput());
+        self::assertFalse($facade->replacesResultOutput());
+    }
+
+    public function testBootstrapSkipsCustomWriterInParatestWorker(): void
+    {
+        putenv('PARATEST=1');
         $output = [];
         $extension = new AiTestReporterExtension(static function (string $message) use (&$output): void {
             $output[] = $message;
         });
 
-        self::assertInstanceOf(Extension::class, $extension);
+        $extension->bootstrap(Registry::get(), new Facade(), ParameterCollection::fromArray([]));
+
+        self::assertSame([], $output);
     }
 }

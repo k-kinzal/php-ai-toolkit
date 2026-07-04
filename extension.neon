@@ -161,6 +161,13 @@ services:
         tags:
             - phpstan.rules.rule
 
+    aiRules.rule.noRedundantAssertInstanceOf:
+        class: PhpStanAiRules\Rule\NoRedundantAssertInstanceOfRule
+        arguments:
+            testClassScope: @aiRules.support.testClassScope
+        tags:
+            - phpstan.rules.rule
+
     aiRules.rule.noTraitUseInTestClass:
         class: PhpStanAiRules\Rule\NoTraitUseInTestClassRule
         arguments:

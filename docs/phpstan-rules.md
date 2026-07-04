@@ -31,6 +31,7 @@ Rules applied to test classes in the `Tests\Unit` / `Tests\Integration` namespac
 | [NoControlFlowInTestMethodRule](rules/NoControlFlowInTestMethodRule.md) | Forbids control flow statements in test methods | `customRules.noControlFlowInTestMethod` |
 | [NoTraitUseInTestClassRule](rules/NoTraitUseInTestClassRule.md) | Forbids trait usage in test classes | `customRules.noTraitUseInTestClass` |
 | [NoReflectionInTestClassRule](rules/NoReflectionInTestClassRule.md) `*` | Forbids Reflection API usage in test classes | `customRules.noReflectionInTestClass` |
+| [NoRedundantAssertInstanceOfRule](rules/NoRedundantAssertInstanceOfRule.md) `*` | Forbids redundant PHPUnit `assertInstanceOf()` calls for values with one statically-known type | `customRules.noRedundantAssertInstanceOf` |
 | [PhpUnitMockApiRule](rules/PhpUnitMockApiRule.md) `*` | Restricts mock API and enforces interface-only mocking | `customRules.phpUnitMockApi` |
 | [ForbidDescriptivePhpDocInTestClassRule](rules/ForbidDescriptivePhpDocInTestClassRule.md) | Forbids descriptive PHPDoc text in test classes | `customRules.forbidDescriptivePhpDocInTestClass` |
 | [TestNamingConventionRule](rules/TestNamingConventionRule.md) | Enforces naming conventions for test methods and data providers | `customRules.testNamingConvention` |

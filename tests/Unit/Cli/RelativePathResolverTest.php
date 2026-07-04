@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cli;
 
-use PhpStanAiRules\Cli\PathHelper;
+use PhpStanAiRules\Cli\RelativePathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(PathHelper::class)]
-final class PathHelperTest extends TestCase
+#[CoversClass(RelativePathResolver::class)]
+final class RelativePathResolverTest extends TestCase
 {
     /**
      * @return array<string, array{string, string, string}>
@@ -59,6 +59,6 @@ final class PathHelperTest extends TestCase
     #[DataProvider('providerRelativePath')]
     public function testRelativePath(string $from, string $to, string $expected): void
     {
-        self::assertSame($expected, PathHelper::relativePath($from, $to));
+        self::assertSame($expected, RelativePathResolver::relativePath($from, $to));
     }
 }

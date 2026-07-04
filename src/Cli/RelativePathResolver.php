@@ -15,7 +15,7 @@ use function str_replace;
 /**
  * Computes relative paths between directories for symlink creation.
  */
-final class PathHelper
+final class RelativePathResolver
 {
     /**
      * Computes the relative path from one directory to another.

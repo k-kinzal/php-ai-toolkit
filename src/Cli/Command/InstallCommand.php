@@ -13,7 +13,7 @@ use function is_dir;
 use function is_link;
 use function mkdir;
 
-use PhpStanAiRules\Cli\PathHelper;
+use PhpStanAiRules\Cli\RelativePathResolver;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -139,7 +139,7 @@ final class InstallCommand
                         $totalErrors++;
                     }
                 } else {
-                    $relativePath = PathHelper::relativePath($absoluteTarget, $sourcePath);
+                    $relativePath = RelativePathResolver::relativePath($absoluteTarget, $sourcePath);
 
                     if (@symlink($relativePath, $targetPath)) {
                         $this->write(sprintf('    [OK] %s -> %s', $skillName, $relativePath));

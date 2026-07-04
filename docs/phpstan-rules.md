@@ -15,6 +15,7 @@ Rules applied to all code.
 | [RequirePhpDocOnPublicApiRule](rules/RequirePhpDocOnPublicApiRule.md) | Requires PHPDoc on all public API elements | `customRules.requirePhpDocOnPublicApi` |
 | [ForbidNonDocCommentRule](rules/ForbidNonDocCommentRule.md) | Forbids `//`, `/* */`, and `#` comments; only `/** */` PHPDoc is allowed | `customRules.forbidNonDocComment` |
 | [ForbidSingleLinePhpDocRule](rules/ForbidSingleLinePhpDocRule.md) | Forbids single-line PHPDoc on public elements; requires multi-line format | `customRules.forbidSingleLinePhpDoc` |
+| [ForbidClassLikeNameSuffixRule](rules/ForbidClassLikeNameSuffixRule.md) | Forbids configured suffixes on class, interface, trait, and enum names | `customRules.forbiddenClassLikeNameSuffix` |
 
 ## Test Class
 
@@ -54,3 +55,4 @@ The following parameters can be customized in your project's `phpstan.neon`:
 | `srcUnitTestPairExcludePatterns` | `[]` | Patterns to exclude from test pair checks |
 | `srcMarker` | `'/src/'` | Source code path marker |
 | `unitTestMarker` | `'/tests/Unit/'` | Unit test path marker |
+| `forbiddenClassLikeNameSuffixes` | See [`extension.neon`](../extension.neon) | Class-like declaration name suffixes to forbid |

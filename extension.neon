@@ -5,6 +5,7 @@ parametersSchema:
         srcUnitTestPairExcludePatterns: listOf(string())
         srcMarker: string()
         unitTestMarker: string()
+        forbiddenClassLikeNameSuffixes: listOf(string())
     ])
 
 parameters:
@@ -17,6 +18,53 @@ parameters:
         srcUnitTestPairExcludePatterns: []
         srcMarker: '/src/'
         unitTestMarker: '/tests/Unit/'
+        forbiddenClassLikeNameSuffixes:
+            - Helper
+            - Helpers
+            - Manager
+            - Managers
+            - Util
+            - Utils
+            - Utility
+            - Utilities
+            - Common
+            - Shared
+            - General
+            - Misc
+            - Miscellaneous
+            - Stuff
+            - Things
+            - Thing
+            - Object
+            - Objects
+            - Data
+            - Info
+            - Information
+            - Detail
+            - Details
+            - Value
+            - Values
+            - Type
+            - Types
+            - Base
+            - Abstract
+            - Generic
+            - Default
+            - Standard
+            - Simple
+            - Basic
+            - Custom
+            - Special
+            - Temp
+            - Temporary
+            - Wrapper
+            - Wrappers
+            - Service
+            - Services
+            - Engine
+            - Engines
+            - System
+            - Systems
 
 services:
     aiRules.support.testClassScope:
@@ -60,6 +108,13 @@ services:
 
     aiRules.rule.forbiddenMagicMethodCall:
         class: PhpStanAiRules\Rule\ForbiddenMagicMethodCallRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidClassLikeNameSuffix:
+        class: PhpStanAiRules\Rule\ForbidClassLikeNameSuffixRule
+        arguments:
+            forbiddenSuffixes: %customRules.forbiddenClassLikeNameSuffixes%
         tags:
             - phpstan.rules.rule
 

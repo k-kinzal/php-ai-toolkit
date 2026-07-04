@@ -98,9 +98,10 @@ Add to the target project's `composer.json`:
 ```json
 {
     "scripts": {
+        "phpstan": "phpstan analyse --memory-limit=512M",
         "lint": [
             "@format:check",
-            "phpstan analyse --memory-limit=512M"
+            "@phpstan"
         ]
     }
 }

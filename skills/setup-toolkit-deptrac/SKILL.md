@@ -118,10 +118,11 @@ Add scripts that match the installed Deptrac binary:
 ```json
 {
     "scripts": {
+        "phpstan": "phpstan analyse --memory-limit=512M",
         "deptrac": "deptrac analyse --config-file=deptrac.yaml",
         "lint": [
             "@format:check",
-            "phpstan analyse --memory-limit=512M",
+            "@phpstan",
             "@deptrac"
         ]
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpAiToolkit\PhpStan\Rule;
 
 use ParseError;
+use PhpAiToolkit\PhpStan\Support\NonDocCommentContext;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\FileNode;
 use PHPStan\Rules\IdentifierRuleError;
@@ -71,25 +72,18 @@ final class ForbidNonDocCommentRule implements Rule
     private function processTokens(array $tokens): array
     {
         $errors = [];
-        $braceDepth = 0;
-        $pendingCatch = false;
-        $catchBodyBraceDepths = [];
+        $context = new NonDocCommentContext();
 
         foreach ($tokens as $token) {
             if (!is_array($token)) {
-                $this->updateCatchBraceState($token, $braceDepth, $pendingCatch, $catchBodyBraceDepths);
+                $context->registerStringToken($token);
                 continue;
             }
 
             [$tokenType, $text, $line] = $token;
 
-            if ($tokenType === T_CATCH) {
-                $pendingCatch = true;
-
-                continue;
-            }
-
             if ($tokenType !== T_COMMENT) {
+                $context->registerToken($tokenType, $text);
                 continue;
             }
 
@@ -97,7 +91,7 @@ final class ForbidNonDocCommentRule implements Rule
                 continue;
             }
 
-            if ($this->isAllowedCatchLineComment($text, $catchBodyBraceDepths)) {
+            if (str_starts_with($text, '//') && $context->allowsLineComment()) {
                 continue;
             }
 
@@ -107,43 +101,11 @@ final class ForbidNonDocCommentRule implements Rule
         return $errors;
     }
 
-    /**
-     * @param list<int> $catchBodyBraceDepths
-     */
-    private function updateCatchBraceState(
-        string $token,
-        int &$braceDepth,
-        bool &$pendingCatch,
-        array &$catchBodyBraceDepths,
-    ): void {
-        if ($token === '{') {
-            ++$braceDepth;
-
-            if ($pendingCatch) {
-                $catchBodyBraceDepths[] = $braceDepth;
-                $pendingCatch = false;
-            }
-        }
-
-        if ($token !== '}') {
-            return;
-        }
-
-        $lastCatchBodyDepth = $catchBodyBraceDepths[count($catchBodyBraceDepths) - 1] ?? null;
-        if ($lastCatchBodyDepth === $braceDepth) {
-            array_pop($catchBodyBraceDepths);
-        }
-
-        if ($braceDepth > 0) {
-            --$braceDepth;
-        }
-    }
-
     private function buildNonDocCommentError(string $text, int $line): IdentifierRuleError
     {
         return RuleErrorBuilder::message(
             sprintf(
-                'Non-PHPDoc comment is prohibited: "%s". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Non-PHPDoc comment is prohibited: "%s". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks or array literals. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
                 $this->truncateComment($text)
             )
         )
@@ -168,13 +130,6 @@ final class ForbidNonDocCommentRule implements Rule
         return false;
     }
 
-    /**
-     * @param list<int> $catchBodyBraceDepths
-     */
-    private function isAllowedCatchLineComment(string $text, array $catchBodyBraceDepths): bool
-    {
-        return $catchBodyBraceDepths !== [] && str_starts_with($text, '//');
-    }
 
     /**
      * Truncates the comment text for display in the error message.

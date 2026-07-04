@@ -5,6 +5,7 @@ parametersSchema:
         srcUnitTestPairExcludePatterns: listOf(string())
         srcMarker: string()
         unitTestMarker: string()
+        forbiddenNamespacePrefixes: listOf(string())
         forbiddenClassLikeNameSuffixes: listOf(string())
     ])
 
@@ -18,6 +19,15 @@ parameters:
         srcUnitTestPairExcludePatterns: []
         srcMarker: '/src/'
         unitTestMarker: '/tests/Unit/'
+        forbiddenNamespacePrefixes:
+            - 'Tests\Support'
+            - 'Tests\Supports'
+            - 'Tests\Helper'
+            - 'Tests\Helpers'
+            - 'Tests\Util'
+            - 'Tests\Utils'
+            - 'Tests\Utility'
+            - 'Tests\Utilities'
         forbiddenClassLikeNameSuffixes:
             - Helper
             - Helpers
@@ -108,6 +118,13 @@ services:
 
     aiRules.rule.forbiddenMagicMethodCall:
         class: PhpStanAiRules\Rule\ForbiddenMagicMethodCallRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbiddenNamespace:
+        class: PhpStanAiRules\Rule\ForbiddenNamespaceRule
+        arguments:
+            forbiddenNamespacePrefixes: %customRules.forbiddenNamespacePrefixes%
         tags:
             - phpstan.rules.rule
 

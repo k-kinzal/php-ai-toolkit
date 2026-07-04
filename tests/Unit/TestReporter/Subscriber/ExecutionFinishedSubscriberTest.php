@@ -9,15 +9,23 @@ use PhpStanAiRules\Support\AgentDetector;
 use PhpStanAiRules\TestReporter\Subscriber\ExecutionFinishedSubscriber;
 use PhpStanAiRules\TestReporter\TestIssueCollector;
 use PhpStanAiRules\TestReporter\TestIssueFormatter;
+use PHPUnit\Event\Code\TestDox;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Telemetry\Duration;
+use PHPUnit\Event\Telemetry\GarbageCollectorStatus;
+use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event\Telemetry\Info;
+use PHPUnit\Event\Telemetry\MemoryUsage;
+use PHPUnit\Event\Telemetry\Snapshot;
 use PHPUnit\Event\Test\Failed;
+use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\MetadataCollection;
 
 use function putenv;
-
-use Tests\Support\PhpUnitEventFactory;
 
 #[CoversClass(ExecutionFinishedSubscriber::class)]
 final class ExecutionFinishedSubscriberTest extends TestCase
@@ -65,9 +73,24 @@ final class ExecutionFinishedSubscriberTest extends TestCase
     public function testNotifyWritesOutputWhenIssuesExist(): void
     {
         $collector = new TestIssueCollector();
+        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
+        $memory = MemoryUsage::fromBytes(0);
+        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
+        $snapshot = new Snapshot($time, $memory, $memory, $gc);
+        $duration = Duration::fromSecondsAndNanoseconds(0, 0);
+        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
+        $testMethod = new TestMethod(
+            self::class,
+            'testBar',
+            '/foo.php',
+            1,
+            new TestDox('', '', ''),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([]),
+        );
         $collector->recordFailure(new Failed(
-            PhpUnitEventFactory::createTelemetryInfo(),
-            PhpUnitEventFactory::createTestMethod('Tests\Unit\FooTest', 'testBar', '/foo.php', 1),
+            $telemetryInfo,
+            $testMethod,
             new Throwable('Exception', 'fail', 'fail', '', null),
             null,
         ));
@@ -78,7 +101,7 @@ final class ExecutionFinishedSubscriberTest extends TestCase
             $output[] = $msg;
         });
 
-        $subscriber->notify(new ExecutionFinished(PhpUnitEventFactory::createTelemetryInfo()));
+        $subscriber->notify(new ExecutionFinished($telemetryInfo));
 
         self::assertCount(1, $output);
         self::assertStringContainsString('1 failure', $output[0]);
@@ -87,13 +110,19 @@ final class ExecutionFinishedSubscriberTest extends TestCase
     public function testNotifyProducesNoOutputWhenNoIssuesAndNotReplaced(): void
     {
         $collector = new TestIssueCollector();
+        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
+        $memory = MemoryUsage::fromBytes(0);
+        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
+        $snapshot = new Snapshot($time, $memory, $memory, $gc);
+        $duration = Duration::fromSecondsAndNanoseconds(0, 0);
+        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
         $output = [];
         $formatter = new TestIssueFormatter(new AgentDetector(), '/');
         $subscriber = new ExecutionFinishedSubscriber($collector, $formatter, static function (string $msg) use (&$output): void {
             $output[] = $msg;
         }, false);
 
-        $subscriber->notify(new ExecutionFinished(PhpUnitEventFactory::createTelemetryInfo()));
+        $subscriber->notify(new ExecutionFinished($telemetryInfo));
 
         self::assertSame([], $output);
     }
@@ -101,13 +130,19 @@ final class ExecutionFinishedSubscriberTest extends TestCase
     public function testNotifyWritesSuccessMessageWhenReplacedAndNoIssues(): void
     {
         $collector = new TestIssueCollector();
+        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
+        $memory = MemoryUsage::fromBytes(0);
+        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
+        $snapshot = new Snapshot($time, $memory, $memory, $gc);
+        $duration = Duration::fromSecondsAndNanoseconds(0, 0);
+        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
         $output = [];
         $formatter = new TestIssueFormatter(new AgentDetector(), '/');
         $subscriber = new ExecutionFinishedSubscriber($collector, $formatter, static function (string $msg) use (&$output): void {
             $output[] = $msg;
         }, true);
 
-        $subscriber->notify(new ExecutionFinished(PhpUnitEventFactory::createTelemetryInfo()));
+        $subscriber->notify(new ExecutionFinished($telemetryInfo));
 
         self::assertCount(1, $output);
         self::assertSame("No test failures\n", $output[0]);

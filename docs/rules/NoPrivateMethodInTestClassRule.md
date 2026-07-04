@@ -82,15 +82,14 @@ final class PaymentServiceTest extends TestCase
 }
 ```
 
-### Option 2: Extract to a dedicated helper class
+### Option 2: Use a real library boundary
 
-For complex setup logic that is genuinely reused, create a dedicated helper class outside of the test:
+For complex setup logic that is genuinely reused, use an existing library or create an independent internal library outside the `Tests` namespace:
 
 ```php
-// tests/Support/GatewayStubFactory.php
-namespace Tests\Support;
+namespace Acme\TestingFixtures\Payment;
 
-final class GatewayStubFactory
+final class GatewayStub
 {
     public static function succeeding(TestCase $test): GatewayInterface
     {

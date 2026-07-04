@@ -69,13 +69,14 @@ final class OrderServiceTest extends TestCase
 }
 ```
 
-### Option 2: Extract to a dedicated helper class
+### Option 2: Use a real library boundary
+
+For genuinely reusable setup logic, use an existing library or create an independent internal library outside the `Tests` namespace:
 
 ```php
-// tests/Support/OrderFixture.php
-namespace Tests\Support;
+namespace Acme\TestingFixtures\Order;
 
-final class OrderFixture
+final class ExampleOrder
 {
     public static function default(): Order
     {
@@ -95,14 +96,14 @@ final class OrderServiceTest extends TestCase
 {
     public function testPlaceOrder(): void
     {
-        $order = OrderFixture::default();
+        $order = ExampleOrder::default();
 
         self::assertSame(1, $order->quantity());
     }
 
     public function testPlaceBulkOrder(): void
     {
-        $order = OrderFixture::withQuantity(100);
+        $order = ExampleOrder::withQuantity(100);
 
         self::assertSame(100, $order->quantity());
     }

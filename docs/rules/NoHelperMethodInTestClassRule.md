@@ -71,15 +71,14 @@ final class UserServiceTest extends TestCase
 }
 ```
 
-### Option 2: Extract to a dedicated helper class
+### Option 2: Use a real library boundary
 
-For genuinely reusable setup logic, create a helper class in a shared test support namespace:
+For genuinely reusable setup logic, use an existing library or create an independent internal library outside the `Tests` namespace. Give the class a domain-specific API instead of placing it in a generic support/helper namespace:
 
 ```php
-// tests/Support/UserFixture.php
-namespace Tests\Support;
+namespace Acme\TestingFixtures\User;
 
-final class UserFixture
+final class ExampleUser
 {
     public static function alice(): User
     {
@@ -94,7 +93,7 @@ final class UserServiceTest extends TestCase
 {
     public function testCreate(): void
     {
-        $user = UserFixture::alice();
+        $user = ExampleUser::alice();
         // ...
     }
 }

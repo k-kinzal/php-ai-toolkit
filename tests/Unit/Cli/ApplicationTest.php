@@ -6,156 +6,390 @@ namespace Tests\Unit\Cli;
 
 use function file_put_contents;
 use function implode;
+use function is_dir;
 use function mkdir;
 
 use PhpStanAiRules\Cli\Application;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\TempDir;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+
+use function rmdir;
+
+use SplFileInfo;
+
+use function sys_get_temp_dir;
+use function uniqid;
+use function unlink;
 
 #[CoversClass(Application::class)]
 final class ApplicationTest extends TestCase
 {
     public function testRunHelpFlag(): void
     {
-        $temp = new TempDir();
-        $output = [];
-        $app = new Application($temp->projectRoot, $temp->packageRoot, static function (string $message) use (&$output): void {
-            $output[] = $message;
-        });
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $projectRoot = $path . '/project';
+        $packageRoot = $path . '/package';
+        mkdir($projectRoot, 0755, true);
+        mkdir($packageRoot, 0755, true);
+        $cleanup = static function () use ($path): void {
+            if (!is_dir($path)) {
+                return;
+            }
 
-        $exitCode = $app->run(['php-ai-toolkit', '--help']);
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST,
+            );
 
-        self::assertSame(0, $exitCode);
-        self::assertStringContainsString('Usage:', implode("\n", $output));
+            /** @var SplFileInfo $item */
+            foreach ($iterator as $item) {
+                if ($item->isLink() || !$item->isDir()) {
+                    unlink($item->getPathname());
+                } else {
+                    rmdir($item->getPathname());
+                }
+            }
 
-        $temp->cleanup();
+            rmdir($path);
+        };
+
+        try {
+            $output = [];
+            $app = new Application($projectRoot, $packageRoot, static function (string $message) use (&$output): void {
+                $output[] = $message;
+            });
+
+            $exitCode = $app->run(['php-ai-toolkit', '--help']);
+
+            self::assertSame(0, $exitCode);
+            self::assertStringContainsString('Usage:', implode("\n", $output));
+        } finally {
+            $cleanup();
+        }
     }
 
     public function testRunHelpShortFlag(): void
     {
-        $temp = new TempDir();
-        $output = [];
-        $app = new Application($temp->projectRoot, $temp->packageRoot, static function (string $message) use (&$output): void {
-            $output[] = $message;
-        });
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $projectRoot = $path . '/project';
+        $packageRoot = $path . '/package';
+        mkdir($projectRoot, 0755, true);
+        mkdir($packageRoot, 0755, true);
+        $cleanup = static function () use ($path): void {
+            if (!is_dir($path)) {
+                return;
+            }
 
-        $exitCode = $app->run(['php-ai-toolkit', '-h']);
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST,
+            );
 
-        self::assertSame(0, $exitCode);
-        self::assertStringContainsString('Usage:', implode("\n", $output));
+            /** @var SplFileInfo $item */
+            foreach ($iterator as $item) {
+                if ($item->isLink() || !$item->isDir()) {
+                    unlink($item->getPathname());
+                } else {
+                    rmdir($item->getPathname());
+                }
+            }
 
-        $temp->cleanup();
+            rmdir($path);
+        };
+
+        try {
+            $output = [];
+            $app = new Application($projectRoot, $packageRoot, static function (string $message) use (&$output): void {
+                $output[] = $message;
+            });
+
+            $exitCode = $app->run(['php-ai-toolkit', '-h']);
+
+            self::assertSame(0, $exitCode);
+            self::assertStringContainsString('Usage:', implode("\n", $output));
+        } finally {
+            $cleanup();
+        }
     }
 
     public function testRunVersionFlag(): void
     {
-        $temp = new TempDir();
-        $output = [];
-        $app = new Application($temp->projectRoot, $temp->packageRoot, static function (string $message) use (&$output): void {
-            $output[] = $message;
-        });
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $projectRoot = $path . '/project';
+        $packageRoot = $path . '/package';
+        mkdir($projectRoot, 0755, true);
+        mkdir($packageRoot, 0755, true);
+        $cleanup = static function () use ($path): void {
+            if (!is_dir($path)) {
+                return;
+            }
 
-        $exitCode = $app->run(['php-ai-toolkit', '--version']);
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST,
+            );
 
-        self::assertSame(0, $exitCode);
-        self::assertStringContainsString('php-ai-toolkit v', implode("\n", $output));
+            /** @var SplFileInfo $item */
+            foreach ($iterator as $item) {
+                if ($item->isLink() || !$item->isDir()) {
+                    unlink($item->getPathname());
+                } else {
+                    rmdir($item->getPathname());
+                }
+            }
 
-        $temp->cleanup();
+            rmdir($path);
+        };
+
+        try {
+            $output = [];
+            $app = new Application($projectRoot, $packageRoot, static function (string $message) use (&$output): void {
+                $output[] = $message;
+            });
+
+            $exitCode = $app->run(['php-ai-toolkit', '--version']);
+
+            self::assertSame(0, $exitCode);
+            self::assertStringContainsString('php-ai-toolkit v', implode("\n", $output));
+        } finally {
+            $cleanup();
+        }
     }
 
     public function testRunUnknownCommand(): void
     {
-        $temp = new TempDir();
-        $output = [];
-        $app = new Application($temp->projectRoot, $temp->packageRoot, static function (string $message) use (&$output): void {
-            $output[] = $message;
-        });
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $projectRoot = $path . '/project';
+        $packageRoot = $path . '/package';
+        mkdir($projectRoot, 0755, true);
+        mkdir($packageRoot, 0755, true);
+        $cleanup = static function () use ($path): void {
+            if (!is_dir($path)) {
+                return;
+            }
 
-        $exitCode = $app->run(['php-ai-toolkit', 'unknown']);
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST,
+            );
 
-        self::assertSame(1, $exitCode);
-        self::assertStringContainsString('[ERROR] Unknown command: unknown', implode("\n", $output));
+            /** @var SplFileInfo $item */
+            foreach ($iterator as $item) {
+                if ($item->isLink() || !$item->isDir()) {
+                    unlink($item->getPathname());
+                } else {
+                    rmdir($item->getPathname());
+                }
+            }
 
-        $temp->cleanup();
+            rmdir($path);
+        };
+
+        try {
+            $output = [];
+            $app = new Application($projectRoot, $packageRoot, static function (string $message) use (&$output): void {
+                $output[] = $message;
+            });
+
+            $exitCode = $app->run(['php-ai-toolkit', 'unknown']);
+
+            self::assertSame(1, $exitCode);
+            self::assertStringContainsString('[ERROR] Unknown command: unknown', implode("\n", $output));
+        } finally {
+            $cleanup();
+        }
     }
 
     public function testRunDefaultsToInstall(): void
     {
-        $temp = new TempDir();
-        mkdir($temp->packageRoot . '/skills/test-skill', 0755, true);
-        file_put_contents($temp->packageRoot . '/skills/test-skill/SKILL.md', 'test');
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $projectRoot = $path . '/project';
+        $packageRoot = $path . '/package';
+        mkdir($projectRoot, 0755, true);
+        mkdir($packageRoot, 0755, true);
+        $cleanup = static function () use ($path): void {
+            if (!is_dir($path)) {
+                return;
+            }
 
-        $output = [];
-        $app = new Application($temp->projectRoot, $temp->packageRoot, static function (string $message) use (&$output): void {
-            $output[] = $message;
-        });
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST,
+            );
 
-        $exitCode = $app->run(['php-ai-toolkit']);
+            /** @var SplFileInfo $item */
+            foreach ($iterator as $item) {
+                if ($item->isLink() || !$item->isDir()) {
+                    unlink($item->getPathname());
+                } else {
+                    rmdir($item->getPathname());
+                }
+            }
 
-        self::assertSame(0, $exitCode);
-        self::assertStringContainsString('Installing skills...', implode("\n", $output));
+            rmdir($path);
+        };
 
-        $temp->cleanup();
+        try {
+            mkdir($packageRoot . '/skills/test-skill', 0755, true);
+            file_put_contents($packageRoot . '/skills/test-skill/SKILL.md', 'test');
+
+            $output = [];
+            $app = new Application($projectRoot, $packageRoot, static function (string $message) use (&$output): void {
+                $output[] = $message;
+            });
+
+            $exitCode = $app->run(['php-ai-toolkit']);
+
+            self::assertSame(0, $exitCode);
+            self::assertStringContainsString('Installing skills...', implode("\n", $output));
+        } finally {
+            $cleanup();
+        }
     }
 
     public function testRunExplicitInstallCommand(): void
     {
-        $temp = new TempDir();
-        mkdir($temp->packageRoot . '/skills/test-skill', 0755, true);
-        file_put_contents($temp->packageRoot . '/skills/test-skill/SKILL.md', 'test');
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $projectRoot = $path . '/project';
+        $packageRoot = $path . '/package';
+        mkdir($projectRoot, 0755, true);
+        mkdir($packageRoot, 0755, true);
+        $cleanup = static function () use ($path): void {
+            if (!is_dir($path)) {
+                return;
+            }
 
-        $output = [];
-        $app = new Application($temp->projectRoot, $temp->packageRoot, static function (string $message) use (&$output): void {
-            $output[] = $message;
-        });
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST,
+            );
 
-        $exitCode = $app->run(['php-ai-toolkit', 'install']);
+            /** @var SplFileInfo $item */
+            foreach ($iterator as $item) {
+                if ($item->isLink() || !$item->isDir()) {
+                    unlink($item->getPathname());
+                } else {
+                    rmdir($item->getPathname());
+                }
+            }
 
-        self::assertSame(0, $exitCode);
-        $fullOutput = implode("\n", $output);
-        self::assertStringContainsString('Installing skills...', $fullOutput);
-        self::assertStringContainsString('[OK] test-skill', $fullOutput);
+            rmdir($path);
+        };
 
-        $temp->cleanup();
+        try {
+            mkdir($packageRoot . '/skills/test-skill', 0755, true);
+            file_put_contents($packageRoot . '/skills/test-skill/SKILL.md', 'test');
+
+            $output = [];
+            $app = new Application($projectRoot, $packageRoot, static function (string $message) use (&$output): void {
+                $output[] = $message;
+            });
+
+            $exitCode = $app->run(['php-ai-toolkit', 'install']);
+
+            self::assertSame(0, $exitCode);
+            $fullOutput = implode("\n", $output);
+            self::assertStringContainsString('Installing skills...', $fullOutput);
+            self::assertStringContainsString('[OK] test-skill', $fullOutput);
+        } finally {
+            $cleanup();
+        }
     }
 
     public function testRunInstallWithForceFlag(): void
     {
-        $temp = new TempDir();
-        mkdir($temp->packageRoot . '/skills/test-skill', 0755, true);
-        file_put_contents($temp->packageRoot . '/skills/test-skill/SKILL.md', 'test');
-        mkdir($temp->projectRoot . '/.claude/skills/test-skill', 0755, true);
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $projectRoot = $path . '/project';
+        $packageRoot = $path . '/package';
+        mkdir($projectRoot, 0755, true);
+        mkdir($packageRoot, 0755, true);
+        $cleanup = static function () use ($path): void {
+            if (!is_dir($path)) {
+                return;
+            }
 
-        $output = [];
-        $app = new Application($temp->projectRoot, $temp->packageRoot, static function (string $message) use (&$output): void {
-            $output[] = $message;
-        });
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST,
+            );
 
-        $exitCode = $app->run(['php-ai-toolkit', 'install', '--force']);
+            /** @var SplFileInfo $item */
+            foreach ($iterator as $item) {
+                if ($item->isLink() || !$item->isDir()) {
+                    unlink($item->getPathname());
+                } else {
+                    rmdir($item->getPathname());
+                }
+            }
 
-        self::assertSame(0, $exitCode);
-        self::assertStringContainsString('[OK] test-skill', implode("\n", $output));
+            rmdir($path);
+        };
 
-        $temp->cleanup();
+        try {
+            mkdir($packageRoot . '/skills/test-skill', 0755, true);
+            file_put_contents($packageRoot . '/skills/test-skill/SKILL.md', 'test');
+            mkdir($projectRoot . '/.claude/skills/test-skill', 0755, true);
+
+            $output = [];
+            $app = new Application($projectRoot, $packageRoot, static function (string $message) use (&$output): void {
+                $output[] = $message;
+            });
+
+            $exitCode = $app->run(['php-ai-toolkit', 'install', '--force']);
+
+            self::assertSame(0, $exitCode);
+            self::assertStringContainsString('[OK] test-skill', implode("\n", $output));
+        } finally {
+            $cleanup();
+        }
     }
 
     public function testRunInstallWithCopyFlag(): void
     {
-        $temp = new TempDir();
-        mkdir($temp->packageRoot . '/skills/test-skill', 0755, true);
-        file_put_contents($temp->packageRoot . '/skills/test-skill/SKILL.md', 'test');
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $projectRoot = $path . '/project';
+        $packageRoot = $path . '/package';
+        mkdir($projectRoot, 0755, true);
+        mkdir($packageRoot, 0755, true);
+        $cleanup = static function () use ($path): void {
+            if (!is_dir($path)) {
+                return;
+            }
 
-        $output = [];
-        $app = new Application($temp->projectRoot, $temp->packageRoot, static function (string $message) use (&$output): void {
-            $output[] = $message;
-        });
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST,
+            );
 
-        $exitCode = $app->run(['php-ai-toolkit', 'install', '--copy']);
+            /** @var SplFileInfo $item */
+            foreach ($iterator as $item) {
+                if ($item->isLink() || !$item->isDir()) {
+                    unlink($item->getPathname());
+                } else {
+                    rmdir($item->getPathname());
+                }
+            }
 
-        self::assertSame(0, $exitCode);
-        self::assertStringContainsString('(copied)', implode("\n", $output));
+            rmdir($path);
+        };
 
-        $temp->cleanup();
+        try {
+            mkdir($packageRoot . '/skills/test-skill', 0755, true);
+            file_put_contents($packageRoot . '/skills/test-skill/SKILL.md', 'test');
+
+            $output = [];
+            $app = new Application($projectRoot, $packageRoot, static function (string $message) use (&$output): void {
+                $output[] = $message;
+            });
+
+            $exitCode = $app->run(['php-ai-toolkit', 'install', '--copy']);
+
+            self::assertSame(0, $exitCode);
+            self::assertStringContainsString('(copied)', implode("\n", $output));
+        } finally {
+            $cleanup();
+        }
     }
 }

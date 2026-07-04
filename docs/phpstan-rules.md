@@ -10,6 +10,7 @@ Rules applied to all code.
 |------|-------------|------------------|
 | [ForbiddenCommentRule](rules/ForbiddenCommentRule.md) | Forbids `@phpstan-ignore` and `@infection-ignore-all` comments | `customRules.phpstanIgnoreComment`, `customRules.infectionIgnoreAllComment` |
 | [ForbiddenMagicMethodCallRule](rules/ForbiddenMagicMethodCallRule.md) | Forbids direct calls to magic methods | `customRules.forbiddenMagicMethodCall` |
+| [ForbiddenNamespaceRule](rules/ForbiddenNamespaceRule.md) | Forbids configured namespace prefixes such as `Tests\Support`, `Tests\Helper`, and `Tests\Util` | `customRules.forbiddenNamespace` |
 | [OverrideMustHaveAttributeRule](rules/OverrideMustHaveAttributeRule.md) | Requires `#[Override]` attribute on overridden methods | `customRules.overrideMustHaveAttribute` |
 | [SrcUnitTestPairRule](rules/SrcUnitTestPairRule.md) | Enforces 1:1 pairing between `src/` classes and `tests/Unit/` test classes | `customRules.srcUnitTestPair` |
 | [RequirePhpDocOnPublicApiRule](rules/RequirePhpDocOnPublicApiRule.md) | Requires PHPDoc on all public API elements | `customRules.requirePhpDocOnPublicApi` |
@@ -55,4 +56,5 @@ The following parameters can be customized in your project's `phpstan.neon`:
 | `srcUnitTestPairExcludePatterns` | `[]` | Patterns to exclude from test pair checks |
 | `srcMarker` | `'/src/'` | Source code path marker |
 | `unitTestMarker` | `'/tests/Unit/'` | Unit test path marker |
+| `forbiddenNamespacePrefixes` | `['Tests\Support', 'Tests\Supports', 'Tests\Helper', 'Tests\Helpers', 'Tests\Util', 'Tests\Utils', 'Tests\Utility', 'Tests\Utilities']` | Namespace prefixes to forbid |
 | `forbiddenClassLikeNameSuffixes` | See [`extension.neon`](../extension.neon) | Class-like declaration name suffixes to forbid |

@@ -53,13 +53,43 @@ final class ForbidNonDocCommentRule implements Rule
         }
 
         $errors = [];
+        $braceDepth = 0;
+        $pendingCatch = false;
+        $catchBodyBraceDepths = [];
 
         foreach ($tokens as $token) {
             if (!is_array($token)) {
+                if ($token === '{') {
+                    ++$braceDepth;
+
+                    if ($pendingCatch) {
+                        $catchBodyBraceDepths[] = $braceDepth;
+                        $pendingCatch = false;
+                    }
+                }
+
+                if ($token === '}') {
+                    $lastCatchBodyDepth = $catchBodyBraceDepths[count($catchBodyBraceDepths) - 1] ?? null;
+
+                    if ($lastCatchBodyDepth === $braceDepth) {
+                        array_pop($catchBodyBraceDepths);
+                    }
+
+                    if ($braceDepth > 0) {
+                        --$braceDepth;
+                    }
+                }
+
                 continue;
             }
 
             [$tokenType, $text, $line] = $token;
+
+            if ($tokenType === T_CATCH) {
+                $pendingCatch = true;
+
+                continue;
+            }
 
             if ($tokenType !== T_COMMENT) {
                 continue;
@@ -69,10 +99,14 @@ final class ForbidNonDocCommentRule implements Rule
                 continue;
             }
 
+            if ($this->isAllowedCatchLineComment($text, $catchBodyBraceDepths)) {
+                continue;
+            }
+
             $commentContent = $this->truncateComment($text);
             $errors[] = RuleErrorBuilder::message(
                 sprintf(
-                    'Non-PHPDoc comment is prohibited: "%s". Only /** ... */ PHPDoc blocks are allowed. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                    'Non-PHPDoc comment is prohibited: "%s". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
                     $commentContent
                 )
             )
@@ -98,6 +132,14 @@ final class ForbidNonDocCommentRule implements Rule
         }
 
         return false;
+    }
+
+    /**
+     * @param list<int> $catchBodyBraceDepths
+     */
+    private function isAllowedCatchLineComment(string $text, array $catchBodyBraceDepths): bool
+    {
+        return $catchBodyBraceDepths !== [] && str_starts_with($text, '//');
     }
 
     /**

@@ -31,11 +31,11 @@ final class ForbidNonDocCommentRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../Fixture/ForbidNonDocComment/WithDoubleSlashComment.php'], [
             [
-                'Non-PHPDoc comment is prohibited: "// This is a line comment". Only /** ... */ PHPDoc blocks are allowed. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Non-PHPDoc comment is prohibited: "// This is a line comment". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
                 5,
             ],
             [
-                'Non-PHPDoc comment is prohibited: "// trailing comment". Only /** ... */ PHPDoc blocks are allowed. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Non-PHPDoc comment is prohibited: "// trailing comment". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
                 8,
             ],
         ]);
@@ -45,11 +45,11 @@ final class ForbidNonDocCommentRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../Fixture/ForbidNonDocComment/WithBlockComment.php'], [
             [
-                'Non-PHPDoc comment is prohibited: "/* This is a block comment */". Only /** ... */ PHPDoc blocks are allowed. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Non-PHPDoc comment is prohibited: "/* This is a block comment */". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
                 5,
             ],
             [
-                'Non-PHPDoc comment is prohibited: "/* inline block */". Only /** ... */ PHPDoc blocks are allowed. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Non-PHPDoc comment is prohibited: "/* inline block */". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
                 8,
             ],
         ]);
@@ -59,7 +59,7 @@ final class ForbidNonDocCommentRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../Fixture/ForbidNonDocComment/WithHashComment.php'], [
             [
-                'Non-PHPDoc comment is prohibited: "# This is a hash comment". Only /** ... */ PHPDoc blocks are allowed. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Non-PHPDoc comment is prohibited: "# This is a hash comment". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
                 5,
             ],
         ]);
@@ -80,6 +80,35 @@ final class ForbidNonDocCommentRuleTest extends RuleTestCase
             [
                 'No error to ignore is reported on line 8.',
                 8,
+            ],
+        ]);
+    }
+
+    public function testProcessNodeDoubleSlashCommentInsideCatchBodyIsNotReported(): void
+    {
+        $this->analyse([__DIR__ . '/../../Fixture/ForbidNonDocComment/WithCatchLineComment.php'], []);
+    }
+
+    public function testProcessNodeBlockAndHashCommentsInsideCatchBodyAreReported(): void
+    {
+        $this->analyse([__DIR__ . '/../../Fixture/ForbidNonDocComment/WithCatchNonLineComment.php'], [
+            [
+                'Non-PHPDoc comment is prohibited: "/* Block comments are still prohibited inside catch blocks. */". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                10,
+            ],
+            [
+                'Non-PHPDoc comment is prohibited: "# Hash comments are still prohibited inside catch blocks.". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                11,
+            ],
+        ]);
+    }
+
+    public function testProcessNodeDoubleSlashCommentAfterCatchBodyIsReported(): void
+    {
+        $this->analyse([__DIR__ . '/../../Fixture/ForbidNonDocComment/WithCatchBoundaryLineComment.php'], [
+            [
+                'Non-PHPDoc comment is prohibited: "// This comment is outside the catch body.". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                11,
             ],
         ]);
     }

@@ -30,7 +30,7 @@ final class SingleLinePhpDocErrorBuilder
     {
         return RuleErrorBuilder::message(
             sprintf(
-                'Single-line PHPDoc is prohibited: "%s". Rewrite as a multi-line PHPDoc block: open with /** on its own line, write the description on the next line prefixed with " * ", and close with */ on its own line.',
+                'Rewrite PHPDoc "%s" as a multi-line block with /** and */ on their own lines.',
                 $this->commentTextFormatter->truncate($text)
             )
         )

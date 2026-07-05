@@ -55,7 +55,7 @@ final class NoReflectionInTestClassRule implements Rule
         return [
             RuleErrorBuilder::message(
                 sprintf(
-                    'Using %s in test classes is prohibited. If you need Reflection to test something, it is a sign that you are not testing behavior. Redesign the code or the test to verify observable behavior instead.',
+                    'Replace %s usage with assertions against public behavior. Test classes must not use Reflection.',
                     $className,
                 )
             )

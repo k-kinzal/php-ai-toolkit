@@ -13,16 +13,13 @@ Reports direct calls to PHP magic methods. The full list of detected methods:
 `__construct`, `__destruct`, `__call`, `__callStatic`, `__get`, `__set`, `__isset`, `__unset`, `__sleep`, `__wakeup`, `__serialize`, `__unserialize`, `__toString`, `__invoke`, `__set_state`, `__clone`, `__debugInfo`
 
 ```php
-// ERROR: Direct call to magic method __toString() is prohibited.
-//        Use (string) cast: (string)$obj.
+// ERROR: Use (string) cast: (string)$obj instead of calling __toString() directly.
 $text = $obj->__toString();
 
-// ERROR: Direct call to magic method __clone() is prohibited.
-//        Use the clone keyword: clone $obj.
+// ERROR: Use the clone keyword: clone $obj instead of calling __clone() directly.
 $copy = $obj->__clone();
 
-// ERROR: Direct call to magic method __invoke() is prohibited.
-//        Call the object as a function: $obj(...$args).
+// ERROR: Call the object as a function: $obj(...$args) instead of calling __invoke() directly.
 $result = $handler->__invoke($request);
 ```
 

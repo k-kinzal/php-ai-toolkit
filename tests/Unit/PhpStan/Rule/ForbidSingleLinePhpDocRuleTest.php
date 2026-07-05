@@ -44,19 +44,19 @@ final class ForbidSingleLinePhpDocRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbidSingleLinePhpDoc/WithSingleLineDoc.php'], [
             [
-                'Single-line PHPDoc is prohibited: "/** Single-line class doc. */". Rewrite as a multi-line PHPDoc block: open with /** on its own line, write the description on the next line prefixed with " * ", and close with */ on its own line.',
+                'Rewrite PHPDoc "/** Single-line class doc. */" as a multi-line block with /** and */ on their own lines.',
                 7,
             ],
             [
-                'Single-line PHPDoc is prohibited: "/** Single-line constant doc. */". Rewrite as a multi-line PHPDoc block: open with /** on its own line, write the description on the next line prefixed with " * ", and close with */ on its own line.',
+                'Rewrite PHPDoc "/** Single-line constant doc. */" as a multi-line block with /** and */ on their own lines.',
                 10,
             ],
             [
-                'Single-line PHPDoc is prohibited: "/** Single-line property doc. */". Rewrite as a multi-line PHPDoc block: open with /** on its own line, write the description on the next line prefixed with " * ", and close with */ on its own line.',
+                'Rewrite PHPDoc "/** Single-line property doc. */" as a multi-line block with /** and */ on their own lines.',
                 13,
             ],
             [
-                'Single-line PHPDoc is prohibited: "/** Single-line method doc. */". Rewrite as a multi-line PHPDoc block: open with /** on its own line, write the description on the next line prefixed with " * ", and close with */ on its own line.',
+                'Rewrite PHPDoc "/** Single-line method doc. */" as a multi-line block with /** and */ on their own lines.',
                 16,
             ],
         ]);

@@ -55,7 +55,7 @@ final class ForbiddenNamespaceRule implements Rule
         return [
             RuleErrorBuilder::message(
                 sprintf(
-                    'Namespace "%s" is prohibited by forbidden prefix "%s". Do not create generic test support/helper/utility namespaces; use an existing library, create an independent internal library outside the Tests namespace, or accept duplication and write setup directly inside each test method.',
+                    'Move code out of namespace "%s". Use a namespace outside forbidden test prefix "%s", or inline setup in each test.',
                     $namespace,
                     $prefix
                 )

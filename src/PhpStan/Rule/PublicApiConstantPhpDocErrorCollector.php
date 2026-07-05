@@ -35,7 +35,7 @@ final class PublicApiConstantPhpDocErrorCollector
             if ($stmt->getDocComment() === null) {
                 $errors[] = RuleErrorBuilder::message(
                     sprintf(
-                        'Public constant %s::%s is missing a PHPDoc comment. Add a multi-line /** ... */ block describing this constant.',
+                        'Add a multi-line PHPDoc block to public constant %s::%s describing the constant.',
                         $className,
                         implode(', ', $names)
                     )

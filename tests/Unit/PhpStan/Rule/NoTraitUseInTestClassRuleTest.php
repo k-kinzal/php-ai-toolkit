@@ -34,7 +34,7 @@ final class NoTraitUseInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/NoTraitUseInTestClass/WithTrait.php'], [
             [
-                'Trait Tests\\Unit\\Fixture\\NoTraitUseInTestClass\\HelperTrait is prohibited in Tests\\Unit and Tests\\Integration classes. Traits can circumvent test class restrictions (no properties, no constants, no private methods). Move shared behavior to a dedicated helper class and call it explicitly.',
+                'Move trait Tests\\Unit\\Fixture\\NoTraitUseInTestClass\\HelperTrait behavior to a dedicated collaborator and call it explicitly. Tests\\Unit and Tests\\Integration classes must not use traits.',
                 19,
             ],
         ]);

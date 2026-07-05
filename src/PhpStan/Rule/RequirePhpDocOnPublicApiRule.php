@@ -70,7 +70,7 @@ final class RequirePhpDocOnPublicApiRule implements Rule
         }
 
         $className = $node->name !== null ? $node->name->toString() : '';
-        $kindLabel = ucfirst($this->kindLabel->label($node));
+        $kindLabel = $this->kindLabel->label($node);
 
         return $this->errorCollector->errors($node, $kindLabel, $className);
     }

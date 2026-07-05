@@ -31,7 +31,7 @@ final class NonDocCommentErrorBuilder
     {
         return RuleErrorBuilder::message(
             sprintf(
-                'Non-PHPDoc comment is prohibited: "%s". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks or array literals. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Remove comment "%s" or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 $this->commentTextFormatter->truncate($text)
             )
         )

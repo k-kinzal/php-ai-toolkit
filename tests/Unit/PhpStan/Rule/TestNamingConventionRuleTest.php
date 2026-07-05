@@ -44,15 +44,15 @@ final class TestNamingConventionRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/TestNamingConvention/InvalidTestNaming.php'], [
             [
-                'Test method test() must follow the pattern test[MethodName] or test[MethodName][Behavior]. The prefix "test" alone is not a valid name. Example: testUserCanLogin().',
+                'Rename test() to test[MethodName] or test[MethodName][Behavior], e.g. testUserCanLogin().',
                 11,
             ],
             [
-                'Test method testsomething() does not follow the naming convention. After the "test" prefix, the next character must be an uppercase letter (PascalCase). Example: testSomething(), testUserCanLogin().',
+                'Rename test method testsomething() to use PascalCase after the "test" prefix, e.g. testSomething().',
                 16,
             ],
             [
-                'Test method test_something() does not follow the naming convention. After the "test" prefix, the next character must be an uppercase letter (PascalCase). Example: testSomething(), testUserCanLogin().',
+                'Rename test method test_something() to use PascalCase after the "test" prefix, e.g. testSomething().',
                 21,
             ],
         ]);
@@ -63,15 +63,15 @@ final class TestNamingConventionRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/TestNamingConvention/InvalidProviderNaming.php'], [
             [
-                'Data provider provider() must follow the pattern provider[TestCaseName]. The prefix "provider" alone is not a valid name. Example: providerValidEmails().',
+                'Rename provider() to provider[TestCaseName], e.g. providerValidEmails().',
                 16,
             ],
             [
-                'Data provider providerdata() does not follow the naming convention. After the "provider" prefix, the next character must be an uppercase letter (PascalCase). Example: providerValidEmails(), providerUserData().',
+                'Rename data provider providerdata() to use PascalCase after the "provider" prefix, e.g. providerValidEmails().',
                 21,
             ],
             [
-                'Data provider provider_data() does not follow the naming convention. After the "provider" prefix, the next character must be an uppercase letter (PascalCase). Example: providerValidEmails(), providerUserData().',
+                'Rename data provider provider_data() to use PascalCase after the "provider" prefix, e.g. providerValidEmails().',
                 26,
             ],
         ]);
@@ -82,27 +82,27 @@ final class TestNamingConventionRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/TestNamingConvention/ProhibitedConstructorTest.php'], [
             [
-                'Test method testConstruct() tests a constructor or destructor directly. Constructors and destructors are implementation details; test the resulting behavior through the public API instead.',
+                'Rename testConstruct() and test behavior through the public API instead of targeting a constructor or destructor.',
                 11,
             ],
             [
-                'Test method testConstructor() tests a constructor or destructor directly. Constructors and destructors are implementation details; test the resulting behavior through the public API instead.',
+                'Rename testConstructor() and test behavior through the public API instead of targeting a constructor or destructor.',
                 16,
             ],
             [
-                'Test method testConstructThrowsException() tests a constructor or destructor directly. Constructors and destructors are implementation details; test the resulting behavior through the public API instead.',
+                'Rename testConstructThrowsException() and test behavior through the public API instead of targeting a constructor or destructor.',
                 21,
             ],
             [
-                'Test method testDestruct() tests a constructor or destructor directly. Constructors and destructors are implementation details; test the resulting behavior through the public API instead.',
+                'Rename testDestruct() and test behavior through the public API instead of targeting a constructor or destructor.',
                 26,
             ],
             [
-                'Test method testDestructor() tests a constructor or destructor directly. Constructors and destructors are implementation details; test the resulting behavior through the public API instead.',
+                'Rename testDestructor() and test behavior through the public API instead of targeting a constructor or destructor.',
                 31,
             ],
             [
-                'Test method testDestructorIsCalled() tests a constructor or destructor directly. Constructors and destructors are implementation details; test the resulting behavior through the public API instead.',
+                'Rename testDestructorIsCalled() and test behavior through the public API instead of targeting a constructor or destructor.',
                 36,
             ],
         ]);
@@ -125,7 +125,7 @@ final class TestNamingConventionRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/TestNamingConvention/src/UncoveredService.php'], [
             [
-                'Public method getResult() has no corresponding test method starting with testGetResult() in the unit test file. Each public method must have at least one test that verifies its behavior.',
+                'Add a unit test method starting with testGetResult() for public method getResult().',
                 13,
             ],
         ]);

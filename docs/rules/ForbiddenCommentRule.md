@@ -13,7 +13,7 @@ Reports two kinds of suppression comments:
 ### 1. PHPStan ignore comments (`customRules.phpstanIgnoreComment`)
 
 ```php
-// ERROR: phpstan-ignore comments are prohibited
+// ERROR: Remove phpstan-ignore comment
 /** @phpstan-ignore-next-line */
 $value = $container->get(SomeService::class);
 
@@ -26,7 +26,7 @@ doSomething($untypedValue);
 ### 2. Infection ignore-all comments (`customRules.infectionIgnoreAllComment`)
 
 ```php
-// ERROR: infection-ignore-all comments are prohibited
+// ERROR: Remove infection-ignore-all comment
 /** @infection-ignore-all */
 function calculateDiscount(int $price, int $rate): int
 {
@@ -78,7 +78,7 @@ if (!is_array($maybeArray)) {
 $result = processItems($maybeArray);
 ```
 
-If the error is a false positive (e.g., a PHPStan bug or an untyped third-party library), a human operator should add an `ignoreErrors` entry in `phpstan.neon` with the error's identifier:
+AI agents must not add or modify `ignoreErrors`. If suppression is genuinely justified (for example, a PHPStan bug or an untyped third-party library), ask a human operator to add a narrowly scoped `ignoreErrors` entry with the error identifier and rationale:
 
 ```neon
 parameters:
@@ -117,4 +117,4 @@ function clamp(int $value, int $min, int $max): int
 // testClamp_atBoundaries_returnsBoundary
 ```
 
-If the code is genuinely untestable, restructure it to improve testability.
+If an exception is genuinely justified, ask a human operator to decide it.

@@ -52,9 +52,9 @@ final class TestMethodControlFlowErrorCollector
 
             $errors[] = RuleErrorBuilder::message(
                 sprintf(
-                    'Control flow statement "%s" is prohibited in test method %s(). Complex control flow in tests indicates the test is doing too much. Split into separate test methods or use data providers for parameterized cases. try-catch is allowed when testing exception behavior.',
-                    $statementType,
-                    $methodName
+                    'Split test method %s() so it contains no "%s" statement. Use separate tests or a data provider for each case.',
+                    $methodName,
+                    $statementType
                 )
             )
                 ->identifier('customRules.testMethodControlFlow')

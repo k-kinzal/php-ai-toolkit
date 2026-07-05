@@ -11,13 +11,13 @@
 Reports public API elements that are missing PHPDoc comments:
 
 ```php
-class UserService  // ERROR: Class UserService is missing a PHPDoc comment.
+class UserService  // ERROR: Add a multi-line PHPDoc block to class UserService describing its purpose.
 {
-    public const VERSION = '1.0';  // ERROR: Public constant is missing a PHPDoc comment.
+    public const VERSION = '1.0';  // ERROR: Add a multi-line PHPDoc block to public constant UserService::VERSION.
 
-    public string $name = '';  // ERROR: Public property is missing a PHPDoc comment.
+    public string $name = '';  // ERROR: Add a multi-line PHPDoc block to public property UserService::$name.
 
-    public function findUser(int $id): ?User  // ERROR: Public method is missing a PHPDoc comment.
+    public function findUser(int $id): ?User  // ERROR: Add a multi-line PHPDoc block to public method UserService::findUser().
     {
         // ...
     }

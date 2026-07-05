@@ -11,7 +11,7 @@
 Reports non-PHPDoc comments. `/* */` block comments and `#` shell-style comments are always forbidden. `//` line comments are forbidden except inside `catch` blocks and array literals. `/** */` PHPDoc blocks (`T_DOC_COMMENT`) are allowed.
 
 ```php
-// ERROR: Non-PHPDoc comment is prohibited
+// ERROR: Remove comment or convert it to /** ... */ PHPDoc.
 // This is a line comment
 function foo(): void {}
 
@@ -28,11 +28,11 @@ $routes = [
     'api' => '/api',
 ];
 
-// ERROR: Non-PHPDoc comment is prohibited
+// ERROR: Remove comment or convert it to /** ... */ PHPDoc.
 /* This is a block comment */
 function bar(): void {}
 
-// ERROR: Non-PHPDoc comment is prohibited
+// ERROR: Remove comment or convert it to /** ... */ PHPDoc.
 # This is a hash comment
 function baz(): void {}
 

@@ -44,7 +44,7 @@ final class ForbiddenCommentRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbiddenComment/PhpstanIgnoreNextLine.php'], [
             [
-                'phpstan-ignore comments are prohibited: "/** @phpstan-ignore-next-line */". Remove this comment and re-run PHPStan to reveal the actual error it was suppressing, then fix the root cause. If the error is a false positive, ask a human operator to add an ignoreErrors entry in phpstan.neon with the error\'s identifier.',
+                'Remove phpstan-ignore comment "/** @phpstan-ignore-next-line */". Re-run PHPStan and fix the revealed error. AI agents must not edit ignoreErrors; ask a human operator only when suppression is genuinely justified.',
                 5,
             ],
             [
@@ -62,7 +62,7 @@ final class ForbiddenCommentRuleTest extends RuleTestCase
                 5,
             ],
             [
-                'phpstan-ignore comments are prohibited: "// @phpstan-ignore argument.type". Remove this comment and re-run PHPStan to reveal the actual error it was suppressing, then fix the root cause. If the error is a false positive, ask a human operator to add an ignoreErrors entry in phpstan.neon with the error\'s identifier.',
+                'Remove phpstan-ignore comment "// @phpstan-ignore argument.type". Re-run PHPStan and fix the revealed error. AI agents must not edit ignoreErrors; ask a human operator only when suppression is genuinely justified.',
                 5,
             ],
         ]);
@@ -72,7 +72,7 @@ final class ForbiddenCommentRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbiddenComment/InfectionIgnoreAll.php'], [
             [
-                'infection-ignore-all comments are prohibited: "/** @infection-ignore-all */". Remove this comment and run mutation testing to identify surviving mutants, then strengthen assertions or add test cases to kill them. If the code is genuinely untestable, restructure it to improve testability.',
+                'Remove infection-ignore-all comment "/** @infection-ignore-all */". Run mutation testing and strengthen assertions or add focused tests. Ask a human operator only when an exception is genuinely justified.',
                 5,
             ],
         ]);

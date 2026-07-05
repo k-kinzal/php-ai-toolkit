@@ -41,7 +41,7 @@ final class NoHelperMethodInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/NoHelperMethodInTestClass/WithHelper.php'], [
             [
-                'Method buildUser() is not an override in Tests\Unit\Fixture\NoHelperMethodInTestClass\WithHelper. Test classes should only contain test methods and framework overrides. Move helper logic to a dedicated class or inline it into the test method.',
+                'Move method buildUser() out of Tests\Unit\Fixture\NoHelperMethodInTestClass\WithHelper or make it a test, data provider, or framework override.',
                 16,
             ],
         ]);

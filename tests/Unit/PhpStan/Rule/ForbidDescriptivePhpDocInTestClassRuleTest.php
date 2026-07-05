@@ -40,7 +40,7 @@ final class ForbidDescriptivePhpDocInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbidDescriptivePhpDocInTestClass/WithDescriptivePhpDoc.php'], [
             [
-                'Method WithDescriptivePhpDoc::testFooReturnsCorrectValue() has descriptive PHPDoc text. Remove the description. Annotation-only PHPDoc (e.g., @dataProvider) is allowed.',
+                'Remove descriptive text from PHPDoc on method WithDescriptivePhpDoc::testFooReturnsCorrectValue(). Keep only annotations such as @dataProvider.',
                 12,
             ],
         ]);
@@ -50,7 +50,7 @@ final class ForbidDescriptivePhpDocInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbidDescriptivePhpDocInTestClass/WithDescriptionAndTag.php'], [
             [
-                'Method WithDescriptionAndTag::testCalculation() has descriptive PHPDoc text. Remove the description. Annotation-only PHPDoc (e.g., @dataProvider) is allowed.',
+                'Remove descriptive text from PHPDoc on method WithDescriptionAndTag::testCalculation(). Keep only annotations such as @dataProvider.',
                 14,
             ],
         ]);
@@ -75,7 +75,7 @@ final class ForbidDescriptivePhpDocInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbidDescriptivePhpDocInTestClass/WithDescriptiveClassDoc.php'], [
             [
-                'Test class WithDescriptiveClassDoc has descriptive PHPDoc text. Remove the description. Annotation-only PHPDoc (e.g., @extends) is allowed.',
+                'Remove descriptive text from PHPDoc on test class WithDescriptiveClassDoc. Keep only annotations such as @extends.',
                 10,
             ],
         ]);
@@ -85,7 +85,7 @@ final class ForbidDescriptivePhpDocInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbidDescriptivePhpDocInTestClass/WithDescriptiveHelperDoc.php'], [
             [
-                'Method WithDescriptiveHelperDoc::setUp() has descriptive PHPDoc text. Remove the description. Annotation-only PHPDoc (e.g., @dataProvider) is allowed.',
+                'Remove descriptive text from PHPDoc on method WithDescriptiveHelperDoc::setUp(). Keep only annotations such as @dataProvider.',
                 12,
             ],
         ]);

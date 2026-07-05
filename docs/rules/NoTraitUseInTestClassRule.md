@@ -15,7 +15,7 @@ namespace Tests\Unit\Service;
 
 final class OrderServiceTest extends TestCase
 {
-    // ERROR: Trait CreatesOrderTrait is prohibited in Tests\Unit and Tests\Integration classes.
+    // ERROR: Move trait CreatesOrderTrait behavior to a dedicated collaborator and call it explicitly.
     use CreatesOrderTrait;
 
     public function testPlaceOrder(): void

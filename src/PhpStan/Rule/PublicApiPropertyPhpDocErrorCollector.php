@@ -31,7 +31,7 @@ final class PublicApiPropertyPhpDocErrorCollector
             if ($property->getDocComment() === null) {
                 $errors[] = RuleErrorBuilder::message(
                     sprintf(
-                        'Public property %s::%s is missing a PHPDoc comment. Add a multi-line /** ... */ block describing this property.',
+                        'Add a multi-line PHPDoc block to public property %s::%s describing the property.',
                         $className,
                         implode(', ', $names)
                     )

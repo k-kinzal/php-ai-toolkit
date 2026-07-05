@@ -72,7 +72,7 @@ final class NoHelperMethodInTestClassRule implements Rule
         return [
             RuleErrorBuilder::message(
                 sprintf(
-                    'Method %s() is not an override in %s. Test classes should only contain test methods and framework overrides. Move helper logic to a dedicated class or inline it into the test method.',
+                    'Move method %s() out of %s or make it a test, data provider, or framework override.',
                     $methodName,
                     $className
                 )

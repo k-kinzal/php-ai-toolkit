@@ -33,7 +33,7 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/MissingClassDoc.php'], [
             [
-                'Class MissingClassDoc is missing a PHPDoc comment. Add a multi-line /** ... */ block describing its purpose.',
+                'Add a multi-line PHPDoc block to class MissingClassDoc describing its purpose.',
                 7,
             ],
         ]);
@@ -43,11 +43,11 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/MissingMethodDoc.php'], [
             [
-                'Public method MissingMethodDoc::undocumented() is missing a PHPDoc comment. Add a multi-line /** ... */ block describing what this method does, its parameters, and return value.',
+                'Add a multi-line PHPDoc block to public method MissingMethodDoc::undocumented() describing behavior, parameters, and return value.',
                 12,
             ],
             [
-                'Public method MissingMethodDoc::__toString() is missing a PHPDoc comment. Add a multi-line /** ... */ block describing what this method does, its parameters, and return value.',
+                'Add a multi-line PHPDoc block to public method MissingMethodDoc::__toString() describing behavior, parameters, and return value.',
                 16,
             ],
         ]);
@@ -57,7 +57,7 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/MissingPropertyDoc.php'], [
             [
-                'Public property MissingPropertyDoc::$undocumented is missing a PHPDoc comment. Add a multi-line /** ... */ block describing this property.',
+                'Add a multi-line PHPDoc block to public property MissingPropertyDoc::$undocumented describing the property.',
                 12,
             ],
         ]);
@@ -67,7 +67,7 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/MissingConstantDoc.php'], [
             [
-                'Public constant MissingConstantDoc::UNDOCUMENTED is missing a PHPDoc comment. Add a multi-line /** ... */ block describing this constant.',
+                'Add a multi-line PHPDoc block to public constant MissingConstantDoc::UNDOCUMENTED describing the constant.',
                 12,
             ],
         ]);
@@ -87,15 +87,15 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/InterfaceWithoutDoc.php'], [
             [
-                'Interface InterfaceWithoutDoc is missing a PHPDoc comment. Add a multi-line /** ... */ block describing its purpose.',
+                'Add a multi-line PHPDoc block to interface InterfaceWithoutDoc describing its purpose.',
                 7,
             ],
             [
-                'Public constant InterfaceWithoutDoc::STATUS is missing a PHPDoc comment. Add a multi-line /** ... */ block describing this constant.',
+                'Add a multi-line PHPDoc block to public constant InterfaceWithoutDoc::STATUS describing the constant.',
                 9,
             ],
             [
-                'Public method InterfaceWithoutDoc::doSomething() is missing a PHPDoc comment. Add a multi-line /** ... */ block describing what this method does, its parameters, and return value.',
+                'Add a multi-line PHPDoc block to public method InterfaceWithoutDoc::doSomething() describing behavior, parameters, and return value.',
                 11,
             ],
         ]);
@@ -105,15 +105,15 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/TraitWithoutDoc.php'], [
             [
-                'Trait TraitWithoutDoc is missing a PHPDoc comment. Add a multi-line /** ... */ block describing its purpose.',
+                'Add a multi-line PHPDoc block to trait TraitWithoutDoc describing its purpose.',
                 7,
             ],
             [
-                'Public property TraitWithoutDoc::$name is missing a PHPDoc comment. Add a multi-line /** ... */ block describing this property.',
+                'Add a multi-line PHPDoc block to public property TraitWithoutDoc::$name describing the property.',
                 9,
             ],
             [
-                'Public method TraitWithoutDoc::doSomething() is missing a PHPDoc comment. Add a multi-line /** ... */ block describing what this method does, its parameters, and return value.',
+                'Add a multi-line PHPDoc block to public method TraitWithoutDoc::doSomething() describing behavior, parameters, and return value.',
                 11,
             ],
         ]);
@@ -123,7 +123,7 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/EnumWithoutDoc.php'], [
             [
-                'Enum EnumWithoutDoc is missing a PHPDoc comment. Add a multi-line /** ... */ block describing its purpose.',
+                'Add a multi-line PHPDoc block to enum EnumWithoutDoc describing its purpose.',
                 7,
             ],
         ]);

@@ -68,7 +68,7 @@ final class OverrideMustHaveAttributeRule implements Rule
         return [
             RuleErrorBuilder::message(
                 sprintf(
-                    'Override method %s() must have the #[\\Override] attribute.',
+                    'Add #[\\Override] to override method %s().',
                     $methodName
                 )
             )

@@ -87,8 +87,7 @@ class UserService
 class UserServiceTest extends TestCase
 {
     public function testCreatePersistsUser(): void { ... }      // OK — covers create()
-    // ERROR: Public method findById() has no corresponding test method
-    //        starting with testFindById() in the unit test file.
+    // ERROR: Add a unit test method starting with testFindById() for public method findById().
 }
 ```
 

@@ -15,10 +15,10 @@ namespace Tests\Unit\Service;
 
 final class UserServiceTest extends TestCase
 {
-    // ERROR: Property $service is prohibited in Tests\Unit and Tests\Integration classes.
+    // ERROR: Move property $service into local variables inside the test methods that use it.
     private UserService $service;
 
-    // ERROR: Property $logger is prohibited in Tests\Unit and Tests\Integration classes.
+    // ERROR: Move property $logger into local variables inside the test methods that use it.
     private MockObject&LoggerInterface $logger;
 
     #[Override]

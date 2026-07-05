@@ -44,7 +44,7 @@ final class DescriptivePhpDocErrorCollector
         if ($docComment !== null && $this->textDetector->has($docComment->getText())) {
             $errors[] = RuleErrorBuilder::message(
                 sprintf(
-                    'Test class %s has descriptive PHPDoc text. Remove the description. Annotation-only PHPDoc (e.g., @extends) is allowed.',
+                    'Remove descriptive text from PHPDoc on test class %s. Keep only annotations such as @extends.',
                     $className
                 )
             )
@@ -61,7 +61,7 @@ final class DescriptivePhpDocErrorCollector
 
             $errors[] = RuleErrorBuilder::message(
                 sprintf(
-                    'Method %s::%s() has descriptive PHPDoc text. Remove the description. Annotation-only PHPDoc (e.g., @dataProvider) is allowed.',
+                    'Remove descriptive text from PHPDoc on method %s::%s(). Keep only annotations such as @dataProvider.',
                     $className,
                     $method->name->toString()
                 )

@@ -33,7 +33,7 @@ final class SrcUnitTestPairRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/SrcUnitTestPairRule/project/src/MissingTest.php'], [
             [
-                'Source file "src/MissingTest.php" requires a matching unit test file "tests/Unit/MissingTestTest.php" to keep behavior verifiable.',
+                'Create unit test file "tests/Unit/MissingTestTest.php" for source file "src/MissingTest.php".',
                 1,
             ],
         ]);
@@ -48,7 +48,7 @@ final class SrcUnitTestPairRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/SrcUnitTestPairRule/project/tests/Unit/OrphanedTest.php'], [
             [
-                'Unit test file "tests/Unit/OrphanedTest.php" requires a matching source file "src/Orphaned.php" to avoid stale or orphaned tests.',
+                'Create source file "src/Orphaned.php" for unit test file "tests/Unit/OrphanedTest.php", or remove the stale test.',
                 1,
             ],
         ]);

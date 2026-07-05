@@ -26,13 +26,13 @@ final class UserServiceTest extends TestCase
     #[Override]
     protected function setUp(): void { ... }
 
-    // ERROR: Method buildUser() is not an override in Tests\Unit\Service\UserServiceTest.
+    // ERROR: Move method buildUser() out of Tests\Unit\Service\UserServiceTest or make it a test, data provider, or framework override.
     protected function buildUser(string $name = 'Alice'): User
     {
         return new User($name, 'alice@example.com', 30);
     }
 
-    // ERROR: Method assertUserIsValid() is not an override.
+    // ERROR: Move method assertUserIsValid() out of Tests\Unit\Service\UserServiceTest or make it a test, data provider, or framework override.
     protected function assertUserIsValid(User $user): void
     {
         self::assertNotEmpty($user->name());

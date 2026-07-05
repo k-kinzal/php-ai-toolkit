@@ -27,7 +27,7 @@ final class PublicApiClassPhpDocErrorCollector
         return [
             RuleErrorBuilder::message(
                 sprintf(
-                    '%s %s is missing a PHPDoc comment. Add a multi-line /** ... */ block describing its purpose.',
+                    'Add a multi-line PHPDoc block to %s %s describing its purpose.',
                     $kindLabel,
                     $className
                 )

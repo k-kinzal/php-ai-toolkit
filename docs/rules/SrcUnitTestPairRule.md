@@ -21,8 +21,8 @@ tests/Unit/
 ```
 
 ```
-Source file "src/Service/UserService.php" requires a matching unit test file
-"tests/Unit/Service/UserServiceTest.php" to keep behavior verifiable.
+Create unit test file "tests/Unit/Service/UserServiceTest.php" for source file
+"src/Service/UserService.php".
 ```
 
 ### 2. Test files without a matching source (`customRules.unitTestWithoutSource`)
@@ -38,8 +38,8 @@ tests/Unit/
 ```
 
 ```
-Unit test file "tests/Unit/Service/LegacyServiceTest.php" requires a matching
-source file "src/Service/LegacyService.php" to avoid stale or orphaned tests.
+Create source file "src/Service/LegacyService.php" for unit test file
+"tests/Unit/Service/LegacyServiceTest.php", or remove the stale test.
 ```
 
 ## Why This Is an Error

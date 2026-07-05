@@ -11,7 +11,7 @@
 Reports single-line PHPDoc comments on public API elements:
 
 ```php
-/** User service. */  // ERROR: Single-line PHPDoc is prohibited.
+/** User service. */  // ERROR: Rewrite PHPDoc as a multi-line block.
 class UserService
 {
     /** The user name. */  // ERROR

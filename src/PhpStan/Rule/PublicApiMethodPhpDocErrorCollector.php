@@ -26,7 +26,7 @@ final class PublicApiMethodPhpDocErrorCollector
             if ($method->getDocComment() === null) {
                 $errors[] = RuleErrorBuilder::message(
                     sprintf(
-                        'Public method %s::%s() is missing a PHPDoc comment. Add a multi-line /** ... */ block describing what this method does, its parameters, and return value.',
+                        'Add a multi-line PHPDoc block to public method %s::%s() describing behavior, parameters, and return value.',
                         $className,
                         $method->name->toString()
                     )

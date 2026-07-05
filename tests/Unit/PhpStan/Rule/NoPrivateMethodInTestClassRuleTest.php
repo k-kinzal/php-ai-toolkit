@@ -34,7 +34,7 @@ final class NoPrivateMethodInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/NoPrivateMethodInTestClass/WithPrivateMethod.php'], [
             [
-                'Private method helper() is prohibited in Tests\\Unit and Tests\\Integration classes. Over-abstracted helpers hide test intent and make failures harder to understand. Inline the logic into each test method, or extract to a dedicated helper class if reuse is truly needed.',
+                'Inline private method helper() into the test method or move it to a dedicated collaborator. Tests\\Unit and Tests\\Integration classes may contain only test methods, data providers, and framework overrides.',
                 16,
             ],
         ]);

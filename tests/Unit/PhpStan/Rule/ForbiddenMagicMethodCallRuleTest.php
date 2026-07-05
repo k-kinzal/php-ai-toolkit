@@ -40,7 +40,7 @@ final class ForbiddenMagicMethodCallRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbiddenMagicMethodCall/DirectCall.php'], [
             [
-                'Direct call to magic method __toString() is prohibited. Magic methods are invoked implicitly by PHP; calling them directly bypasses language semantics. Use (string) cast: (string)$obj.',
+                'Use (string) cast: (string)$obj instead of calling __toString() directly.',
                 19,
             ],
         ]);

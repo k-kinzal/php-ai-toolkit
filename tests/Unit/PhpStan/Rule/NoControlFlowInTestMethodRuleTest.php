@@ -43,11 +43,11 @@ final class NoControlFlowInTestMethodRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/NoControlFlowInTestMethod/WithControlFlow.php'], [
             [
-                'Control flow statement "if" is prohibited in test method testWithIf(). Complex control flow in tests indicates the test is doing too much. Split into separate test methods or use data providers for parameterized cases. try-catch is allowed when testing exception behavior.',
+                'Split test method testWithIf() so it contains no "if" statement. Use separate tests or a data provider for each case.',
                 14,
             ],
             [
-                'Control flow statement "foreach" is prohibited in test method testWithForeach(). Complex control flow in tests indicates the test is doing too much. Split into separate test methods or use data providers for parameterized cases. try-catch is allowed when testing exception behavior.',
+                'Split test method testWithForeach() so it contains no "foreach" statement. Use separate tests or a data provider for each case.',
                 21,
             ],
         ]);

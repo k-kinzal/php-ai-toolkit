@@ -50,7 +50,7 @@ final class NoClassConstantInTestClassRule implements Rule
         return [
             RuleErrorBuilder::message(
                 sprintf(
-                    'Class constant %s is prohibited in Tests\\Unit and Tests\\Integration classes. Shared constants encourage fixture coupling and reduce test independence. Use inline literal values in each test method instead.',
+                    'Inline class constant %s inside the test methods that use it. Tests\\Unit and Tests\\Integration classes must not declare constants.',
                     implode(', ', $names)
                 )
             )

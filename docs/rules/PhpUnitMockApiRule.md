@@ -22,12 +22,12 @@ The following methods are always forbidden:
 - `getMockFromWsdl()`
 
 ```php
-// ERROR: PHPUnit getMockBuilder() is prohibited.
+// ERROR: Use createMock(FooInterface::class) or createStub(FooInterface::class) instead of PHPUnit getMockBuilder().
 $mock = $this->getMockBuilder(FooInterface::class)
     ->disableOriginalConstructor()
     ->getMock();
 
-// ERROR: PHPUnit createPartialMock() is prohibited.
+// ERROR: Use createMock(FooInterface::class) or createStub(FooInterface::class) instead of PHPUnit createPartialMock().
 $mock = $this->createPartialMock(ConcreteService::class, ['process']);
 ```
 
@@ -36,10 +36,10 @@ $mock = $this->createPartialMock(ConcreteService::class, ['process']);
 `createMock()`, `createStub()`, `createConfiguredMock()`, and `createConfiguredStub()` must target an interface:
 
 ```php
-// ERROR: PHPUnit createMock() must target an interface; "App\Service\UserService" is not an interface.
+// ERROR: Pass an interface class-string to PHPUnit createMock(); "App\Service\UserService" is not an interface.
 $mock = $this->createMock(UserService::class);
 
-// ERROR: PHPUnit createStub() must target an interface; "App\Repository\OrderRepository" is not an interface.
+// ERROR: Pass an interface class-string to PHPUnit createStub(); "App\Repository\OrderRepository" is not an interface.
 $stub = $this->createStub(OrderRepository::class);
 
 // OK
@@ -52,7 +52,7 @@ $stub = $this->createStub(OrderRepositoryInterface::class);
 The first argument must be a direct `::class` constant fetch, not a variable or string:
 
 ```php
-// ERROR: PHPUnit createMock() must use a direct interface class-string literal.
+// ERROR: Pass an interface class-string literal to PHPUnit createMock(), e.g. DependencyInterface::class.
 $mock = $this->createMock($className);
 
 // ERROR: also reported
@@ -67,7 +67,7 @@ $mock = $this->createMock(FooInterface::class);
 Direct instantiation of `MockBuilder` and `MockGenerator` is forbidden:
 
 ```php
-// ERROR: Direct instantiation of PHPUnit\Framework\MockObject\MockBuilder is prohibited.
+// ERROR: Use createMock(FooInterface::class) or createStub(FooInterface::class) instead of instantiating PHPUnit\Framework\MockObject\MockBuilder directly.
 $builder = new MockBuilder($this, FooInterface::class);
 ```
 

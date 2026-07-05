@@ -33,7 +33,7 @@ final class OverrideMustHaveAttributeRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/OverrideMustHaveAttribute/WithoutAttribute.php'], [
             [
-                'Override method doSomething() must have the #[\\Override] attribute.',
+                'Add #[\\Override] to override method doSomething().',
                 16,
             ],
         ]);

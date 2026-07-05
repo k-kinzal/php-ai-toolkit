@@ -22,7 +22,7 @@ final class ProviderNameValidator
         if ($suffix === '') {
             return [
                 RuleErrorBuilder::message(
-                    'Data provider provider() must follow the pattern provider[TestCaseName]. The prefix "provider" alone is not a valid name. Example: providerValidEmails().'
+                    'Rename provider() to provider[TestCaseName], e.g. providerValidEmails().'
                 )
                     ->identifier('customRules.providerNamingConvention')
                     ->line($line)
@@ -34,7 +34,7 @@ final class ProviderNameValidator
             return [
                 RuleErrorBuilder::message(
                     sprintf(
-                        'Data provider %s() does not follow the naming convention. After the "provider" prefix, the next character must be an uppercase letter (PascalCase). Example: providerValidEmails(), providerUserData().',
+                        'Rename data provider %s() to use PascalCase after the "provider" prefix, e.g. providerValidEmails().',
                         $methodName
                     )
                 )

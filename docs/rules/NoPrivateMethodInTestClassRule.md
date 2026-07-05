@@ -27,7 +27,7 @@ final class PaymentServiceTest extends TestCase
         // ...
     }
 
-    // ERROR: Private method createGatewayStub() is prohibited in Tests\Unit and Tests\Integration classes.
+    // ERROR: Inline private method createGatewayStub() into the test method or move it to a dedicated collaborator.
     private function createGatewayStub(bool $willSucceed): GatewayInterface
     {
         $stub = $this->createStub(GatewayInterface::class);

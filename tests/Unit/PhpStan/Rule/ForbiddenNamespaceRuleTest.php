@@ -46,35 +46,35 @@ final class ForbiddenNamespaceRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbiddenNamespace/WithForbiddenNamespaces.php'], [
             [
-                'Namespace "Tests\Support" is prohibited by forbidden prefix "Tests\Support". Do not create generic test support/helper/utility namespaces; use an existing library, create an independent internal library outside the Tests namespace, or accept duplication and write setup directly inside each test method.',
+                'Move code out of namespace "Tests\Support". Use a namespace outside forbidden test prefix "Tests\Support", or inline setup in each test.',
                 5,
             ],
             [
-                'Namespace "Tests\Supports\Fixture" is prohibited by forbidden prefix "Tests\Supports". Do not create generic test support/helper/utility namespaces; use an existing library, create an independent internal library outside the Tests namespace, or accept duplication and write setup directly inside each test method.',
+                'Move code out of namespace "Tests\Supports\Fixture". Use a namespace outside forbidden test prefix "Tests\Supports", or inline setup in each test.',
                 11,
             ],
             [
-                'Namespace "Tests\Helper" is prohibited by forbidden prefix "Tests\Helper". Do not create generic test support/helper/utility namespaces; use an existing library, create an independent internal library outside the Tests namespace, or accept duplication and write setup directly inside each test method.',
+                'Move code out of namespace "Tests\Helper". Use a namespace outside forbidden test prefix "Tests\Helper", or inline setup in each test.',
                 17,
             ],
             [
-                'Namespace "Tests\Helpers\Fixture" is prohibited by forbidden prefix "Tests\Helpers". Do not create generic test support/helper/utility namespaces; use an existing library, create an independent internal library outside the Tests namespace, or accept duplication and write setup directly inside each test method.',
+                'Move code out of namespace "Tests\Helpers\Fixture". Use a namespace outside forbidden test prefix "Tests\Helpers", or inline setup in each test.',
                 23,
             ],
             [
-                'Namespace "Tests\Util" is prohibited by forbidden prefix "Tests\Util". Do not create generic test support/helper/utility namespaces; use an existing library, create an independent internal library outside the Tests namespace, or accept duplication and write setup directly inside each test method.',
+                'Move code out of namespace "Tests\Util". Use a namespace outside forbidden test prefix "Tests\Util", or inline setup in each test.',
                 29,
             ],
             [
-                'Namespace "Tests\Utils\Fixture" is prohibited by forbidden prefix "Tests\Utils". Do not create generic test support/helper/utility namespaces; use an existing library, create an independent internal library outside the Tests namespace, or accept duplication and write setup directly inside each test method.',
+                'Move code out of namespace "Tests\Utils\Fixture". Use a namespace outside forbidden test prefix "Tests\Utils", or inline setup in each test.',
                 35,
             ],
             [
-                'Namespace "Tests\Utility" is prohibited by forbidden prefix "Tests\Utility". Do not create generic test support/helper/utility namespaces; use an existing library, create an independent internal library outside the Tests namespace, or accept duplication and write setup directly inside each test method.',
+                'Move code out of namespace "Tests\Utility". Use a namespace outside forbidden test prefix "Tests\Utility", or inline setup in each test.',
                 41,
             ],
             [
-                'Namespace "Tests\Utilities\Fixture" is prohibited by forbidden prefix "Tests\Utilities". Do not create generic test support/helper/utility namespaces; use an existing library, create an independent internal library outside the Tests namespace, or accept duplication and write setup directly inside each test method.',
+                'Move code out of namespace "Tests\Utilities\Fixture". Use a namespace outside forbidden test prefix "Tests\Utilities", or inline setup in each test.',
                 47,
             ],
         ]);

@@ -37,11 +37,11 @@ final class PhpUnitMockApiRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/PhpUnitMockApi/ProhibitedApi.php'], [
             [
-                'PHPUnit getMockBuilder() is prohibited. Use createMock(FooInterface::class) or createStub(FooInterface::class) instead. These APIs enforce interface-based test doubles for better decoupling.',
+                'Use createMock(FooInterface::class) or createStub(FooInterface::class) instead of PHPUnit getMockBuilder().',
                 18,
             ],
             [
-                'PHPUnit createPartialMock() is prohibited. Use createMock(FooInterface::class) or createStub(FooInterface::class) instead. These APIs enforce interface-based test doubles for better decoupling.',
+                'Use createMock(FooInterface::class) or createStub(FooInterface::class) instead of PHPUnit createPartialMock().',
                 23,
             ],
         ]);
@@ -51,7 +51,7 @@ final class PhpUnitMockApiRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/PhpUnitMockApi/ConcreteClassMock.php'], [
             [
-                'PHPUnit createMock() must target an interface; "Tests\Fixture\PhpUnitMockApi\ConcreteService" is not an interface. Mock only interfaces to keep tests decoupled from implementations.',
+                'Pass an interface class-string to PHPUnit createMock(); "Tests\Fixture\PhpUnitMockApi\ConcreteService" is not an interface.',
                 20,
             ],
         ]);
@@ -66,7 +66,7 @@ final class PhpUnitMockApiRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/PhpUnitMockApi/NonLiteral.php'], [
             [
-                'PHPUnit createMock() must use a direct interface class-string literal (e.g. DependencyInterface::class). Variables and string literals are not allowed because the type must be statically verifiable.',
+                'Pass an interface class-string literal to PHPUnit createMock(), e.g. DependencyInterface::class. Do not pass variables or plain strings.',
                 14,
             ],
         ]);

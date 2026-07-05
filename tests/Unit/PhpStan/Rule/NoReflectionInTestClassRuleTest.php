@@ -34,11 +34,11 @@ final class NoReflectionInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/NoReflectionInTestClass/WithReflection.php'], [
             [
-                'Using ReflectionClass in test classes is prohibited. If you need Reflection to test something, it is a sign that you are not testing behavior. Redesign the code or the test to verify observable behavior instead.',
+                'Replace ReflectionClass usage with assertions against public behavior. Test classes must not use Reflection.',
                 17,
             ],
             [
-                'Using ReflectionMethod in test classes is prohibited. If you need Reflection to test something, it is a sign that you are not testing behavior. Redesign the code or the test to verify observable behavior instead.',
+                'Replace ReflectionMethod usage with assertions against public behavior. Test classes must not use Reflection.',
                 23,
             ],
         ]);

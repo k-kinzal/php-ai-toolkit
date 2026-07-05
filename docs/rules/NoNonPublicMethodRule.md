@@ -19,7 +19,7 @@ final class InvoiceService
         return $this->createReceipt($invoice);
     }
 
-    // ERROR: Private method validate() is prohibited.
+    // ERROR: Move private method validate() out of InvoiceService into a focused collaborator.
     private function validate(Invoice $invoice): void
     {
         // ...

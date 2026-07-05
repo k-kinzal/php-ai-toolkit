@@ -54,11 +54,11 @@ final class ForbidNonDocCommentRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithDoubleSlashComment.php'], [
             [
-                'Non-PHPDoc comment is prohibited: "// This is a line comment". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks or array literals. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Remove comment "// This is a line comment" or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 5,
             ],
             [
-                'Non-PHPDoc comment is prohibited: "// trailing comment". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks or array literals. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Remove comment "// trailing comment" or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 8,
             ],
         ]);
@@ -68,11 +68,11 @@ final class ForbidNonDocCommentRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithBlockComment.php'], [
             [
-                'Non-PHPDoc comment is prohibited: "/* This is a block comment */". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks or array literals. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Remove comment "/* This is a block comment */" or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 5,
             ],
             [
-                'Non-PHPDoc comment is prohibited: "/* inline block */". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks or array literals. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Remove comment "/* inline block */" or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 8,
             ],
         ]);
@@ -82,7 +82,7 @@ final class ForbidNonDocCommentRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithHashComment.php'], [
             [
-                'Non-PHPDoc comment is prohibited: "# This is a hash comment". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks or array literals. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Remove comment "# This is a hash comment" or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 5,
             ],
         ]);
@@ -145,7 +145,7 @@ PHP));
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithArrayAccessLineComment.php'], [
             [
-                'Non-PHPDoc comment is prohibited: "// This comment is inside array access, not an array literal.". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks or array literals. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Remove comment "// This comment is inside array access, not an array literal." or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 8,
             ],
         ]);
@@ -155,11 +155,11 @@ PHP));
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithCatchNonLineComment.php'], [
             [
-                'Non-PHPDoc comment is prohibited: "/* Block comments are still prohibited inside catch blocks. */". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks or array literals. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Remove comment "/* Block comments are still prohibited inside catch blocks. */" or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 10,
             ],
             [
-                'Non-PHPDoc comment is prohibited: "# Hash comments are still prohibited inside catch blocks.". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks or array literals. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Remove comment "# Hash comments are still prohibited inside catch blocks." or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 11,
             ],
         ]);
@@ -169,11 +169,11 @@ PHP));
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithArrayNonLineComment.php'], [
             [
-                'Non-PHPDoc comment is prohibited: "/* Block comments are still prohibited inside arrays. */". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks or array literals. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Remove comment "/* Block comments are still prohibited inside arrays. */" or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 8,
             ],
             [
-                'Non-PHPDoc comment is prohibited: "# Hash comments are still prohibited inside arrays.". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks or array literals. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Remove comment "# Hash comments are still prohibited inside arrays." or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 9,
             ],
         ]);
@@ -183,7 +183,7 @@ PHP));
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithCatchBoundaryLineComment.php'], [
             [
-                'Non-PHPDoc comment is prohibited: "// This comment is outside the catch body.". Only /** ... */ PHPDoc blocks are allowed, except // comments inside catch blocks or array literals. Remove this comment or convert to a PHPDoc block if it documents an API contract.',
+                'Remove comment "// This comment is outside the catch body." or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 11,
             ],
         ]);

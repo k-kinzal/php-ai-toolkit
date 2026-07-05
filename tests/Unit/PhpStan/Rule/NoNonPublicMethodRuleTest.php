@@ -33,7 +33,7 @@ final class NoNonPublicMethodRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/NoNonPublicMethod/WithPrivateMethod.php'], [
             [
-                'Private method helper() is prohibited in Tests\\Fixture\\NoNonPublicMethod\\WithPrivateMethod. Private behavior hides a responsibility inside the class; extract that behavior to a focused collaborator with a public API, or make it public only when it is part of this type\'s own responsibility.',
+                'Move private method helper() out of Tests\\Fixture\\NoNonPublicMethod\\WithPrivateMethod into a focused collaborator, or make it public only if it is part of this type\'s API.',
                 14,
             ],
         ]);
@@ -43,7 +43,7 @@ final class NoNonPublicMethodRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/NoNonPublicMethod/WithProtectedMethod.php'], [
             [
-                'Protected method helper() is prohibited in concrete class Tests\\Fixture\\NoNonPublicMethod\\WithProtectedMethod. Protected methods are allowed only in abstract classes, traits, or override methods. Extract the behavior to a focused collaborator, or move the extension point to an abstract class or trait if inheritance is intentional.',
+                'Move protected method helper() out of concrete class Tests\\Fixture\\NoNonPublicMethod\\WithProtectedMethod, or put the extension point on an abstract class, trait, or override method.',
                 14,
             ],
         ]);
@@ -68,7 +68,7 @@ final class NoNonPublicMethodRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/NoNonPublicMethod/AbstractClassWithPrivateMethod.php'], [
             [
-                'Private method helper() is prohibited in Tests\\Fixture\\NoNonPublicMethod\\AbstractClassWithPrivateMethod. Private behavior hides a responsibility inside the class; extract that behavior to a focused collaborator with a public API, or make it public only when it is part of this type\'s own responsibility.',
+                'Move private method helper() out of Tests\\Fixture\\NoNonPublicMethod\\AbstractClassWithPrivateMethod into a focused collaborator, or make it public only if it is part of this type\'s API.',
                 14,
             ],
         ]);
@@ -78,7 +78,7 @@ final class NoNonPublicMethodRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/NoNonPublicMethod/TraitWithPrivateMethod.php'], [
             [
-                'Private method helper() is prohibited in Tests\\Fixture\\NoNonPublicMethod\\TraitWithPrivateMethod. Private behavior hides a responsibility inside the class; extract that behavior to a focused collaborator with a public API, or make it public only when it is part of this type\'s own responsibility.',
+                'Move private method helper() out of Tests\\Fixture\\NoNonPublicMethod\\TraitWithPrivateMethod into a focused collaborator, or make it public only if it is part of this type\'s API.',
                 14,
             ],
         ]);

@@ -27,7 +27,7 @@ final class ParserTest extends TestCase
     {
         $formats = ['json', 'xml', 'yaml'];
 
-        // ERROR: Control flow statement "foreach" is prohibited in test method
+        // ERROR: Split test method testParsesAllFormats() so it contains no "foreach" statement.
         foreach ($formats as $format) {
             $result = Parser::parse($format, '...');
             self::assertNotNull($result);
@@ -38,7 +38,7 @@ final class ParserTest extends TestCase
     {
         $result = Calculator::compute(42);
 
-        // ERROR: Control flow statement "if" is prohibited in test method
+        // ERROR: Split test method testConditionalBehavior() so it contains no "if" statement.
         if ($result > 100) {
             self::assertGreaterThan(100, $result);
         } else {

@@ -22,11 +22,11 @@ final class SrcUnitTestPairErrorBuilder
         string $expectedTestRelativePath,
     ): IdentifierRuleError {
         return RuleErrorBuilder::message(sprintf(
-            'Source file "%s%s" requires a matching unit test file "%s%s" to keep behavior verifiable.',
-            trim($srcMarker, '/'),
-            '/' . $srcRelativePath,
+            'Create unit test file "%s%s" for source file "%s%s".',
             trim($unitTestMarker, '/'),
-            '/' . $expectedTestRelativePath
+            '/' . $expectedTestRelativePath,
+            trim($srcMarker, '/'),
+            '/' . $srcRelativePath
         ))
             ->identifier('customRules.srcWithoutUnitTest')
             ->line(1)
@@ -43,11 +43,11 @@ final class SrcUnitTestPairErrorBuilder
         string $expectedSourceRelativePath,
     ): IdentifierRuleError {
         return RuleErrorBuilder::message(sprintf(
-            'Unit test file "%s%s" requires a matching source file "%s%s" to avoid stale or orphaned tests.',
-            trim($unitTestMarker, '/'),
-            '/' . $testRelativePath,
+            'Create source file "%s%s" for unit test file "%s%s", or remove the stale test.',
             trim($srcMarker, '/'),
-            '/' . $expectedSourceRelativePath
+            '/' . $expectedSourceRelativePath,
+            trim($unitTestMarker, '/'),
+            '/' . $testRelativePath
         ))
             ->identifier('customRules.unitTestWithoutSource')
             ->line(1)

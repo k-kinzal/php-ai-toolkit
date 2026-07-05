@@ -19,7 +19,7 @@ final class PhpUnitMockApiErrorBuilder
     {
         return RuleErrorBuilder::message(
             sprintf(
-                'PHPUnit %s() is prohibited. Use createMock(FooInterface::class) or createStub(FooInterface::class) instead. These APIs enforce interface-based test doubles for better decoupling.',
+                'Use createMock(FooInterface::class) or createStub(FooInterface::class) instead of PHPUnit %s().',
                 $methodName
             )
         )
@@ -35,7 +35,7 @@ final class PhpUnitMockApiErrorBuilder
     {
         return RuleErrorBuilder::message(
             sprintf(
-                'PHPUnit %s() must use a direct interface class-string literal (e.g. DependencyInterface::class). Variables and string literals are not allowed because the type must be statically verifiable.',
+                'Pass an interface class-string literal to PHPUnit %s(), e.g. DependencyInterface::class. Do not pass variables or plain strings.',
                 $methodName
             )
         )
@@ -51,7 +51,7 @@ final class PhpUnitMockApiErrorBuilder
     {
         return RuleErrorBuilder::message(
             sprintf(
-                'PHPUnit %s() must target an interface; "%s" is not an interface. Mock only interfaces to keep tests decoupled from implementations.',
+                'Pass an interface class-string to PHPUnit %s(); "%s" is not an interface.',
                 $methodName,
                 $targetTypeName
             )
@@ -68,7 +68,7 @@ final class PhpUnitMockApiErrorBuilder
     {
         return RuleErrorBuilder::message(
             sprintf(
-                'Direct instantiation of %s is prohibited. Use createMock(FooInterface::class) or createStub(FooInterface::class) instead.',
+                'Use createMock(FooInterface::class) or createStub(FooInterface::class) instead of instantiating %s directly.',
                 $className
             )
         )

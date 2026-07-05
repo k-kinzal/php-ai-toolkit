@@ -31,9 +31,9 @@ final class MagicMethodCallErrorBuilder
     {
         return RuleErrorBuilder::message(
             sprintf(
-                'Direct call to magic method %s() is prohibited. Magic methods are invoked implicitly by PHP; calling them directly bypasses language semantics. %s.',
-                $methodName,
-                $this->magicMethodRegistry->alternative($methodName)
+                '%s instead of calling %s() directly.',
+                $this->magicMethodRegistry->alternative($methodName),
+                $methodName
             )
         )
             ->identifier('customRules.forbiddenMagicMethodCall')

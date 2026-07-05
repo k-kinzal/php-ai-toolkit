@@ -34,7 +34,7 @@ final class NonPublicMethodErrorBuilder
     ): IdentifierRuleError {
         return RuleErrorBuilder::message(
             sprintf(
-                'Private method %s() is prohibited in %s. Private behavior hides a responsibility inside the class; extract that behavior to a focused collaborator with a public API, or make it public only when it is part of this type\'s own responsibility.',
+                'Move private method %s() out of %s into a focused collaborator, or make it public only if it is part of this type\'s API.',
                 $method->name->toString(),
                 $this->classLikeNameResolver->resolve($classLike, $scope),
             )
@@ -54,7 +54,7 @@ final class NonPublicMethodErrorBuilder
     ): IdentifierRuleError {
         return RuleErrorBuilder::message(
             sprintf(
-                'Protected method %s() is prohibited in concrete class %s. Protected methods are allowed only in abstract classes, traits, or override methods. Extract the behavior to a focused collaborator, or move the extension point to an abstract class or trait if inheritance is intentional.',
+                'Move protected method %s() out of concrete class %s, or put the extension point on an abstract class, trait, or override method.',
                 $method->name->toString(),
                 $this->classLikeNameResolver->resolve($classLike, $scope),
             )

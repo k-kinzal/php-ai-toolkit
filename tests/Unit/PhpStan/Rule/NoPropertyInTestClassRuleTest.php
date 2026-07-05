@@ -34,7 +34,7 @@ final class NoPropertyInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/NoPropertyInTestClass/WithProperty.php'], [
             [
-                'Property $name is prohibited in Tests\\Unit and Tests\\Integration classes. Shared state across test methods reduces test isolation and makes failures harder to debug. Declare values as local variables inside each test method instead.',
+                'Move property $name into local variables inside the test methods that use it. Tests\\Unit and Tests\\Integration classes must not declare properties.',
                 11,
             ],
         ]);

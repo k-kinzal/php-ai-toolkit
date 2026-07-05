@@ -34,15 +34,15 @@ final class NoRedundantAssertInstanceOfRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/NoRedundantAssertInstanceOf/RedundantAssertInstanceOf.php'], [
             [
-                'Redundant PHPUnit assertInstanceOf() in test class: the asserted value already has the statically-known type "Tests\Fixture\NoRedundantAssertInstanceOf\Reporter", which is guaranteed to be an instance of "Tests\Fixture\NoRedundantAssertInstanceOf\ReporterInterface". Remove this assertion or replace it with an assertion about observable behavior.',
+                'Remove redundant assertInstanceOf(): "Tests\Fixture\NoRedundantAssertInstanceOf\Reporter" is already an instance of "Tests\Fixture\NoRedundantAssertInstanceOf\ReporterInterface". Assert observable behavior instead.',
                 29,
             ],
             [
-                'Redundant PHPUnit assertInstanceOf() in test class: the asserted value already has the statically-known type "Tests\Fixture\NoRedundantAssertInstanceOf\Reporter", which is guaranteed to be an instance of "Tests\Fixture\NoRedundantAssertInstanceOf\Reporter". Remove this assertion or replace it with an assertion about observable behavior.',
+                'Remove redundant assertInstanceOf(): "Tests\Fixture\NoRedundantAssertInstanceOf\Reporter" is already an instance of "Tests\Fixture\NoRedundantAssertInstanceOf\Reporter". Assert observable behavior instead.',
                 36,
             ],
             [
-                'Redundant PHPUnit assertInstanceOf() in test class: the asserted value already has the statically-known type "Tests\Fixture\NoRedundantAssertInstanceOf\Reporter", which is guaranteed to be an instance of "Tests\Fixture\NoRedundantAssertInstanceOf\ReporterInterface". Remove this assertion or replace it with an assertion about observable behavior.',
+                'Remove redundant assertInstanceOf(): "Tests\Fixture\NoRedundantAssertInstanceOf\Reporter" is already an instance of "Tests\Fixture\NoRedundantAssertInstanceOf\ReporterInterface". Assert observable behavior instead.',
                 43,
             ],
         ]);

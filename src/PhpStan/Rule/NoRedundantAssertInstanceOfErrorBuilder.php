@@ -19,7 +19,7 @@ final class NoRedundantAssertInstanceOfErrorBuilder
     {
         return RuleErrorBuilder::message(
             sprintf(
-                'Redundant PHPUnit assertInstanceOf() in test class: the asserted value already has the statically-known type "%s", which is guaranteed to be an instance of "%s". Remove this assertion or replace it with an assertion about observable behavior.',
+                'Remove redundant assertInstanceOf(): "%s" is already an instance of "%s". Assert observable behavior instead.',
                 $actualTypeName,
                 $expectedTypeName,
             )

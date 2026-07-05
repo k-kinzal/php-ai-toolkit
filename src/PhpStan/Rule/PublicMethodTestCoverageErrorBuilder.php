@@ -19,9 +19,9 @@ final class PublicMethodTestCoverageErrorBuilder
     {
         return RuleErrorBuilder::message(
             sprintf(
-                'Public method %s() has no corresponding test method starting with %s() in the unit test file. Each public method must have at least one test that verifies its behavior.',
-                $methodName,
-                $expectedPrefix
+                'Add a unit test method starting with %s() for public method %s().',
+                $expectedPrefix,
+                $methodName
             )
         )
             ->identifier('customRules.publicMethodWithoutTest')

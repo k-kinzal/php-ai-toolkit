@@ -61,11 +61,9 @@ final class ForbidClassLikeNameSuffixRule implements Rule
         return [
             RuleErrorBuilder::message(
                 sprintf(
-                    '%s %s uses forbidden suffix "%s". Rename this %s so its name does not end with "%s"; use a specific domain name instead.',
-                    ucfirst($kind),
-                    $name,
-                    $suffix,
+                    'Rename %s %s to a specific domain name without the "%s" suffix.',
                     $kind,
+                    $name,
                     $suffix
                 )
             )

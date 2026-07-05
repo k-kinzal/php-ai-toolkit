@@ -20,7 +20,7 @@ final class UserServiceTest extends TestCase
         $service = new UserService();
         $service->register('Alice');
 
-        // ERROR: Using ReflectionProperty in test classes is prohibited.
+        // ERROR: Replace ReflectionProperty usage with assertions against public behavior.
         $ref = new ReflectionProperty($service, 'users');
         $ref->setAccessible(true);
         $users = $ref->getValue($service);
@@ -32,7 +32,7 @@ final class UserServiceTest extends TestCase
     {
         $service = new UserService();
 
-        // ERROR: Using ReflectionMethod in test classes is prohibited.
+        // ERROR: Replace ReflectionMethod usage with assertions against public behavior.
         $method = new ReflectionMethod($service, 'normalize');
         $method->setAccessible(true);
         $result = $method->invoke($service, 'Alice');

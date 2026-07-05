@@ -15,9 +15,9 @@ namespace Tests\Unit\Service;
 
 final class OrderServiceTest extends TestCase
 {
-    // ERROR: Class constant DEFAULT_QUANTITY is prohibited in Tests\Unit and Tests\Integration classes.
+    // ERROR: Inline class constant DEFAULT_QUANTITY inside the test methods that use it.
     private const DEFAULT_QUANTITY = 5;
-    // ERROR: Class constant CUSTOMER_EMAIL is prohibited in Tests\Unit and Tests\Integration classes.
+    // ERROR: Inline class constant CUSTOMER_EMAIL inside the test methods that use it.
     private const CUSTOMER_EMAIL = 'test@example.com';
 
     public function testPlaceOrder(): void

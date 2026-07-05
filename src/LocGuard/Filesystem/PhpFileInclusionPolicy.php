@@ -15,12 +15,15 @@ use function str_ends_with;
  */
 final class PhpFileInclusionPolicy
 {
+    /** @readonly */
+    private LocGuardPathResolver $pathResolver;
+
     /**
      * Creates an inclusion policy from path resolution.
      */
-    public function __construct(
-        private readonly LocGuardPathResolver $pathResolver = new LocGuardPathResolver(),
-    ) {
+    public function __construct(?LocGuardPathResolver $pathResolver = null)
+    {
+        $this->pathResolver = $pathResolver ?? new LocGuardPathResolver();
     }
 
     /**

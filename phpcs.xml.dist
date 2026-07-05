@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="php-ai-toolkit-compat">
+    <description>
+        Cross-version PHP compatibility gate. The package declares "php": "^8.0",
+        so any syntax or function newer than the 8.0 floor must be reported.
+        Only PHPCompatibility runs here — code style is owned by PHP-CS-Fixer.
+    </description>
+
+    <file>src</file>
+    <file>tests</file>
+
+    <!-- Fixtures are deliberate syntax samples fed to the rule tests
+         (they intentionally contain enums and other constructs), so they
+         are not production code and must not be gated. -->
+    <exclude-pattern>tests/Fixture/*</exclude-pattern>
+
+    <!-- Floor of the supported range. Trailing "-" means "8.0 and up",
+         i.e. flag everything introduced after 8.0. -->
+    <config name="testVersion" value="8.0-"/>
+
+    <rule ref="PHPCompatibility"/>
+</ruleset>

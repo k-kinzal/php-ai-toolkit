@@ -11,13 +11,21 @@ use PhpToken;
  */
 final class ArrowFunctionMetricReader
 {
+    /** @readonly */
+    private FunctionBodyLocator $bodyLocator;
+
+    /** @readonly */
+    private PhpTokenNavigator $tokenNavigator;
+
     /**
      * Creates an arrow-function metric reader from body location and token navigation.
      */
     public function __construct(
-        private readonly FunctionBodyLocator $bodyLocator = new FunctionBodyLocator(),
-        private readonly PhpTokenNavigator $tokenNavigator = new PhpTokenNavigator(),
+        ?FunctionBodyLocator $bodyLocator = null,
+        ?PhpTokenNavigator $tokenNavigator = null,
     ) {
+        $this->bodyLocator = $bodyLocator ?? new FunctionBodyLocator();
+        $this->tokenNavigator = $tokenNavigator ?? new PhpTokenNavigator();
     }
 
     /**

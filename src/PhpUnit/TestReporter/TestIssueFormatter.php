@@ -14,11 +14,14 @@ use PhpAiToolkit\Shared\FormatMode;
  */
 final class TestIssueFormatter
 {
-    private readonly string $mode;
+    /** @readonly */
+    private string $mode;
 
-    private readonly TestIssueAiFormatter $aiFormatter;
+    /** @readonly */
+    private TestIssueAiFormatter $aiFormatter;
 
-    private readonly TestIssueHumanFormatter $humanFormatter;
+    /** @readonly */
+    private TestIssueHumanFormatter $humanFormatter;
 
     /**
      * Creates the formatter from mode detection and optional renderers.

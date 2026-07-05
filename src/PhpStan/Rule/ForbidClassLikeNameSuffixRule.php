@@ -16,9 +16,11 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final class ForbidClassLikeNameSuffixRule implements Rule
 {
-    private readonly ForbiddenClassLikeSuffixes $forbiddenSuffixes;
+    /** @readonly */
+    private ForbiddenClassLikeSuffixes $forbiddenSuffixes;
 
-    private readonly ClassLikeKindLabel $kindLabel;
+    /** @readonly */
+    private ClassLikeKindLabel $kindLabel;
 
     /**
      * @param list<string> $forbiddenSuffixes class-like name suffixes to forbid

@@ -12,12 +12,16 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final class MagicMethodCallErrorBuilder
 {
+    /** @readonly */
+    private MagicMethodRegistry $magicMethodRegistry;
+
     /**
      * Creates a builder from magic method alternatives.
      */
     public function __construct(
-        private readonly MagicMethodRegistry $magicMethodRegistry = new MagicMethodRegistry(),
+        ?MagicMethodRegistry $magicMethodRegistry = null,
     ) {
+        $this->magicMethodRegistry = $magicMethodRegistry ?? new MagicMethodRegistry();
     }
 
     /**

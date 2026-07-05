@@ -27,10 +27,14 @@ final class ExecutionFinishedSubscriber implements ExecutionFinishedSubscriberIn
      * @param bool $replacedOutput whether PHPUnit's default output was replaced
      */
     public function __construct(
-        private readonly TestIssueCollector $collector,
-        private readonly TestIssueFormatter $formatter,
-        private readonly Closure $writer,
-        private readonly bool $replacedOutput = false,
+        /** @readonly */
+        private TestIssueCollector $collector,
+        /** @readonly */
+        private TestIssueFormatter $formatter,
+        /** @readonly */
+        private Closure $writer,
+        /** @readonly */
+        private bool $replacedOutput = false,
     ) {
     }
 

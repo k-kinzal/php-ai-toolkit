@@ -18,7 +18,8 @@ final class TestIssuePathFormatter
      * Creates a path formatter for a project base path.
      */
     public function __construct(
-        private readonly string $basePath,
+        /** @readonly */
+        private string $basePath,
     ) {
     }
 

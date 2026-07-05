@@ -15,9 +15,11 @@ use PHPStan\Rules\Rule;
  */
 final class PhpUnitMockApiRule implements Rule
 {
-    private readonly PhpUnitMockApiCallInspector $callInspector;
+    /** @readonly */
+    private PhpUnitMockApiCallInspector $callInspector;
 
-    private readonly PhpUnitMockInstantiationInspector $instantiationInspector;
+    /** @readonly */
+    private PhpUnitMockInstantiationInspector $instantiationInspector;
 
     /**
      * @param ReflectionProvider $reflectionProvider PHPStan reflection provider
@@ -25,7 +27,8 @@ final class PhpUnitMockApiRule implements Rule
      */
     public function __construct(
         ReflectionProvider $reflectionProvider,
-        private readonly TestClassScope $testClassScope,
+        /** @readonly */
+        private TestClassScope $testClassScope,
         ?PhpUnitMockApiCallInspector $callInspector = null,
         ?PhpUnitMockInstantiationInspector $instantiationInspector = null,
     ) {

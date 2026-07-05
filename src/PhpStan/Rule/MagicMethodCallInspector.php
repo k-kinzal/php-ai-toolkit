@@ -11,13 +11,21 @@ use PHPStan\Rules\IdentifierRuleError;
  */
 final class MagicMethodCallInspector
 {
+    /** @readonly */
+    private MagicMethodRegistry $magicMethodRegistry;
+
+    /** @readonly */
+    private MagicMethodCallErrorBuilder $errorBuilder;
+
     /**
      * Creates an inspector from magic method registry and error building.
      */
     public function __construct(
-        private readonly MagicMethodRegistry $magicMethodRegistry = new MagicMethodRegistry(),
-        private readonly MagicMethodCallErrorBuilder $errorBuilder = new MagicMethodCallErrorBuilder(),
+        ?MagicMethodRegistry $magicMethodRegistry = null,
+        ?MagicMethodCallErrorBuilder $errorBuilder = null,
     ) {
+        $this->magicMethodRegistry = $magicMethodRegistry ?? new MagicMethodRegistry();
+        $this->errorBuilder = $errorBuilder ?? new MagicMethodCallErrorBuilder();
     }
 
     /**

@@ -16,16 +16,19 @@ use PHPStan\File\RelativePathHelper;
  */
 final class AiRulesErrorFormatter implements ErrorFormatter
 {
-    private readonly AiRulesHumanErrorFormatter $humanFormatter;
+    /** @readonly */
+    private AiRulesHumanErrorFormatter $humanFormatter;
 
-    private readonly AiRulesAiErrorFormatter $aiFormatter;
+    /** @readonly */
+    private AiRulesAiErrorFormatter $aiFormatter;
 
     /**
      * Creates the dual-mode formatter from path and agent detection services.
      */
     public function __construct(
         RelativePathHelper $relativePathHelper,
-        private readonly AgentDetector $agentDetector,
+        /** @readonly */
+        private AgentDetector $agentDetector,
         ?AiRulesHumanErrorFormatter $humanFormatter = null,
         ?AiRulesAiErrorFormatter $aiFormatter = null,
     ) {

@@ -21,28 +21,45 @@ final class Application
 {
     private const VERSION = '1.0.0';
 
-    private readonly LocGuardOutputWriter $writer;
+    /** @readonly */
+    private LocGuardOutputWriter $writer;
 
-    private readonly LocGuardCliArgumentParser $argumentParser;
+    /** @readonly */
+    private LocGuardCliArgumentParser $argumentParser;
 
-    private readonly LocGuardHelpText $helpText;
+    /** @readonly */
+    private LocGuardHelpText $helpText;
 
-    private readonly LocGuardAnalysisRunner $analysisRunner;
+    /** @readonly */
+    private LocGuardAnalysisRunner $analysisRunner;
+
+    /** @readonly */
+    private ConfigLoader $configLoader;
+
+    /** @readonly */
+    private LocGuardAnalyzer $analyzer;
+
+    /** @readonly */
+    private ReporterFactory $reporterFactory;
 
     /**
      * Creates the LocGuard CLI application for a project working directory.
      */
     public function __construct(
-        private readonly string $workingDirectory,
-        private readonly ConfigLoader $configLoader = new ConfigLoader(),
-        private readonly LocGuardAnalyzer $analyzer = new LocGuardAnalyzer(),
-        private readonly ReporterFactory $reporterFactory = new ReporterFactory(),
+        /** @readonly */
+        private string $workingDirectory,
+        ?ConfigLoader $configLoader = null,
+        ?LocGuardAnalyzer $analyzer = null,
+        ?ReporterFactory $reporterFactory = null,
         ?Closure $stdout = null,
         ?Closure $stderr = null,
         ?LocGuardCliArgumentParser $argumentParser = null,
         ?LocGuardHelpText $helpText = null,
         ?LocGuardAnalysisRunner $analysisRunner = null,
     ) {
+        $this->configLoader = $configLoader ?? new ConfigLoader();
+        $this->analyzer = $analyzer ?? new LocGuardAnalyzer();
+        $this->reporterFactory = $reporterFactory ?? new ReporterFactory();
         $this->writer = new LocGuardOutputWriter($stdout, $stderr);
         $this->argumentParser = $argumentParser ?? new LocGuardCliArgumentParser();
         $this->helpText = $helpText ?? new LocGuardHelpText();

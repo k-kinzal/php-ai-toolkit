@@ -18,7 +18,8 @@ final class TestFailedSubscriber implements FailedSubscriber
      * @param TestIssueCollector $collector accumulates test issues
      */
     public function __construct(
-        private readonly TestIssueCollector $collector,
+        /** @readonly */
+        private TestIssueCollector $collector,
     ) {
     }
 

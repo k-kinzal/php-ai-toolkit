@@ -19,7 +19,8 @@ use PHPStan\Rules\Rule;
  */
 final class ForbidSingleLinePhpDocRule implements Rule
 {
-    private readonly SingleLinePhpDocErrorCollector $errorCollector;
+    /** @readonly */
+    private SingleLinePhpDocErrorCollector $errorCollector;
 
     /**
      * Creates the rule from single-line PHPDoc error collection.

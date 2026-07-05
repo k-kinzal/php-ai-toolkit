@@ -19,12 +19,15 @@ use PhpAiToolkit\LocGuard\Config\ReportConfig;
  */
 final class JsonReporter implements Reporter
 {
+    /** @readonly */
+    private ViolationSorter $sorter;
+
     /**
      * Creates a JSON reporter with violation ordering support.
      */
-    public function __construct(
-        private readonly ViolationSorter $sorter = new ViolationSorter(),
-    ) {
+    public function __construct(?ViolationSorter $sorter = null)
+    {
+        $this->sorter = $sorter ?? new ViolationSorter();
     }
 
     /**

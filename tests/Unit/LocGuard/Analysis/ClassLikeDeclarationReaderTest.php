@@ -8,12 +8,12 @@ use PhpAiToolkit\LocGuard\Analysis\ClassLikeDeclarationReader;
 use PhpAiToolkit\LocGuard\Analysis\PhpTokenNavigator;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 use const T_CLASS;
 use const T_DOUBLE_COLON;
-use const T_ENUM;
 use const T_EXTENDS;
 use const T_INTERFACE;
 use const T_STRING;
@@ -51,7 +51,14 @@ final class ClassLikeDeclarationReaderTest extends TestCase
         self::assertSame('class', $reader->kind(new PhpToken(T_CLASS, 'class', 1, 0)));
         self::assertSame('interface', $reader->kind(new PhpToken(T_INTERFACE, 'interface', 1, 0)));
         self::assertSame('trait', $reader->kind(new PhpToken(T_TRAIT, 'trait', 1, 0)));
-        self::assertSame('enum', $reader->kind(new PhpToken(T_ENUM, 'enum', 1, 0)));
+    }
+
+    #[RequiresPhp('>= 8.1')]
+    public function testKindReturnsEnumForEnumToken(): void
+    {
+        $reader = new ClassLikeDeclarationReader();
+
+        self::assertSame('enum', $reader->kind(new PhpToken(constant('T_ENUM'), 'enum', 1, 0)));
     }
 
     public function testNameReturnsNamedClassName(): void

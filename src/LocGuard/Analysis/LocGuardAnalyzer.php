@@ -12,13 +12,21 @@ use PhpAiToolkit\LocGuard\Filesystem\PhpFileFinder;
  */
 final class LocGuardAnalyzer
 {
+    /** @readonly */
+    private PhpFileFinder $fileFinder;
+
+    /** @readonly */
+    private PhpFileAnalyzer $fileAnalyzer;
+
     /**
      * Creates an analyzer with injectable file discovery and per-file analysis.
      */
     public function __construct(
-        private readonly PhpFileFinder $fileFinder = new PhpFileFinder(),
-        private readonly PhpFileAnalyzer $fileAnalyzer = new PhpFileAnalyzer(),
+        ?PhpFileFinder $fileFinder = null,
+        ?PhpFileAnalyzer $fileAnalyzer = null,
     ) {
+        $this->fileFinder = $fileFinder ?? new PhpFileFinder();
+        $this->fileAnalyzer = $fileAnalyzer ?? new PhpFileAnalyzer();
     }
 
     /**

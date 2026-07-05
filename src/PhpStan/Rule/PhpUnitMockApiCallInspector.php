@@ -13,23 +13,30 @@ use PHPStan\Rules\IdentifierRuleError;
  */
 final class PhpUnitMockApiCallInspector
 {
-    private readonly CallMethodNameResolver $methodNameResolver;
+    /** @readonly */
+    private CallMethodNameResolver $methodNameResolver;
 
-    private readonly CallArgumentResolver $argumentResolver;
+    /** @readonly */
+    private CallArgumentResolver $argumentResolver;
 
-    private readonly ClassStringExpressionResolver $classStringResolver;
+    /** @readonly */
+    private ClassStringExpressionResolver $classStringResolver;
 
-    private readonly PhpUnitCallTargetMatcher $targetMatcher;
+    /** @readonly */
+    private PhpUnitCallTargetMatcher $targetMatcher;
 
-    private readonly PhpUnitMockApiMethodPolicy $methodPolicy;
+    /** @readonly */
+    private PhpUnitMockApiMethodPolicy $methodPolicy;
 
-    private readonly PhpUnitMockApiErrorBuilder $errorBuilder;
+    /** @readonly */
+    private PhpUnitMockApiErrorBuilder $errorBuilder;
 
     /**
      * Creates an inspector from call parsing, reflection, and policy collaborators.
      */
     public function __construct(
-        private readonly ReflectionProvider $reflectionProvider,
+        /** @readonly */
+        private ReflectionProvider $reflectionProvider,
         ?CallMethodNameResolver $methodNameResolver = null,
         ?CallArgumentResolver $argumentResolver = null,
         ?ClassStringExpressionResolver $classStringResolver = null,

@@ -14,7 +14,8 @@ use PHPStan\Rules\Rule;
  */
 final class SrcUnitTestPairRule implements Rule
 {
-    private readonly SrcUnitTestPairFileInspector $fileInspector;
+    /** @readonly */
+    private SrcUnitTestPairFileInspector $fileInspector;
 
     /**
      * @param list<string> $excludePatterns glob patterns for filenames to exclude

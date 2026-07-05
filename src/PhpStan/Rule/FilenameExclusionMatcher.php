@@ -9,8 +9,11 @@ namespace PhpAiToolkit\PhpStan\Rule;
  */
 final class FilenameExclusionMatcher
 {
-    /** @var list<string> */
-    private readonly array $patterns;
+    /**
+     * @var list<string>
+     * @readonly
+     */
+    private array $patterns;
 
     /**
      * @param list<string> $patterns filename exclusion patterns

@@ -13,13 +13,21 @@ use PhpAiToolkit\LocGuard\Config\LimitConfig;
  */
 final class FunctionMetricViolationBuilder
 {
+    /** @readonly */
+    private FunctionLineViolationBuilder $lineViolationBuilder;
+
+    /** @readonly */
+    private FunctionComplexityViolationBuilder $complexityViolationBuilder;
+
     /**
      * Creates a builder from function line and complexity violation builders.
      */
     public function __construct(
-        private readonly FunctionLineViolationBuilder $lineViolationBuilder = new FunctionLineViolationBuilder(),
-        private readonly FunctionComplexityViolationBuilder $complexityViolationBuilder = new FunctionComplexityViolationBuilder(),
+        ?FunctionLineViolationBuilder $lineViolationBuilder = null,
+        ?FunctionComplexityViolationBuilder $complexityViolationBuilder = null,
     ) {
+        $this->lineViolationBuilder = $lineViolationBuilder ?? new FunctionLineViolationBuilder();
+        $this->complexityViolationBuilder = $complexityViolationBuilder ?? new FunctionComplexityViolationBuilder();
     }
 
     /**

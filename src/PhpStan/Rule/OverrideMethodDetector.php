@@ -14,8 +14,10 @@ final class OverrideMethodDetector
 {
     /**
      * Creates a detector from Override attribute detection.
+     *
+     * @readonly
      */
-    private readonly OverrideAttributeDetector $overrideAttributeDetector;
+    private OverrideAttributeDetector $overrideAttributeDetector;
 
     /**
      * Creates a detector from Override attribute detection.

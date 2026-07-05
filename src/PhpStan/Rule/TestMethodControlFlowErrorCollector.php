@@ -13,13 +13,21 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final class TestMethodControlFlowErrorCollector
 {
+    /** @readonly */
+    private ControlFlowTypeResolver $typeResolver;
+
+    /** @readonly */
+    private NestedScopeFilter $nestedScopeFilter;
+
     /**
      * Creates a collector from type resolution and nested-scope filtering.
      */
     public function __construct(
-        private readonly ControlFlowTypeResolver $typeResolver = new ControlFlowTypeResolver(),
-        private readonly NestedScopeFilter $nestedScopeFilter = new NestedScopeFilter(),
+        ?ControlFlowTypeResolver $typeResolver = null,
+        ?NestedScopeFilter $nestedScopeFilter = null,
     ) {
+        $this->typeResolver = $typeResolver ?? new ControlFlowTypeResolver();
+        $this->nestedScopeFilter = $nestedScopeFilter ?? new NestedScopeFilter();
     }
 
     /**

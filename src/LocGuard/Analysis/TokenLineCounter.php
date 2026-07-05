@@ -16,12 +16,15 @@ use function substr_count;
  */
 final class TokenLineCounter
 {
+    /** @readonly */
+    private CodeTokenLineResolver $codeLineResolver;
+
     /**
      * Creates a line counter from token line resolution.
      */
-    public function __construct(
-        private readonly CodeTokenLineResolver $codeLineResolver = new CodeTokenLineResolver(),
-    ) {
+    public function __construct(?CodeTokenLineResolver $codeLineResolver = null)
+    {
+        $this->codeLineResolver = $codeLineResolver ?? new CodeTokenLineResolver();
     }
 
     /**

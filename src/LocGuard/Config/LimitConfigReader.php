@@ -13,12 +13,15 @@ use PhpAiToolkit\LocGuard\LocGuardException;
  */
 final class LimitConfigReader
 {
+    /** @readonly */
+    private ConfigScalarReader $scalarReader;
+
     /**
      * Creates a reader from scalar validation.
      */
-    public function __construct(
-        private readonly ConfigScalarReader $scalarReader = new ConfigScalarReader(),
-    ) {
+    public function __construct(?ConfigScalarReader $scalarReader = null)
+    {
+        $this->scalarReader = $scalarReader ?? new ConfigScalarReader();
     }
 
     /**

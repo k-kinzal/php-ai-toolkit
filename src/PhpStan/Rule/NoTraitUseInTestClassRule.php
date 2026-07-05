@@ -19,7 +19,8 @@ final class NoTraitUseInTestClassRule implements Rule
      * @param TestClassScope $testClassScope test class scope detector
      */
     public function __construct(
-        private readonly TestClassScope $testClassScope,
+        /** @readonly */
+        private TestClassScope $testClassScope,
     ) {
     }
 

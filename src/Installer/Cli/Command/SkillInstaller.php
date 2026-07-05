@@ -20,8 +20,10 @@ final class SkillInstaller
      * Creates an installer from filesystem operations and output writing.
      */
     public function __construct(
-        private readonly SkillFilesystemOperator $filesystemOperator,
-        private readonly SkillInstallationWriter $writer,
+        /** @readonly */
+        private SkillFilesystemOperator $filesystemOperator,
+        /** @readonly */
+        private SkillInstallationWriter $writer,
     ) {
     }
 

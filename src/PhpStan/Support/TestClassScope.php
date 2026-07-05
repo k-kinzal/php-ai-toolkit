@@ -11,11 +11,17 @@ use PHPStan\Analyser\Scope;
  */
 final class TestClassScope
 {
-    /** @var list<string> */
-    private readonly array $testNamespacePrefixes;
+    /**
+     * @var list<string>
+     * @readonly
+     */
+    private array $testNamespacePrefixes;
 
-    /** @var list<string> */
-    private readonly array $restrictedTestNamespacePrefixes;
+    /**
+     * @var list<string>
+     * @readonly
+     */
+    private array $restrictedTestNamespacePrefixes;
 
     /**
      * @param list<string> $testNamespacePrefixes namespace prefixes that identify test classes

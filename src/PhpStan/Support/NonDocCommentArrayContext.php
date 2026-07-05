@@ -24,13 +24,21 @@ final class NonDocCommentArrayContext
     /** @var array{int, string}|string|null */
     private array|string|null $previousSignificantToken = null;
 
+    /** @readonly */
+    private ShortArrayOpeningPolicy $shortArrayOpeningPolicy;
+
+    /** @readonly */
+    private NonDocCommentTokenClassifier $tokenClassifier;
+
     /**
      * Creates an array context from short-array opening policy and token classification.
      */
     public function __construct(
-        private readonly ShortArrayOpeningPolicy $shortArrayOpeningPolicy = new ShortArrayOpeningPolicy(),
-        private readonly NonDocCommentTokenClassifier $tokenClassifier = new NonDocCommentTokenClassifier(),
+        ?ShortArrayOpeningPolicy $shortArrayOpeningPolicy = null,
+        ?NonDocCommentTokenClassifier $tokenClassifier = null,
     ) {
+        $this->shortArrayOpeningPolicy = $shortArrayOpeningPolicy ?? new ShortArrayOpeningPolicy();
+        $this->tokenClassifier = $tokenClassifier ?? new NonDocCommentTokenClassifier();
     }
 
     /**

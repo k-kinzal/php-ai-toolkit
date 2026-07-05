@@ -13,7 +13,8 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final class NonPublicMethodErrorBuilder
 {
-    private readonly ClassLikeNameResolver $classLikeNameResolver;
+    /** @readonly */
+    private ClassLikeNameResolver $classLikeNameResolver;
 
     /**
      * Creates the error builder from a class-like name resolver.

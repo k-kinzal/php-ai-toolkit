@@ -9,16 +9,20 @@ namespace PhpAiToolkit\PhpStan\Rule;
  */
 final class SourceUnitTestFileResolver
 {
-    private readonly PathMarkerSplitter $pathSplitter;
+    /** @readonly */
+    private PathMarkerSplitter $pathSplitter;
 
-    private readonly SrcUnitTestRelativePathMapper $pathMapper;
+    /** @readonly */
+    private SrcUnitTestRelativePathMapper $pathMapper;
 
     /**
      * Creates a resolver from src and unit test path markers.
      */
     public function __construct(
-        private readonly string $srcMarker = '/src/',
-        private readonly string $unitTestMarker = '/tests/Unit/',
+        /** @readonly */
+        private string $srcMarker = '/src/',
+        /** @readonly */
+        private string $unitTestMarker = '/tests/Unit/',
         ?PathMarkerSplitter $pathSplitter = null,
         ?SrcUnitTestRelativePathMapper $pathMapper = null,
     ) {

@@ -14,12 +14,15 @@ use function usort;
  */
 final class ViolationSorter
 {
+    /** @readonly */
+    private ViolationFieldComparator $fieldComparator;
+
     /**
      * Creates a sorter from field comparison behavior.
      */
-    public function __construct(
-        private readonly ViolationFieldComparator $fieldComparator = new ViolationFieldComparator(),
-    ) {
+    public function __construct(?ViolationFieldComparator $fieldComparator = null)
+    {
+        $this->fieldComparator = $fieldComparator ?? new ViolationFieldComparator();
     }
 
     /**

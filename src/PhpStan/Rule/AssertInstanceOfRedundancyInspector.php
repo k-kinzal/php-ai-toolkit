@@ -13,15 +13,20 @@ use PHPStan\Type\ObjectType;
  */
 final class AssertInstanceOfRedundancyInspector
 {
-    private readonly CallMethodNameResolver $methodNameResolver;
+    /** @readonly */
+    private CallMethodNameResolver $methodNameResolver;
 
-    private readonly CallArgumentResolver $argumentResolver;
+    /** @readonly */
+    private CallArgumentResolver $argumentResolver;
 
-    private readonly ClassStringExpressionResolver $classStringResolver;
+    /** @readonly */
+    private ClassStringExpressionResolver $classStringResolver;
 
-    private readonly PhpUnitCallTargetMatcher $targetMatcher;
+    /** @readonly */
+    private PhpUnitCallTargetMatcher $targetMatcher;
 
-    private readonly NoRedundantAssertInstanceOfErrorBuilder $errorBuilder;
+    /** @readonly */
+    private NoRedundantAssertInstanceOfErrorBuilder $errorBuilder;
 
     /**
      * Creates an inspector from call parsing and error-building collaborators.

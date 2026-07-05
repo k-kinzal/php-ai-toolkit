@@ -11,13 +11,21 @@ use PhpToken;
  */
 final class CyclomaticComplexityCalculator
 {
+    /** @readonly */
+    private CyclomaticDecisionWeight $decisionWeight;
+
+    /** @readonly */
+    private NestedFunctionMetricRange $nestedFunctionMetricRange;
+
     /**
      * Creates a calculator from decision weighting and nested-range detection.
      */
     public function __construct(
-        private readonly CyclomaticDecisionWeight $decisionWeight = new CyclomaticDecisionWeight(),
-        private readonly NestedFunctionMetricRange $nestedFunctionMetricRange = new NestedFunctionMetricRange(),
+        ?CyclomaticDecisionWeight $decisionWeight = null,
+        ?NestedFunctionMetricRange $nestedFunctionMetricRange = null,
     ) {
+        $this->decisionWeight = $decisionWeight ?? new CyclomaticDecisionWeight();
+        $this->nestedFunctionMetricRange = $nestedFunctionMetricRange ?? new NestedFunctionMetricRange();
     }
 
     /**

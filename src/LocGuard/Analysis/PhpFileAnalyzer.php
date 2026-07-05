@@ -16,17 +16,41 @@ use PhpToken;
  */
 final class PhpFileAnalyzer
 {
+    /** @readonly */
+    private TokenLineCounter $lineCounter;
+
+    /** @readonly */
+    private FunctionMetricCollector $functionCollector;
+
+    /** @readonly */
+    private ClassLikeMetricCollector $classLikeCollector;
+
+    /** @readonly */
+    private FileMetricViolationBuilder $fileViolationBuilder;
+
+    /** @readonly */
+    private ClassLikeMetricViolationBuilder $classLikeViolationBuilder;
+
+    /** @readonly */
+    private FunctionMetricViolationBuilder $functionViolationBuilder;
+
     /**
      * Creates a PHP file analyzer from metric collectors.
      */
     public function __construct(
-        private readonly TokenLineCounter $lineCounter = new TokenLineCounter(),
-        private readonly FunctionMetricCollector $functionCollector = new FunctionMetricCollector(),
-        private readonly ClassLikeMetricCollector $classLikeCollector = new ClassLikeMetricCollector(),
-        private readonly FileMetricViolationBuilder $fileViolationBuilder = new FileMetricViolationBuilder(),
-        private readonly ClassLikeMetricViolationBuilder $classLikeViolationBuilder = new ClassLikeMetricViolationBuilder(),
-        private readonly FunctionMetricViolationBuilder $functionViolationBuilder = new FunctionMetricViolationBuilder(),
+        ?TokenLineCounter $lineCounter = null,
+        ?FunctionMetricCollector $functionCollector = null,
+        ?ClassLikeMetricCollector $classLikeCollector = null,
+        ?FileMetricViolationBuilder $fileViolationBuilder = null,
+        ?ClassLikeMetricViolationBuilder $classLikeViolationBuilder = null,
+        ?FunctionMetricViolationBuilder $functionViolationBuilder = null,
     ) {
+        $this->lineCounter = $lineCounter ?? new TokenLineCounter();
+        $this->functionCollector = $functionCollector ?? new FunctionMetricCollector();
+        $this->classLikeCollector = $classLikeCollector ?? new ClassLikeMetricCollector();
+        $this->fileViolationBuilder = $fileViolationBuilder ?? new FileMetricViolationBuilder();
+        $this->classLikeViolationBuilder = $classLikeViolationBuilder ?? new ClassLikeMetricViolationBuilder();
+        $this->functionViolationBuilder = $functionViolationBuilder ?? new FunctionMetricViolationBuilder();
     }
 
     /**

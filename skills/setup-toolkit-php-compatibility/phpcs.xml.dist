@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<ruleset name="php-compatibility">
+    <description>
+        Cross-version PHP compatibility gate. Reports any syntax or function
+        newer than the project's declared PHP floor, so code cannot silently
+        drift above the minimum supported runtime.
+
+        Only PHPCompatibility runs here — code style is owned by PHP-CS-Fixer.
+        Do NOT add style sniffs (PSR12, Squiz, ...) to this ruleset; that would
+        overlap with and fight the formatter.
+    </description>
+
+    <!-- Production code. Add more autoload roots (app, packages/*/src) as needed. -->
+    <file>src</file>
+    <file>tests</file>
+
+    <!-- Fixtures / snapshots are deliberate syntax samples fed to tests and are
+         not production code, so they must not be gated. Adjust to the project. -->
+    <exclude-pattern>tests/Fixture/*</exclude-pattern>
+
+    <!-- REPLACE 8.0 with the project's actual floor (lowest version allowed by
+         composer.json "require": {"php": ...}). Trailing "-" means "and up",
+         i.e. flag everything introduced after the floor. -->
+    <config name="testVersion" value="8.0-"/>
+
+    <rule ref="PHPCompatibility"/>
+</ruleset>

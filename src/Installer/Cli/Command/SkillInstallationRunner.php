@@ -15,9 +15,12 @@ final class SkillInstallationRunner
      * Creates a runner from filesystem operations, skill installation, and output writing.
      */
     public function __construct(
-        private readonly SkillFilesystemOperator $filesystemOperator,
-        private readonly SkillInstaller $skillInstaller,
-        private readonly SkillInstallationWriter $writer,
+        /** @readonly */
+        private SkillFilesystemOperator $filesystemOperator,
+        /** @readonly */
+        private SkillInstaller $skillInstaller,
+        /** @readonly */
+        private SkillInstallationWriter $writer,
     ) {
     }
 

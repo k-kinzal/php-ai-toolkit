@@ -19,7 +19,8 @@ use PHPStan\Rules\Rule;
  */
 final class ForbidDescriptivePhpDocInTestClassRule implements Rule
 {
-    private readonly DescriptivePhpDocErrorCollector $errorCollector;
+    /** @readonly */
+    private DescriptivePhpDocErrorCollector $errorCollector;
 
     /**
      * @param list<string> $restrictedTestNamespacePrefixes namespace prefixes for test classes

@@ -13,12 +13,16 @@ use function sprintf;
  */
 final class ClassLikeMetricViolationBuilder
 {
+    /** @readonly */
+    private ClassLikeMetricLimit $classLikeMetricLimit;
+
     /**
      * Creates a builder backed by class-like limit selection.
      */
     public function __construct(
-        private readonly ClassLikeMetricLimit $classLikeMetricLimit = new ClassLikeMetricLimit(),
+        ?ClassLikeMetricLimit $classLikeMetricLimit = null,
     ) {
+        $this->classLikeMetricLimit = $classLikeMetricLimit ?? new ClassLikeMetricLimit();
     }
 
     /**

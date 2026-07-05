@@ -11,12 +11,16 @@ use PhpToken;
  */
 final class FunctionMetricComplexityAssigner
 {
+    /** @readonly */
+    private CyclomaticComplexityCalculator $complexityCalculator;
+
     /**
      * Creates an assigner backed by the cyclomatic-complexity calculator.
      */
     public function __construct(
-        private readonly CyclomaticComplexityCalculator $complexityCalculator = new CyclomaticComplexityCalculator(),
+        ?CyclomaticComplexityCalculator $complexityCalculator = null,
     ) {
+        $this->complexityCalculator = $complexityCalculator ?? new CyclomaticComplexityCalculator();
     }
 
     /**

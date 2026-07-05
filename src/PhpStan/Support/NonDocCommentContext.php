@@ -9,13 +9,21 @@ namespace PhpAiToolkit\PhpStan\Support;
  */
 final class NonDocCommentContext
 {
+    /** @readonly */
+    private NonDocCommentCatchContext $catchContext;
+
+    /** @readonly */
+    private NonDocCommentArrayContext $arrayContext;
+
     /**
      * Creates a context from catch and array context trackers.
      */
     public function __construct(
-        private readonly NonDocCommentCatchContext $catchContext = new NonDocCommentCatchContext(),
-        private readonly NonDocCommentArrayContext $arrayContext = new NonDocCommentArrayContext(),
+        ?NonDocCommentCatchContext $catchContext = null,
+        ?NonDocCommentArrayContext $arrayContext = null,
     ) {
+        $this->catchContext = $catchContext ?? new NonDocCommentCatchContext();
+        $this->arrayContext = $arrayContext ?? new NonDocCommentArrayContext();
     }
 
     /**

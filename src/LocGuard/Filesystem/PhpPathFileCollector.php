@@ -20,13 +20,21 @@ use function sprintf;
  */
 final class PhpPathFileCollector
 {
+    /** @readonly */
+    private PhpFileInclusionPolicy $inclusionPolicy;
+
+    /** @readonly */
+    private LocGuardPathResolver $pathResolver;
+
     /**
      * Creates a collector from inclusion and path resolution policies.
      */
     public function __construct(
-        private readonly PhpFileInclusionPolicy $inclusionPolicy = new PhpFileInclusionPolicy(),
-        private readonly LocGuardPathResolver $pathResolver = new LocGuardPathResolver(),
+        ?PhpFileInclusionPolicy $inclusionPolicy = null,
+        ?LocGuardPathResolver $pathResolver = null,
     ) {
+        $this->inclusionPolicy = $inclusionPolicy ?? new PhpFileInclusionPolicy();
+        $this->pathResolver = $pathResolver ?? new LocGuardPathResolver();
     }
 
     /**

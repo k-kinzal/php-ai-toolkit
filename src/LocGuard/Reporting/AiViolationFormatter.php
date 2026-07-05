@@ -13,12 +13,15 @@ use function sprintf;
  */
 final class AiViolationFormatter
 {
+    /** @readonly */
+    private AiViolationAction $action;
+
     /**
      * Creates a formatter from action selection.
      */
-    public function __construct(
-        private readonly AiViolationAction $action = new AiViolationAction(),
-    ) {
+    public function __construct(?AiViolationAction $action = null)
+    {
+        $this->action = $action ?? new AiViolationAction();
     }
 
     /**

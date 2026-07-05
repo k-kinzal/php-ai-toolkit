@@ -11,16 +11,20 @@ use PHPStan\Rules\IdentifierRuleError;
  */
 final class UnitTestSourcePairInspector
 {
-    private readonly SrcUnitTestRelativePathMapper $pathMapper;
+    /** @readonly */
+    private SrcUnitTestRelativePathMapper $pathMapper;
 
-    private readonly SrcUnitTestPairErrorBuilder $errorBuilder;
+    /** @readonly */
+    private SrcUnitTestPairErrorBuilder $errorBuilder;
 
     /**
      * Creates an inspector for unit-test-to-source pairing.
      */
     public function __construct(
-        private readonly string $srcMarker,
-        private readonly string $unitTestMarker,
+        /** @readonly */
+        private string $srcMarker,
+        /** @readonly */
+        private string $unitTestMarker,
         ?SrcUnitTestRelativePathMapper $pathMapper = null,
         ?SrcUnitTestPairErrorBuilder $errorBuilder = null,
     ) {

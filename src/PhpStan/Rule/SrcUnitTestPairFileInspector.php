@@ -11,13 +11,17 @@ use PHPStan\Rules\IdentifierRuleError;
  */
 final class SrcUnitTestPairFileInspector
 {
-    private readonly RulePathNormalizer $pathNormalizer;
+    /** @readonly */
+    private RulePathNormalizer $pathNormalizer;
 
-    private readonly PathMarkerSplitter $pathSplitter;
+    /** @readonly */
+    private PathMarkerSplitter $pathSplitter;
 
-    private readonly SourceFileUnitTestPairInspector $sourceInspector;
+    /** @readonly */
+    private SourceFileUnitTestPairInspector $sourceInspector;
 
-    private readonly UnitTestSourcePairInspector $unitTestInspector;
+    /** @readonly */
+    private UnitTestSourcePairInspector $unitTestInspector;
 
     /**
      * Creates a file inspector from path markers and pairing inspectors.
@@ -25,8 +29,10 @@ final class SrcUnitTestPairFileInspector
      * @param list<string> $excludePatterns filename exclusion patterns
      */
     public function __construct(
-        private readonly string $srcMarker = '/src/',
-        private readonly string $unitTestMarker = '/tests/Unit/',
+        /** @readonly */
+        private string $srcMarker = '/src/',
+        /** @readonly */
+        private string $unitTestMarker = '/tests/Unit/',
         array $excludePatterns = [],
         ?RulePathNormalizer $pathNormalizer = null,
         ?PathMarkerSplitter $pathSplitter = null,

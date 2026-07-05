@@ -9,7 +9,8 @@ namespace PhpAiToolkit\PhpStan\Rule;
  */
 final class ProtectedMethodPolicy
 {
-    private readonly OverrideAttributeDetector $overrideAttributeDetector;
+    /** @readonly */
+    private OverrideAttributeDetector $overrideAttributeDetector;
 
     /**
      * Creates the policy from Override attribute detection.

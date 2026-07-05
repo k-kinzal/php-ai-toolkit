@@ -17,7 +17,8 @@ use function sprintf;
  */
 final class AiRulesHumanErrorFormatter
 {
-    private readonly HumanFileErrorPrinter $fileErrorPrinter;
+    /** @readonly */
+    private HumanFileErrorPrinter $fileErrorPrinter;
 
     /**
      * Creates the human error renderer from path and formatting collaborators.
@@ -26,8 +27,10 @@ final class AiRulesHumanErrorFormatter
         RelativePathHelper $relativePathHelper,
         ErrorSourceReader $sourceReader,
         ErrorGutter $gutter,
-        private readonly ErrorGrouping $grouping,
-        private readonly ErrorCollectionSummary $summary,
+        /** @readonly */
+        private ErrorGrouping $grouping,
+        /** @readonly */
+        private ErrorCollectionSummary $summary,
         ?HumanFileErrorPrinter $fileErrorPrinter = null,
     ) {
         $this->fileErrorPrinter = $fileErrorPrinter ?? new HumanFileErrorPrinter($relativePathHelper, $gutter, new HumanErrorPrinter($sourceReader, $gutter));

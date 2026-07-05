@@ -16,18 +16,31 @@ use function sprintf;
  */
 final class LocGuardAnalysisRunner
 {
+    /** @readonly */
+    private LocGuardConfigPathResolver $pathResolver;
+
+    /** @readonly */
+    private LocGuardReporterOverride $reporterOverride;
+
     /**
      * Creates an analysis runner from LocGuard services.
      */
     public function __construct(
-        private readonly string $workingDirectory,
-        private readonly ConfigLoader $configLoader,
-        private readonly LocGuardAnalyzer $analyzer,
-        private readonly ReporterFactory $reporterFactory,
-        private readonly LocGuardOutputWriter $writer,
-        private readonly LocGuardConfigPathResolver $pathResolver = new LocGuardConfigPathResolver(),
-        private readonly LocGuardReporterOverride $reporterOverride = new LocGuardReporterOverride(),
+        /** @readonly */
+        private string $workingDirectory,
+        /** @readonly */
+        private ConfigLoader $configLoader,
+        /** @readonly */
+        private LocGuardAnalyzer $analyzer,
+        /** @readonly */
+        private ReporterFactory $reporterFactory,
+        /** @readonly */
+        private LocGuardOutputWriter $writer,
+        ?LocGuardConfigPathResolver $pathResolver = null,
+        ?LocGuardReporterOverride $reporterOverride = null,
     ) {
+        $this->pathResolver = $pathResolver ?? new LocGuardConfigPathResolver();
+        $this->reporterOverride = $reporterOverride ?? new LocGuardReporterOverride();
     }
 
     /**

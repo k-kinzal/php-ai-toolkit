@@ -15,8 +15,10 @@ final class ApplicationHelpPrinter
      * Creates a help printer for the application version.
      */
     public function __construct(
-        private readonly CliOutputWriter $writer,
-        private readonly string $version,
+        /** @readonly */
+        private CliOutputWriter $writer,
+        /** @readonly */
+        private string $version,
     ) {
     }
 

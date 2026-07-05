@@ -14,15 +14,20 @@ use PHPStan\Rules\Rule;
  */
 final class TestNamingConventionRule implements Rule
 {
-    private readonly RulePathNormalizer $pathNormalizer;
+    /** @readonly */
+    private RulePathNormalizer $pathNormalizer;
 
-    private readonly SourceFileRuleMatcher $sourceFileMatcher;
+    /** @readonly */
+    private SourceFileRuleMatcher $sourceFileMatcher;
 
-    private readonly PublicMethodTestCoverageValidator $publicMethodValidator;
+    /** @readonly */
+    private PublicMethodTestCoverageValidator $publicMethodValidator;
 
-    private readonly TestMethodNameValidator $testMethodNameValidator;
+    /** @readonly */
+    private TestMethodNameValidator $testMethodNameValidator;
 
-    private readonly ProviderNameValidator $providerNameValidator;
+    /** @readonly */
+    private ProviderNameValidator $providerNameValidator;
 
     /**
      * @param TestClassScope $testClassScope test class scope detector
@@ -30,8 +35,10 @@ final class TestNamingConventionRule implements Rule
      * @param string $unitTestMarker path marker identifying unit test directories
      */
     public function __construct(
-        private readonly TestClassScope $testClassScope,
-        private readonly string $srcMarker = '/src/',
+        /** @readonly */
+        private TestClassScope $testClassScope,
+        /** @readonly */
+        private string $srcMarker = '/src/',
         string $unitTestMarker = '/tests/Unit/',
         ?RulePathNormalizer $pathNormalizer = null,
         ?SourceFileRuleMatcher $sourceFileMatcher = null,

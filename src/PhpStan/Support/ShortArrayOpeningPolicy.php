@@ -9,12 +9,16 @@ namespace PhpAiToolkit\PhpStan\Support;
  */
 final class ShortArrayOpeningPolicy
 {
+    /** @readonly */
+    private NonDocCommentTokenClassifier $tokenClassifier;
+
     /**
      * Creates a policy from token classification.
      */
     public function __construct(
-        private readonly NonDocCommentTokenClassifier $tokenClassifier = new NonDocCommentTokenClassifier(),
+        ?NonDocCommentTokenClassifier $tokenClassifier = null,
     ) {
+        $this->tokenClassifier = $tokenClassifier ?? new NonDocCommentTokenClassifier();
     }
 
     /**

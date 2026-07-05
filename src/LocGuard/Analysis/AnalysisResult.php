@@ -6,6 +6,9 @@ namespace PhpAiToolkit\LocGuard\Analysis;
 
 /**
  * Aggregated LocGuard analysis result for a configured project.
+ *
+ * @property-read list<FileMetric> $files
+ * @property-read list<Violation> $violations
  */
 final class AnalysisResult
 {
@@ -14,9 +17,21 @@ final class AnalysisResult
      * @param list<Violation> $violations
      */
     public function __construct(
-        public readonly array $files,
-        public readonly array $violations,
+        /** @readonly */
+        private array $files,
+        /** @readonly */
+        private array $violations,
     ) {
+    }
+
+    /**
+     * Provides read-only access to the immutable properties.
+     *
+     * @return mixed the value of the requested property
+     */
+    public function __get(string $name): mixed
+    {
+        return get_object_vars($this)[$name] ?? null;
     }
 
     /**

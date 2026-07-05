@@ -11,7 +11,6 @@ use PhpToken;
 
 use const T_CLASS;
 use const T_DOUBLE_COLON;
-use const T_ENUM;
 use const T_EXTENDS;
 use const T_IMPLEMENTS;
 use const T_INTERFACE;
@@ -23,12 +22,15 @@ use const T_TRAIT;
  */
 final class ClassLikeDeclarationReader
 {
+    /** @readonly */
+    private PhpTokenNavigator $tokenNavigator;
+
     /**
      * Creates a reader backed by token navigation.
      */
-    public function __construct(
-        private readonly PhpTokenNavigator $tokenNavigator = new PhpTokenNavigator(),
-    ) {
+    public function __construct(?PhpTokenNavigator $tokenNavigator = null)
+    {
+        $this->tokenNavigator = $tokenNavigator ?? new PhpTokenNavigator();
     }
 
     /**
@@ -39,7 +41,8 @@ final class ClassLikeDeclarationReader
     public function isDeclaration(array $tokens, int $index): bool
     {
         $token = $tokens[$index];
-        if (!in_array($token->id, [T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM], true)) {
+        $enumTokenId = defined('T_ENUM') ? constant('T_ENUM') : -1;
+        if (!in_array($token->id, [T_CLASS, T_INTERFACE, T_TRAIT, $enumTokenId], true)) {
             return false;
         }
 
@@ -60,7 +63,7 @@ final class ClassLikeDeclarationReader
             return 'trait';
         }
 
-        if ($token->id === T_ENUM) {
+        if (defined('T_ENUM') && $token->id === constant('T_ENUM')) {
             return 'enum';
         }
 

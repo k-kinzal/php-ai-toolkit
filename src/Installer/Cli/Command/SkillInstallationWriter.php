@@ -17,7 +17,8 @@ final class SkillInstallationWriter
      * @param Closure(string): void $output writer function for CLI output
      */
     public function __construct(
-        private readonly Closure $output,
+        /** @readonly */
+        private Closure $output,
     ) {
     }
 

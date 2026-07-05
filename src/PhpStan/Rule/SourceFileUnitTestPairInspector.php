@@ -11,11 +11,14 @@ use PHPStan\Rules\IdentifierRuleError;
  */
 final class SourceFileUnitTestPairInspector
 {
-    private readonly SrcUnitTestRelativePathMapper $pathMapper;
+    /** @readonly */
+    private SrcUnitTestRelativePathMapper $pathMapper;
 
-    private readonly FilenameExclusionMatcher $exclusionMatcher;
+    /** @readonly */
+    private FilenameExclusionMatcher $exclusionMatcher;
 
-    private readonly SrcUnitTestPairErrorBuilder $errorBuilder;
+    /** @readonly */
+    private SrcUnitTestPairErrorBuilder $errorBuilder;
 
     /**
      * Creates an inspector for source-file-to-unit-test pairing.
@@ -23,8 +26,10 @@ final class SourceFileUnitTestPairInspector
      * @param list<string> $excludePatterns filename exclusion patterns
      */
     public function __construct(
-        private readonly string $srcMarker,
-        private readonly string $unitTestMarker,
+        /** @readonly */
+        private string $srcMarker,
+        /** @readonly */
+        private string $unitTestMarker,
         array $excludePatterns = [],
         ?SrcUnitTestRelativePathMapper $pathMapper = null,
         ?FilenameExclusionMatcher $exclusionMatcher = null,

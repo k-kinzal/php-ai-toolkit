@@ -14,15 +14,18 @@ use PHPStan\Rules\Rule;
  */
 final class NoControlFlowInTestMethodRule implements Rule
 {
-    private readonly TestMethodDetector $testMethodDetector;
+    /** @readonly */
+    private TestMethodDetector $testMethodDetector;
 
-    private readonly TestMethodControlFlowErrorCollector $errorCollector;
+    /** @readonly */
+    private TestMethodControlFlowErrorCollector $errorCollector;
 
     /**
      * @param TestClassScope $testClassScope test class scope detector
      */
     public function __construct(
-        private readonly TestClassScope $testClassScope,
+        /** @readonly */
+        private TestClassScope $testClassScope,
         ?TestMethodDetector $testMethodDetector = null,
         ?TestMethodControlFlowErrorCollector $errorCollector = null,
     ) {

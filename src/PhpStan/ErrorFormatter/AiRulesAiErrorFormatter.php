@@ -25,10 +25,14 @@ final class AiRulesAiErrorFormatter
      * Creates the AI error renderer from path and formatting collaborators.
      */
     public function __construct(
-        private readonly RelativePathHelper $relativePathHelper,
-        private readonly ErrorSourceReader $sourceReader,
-        private readonly ErrorGrouping $grouping,
-        private readonly ErrorCollectionSummary $summary,
+        /** @readonly */
+        private RelativePathHelper $relativePathHelper,
+        /** @readonly */
+        private ErrorSourceReader $sourceReader,
+        /** @readonly */
+        private ErrorGrouping $grouping,
+        /** @readonly */
+        private ErrorCollectionSummary $summary,
     ) {
     }
 

@@ -14,9 +14,11 @@ use PHPStan\Rules\Rule;
  */
 final class ForbiddenCommentRule implements Rule
 {
-    private readonly FileTokenParser $fileTokenParser;
+    /** @readonly */
+    private FileTokenParser $fileTokenParser;
 
-    private readonly ForbiddenCommentTokenAnalyzer $tokenAnalyzer;
+    /** @readonly */
+    private ForbiddenCommentTokenAnalyzer $tokenAnalyzer;
 
     /**
      * Creates the rule from tokenizer parsing and token analysis.

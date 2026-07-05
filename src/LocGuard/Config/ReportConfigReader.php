@@ -23,13 +23,21 @@ final class ReportConfigReader
     /** @var list<string> */
     private const ORDER_FIELDS = ['path', 'line', 'rule', 'actual', 'limit'];
 
+    /** @readonly */
+    private ConfigScalarReader $scalarReader;
+
+    /** @readonly */
+    private ConfigStringListReader $stringListReader;
+
     /**
      * Creates a reader from scalar and list validation.
      */
     public function __construct(
-        private readonly ConfigScalarReader $scalarReader = new ConfigScalarReader(),
-        private readonly ConfigStringListReader $stringListReader = new ConfigStringListReader(),
+        ?ConfigScalarReader $scalarReader = null,
+        ?ConfigStringListReader $stringListReader = null,
     ) {
+        $this->scalarReader = $scalarReader ?? new ConfigScalarReader();
+        $this->stringListReader = $stringListReader ?? new ConfigStringListReader();
     }
 
     /**

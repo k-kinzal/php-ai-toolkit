@@ -15,13 +15,21 @@ use const T_DOUBLE_ARROW;
  */
 final class FunctionBodyLocator
 {
+    /** @readonly */
+    private PhpTokenNavigator $tokenNavigator;
+
+    /** @readonly */
+    private ArrowExpressionBoundary $arrowExpressionBoundary;
+
     /**
      * Creates a body locator from token navigation and arrow-expression boundary detection.
      */
     public function __construct(
-        private readonly PhpTokenNavigator $tokenNavigator = new PhpTokenNavigator(),
-        private readonly ArrowExpressionBoundary $arrowExpressionBoundary = new ArrowExpressionBoundary(),
+        ?PhpTokenNavigator $tokenNavigator = null,
+        ?ArrowExpressionBoundary $arrowExpressionBoundary = null,
     ) {
+        $this->tokenNavigator = $tokenNavigator ?? new PhpTokenNavigator();
+        $this->arrowExpressionBoundary = $arrowExpressionBoundary ?? new ArrowExpressionBoundary();
     }
 
     /**

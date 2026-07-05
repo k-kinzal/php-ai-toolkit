@@ -19,20 +19,26 @@ final class Application
 {
     private const VERSION = '1.0.0';
 
-    private readonly CliOutputWriter $writer;
+    /** @readonly */
+    private CliOutputWriter $writer;
 
-    private readonly CliArgumentParser $argumentParser;
+    /** @readonly */
+    private CliArgumentParser $argumentParser;
 
-    private readonly ApplicationHelpPrinter $helpPrinter;
+    /** @readonly */
+    private ApplicationHelpPrinter $helpPrinter;
 
-    private readonly ApplicationInstallRunner $installRunner;
+    /** @readonly */
+    private ApplicationInstallRunner $installRunner;
 
     /**
      * @param Closure(string): void|null $output writer function for CLI output (defaults to STDOUT)
      */
     public function __construct(
-        private readonly string $projectRoot,
-        private readonly string $packageRoot,
+        /** @readonly */
+        private string $projectRoot,
+        /** @readonly */
+        private string $packageRoot,
         ?Closure $output = null,
         ?CliArgumentParser $argumentParser = null,
         ?ApplicationHelpPrinter $helpPrinter = null,

@@ -16,7 +16,8 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final class ForbiddenNamespaceRule implements Rule
 {
-    private readonly ForbiddenNamespacePrefixes $forbiddenNamespacePrefixes;
+    /** @readonly */
+    private ForbiddenNamespacePrefixes $forbiddenNamespacePrefixes;
 
     /**
      * @param list<string> $forbiddenNamespacePrefixes namespace prefixes to forbid

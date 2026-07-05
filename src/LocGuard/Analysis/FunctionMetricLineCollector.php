@@ -14,15 +14,31 @@ use const T_FUNCTION;
  */
 final class FunctionMetricLineCollector
 {
+    /** @readonly */
+    private ClassLikeDeclarationReader $classLikeDeclarationReader;
+
+    /** @readonly */
+    private PhpTokenNavigator $tokenNavigator;
+
+    /** @readonly */
+    private BlockFunctionMetricReader $blockFunctionMetricReader;
+
+    /** @readonly */
+    private ArrowFunctionMetricReader $arrowFunctionMetricReader;
+
     /**
      * Creates a line collector from declaration, navigation, and metric readers.
      */
     public function __construct(
-        private readonly ClassLikeDeclarationReader $classLikeDeclarationReader = new ClassLikeDeclarationReader(),
-        private readonly PhpTokenNavigator $tokenNavigator = new PhpTokenNavigator(),
-        private readonly BlockFunctionMetricReader $blockFunctionMetricReader = new BlockFunctionMetricReader(),
-        private readonly ArrowFunctionMetricReader $arrowFunctionMetricReader = new ArrowFunctionMetricReader(),
+        ?ClassLikeDeclarationReader $classLikeDeclarationReader = null,
+        ?PhpTokenNavigator $tokenNavigator = null,
+        ?BlockFunctionMetricReader $blockFunctionMetricReader = null,
+        ?ArrowFunctionMetricReader $arrowFunctionMetricReader = null,
     ) {
+        $this->classLikeDeclarationReader = $classLikeDeclarationReader ?? new ClassLikeDeclarationReader();
+        $this->tokenNavigator = $tokenNavigator ?? new PhpTokenNavigator();
+        $this->blockFunctionMetricReader = $blockFunctionMetricReader ?? new BlockFunctionMetricReader();
+        $this->arrowFunctionMetricReader = $arrowFunctionMetricReader ?? new ArrowFunctionMetricReader();
     }
 
     /**

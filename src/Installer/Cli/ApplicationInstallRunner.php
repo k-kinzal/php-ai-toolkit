@@ -17,10 +17,14 @@ final class ApplicationInstallRunner
      * Creates an install runner for a project and package root.
      */
     public function __construct(
-        private readonly string $projectRoot,
-        private readonly string $packageRoot,
-        private readonly CliOutputWriter $writer,
-        private readonly string $version,
+        /** @readonly */
+        private string $projectRoot,
+        /** @readonly */
+        private string $packageRoot,
+        /** @readonly */
+        private CliOutputWriter $writer,
+        /** @readonly */
+        private string $version,
     ) {
     }
 

@@ -20,14 +20,26 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class ConfigLoader
 {
+    /** @readonly */
+    private ConfigStringListReader $stringListReader;
+
+    /** @readonly */
+    private LimitConfigReader $limitConfigReader;
+
+    /** @readonly */
+    private ReportConfigReader $reportConfigReader;
+
     /**
      * Creates a config loader from YAML section readers.
      */
     public function __construct(
-        private readonly ConfigStringListReader $stringListReader = new ConfigStringListReader(),
-        private readonly LimitConfigReader $limitConfigReader = new LimitConfigReader(),
-        private readonly ReportConfigReader $reportConfigReader = new ReportConfigReader(),
+        ?ConfigStringListReader $stringListReader = null,
+        ?LimitConfigReader $limitConfigReader = null,
+        ?ReportConfigReader $reportConfigReader = null,
     ) {
+        $this->stringListReader = $stringListReader ?? new ConfigStringListReader();
+        $this->limitConfigReader = $limitConfigReader ?? new LimitConfigReader();
+        $this->reportConfigReader = $reportConfigReader ?? new ReportConfigReader();
     }
 
     /**

@@ -15,15 +15,18 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final class NoHelperMethodInTestClassRule implements Rule
 {
-    private readonly TestMethodDetector $testMethodDetector;
+    /** @readonly */
+    private TestMethodDetector $testMethodDetector;
 
-    private readonly OverrideMethodDetector $overrideMethodDetector;
+    /** @readonly */
+    private OverrideMethodDetector $overrideMethodDetector;
 
     /**
      * @param TestClassScope $testClassScope test class scope detector
      */
     public function __construct(
-        private readonly TestClassScope $testClassScope,
+        /** @readonly */
+        private TestClassScope $testClassScope,
         ?TestMethodDetector $testMethodDetector = null,
         ?OverrideMethodDetector $overrideMethodDetector = null,
     ) {

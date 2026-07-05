@@ -11,13 +11,17 @@ use PHPStan\Rules\IdentifierRuleError;
  */
 final class PublicApiPhpDocErrorCollector
 {
-    private readonly PublicApiClassPhpDocErrorCollector $classCollector;
+    /** @readonly */
+    private PublicApiClassPhpDocErrorCollector $classCollector;
 
-    private readonly PublicApiMethodPhpDocErrorCollector $methodCollector;
+    /** @readonly */
+    private PublicApiMethodPhpDocErrorCollector $methodCollector;
 
-    private readonly PublicApiPropertyPhpDocErrorCollector $propertyCollector;
+    /** @readonly */
+    private PublicApiPropertyPhpDocErrorCollector $propertyCollector;
 
-    private readonly PublicApiConstantPhpDocErrorCollector $constantCollector;
+    /** @readonly */
+    private PublicApiConstantPhpDocErrorCollector $constantCollector;
 
     /**
      * Creates a public API PHPDoc collector from declaration-specific collectors.

@@ -11,13 +11,21 @@ use PhpToken;
  */
 final class BlockFunctionMetricReader
 {
+    /** @readonly */
+    private FunctionBodyLocator $bodyLocator;
+
+    /** @readonly */
+    private FunctionNameReader $nameReader;
+
     /**
      * Creates a block-function metric reader from body and name readers.
      */
     public function __construct(
-        private readonly FunctionBodyLocator $bodyLocator = new FunctionBodyLocator(),
-        private readonly FunctionNameReader $nameReader = new FunctionNameReader(),
+        ?FunctionBodyLocator $bodyLocator = null,
+        ?FunctionNameReader $nameReader = null,
     ) {
+        $this->bodyLocator = $bodyLocator ?? new FunctionBodyLocator();
+        $this->nameReader = $nameReader ?? new FunctionNameReader();
     }
 
     /**

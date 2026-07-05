@@ -9,8 +9,11 @@ namespace PhpAiToolkit\PhpStan\Rule;
  */
 final class RestrictedTestNamespaceMatcher
 {
-    /** @var list<string> */
-    private readonly array $prefixes;
+    /**
+     * @var list<string>
+     * @readonly
+     */
+    private array $prefixes;
 
     /**
      * @param list<string> $prefixes namespace prefixes for restricted test classes

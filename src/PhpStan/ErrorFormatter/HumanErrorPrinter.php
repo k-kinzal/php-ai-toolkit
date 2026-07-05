@@ -24,8 +24,10 @@ final class HumanErrorPrinter
      * Creates a single-error printer from source and gutter formatters.
      */
     public function __construct(
-        private readonly ErrorSourceReader $sourceReader,
-        private readonly ErrorGutter $gutter,
+        /** @readonly */
+        private ErrorSourceReader $sourceReader,
+        /** @readonly */
+        private ErrorGutter $gutter,
     ) {
     }
 

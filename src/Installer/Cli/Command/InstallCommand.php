@@ -16,20 +16,26 @@ use function is_dir;
  */
 final class InstallCommand
 {
-    private readonly SkillInstallationWriter $writer;
+    /** @readonly */
+    private SkillInstallationWriter $writer;
 
-    private readonly PackageSkillDirectoryScanner $skillDirectoryScanner;
+    /** @readonly */
+    private PackageSkillDirectoryScanner $skillDirectoryScanner;
 
-    private readonly AgentSkillDirectoryDetector $agentDirectoryDetector;
+    /** @readonly */
+    private AgentSkillDirectoryDetector $agentDirectoryDetector;
 
-    private readonly SkillInstallationRunner $installationRunner;
+    /** @readonly */
+    private SkillInstallationRunner $installationRunner;
 
     /**
      * @param Closure(string): void $output writer function for CLI output
      */
     public function __construct(
-        private readonly string $projectRoot,
-        private readonly string $packageRoot,
+        /** @readonly */
+        private string $projectRoot,
+        /** @readonly */
+        private string $packageRoot,
         Closure $output,
         ?PackageSkillDirectoryScanner $skillDirectoryScanner = null,
         ?AgentSkillDirectoryDetector $agentDirectoryDetector = null,

@@ -13,13 +13,21 @@ use PhpAiToolkit\LocGuard\Config\LocGuardConfig;
  */
 final class PhpFileFinder
 {
+    /** @readonly */
+    private LocGuardPathResolver $pathResolver;
+
+    /** @readonly */
+    private PhpPathFileCollector $pathFileCollector;
+
     /**
      * Creates a finder from path resolution and per-path collection.
      */
     public function __construct(
-        private readonly LocGuardPathResolver $pathResolver = new LocGuardPathResolver(),
-        private readonly PhpPathFileCollector $pathFileCollector = new PhpPathFileCollector(),
+        ?LocGuardPathResolver $pathResolver = null,
+        ?PhpPathFileCollector $pathFileCollector = null,
     ) {
+        $this->pathResolver = $pathResolver ?? new LocGuardPathResolver();
+        $this->pathFileCollector = $pathFileCollector ?? new PhpPathFileCollector();
     }
 
     /**

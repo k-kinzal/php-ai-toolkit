@@ -21,11 +21,14 @@ final class TestIssueCollector
     /** @var list<TestIssue> */
     private array $issues = [];
 
-    private readonly TestIssueNameResolver $nameResolver;
+    /** @readonly */
+    private TestIssueNameResolver $nameResolver;
 
-    private readonly TestFailureLineResolver $failureLineResolver;
+    /** @readonly */
+    private TestFailureLineResolver $failureLineResolver;
 
-    private readonly TestIssueSourceLocationResolver $sourceLocationResolver;
+    /** @readonly */
+    private TestIssueSourceLocationResolver $sourceLocationResolver;
 
     /**
      * Creates the issue collector from event-to-issue resolver collaborators.

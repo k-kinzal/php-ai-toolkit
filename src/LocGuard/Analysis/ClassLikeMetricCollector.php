@@ -13,13 +13,21 @@ use PhpToken;
  */
 final class ClassLikeMetricCollector
 {
+    /** @readonly */
+    private ClassLikeDeclarationReader $declarationReader;
+
+    /** @readonly */
+    private PhpTokenNavigator $tokenNavigator;
+
     /**
      * Creates a collector from declaration reading and token navigation collaborators.
      */
     public function __construct(
-        private readonly ClassLikeDeclarationReader $declarationReader = new ClassLikeDeclarationReader(),
-        private readonly PhpTokenNavigator $tokenNavigator = new PhpTokenNavigator(),
+        ?ClassLikeDeclarationReader $declarationReader = null,
+        ?PhpTokenNavigator $tokenNavigator = null,
     ) {
+        $this->declarationReader = $declarationReader ?? new ClassLikeDeclarationReader();
+        $this->tokenNavigator = $tokenNavigator ?? new PhpTokenNavigator();
     }
 
     /**

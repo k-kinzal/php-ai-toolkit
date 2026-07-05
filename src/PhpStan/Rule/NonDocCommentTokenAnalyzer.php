@@ -12,13 +12,21 @@ use PHPStan\Rules\IdentifierRuleError;
  */
 final class NonDocCommentTokenAnalyzer
 {
+    /** @readonly */
+    private ForbiddenCommentPattern $forbiddenCommentPattern;
+
+    /** @readonly */
+    private NonDocCommentErrorBuilder $errorBuilder;
+
     /**
      * Creates an analyzer from suppression detection and error building.
      */
     public function __construct(
-        private readonly ForbiddenCommentPattern $forbiddenCommentPattern = new ForbiddenCommentPattern(),
-        private readonly NonDocCommentErrorBuilder $errorBuilder = new NonDocCommentErrorBuilder(),
+        ?ForbiddenCommentPattern $forbiddenCommentPattern = null,
+        ?NonDocCommentErrorBuilder $errorBuilder = null,
     ) {
+        $this->forbiddenCommentPattern = $forbiddenCommentPattern ?? new ForbiddenCommentPattern();
+        $this->errorBuilder = $errorBuilder ?? new NonDocCommentErrorBuilder();
     }
 
     /**

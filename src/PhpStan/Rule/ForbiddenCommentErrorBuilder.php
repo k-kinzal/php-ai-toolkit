@@ -12,13 +12,21 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final class ForbiddenCommentErrorBuilder
 {
+    /** @readonly */
+    private CommentTextFormatter $commentTextFormatter;
+
+    /** @readonly */
+    private ForbiddenCommentPattern $forbiddenCommentPattern;
+
     /**
      * Creates an error builder from comment formatting and pattern handling.
      */
     public function __construct(
-        private readonly CommentTextFormatter $commentTextFormatter = new CommentTextFormatter(),
-        private readonly ForbiddenCommentPattern $forbiddenCommentPattern = new ForbiddenCommentPattern(),
+        ?CommentTextFormatter $commentTextFormatter = null,
+        ?ForbiddenCommentPattern $forbiddenCommentPattern = null,
     ) {
+        $this->commentTextFormatter = $commentTextFormatter ?? new CommentTextFormatter();
+        $this->forbiddenCommentPattern = $forbiddenCommentPattern ?? new ForbiddenCommentPattern();
     }
 
     /**

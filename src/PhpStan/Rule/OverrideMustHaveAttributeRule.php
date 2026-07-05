@@ -15,7 +15,8 @@ use PHPStan\TrinaryLogic;
  */
 final class OverrideMustHaveAttributeRule implements Rule
 {
-    private readonly OverrideAttributeDetector $overrideAttributeDetector;
+    /** @readonly */
+    private OverrideAttributeDetector $overrideAttributeDetector;
 
     /**
      * Creates a rule from override attribute detection.

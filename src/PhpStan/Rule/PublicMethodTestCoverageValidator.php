@@ -11,11 +11,14 @@ use PHPStan\Rules\IdentifierRuleError;
  */
 final class PublicMethodTestCoverageValidator
 {
-    private readonly SourceUnitTestFileResolver $testFileResolver;
+    /** @readonly */
+    private SourceUnitTestFileResolver $testFileResolver;
 
-    private readonly TestMethodFileReader $testMethodFileReader;
+    /** @readonly */
+    private TestMethodFileReader $testMethodFileReader;
 
-    private readonly PublicMethodTestCoverageErrorBuilder $errorBuilder;
+    /** @readonly */
+    private PublicMethodTestCoverageErrorBuilder $errorBuilder;
 
     /**
      * Creates a public method test coverage validator.

@@ -15,14 +15,17 @@ use function sprintf;
  */
 final class HumanFileErrorPrinter
 {
-    private readonly HumanErrorPrinter $errorPrinter;
+    /** @readonly */
+    private HumanErrorPrinter $errorPrinter;
 
     /**
      * Creates a file error printer from path and error formatting collaborators.
      */
     public function __construct(
-        private readonly RelativePathHelper $relativePathHelper,
-        private readonly ErrorGutter $gutter,
+        /** @readonly */
+        private RelativePathHelper $relativePathHelper,
+        /** @readonly */
+        private ErrorGutter $gutter,
         ?HumanErrorPrinter $errorPrinter = null,
     ) {
         $this->errorPrinter = $errorPrinter ?? new HumanErrorPrinter(new ErrorSourceReader(), $gutter);

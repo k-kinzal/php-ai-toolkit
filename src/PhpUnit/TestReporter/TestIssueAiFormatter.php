@@ -17,11 +17,16 @@ final class TestIssueAiFormatter
      * Creates the AI renderer from reusable formatting collaborators.
      */
     public function __construct(
-        private readonly TestIssuePathFormatter $pathFormatter,
-        private readonly TestIssueSourceReader $sourceReader,
-        private readonly TestIssueTypePresentation $typePresentation,
-        private readonly TestIssueSummary $summary,
-        private readonly TestIssueBlockIndenter $blockIndenter,
+        /** @readonly */
+        private TestIssuePathFormatter $pathFormatter,
+        /** @readonly */
+        private TestIssueSourceReader $sourceReader,
+        /** @readonly */
+        private TestIssueTypePresentation $typePresentation,
+        /** @readonly */
+        private TestIssueSummary $summary,
+        /** @readonly */
+        private TestIssueBlockIndenter $blockIndenter,
     ) {
     }
 

@@ -15,9 +15,11 @@ use PHPStan\Rules\Rule;
  */
 final class NoNonPublicMethodRule implements Rule
 {
-    private readonly ProtectedMethodPolicy $protectedMethodPolicy;
+    /** @readonly */
+    private ProtectedMethodPolicy $protectedMethodPolicy;
 
-    private readonly NonPublicMethodErrorBuilder $errorBuilder;
+    /** @readonly */
+    private NonPublicMethodErrorBuilder $errorBuilder;
 
     /**
      * Creates the non-public method rule from its design collaborators.

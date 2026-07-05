@@ -12,13 +12,18 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final class DescriptivePhpDocErrorCollector
 {
+    /** @readonly */
+    private DescriptivePhpDocTextDetector $textDetector;
+
     /**
      * Creates a collector from namespace matching and PHPDoc text detection.
      */
     public function __construct(
-        private readonly RestrictedTestNamespaceMatcher $namespaceMatcher,
-        private readonly DescriptivePhpDocTextDetector $textDetector = new DescriptivePhpDocTextDetector(),
+        /** @readonly */
+        private RestrictedTestNamespaceMatcher $namespaceMatcher,
+        ?DescriptivePhpDocTextDetector $textDetector = null,
     ) {
+        $this->textDetector = $textDetector ?? new DescriptivePhpDocTextDetector();
     }
 
     /**

@@ -14,13 +14,15 @@ use PHPStan\Rules\Rule;
  */
 final class NoRedundantAssertInstanceOfRule implements Rule
 {
-    private readonly AssertInstanceOfRedundancyInspector $inspector;
+    /** @readonly */
+    private AssertInstanceOfRedundancyInspector $inspector;
 
     /**
      * @param TestClassScope $testClassScope test class scope detector
      */
     public function __construct(
-        private readonly TestClassScope $testClassScope,
+        /** @readonly */
+        private TestClassScope $testClassScope,
         ?AssertInstanceOfRedundancyInspector $inspector = null,
     ) {
         $this->inspector = $inspector ?? new AssertInstanceOfRedundancyInspector();

@@ -14,7 +14,8 @@ use PHPUnit\Framework\MockObject\MockBuilder;
  */
 final class PhpUnitMockInstantiationInspector
 {
-    private readonly PhpUnitMockApiErrorBuilder $errorBuilder;
+    /** @readonly */
+    private PhpUnitMockApiErrorBuilder $errorBuilder;
 
     /**
      * Creates an inspector from mock API error building.

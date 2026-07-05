@@ -22,12 +22,18 @@ final class TestIssueHumanFormatter
      * Creates the human renderer from reusable formatting collaborators.
      */
     public function __construct(
-        private readonly TestIssuePathFormatter $pathFormatter,
-        private readonly TestIssueSourceReader $sourceReader,
-        private readonly TestIssueTypePresentation $typePresentation,
-        private readonly TestIssueSummary $summary,
-        private readonly TestIssueBlockIndenter $blockIndenter,
-        private readonly TestIssueGutter $gutter,
+        /** @readonly */
+        private TestIssuePathFormatter $pathFormatter,
+        /** @readonly */
+        private TestIssueSourceReader $sourceReader,
+        /** @readonly */
+        private TestIssueTypePresentation $typePresentation,
+        /** @readonly */
+        private TestIssueSummary $summary,
+        /** @readonly */
+        private TestIssueBlockIndenter $blockIndenter,
+        /** @readonly */
+        private TestIssueGutter $gutter,
     ) {
     }
 

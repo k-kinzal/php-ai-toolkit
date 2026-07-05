@@ -12,15 +12,31 @@ use PhpAiToolkit\LocGuard\Config\ReportConfig;
  */
 final class AiReporter implements Reporter
 {
+    /** @readonly */
+    private ViolationSorter $sorter;
+
+    /** @readonly */
+    private AiReportSummary $summary;
+
+    /** @readonly */
+    private AiReportGuidance $guidance;
+
+    /** @readonly */
+    private AiViolationFormatter $violationFormatter;
+
     /**
      * Creates an AI reporter with violation ordering support.
      */
     public function __construct(
-        private readonly ViolationSorter $sorter = new ViolationSorter(),
-        private readonly AiReportSummary $summary = new AiReportSummary(),
-        private readonly AiReportGuidance $guidance = new AiReportGuidance(),
-        private readonly AiViolationFormatter $violationFormatter = new AiViolationFormatter(),
+        ?ViolationSorter $sorter = null,
+        ?AiReportSummary $summary = null,
+        ?AiReportGuidance $guidance = null,
+        ?AiViolationFormatter $violationFormatter = null,
     ) {
+        $this->sorter = $sorter ?? new ViolationSorter();
+        $this->summary = $summary ?? new AiReportSummary();
+        $this->guidance = $guidance ?? new AiReportGuidance();
+        $this->violationFormatter = $violationFormatter ?? new AiViolationFormatter();
     }
 
     /**

@@ -11,13 +11,21 @@ use PHPStan\Rules\IdentifierRuleError;
  */
 final class ForbiddenCommentTokenAnalyzer
 {
+    /** @readonly */
+    private ForbiddenCommentPattern $forbiddenCommentPattern;
+
+    /** @readonly */
+    private ForbiddenCommentErrorBuilder $errorBuilder;
+
     /**
      * Creates an analyzer from pattern detection and error building.
      */
     public function __construct(
-        private readonly ForbiddenCommentPattern $forbiddenCommentPattern = new ForbiddenCommentPattern(),
-        private readonly ForbiddenCommentErrorBuilder $errorBuilder = new ForbiddenCommentErrorBuilder(),
+        ?ForbiddenCommentPattern $forbiddenCommentPattern = null,
+        ?ForbiddenCommentErrorBuilder $errorBuilder = null,
     ) {
+        $this->forbiddenCommentPattern = $forbiddenCommentPattern ?? new ForbiddenCommentPattern();
+        $this->errorBuilder = $errorBuilder ?? new ForbiddenCommentErrorBuilder();
     }
 
     /**

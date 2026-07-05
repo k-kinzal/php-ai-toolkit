@@ -12,14 +12,26 @@ use PHPStan\Rules\IdentifierRuleError;
  */
 final class SingleLinePhpDocErrorCollector
 {
+    /** @readonly */
+    private AnonymousClassDetector $anonymousClassDetector;
+
+    /** @readonly */
+    private SingleLinePhpDocDetector $singleLinePhpDocDetector;
+
+    /** @readonly */
+    private SingleLinePhpDocErrorBuilder $errorBuilder;
+
     /**
      * Creates a collector from anonymous-class detection and PHPDoc error building.
      */
     public function __construct(
-        private readonly AnonymousClassDetector $anonymousClassDetector = new AnonymousClassDetector(),
-        private readonly SingleLinePhpDocDetector $singleLinePhpDocDetector = new SingleLinePhpDocDetector(),
-        private readonly SingleLinePhpDocErrorBuilder $errorBuilder = new SingleLinePhpDocErrorBuilder(),
+        ?AnonymousClassDetector $anonymousClassDetector = null,
+        ?SingleLinePhpDocDetector $singleLinePhpDocDetector = null,
+        ?SingleLinePhpDocErrorBuilder $errorBuilder = null,
     ) {
+        $this->anonymousClassDetector = $anonymousClassDetector ?? new AnonymousClassDetector();
+        $this->singleLinePhpDocDetector = $singleLinePhpDocDetector ?? new SingleLinePhpDocDetector();
+        $this->errorBuilder = $errorBuilder ?? new SingleLinePhpDocErrorBuilder();
     }
 
     /**

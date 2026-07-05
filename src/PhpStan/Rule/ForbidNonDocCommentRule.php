@@ -14,9 +14,11 @@ use PHPStan\Rules\Rule;
  */
 final class ForbidNonDocCommentRule implements Rule
 {
-    private readonly FileTokenParser $fileTokenParser;
+    /** @readonly */
+    private FileTokenParser $fileTokenParser;
 
-    private readonly NonDocCommentTokenAnalyzer $tokenAnalyzer;
+    /** @readonly */
+    private NonDocCommentTokenAnalyzer $tokenAnalyzer;
 
     /**
      * Creates the rule from tokenizer parsing and token analysis.

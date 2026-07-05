@@ -11,20 +11,22 @@ use PhpToken;
  */
 final class FunctionMetricCollector
 {
-    private readonly FunctionMetricLineCollector $lineCollector;
+    /** @readonly */
+    private FunctionMetricLineCollector $lineCollector;
 
-    private readonly FunctionMetricComplexityAssigner $complexityAssigner;
+    /** @readonly */
+    private FunctionMetricComplexityAssigner $complexityAssigner;
 
     /**
      * Creates a function metric collector from a complexity calculator.
      */
     public function __construct(
-        CyclomaticComplexityCalculator $complexityCalculator = new CyclomaticComplexityCalculator(),
+        ?CyclomaticComplexityCalculator $complexityCalculator = null,
         ?FunctionMetricLineCollector $lineCollector = null,
         ?FunctionMetricComplexityAssigner $complexityAssigner = null,
     ) {
         $this->lineCollector = $lineCollector ?? new FunctionMetricLineCollector();
-        $this->complexityAssigner = $complexityAssigner ?? new FunctionMetricComplexityAssigner($complexityCalculator);
+        $this->complexityAssigner = $complexityAssigner ?? new FunctionMetricComplexityAssigner($complexityCalculator ?? new CyclomaticComplexityCalculator());
     }
 
     /**

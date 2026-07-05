@@ -13,7 +13,8 @@ use PHPStan\Rules\Rule;
  */
 final class ForbiddenMagicMethodCallRule implements Rule
 {
-    private readonly MagicMethodCallInspector $callInspector;
+    /** @readonly */
+    private MagicMethodCallInspector $callInspector;
 
     /**
      * Creates the rule from call inspection.

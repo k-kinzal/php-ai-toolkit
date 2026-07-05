@@ -19,13 +19,17 @@ use PHPStan\Rules\Rule;
  */
 final class RequirePhpDocOnPublicApiRule implements Rule
 {
-    private readonly AnonymousClassDetector $anonymousClassDetector;
+    /** @readonly */
+    private AnonymousClassDetector $anonymousClassDetector;
 
-    private readonly RestrictedTestNamespaceMatcher $restrictedTestNamespaceMatcher;
+    /** @readonly */
+    private RestrictedTestNamespaceMatcher $restrictedTestNamespaceMatcher;
 
-    private readonly ClassLikeKindLabel $kindLabel;
+    /** @readonly */
+    private ClassLikeKindLabel $kindLabel;
 
-    private readonly PublicApiPhpDocErrorCollector $errorCollector;
+    /** @readonly */
+    private PublicApiPhpDocErrorCollector $errorCollector;
 
     /**
      * @param list<string> $restrictedTestNamespacePrefixes namespace prefixes to exclude from checks

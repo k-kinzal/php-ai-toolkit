@@ -12,12 +12,16 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final class NonDocCommentErrorBuilder
 {
+    /** @readonly */
+    private CommentTextFormatter $commentTextFormatter;
+
     /**
      * Creates an error builder from comment formatting.
      */
     public function __construct(
-        private readonly CommentTextFormatter $commentTextFormatter = new CommentTextFormatter(),
+        ?CommentTextFormatter $commentTextFormatter = null,
     ) {
+        $this->commentTextFormatter = $commentTextFormatter ?? new CommentTextFormatter();
     }
 
     /**

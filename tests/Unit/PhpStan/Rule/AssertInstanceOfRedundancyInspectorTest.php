@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use PhpAiToolkit\PhpStan\Rule\AssertInstanceOfRedundancyInspector;
+use PhpAiToolkit\PhpStan\Rule\AssertInstanceOfTypeMatcher;
 use PhpAiToolkit\PhpStan\Rule\CallArgumentResolver;
 use PhpAiToolkit\PhpStan\Rule\CallMethodNameResolver;
 use PhpAiToolkit\PhpStan\Rule\ClassStringExpressionResolver;
@@ -20,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(CallArgumentResolver::class)]
 #[UsesClass(CallMethodNameResolver::class)]
 #[UsesClass(ClassStringExpressionResolver::class)]
+#[UsesClass(AssertInstanceOfTypeMatcher::class)]
 #[UsesClass(NoRedundantAssertInstanceOfErrorBuilder::class)]
 #[UsesClass(PhpUnitCallTargetMatcher::class)]
 final class AssertInstanceOfRedundancyInspectorTest extends TestCase

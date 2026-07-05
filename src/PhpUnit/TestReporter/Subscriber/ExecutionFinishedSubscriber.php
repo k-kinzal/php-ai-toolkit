@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpUnit\TestReporter\Subscriber;
 
-use Closure;
 use Override;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueFormatter;
+use PhpAiToolkit\PhpUnit\TestReporter\TestReporterRuntime;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
 use PHPUnit\Event\TestRunner\ExecutionFinishedSubscriber as ExecutionFinishedSubscriberInterface;
 
@@ -21,20 +19,11 @@ use PHPUnit\Event\TestRunner\ExecutionFinishedSubscriber as ExecutionFinishedSub
 final class ExecutionFinishedSubscriber implements ExecutionFinishedSubscriberInterface
 {
     /**
-     * @param TestIssueCollector $collector the collected test issues
-     * @param TestIssueFormatter $formatter the dual-mode formatter
-     * @param Closure(string): void $writer output writer
-     * @param bool $replacedOutput whether PHPUnit's default output was replaced
+     * Creates the PHPUnit 10+ execution-finished adapter.
      */
     public function __construct(
         /** @readonly */
-        private TestIssueCollector $collector,
-        /** @readonly */
-        private TestIssueFormatter $formatter,
-        /** @readonly */
-        private Closure $writer,
-        /** @readonly */
-        private bool $replacedOutput = false,
+        private TestReporterRuntime $runtime,
     ) {
     }
 
@@ -44,15 +33,6 @@ final class ExecutionFinishedSubscriber implements ExecutionFinishedSubscriberIn
     #[Override]
     public function notify(ExecutionFinished $event): void
     {
-        if (!$this->collector->hasIssues()) {
-            if ($this->replacedOutput) {
-                ($this->writer)("No test failures\n");
-            }
-
-            return;
-        }
-
-        $output = $this->formatter->format($this->collector->getIssues());
-        ($this->writer)($output);
+        $this->runtime->writeReport();
     }
 }

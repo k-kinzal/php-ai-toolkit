@@ -6,8 +6,6 @@ namespace PhpAiToolkit\PhpUnit\TestReporter;
 
 use Closure;
 
-use function fwrite;
-use function getcwd;
 use function getenv;
 
 use Override;
@@ -15,14 +13,10 @@ use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\ExecutionFinishedSubscriber;
 use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\TestConsideredRiskySubscriber;
 use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\TestErroredSubscriber;
 use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\TestFailedSubscriber;
-use PhpAiToolkit\Shared\AgentDetector;
-use PhpAiToolkit\Shared\FormatMode;
 use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Configuration;
-
-use const STDERR;
 
 /**
  * PHPUnit extension that provides dual-mode test result reporting.
@@ -35,17 +29,15 @@ use const STDERR;
  */
 final class AiTestReporterExtension implements Extension
 {
-    /** @var Closure(string): void */
-    private Closure $writer;
+    /** @var Closure(string): void|null */
+    private ?Closure $writer;
 
     /**
      * @param Closure(string): void|null $writer output writer for testing (defaults to STDERR)
      */
     public function __construct(?Closure $writer = null)
     {
-        $this->writer = $writer ?? static function (string $output): void {
-            fwrite(STDERR, $output);
-        };
+        $this->writer = $writer;
     }
 
     /**
@@ -62,22 +54,20 @@ final class AiTestReporterExtension implements Extension
             return;
         }
 
-        $agentDetector = new AgentDetector();
-        $basePath = (string) getcwd();
-        $collector = new TestIssueCollector();
-        $formatter = new TestIssueFormatter($agentDetector, $basePath);
-        $isAiMode = $agentDetector->resolveMode() === FormatMode::AI;
+        $isAiMode = TestReporterRuntime::isAiMode();
 
         if ($isAiMode) {
             $facade->replaceProgressOutput();
             $facade->replaceResultOutput();
         }
 
+        $runtime = TestReporterRuntime::fromCurrentProcess($this->writer, $isAiMode);
+
         $facade->registerSubscribers(
-            new TestFailedSubscriber($collector),
-            new TestErroredSubscriber($collector),
-            new TestConsideredRiskySubscriber($collector),
-            new ExecutionFinishedSubscriber($collector, $formatter, $this->writer, $isAiMode),
+            new TestFailedSubscriber($runtime->collector()),
+            new TestErroredSubscriber($runtime->collector()),
+            new TestConsideredRiskySubscriber($runtime->collector()),
+            new ExecutionFinishedSubscriber($runtime),
         );
     }
 }

@@ -1,0 +1,261 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PHPUnit\Event\Code;
+
+interface Test
+{
+    public function file(): string;
+
+    public function id(): string;
+
+    public function isTestMethod(): bool;
+
+    public function line(): int;
+
+    public function name(): string;
+
+    public function nameWithClass(): string;
+}
+
+final class TestDox
+{
+    public function __construct(string $prettifiedClassName, string $prettifiedMethodName, string $text)
+    {
+    }
+}
+
+final class TestMethod implements Test
+{
+    public function __construct(
+        string $className,
+        string $methodName,
+        string $file,
+        int $line,
+        TestDox $testDox,
+        \PHPUnit\Metadata\MetadataCollection $metadata,
+        \PHPUnit\Event\TestData\TestDataCollection $testData,
+    ) {
+    }
+
+    public function file(): string
+    {
+    }
+
+    public function id(): string
+    {
+    }
+
+    public function isTestMethod(): bool
+    {
+    }
+
+    public function line(): int
+    {
+    }
+
+    public function name(): string
+    {
+    }
+
+    public function nameWithClass(): string
+    {
+    }
+}
+
+final class Throwable
+{
+    public function __construct(string $className, string $message, string $description, string $stackTrace, ?self $previous)
+    {
+    }
+
+    public function message(): string
+    {
+    }
+
+    public function stackTrace(): string
+    {
+    }
+}
+
+final class ComparisonFailure
+{
+    public function __construct(string $expected, string $actual, string $diff)
+    {
+    }
+
+    public function diff(): string
+    {
+    }
+}
+
+namespace PHPUnit\Event\Telemetry;
+
+final class Duration
+{
+    public static function fromSecondsAndNanoseconds(int $seconds, int $nanoseconds): self
+    {
+    }
+}
+
+final class CpuTime
+{
+    public static function fromSecondsAndNanoseconds(int $seconds, int $nanoseconds): self
+    {
+    }
+}
+
+final class GarbageCollectorStatus
+{
+    public function __construct(
+        int $runs,
+        int $collected,
+        int $threshold,
+        int $roots,
+        float $applicationTime,
+        float $collectorTime,
+        float $destructorTime,
+        float $freeTime,
+        bool $enabled,
+        bool $protected,
+        bool $full,
+        int $bufferSize,
+    ) {
+    }
+}
+
+final class HRTime
+{
+    public static function fromSecondsAndNanoseconds(int $seconds, int $nanoseconds): self
+    {
+    }
+}
+
+final class Info
+{
+    public function __construct(
+        Snapshot $snapshot,
+        Duration $durationSinceStart,
+        MemoryUsage $memoryUsageSinceStart,
+        Duration $durationSincePrevious,
+        MemoryUsage $memoryUsageSincePrevious,
+        CpuTime ...$cpuTimes,
+    ) {
+    }
+}
+
+final class MemoryUsage
+{
+    public static function fromBytes(int $bytes): self
+    {
+    }
+}
+
+final class Snapshot
+{
+    public function __construct(
+        HRTime $time,
+        MemoryUsage $memoryUsage,
+        MemoryUsage $peakMemoryUsage,
+        GarbageCollectorStatus $garbageCollectorStatus,
+        CpuTime ...$cpuTimes,
+    ) {
+    }
+}
+
+namespace PHPUnit\Event\Test;
+
+interface ConsideredRiskySubscriber
+{
+    public function notify(ConsideredRisky $event): void;
+}
+
+interface ErroredSubscriber
+{
+    public function notify(Errored $event): void;
+}
+
+interface FailedSubscriber
+{
+    public function notify(Failed $event): void;
+}
+
+final class ConsideredRisky
+{
+    public function __construct(\PHPUnit\Event\Telemetry\Info $telemetryInfo, \PHPUnit\Event\Code\Test $test, string $message)
+    {
+    }
+
+    public function message(): string
+    {
+    }
+
+    public function test(): \PHPUnit\Event\Code\Test
+    {
+    }
+}
+
+final class Errored
+{
+    public function __construct(\PHPUnit\Event\Telemetry\Info $telemetryInfo, \PHPUnit\Event\Code\Test $test, \PHPUnit\Event\Code\Throwable $throwable)
+    {
+    }
+
+    public function test(): \PHPUnit\Event\Code\Test
+    {
+    }
+
+    public function throwable(): \PHPUnit\Event\Code\Throwable
+    {
+    }
+}
+
+final class Failed
+{
+    public function __construct(\PHPUnit\Event\Telemetry\Info $telemetryInfo, \PHPUnit\Event\Code\Test $test, \PHPUnit\Event\Code\Throwable $throwable, ?\PHPUnit\Event\Code\ComparisonFailure $comparisonFailure)
+    {
+    }
+
+    public function comparisonFailure(): \PHPUnit\Event\Code\ComparisonFailure
+    {
+    }
+
+    public function hasComparisonFailure(): bool
+    {
+    }
+
+    public function test(): \PHPUnit\Event\Code\Test
+    {
+    }
+
+    public function throwable(): \PHPUnit\Event\Code\Throwable
+    {
+    }
+}
+
+namespace PHPUnit\Event\TestData;
+
+final class TestDataCollection
+{
+    /**
+     * @param array<mixed> $testData
+     */
+    public static function fromArray(array $testData): self
+    {
+    }
+}
+
+namespace PHPUnit\Event\TestRunner;
+
+interface ExecutionFinishedSubscriber
+{
+    public function notify(ExecutionFinished $event): void;
+}
+
+final class ExecutionFinished
+{
+    public function __construct(\PHPUnit\Event\Telemetry\Info $telemetryInfo)
+    {
+    }
+}

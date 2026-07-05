@@ -26,7 +26,11 @@ Prefer Composer when it resolves cleanly:
 composer require --dev deptrac/deptrac
 ```
 
-Do not use `--ignore-platform-reqs` to force Deptrac into an incompatible project. If Composer cannot install Deptrac because the project runtime is older than Deptrac's runtime requirement, either use a compatible Deptrac major selected by Composer or run Deptrac as a PHAR/separate toolchain on a newer PHP runtime. Deptrac can analyze code that targets an older PHP version as long as the parser can parse the syntax.
+Do not use `--ignore-platform-reqs` to force Deptrac into an incompatible project. If the project is a library or developer tool that supports old PHP minors, allow Composer constraints to choose different Deptrac versions per PHP runtime instead of forcing one version for every PHP version. A normal single `composer.lock` is fine when it can represent the supported dependency graph. Use PHP-versioned lock files only when old PHP support requires a different graph and the project needs supply-chain pinning. For example, a PHP 8.0+ library may need a constraint like `^0.24 || ^1.0 || ^2.0 || ^3.0 || ^4.0` so PHP 8.0 can resolve an older Deptrac while newer PHP versions resolve a newer one.
+
+Do not add `config.platform.php` just to make all environments use the oldest PHP dependency set unless the target project intentionally locks one dependency graph. Use platform overrides only for temporary compatibility checks.
+
+If Composer cannot install any compatible Deptrac for the target runtime, run Deptrac as a PHAR/separate toolchain on a newer PHP runtime. Deptrac can analyze code that targets an older PHP version as long as the parser can parse the syntax.
 
 ## Discovery Inputs
 
@@ -113,13 +117,49 @@ If `deptrac.yaml` already exists, merge rather than overwrite:
 
 ## Recommended Composer Scripts
 
-Add scripts that match the installed Deptrac binary:
+Add scripts that match the installed Deptrac entry point.
+
+Some old Composer-installable Deptrac versions, including the line used for PHP 8.0 compatibility, do not expose `vendor/bin/deptrac`. For packages that publish their own `bin` entries, prefer a project-root launcher such as `deptrac.php` instead of adding a new file under `bin/`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+$deptracEntrypoints = [
+    __DIR__ . '/vendor/bin/deptrac',
+    __DIR__ . '/vendor/deptrac/deptrac/deptrac.php',
+];
+
+foreach ($deptracEntrypoints as $deptracEntrypoint) {
+    if (!is_file($deptracEntrypoint)) {
+        continue;
+    }
+
+    $command = array_map(
+        static fn (string $argument): string => escapeshellarg($argument),
+        [
+            PHP_BINARY,
+            $deptracEntrypoint,
+            ...array_slice($argv, 1),
+        ],
+    );
+
+    passthru(implode(' ', $command), $exitCode);
+    exit($exitCode);
+}
+
+fwrite(STDERR, 'Could not find Deptrac. Run "composer install" first.' . PHP_EOL);
+exit(1);
+```
+
+Then call the launcher from Composer:
 
 ```json
 {
     "scripts": {
         "phpstan": "phpstan analyse --memory-limit=512M",
-        "deptrac": "deptrac analyse --config-file=deptrac.yaml",
+        "deptrac": "@php deptrac.php analyse --config-file=deptrac.yaml",
         "lint": [
             "@format:check",
             "@phpstan",
@@ -136,9 +176,9 @@ If the project already has `lint` or `check`, merge `@deptrac` into it after PHP
 After applying:
 
 ```bash
-vendor/bin/deptrac analyse --config-file=deptrac.yaml
-vendor/bin/deptrac debug:unassigned --config-file=deptrac.yaml
-vendor/bin/deptrac debug:unused --config-file=deptrac.yaml
+composer deptrac
+php deptrac.php debug:unassigned --config-file=deptrac.yaml
+php deptrac.php debug:unused --config-file=deptrac.yaml
 ```
 
 `debug:unassigned` can return a non-zero exit code when it successfully finds unassigned tokens. Treat the output as a collector coverage report, not as a command failure by itself.

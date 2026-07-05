@@ -48,5 +48,4 @@ final class OverrideMustHaveAttributeRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/OverrideMustHaveAttribute/AbstractImpl.php'], []);
     }
-
 }

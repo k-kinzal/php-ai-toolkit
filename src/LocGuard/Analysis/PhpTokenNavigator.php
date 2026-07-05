@@ -31,6 +31,22 @@ final class PhpTokenNavigator
     }
 
     /**
+     * Returns the nearest next token that is not whitespace or a comment.
+     *
+     * @param list<PhpToken> $tokens
+     */
+    public function nextSignificant(array $tokens, int $index): ?PhpToken
+    {
+        for ($i = $index + 1; $i < count($tokens); $i++) {
+            if (!in_array($tokens[$i]->id, [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) {
+                return $tokens[$i];
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Returns the nearest previous significant token index before the exclusive end.
      *
      * @param list<PhpToken> $tokens

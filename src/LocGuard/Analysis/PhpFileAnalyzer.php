@@ -63,7 +63,7 @@ final class PhpFileAnalyzer
             return new FileAnalysis(new FileMetric($relativePath, 0, 0), []);
         }
 
-        $tokens = array_values(PhpToken::tokenize($source, TOKEN_PARSE));
+        $tokens = array_values(PhpToken::tokenize($source));
         $file = new FileMetric(
             $relativePath,
             $this->lineCounter->physicalLines($source),

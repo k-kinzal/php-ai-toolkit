@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpAiToolkit\PhpUnit\TestReporter\Subscriber;
 
 use Override;
+use PhpAiToolkit\PhpUnit\TestReporter\EventTestIssueFactory;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\ErroredSubscriber;
@@ -20,6 +21,8 @@ final class TestErroredSubscriber implements ErroredSubscriber
     public function __construct(
         /** @readonly */
         private TestIssueCollector $collector,
+        /** @readonly */
+        private ?EventTestIssueFactory $factory = null,
     ) {
     }
 
@@ -29,6 +32,7 @@ final class TestErroredSubscriber implements ErroredSubscriber
     #[Override]
     public function notify(Errored $event): void
     {
-        $this->collector->recordError($event);
+        $factory = $this->factory ?? new EventTestIssueFactory();
+        $this->collector->record($factory->fromError($event));
     }
 }

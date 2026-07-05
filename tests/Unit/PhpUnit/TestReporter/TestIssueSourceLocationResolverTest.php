@@ -33,4 +33,17 @@ final class TestIssueSourceLocationResolverTest extends TestCase
             '/project/tests/ServiceTest.php',
         ));
     }
+
+    public function testResolveReturnsFirstApplicationFrameFromPhpTrace(): void
+    {
+        $resolver = new TestIssueSourceLocationResolver();
+
+        self::assertSame([
+            'file' => '/project/src/Service.php',
+            'line' => 45,
+        ], $resolver->resolve(
+            "#0 /project/tests/ServiceTest.php(12): ServiceTest->testIt()\n#1 /project/vendor/phpunit/phpunit/TestCase.php(20): PHPUnit\\Framework\\TestCase->run()\n#2 /project/src/Service.php(45): App\\Service->run()",
+            '/project/tests/ServiceTest.php',
+        ));
+    }
 }

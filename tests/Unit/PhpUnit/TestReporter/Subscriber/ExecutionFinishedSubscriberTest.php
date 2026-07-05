@@ -4,36 +4,40 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter\Subscriber;
 
+use function interface_exists;
 use Override;
 use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\ExecutionFinishedSubscriber;
+use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueFormatter;
+use PhpAiToolkit\PhpUnit\TestReporter\TestIssueInput;
+use PhpAiToolkit\PhpUnit\TestReporter\TestReporterRuntime;
 use PhpAiToolkit\Shared\AgentDetector;
-use PHPUnit\Event\Code\TestDox;
-use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Telemetry\CpuTime;
 use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Event\Telemetry\GarbageCollectorStatus;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Event\Telemetry\MemoryUsage;
 use PHPUnit\Event\Telemetry\Snapshot;
-use PHPUnit\Event\Test\Failed;
-use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\MetadataCollection;
 
+use PHPUnit\Framework\TestCase;
 use function putenv;
 
 #[CoversClass(ExecutionFinishedSubscriber::class)]
+#[CoversClass(TestReporterRuntime::class)]
 final class ExecutionFinishedSubscriberTest extends TestCase
 {
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
+        if (!interface_exists('PHPUnit\Runner\Extension\Extension')) {
+            self::markTestSkipped('Requires PHPUnit 10 event extension API.');
+        }
+
         putenv('AI_AGENT');
         putenv('CLAUDE_CODE');
         putenv('CLAUDECODE');
@@ -73,33 +77,46 @@ final class ExecutionFinishedSubscriberTest extends TestCase
     public function testNotifyWritesOutputWhenIssuesExist(): void
     {
         $collector = new TestIssueCollector();
-        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
-        $memory = MemoryUsage::fromBytes(0);
-        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
-        $snapshot = new Snapshot($time, $memory, $memory, $gc);
         $duration = Duration::fromSecondsAndNanoseconds(0, 0);
-        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
-        $testMethod = new TestMethod(
-            self::class,
-            'testBar',
-            '/foo.php',
-            1,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
-        $collector->recordFailure(new Failed(
-            $telemetryInfo,
-            $testMethod,
-            new Throwable('Exception', 'fail', 'fail', '', null),
-            null,
-        ));
+        $memory = MemoryUsage::fromBytes(0);
+        $garbageCollectorStatus = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
+        $telemetryInfo = PHP_VERSION_ID >= 80500
+            ? new Info(
+                new Snapshot(
+                    HRTime::fromSecondsAndNanoseconds(0, 0),
+                    $memory,
+                    $memory,
+                    $garbageCollectorStatus,
+                    CpuTime::fromSecondsAndNanoseconds(0, 0),
+                    CpuTime::fromSecondsAndNanoseconds(0, 0),
+                    CpuTime::fromSecondsAndNanoseconds(0, 0),
+                ),
+                $duration,
+                $memory,
+                $duration,
+                $memory,
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+            )
+            : new Info(
+                new Snapshot(HRTime::fromSecondsAndNanoseconds(0, 0), $memory, $memory, $garbageCollectorStatus),
+                $duration,
+                $memory,
+                $duration,
+                $memory,
+            );
+        $collector->record(new TestIssueInput(TestIssue::TYPE_FAILED, self::class . '::testBar', self::class . '::testBar', '/foo.php', 1, 'fail'));
 
         $output = [];
         $formatter = new TestIssueFormatter(new AgentDetector(), '/');
-        $subscriber = new ExecutionFinishedSubscriber($collector, $formatter, static function (string $msg) use (&$output): void {
+        $runtime = new TestReporterRuntime($collector, $formatter, static function (string $msg) use (&$output): void {
             $output[] = $msg;
-        });
+        }, false);
+        $subscriber = new ExecutionFinishedSubscriber($runtime);
 
         $subscriber->notify(new ExecutionFinished($telemetryInfo));
 
@@ -110,17 +127,44 @@ final class ExecutionFinishedSubscriberTest extends TestCase
     public function testNotifyProducesNoOutputWhenNoIssuesAndNotReplaced(): void
     {
         $collector = new TestIssueCollector();
-        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
-        $memory = MemoryUsage::fromBytes(0);
-        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
-        $snapshot = new Snapshot($time, $memory, $memory, $gc);
         $duration = Duration::fromSecondsAndNanoseconds(0, 0);
-        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
+        $memory = MemoryUsage::fromBytes(0);
+        $garbageCollectorStatus = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
+        $telemetryInfo = PHP_VERSION_ID >= 80500
+            ? new Info(
+                new Snapshot(
+                    HRTime::fromSecondsAndNanoseconds(0, 0),
+                    $memory,
+                    $memory,
+                    $garbageCollectorStatus,
+                    CpuTime::fromSecondsAndNanoseconds(0, 0),
+                    CpuTime::fromSecondsAndNanoseconds(0, 0),
+                    CpuTime::fromSecondsAndNanoseconds(0, 0),
+                ),
+                $duration,
+                $memory,
+                $duration,
+                $memory,
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+            )
+            : new Info(
+                new Snapshot(HRTime::fromSecondsAndNanoseconds(0, 0), $memory, $memory, $garbageCollectorStatus),
+                $duration,
+                $memory,
+                $duration,
+                $memory,
+            );
         $output = [];
         $formatter = new TestIssueFormatter(new AgentDetector(), '/');
-        $subscriber = new ExecutionFinishedSubscriber($collector, $formatter, static function (string $msg) use (&$output): void {
+        $runtime = new TestReporterRuntime($collector, $formatter, static function (string $msg) use (&$output): void {
             $output[] = $msg;
         }, false);
+        $subscriber = new ExecutionFinishedSubscriber($runtime);
 
         $subscriber->notify(new ExecutionFinished($telemetryInfo));
 
@@ -130,17 +174,44 @@ final class ExecutionFinishedSubscriberTest extends TestCase
     public function testNotifyWritesSuccessMessageWhenReplacedAndNoIssues(): void
     {
         $collector = new TestIssueCollector();
-        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
-        $memory = MemoryUsage::fromBytes(0);
-        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
-        $snapshot = new Snapshot($time, $memory, $memory, $gc);
         $duration = Duration::fromSecondsAndNanoseconds(0, 0);
-        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
+        $memory = MemoryUsage::fromBytes(0);
+        $garbageCollectorStatus = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
+        $telemetryInfo = PHP_VERSION_ID >= 80500
+            ? new Info(
+                new Snapshot(
+                    HRTime::fromSecondsAndNanoseconds(0, 0),
+                    $memory,
+                    $memory,
+                    $garbageCollectorStatus,
+                    CpuTime::fromSecondsAndNanoseconds(0, 0),
+                    CpuTime::fromSecondsAndNanoseconds(0, 0),
+                    CpuTime::fromSecondsAndNanoseconds(0, 0),
+                ),
+                $duration,
+                $memory,
+                $duration,
+                $memory,
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+            )
+            : new Info(
+                new Snapshot(HRTime::fromSecondsAndNanoseconds(0, 0), $memory, $memory, $garbageCollectorStatus),
+                $duration,
+                $memory,
+                $duration,
+                $memory,
+            );
         $output = [];
         $formatter = new TestIssueFormatter(new AgentDetector(), '/');
-        $subscriber = new ExecutionFinishedSubscriber($collector, $formatter, static function (string $msg) use (&$output): void {
+        $runtime = new TestReporterRuntime($collector, $formatter, static function (string $msg) use (&$output): void {
             $output[] = $msg;
         }, true);
+        $subscriber = new ExecutionFinishedSubscriber($runtime);
 
         $subscriber->notify(new ExecutionFinished($telemetryInfo));
 

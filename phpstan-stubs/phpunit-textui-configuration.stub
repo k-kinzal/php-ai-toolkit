@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PHPUnit\TextUI\Configuration;
+
+final class Configuration
+{
+}
+
+final class Registry
+{
+    public static function get(): Configuration
+    {
+    }
+}

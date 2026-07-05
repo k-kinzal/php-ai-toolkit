@@ -1,0 +1,15 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PHPUnit\Metadata;
+
+final class MetadataCollection
+{
+    /**
+     * @param array<mixed> $metadata
+     */
+    public static function fromArray(array $metadata): self
+    {
+    }
+}

@@ -8,6 +8,7 @@ use PhpAiToolkit\LocGuard\Analysis\ArrowExpressionBoundary;
 use PhpAiToolkit\LocGuard\Analysis\ArrowFunctionMetricReader;
 use PhpAiToolkit\LocGuard\Analysis\BlockFunctionMetricReader;
 use PhpAiToolkit\LocGuard\Analysis\ClassLikeDeclarationReader;
+use PhpAiToolkit\LocGuard\Analysis\ClassLikeTokenMatcher;
 use PhpAiToolkit\LocGuard\Analysis\FunctionBodyLocator;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetricLineCollector;
@@ -24,6 +25,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ArrowFunctionMetricReader::class)]
 #[UsesClass(BlockFunctionMetricReader::class)]
 #[UsesClass(ClassLikeDeclarationReader::class)]
+#[UsesClass(ClassLikeTokenMatcher::class)]
 #[UsesClass(FunctionBodyLocator::class)]
 #[UsesClass(FunctionMetric::class)]
 #[UsesClass(FunctionNameReader::class)]

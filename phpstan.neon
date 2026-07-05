@@ -10,6 +10,8 @@ parameters:
         - tests
     excludePaths:
         - tests/Fixture
+    bootstrapFiles:
+        - phpstan-stubs/bootstrap.php
     ignoreErrors:
         # PHPStan's ErrorFormatterTestCase and related internal classes
         # (ErrorsConsoleStyle, SymfonyOutput, SymfonyStyle) are not marked

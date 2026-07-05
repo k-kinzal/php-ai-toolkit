@@ -86,6 +86,9 @@ final class AgentDetectorTest extends TestCase
         ];
     }
 
+    /**
+     * @dataProvider providerAgentEnvVars
+     */
     #[DataProvider('providerAgentEnvVars')]
     public function testResolveModeDetectsAgentViaEnvVar(string $envVar): void
     {

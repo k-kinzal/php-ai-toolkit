@@ -41,6 +41,30 @@ final class PhpTokenNavigatorTest extends TestCase
         self::assertNull((new PhpTokenNavigator())->previousSignificant($tokens, 0));
     }
 
+    public function testNextSignificantReturnsNextNonTriviaToken(): void
+    {
+        $tokens = [
+            new PhpToken(T_STRING, 'first', 1, 0),
+            new PhpToken(T_WHITESPACE, "\n", 1, 5),
+            new PhpToken(T_COMMENT, '// comment', 2, 6),
+            new PhpToken(T_DOC_COMMENT, '/** doc */', 3, 17),
+            new PhpToken(T_STRING, 'second', 4, 28),
+        ];
+
+        $next = (new PhpTokenNavigator())->nextSignificant($tokens, 0);
+
+        self::assertSame('second', $next?->text);
+    }
+
+    public function testNextSignificantReturnsNullWhenNoNextTokenExists(): void
+    {
+        $tokens = [
+            new PhpToken(T_STRING, 'first', 1, 0),
+        ];
+
+        self::assertNull((new PhpTokenNavigator())->nextSignificant($tokens, 0));
+    }
+
     public function testPreviousSignificantIndexReturnsPreviousNonTriviaTokenIndex(): void
     {
         $tokens = [
@@ -88,7 +112,6 @@ final class PhpTokenNavigatorTest extends TestCase
 
         self::assertNull((new PhpTokenNavigator())->nextId($tokens, 0, T_DOC_COMMENT));
     }
-
 
     public function testMatchingBraceReturnsClosingBraceForNestedBlocks(): void
     {

@@ -14,7 +14,17 @@ Use Composer when the target project can satisfy Deptrac's runtime constraints:
 composer require --dev deptrac/deptrac
 ```
 
-Do not force installation with `--ignore-platform-reqs`. If the target project supports an older PHP runtime than Deptrac can run on, run Deptrac from a separate toolchain or PHAR on a newer PHP runtime.
+Do not force installation with `--ignore-platform-reqs`. For libraries and developer tools that support older PHP versions, allow Composer to resolve different Deptrac versions per PHP runtime. A normal single `composer.lock` is fine when it works for the supported dependency graph. Use PHP-versioned lock files when old PHP support requires a different graph and supply-chain pinning is required. If the target project supports an older PHP runtime than any compatible Deptrac can run on, run Deptrac from a separate toolchain or PHAR on a newer PHP runtime.
+
+Older Deptrac lines used for PHP 8.0 compatibility may not provide `vendor/bin/deptrac`. In that case, use a project-root launcher such as `deptrac.php` that prefers `vendor/bin/deptrac` and falls back to `vendor/deptrac/deptrac/deptrac.php`, then call it from Composer:
+
+```json
+{
+    "scripts": {
+        "deptrac": "@php deptrac.php analyse --config-file=deptrac.yaml"
+    }
+}
+```
 
 ## Layer Discovery
 
@@ -41,9 +51,9 @@ Use these examples only to see how discovered layers can be represented with col
 Run:
 
 ```bash
-vendor/bin/deptrac analyse --config-file=deptrac.yaml
-vendor/bin/deptrac debug:unassigned --config-file=deptrac.yaml
-vendor/bin/deptrac debug:unused --config-file=deptrac.yaml
+composer deptrac
+php deptrac.php debug:unassigned --config-file=deptrac.yaml
+php deptrac.php debug:unused --config-file=deptrac.yaml
 ```
 
 Use `debug:unassigned` to check collector coverage and `debug:unused` to find stale rules. Fix unassigned production classes before treating the ruleset as complete.

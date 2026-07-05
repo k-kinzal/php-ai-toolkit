@@ -59,6 +59,9 @@ final class RelativePathResolverTest extends TestCase
         ];
     }
 
+    /**
+     * @dataProvider providerRelativePath
+     */
     #[DataProvider('providerRelativePath')]
     public function testRelativePath(string $from, string $to, string $expected): void
     {

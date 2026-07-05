@@ -1,0 +1,61 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PHPUnit\Framework\Attributes;
+
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+final class CoversClass
+{
+    public function __construct(string $className)
+    {
+    }
+}
+
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+final class CoversNothing
+{
+    public function __construct()
+    {
+    }
+}
+
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+final class DataProvider
+{
+    public function __construct(string $methodName)
+    {
+    }
+}
+
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+final class Medium
+{
+    public function __construct()
+    {
+    }
+}
+
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+final class RequiresPhp
+{
+    public function __construct(string $versionRequirement)
+    {
+    }
+}
+
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+final class Small
+{
+    public function __construct()
+    {
+    }
+}
+
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+final class UsesClass
+{
+    public function __construct(string $className)
+    {
+    }
+}

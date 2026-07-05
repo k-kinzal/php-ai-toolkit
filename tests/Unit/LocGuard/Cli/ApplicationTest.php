@@ -10,6 +10,7 @@ use PhpAiToolkit\LocGuard\Analysis\ArrowFunctionMetricReader;
 use PhpAiToolkit\LocGuard\Analysis\BlockFunctionMetricReader;
 use PhpAiToolkit\LocGuard\Analysis\ClassLikeDeclarationReader;
 use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetricCollector;
+use PhpAiToolkit\LocGuard\Analysis\ClassLikeTokenMatcher;
 use PhpAiToolkit\LocGuard\Analysis\CodeTokenLineResolver;
 use PhpAiToolkit\LocGuard\Analysis\CyclomaticComplexityCalculator;
 use PhpAiToolkit\LocGuard\Analysis\CyclomaticComplexityState;
@@ -67,6 +68,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(BlockFunctionMetricReader::class)]
 #[UsesClass(ClassLikeMetricCollector::class)]
 #[UsesClass(ClassLikeDeclarationReader::class)]
+#[UsesClass(ClassLikeTokenMatcher::class)]
 #[UsesClass(CodeTokenLineResolver::class)]
 #[UsesClass(CyclomaticComplexityCalculator::class)]
 #[UsesClass(CyclomaticComplexityState::class)]

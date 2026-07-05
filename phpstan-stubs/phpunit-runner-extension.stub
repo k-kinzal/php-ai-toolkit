@@ -1,0 +1,60 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PHPUnit\Runner\Extension;
+
+interface Extension
+{
+    public function bootstrap(
+        \PHPUnit\TextUI\Configuration\Configuration $configuration,
+        Facade $facade,
+        ParameterCollection $parameters,
+    ): void;
+}
+
+interface Facade
+{
+    public function registerSubscribers(object ...$subscribers): void;
+
+    public function replaceProgressOutput(): void;
+
+    public function replaceResultOutput(): void;
+
+    public function replacesProgressOutput(): bool;
+
+    public function replacesResultOutput(): bool;
+}
+
+final class ExtensionFacade implements Facade
+{
+    public function registerSubscribers(object ...$subscribers): void
+    {
+    }
+
+    public function replaceProgressOutput(): void
+    {
+    }
+
+    public function replaceResultOutput(): void
+    {
+    }
+
+    public function replacesProgressOutput(): bool
+    {
+    }
+
+    public function replacesResultOutput(): bool
+    {
+    }
+}
+
+final class ParameterCollection
+{
+    /**
+     * @param array<mixed> $parameters
+     */
+    public static function fromArray(array $parameters): self
+    {
+    }
+}

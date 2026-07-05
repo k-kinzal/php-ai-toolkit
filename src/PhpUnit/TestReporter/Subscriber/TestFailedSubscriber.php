@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpAiToolkit\PhpUnit\TestReporter\Subscriber;
 
 use Override;
+use PhpAiToolkit\PhpUnit\TestReporter\EventTestIssueFactory;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\FailedSubscriber;
@@ -20,6 +21,8 @@ final class TestFailedSubscriber implements FailedSubscriber
     public function __construct(
         /** @readonly */
         private TestIssueCollector $collector,
+        /** @readonly */
+        private ?EventTestIssueFactory $factory = null,
     ) {
     }
 
@@ -29,6 +32,7 @@ final class TestFailedSubscriber implements FailedSubscriber
     #[Override]
     public function notify(Failed $event): void
     {
-        $this->collector->recordFailure($event);
+        $factory = $this->factory ?? new EventTestIssueFactory();
+        $this->collector->record($factory->fromFailure($event));
     }
 }

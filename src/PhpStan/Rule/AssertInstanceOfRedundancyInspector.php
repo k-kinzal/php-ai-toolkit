@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
+use function count;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
-use PHPStan\Type\ObjectType;
 
 /**
  * Detects PHPUnit assertInstanceOf() calls guaranteed by static types.
@@ -28,6 +28,9 @@ final class AssertInstanceOfRedundancyInspector
     /** @readonly */
     private NoRedundantAssertInstanceOfErrorBuilder $errorBuilder;
 
+    /** @readonly */
+    private AssertInstanceOfTypeMatcher $typeMatcher;
+
     /**
      * Creates an inspector from call parsing and error-building collaborators.
      */
@@ -37,12 +40,14 @@ final class AssertInstanceOfRedundancyInspector
         ?ClassStringExpressionResolver $classStringResolver = null,
         ?PhpUnitCallTargetMatcher $targetMatcher = null,
         ?NoRedundantAssertInstanceOfErrorBuilder $errorBuilder = null,
+        ?AssertInstanceOfTypeMatcher $typeMatcher = null,
     ) {
         $this->methodNameResolver = $methodNameResolver ?? new CallMethodNameResolver();
         $this->argumentResolver = $argumentResolver ?? new CallArgumentResolver();
         $this->classStringResolver = $classStringResolver ?? new ClassStringExpressionResolver();
         $this->targetMatcher = $targetMatcher ?? new PhpUnitCallTargetMatcher();
         $this->errorBuilder = $errorBuilder ?? new NoRedundantAssertInstanceOfErrorBuilder();
+        $this->typeMatcher = $typeMatcher ?? new AssertInstanceOfTypeMatcher();
     }
 
     /**
@@ -106,7 +111,7 @@ final class AssertInstanceOfRedundancyInspector
             return [];
         }
 
-        if (!(new ObjectType($expectedTypeName))->isSuperTypeOf($actualType)->yes()) {
+        if (!$this->typeMatcher->matches($expectedTypeName, $actualType, $actualTypeNames[0])) {
             return [];
         }
 

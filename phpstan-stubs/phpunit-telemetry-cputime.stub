@@ -1,0 +1,12 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PHPUnit\Event\Telemetry;
+
+final class CpuTime
+{
+    public static function fromSecondsAndNanoseconds(int $seconds, int $nanoseconds): self
+    {
+    }
+}

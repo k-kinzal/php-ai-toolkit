@@ -11,11 +11,11 @@
     },
     "require-dev": {
         "brianium/paratest": "^6.11 || ^7",
-        "deptrac/deptrac": "^4.6",
-        "friendsofphp/php-cs-fixer": "^3.92",
+        "deptrac/deptrac": "^0.24 || ^1.0 || ^2.0 || ^3.0 || ^4.6",
+        "friendsofphp/php-cs-fixer": "^3.4",
         "phpcompatibility/php-compatibility": "^10.0@alpha",
         "phpstan/phpstan-strict-rules": "^2.0",
-        "phpunit/phpunit": "^10.5 || ^11 || ^12 || ^13",
+        "phpunit/phpunit": "^9.6 || ^10.5 || ^11 || ^12 || ^13",
         "squizlabs/php_codesniffer": "^4.0"
     },
     "autoload": {
@@ -38,7 +38,8 @@
     },
     "scripts": {
         "test": "paratest --processes=auto",
-        "test:unit": "phpunit tests/Unit/",
+        "test:unit": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist",
+        "test:unit:legacy": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit9.xml.dist",
         "lint": [
             "@format:check",
             "@phpstan",
@@ -49,7 +50,7 @@
         "phpstan": "phpstan analyse --memory-limit=512M",
         "compat": "phpcs",
         "loc-guard": "@php bin/loc-guard --config=loc.yaml",
-        "deptrac": "deptrac analyse --config-file=deptrac.yaml",
+        "deptrac": "@php deptrac.php analyse --config-file=deptrac.yaml",
         "format": "php-cs-fixer fix --allow-risky=yes",
         "format:check": "php-cs-fixer fix --dry-run --diff --allow-risky=yes"
     },

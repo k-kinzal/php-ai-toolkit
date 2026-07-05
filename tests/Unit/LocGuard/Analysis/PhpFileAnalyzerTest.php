@@ -8,6 +8,7 @@ use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric;
 use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetricCollector;
 use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetricLimit;
 use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetricViolationBuilder;
+use PhpAiToolkit\LocGuard\Analysis\ClassLikeTokenMatcher;
 use PhpAiToolkit\LocGuard\Analysis\CyclomaticComplexityCalculator;
 use PhpAiToolkit\LocGuard\Analysis\FileAnalysis;
 use PhpAiToolkit\LocGuard\Analysis\FileMetric;
@@ -29,6 +30,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ClassLikeMetric::class)]
 #[UsesClass(ClassLikeMetricCollector::class)]
 #[UsesClass(ClassLikeMetricLimit::class)]
+#[UsesClass(ClassLikeTokenMatcher::class)]
 #[UsesClass(ClassLikeMetricViolationBuilder::class)]
 #[UsesClass(CyclomaticComplexityCalculator::class)]
 #[UsesClass(FileAnalysis::class)]

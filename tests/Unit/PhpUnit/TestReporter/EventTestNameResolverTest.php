@@ -4,20 +4,32 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter;
 
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueNameResolver;
+use function interface_exists;
+use Override;
+use PhpAiToolkit\PhpUnit\TestReporter\EventTestNameResolver;
 use PHPUnit\Event\Code\TestDox;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+
 use PHPUnit\Metadata\MetadataCollection;
 
-#[CoversClass(TestIssueNameResolver::class)]
-final class TestIssueNameResolverTest extends TestCase
+#[CoversClass(EventTestNameResolver::class)]
+final class EventTestNameResolverTest extends TestCase
 {
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+        if (!interface_exists('PHPUnit\Runner\Extension\Extension')) {
+            self::markTestSkipped('Requires PHPUnit 10 event extension API.');
+        }
+    }
+
     public function testResolveReturnsClassQualifiedMethodName(): void
     {
-        $resolver = new TestIssueNameResolver();
+        $resolver = new EventTestNameResolver();
         $test = new TestMethod(
             self::class,
             'testExample',

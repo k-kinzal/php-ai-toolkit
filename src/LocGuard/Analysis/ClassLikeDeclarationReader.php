@@ -9,9 +9,9 @@ use function in_array;
 
 use PhpToken;
 
-use const T_CLASS;
 use const T_DOUBLE_COLON;
 use const T_EXTENDS;
+use const T_FUNCTION;
 use const T_IMPLEMENTS;
 use const T_INTERFACE;
 use const T_STRING;
@@ -25,12 +25,16 @@ final class ClassLikeDeclarationReader
     /** @readonly */
     private PhpTokenNavigator $tokenNavigator;
 
+    /** @readonly */
+    private ClassLikeTokenMatcher $tokenMatcher;
+
     /**
      * Creates a reader backed by token navigation.
      */
-    public function __construct(?PhpTokenNavigator $tokenNavigator = null)
+    public function __construct(?PhpTokenNavigator $tokenNavigator = null, ?ClassLikeTokenMatcher $tokenMatcher = null)
     {
         $this->tokenNavigator = $tokenNavigator ?? new PhpTokenNavigator();
+        $this->tokenMatcher = $tokenMatcher ?? new ClassLikeTokenMatcher($this->tokenNavigator);
     }
 
     /**
@@ -40,14 +44,12 @@ final class ClassLikeDeclarationReader
      */
     public function isDeclaration(array $tokens, int $index): bool
     {
-        $token = $tokens[$index];
-        $enumTokenId = defined('T_ENUM') ? constant('T_ENUM') : -1;
-        if (!in_array($token->id, [T_CLASS, T_INTERFACE, T_TRAIT, $enumTokenId], true)) {
+        if (!$this->tokenMatcher->isClassLikeToken($tokens, $index)) {
             return false;
         }
 
         $previous = $this->tokenNavigator->previousSignificant($tokens, $index);
-        return $previous === null || $previous->id !== T_DOUBLE_COLON;
+        return $previous === null || !in_array($previous->id, [T_DOUBLE_COLON, T_FUNCTION], true);
     }
 
     /**
@@ -63,7 +65,7 @@ final class ClassLikeDeclarationReader
             return 'trait';
         }
 
-        if (defined('T_ENUM') && $token->id === constant('T_ENUM')) {
+        if ($this->tokenMatcher->isEnumToken($token)) {
             return 'enum';
         }
 

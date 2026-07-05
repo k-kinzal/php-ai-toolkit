@@ -6,25 +6,12 @@ namespace Tests\Unit\PhpUnit\TestReporter;
 
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
-use PHPUnit\Event\Code\ComparisonFailure;
-use PHPUnit\Event\Code\TestDox;
-use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\Telemetry\Duration;
-use PHPUnit\Event\Telemetry\GarbageCollectorStatus;
-use PHPUnit\Event\Telemetry\HRTime;
-use PHPUnit\Event\Telemetry\Info;
-use PHPUnit\Event\Telemetry\MemoryUsage;
-use PHPUnit\Event\Telemetry\Snapshot;
-use PHPUnit\Event\Test\ConsideredRisky;
-use PHPUnit\Event\Test\Errored;
-use PHPUnit\Event\Test\Failed;
-use PHPUnit\Event\TestData\TestDataCollection;
+use PhpAiToolkit\PhpUnit\TestReporter\TestIssueInput;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\MetadataCollection;
 
 #[CoversClass(TestIssueCollector::class)]
+#[CoversClass(TestIssueInput::class)]
 final class TestIssueCollectorTest extends TestCase
 {
     public function testHasIssuesReturnsFalseWhenEmpty(): void
@@ -44,36 +31,17 @@ final class TestIssueCollectorTest extends TestCase
     public function testRecordFailureCreatesFailedIssueWithDiff(): void
     {
         $collector = new TestIssueCollector();
-        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
-        $memory = MemoryUsage::fromBytes(0);
-        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
-        $snapshot = new Snapshot($time, $memory, $memory, $gc);
-        $duration = Duration::fromSecondsAndNanoseconds(0, 0);
-        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
-        $testMethod = new TestMethod(
-            self::class,
-            'testBar',
+
+        $collector->record(new TestIssueInput(
+            TestIssue::TYPE_FAILED,
+            self::class . '::testBar',
+            self::class . '::testBar',
             '/path/to/tests/Unit/FooTest.php',
             42,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
-
-        $event = new Failed(
-            $telemetryInfo,
-            $testMethod,
-            new Throwable(
-                'PHPUnit\Framework\ExpectationFailedException',
-                'Failed asserting that false is true.',
-                'Failed asserting that false is true.',
-                "/path/to/tests/Unit/FooTest.php:42\n/path/to/vendor/phpunit/phpunit/src/Framework/Assert.php:100",
-                null,
-            ),
-            new ComparisonFailure('true', 'false', "--- Expected\n+++ Actual\n-true\n+false"),
-        );
-
-        $collector->recordFailure($event);
+            'Failed asserting that false is true.',
+            "--- Expected\n+++ Actual\n-true\n+false",
+            "/path/to/tests/Unit/FooTest.php:42\n/path/to/vendor/phpunit/phpunit/src/Framework/Assert.php:100",
+        ));
 
         self::assertTrue($collector->hasIssues());
 
@@ -91,36 +59,17 @@ final class TestIssueCollectorTest extends TestCase
     public function testRecordFailureWithoutComparisonFailureHasNullDiff(): void
     {
         $collector = new TestIssueCollector();
-        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
-        $memory = MemoryUsage::fromBytes(0);
-        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
-        $snapshot = new Snapshot($time, $memory, $memory, $gc);
-        $duration = Duration::fromSecondsAndNanoseconds(0, 0);
-        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
-        $testMethod = new TestMethod(
-            self::class,
-            'testBar',
+
+        $collector->record(new TestIssueInput(
+            TestIssue::TYPE_FAILED,
+            self::class . '::testBar',
+            self::class . '::testBar',
             '/path/to/tests/Unit/FooTest.php',
             42,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
-
-        $event = new Failed(
-            $telemetryInfo,
-            $testMethod,
-            new Throwable(
-                'PHPUnit\Framework\ExpectationFailedException',
-                'Some assertion failed.',
-                'Some assertion failed.',
-                '/path/to/tests/Unit/FooTest.php:42',
-                null,
-            ),
+            'Some assertion failed.',
             null,
-        );
-
-        $collector->recordFailure($event);
+            '/path/to/tests/Unit/FooTest.php:42',
+        ));
 
         $issues = $collector->getIssues();
         self::assertNull($issues[0]->diff);
@@ -129,35 +78,17 @@ final class TestIssueCollectorTest extends TestCase
     public function testRecordErrorCreatesErrorIssue(): void
     {
         $collector = new TestIssueCollector();
-        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
-        $memory = MemoryUsage::fromBytes(0);
-        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
-        $snapshot = new Snapshot($time, $memory, $memory, $gc);
-        $duration = Duration::fromSecondsAndNanoseconds(0, 0);
-        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
-        $testMethod = new TestMethod(
-            self::class,
-            'testBaz',
+
+        $collector->record(new TestIssueInput(
+            TestIssue::TYPE_ERROR,
+            self::class . '::testBaz',
+            self::class . '::testBaz',
             '/path/to/tests/Unit/BarTest.php',
             18,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
-
-        $event = new Errored(
-            $telemetryInfo,
-            $testMethod,
-            new Throwable(
-                'TypeError',
-                'Argument 1 must be of type int, string given',
-                'TypeError: Argument 1 must be of type int, string given',
-                "/path/to/tests/Unit/BarTest.php:18\n/path/to/src/Bar.php:45\n/path/to/vendor/phpunit/phpunit/src/Framework/TestCase.php:200",
-                null,
-            ),
-        );
-
-        $collector->recordError($event);
+            'Argument 1 must be of type int, string given',
+            null,
+            "/path/to/tests/Unit/BarTest.php:18\n/path/to/src/Bar.php:45\n/path/to/vendor/phpunit/phpunit/src/Framework/TestCase.php:200",
+        ));
 
         $issues = $collector->getIssues();
         self::assertCount(1, $issues);
@@ -170,29 +101,15 @@ final class TestIssueCollectorTest extends TestCase
     public function testRecordRiskyCreatesRiskyIssue(): void
     {
         $collector = new TestIssueCollector();
-        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
-        $memory = MemoryUsage::fromBytes(0);
-        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
-        $snapshot = new Snapshot($time, $memory, $memory, $gc);
-        $duration = Duration::fromSecondsAndNanoseconds(0, 0);
-        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
-        $testMethod = new TestMethod(
-            self::class,
-            'testExpiry',
+
+        $collector->record(new TestIssueInput(
+            TestIssue::TYPE_RISKY,
+            self::class . '::testExpiry',
+            self::class . '::testExpiry',
             '/path/to/tests/Unit/CacheTest.php',
             55,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
-
-        $event = new ConsideredRisky(
-            $telemetryInfo,
-            $testMethod,
             'This test did not perform any assertions',
-        );
-
-        $collector->recordRisky($event);
+        ));
 
         $issues = $collector->getIssues();
         self::assertCount(1, $issues);
@@ -205,35 +122,17 @@ final class TestIssueCollectorTest extends TestCase
     public function testRecordErrorExtractsSourceLocationFromStackTrace(): void
     {
         $collector = new TestIssueCollector();
-        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
-        $memory = MemoryUsage::fromBytes(0);
-        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
-        $snapshot = new Snapshot($time, $memory, $memory, $gc);
-        $duration = Duration::fromSecondsAndNanoseconds(0, 0);
-        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
-        $testMethod = new TestMethod(
-            self::class,
-            'testBaz',
+
+        $collector->record(new TestIssueInput(
+            TestIssue::TYPE_ERROR,
+            self::class . '::testBaz',
+            self::class . '::testBaz',
             '/path/to/tests/Unit/BarTest.php',
             18,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
-
-        $event = new Errored(
-            $telemetryInfo,
-            $testMethod,
-            new Throwable(
-                'TypeError',
-                'Some error',
-                'Some error',
-                "/path/to/tests/Unit/BarTest.php:18\n/path/to/src/Service/UserService.php:45\n/path/to/vendor/phpunit/phpunit/src/Framework/TestCase.php:200",
-                null,
-            ),
-        );
-
-        $collector->recordError($event);
+            'Some error',
+            null,
+            "/path/to/tests/Unit/BarTest.php:18\n/path/to/src/Service/UserService.php:45\n/path/to/vendor/phpunit/phpunit/src/Framework/TestCase.php:200",
+        ));
 
         $issues = $collector->getIssues();
         self::assertSame('/path/to/src/Service/UserService.php', $issues[0]->sourceFile);
@@ -243,35 +142,17 @@ final class TestIssueCollectorTest extends TestCase
     public function testExtractSourceLocationSkipsVendorFrames(): void
     {
         $collector = new TestIssueCollector();
-        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
-        $memory = MemoryUsage::fromBytes(0);
-        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
-        $snapshot = new Snapshot($time, $memory, $memory, $gc);
-        $duration = Duration::fromSecondsAndNanoseconds(0, 0);
-        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
-        $testMethod = new TestMethod(
-            self::class,
-            'testBar',
+
+        $collector->record(new TestIssueInput(
+            TestIssue::TYPE_ERROR,
+            self::class . '::testBar',
+            self::class . '::testBar',
             '/path/to/tests/Unit/FooTest.php',
             10,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
-
-        $event = new Errored(
-            $telemetryInfo,
-            $testMethod,
-            new Throwable(
-                'Error',
-                'Some error',
-                'Some error',
-                "/path/to/tests/Unit/FooTest.php:10\n/path/to/vendor/some/package/File.php:20",
-                null,
-            ),
-        );
-
-        $collector->recordError($event);
+            'Some error',
+            null,
+            "/path/to/tests/Unit/FooTest.php:10\n/path/to/vendor/some/package/File.php:20",
+        ));
 
         $issues = $collector->getIssues();
         self::assertNull($issues[0]->sourceFile);
@@ -280,56 +161,10 @@ final class TestIssueCollectorTest extends TestCase
     public function testMultipleIssuesCollectedInOrder(): void
     {
         $collector = new TestIssueCollector();
-        $time = HRTime::fromSecondsAndNanoseconds(0, 0);
-        $memory = MemoryUsage::fromBytes(0);
-        $gc = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
-        $snapshot = new Snapshot($time, $memory, $memory, $gc);
-        $duration = Duration::fromSecondsAndNanoseconds(0, 0);
-        $telemetryInfo = new Info($snapshot, $duration, $memory, $duration, $memory);
-        $failedTestMethod = new TestMethod(
-            self::class,
-            'testA',
-            '/a.php',
-            1,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
-        $erroredTestMethod = new TestMethod(
-            self::class,
-            'testB',
-            '/b.php',
-            2,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
-        $riskyTestMethod = new TestMethod(
-            self::class,
-            'testC',
-            '/c.php',
-            3,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
 
-        $collector->recordFailure(new Failed(
-            $telemetryInfo,
-            $failedTestMethod,
-            new Throwable('Exception', 'fail A', 'fail A', '', null),
-            null,
-        ));
-        $collector->recordError(new Errored(
-            $telemetryInfo,
-            $erroredTestMethod,
-            new Throwable('Exception', 'error B', 'error B', '', null),
-        ));
-        $collector->recordRisky(new ConsideredRisky(
-            $telemetryInfo,
-            $riskyTestMethod,
-            'risky C',
-        ));
+        $collector->record(new TestIssueInput(TestIssue::TYPE_FAILED, 'T::a', 'T::a', '/a.php', 1, 'fail A'));
+        $collector->record(new TestIssueInput(TestIssue::TYPE_ERROR, 'T::b', 'T::b', '/b.php', 2, 'error B'));
+        $collector->record(new TestIssueInput(TestIssue::TYPE_RISKY, 'T::c', 'T::c', '/c.php', 3, 'risky C'));
 
         $issues = $collector->getIssues();
         self::assertCount(3, $issues);

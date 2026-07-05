@@ -8,6 +8,7 @@ use PhpAiToolkit\LocGuard\Analysis\ArrowExpressionBoundary;
 use PhpAiToolkit\LocGuard\Analysis\ArrowFunctionMetricReader;
 use PhpAiToolkit\LocGuard\Analysis\BlockFunctionMetricReader;
 use PhpAiToolkit\LocGuard\Analysis\ClassLikeDeclarationReader;
+use PhpAiToolkit\LocGuard\Analysis\ClassLikeTokenMatcher;
 use PhpAiToolkit\LocGuard\Analysis\CyclomaticComplexityCalculator;
 use PhpAiToolkit\LocGuard\Analysis\CyclomaticComplexityState;
 use PhpAiToolkit\LocGuard\Analysis\CyclomaticDecisionWeight;
@@ -30,6 +31,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ArrowFunctionMetricReader::class)]
 #[UsesClass(BlockFunctionMetricReader::class)]
 #[UsesClass(ClassLikeDeclarationReader::class)]
+#[UsesClass(ClassLikeTokenMatcher::class)]
 #[UsesClass(CyclomaticComplexityCalculator::class)]
 #[UsesClass(CyclomaticComplexityState::class)]
 #[UsesClass(CyclomaticDecisionWeight::class)]

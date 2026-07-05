@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter;
 
+use function array_merge;
+use function dirname;
+use function fclose;
+use function getenv;
 use function interface_exists;
 
 use Override;
+
+use const PHP_BINARY;
+
 use PhpAiToolkit\PhpUnit\TestReporter\AiTestReporterExtension;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\Extension\ParameterCollection;
-use PHPUnit\TextUI\Configuration\Registry;
 
-use function putenv;
-
-use Tests\Fixture\PhpUnitInternalObjectFactory;
+use function proc_close;
+use function proc_open;
+use function stream_get_contents;
 
 #[CoversClass(AiTestReporterExtension::class)]
 final class AiTestReporterExtensionTest extends TestCase
@@ -27,40 +32,91 @@ final class AiTestReporterExtensionTest extends TestCase
         if (!interface_exists('PHPUnit\Runner\Extension\Extension')) {
             self::markTestSkipped('Requires PHPUnit 10 event extension API.');
         }
-
-        putenv('PARATEST');
     }
 
-    #[Override]
-    protected function tearDown(): void
+    public function testExtensionReportsPhpUnitEventsThroughPhpUnitRunner(): void
     {
-        putenv('PARATEST');
-        parent::tearDown();
+        $environment = getenv();
+        unset($environment['PARATEST']);
+        $environment = array_merge($environment, ['AI_AGENT' => '1']);
+
+        $pipes = [];
+        $process = proc_open(
+            [
+                PHP_BINARY,
+                'vendor/bin/phpunit',
+                '--configuration',
+                'tests/Fixture/TestReporter/phpunit-extension.xml.dist',
+                '--colors=never',
+            ],
+            [
+                0 => ['pipe', 'r'],
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w'],
+            ],
+            $pipes,
+            dirname(__DIR__, 4),
+            $environment,
+        );
+
+        self::assertIsResource($process);
+
+        fclose($pipes[0]);
+        $stdout = stream_get_contents($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+
+        $exitCode = proc_close($process);
+
+        self::assertIsString($stdout);
+        self::assertIsString($stderr);
+        self::assertNotSame(0, $exitCode);
+        self::assertStringContainsString('--- PHPUnit: 1 failure, 1 error, 1 risky ---', $stdout . $stderr);
+        self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testFails', $stdout . $stderr);
+        self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testErrors', $stdout . $stderr);
+        self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testIsRisky', $stdout . $stderr);
+        self::assertStringContainsString('fixture error', $stdout . $stderr);
     }
 
-    public function testBootstrapSkipsParatestWorkerOutputReplacement(): void
+    public function testExtensionSkipsReporterInParatestWorkerThroughPhpUnitRunner(): void
     {
-        putenv('PARATEST=1');
-        $facade = PhpUnitInternalObjectFactory::extensionFacade();
-        $extension = new AiTestReporterExtension();
+        $environment = getenv();
+        $environment = array_merge($environment, ['AI_AGENT' => '1', 'PARATEST' => '1']);
 
-        $extension->bootstrap(Registry::get(), $facade, ParameterCollection::fromArray([]));
+        $pipes = [];
+        $process = proc_open(
+            [
+                PHP_BINARY,
+                'vendor/bin/phpunit',
+                '--configuration',
+                'tests/Fixture/TestReporter/phpunit-extension.xml.dist',
+                '--colors=never',
+            ],
+            [
+                0 => ['pipe', 'r'],
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w'],
+            ],
+            $pipes,
+            dirname(__DIR__, 4),
+            $environment,
+        );
 
-        self::assertFalse(PhpUnitInternalObjectFactory::replacesProgressOutput($facade));
-        self::assertFalse(PhpUnitInternalObjectFactory::replacesResultOutput($facade));
-    }
+        self::assertIsResource($process);
 
-    public function testBootstrapSkipsCustomWriterInParatestWorker(): void
-    {
-        putenv('PARATEST=1');
-        $output = [];
-        $extension = new AiTestReporterExtension(static function (string $message) use (&$output): void {
-            $output[] = $message;
-        });
-        $facade = PhpUnitInternalObjectFactory::extensionFacade();
+        fclose($pipes[0]);
+        $stdout = stream_get_contents($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
 
-        $extension->bootstrap(Registry::get(), $facade, ParameterCollection::fromArray([]));
+        $exitCode = proc_close($process);
 
-        self::assertSame([], $output);
+        self::assertIsString($stdout);
+        self::assertIsString($stderr);
+        self::assertNotSame(0, $exitCode);
+        self::assertStringNotContainsString('--- PHPUnit:', $stdout . $stderr);
+        self::assertStringContainsString('There was 1 error:', $stdout . $stderr);
     }
 }

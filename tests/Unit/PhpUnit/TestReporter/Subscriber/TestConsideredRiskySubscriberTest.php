@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter\Subscriber;
 
+use function class_implements;
 use function interface_exists;
 
 use Override;
 use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\TestConsideredRiskySubscriber;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
-use PHPUnit\Event\Code\TestDox;
-use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Test\ConsideredRisky;
-use PHPUnit\Event\TestData\TestDataCollection;
+use PHPUnit\Event\Test\ConsideredRiskySubscriber;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\MetadataCollection;
-use Tests\Fixture\PhpUnitInternalObjectFactory;
 
 #[CoversClass(TestConsideredRiskySubscriber::class)]
 final class TestConsideredRiskySubscriberTest extends TestCase
@@ -30,27 +25,11 @@ final class TestConsideredRiskySubscriberTest extends TestCase
         }
     }
 
-    public function testNotifyDelegatesToCollector(): void
+    public function testSubscriberImplementsConsideredRiskySubscriber(): void
     {
-        $collector = new TestIssueCollector();
-        $subscriber = new TestConsideredRiskySubscriber($collector);
-        $telemetryInfo = PhpUnitInternalObjectFactory::telemetryInfo();
-        $testMethod = new TestMethod(
-            self::class,
-            'testBar',
-            '/foo.php',
-            1,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
+        $interfaces = class_implements(TestConsideredRiskySubscriber::class);
 
-        $subscriber->notify(new ConsideredRisky(
-            $telemetryInfo,
-            $testMethod,
-            'No assertions',
-        ));
-
-        self::assertTrue($collector->hasIssues());
+        self::assertIsArray($interfaces);
+        self::assertContains(ConsideredRiskySubscriber::class, $interfaces);
     }
 }

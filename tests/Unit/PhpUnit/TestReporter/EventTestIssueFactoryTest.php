@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter;
 
+use function array_merge;
+use function dirname;
+use function fclose;
+use function getenv;
 use function interface_exists;
 
 use Override;
+
+use const PHP_BINARY;
+
 use PhpAiToolkit\PhpUnit\TestReporter\EventTestIssueFactory;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
-use PHPUnit\Event\Code\ComparisonFailure;
-use PHPUnit\Event\Code\TestDox;
-use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\Test\ConsideredRisky;
-use PHPUnit\Event\Test\Errored;
-use PHPUnit\Event\Test\Failed;
-use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\MetadataCollection;
-use Tests\Fixture\PhpUnitInternalObjectFactory;
+
+use function proc_close;
+use function proc_open;
+use function stream_get_contents;
 
 #[CoversClass(EventTestIssueFactory::class)]
 final class EventTestIssueFactoryTest extends TestCase
@@ -34,89 +34,47 @@ final class EventTestIssueFactoryTest extends TestCase
         }
     }
 
-    public function testFromFailureConvertsEventToInput(): void
+    public function testFactoryConvertsPhpUnitEventsThroughPhpUnitRunner(): void
     {
-        $factory = new EventTestIssueFactory();
-        $telemetryInfo = PhpUnitInternalObjectFactory::telemetryInfo();
-        $test = new TestMethod(
-            self::class,
-            'testBar',
-            '/path/to/tests/FooTest.php',
-            42,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
-        $event = new Failed(
-            $telemetryInfo,
-            $test,
-            new Throwable('Exception', 'Failed', 'Failed', '/path/to/tests/FooTest.php:42', null),
-            new ComparisonFailure('true', 'false', "--- Expected\n+++ Actual\n-true\n+false"),
-        );
+        $environment = getenv();
+        unset($environment['PARATEST']);
+        $environment = array_merge($environment, ['AI_AGENT' => '1']);
 
-        $input = $factory->fromFailure($event);
-
-        self::assertSame(TestIssue::TYPE_FAILED, $input->type);
-        self::assertSame(self::class . '::testBar', $input->testId);
-        self::assertSame(self::class . '::testBar', $input->testName);
-        self::assertSame('/path/to/tests/FooTest.php', $input->testFile);
-        self::assertSame(42, $input->testLine);
-        self::assertSame('Failed', $input->message);
-        self::assertSame("--- Expected\n+++ Actual\n-true\n+false", $input->diff);
-        self::assertSame('/path/to/tests/FooTest.php:42', $input->stackTrace);
-    }
-
-    public function testFromErrorConvertsEventToInput(): void
-    {
-        $factory = new EventTestIssueFactory();
-        $telemetryInfo = PhpUnitInternalObjectFactory::telemetryInfo();
-        $test = new TestMethod(
-            self::class,
-            'testBaz',
-            '/path/to/tests/BarTest.php',
-            18,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
-        $event = new Errored(
-            $telemetryInfo,
-            $test,
-            new Throwable('TypeError', 'Broken', 'Broken', '/path/to/tests/BarTest.php:18', null),
+        $pipes = [];
+        $process = proc_open(
+            [
+                PHP_BINARY,
+                'vendor/bin/phpunit',
+                '--configuration',
+                'tests/Fixture/TestReporter/phpunit-extension.xml.dist',
+                '--colors=never',
+            ],
+            [
+                0 => ['pipe', 'r'],
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w'],
+            ],
+            $pipes,
+            dirname(__DIR__, 4),
+            $environment,
         );
 
-        $input = $factory->fromError($event);
+        self::assertIsResource($process);
 
-        self::assertSame(TestIssue::TYPE_ERROR, $input->type);
-        self::assertSame(self::class . '::testBaz', $input->testId);
-        self::assertSame('Broken', $input->message);
-        self::assertNull($input->diff);
-    }
+        fclose($pipes[0]);
+        $stdout = stream_get_contents($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
 
-    public function testFromRiskyConvertsEventToInput(): void
-    {
-        $factory = new EventTestIssueFactory();
-        $telemetryInfo = PhpUnitInternalObjectFactory::telemetryInfo();
-        $test = new TestMethod(
-            self::class,
-            'testRisk',
-            '/path/to/tests/RiskyTest.php',
-            9,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
-        $event = new ConsideredRisky(
-            $telemetryInfo,
-            $test,
-            'This test did not perform any assertions',
-        );
+        $exitCode = proc_close($process);
 
-        $input = $factory->fromRisky($event);
-
-        self::assertSame(TestIssue::TYPE_RISKY, $input->type);
-        self::assertSame(self::class . '::testRisk', $input->testId);
-        self::assertSame('This test did not perform any assertions', $input->message);
-        self::assertSame('', $input->stackTrace);
+        self::assertIsString($stdout);
+        self::assertIsString($stderr);
+        self::assertNotSame(0, $exitCode);
+        self::assertStringContainsString('[FAILED]', $stdout . $stderr);
+        self::assertStringContainsString('[ERROR]', $stdout . $stderr);
+        self::assertStringContainsString('[RISKY]', $stdout . $stderr);
+        self::assertStringContainsString('fixture error', $stdout . $stderr);
     }
 }

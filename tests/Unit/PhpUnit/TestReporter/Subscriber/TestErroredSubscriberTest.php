@@ -4,20 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter\Subscriber;
 
+use function class_implements;
 use function interface_exists;
 
 use Override;
 use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\TestErroredSubscriber;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
-use PHPUnit\Event\Code\TestDox;
-use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\Test\Errored;
-use PHPUnit\Event\TestData\TestDataCollection;
+use PHPUnit\Event\Test\ErroredSubscriber;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\MetadataCollection;
-use Tests\Fixture\PhpUnitInternalObjectFactory;
 
 #[CoversClass(TestErroredSubscriber::class)]
 final class TestErroredSubscriberTest extends TestCase
@@ -31,27 +25,11 @@ final class TestErroredSubscriberTest extends TestCase
         }
     }
 
-    public function testNotifyDelegatesToCollector(): void
+    public function testSubscriberImplementsErroredSubscriber(): void
     {
-        $collector = new TestIssueCollector();
-        $subscriber = new TestErroredSubscriber($collector);
-        $telemetryInfo = PhpUnitInternalObjectFactory::telemetryInfo();
-        $testMethod = new TestMethod(
-            self::class,
-            'testBar',
-            '/foo.php',
-            1,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
-        );
+        $interfaces = class_implements(TestErroredSubscriber::class);
 
-        $subscriber->notify(new Errored(
-            $telemetryInfo,
-            $testMethod,
-            new Throwable('TypeError', 'error', 'error', '', null),
-        ));
-
-        self::assertTrue($collector->hasIssues());
+        self::assertIsArray($interfaces);
+        self::assertContains(ErroredSubscriber::class, $interfaces);
     }
 }

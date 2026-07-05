@@ -4,16 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter;
 
+use function array_merge;
+use function dirname;
+use function fclose;
+use function getenv;
 use function interface_exists;
 
 use Override;
+
+use const PHP_BINARY;
+
 use PhpAiToolkit\PhpUnit\TestReporter\EventTestNameResolver;
-use PHPUnit\Event\Code\TestDox;
-use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\MetadataCollection;
+
+use function proc_close;
+use function proc_open;
+use function stream_get_contents;
 
 #[CoversClass(EventTestNameResolver::class)]
 final class EventTestNameResolverTest extends TestCase
@@ -29,17 +36,42 @@ final class EventTestNameResolverTest extends TestCase
 
     public function testResolveReturnsClassQualifiedMethodName(): void
     {
-        $resolver = new EventTestNameResolver();
-        $test = new TestMethod(
-            self::class,
-            'testExample',
-            '/tmp/ExampleTest.php',
-            12,
-            new TestDox('', '', ''),
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
+        $environment = getenv();
+        unset($environment['PARATEST']);
+        $environment = array_merge($environment, ['AI_AGENT' => '1']);
+
+        $pipes = [];
+        $process = proc_open(
+            [
+                PHP_BINARY,
+                'vendor/bin/phpunit',
+                '--configuration',
+                'tests/Fixture/TestReporter/phpunit-extension.xml.dist',
+                '--colors=never',
+            ],
+            [
+                0 => ['pipe', 'r'],
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w'],
+            ],
+            $pipes,
+            dirname(__DIR__, 4),
+            $environment,
         );
 
-        self::assertSame(self::class . '::testExample', $resolver->resolve($test));
+        self::assertIsResource($process);
+
+        fclose($pipes[0]);
+        $stdout = stream_get_contents($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+
+        $exitCode = proc_close($process);
+
+        self::assertIsString($stdout);
+        self::assertIsString($stderr);
+        self::assertNotSame(0, $exitCode);
+        self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testFails', $stdout . $stderr);
     }
 }

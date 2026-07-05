@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use PhpAiToolkit\PhpStan\Rule\PublicApiPropertyPhpDocErrorCollector;
-use PhpParser\Modifiers;
+use PhpParser\Node\Stmt\Class_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -14,10 +14,10 @@ final class PublicApiPropertyPhpDocErrorCollectorTest extends TestCase
 {
     public function testErrorsReturnsPropertyPhpDocError(): void
     {
-        $class = new \PhpParser\Node\Stmt\Class_('Example', [
+        $class = new Class_('Example', [
             'stmts' => [
                 new \PhpParser\Node\Stmt\Property(
-                    Modifiers::PUBLIC,
+                    Class_::MODIFIER_PUBLIC,
                     [new \PhpParser\Node\PropertyItem('name')],
                 ),
             ],

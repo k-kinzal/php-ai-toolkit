@@ -10,13 +10,13 @@ use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\Large;
 
 /**
  * @extends RuleTestCase<NoPropertyInTestClassRule>
  */
 #[CoversClass(NoPropertyInTestClassRule::class)]
-#[Medium]
+#[Large]
 final class NoPropertyInTestClassRuleTest extends RuleTestCase
 {
     #[Override]

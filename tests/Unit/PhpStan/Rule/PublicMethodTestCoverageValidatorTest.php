@@ -10,7 +10,7 @@ use PhpAiToolkit\PhpStan\Rule\PublicMethodTestCoverageValidator;
 use PhpAiToolkit\PhpStan\Rule\SourceUnitTestFileResolver;
 use PhpAiToolkit\PhpStan\Rule\SrcUnitTestRelativePathMapper;
 use PhpAiToolkit\PhpStan\Rule\TestMethodFileReader;
-use PhpParser\Modifiers;
+use PhpParser\Node\Stmt\Class_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +25,7 @@ final class PublicMethodTestCoverageValidatorTest extends TestCase
 {
     public function testErrorsReturnsPublicMethodWithoutTestError(): void
     {
-        $method = new \PhpParser\Node\Stmt\ClassMethod('getResult', ['flags' => Modifiers::PUBLIC]);
+        $method = new \PhpParser\Node\Stmt\ClassMethod('getResult', ['flags' => Class_::MODIFIER_PUBLIC]);
         $sourceFile = __DIR__ . '/../../../Fixture/TestNamingConvention/src/UncoveredService.php';
 
         $errors = (new PublicMethodTestCoverageValidator())->errors($method, $sourceFile);

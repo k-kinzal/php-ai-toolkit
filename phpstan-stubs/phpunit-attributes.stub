@@ -29,6 +29,14 @@ final class DataProvider
 }
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+final class Large
+{
+    public function __construct()
+    {
+    }
+}
+
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 final class Medium
 {
     public function __construct()

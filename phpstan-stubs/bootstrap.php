@@ -33,7 +33,3 @@ if (!class_exists('PHPUnit\Event\Telemetry\CpuTime')) {
 if (!interface_exists('PHPUnit\Runner\Extension\Extension')) {
     require_once __DIR__ . '/phpunit-runner-extension.stub';
 }
-
-if (!class_exists('PHPUnit\Runner\Extension\ExtensionFacade') && interface_exists('PHPUnit\Runner\Extension\Facade')) {
-    require_once __DIR__ . '/phpunit-runner-extension-facade.stub';
-}

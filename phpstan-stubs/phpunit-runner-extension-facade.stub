@@ -1,9 +1,0 @@
-<?php
-
-declare(strict_types=1);
-
-namespace PHPUnit\Runner\Extension;
-
-if (!class_exists(__NAMESPACE__ . '\ExtensionFacade') && interface_exists(__NAMESPACE__ . '\Facade')) {
-    class_alias(__NAMESPACE__ . '\Facade', __NAMESPACE__ . '\ExtensionFacade');
-}

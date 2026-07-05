@@ -13,7 +13,7 @@ use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -23,7 +23,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass(OverrideAttributeDetector::class)]
 #[UsesClass(OverrideMethodDetector::class)]
 #[UsesClass(TestMethodDetector::class)]
-#[Medium]
+#[Large]
 final class NoHelperMethodInTestClassRuleTest extends RuleTestCase
 {
     #[Override]

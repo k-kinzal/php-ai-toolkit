@@ -6,6 +6,7 @@ namespace Tests\Unit\LocGuard\Reporting;
 
 use PhpAiToolkit\LocGuard\Analysis\Violation;
 use PhpAiToolkit\LocGuard\Config\ReportConfig;
+use PhpAiToolkit\LocGuard\Reporting\ViolationFieldComparator;
 use PhpAiToolkit\LocGuard\Reporting\ViolationSorter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -14,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(ViolationSorter::class)]
 #[UsesClass(ReportConfig::class)]
 #[UsesClass(Violation::class)]
+#[UsesClass(ViolationFieldComparator::class)]
 final class ViolationSorterTest extends TestCase
 {
     public function testSortOrdersViolationsByConfiguredFields(): void

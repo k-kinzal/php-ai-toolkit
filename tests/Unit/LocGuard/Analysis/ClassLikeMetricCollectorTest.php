@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis;
 
+use PhpAiToolkit\LocGuard\Analysis\ClassLikeDeclarationReader;
 use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric;
 use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetricCollector;
+use PhpAiToolkit\LocGuard\Analysis\PhpTokenNavigator;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ClassLikeMetricCollector::class)]
+#[UsesClass(ClassLikeDeclarationReader::class)]
 #[UsesClass(ClassLikeMetric::class)]
+#[UsesClass(PhpTokenNavigator::class)]
 final class ClassLikeMetricCollectorTest extends TestCase
 {
     public function testCollectReturnsClassLikeMetrics(): void

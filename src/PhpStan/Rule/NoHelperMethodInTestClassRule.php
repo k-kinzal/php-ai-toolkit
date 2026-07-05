@@ -9,19 +9,26 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
-use PHPStan\TrinaryLogic;
 
 /**
  * @implements Rule<\PhpParser\Node\Stmt\ClassMethod>
  */
 final class NoHelperMethodInTestClassRule implements Rule
 {
+    private readonly TestMethodDetector $testMethodDetector;
+
+    private readonly OverrideMethodDetector $overrideMethodDetector;
+
     /**
      * @param TestClassScope $testClassScope test class scope detector
      */
     public function __construct(
         private readonly TestClassScope $testClassScope,
+        ?TestMethodDetector $testMethodDetector = null,
+        ?OverrideMethodDetector $overrideMethodDetector = null,
     ) {
+        $this->testMethodDetector = $testMethodDetector ?? new TestMethodDetector();
+        $this->overrideMethodDetector = $overrideMethodDetector ?? new OverrideMethodDetector();
     }
 
     /**
@@ -44,7 +51,7 @@ final class NoHelperMethodInTestClassRule implements Rule
 
         $methodName = $node->name->toString();
 
-        if ($this->isTestMethod($node)) {
+        if ($this->testMethodDetector->isTestMethod($node)) {
             return [];
         }
 
@@ -52,7 +59,7 @@ final class NoHelperMethodInTestClassRule implements Rule
             return [];
         }
 
-        if ($this->isOverride($node, $scope)) {
+        if ($this->overrideMethodDetector->isOverride($node, $scope)) {
             return [];
         }
 
@@ -69,65 +76,7 @@ final class NoHelperMethodInTestClassRule implements Rule
             )
                 ->identifier('customRules.testClassNonOverrideMethod')
                 ->line($node->getStartLine())
-                ->build(),
+            ->build(),
         ];
-    }
-
-    private function isTestMethod(\PhpParser\Node\Stmt\ClassMethod $node): bool
-    {
-        if (str_starts_with($node->name->toString(), 'test')) {
-            return true;
-        }
-
-        foreach ($node->attrGroups as $attrGroup) {
-            foreach ($attrGroup->attrs as $attr) {
-                $attrName = $attr->name->toString();
-                if ($attrName === 'Test' || str_ends_with($attrName, '\\Test')) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    private function isOverride(\PhpParser\Node\Stmt\ClassMethod $node, Scope $scope): bool
-    {
-        $classReflection = $scope->getClassReflection();
-        if ($classReflection === null) {
-            return false;
-        }
-
-        $parentClass = $classReflection->getParentClass();
-        if ($parentClass === null) {
-            return false;
-        }
-
-        $methodName = $node->name->toString();
-        if (!$parentClass->hasMethod($methodName)) {
-            return false;
-        }
-
-        $parentMethod = $parentClass->getMethod($methodName, $scope);
-        $isAbstract = $parentMethod->isAbstract();
-        if ($isAbstract instanceof TrinaryLogic ? $isAbstract->yes() : $isAbstract === true) {
-            return true;
-        }
-
-        return $this->hasOverrideAttribute($node);
-    }
-
-    private function hasOverrideAttribute(\PhpParser\Node\Stmt\ClassMethod $node): bool
-    {
-        foreach ($node->attrGroups as $attrGroup) {
-            foreach ($attrGroup->attrs as $attr) {
-                $name = $attr->name->toString();
-                if ($name === 'Override' || $name === '\\Override') {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 }

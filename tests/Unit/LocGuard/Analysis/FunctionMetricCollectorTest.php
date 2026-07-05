@@ -4,17 +4,43 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis;
 
+use PhpAiToolkit\LocGuard\Analysis\ArrowExpressionBoundary;
+use PhpAiToolkit\LocGuard\Analysis\ArrowFunctionMetricReader;
+use PhpAiToolkit\LocGuard\Analysis\BlockFunctionMetricReader;
+use PhpAiToolkit\LocGuard\Analysis\ClassLikeDeclarationReader;
 use PhpAiToolkit\LocGuard\Analysis\CyclomaticComplexityCalculator;
+use PhpAiToolkit\LocGuard\Analysis\CyclomaticComplexityState;
+use PhpAiToolkit\LocGuard\Analysis\CyclomaticDecisionWeight;
+use PhpAiToolkit\LocGuard\Analysis\FunctionBodyLocator;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetricCollector;
+use PhpAiToolkit\LocGuard\Analysis\FunctionMetricComplexityAssigner;
+use PhpAiToolkit\LocGuard\Analysis\FunctionMetricLineCollector;
+use PhpAiToolkit\LocGuard\Analysis\FunctionNameReader;
+use PhpAiToolkit\LocGuard\Analysis\FunctionScanState;
+use PhpAiToolkit\LocGuard\Analysis\NestedFunctionMetricRange;
+use PhpAiToolkit\LocGuard\Analysis\PhpTokenNavigator;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(FunctionMetricCollector::class)]
+#[UsesClass(ArrowExpressionBoundary::class)]
+#[UsesClass(ArrowFunctionMetricReader::class)]
+#[UsesClass(BlockFunctionMetricReader::class)]
+#[UsesClass(ClassLikeDeclarationReader::class)]
 #[UsesClass(CyclomaticComplexityCalculator::class)]
+#[UsesClass(CyclomaticComplexityState::class)]
+#[UsesClass(CyclomaticDecisionWeight::class)]
+#[UsesClass(FunctionBodyLocator::class)]
 #[UsesClass(FunctionMetric::class)]
+#[UsesClass(FunctionMetricComplexityAssigner::class)]
+#[UsesClass(FunctionMetricLineCollector::class)]
+#[UsesClass(FunctionNameReader::class)]
+#[UsesClass(FunctionScanState::class)]
+#[UsesClass(NestedFunctionMetricRange::class)]
+#[UsesClass(PhpTokenNavigator::class)]
 final class FunctionMetricCollectorTest extends TestCase
 {
     public function testCollectReturnsFunctionMethodAndComplexityMetrics(): void

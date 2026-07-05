@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule;
 
+use Override;
 use PhpAiToolkit\PhpStan\Rule\RequirePhpDocOnPublicApiRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
@@ -17,6 +18,7 @@ use PHPUnit\Framework\Attributes\Medium;
 #[Medium]
 final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
 {
+    #[Override]
     protected function getRule(): Rule
     {
         return new RequirePhpDocOnPublicApiRule();

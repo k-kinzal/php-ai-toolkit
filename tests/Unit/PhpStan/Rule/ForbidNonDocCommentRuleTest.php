@@ -4,19 +4,42 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule;
 
+use Override;
+use PhpAiToolkit\PhpStan\Rule\CommentTextFormatter;
+use PhpAiToolkit\PhpStan\Rule\FileTokenParser;
+use PhpAiToolkit\PhpStan\Rule\ForbiddenCommentPattern;
 use PhpAiToolkit\PhpStan\Rule\ForbidNonDocCommentRule;
+use PhpAiToolkit\PhpStan\Rule\NonDocCommentErrorBuilder;
+use PhpAiToolkit\PhpStan\Rule\NonDocCommentTokenAnalyzer;
+use PhpAiToolkit\PhpStan\Support\NonDocCommentArrayContext;
+use PhpAiToolkit\PhpStan\Support\NonDocCommentCatchContext;
+use PhpAiToolkit\PhpStan\Support\NonDocCommentContext;
+use PhpAiToolkit\PhpStan\Support\NonDocCommentTokenClassifier;
+use PhpAiToolkit\PhpStan\Support\ShortArrayOpeningPolicy;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * @extends RuleTestCase<ForbidNonDocCommentRule>
  */
 #[CoversClass(ForbidNonDocCommentRule::class)]
+#[UsesClass(CommentTextFormatter::class)]
+#[UsesClass(FileTokenParser::class)]
+#[UsesClass(ForbiddenCommentPattern::class)]
+#[UsesClass(NonDocCommentArrayContext::class)]
+#[UsesClass(NonDocCommentCatchContext::class)]
+#[UsesClass(NonDocCommentContext::class)]
+#[UsesClass(NonDocCommentErrorBuilder::class)]
+#[UsesClass(NonDocCommentTokenAnalyzer::class)]
+#[UsesClass(NonDocCommentTokenClassifier::class)]
+#[UsesClass(ShortArrayOpeningPolicy::class)]
 #[Medium]
 final class ForbidNonDocCommentRuleTest extends RuleTestCase
 {
+    #[Override]
     protected function getRule(): Rule
     {
         return new ForbidNonDocCommentRule();

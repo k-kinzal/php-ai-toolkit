@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Installer;
 
+use PhpAiToolkit\Installer\PathNormalizer;
 use PhpAiToolkit\Installer\RelativePathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(RelativePathResolver::class)]
+#[UsesClass(PathNormalizer::class)]
 final class RelativePathResolverTest extends TestCase
 {
     /**

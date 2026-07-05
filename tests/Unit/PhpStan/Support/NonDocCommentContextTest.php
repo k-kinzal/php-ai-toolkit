@@ -4,12 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Support;
 
+use PhpAiToolkit\PhpStan\Support\NonDocCommentArrayContext;
+use PhpAiToolkit\PhpStan\Support\NonDocCommentCatchContext;
 use PhpAiToolkit\PhpStan\Support\NonDocCommentContext;
+use PhpAiToolkit\PhpStan\Support\NonDocCommentTokenClassifier;
+use PhpAiToolkit\PhpStan\Support\ShortArrayOpeningPolicy;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(NonDocCommentContext::class)]
+#[UsesClass(NonDocCommentArrayContext::class)]
+#[UsesClass(NonDocCommentCatchContext::class)]
+#[UsesClass(NonDocCommentTokenClassifier::class)]
+#[UsesClass(ShortArrayOpeningPolicy::class)]
 #[Medium]
 final class NonDocCommentContextTest extends TestCase
 {

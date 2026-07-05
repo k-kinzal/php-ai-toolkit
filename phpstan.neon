@@ -25,6 +25,15 @@ parameters:
         # See: https://github.com/phpstan/phpstan/discussions (no @api on ErrorFormatterTestCase)
         -
             identifier: phpstanApi.class
+            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesAiErrorFormatterTest.php
+        -
+            identifier: phpstanApi.method
+            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesAiErrorFormatterTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesAiErrorFormatterTest.php
+        -
+            identifier: phpstanApi.class
             path: tests/Unit/PhpStan/ErrorFormatter/AiRulesErrorFormatterTest.php
         -
             identifier: phpstanApi.method
@@ -32,3 +41,27 @@ parameters:
         -
             identifier: phpstanApi.constructor
             path: tests/Unit/PhpStan/ErrorFormatter/AiRulesErrorFormatterTest.php
+        -
+            identifier: phpstanApi.class
+            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesHumanErrorFormatterTest.php
+        -
+            identifier: phpstanApi.method
+            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesHumanErrorFormatterTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesHumanErrorFormatterTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/ErrorCollectionSummaryTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/ErrorGroupingTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/ErrorGutterTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/HumanErrorPrinterTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/HumanFileErrorPrinterTest.php

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule;
 
+use Override;
 use PhpAiToolkit\PhpStan\Rule\NoPrivateMethodInTestClassRule;
 use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
@@ -18,6 +19,7 @@ use PHPUnit\Framework\Attributes\Medium;
 #[Medium]
 final class NoPrivateMethodInTestClassRuleTest extends RuleTestCase
 {
+    #[Override]
     protected function getRule(): Rule
     {
         return new NoPrivateMethodInTestClassRule(new TestClassScope());

@@ -10,7 +10,20 @@ use function is_dir;
 use function mkdir;
 
 use PhpAiToolkit\Installer\Cli\Application;
+use PhpAiToolkit\Installer\Cli\ApplicationHelpPrinter;
+use PhpAiToolkit\Installer\Cli\ApplicationInstallRunner;
+use PhpAiToolkit\Installer\Cli\CliArgumentParser;
+use PhpAiToolkit\Installer\Cli\CliOutputWriter;
+use PhpAiToolkit\Installer\Cli\Command\AgentSkillDirectoryDetector;
+use PhpAiToolkit\Installer\Cli\Command\InstallCommand;
+use PhpAiToolkit\Installer\Cli\Command\PackageSkillDirectoryScanner;
+use PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator;
+use PhpAiToolkit\Installer\Cli\Command\SkillInstallationRunner;
+use PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter;
+use PhpAiToolkit\Installer\Cli\Command\SkillInstaller;
+use PhpAiToolkit\Installer\RelativePathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -24,6 +37,18 @@ use function uniqid;
 use function unlink;
 
 #[CoversClass(Application::class)]
+#[UsesClass(AgentSkillDirectoryDetector::class)]
+#[UsesClass(ApplicationHelpPrinter::class)]
+#[UsesClass(ApplicationInstallRunner::class)]
+#[UsesClass(CliArgumentParser::class)]
+#[UsesClass(CliOutputWriter::class)]
+#[UsesClass(InstallCommand::class)]
+#[UsesClass(PackageSkillDirectoryScanner::class)]
+#[UsesClass(RelativePathResolver::class)]
+#[UsesClass(SkillFilesystemOperator::class)]
+#[UsesClass(SkillInstallationRunner::class)]
+#[UsesClass(SkillInstallationWriter::class)]
+#[UsesClass(SkillInstaller::class)]
 final class ApplicationTest extends TestCase
 {
     public function testRunHelpFlag(): void

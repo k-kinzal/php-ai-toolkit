@@ -10,7 +10,6 @@ use function explode;
 use function implode;
 use function rtrim;
 use function str_repeat;
-use function str_replace;
 
 /**
  * Computes relative paths between directories for symlink creation.
@@ -28,8 +27,9 @@ final class RelativePathResolver
      */
     public static function relativePath(string $from, string $to): string
     {
-        $from = self::normalizePath($from);
-        $to = self::normalizePath($to);
+        $normalizer = new PathNormalizer();
+        $from = $normalizer->normalize($from);
+        $to = $normalizer->normalize($to);
 
         $fromParts = explode('/', $from);
         $toParts = explode('/', $to);
@@ -47,12 +47,5 @@ final class RelativePathResolver
         $relative = str_repeat('../', $upCount) . implode('/', $remaining);
 
         return rtrim($relative, '/');
-    }
-
-    private static function normalizePath(string $path): string
-    {
-        $path = str_replace('\\', '/', $path);
-
-        return rtrim($path, '/');
     }
 }

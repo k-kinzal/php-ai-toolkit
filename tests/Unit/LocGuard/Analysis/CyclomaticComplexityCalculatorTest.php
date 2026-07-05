@@ -5,16 +5,22 @@ declare(strict_types=1);
 namespace Tests\Unit\LocGuard\Analysis;
 
 use PhpAiToolkit\LocGuard\Analysis\CyclomaticComplexityCalculator;
+use PhpAiToolkit\LocGuard\Analysis\CyclomaticComplexityState;
+use PhpAiToolkit\LocGuard\Analysis\CyclomaticDecisionWeight;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetricCollector;
+use PhpAiToolkit\LocGuard\Analysis\NestedFunctionMetricRange;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(CyclomaticComplexityCalculator::class)]
+#[UsesClass(CyclomaticComplexityState::class)]
+#[UsesClass(CyclomaticDecisionWeight::class)]
 #[UsesClass(FunctionMetric::class)]
 #[UsesClass(FunctionMetricCollector::class)]
+#[UsesClass(NestedFunctionMetricRange::class)]
 final class CyclomaticComplexityCalculatorTest extends TestCase
 {
     public function testCalculateCountsBranchTokensAndTopLevelMatchArms(): void

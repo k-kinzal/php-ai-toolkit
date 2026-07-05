@@ -6,11 +6,17 @@ namespace Tests\Unit\LocGuard\Analysis;
 
 use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric;
 use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetricCollector;
+use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetricLimit;
+use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetricViolationBuilder;
 use PhpAiToolkit\LocGuard\Analysis\CyclomaticComplexityCalculator;
 use PhpAiToolkit\LocGuard\Analysis\FileAnalysis;
 use PhpAiToolkit\LocGuard\Analysis\FileMetric;
+use PhpAiToolkit\LocGuard\Analysis\FileMetricViolationBuilder;
+use PhpAiToolkit\LocGuard\Analysis\FunctionComplexityViolationBuilder;
+use PhpAiToolkit\LocGuard\Analysis\FunctionLineViolationBuilder;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetricCollector;
+use PhpAiToolkit\LocGuard\Analysis\FunctionMetricViolationBuilder;
 use PhpAiToolkit\LocGuard\Analysis\PhpFileAnalyzer;
 use PhpAiToolkit\LocGuard\Analysis\TokenLineCounter;
 use PhpAiToolkit\LocGuard\Analysis\Violation;
@@ -22,11 +28,17 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(PhpFileAnalyzer::class)]
 #[UsesClass(ClassLikeMetric::class)]
 #[UsesClass(ClassLikeMetricCollector::class)]
+#[UsesClass(ClassLikeMetricLimit::class)]
+#[UsesClass(ClassLikeMetricViolationBuilder::class)]
 #[UsesClass(CyclomaticComplexityCalculator::class)]
 #[UsesClass(FileAnalysis::class)]
 #[UsesClass(FileMetric::class)]
+#[UsesClass(FileMetricViolationBuilder::class)]
+#[UsesClass(FunctionComplexityViolationBuilder::class)]
+#[UsesClass(FunctionLineViolationBuilder::class)]
 #[UsesClass(FunctionMetric::class)]
 #[UsesClass(FunctionMetricCollector::class)]
+#[UsesClass(FunctionMetricViolationBuilder::class)]
 #[UsesClass(LimitConfig::class)]
 #[UsesClass(TokenLineCounter::class)]
 #[UsesClass(Violation::class)]

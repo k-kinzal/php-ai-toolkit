@@ -7,7 +7,6 @@ namespace PhpAiToolkit\LocGuard\Reporting;
 use PhpAiToolkit\LocGuard\Analysis\Violation;
 use PhpAiToolkit\LocGuard\Config\ReportConfig;
 
-use function strcmp;
 use function usort;
 
 /**
@@ -15,6 +14,14 @@ use function usort;
  */
 final class ViolationSorter
 {
+    /**
+     * Creates a sorter from field comparison behavior.
+     */
+    public function __construct(
+        private readonly ViolationFieldComparator $fieldComparator = new ViolationFieldComparator(),
+    ) {
+    }
+
     /**
      * Returns violations sorted by configured fields.
      *
@@ -25,7 +32,7 @@ final class ViolationSorter
     {
         usort($violations, function (Violation $left, Violation $right) use ($config): int {
             foreach ($config->orderBy as $field) {
-                $comparison = $this->compareField($left, $right, $field);
+                $comparison = $this->fieldComparator->compare($left, $right, $field);
                 if ($comparison !== 0) {
                     return $comparison;
                 }
@@ -35,26 +42,5 @@ final class ViolationSorter
         });
 
         return $violations;
-    }
-
-    private function compareField(Violation $left, Violation $right, string $field): int
-    {
-        if ($field === 'path') {
-            return strcmp($left->path, $right->path);
-        }
-
-        if ($field === 'rule') {
-            return strcmp($left->rule, $right->rule);
-        }
-
-        if ($field === 'actual') {
-            return $left->actual <=> $right->actual;
-        }
-
-        if ($field === 'limit') {
-            return $left->limit <=> $right->limit;
-        }
-
-        return $left->line <=> $right->line;
     }
 }

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule;
 
+use Override;
+use PhpAiToolkit\PhpStan\Rule\ForbiddenNamespacePrefixes;
 use PhpAiToolkit\PhpStan\Rule\ForbiddenNamespaceRule;
+use PhpAiToolkit\PhpStan\Rule\NamespacePrefixNormalizer;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -14,9 +17,12 @@ use PHPUnit\Framework\Attributes\Medium;
  * @extends RuleTestCase<ForbiddenNamespaceRule>
  */
 #[CoversClass(ForbiddenNamespaceRule::class)]
+#[CoversClass(ForbiddenNamespacePrefixes::class)]
+#[CoversClass(NamespacePrefixNormalizer::class)]
 #[Medium]
 final class ForbiddenNamespaceRuleTest extends RuleTestCase
 {
+    #[Override]
     protected function getRule(): Rule
     {
         return new ForbiddenNamespaceRule([
@@ -78,6 +84,19 @@ final class ForbiddenNamespaceRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/ForbiddenNamespace/WithoutForbiddenNamespaces.php'], []);
     }
+
+    public function testNormalizeConvertsSeparatorsAndTrimsNamespaceBoundaries(): void
+    {
+        self::assertSame('Tests\Support', (new NamespacePrefixNormalizer())->normalize('\\Tests/Support\\'));
+    }
+
+    public function testMatchingPrefixReturnsForbiddenPrefix(): void
+    {
+        $prefixes = new ForbiddenNamespacePrefixes(['Tests/Support']);
+
+        self::assertSame('Tests\Support', $prefixes->matchingPrefix('Tests\Support\Fixture'));
+        self::assertNull($prefixes->matchingPrefix('Tests\Domain'));
+    }
 }
 
 /**
@@ -87,6 +106,7 @@ final class ForbiddenNamespaceRuleTest extends RuleTestCase
 #[Medium]
 final class ForbiddenNamespaceRuleWithoutConfiguredPrefixesTest extends RuleTestCase
 {
+    #[Override]
     protected function getRule(): Rule
     {
         return new ForbiddenNamespaceRule();

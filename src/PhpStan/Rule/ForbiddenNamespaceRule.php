@@ -16,18 +16,14 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final class ForbiddenNamespaceRule implements Rule
 {
-    /** @var list<string> */
-    private array $forbiddenNamespacePrefixes;
+    private readonly ForbiddenNamespacePrefixes $forbiddenNamespacePrefixes;
 
     /**
      * @param list<string> $forbiddenNamespacePrefixes namespace prefixes to forbid
      */
     public function __construct(array $forbiddenNamespacePrefixes = [])
     {
-        $this->forbiddenNamespacePrefixes = array_values(array_unique(array_filter(
-            array_map([$this, 'normalizeNamespacePrefix'], $forbiddenNamespacePrefixes),
-            static fn (string $prefix): bool => $prefix !== '',
-        )));
+        $this->forbiddenNamespacePrefixes = new ForbiddenNamespacePrefixes($forbiddenNamespacePrefixes);
     }
 
     /**
@@ -44,49 +40,28 @@ final class ForbiddenNamespaceRule implements Rule
      */
     public function processNode(\PhpParser\Node $node, Scope $scope): array
     {
-        if ($this->forbiddenNamespacePrefixes === []) {
-            return [];
-        }
-
         if ($node->name === null) {
             return [];
         }
 
         $namespace = $node->name->toString();
+        $prefix = $this->forbiddenNamespacePrefixes->matchingPrefix($namespace);
 
-        foreach ($this->forbiddenNamespacePrefixes as $prefix) {
-            if ($this->matchesForbiddenPrefix($namespace, $prefix)) {
-                return [$this->buildError($node, $namespace, $prefix)];
-            }
+        if ($prefix === null) {
+            return [];
         }
 
-        return [];
-    }
-
-    private function normalizeNamespacePrefix(string $prefix): string
-    {
-        return trim(str_replace('/', '\\', $prefix), '\\');
-    }
-
-    private function matchesForbiddenPrefix(string $namespace, string $prefix): bool
-    {
-        return $namespace === $prefix || str_starts_with($namespace, $prefix . '\\');
-    }
-
-    private function buildError(
-        \PhpParser\Node\Stmt\Namespace_ $node,
-        string $namespace,
-        string $prefix,
-    ): IdentifierRuleError {
-        return RuleErrorBuilder::message(
-            sprintf(
-                'Namespace "%s" is prohibited by forbidden prefix "%s". Do not create generic test support/helper/utility namespaces; use an existing library, create an independent internal library outside the Tests namespace, or accept duplication and write setup directly inside each test method.',
-                $namespace,
-                $prefix
+        return [
+            RuleErrorBuilder::message(
+                sprintf(
+                    'Namespace "%s" is prohibited by forbidden prefix "%s". Do not create generic test support/helper/utility namespaces; use an existing library, create an independent internal library outside the Tests namespace, or accept duplication and write setup directly inside each test method.',
+                    $namespace,
+                    $prefix
+                )
             )
-        )
-            ->identifier('customRules.forbiddenNamespace')
-            ->line($node->getStartLine())
-            ->build();
+                ->identifier('customRules.forbiddenNamespace')
+                ->line($node->getStartLine())
+                ->build(),
+        ];
     }
 }

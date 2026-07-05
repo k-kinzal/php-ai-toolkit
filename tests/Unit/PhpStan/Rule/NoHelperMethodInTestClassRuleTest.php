@@ -4,20 +4,29 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule;
 
+use Override;
 use PhpAiToolkit\PhpStan\Rule\NoHelperMethodInTestClassRule;
+use PhpAiToolkit\PhpStan\Rule\OverrideAttributeDetector;
+use PhpAiToolkit\PhpStan\Rule\OverrideMethodDetector;
+use PhpAiToolkit\PhpStan\Rule\TestMethodDetector;
 use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * @extends RuleTestCase<NoHelperMethodInTestClassRule>
  */
 #[CoversClass(NoHelperMethodInTestClassRule::class)]
+#[UsesClass(OverrideAttributeDetector::class)]
+#[UsesClass(OverrideMethodDetector::class)]
+#[UsesClass(TestMethodDetector::class)]
 #[Medium]
 final class NoHelperMethodInTestClassRuleTest extends RuleTestCase
 {
+    #[Override]
     protected function getRule(): Rule
     {
         return new NoHelperMethodInTestClassRule(new TestClassScope());

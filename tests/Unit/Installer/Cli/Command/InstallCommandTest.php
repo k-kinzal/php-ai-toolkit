@@ -11,8 +11,16 @@ use function is_dir;
 use function is_link;
 use function mkdir;
 
+use PhpAiToolkit\Installer\Cli\Command\AgentSkillDirectoryDetector;
 use PhpAiToolkit\Installer\Cli\Command\InstallCommand;
+use PhpAiToolkit\Installer\Cli\Command\PackageSkillDirectoryScanner;
+use PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator;
+use PhpAiToolkit\Installer\Cli\Command\SkillInstallationRunner;
+use PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter;
+use PhpAiToolkit\Installer\Cli\Command\SkillInstaller;
+use PhpAiToolkit\Installer\RelativePathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -27,6 +35,13 @@ use function uniqid;
 use function unlink;
 
 #[CoversClass(InstallCommand::class)]
+#[UsesClass(AgentSkillDirectoryDetector::class)]
+#[UsesClass(PackageSkillDirectoryScanner::class)]
+#[UsesClass(RelativePathResolver::class)]
+#[UsesClass(SkillFilesystemOperator::class)]
+#[UsesClass(SkillInstallationRunner::class)]
+#[UsesClass(SkillInstallationWriter::class)]
+#[UsesClass(SkillInstaller::class)]
 final class InstallCommandTest extends TestCase
 {
     public function testExecuteNoSkillsDirectoryOutputsInfo(): void

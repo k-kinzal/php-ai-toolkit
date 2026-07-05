@@ -16,18 +16,17 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final class ForbidClassLikeNameSuffixRule implements Rule
 {
-    /** @var list<string> */
-    private array $forbiddenSuffixes;
+    private readonly ForbiddenClassLikeSuffixes $forbiddenSuffixes;
+
+    private readonly ClassLikeKindLabel $kindLabel;
 
     /**
      * @param list<string> $forbiddenSuffixes class-like name suffixes to forbid
      */
     public function __construct(array $forbiddenSuffixes = [])
     {
-        $this->forbiddenSuffixes = array_values(array_unique(array_filter(
-            $forbiddenSuffixes,
-            static fn (string $suffix): bool => $suffix !== '',
-        )));
+        $this->forbiddenSuffixes = new ForbiddenClassLikeSuffixes($forbiddenSuffixes);
+        $this->kindLabel = new ClassLikeKindLabel();
     }
 
     /**
@@ -44,61 +43,33 @@ final class ForbidClassLikeNameSuffixRule implements Rule
      */
     public function processNode(\PhpParser\Node $node, Scope $scope): array
     {
-        if ($this->forbiddenSuffixes === []) {
-            return [];
-        }
-
         if ($node->name === null) {
             return [];
         }
 
         $name = $node->name->toString();
+        $suffix = $this->forbiddenSuffixes->matchingSuffix($name);
 
-        foreach ($this->forbiddenSuffixes as $suffix) {
-            if (str_ends_with($name, $suffix)) {
-                return [$this->buildError($node, $name, $suffix)];
-            }
+        if ($suffix === null) {
+            return [];
         }
 
-        return [];
-    }
+        $kind = $this->kindLabel->label($node);
 
-    private function buildError(
-        \PhpParser\Node\Stmt\ClassLike $node,
-        string $name,
-        string $suffix,
-    ): IdentifierRuleError {
-        $kind = $this->resolveKindLabel($node);
-
-        return RuleErrorBuilder::message(
-            sprintf(
-                '%s %s uses forbidden suffix "%s". Rename this %s so its name does not end with "%s"; use a specific domain name instead.',
-                ucfirst($kind),
-                $name,
-                $suffix,
-                $kind,
-                $suffix
+        return [
+            RuleErrorBuilder::message(
+                sprintf(
+                    '%s %s uses forbidden suffix "%s". Rename this %s so its name does not end with "%s"; use a specific domain name instead.',
+                    ucfirst($kind),
+                    $name,
+                    $suffix,
+                    $kind,
+                    $suffix
+                )
             )
-        )
-            ->identifier('customRules.forbiddenClassLikeNameSuffix')
-            ->line($node->getStartLine())
-            ->build();
-    }
-
-    private function resolveKindLabel(\PhpParser\Node\Stmt\ClassLike $node): string
-    {
-        if ($node instanceof \PhpParser\Node\Stmt\Interface_) {
-            return 'interface';
-        }
-
-        if ($node instanceof \PhpParser\Node\Stmt\Trait_) {
-            return 'trait';
-        }
-
-        if ($node instanceof \PhpParser\Node\Stmt\Enum_) {
-            return 'enum';
-        }
-
-        return 'class';
+                ->identifier('customRules.forbiddenClassLikeNameSuffix')
+                ->line($node->getStartLine())
+                ->build(),
+        ];
     }
 }

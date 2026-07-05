@@ -5,18 +5,26 @@ declare(strict_types=1);
 namespace Tests\Unit\LocGuard\Config;
 
 use PhpAiToolkit\LocGuard\Config\ConfigLoader;
+use PhpAiToolkit\LocGuard\Config\ConfigScalarReader;
+use PhpAiToolkit\LocGuard\Config\ConfigStringListReader;
 use PhpAiToolkit\LocGuard\Config\LimitConfig;
+use PhpAiToolkit\LocGuard\Config\LimitConfigReader;
 use PhpAiToolkit\LocGuard\Config\LocGuardConfig;
 use PhpAiToolkit\LocGuard\Config\ReportConfig;
+use PhpAiToolkit\LocGuard\Config\ReportConfigReader;
 use PhpAiToolkit\LocGuard\LocGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ConfigLoader::class)]
+#[UsesClass(ConfigScalarReader::class)]
+#[UsesClass(ConfigStringListReader::class)]
 #[UsesClass(LimitConfig::class)]
+#[UsesClass(LimitConfigReader::class)]
 #[UsesClass(LocGuardConfig::class)]
 #[UsesClass(ReportConfig::class)]
+#[UsesClass(ReportConfigReader::class)]
 final class ConfigLoaderTest extends TestCase
 {
     public function testLoadsLocYaml(): void

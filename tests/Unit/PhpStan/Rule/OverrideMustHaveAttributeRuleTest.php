@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule;
 
+use Override;
 use PhpAiToolkit\PhpStan\Rule\OverrideMustHaveAttributeRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
@@ -17,6 +18,7 @@ use PHPUnit\Framework\Attributes\Medium;
 #[Medium]
 final class OverrideMustHaveAttributeRuleTest extends RuleTestCase
 {
+    #[Override]
     protected function getRule(): Rule
     {
         return new OverrideMustHaveAttributeRule();
@@ -46,4 +48,5 @@ final class OverrideMustHaveAttributeRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/OverrideMustHaveAttribute/AbstractImpl.php'], []);
     }
+
 }

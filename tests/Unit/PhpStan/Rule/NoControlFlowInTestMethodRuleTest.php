@@ -4,20 +4,31 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule;
 
+use Override;
+use PhpAiToolkit\PhpStan\Rule\ControlFlowTypeResolver;
+use PhpAiToolkit\PhpStan\Rule\NestedScopeFilter;
 use PhpAiToolkit\PhpStan\Rule\NoControlFlowInTestMethodRule;
+use PhpAiToolkit\PhpStan\Rule\TestMethodControlFlowErrorCollector;
+use PhpAiToolkit\PhpStan\Rule\TestMethodDetector;
 use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * @extends RuleTestCase<NoControlFlowInTestMethodRule>
  */
 #[CoversClass(NoControlFlowInTestMethodRule::class)]
+#[UsesClass(ControlFlowTypeResolver::class)]
+#[UsesClass(NestedScopeFilter::class)]
+#[UsesClass(TestMethodControlFlowErrorCollector::class)]
+#[UsesClass(TestMethodDetector::class)]
 #[Medium]
 final class NoControlFlowInTestMethodRuleTest extends RuleTestCase
 {
+    #[Override]
     protected function getRule(): Rule
     {
         return new NoControlFlowInTestMethodRule(new TestClassScope());

@@ -8,15 +8,7 @@ use function array_shift;
 
 use Closure;
 
-use function fwrite;
-
-use const PHP_EOL;
-
-use PhpAiToolkit\Installer\Cli\Command\InstallCommand;
-
 use function sprintf;
-
-use const STDOUT;
 
 /**
  * CLI application for php-ai-toolkit.
@@ -27,8 +19,13 @@ final class Application
 {
     private const VERSION = '1.0.0';
 
-    /** @var Closure(string): void */
-    private Closure $output;
+    private readonly CliOutputWriter $writer;
+
+    private readonly CliArgumentParser $argumentParser;
+
+    private readonly ApplicationHelpPrinter $helpPrinter;
+
+    private readonly ApplicationInstallRunner $installRunner;
 
     /**
      * @param Closure(string): void|null $output writer function for CLI output (defaults to STDOUT)
@@ -37,10 +34,14 @@ final class Application
         private readonly string $projectRoot,
         private readonly string $packageRoot,
         ?Closure $output = null,
+        ?CliArgumentParser $argumentParser = null,
+        ?ApplicationHelpPrinter $helpPrinter = null,
+        ?ApplicationInstallRunner $installRunner = null,
     ) {
-        $this->output = $output ?? static function (string $message): void {
-            fwrite(STDOUT, $message . PHP_EOL);
-        };
+        $this->writer = new CliOutputWriter($output);
+        $this->argumentParser = $argumentParser ?? new CliArgumentParser();
+        $this->helpPrinter = $helpPrinter ?? new ApplicationHelpPrinter($this->writer, self::VERSION);
+        $this->installRunner = $installRunner ?? new ApplicationInstallRunner($this->projectRoot, $this->packageRoot, $this->writer, self::VERSION);
     }
 
     /**
@@ -57,105 +58,27 @@ final class Application
     {
         array_shift($argv);
 
-        $arguments = $this->parseArguments($argv);
+        $arguments = $this->argumentParser->parse($argv);
         if ($arguments['help']) {
-            $this->printHelp();
+            $this->helpPrinter->print();
 
             return 0;
         }
 
         if ($arguments['version']) {
-            $this->write(sprintf('php-ai-toolkit v%s', self::VERSION));
+            $this->writer->write(sprintf('php-ai-toolkit v%s', self::VERSION));
 
             return 0;
         }
 
         $command = $arguments['command'] ?? 'install';
         if ($command === 'install') {
-            return $this->runInstall($arguments['force'], $arguments['copy']);
+            return $this->installRunner->run($arguments['force'], $arguments['copy']);
         }
 
-        $this->write(sprintf('[ERROR] Unknown command: %s', $command));
-        $this->printHelp();
+        $this->writer->write(sprintf('[ERROR] Unknown command: %s', $command));
+        $this->helpPrinter->print();
 
         return 1;
-    }
-
-    /**
-     * @param list<string> $argv
-     * @return array{command: string|null, force: bool, copy: bool, help: bool, version: bool}
-     */
-    private function parseArguments(array $argv): array
-    {
-        $arguments = [
-            'command' => null,
-            'force' => false,
-            'copy' => false,
-            'help' => false,
-            'version' => false,
-        ];
-
-        foreach ($argv as $arg) {
-            $arguments = $this->parseArgument($arguments, $arg);
-        }
-
-        return $arguments;
-    }
-
-    /**
-     * @param array{command: string|null, force: bool, copy: bool, help: bool, version: bool} $arguments
-     * @return array{command: string|null, force: bool, copy: bool, help: bool, version: bool}
-     */
-    private function parseArgument(array $arguments, string $arg): array
-    {
-        if ($arg === '--help' || $arg === '-h') {
-            $arguments['help'] = true;
-        } elseif ($arg === '--version' || $arg === '-V') {
-            $arguments['version'] = true;
-        } elseif ($arg === '--force' || $arg === '-f') {
-            $arguments['force'] = true;
-        } elseif ($arg === '--copy') {
-            $arguments['copy'] = true;
-        } elseif (!str_starts_with($arg, '-') && $arguments['command'] === null) {
-            $arguments['command'] = $arg;
-        }
-
-        return $arguments;
-    }
-
-    private function runInstall(bool $force, bool $copy): int
-    {
-        $this->write(sprintf('php-ai-toolkit v%s', self::VERSION));
-        $this->write('');
-        $this->write('Installing skills...');
-
-        $installCommand = new InstallCommand(
-            $this->projectRoot,
-            $this->packageRoot,
-            $this->output,
-        );
-
-        return $installCommand->execute($force, $copy);
-    }
-
-    private function printHelp(): void
-    {
-        $this->write(sprintf('php-ai-toolkit v%s', self::VERSION));
-        $this->write('');
-        $this->write('Usage: php-ai-toolkit [command] [options]');
-        $this->write('');
-        $this->write('Commands:');
-        $this->write('  install          Install skills into the project (default)');
-        $this->write('');
-        $this->write('Options:');
-        $this->write('  --force, -f      Overwrite existing skills');
-        $this->write('  --copy           Copy files instead of creating symlinks');
-        $this->write('  --help, -h       Show this help message');
-        $this->write('  --version, -V    Show version');
-    }
-
-    private function write(string $message): void
-    {
-        ($this->output)($message);
     }
 }

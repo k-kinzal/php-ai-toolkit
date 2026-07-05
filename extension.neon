@@ -135,6 +135,11 @@ services:
         tags:
             - phpstan.rules.rule
 
+    aiRules.rule.noNonPublicMethod:
+        class: PhpAiToolkit\PhpStan\Rule\NoNonPublicMethodRule
+        tags:
+            - phpstan.rules.rule
+
     aiRules.rule.noHelperMethodInTestClass:
         class: PhpAiToolkit\PhpStan\Rule\NoHelperMethodInTestClassRule
         arguments:

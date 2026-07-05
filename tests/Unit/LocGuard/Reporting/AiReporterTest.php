@@ -9,6 +9,11 @@ use PhpAiToolkit\LocGuard\Analysis\FileMetric;
 use PhpAiToolkit\LocGuard\Analysis\Violation;
 use PhpAiToolkit\LocGuard\Config\ReportConfig;
 use PhpAiToolkit\LocGuard\Reporting\AiReporter;
+use PhpAiToolkit\LocGuard\Reporting\AiReportGuidance;
+use PhpAiToolkit\LocGuard\Reporting\AiReportSummary;
+use PhpAiToolkit\LocGuard\Reporting\AiViolationAction;
+use PhpAiToolkit\LocGuard\Reporting\AiViolationFormatter;
+use PhpAiToolkit\LocGuard\Reporting\ViolationFieldComparator;
 use PhpAiToolkit\LocGuard\Reporting\ViolationSorter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -18,7 +23,12 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(AnalysisResult::class)]
 #[UsesClass(FileMetric::class)]
 #[UsesClass(ReportConfig::class)]
+#[UsesClass(AiReportGuidance::class)]
+#[UsesClass(AiReportSummary::class)]
+#[UsesClass(AiViolationAction::class)]
+#[UsesClass(AiViolationFormatter::class)]
 #[UsesClass(Violation::class)]
+#[UsesClass(ViolationFieldComparator::class)]
 #[UsesClass(ViolationSorter::class)]
 final class AiReporterTest extends TestCase
 {

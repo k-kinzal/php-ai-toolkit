@@ -6,17 +6,9 @@ namespace PhpAiToolkit\PhpUnit\TestReporter;
 
 use function count;
 
-use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
-
-use function preg_match_all;
-use function preg_quote;
-use function str_contains;
-use function str_starts_with;
-use function trim;
 
 /**
  * Collects test issues (failures, errors, risky) during a PHPUnit run.
@@ -28,6 +20,25 @@ final class TestIssueCollector
 {
     /** @var list<TestIssue> */
     private array $issues = [];
+
+    private readonly TestIssueNameResolver $nameResolver;
+
+    private readonly TestFailureLineResolver $failureLineResolver;
+
+    private readonly TestIssueSourceLocationResolver $sourceLocationResolver;
+
+    /**
+     * Creates the issue collector from event-to-issue resolver collaborators.
+     */
+    public function __construct(
+        ?TestIssueNameResolver $nameResolver = null,
+        ?TestFailureLineResolver $failureLineResolver = null,
+        ?TestIssueSourceLocationResolver $sourceLocationResolver = null,
+    ) {
+        $this->nameResolver = $nameResolver ?? new TestIssueNameResolver();
+        $this->failureLineResolver = $failureLineResolver ?? new TestFailureLineResolver();
+        $this->sourceLocationResolver = $sourceLocationResolver ?? new TestIssueSourceLocationResolver();
+    }
 
     /**
      * Records a test failure from a Failed event.
@@ -46,14 +57,14 @@ final class TestIssueCollector
         }
 
         $testFile = $test->file();
-        $testLine = $test->isTestMethod() ? $this->resolveFailureLine($throwable, $testFile, $test->line()) : 0;
+        $testLine = $test->isTestMethod() ? $this->failureLineResolver->resolve($throwable, $testFile, $test->line()) : 0;
 
-        $sourceLocation = $this->extractSourceLocation($throwable->stackTrace(), $testFile);
+        $sourceLocation = $this->sourceLocationResolver->resolve($throwable->stackTrace(), $testFile);
 
         $this->issues[] = new TestIssue(
             TestIssue::TYPE_FAILED,
             $test->id(),
-            $this->resolveTestName($test),
+            $this->nameResolver->resolve($test),
             $testFile,
             $testLine,
             $throwable->message(),
@@ -74,14 +85,14 @@ final class TestIssueCollector
         $throwable = $event->throwable();
 
         $testFile = $test->file();
-        $testLine = $test->isTestMethod() ? $this->resolveFailureLine($throwable, $testFile, $test->line()) : 0;
+        $testLine = $test->isTestMethod() ? $this->failureLineResolver->resolve($throwable, $testFile, $test->line()) : 0;
 
-        $sourceLocation = $this->extractSourceLocation($throwable->stackTrace(), $testFile);
+        $sourceLocation = $this->sourceLocationResolver->resolve($throwable->stackTrace(), $testFile);
 
         $this->issues[] = new TestIssue(
             TestIssue::TYPE_ERROR,
             $test->id(),
-            $this->resolveTestName($test),
+            $this->nameResolver->resolve($test),
             $testFile,
             $testLine,
             $throwable->message(),
@@ -102,7 +113,7 @@ final class TestIssueCollector
         $this->issues[] = new TestIssue(
             TestIssue::TYPE_RISKY,
             $test->id(),
-            $this->resolveTestName($test),
+            $this->nameResolver->resolve($test),
             $test->file(),
             $testLine,
             $event->message(),
@@ -125,86 +136,5 @@ final class TestIssueCollector
     public function hasIssues(): bool
     {
         return count($this->issues) > 0;
-    }
-
-    /**
-     * Resolves a human-readable test name from a Test object.
-     *
-     * Returns ClassName::methodName for TestMethod instances,
-     * or the raw name for other test types.
-     *
-     * @param \PHPUnit\Event\Code\Test $test the test to resolve a name for
-     */
-    private function resolveTestName(\PHPUnit\Event\Code\Test $test): string
-    {
-        if ($test->isTestMethod()) {
-            return $test->nameWithClass();
-        }
-
-        return $test->name();
-    }
-
-    /**
-     * Resolves the failure line from the stack trace or falls back to the method definition line.
-     *
-     * Scans the stack trace for the first frame matching the test file
-     * to find the exact assertion line, rather than the method definition line.
-     */
-    private function resolveFailureLine(Throwable $throwable, string $testFile, int $fallbackLine): int
-    {
-        $stackTrace = $throwable->stackTrace();
-        if ($stackTrace === '') {
-            return $fallbackLine;
-        }
-
-        $matches = [];
-        $escaped = preg_quote($testFile, '/');
-        if (preg_match_all('/^' . $escaped . ':(\d+)$/m', $stackTrace, $matches) > 0) {
-            return (int) $matches[1][0];
-        }
-
-        return $fallbackLine;
-    }
-
-    /**
-     * Extracts the source file location from a stack trace string.
-     *
-     * Scans the stack trace for frames that are NOT the test file and
-     * NOT vendor files, returning the first application code frame.
-     * This helps the AI agent identify where the actual bug is.
-     *
-     * @return array{file: string, line: int}|null the source location or null if not found
-     */
-    private function extractSourceLocation(string $stackTrace, string $testFile): ?array
-    {
-        if ($stackTrace === '') {
-            return null;
-        }
-
-        $matches = [];
-        if (preg_match_all('/^(.+):(\d+)$/m', $stackTrace, $matches, PREG_SET_ORDER) === 0) {
-            return null;
-        }
-
-        foreach ($matches as $match) {
-            $file = trim($match[1]);
-            $line = (int) $match[2];
-
-            if ($file === $testFile) {
-                continue;
-            }
-
-            if (str_contains($file, '/vendor/')) {
-                continue;
-            }
-
-            if (str_starts_with($file, 'phar://')) {
-                continue;
-            }
-
-            return ['file' => $file, 'line' => $line];
-        }
-
-        return null;
     }
 }

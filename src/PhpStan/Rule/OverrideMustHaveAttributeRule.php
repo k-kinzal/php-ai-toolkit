@@ -15,6 +15,16 @@ use PHPStan\TrinaryLogic;
  */
 final class OverrideMustHaveAttributeRule implements Rule
 {
+    private readonly OverrideAttributeDetector $overrideAttributeDetector;
+
+    /**
+     * Creates a rule from override attribute detection.
+     */
+    public function __construct(?OverrideAttributeDetector $overrideAttributeDetector = null)
+    {
+        $this->overrideAttributeDetector = $overrideAttributeDetector ?? new OverrideAttributeDetector();
+    }
+
     /**
      * @return class-string<\PhpParser\Node\Stmt\ClassMethod>
      */
@@ -29,7 +39,7 @@ final class OverrideMustHaveAttributeRule implements Rule
      */
     public function processNode(\PhpParser\Node $node, Scope $scope): array
     {
-        if ($this->hasOverrideAttribute($node)) {
+        if ($this->overrideAttributeDetector->has($node)) {
             return [];
         }
 
@@ -63,21 +73,7 @@ final class OverrideMustHaveAttributeRule implements Rule
             )
                 ->identifier('customRules.overrideMustHaveAttribute')
                 ->line($node->getStartLine())
-                ->build(),
+            ->build(),
         ];
-    }
-
-    private function hasOverrideAttribute(\PhpParser\Node\Stmt\ClassMethod $node): bool
-    {
-        foreach ($node->attrGroups as $attrGroup) {
-            foreach ($attrGroup->attrs as $attr) {
-                $name = $attr->name->toString();
-                if ($name === 'Override' || $name === '\\Override') {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 }

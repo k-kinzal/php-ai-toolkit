@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\PhpStan\Rule;
+
+use PhpAiToolkit\PhpStan\Rule\ClassLikeNameResolver;
+use PhpAiToolkit\PhpStan\Rule\NonPublicMethodErrorBuilder;
+use PhpParser\Modifiers;
+use PHPStan\Analyser\Scope;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\TestCase;
+
+#[CoversClass(NonPublicMethodErrorBuilder::class)]
+#[UsesClass(ClassLikeNameResolver::class)]
+final class NonPublicMethodErrorBuilderTest extends TestCase
+{
+    public function testPrivateMethodReturnsNonPublicMethodError(): void
+    {
+        $error = (new NonPublicMethodErrorBuilder())->privateMethod(
+            new \PhpParser\Node\Stmt\ClassMethod('helper', ['flags' => Modifiers::PRIVATE]),
+            new \PhpParser\Node\Stmt\Class_('Example'),
+            self::createStub(Scope::class),
+        );
+
+        self::assertSame('customRules.nonPublicMethod', $error->getIdentifier());
+    }
+
+    public function testProtectedMethodReturnsNonPublicMethodError(): void
+    {
+        $error = (new NonPublicMethodErrorBuilder())->protectedMethod(
+            new \PhpParser\Node\Stmt\ClassMethod('helper', ['flags' => Modifiers::PROTECTED]),
+            new \PhpParser\Node\Stmt\Class_('Example'),
+            self::createStub(Scope::class),
+        );
+
+        self::assertSame('customRules.nonPublicMethod', $error->getIdentifier());
+    }
+}

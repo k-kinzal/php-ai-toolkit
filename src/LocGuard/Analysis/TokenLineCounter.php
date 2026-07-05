@@ -5,27 +5,25 @@ declare(strict_types=1);
 namespace PhpAiToolkit\LocGuard\Analysis;
 
 use function count;
-use function explode;
-use function in_array;
 
 use PhpToken;
 
 use function str_ends_with;
 use function substr_count;
 
-use const T_CLOSE_TAG;
-use const T_COMMENT;
-use const T_DOC_COMMENT;
-use const T_OPEN_TAG;
-use const T_WHITESPACE;
-
-use function trim;
-
 /**
  * Counts physical lines and non-comment lines of PHP source.
  */
 final class TokenLineCounter
 {
+    /**
+     * Creates a line counter from token line resolution.
+     */
+    public function __construct(
+        private readonly CodeTokenLineResolver $codeLineResolver = new CodeTokenLineResolver(),
+    ) {
+    }
+
     /**
      * Counts physical lines in the source exactly as stored on disk.
      */
@@ -47,31 +45,11 @@ final class TokenLineCounter
     {
         $lines = [];
         foreach ($tokens as $token) {
-            if ($this->isNonCodeToken($token)) {
-                continue;
+            foreach ($this->codeLineResolver->lineNumbers($token) as $lineNumber) {
+                $lines[$lineNumber] = true;
             }
-
-            $this->markCodeLines($lines, $token);
         }
 
         return count($lines);
-    }
-
-    private function isNonCodeToken(PhpToken $token): bool
-    {
-        return in_array($token->id, [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT, T_OPEN_TAG, T_CLOSE_TAG], true);
-    }
-
-    /**
-     * @param array<int, bool> $lines
-     */
-    private function markCodeLines(array &$lines, PhpToken $token): void
-    {
-        $parts = explode("\n", $token->text);
-        foreach ($parts as $offset => $part) {
-            if (trim($part) !== '') {
-                $lines[$token->line + $offset] = true;
-            }
-        }
     }
 }

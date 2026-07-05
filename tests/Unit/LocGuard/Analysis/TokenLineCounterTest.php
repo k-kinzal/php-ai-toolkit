@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis;
 
+use PhpAiToolkit\LocGuard\Analysis\CodeTokenLineResolver;
 use PhpAiToolkit\LocGuard\Analysis\TokenLineCounter;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TokenLineCounter::class)]
+#[UsesClass(CodeTokenLineResolver::class)]
 final class TokenLineCounterTest extends TestCase
 {
     public function testPhysicalLinesCountsStoredLines(): void

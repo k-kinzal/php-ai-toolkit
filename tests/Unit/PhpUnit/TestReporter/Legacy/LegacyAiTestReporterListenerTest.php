@@ -13,9 +13,9 @@ use PhpAiToolkit\Shared\AgentDetector;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use RuntimeException;
+use Tests\Fixture\PhpUnitInternalObjectFactory;
 
 #[CoversNothing]
 final class LegacyAiTestReporterListenerTest extends TestCase
@@ -42,7 +42,7 @@ final class LegacyAiTestReporterListenerTest extends TestCase
             false,
         );
         $listener = new LegacyAiTestReporterListener($runtime);
-        $suite = new TestSuite('root');
+        $suite = PhpUnitInternalObjectFactory::legacyTestSuite('root');
 
         $listener->startTestSuite($suite);
         $listener->addError(new self(__FUNCTION__), new RuntimeException('legacy error'), 0.0);
@@ -65,7 +65,7 @@ final class LegacyAiTestReporterListenerTest extends TestCase
             false,
         );
         $listener = new LegacyAiTestReporterListener($runtime);
-        $suite = new TestSuite('root');
+        $suite = PhpUnitInternalObjectFactory::legacyTestSuite('root');
 
         $listener->startTestSuite($suite);
         $listener->addWarning(new self(__FUNCTION__), new Warning('warning'), 0.0);
@@ -86,7 +86,7 @@ final class LegacyAiTestReporterListenerTest extends TestCase
             false,
         );
         $listener = new LegacyAiTestReporterListener($runtime);
-        $suite = new TestSuite('root');
+        $suite = PhpUnitInternalObjectFactory::legacyTestSuite('root');
 
         $listener->startTestSuite($suite);
         $listener->addFailure(new self(__FUNCTION__), new ExpectationFailedException('legacy failure'), 0.0);
@@ -109,7 +109,7 @@ final class LegacyAiTestReporterListenerTest extends TestCase
             false,
         );
         $listener = new LegacyAiTestReporterListener($runtime);
-        $suite = new TestSuite('root');
+        $suite = PhpUnitInternalObjectFactory::legacyTestSuite('root');
 
         $listener->startTestSuite($suite);
         $listener->addIncompleteTest(new self(__FUNCTION__), new RuntimeException('incomplete'), 0.0);
@@ -130,7 +130,7 @@ final class LegacyAiTestReporterListenerTest extends TestCase
             false,
         );
         $listener = new LegacyAiTestReporterListener($runtime);
-        $suite = new TestSuite('root');
+        $suite = PhpUnitInternalObjectFactory::legacyTestSuite('root');
 
         $listener->startTestSuite($suite);
         $listener->addRiskyTest(new self(__FUNCTION__), new RuntimeException('legacy risky'), 0.0);
@@ -152,7 +152,7 @@ final class LegacyAiTestReporterListenerTest extends TestCase
             false,
         );
         $listener = new LegacyAiTestReporterListener($runtime);
-        $suite = new TestSuite('root');
+        $suite = PhpUnitInternalObjectFactory::legacyTestSuite('root');
 
         $listener->startTestSuite($suite);
         $listener->addSkippedTest(new self(__FUNCTION__), new RuntimeException('skipped'), 0.0);
@@ -174,10 +174,10 @@ final class LegacyAiTestReporterListenerTest extends TestCase
         );
         $listener = new LegacyAiTestReporterListener($runtime);
 
-        $listener->startTestSuite(new TestSuite('root'));
-        $listener->startTestSuite(new TestSuite('nested'));
+        $listener->startTestSuite(PhpUnitInternalObjectFactory::legacyTestSuite('root'));
+        $listener->startTestSuite(PhpUnitInternalObjectFactory::legacyTestSuite('nested'));
         $listener->addFailure(new self(__FUNCTION__), new ExpectationFailedException('legacy failure'), 0.0);
-        $listener->endTestSuite(new TestSuite('nested'));
+        $listener->endTestSuite(PhpUnitInternalObjectFactory::legacyTestSuite('nested'));
 
         self::assertSame([], $output);
     }
@@ -195,11 +195,11 @@ final class LegacyAiTestReporterListenerTest extends TestCase
         );
         $listener = new LegacyAiTestReporterListener($runtime);
 
-        $listener->startTestSuite(new TestSuite('root'));
-        $listener->startTestSuite(new TestSuite('nested'));
+        $listener->startTestSuite(PhpUnitInternalObjectFactory::legacyTestSuite('root'));
+        $listener->startTestSuite(PhpUnitInternalObjectFactory::legacyTestSuite('nested'));
         $listener->addFailure(new self(__FUNCTION__), new ExpectationFailedException('legacy failure'), 0.0);
-        $listener->endTestSuite(new TestSuite('nested'));
-        $listener->endTestSuite(new TestSuite('root'));
+        $listener->endTestSuite(PhpUnitInternalObjectFactory::legacyTestSuite('nested'));
+        $listener->endTestSuite(PhpUnitInternalObjectFactory::legacyTestSuite('root'));
 
         self::assertCount(1, $output);
     }

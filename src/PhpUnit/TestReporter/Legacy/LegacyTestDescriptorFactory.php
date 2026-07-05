@@ -7,6 +7,7 @@ namespace PhpAiToolkit\PhpUnit\TestReporter\Legacy;
 use function get_class;
 
 use PHPUnit\Framework\TestCase;
+
 use function preg_match;
 
 use ReflectionException;

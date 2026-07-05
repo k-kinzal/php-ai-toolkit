@@ -7,15 +7,16 @@ namespace Tests\Unit\PhpUnit\TestReporter;
 use function class_alias;
 use function class_exists;
 use function interface_exists;
+
 use Override;
 use PhpAiToolkit\PhpUnit\TestReporter\AiTestReporterExtension;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Extension\ExtensionFacade;
-
 use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Registry;
+
 use function putenv;
 
 #[CoversClass(AiTestReporterExtension::class)]

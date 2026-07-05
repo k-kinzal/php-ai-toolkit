@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PhpAiToolkit\PhpStan\Rule;
 
 use function is_a;
+
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
-
 use Throwable;
 
 /**

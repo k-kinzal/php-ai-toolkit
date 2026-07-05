@@ -6,6 +6,7 @@ namespace PhpAiToolkit\LocGuard\Analysis;
 
 use function defined;
 use function in_array;
+
 use PhpToken;
 
 use function strtolower;

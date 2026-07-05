@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpAiToolkit\PhpStan\Rule;
 
 use function count;
+
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpUnit\TestReporter;
 
 use function interface_exists;
+
 use Override;
 use PhpAiToolkit\PhpUnit\TestReporter\EventTestNameResolver;
 use PHPUnit\Event\Code\TestDox;
@@ -12,7 +13,6 @@ use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-
 use PHPUnit\Metadata\MetadataCollection;
 
 #[CoversClass(EventTestNameResolver::class)]

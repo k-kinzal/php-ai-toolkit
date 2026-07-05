@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpAiToolkit\PhpUnit\TestReporter;
 
 use Closure;
+
 use function fwrite;
 use function getcwd;
 

@@ -30,45 +30,92 @@ When in doubt, prioritize quality over everything else. It is better to ship les
 
 ## Architecture
 
-The toolkit provides three independent extension points that integrate into a PHP project's existing toolchain, plus a CLI for project setup.
+The toolkit provides PHPStan and PHPUnit integrations, shared runtime services, an installer CLI, and two independent guard CLIs.
 
 | Layer | Responsibility | Entry point |
-  |-------|---------------|-------------|
-| **Rule** | PHPStan rules that detect AI-specific code issues (17 rules) | `src/Rule/` — one class per rule |
-| **Support** | Shared services used by rules — test class detection, agent detection, format mode | `src/Support/` |
-| **ErrorFormatter** | Dual-mode PHPStan error formatter — human-readable or machine-readable depending on caller |
-  `src/ErrorFormatter/AiRulesErrorFormatter.php` |
-| **TestReporter** | PHPUnit extension that collects and formats test issues with AI-friendly messages | `src/TestReporter/AiTestReporterExtension.php` |
-| **Cli** | CLI binary for installing skills and templates into target projects | `src/Cli/Command/InstallCommand.php` |
+|-------|---------------|-------------|
+| **Rule** | PHPStan rules that detect AI-specific code issues (21 rules) | `src/PhpStan/Rule/` — one class per rule at the top level; single-rule collaborators live in a per-rule subdirectory named after the rule without the `Rule` suffix (for example, `src/PhpStan/Rule/TestNamingConvention/`), while collaborators used by two or more rules live in `src/PhpStan/Rule/Shared/` |
+| **Support** | Test class detection shared by PHPStan rules | `src/PhpStan/Support/` |
+| **ErrorFormatter** | Dual-mode PHPStan error formatter — human-readable or machine-readable depending on caller | `src/PhpStan/ErrorFormatter/AiRulesErrorFormatter.php` |
+| **TestReporter** | PHPUnit extension that collects and formats test issues with AI-friendly messages | `src/PhpUnit/TestReporter/AiTestReporterExtension.php`, with `Subscriber/` and `Legacy/` |
+| **Shared** | Agent detection and format mode used by ErrorFormatter and TestReporter | `src/Shared/` (`AgentDetector`, `FormatMode`) |
+| **Installer CLI** | Installs skills and templates into target projects | `src/Installer/Cli/Application.php`, binary `bin/php-ai-toolkit` |
+| **LocGuard CLI** | Checks source LOC, NCLOC, length, and cyclomatic complexity metrics | `src/LocGuard/` (`Cli/`, `Config/`, `Filesystem/`, `Analysis/` with `Token/`, `Complexity/`, `FunctionMetric/`, `ClassLikeMetric/`, and `FileMetric/`, and `Reporting/`), binary `bin/loc-guard`, config `loc.yaml` |
+| **TreeGuard CLI** | Enforces per-directory file and subdirectory counts, recursive subtree totals, nesting depth, file and directory naming globs and case conventions, required files, and empty-directory detection | `src/TreeGuard/` (`Cli/`, `Config/`, `Filesystem/`, `Analysis/`, `Reporting/`), binary `bin/tree-guard`, config `tree.yaml` |
 
-Integration: PHPStan loads `extension.neon` which registers all Rule and Support services. Optionally, `error-formatter.neon` registers the ErrorFormatter.
-PHPUnit loads the TestReporter extension via `phpunit.xml`. The CLI (`bin/php-ai-toolkit`) operates independently.
+Integration: PHPStan loads `extension.neon`, which registers all 21 Rule services and their Support service. Optionally, `error-formatter.neon`
+registers the ErrorFormatter. PHPUnit loads the TestReporter extension via `phpunit.xml.dist`. The Installer CLI (`bin/php-ai-toolkit`), LocGuard
+(`bin/loc-guard`), and TreeGuard (`bin/tree-guard`) operate independently. `deptrac.yaml` defines LocGuard and TreeGuard as dependency-free toolkit
+layers: neither may depend on another toolkit layer.
 
 ```
 src/
-  Cli/
-    Command/           # CLI commands (InstallCommand)
-  Rule/                # PHPStan rule implementations (one class per rule)
-  Support/             # Shared support classes (AgentDetector, FormatMode, TestClassScope)
-  ErrorFormatter/      # Custom PHPStan error formatter
-  TestReporter/        # PHPUnit extension for dual-mode test result reporting
-    Subscriber/        # PHPUnit event subscribers
+  Installer/
+    Cli/               # Project setup application
+      Command/         # Skill installation command and collaborators
+  LocGuard/
+    Analysis/          # Source metric analysis
+      Token/           # PHP token navigation and line counting
+      Complexity/      # Cyclomatic complexity calculation
+      FunctionMetric/  # Function and method metrics
+      ClassLikeMetric/ # Class, trait, interface, and enum metrics
+      FileMetric/      # File LOC and NCLOC metrics
+    Cli/               # LocGuard command-line application
+    Config/            # loc.yaml loading and validation
+    Filesystem/        # PHP source discovery
+    Reporting/         # AI, text, and JSON reporters
+  PhpStan/
+    ErrorFormatter/    # Dual-mode PHPStan error formatter
+    Rule/              # 21 top-level PHPStan rule classes
+      TestNamingConvention/ # Example per-rule collaborator directory
+      Shared/          # Collaborators used by multiple rules
+    Support/           # Test class detection
+  PhpUnit/
+    TestReporter/      # Dual-mode PHPUnit test result reporting
+      Subscriber/      # PHPUnit event subscribers
+      Legacy/          # PHPUnit 9 listener support
+  Shared/              # AgentDetector and FormatMode
+  TreeGuard/
+    Analysis/          # Directory structure analysis
+    Cli/               # TreeGuard command-line application
+    Config/            # tree.yaml loading and validation
+    Filesystem/        # Directory tree scanning
+    Reporting/         # AI, text, and JSON reporters
 tests/
-  Unit/
-    Cli/Command/       # CLI command tests
-    Rule/              # Rule tests using PHPStan\Testing\RuleTestCase
-    Support/           # Support class tests
-    ErrorFormatter/    # Error formatter tests
-    TestReporter/      # Test reporter tests
-      Subscriber/      # Subscriber tests
-  Support/             # Test helper classes (e.g. PhpUnitEventFactory)
-  Fixture/             # PHP fixture files consumed by tests
-skills/                # Setup skill templates (AGENTS.md, PHPStan, PHPUnit, PHP-CS-Fixer)
+  Unit/                # Unit-test mirror of all six src/ top-level directories
+    Installer/
+      Cli/             # Installer CLI tests
+    LocGuard/
+      Analysis/        # Metric analysis tests, including all five subdirectory mirrors
+      Cli/             # LocGuard CLI tests
+      Config/          # LocGuard configuration tests
+      Filesystem/      # LocGuard source discovery tests
+      Reporting/       # LocGuard reporter tests
+    PhpStan/
+      ErrorFormatter/  # Error formatter tests
+      Rule/            # Rule and rule collaborator tests
+      Support/         # Test class detection tests
+    PhpUnit/
+      TestReporter/    # Test reporter tests
+        Subscriber/    # Subscriber tests
+        Legacy/        # PHPUnit 9 listener tests
+    Shared/            # Shared runtime service tests
+    TreeGuard/
+      Analysis/        # Directory structure analysis tests
+      Cli/             # TreeGuard CLI tests
+      Config/          # TreeGuard configuration tests
+      Filesystem/      # TreeGuard scanning tests
+      Reporting/       # TreeGuard reporter tests
+  Fixture/             # PHP fixture files consumed by rule and formatter tests
+skills/                # Nine setup skills, including setup-toolkit-tree-guard
 docs/                  # Documentation
 extension.neon         # PHPStan extension — registers all rules and services
 error-formatter.neon   # Optional error formatter (not auto-included)
 phpstan.neon           # Self-analysis config (level max + strict-rules)
 phpunit.xml.dist       # PHPUnit config (strict mode + test reporter extension)
+loc.yaml               # LocGuard source-metric limits
+tree.yaml              # TreeGuard structure constraints
+deptrac.yaml           # Architectural dependency rules
 ```
 
 ## Rule Design Principles
@@ -82,18 +129,26 @@ phpunit.xml.dist       # PHPUnit config (strict mode + test reporter extension)
 - [PHPStan Configuration](docs/phpstan.md): PHPStan settings and why each is needed
 - [PHPUnit Configuration](docs/phpunit.md): PHPUnit settings and why each is needed
 - [PHP-CS-Fixer Configuration](docs/php-cs-fixer.md): PHP-CS-Fixer settings and why each is needed
+- [LocGuard Configuration](docs/loc-guard.md): LocGuard source metric limits and reporting
+- [TreeGuard Configuration](docs/tree-guard.md): TreeGuard directory and file structure constraints
+- [Deptrac Configuration](docs/deptrac.md): Architectural layer discovery and dependency rules
+- [GitHub Actions Configuration](docs/github-actions.md): CI coverage, quality gates, and workflow hardening
 
 **Rule Documentation**
+- [ForbidClassLikeNameSuffixRule](docs/rules/ForbidClassLikeNameSuffixRule.md): Forbids class, interface, trait, and enum names ending with configured generic suffixes
 - [ForbidDescriptivePhpDocInTestClassRule](docs/rules/ForbidDescriptivePhpDocInTestClassRule.md): Forbids descriptive PHPDoc text in test classes
 - [ForbiddenCommentRule](docs/rules/ForbiddenCommentRule.md): Forbids suppression comments such as `@phpstan-ignore` and `@infection-ignore-all`
 - [ForbiddenMagicMethodCallRule](docs/rules/ForbiddenMagicMethodCallRule.md): Reports direct calls to PHP magic methods like `__construct`, `__toString`, etc.
+- [ForbiddenNamespaceRule](docs/rules/ForbiddenNamespaceRule.md): Forbids namespaces that match or descend from configured namespace prefixes
 - [ForbidNonDocCommentRule](docs/rules/ForbidNonDocCommentRule.md): Forbids all non-PHPDoc comments (`//`, `/* */`, `#`)
 - [ForbidSingleLinePhpDocRule](docs/rules/ForbidSingleLinePhpDocRule.md): Forbids single-line PHPDoc comments on public API elements
 - [NoClassConstantInTestClassRule](docs/rules/NoClassConstantInTestClassRule.md): Forbids class constant declarations in test classes
 - [NoControlFlowInTestMethodRule](docs/rules/NoControlFlowInTestMethodRule.md): Forbids control flow statements (if/for/while, etc.) inside test methods
 - [NoHelperMethodInTestClassRule](docs/rules/NoHelperMethodInTestClassRule.md): Forbids methods in test classes other than test methods, data providers, and framework hooks
+- [NoNonPublicMethodRule](docs/rules/NoNonPublicMethodRule.md): Forbids private methods and restricts protected methods to inheritance boundaries
 - [NoPrivateMethodInTestClassRule](docs/rules/NoPrivateMethodInTestClassRule.md): Forbids private method declarations in test classes
 - [NoPropertyInTestClassRule](docs/rules/NoPropertyInTestClassRule.md): Forbids property declarations in test classes
+- [NoRedundantAssertInstanceOfRule](docs/rules/NoRedundantAssertInstanceOfRule.md): Forbids PHPUnit `assertInstanceOf()` calls when the asserted type is already statically guaranteed
 - [NoReflectionInTestClassRule](docs/rules/NoReflectionInTestClassRule.md): Forbids usage of the Reflection API in test classes
 - [NoTraitUseInTestClassRule](docs/rules/NoTraitUseInTestClassRule.md): Forbids trait use statements in test classes
 - [OverrideMustHaveAttributeRule](docs/rules/OverrideMustHaveAttributeRule.md): Requires the `#[Override]` attribute when overriding a non-abstract parent method

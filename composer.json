@@ -45,16 +45,18 @@
             "@phpstan",
             "@compat",
             "@loc-guard",
+            "@tree-guard",
             "@deptrac"
         ],
         "phpstan": "phpstan analyse --memory-limit=512M",
         "compat": "phpcs",
         "loc-guard": "@php bin/loc-guard --config=loc.yaml",
+        "tree-guard": "@php bin/tree-guard --config=tree.yaml",
         "deptrac": "@php deptrac.php analyse --config-file=deptrac.yaml",
         "format": "php-cs-fixer fix --allow-risky=yes",
         "format:check": "php-cs-fixer fix --dry-run --diff --allow-risky=yes"
     },
-    "bin": ["bin/php-ai-toolkit", "bin/loc-guard"],
+    "bin": ["bin/php-ai-toolkit", "bin/loc-guard", "bin/tree-guard"],
     "config": {
         "sort-packages": true,
         "allow-plugins": {

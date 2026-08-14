@@ -51,6 +51,7 @@ Run the following skills in your AI agent:
 - `/setup-toolkit-phpunit` — PHPUnit with strict configuration and AI test reporter
 - `/setup-toolkit-php-cs-fixer` — PHP-CS-Fixer configuration
 - `/setup-toolkit-loc-guard` — LocGuard metrics checks for production source complexity and length limits
+- `/setup-toolkit-tree-guard` — TreeGuard directory and file structure constraints
 - `/setup-toolkit-deptrac` — Deptrac architecture dependency rules for web apps, CLI apps, libraries, and modular projects
 - `/setup-toolkit-github-actions` — GitHub Actions CI for tests, lint gates, PHP compatibility, and pinned actions
 - `/setup-toolkit-agents-md` — AGENTS.md with project conventions and AI agent guidelines
@@ -64,6 +65,7 @@ Each skill reads your project structure and generates appropriate configuration.
 - [PHPUnit Configuration](docs/phpunit.md) — PHPUnit settings and why each is needed
 - [PHP-CS-Fixer Configuration](docs/php-cs-fixer.md) — PHP-CS-Fixer settings and why each is needed
 - [LocGuard Configuration](docs/loc-guard.md) — Production source metrics checks and thresholds
+- [TreeGuard Configuration](docs/tree-guard.md) — Directory and file structure constraints
 - [Deptrac Configuration](docs/deptrac.md) — Architecture dependency rules and adaptation guidance
 - [GitHub Actions Configuration](docs/github-actions.md) — CI jobs, PHP version coverage, and workflow hardening
 

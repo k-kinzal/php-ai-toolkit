@@ -91,4 +91,6 @@ jobs:
 
       - run: composer loc-guard
 
+      - run: composer tree-guard
+
       - run: composer deptrac

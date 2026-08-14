@@ -13,6 +13,10 @@ deptrac:
       collectors:
         - type: directory
           value: src/LocGuard/.*
+    - name: TreeGuard
+      collectors:
+        - type: directory
+          value: src/TreeGuard/.*
     - name: PhpStanRule
       collectors:
         - type: directory
@@ -36,6 +40,7 @@ deptrac:
   ruleset:
     Installer: ~
     LocGuard: ~
+    TreeGuard: ~
     PhpStanRule:
       - PhpStanSupport
     PhpStanSupport: ~

@@ -1,0 +1,41 @@
+paths:
+  - src
+  - tests/Unit
+  - skills
+
+exclude: []
+
+rules:
+  - path: 'src'
+    allow: []
+    max_dirs: 8
+    max_depth: 3
+  - path: 'tests/Unit'
+    allow: []
+    max_depth: 3
+  - path: 'src/**'
+    forbid_empty: true
+    allow: ['*.php']
+    deny: ['*Helper.php', '*Helpers.php', '*Manager.php', '*Util.php', '*Utils.php', '*Service.php']
+    file_case: pascal
+    dir_case: pascal
+    max_files: 25
+    max_dirs: 20
+  - path: 'src/*'
+    max_total_files: 250
+  - path: 'tests/Unit/**'
+    forbid_empty: true
+    allow: ['*Test.php']
+    file_case: pascal
+    dir_case: pascal
+    max_files: 25
+    max_dirs: 20
+  - path: 'skills/*'
+    require: ['SKILL.md']
+    forbid_empty: true
+
+report:
+  reporter: ai
+  order_by:
+    - path
+    - rule

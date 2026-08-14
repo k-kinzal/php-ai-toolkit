@@ -1,0 +1,19 @@
+paths:
+  - src
+
+exclude: []
+
+rules:
+  - path: 'src/**'
+    forbid_empty: true
+    allow: ['*.php']
+    file_case: pascal
+    dir_case: pascal
+    max_files: 25
+    max_dirs: 20
+
+report:
+  reporter: ai
+  order_by:
+    - path
+    - rule

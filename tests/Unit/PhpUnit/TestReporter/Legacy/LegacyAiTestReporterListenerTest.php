@@ -31,6 +31,7 @@ use function proc_open;
 use RuntimeException;
 
 use function stream_get_contents;
+use function substr_count;
 
 #[CoversNothing]
 final class LegacyAiTestReporterListenerTest extends TestCase
@@ -208,7 +209,7 @@ final class LegacyAiTestReporterListenerTest extends TestCase
         self::assertSame([], $output);
     }
 
-    public function testListenerReportsPhpUnitCallbacksThroughPhpUnitRunner(): void
+    public function testEndTestSuiteWritesReportAtRootSuiteEndThroughPhpUnitRunner(): void
     {
         $environment = getenv();
         unset($environment['PARATEST']);
@@ -251,5 +252,46 @@ final class LegacyAiTestReporterListenerTest extends TestCase
         self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testErrors', $stdout . $stderr);
         self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testIsRisky', $stdout . $stderr);
         self::assertStringContainsString('fixture error', $stdout . $stderr);
+    }
+
+    public function testStartTestSuiteTracksDepthSoNestedSuitesWriteReportOnceThroughPhpUnitRunner(): void
+    {
+        $environment = getenv();
+        unset($environment['PARATEST']);
+        $environment = array_merge($environment, ['AI_AGENT' => '1']);
+
+        $pipes = [];
+        $process = proc_open(
+            [
+                PHP_BINARY,
+                'vendor/bin/phpunit',
+                '--configuration',
+                'tests/Fixture/TestReporter/phpunit-listener.xml.dist',
+                '--colors=never',
+            ],
+            [
+                0 => ['pipe', 'r'],
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w'],
+            ],
+            $pipes,
+            dirname(__DIR__, 5),
+            $environment,
+        );
+
+        self::assertIsResource($process);
+
+        fclose($pipes[0]);
+        $stdout = stream_get_contents($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+
+        $exitCode = proc_close($process);
+
+        self::assertIsString($stdout);
+        self::assertIsString($stderr);
+        self::assertNotSame(0, $exitCode);
+        self::assertSame(1, substr_count($stdout . $stderr, '--- PHPUnit: 1 failure, 1 error, 1 risky ---'));
     }
 }

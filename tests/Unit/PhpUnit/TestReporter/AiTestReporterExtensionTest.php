@@ -34,7 +34,7 @@ final class AiTestReporterExtensionTest extends TestCase
         }
     }
 
-    public function testExtensionReportsPhpUnitEventsThroughPhpUnitRunner(): void
+    public function testBootstrapRegistersReportingSubscribersThroughPhpUnitRunner(): void
     {
         $environment = getenv();
         unset($environment['PARATEST']);
@@ -79,7 +79,7 @@ final class AiTestReporterExtensionTest extends TestCase
         self::assertStringContainsString('fixture error', $stdout . $stderr);
     }
 
-    public function testExtensionSkipsReporterInParatestWorkerThroughPhpUnitRunner(): void
+    public function testBootstrapSkipsReporterInParatestWorkerThroughPhpUnitRunner(): void
     {
         $environment = getenv();
         $environment = array_merge($environment, ['AI_AGENT' => '1', 'PARATEST' => '1']);

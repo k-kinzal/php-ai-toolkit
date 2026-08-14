@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
+use PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDoc\SingleLinePhpDocErrorCollector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;

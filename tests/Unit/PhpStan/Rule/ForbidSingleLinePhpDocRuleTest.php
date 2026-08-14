@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\AnonymousClassDetector;
-use PhpAiToolkit\PhpStan\Rule\CommentTextFormatter;
+use PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDoc\SingleLinePhpDocDetector;
+use PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDoc\SingleLinePhpDocErrorBuilder;
+use PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDoc\SingleLinePhpDocErrorCollector;
 use PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDocRule;
-use PhpAiToolkit\PhpStan\Rule\SingleLinePhpDocDetector;
-use PhpAiToolkit\PhpStan\Rule\SingleLinePhpDocErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\SingleLinePhpDocErrorCollector;
+use PhpAiToolkit\PhpStan\Rule\Shared\AnonymousClassDetector;
+use PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;

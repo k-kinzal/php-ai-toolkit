@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
+use PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser;
+use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentTokenAnalyzer;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\FileNode;
 use PHPStan\Rules\IdentifierRuleError;

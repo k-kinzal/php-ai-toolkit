@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ForbiddenNamespacePrefixes;
+use PhpAiToolkit\PhpStan\Rule\ForbiddenNamespace\ForbiddenNamespacePrefixes;
+use PhpAiToolkit\PhpStan\Rule\ForbiddenNamespace\NamespacePrefixNormalizer;
 use PhpAiToolkit\PhpStan\Rule\ForbiddenNamespaceRule;
-use PhpAiToolkit\PhpStan\Rule\NamespacePrefixNormalizer;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;

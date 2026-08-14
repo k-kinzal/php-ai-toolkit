@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
+use PhpAiToolkit\PhpStan\Rule\Shared\RulePathNormalizer;
+use PhpAiToolkit\PhpStan\Rule\TestNamingConvention\ProviderNameValidator;
+use PhpAiToolkit\PhpStan\Rule\TestNamingConvention\PublicMethodTestCoverageValidator;
+use PhpAiToolkit\PhpStan\Rule\TestNamingConvention\SourceFileRuleMatcher;
+use PhpAiToolkit\PhpStan\Rule\TestNamingConvention\SourceUnitTestFileResolver;
+use PhpAiToolkit\PhpStan\Rule\TestNamingConvention\TestMethodNameValidator;
 use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;

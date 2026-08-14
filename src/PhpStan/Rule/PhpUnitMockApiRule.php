@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
+use PhpAiToolkit\PhpStan\Rule\PhpUnitMockApi\PhpUnitMockApiCallInspector;
+use PhpAiToolkit\PhpStan\Rule\PhpUnitMockApi\PhpUnitMockInstantiationInspector;
 use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ReflectionProvider;

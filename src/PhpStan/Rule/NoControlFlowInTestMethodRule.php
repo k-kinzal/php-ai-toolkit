@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
+use PhpAiToolkit\PhpStan\Rule\NoControlFlowInTestMethod\TestMethodControlFlowErrorCollector;
+use PhpAiToolkit\PhpStan\Rule\Shared\TestMethodDetector;
 use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;

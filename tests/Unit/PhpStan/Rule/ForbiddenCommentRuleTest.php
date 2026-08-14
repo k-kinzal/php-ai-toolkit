@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\CommentTextFormatter;
-use PhpAiToolkit\PhpStan\Rule\FileTokenParser;
-use PhpAiToolkit\PhpStan\Rule\ForbiddenCommentErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\ForbiddenCommentPattern;
 use PhpAiToolkit\PhpStan\Rule\ForbiddenCommentRule;
-use PhpAiToolkit\PhpStan\Rule\ForbiddenCommentTokenAnalyzer;
+use PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter;
+use PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser;
+use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentErrorBuilder;
+use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern;
+use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentTokenAnalyzer;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;

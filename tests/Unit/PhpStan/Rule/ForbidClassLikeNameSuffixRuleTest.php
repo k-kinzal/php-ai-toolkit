@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ClassLikeKindLabel;
+use PhpAiToolkit\PhpStan\Rule\ForbidClassLikeNameSuffix\ForbiddenClassLikeSuffixes;
 use PhpAiToolkit\PhpStan\Rule\ForbidClassLikeNameSuffixRule;
-use PhpAiToolkit\PhpStan\Rule\ForbiddenClassLikeSuffixes;
+use PhpAiToolkit\PhpStan\Rule\Shared\ClassLikeKindLabel;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;

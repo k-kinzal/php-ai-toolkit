@@ -8,6 +8,13 @@ use function array_merge;
 use function array_values;
 use function file_get_contents;
 
+use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector;
+use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder;
+use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric;
+use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder;
+use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricCollector;
+use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricViolationBuilder;
+use PhpAiToolkit\LocGuard\Analysis\Token\TokenLineCounter;
 use PhpAiToolkit\LocGuard\Config\LimitConfig;
 use PhpToken;
 

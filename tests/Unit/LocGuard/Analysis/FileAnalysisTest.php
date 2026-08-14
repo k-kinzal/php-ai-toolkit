@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\LocGuard\Analysis;
 
 use PhpAiToolkit\LocGuard\Analysis\FileAnalysis;
-use PhpAiToolkit\LocGuard\Analysis\FileMetric;
+use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric;
 use PhpAiToolkit\LocGuard\Analysis\Violation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;

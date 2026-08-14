@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\LocGuard\Cli;
 
 use PhpAiToolkit\LocGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetricCollector;
+use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector;
 use PhpAiToolkit\LocGuard\Analysis\FileAnalysis;
-use PhpAiToolkit\LocGuard\Analysis\FileMetric;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetricCollector;
+use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric;
+use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricCollector;
 use PhpAiToolkit\LocGuard\Analysis\LocGuardAnalyzer;
 use PhpAiToolkit\LocGuard\Analysis\PhpFileAnalyzer;
-use PhpAiToolkit\LocGuard\Analysis\TokenLineCounter;
+use PhpAiToolkit\LocGuard\Analysis\Token\TokenLineCounter;
 use PhpAiToolkit\LocGuard\Cli\LocGuardAnalysisRunner;
 use PhpAiToolkit\LocGuard\Cli\LocGuardConfigPathResolver;
 use PhpAiToolkit\LocGuard\Cli\LocGuardOutputWriter;

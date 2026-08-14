@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\DescriptivePhpDocErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\DescriptivePhpDocTextDetector;
+use PhpAiToolkit\PhpStan\Rule\ForbidDescriptivePhpDocInTestClass\DescriptivePhpDocErrorCollector;
+use PhpAiToolkit\PhpStan\Rule\ForbidDescriptivePhpDocInTestClass\DescriptivePhpDocTextDetector;
 use PhpAiToolkit\PhpStan\Rule\ForbidDescriptivePhpDocInTestClassRule;
-use PhpAiToolkit\PhpStan\Rule\RestrictedTestNamespaceMatcher;
+use PhpAiToolkit\PhpStan\Rule\Shared\RestrictedTestNamespaceMatcher;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;

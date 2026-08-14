@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
+use PhpAiToolkit\PhpStan\Rule\ForbidClassLikeNameSuffix\ForbiddenClassLikeSuffixes;
+use PhpAiToolkit\PhpStan\Rule\Shared\ClassLikeKindLabel;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;

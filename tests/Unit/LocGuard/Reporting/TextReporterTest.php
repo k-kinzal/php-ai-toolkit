@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\LocGuard\Reporting;
 
 use PhpAiToolkit\LocGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\LocGuard\Analysis\FileMetric;
+use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric;
 use PhpAiToolkit\LocGuard\Analysis\Violation;
 use PhpAiToolkit\LocGuard\Config\ReportConfig;
 use PhpAiToolkit\LocGuard\Reporting\TextReporter;

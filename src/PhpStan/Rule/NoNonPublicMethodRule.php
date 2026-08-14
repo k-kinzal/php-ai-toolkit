@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
+use PhpAiToolkit\PhpStan\Rule\NoNonPublicMethod\NonPublicMethodErrorBuilder;
+use PhpAiToolkit\PhpStan\Rule\NoNonPublicMethod\ProtectedMethodPolicy;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;

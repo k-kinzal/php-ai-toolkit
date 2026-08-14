@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
+use PhpAiToolkit\PhpStan\Rule\NoHelperMethodInTestClass\OverrideMethodDetector;
 use PhpAiToolkit\PhpStan\Rule\NoHelperMethodInTestClassRule;
-use PhpAiToolkit\PhpStan\Rule\OverrideAttributeDetector;
-use PhpAiToolkit\PhpStan\Rule\OverrideMethodDetector;
-use PhpAiToolkit\PhpStan\Rule\TestMethodDetector;
+use PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
+use PhpAiToolkit\PhpStan\Rule\Shared\TestMethodDetector;
 use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;

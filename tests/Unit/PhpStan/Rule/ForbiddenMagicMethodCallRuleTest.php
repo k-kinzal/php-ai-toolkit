@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
+use PhpAiToolkit\PhpStan\Rule\ForbiddenMagicMethodCall\MagicMethodCallErrorBuilder;
+use PhpAiToolkit\PhpStan\Rule\ForbiddenMagicMethodCall\MagicMethodCallInspector;
+use PhpAiToolkit\PhpStan\Rule\ForbiddenMagicMethodCall\MagicMethodRegistry;
 use PhpAiToolkit\PhpStan\Rule\ForbiddenMagicMethodCallRule;
-use PhpAiToolkit\PhpStan\Rule\MagicMethodCallErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\MagicMethodCallInspector;
-use PhpAiToolkit\PhpStan\Rule\MagicMethodRegistry;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;

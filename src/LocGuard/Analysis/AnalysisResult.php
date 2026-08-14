@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\LocGuard\Analysis;
 
+use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric;
+
 /**
  * Aggregated LocGuard analysis result for a configured project.
  *

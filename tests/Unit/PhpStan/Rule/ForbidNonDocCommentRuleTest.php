@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\CommentTextFormatter;
-use PhpAiToolkit\PhpStan\Rule\FileTokenParser;
-use PhpAiToolkit\PhpStan\Rule\ForbiddenCommentPattern;
+use PhpAiToolkit\PhpStan\Rule\ForbidNonDocComment\NonDocCommentErrorBuilder;
+use PhpAiToolkit\PhpStan\Rule\ForbidNonDocComment\NonDocCommentTokenAnalyzer;
 use PhpAiToolkit\PhpStan\Rule\ForbidNonDocCommentRule;
-use PhpAiToolkit\PhpStan\Rule\NonDocCommentErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\NonDocCommentTokenAnalyzer;
+use PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter;
+use PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser;
+use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern;
 use PhpAiToolkit\PhpStan\Support\NonDocCommentArrayContext;
 use PhpAiToolkit\PhpStan\Support\NonDocCommentCatchContext;
 use PhpAiToolkit\PhpStan\Support\NonDocCommentContext;

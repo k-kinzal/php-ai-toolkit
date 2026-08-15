@@ -1,0 +1,11 @@
+packages:
+  - '.'
+  - 'packages/*'
+
+vendor: []
+
+vendor_dev: []
+
+exclude: []
+
+output: build/docs

@@ -1,0 +1,81 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PhpAiToolkit\DocGen\Render\Page;
+
+use function implode;
+
+use PhpAiToolkit\DocGen\Render\RenderKit;
+
+use function preg_match;
+use function sprintf;
+
+/**
+ * Renders executable examples with doctest assertion styling.
+ *
+ * Assertion markers keep their notation in the copyable text, so a copied
+ * example stays runnable by doctest-php as-is.
+ */
+final class ExampleHtml
+{
+    /**
+     * Renders one captioned example figure.
+     *
+     * Runnable examples carry a doctest badge; display-only examples do not.
+     */
+    public function figure(RenderKit $services, ?string $description, string $code, bool $runnable): string
+    {
+        $escaper = $services->escaper;
+
+        return '<figure class="example">'
+            . '<figcaption>'
+            . sprintf('<span class="example-title">%s</span>', $escaper->e($description ?? 'Example'))
+            . ($runnable ? '<span class="chip chip-sm chip-doctest" title="Executable with doctest-php">doctest</span>' : '')
+            . '<button class="copy-btn" type="button" title="Copy example">copy</button>'
+            . '</figcaption>'
+            . $this->codeBlock($services, $code)
+            . '</figure>' . "\n";
+    }
+
+    /**
+     * Renders example code with per-line assertion highlighting.
+     */
+    public function codeBlock(RenderKit $services, string $code): string
+    {
+        $lines = [];
+        foreach ($services->assertions->scan($code) as $line) {
+            $indent = '';
+            if (preg_match('/^\s+/', $line->text, $match) === 1) {
+                $indent = $match[0];
+            }
+
+            if ($line->marker === null) {
+                $lines[] = $indent . $services->highlighter->highlightSnippet($line->code);
+                continue;
+            }
+
+            $lines[] = $indent
+                . $services->highlighter->highlightSnippet($line->code)
+                . ' <span class="doct doct-' . $line->marker . '">' . $services->escaper->e($this->markerText($line->marker, $line->expected ?? '', $line->exceptionMessage)) . '</span>';
+        }
+
+        return '<pre class="code-block doctest"><code>' . implode("\n", $lines) . '</code></pre>';
+    }
+
+    /**
+     * Rebuilds the doctest marker comment of one assertion line.
+     */
+    public function markerText(string $marker, string $expected, ?string $exceptionMessage): string
+    {
+        if ($marker === 'return') {
+            return '// => ' . $expected;
+        }
+
+        if ($marker === 'output') {
+            return '// Output: ' . $expected;
+        }
+
+        return '// throws ' . $expected . ($exceptionMessage !== null && $exceptionMessage !== '' ? ': ' . $exceptionMessage : '');
+    }
+}

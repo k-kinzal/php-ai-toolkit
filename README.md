@@ -52,6 +52,7 @@ Run the following skills in your AI agent:
 - `/setup-toolkit-php-cs-fixer` — PHP-CS-Fixer configuration
 - `/setup-toolkit-loc-guard` — LocGuard metrics checks for production source complexity and length limits
 - `/setup-toolkit-tree-guard` — TreeGuard directory and file structure constraints
+- `/setup-toolkit-doc-gen` — DocGen static documentation site with full types, relations, layers, and doctest examples
 - `/setup-toolkit-deptrac` — Deptrac architecture dependency rules for web apps, CLI apps, libraries, and modular projects
 - `/setup-toolkit-github-actions` — GitHub Actions CI for tests, lint gates, PHP compatibility, and pinned actions
 - `/setup-toolkit-agents-md` — AGENTS.md with project conventions and AI agent guidelines
@@ -66,6 +67,7 @@ Each skill reads your project structure and generates appropriate configuration.
 - [PHP-CS-Fixer Configuration](docs/php-cs-fixer.md) — PHP-CS-Fixer settings and why each is needed
 - [LocGuard Configuration](docs/loc-guard.md) — Production source metrics checks and thresholds
 - [TreeGuard Configuration](docs/tree-guard.md) — Directory and file structure constraints
+- [DocGen Configuration](docs/doc-gen.md) — Static documentation site generation and scope control
 - [Deptrac Configuration](docs/deptrac.md) — Architecture dependency rules and adaptation guidance
 - [GitHub Actions Configuration](docs/github-actions.md) — CI jobs, PHP version coverage, and workflow hardening
 

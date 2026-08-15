@@ -6,6 +6,8 @@
     "keywords": ["phpstan", "phpunit", "ai", "toolkit", "static analysis", "custom rules", "templates"],
     "require": {
         "php": "^8.0",
+        "nikic/php-parser": "^4.19 || ^5.0",
+        "phpstan/phpdoc-parser": "^1.33 || ^2.0",
         "phpstan/phpstan": "^1.12 || ^2.0",
         "symfony/yaml": "^5.4 || ^6.4 || ^7.4 || ^8.0"
     },
@@ -40,6 +42,7 @@
         "test": "paratest --processes=auto",
         "test:unit": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist",
         "test:unit:legacy": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit9.xml.dist",
+        "test:coverage": "@php -d memory_limit=1G -d xdebug.mode=coverage vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-xml build/coverage-xml",
         "lint": [
             "@format:check",
             "@phpstan",
@@ -52,11 +55,12 @@
         "compat": "phpcs",
         "loc-guard": "@php bin/loc-guard --config=loc.yaml",
         "tree-guard": "@php bin/tree-guard --config=tree.yaml",
+        "doc-gen": "@php bin/doc-gen",
         "deptrac": "@php deptrac.php analyse --config-file=deptrac.yaml",
         "format": "php-cs-fixer fix --allow-risky=yes",
         "format:check": "php-cs-fixer fix --dry-run --diff --allow-risky=yes"
     },
-    "bin": ["bin/php-ai-toolkit", "bin/loc-guard", "bin/tree-guard"],
+    "bin": ["bin/php-ai-toolkit", "bin/loc-guard", "bin/tree-guard", "bin/doc-gen"],
     "config": {
         "sort-packages": true,
         "allow-plugins": {

@@ -1,0 +1,7 @@
+packages:
+  - '.'
+
+exclude:
+  - 'tests/Fixture/*'
+
+output: build/docs

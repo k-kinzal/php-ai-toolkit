@@ -52,6 +52,14 @@ final class RequiresPhp
     }
 }
 
+#[\Attribute(\Attribute::TARGET_METHOD)]
+final class RunInSeparateProcess
+{
+    public function __construct()
+    {
+    }
+}
+
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 final class Small
 {
@@ -64,6 +72,14 @@ final class Small
 final class UsesClass
 {
     public function __construct(string $className)
+    {
+    }
+}
+
+#[\Attribute(\Attribute::TARGET_METHOD)]
+final class WithoutErrorHandler
+{
+    public function __construct()
     {
     }
 }

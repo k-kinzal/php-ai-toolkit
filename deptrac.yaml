@@ -9,6 +9,10 @@ deptrac:
       collectors:
         - type: directory
           value: src/Installer/.*
+    - name: DocGen
+      collectors:
+        - type: directory
+          value: src/DocGen/.*
     - name: LocGuard
       collectors:
         - type: directory
@@ -39,6 +43,7 @@ deptrac:
           value: src/Shared/.*
   ruleset:
     Installer: ~
+    DocGen: ~
     LocGuard: ~
     TreeGuard: ~
     PhpStanRule:

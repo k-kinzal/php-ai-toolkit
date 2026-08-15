@@ -16,6 +16,7 @@ use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
 use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
+use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
 use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
 use PhpAiToolkit\DocGen\Render\Page\IndexPage;
 use PhpAiToolkit\DocGen\Render\Page\LayerPage;
@@ -68,6 +69,9 @@ final class SiteRenderer
     /** @readonly */
     private SidebarHtml $sidebar;
 
+    /** @readonly */
+    private DocumentPage $documentPage;
+
     /**
      * Creates a site renderer from its page and asset collaborators.
      */
@@ -85,6 +89,7 @@ final class SiteRenderer
         ?AllItemsPage $allItemsPage = null,
         ?LayerPage $layerPage = null,
         ?SidebarHtml $sidebar = null,
+        ?DocumentPage $documentPage = null,
     ) {
         $this->writer = $writer ?? new SiteFileWriter();
         $this->assets = $assets ?? new AssetPublisher();
@@ -99,6 +104,7 @@ final class SiteRenderer
         $this->allItemsPage = $allItemsPage ?? new AllItemsPage();
         $this->layerPage = $layerPage ?? new LayerPage();
         $this->sidebar = $sidebar ?? new SidebarHtml();
+        $this->documentPage = $documentPage ?? new DocumentPage();
     }
 
     /**
@@ -129,6 +135,7 @@ final class SiteRenderer
             }
         }
 
+        $count += $this->renderDocumentPages($services, $model, $outputRoot);
         foreach ($this->sourceFiles($model) as $relativeFile) {
             $code = is_file($model->root . '/' . $relativeFile) ? file_get_contents($model->root . '/' . $relativeFile) : false;
             if ($code !== false) {
@@ -179,6 +186,30 @@ final class SiteRenderer
                     $outputRoot,
                     $this->url->namespacePage($package->manifest->name, $namespace),
                     $this->namespacePage->render($services, $package->manifest->name, $namespace),
+                );
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * Renders one page per Markdown document of the project.
+     *
+     * @return int the number of written pages
+     */
+    public function renderDocumentPages(RenderKit $services, ProjectModel $model, string $outputRoot): int
+    {
+        $count = 0;
+        foreach ($model->documents as $document) {
+            $path = $model->root . '/' . $document->file;
+            $markdown = is_file($path) ? file_get_contents($path) : false;
+            if ($markdown !== false) {
+                $this->writer->write(
+                    $outputRoot,
+                    $this->url->documentPage($document->packageName, $document->path),
+                    $this->documentPage->render($services, $document, $markdown),
                 );
                 $count++;
             }

@@ -6,7 +6,9 @@ namespace Tests\Unit\DocGen\Render;
 
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
+use PhpAiToolkit\DocGen\Render\MarkdownLinks;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
+use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -14,8 +16,25 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(MarkdownRenderer::class)]
 #[UsesClass(HtmlText::class)]
 #[UsesClass(MarkdownInline::class)]
+#[UsesClass(MarkdownLinks::class)]
+#[UsesClass(SiteUrl::class)]
 final class MarkdownRendererTest extends TestCase
 {
+    public function testWithLinksResolvesDocumentLinksWithoutChangingTheOriginal(): void
+    {
+        $renderer = new MarkdownRenderer();
+        $links = new MarkdownLinks(new SiteUrl(), 'demo/pkg', 'demo/pkg/index.html', '', ['docs/guide.md']);
+
+        self::assertSame(
+            '<p>See <a href="../../demo/pkg/doc/docs/guide.md.html">the guide</a>.</p>' . "\n",
+            $renderer->withLinks($links)->render('See [the guide](docs/guide.md).'),
+        );
+        self::assertSame(
+            '<p>See <span class="md-target" title="docs/guide.md">the guide</span>.</p>' . "\n",
+            $renderer->render('See [the guide](docs/guide.md).'),
+        );
+    }
+
     public function testRenderBuildsHeadingsRuleAndParagraphs(): void
     {
         $expected = <<<'HTML'

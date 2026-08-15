@@ -11,6 +11,7 @@ use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind;
 use PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
 use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
+use PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\MethodDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
 use PhpAiToolkit\DocGen\Analysis\ProjectModel;
@@ -25,11 +26,14 @@ use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
+use PhpAiToolkit\DocGen\Render\MarkdownLinks;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
 use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
 use PhpAiToolkit\DocGen\Render\Page\BreadcrumbHtml;
 use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
 use PhpAiToolkit\DocGen\Render\Page\DocTextHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentListHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
 use PhpAiToolkit\DocGen\Render\Page\ExampleHtml;
 use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
 use PhpAiToolkit\DocGen\Render\Page\GraphSvg;
@@ -82,7 +86,11 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(HtmlText::class)]
 #[UsesClass(IndexPage::class)]
 #[UsesClass(LayerPage::class)]
+#[UsesClass(MarkdownDoc::class)]
 #[UsesClass(MarkdownInline::class)]
+#[UsesClass(MarkdownLinks::class)]
+#[UsesClass(DocumentListHtml::class)]
+#[UsesClass(DocumentPage::class)]
 #[UsesClass(MarkdownRenderer::class)]
 #[UsesClass(MemberHtml::class)]
 #[UsesClass(MethodDoc::class)]
@@ -188,6 +196,26 @@ final class SiteRendererTest extends TestCase
         self::assertFileExists($out . '/demo/pkg/all-items.html');
         self::assertFileExists($out . '/demo/pkg/layer.Domain.html');
         self::assertFileExists($out . '/demo/pkg/Demo/index.html');
+    }
+
+    public function testRenderDocumentPagesWritesOnePagePerReadableDocument(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-render-' . uniqid('', true);
+        mkdir($dir . '/docs', 0777, true);
+        file_put_contents($dir . '/docs/guide.md', "# Guide\n\nHello guide.\n");
+        $manifest = new ComposerManifest($dir, 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []);
+        $documents = [
+            new MarkdownDoc('demo/pkg', 'docs/guide.md', 'docs/guide.md', 'Guide'),
+            new MarkdownDoc('demo/pkg', 'docs/absent.md', 'docs/absent.md', 'Absent'),
+        ];
+        $model = new ProjectModel('Demo Docs', $dir, [new DiscoveredPackage($manifest, false)], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], $documents);
+        $out = $dir . '/site';
+        $renderer = new SiteRenderer();
+
+        self::assertSame(1, $renderer->renderDocumentPages($renderer->services($model), $model, $out));
+        self::assertFileExists($out . '/demo/pkg/doc/docs/guide.md.html');
+        self::assertFileDoesNotExist($out . '/demo/pkg/doc/docs/absent.md.html');
+        self::assertStringContainsString('Hello guide.', (string) file_get_contents($out . '/demo/pkg/doc/docs/guide.md.html'));
     }
 
     public function testServicesBuildsRenderKitForModel(): void

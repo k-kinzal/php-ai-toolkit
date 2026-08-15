@@ -18,20 +18,25 @@ use function substr;
  * Renders the navigation sidebar shared by all pages.
  *
  * The sidebar is scoped to the current page rather than to the whole
- * project: it lists the sections of the page, the symbols that sit in the
- * same namespace grouped by kind, and the entry points of the package.
+ * project: it lists the sections of the page, then narrows from the widest
+ * scope to the narrowest — the entry points and layers of the package
+ * first, then the namespace with the symbols that sit next to this page.
  */
 final class SidebarHtml
 {
     /** @readonly */
     private SymbolIndex $symbols;
 
+    /** @readonly */
+    private DocumentListHtml $documents;
+
     /**
-     * Creates a sidebar renderer from the symbol index.
+     * Creates a sidebar renderer from the symbol and document indexes.
      */
-    public function __construct(?SymbolIndex $symbols = null)
+    public function __construct(?SymbolIndex $symbols = null, ?DocumentListHtml $documents = null)
     {
         $this->symbols = $symbols ?? new SymbolIndex();
+        $this->documents = $documents ?? new DocumentListHtml();
     }
 
     /**
@@ -56,11 +61,11 @@ final class SidebarHtml
             $escaper->e($scope->packageName),
         );
         $html .= $this->pageSections($services, $scope);
-        $html .= $scope->namespace !== null
-            ? $this->namespaceBlock($services, $pagePath, $scope)
-            : $this->namespaceListBlock($services, $pagePath, $scope->packageName);
+        $html .= $this->packageBlock($services, $pagePath, $scope->packageName);
 
-        return $html . $this->packageBlock($services, $pagePath, $scope->packageName);
+        return $html . ($scope->namespace !== null
+            ? $this->namespaceBlock($services, $pagePath, $scope)
+            : $this->namespaceListBlock($services, $pagePath, $scope->packageName));
     }
 
     /**
@@ -191,9 +196,14 @@ final class SidebarHtml
     public function packageBlock(RenderKit $services, string $pagePath, string $packageName): string
     {
         $escaper = $services->escaper;
+        $documents = $this->documents->documents($services, $packageName);
         $html = sprintf(
-            '<nav class="sb-block"><div class="sb-title">Package</div><ul class="sb-list"><li><a href="%s">All items</a></li></ul>',
+            '<nav class="sb-block"><div class="sb-title">Package</div><ul class="sb-list"><li><a href="%s">All items</a></li>%s</ul>',
             $escaper->e($services->url->href($pagePath, $services->url->allItemsPage($packageName))),
+            $documents === [] ? '' : sprintf(
+                '<li><a href="%s#documents">Documents</a></li>',
+                $escaper->e($services->url->href($pagePath, $services->url->packagePage($packageName))),
+            ),
         );
         $layers = $this->packageLayers($services, $packageName);
         if ($layers !== []) {

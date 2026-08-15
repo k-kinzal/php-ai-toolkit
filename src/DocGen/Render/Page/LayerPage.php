@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Render\Page;
 
+use function array_unshift;
 use function count;
 use function implode;
 
@@ -16,7 +17,9 @@ use function sprintf;
  * Renders the symbols of one architecture layer.
  *
  * Layers come from the project's deptrac configuration, so the page also
- * states which layers this one may depend on.
+ * states which layers this one may depend on. The namespaces the layer
+ * spans are listed before its symbols: a layer is usually recognised by
+ * the namespaces it owns rather than by the individual classes in it.
  */
 final class LayerPage
 {
@@ -59,6 +62,11 @@ final class LayerPage
     {
         $pagePath = $services->url->layerPage($packageName, $layer);
         $rows = $this->symbols->inLayer($services, $packageName, $layer);
+        $sections = $this->symbolList->sections($rows);
+        if ($rows !== []) {
+            array_unshift($sections, ['id' => 'namespaces', 'label' => 'Namespaces']);
+        }
+
         $crumbs = [
             ['label' => $packageName, 'path' => $services->url->packagePage($packageName)],
             ['label' => 'Layer ' . $layer, 'path' => null],
@@ -69,7 +77,7 @@ final class LayerPage
             $pagePath,
             'Layer ' . $layer,
             $this->breadcrumb->build($services, $pagePath, $crumbs),
-            $this->sidebar->build($services, $pagePath, new SidebarScope($packageName, null, null, $this->symbolList->sections($rows))),
+            $this->sidebar->build($services, $pagePath, new SidebarScope($packageName, null, null, $sections)),
             $this->content($services, $pagePath, $layer, $rows),
         );
     }
@@ -88,6 +96,7 @@ final class LayerPage
             count($rows),
         ) . "\n";
         $html .= $this->dependencyRow($services, $pagePath, $layer);
+        $html .= $this->symbolList->namespaceOverview($services, $pagePath, $rows);
 
         return $html . $this->symbolList->groups($services, $pagePath, $rows, true);
     }

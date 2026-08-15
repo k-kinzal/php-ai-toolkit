@@ -64,20 +64,20 @@ final class TestCaseHtml
     /**
      * Renders one labeled group of test cases inside a section.
      *
+     * The group uses the same disclosure shape as the relation sections, so
+     * every grouped list on a page is opened and closed the same way.
+     *
      * @param list<TestCase> $testCases
      */
-    public function subSection(RenderKit $services, string $pagePath, string $label, array $testCases): string
+    public function subSection(RenderKit $services, string $pagePath, string $label, array $testCases, bool $open): string
     {
         if ($testCases === []) {
             return '';
         }
 
-        return sprintf(
-            '<div class="member-block"><h4>%s <span class="count">%d</span></h4>%s</div>',
-            $services->escaper->e($label),
-            count($testCases),
-            $this->list($services, $pagePath, $testCases),
-        ) . "\n";
+        return '<details class="usage-details test-cases"' . ($open ? ' open' : '') . '><summary>'
+            . sprintf('%s <span class="count">%d</span>', $services->escaper->e($label), count($testCases))
+            . '</summary>' . $this->list($services, $pagePath, $testCases) . '</details>' . "\n";
     }
 
     /**

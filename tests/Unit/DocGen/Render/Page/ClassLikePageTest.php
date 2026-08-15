@@ -619,12 +619,12 @@ PHP;
         self::assertStringStartsWith(
             '<section><h2 id="test-cases">Test cases <span class="count">2</span><a class="anchor" href="#test-cases">§</a></h2>'
             . '<p class="section-note">Test cases that cover or call this symbol, from the coverage report and from the analyzed test sources.</p>'
-            . '<div class="member-block"><h4>Dedicated tests <span class="count">1</span></h4><ul class="usage-list">'
+            . '<details class="usage-details test-cases" open><summary>Dedicated tests <span class="count">1</span></summary><ul class="usage-list">'
             . '<li><a href="../../../src/tests/WidgetTest.php.html#L20" title="Tests\WidgetTest"><code>WidgetTest::testRun</code></a>',
             $html,
         );
         self::assertStringContainsString(
-            '<div class="member-block"><h4>Other tests reaching this symbol <span class="count">1</span></h4><ul class="usage-list">'
+            '<details class="usage-details test-cases"><summary>Other tests reaching this symbol <span class="count">1</span></summary><ul class="usage-list">'
             . '<li><a href="../../../src/tests/AppTest.php.html#L33" title="Tests\AppTest"><code>AppTest::testBoot</code></a>',
             $html,
         );

@@ -87,7 +87,10 @@ final class LayerPageTest extends TestCase
         self::assertStringContainsString('<p class="section-note">May depend on Shared.</p>', $html);
         self::assertStringContainsString('<a class="item-name k-class" href="../../demo/pkg/Demo/Core/class.Engine.html">Engine</a>', $html);
         self::assertStringNotContainsString('Runner', $html);
-        self::assertStringContainsString('<li><a href="#classes">Classes</a></li>', $html);
+        self::assertStringContainsString(
+            '<li><a href="#namespaces">Namespaces</a></li><li><a href="#classes">Classes</a></li>',
+            $html,
+        );
     }
 
     public function testContentHeadsWithLayerChipCountAndDependencyNote(): void
@@ -105,6 +108,16 @@ final class LayerPageTest extends TestCase
             "<div class=\"symbol-head\"><h1><span class=\"chip chip-layer\">layer</span>Domain <span class=\"count\">1</span></h1></div>\n"
             . "<p class=\"section-note\">This layer may not depend on any other layer.</p>\n",
             $html,
+        );
+        self::assertStringContainsString(
+            '<h2 id="namespaces">Namespaces<a class="anchor" href="#namespaces">§</a></h2>'
+            . '<div class="table-wrap"><table class="symbol-table">'
+            . '<tr><td>Demo\Core</td><td class="ns-counts"> <span class="ns-count k-class">1 class</span></td></tr>',
+            $html,
+        );
+        self::assertLessThan(
+            strpos($html, '<section class="items" id="classes">'),
+            strpos($html, '<h2 id="namespaces">'),
         );
         self::assertStringContainsString('<section class="items" id="classes"><h2>Classes <span class="count">1</span>', $html);
     }

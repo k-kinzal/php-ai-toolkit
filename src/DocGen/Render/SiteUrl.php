@@ -91,6 +91,14 @@ final class SiteUrl
     }
 
     /**
+     * Returns the site path of a rendered Markdown document.
+     */
+    public function documentPage(string $packageName, string $path): string
+    {
+        return $this->slug($packageName) . '/doc/' . $path . '.html';
+    }
+
+    /**
      * Returns the site path of a highlighted source page.
      */
     public function sourcePage(string $relativeFile): string

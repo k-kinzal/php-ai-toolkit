@@ -69,6 +69,17 @@ final class SearchIndexBuilder
             }
         }
 
+        foreach ($model->documents as $document) {
+            $json .= $separator . $this->encode($this->item(
+                $document->title,
+                $document->packageName . '/' . $document->path,
+                'document',
+                $this->url->documentPage($document->packageName, $document->path),
+                $document->path,
+            ));
+            $separator = ',';
+        }
+
         return 'window.__DOCGEN_INDEX__=[' . $json . '];' . "\n";
     }
 

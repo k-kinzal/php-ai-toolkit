@@ -113,6 +113,62 @@ final class SymbolListHtmlTest extends TestCase
         );
     }
 
+    public function testNamespaceOverviewListsEveryNamespaceOfTheListingSorted(): void
+    {
+        $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/pkg', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $text = new ClassLikeDoc('Demo\Util\Text', 'Text', 'Demo\Util', 'class', 'demo/pkg', 'src/Util/Text.php', 4, 11, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $table = new SymbolTable();
+        $table->registerClassLike($engine);
+        $table->registerClassLike($text);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [$engine, $text], [], $table, new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+        $rows = [
+            new SymbolRow('class', 'Text', 'Demo\Util\Text', 'demo/pkg/Demo/Util/class.Text.html', '', [], 'Demo\Util'),
+            new SymbolRow('class', 'Engine', 'Demo\Core\Engine', 'demo/pkg/Demo/Core/class.Engine.html', '', [], 'Demo\Core'),
+        ];
+
+        self::assertSame(
+            '<section><h2 id="namespaces">Namespaces<a class="anchor" href="#namespaces">§</a></h2>'
+            . '<div class="table-wrap"><table class="symbol-table">'
+            . '<tr><td><a href="../../demo/pkg/Demo/Core/index.html">Demo\Core</a></td>'
+            . '<td class="ns-counts"> <span class="ns-count k-class">1 class</span></td></tr>'
+            . '<tr><td><a href="../../demo/pkg/Demo/Util/index.html">Demo\Util</a></td>'
+            . '<td class="ns-counts"> <span class="ns-count k-class">1 class</span></td></tr>'
+            . "</table></div></section>\n",
+            (new SymbolListHtml())->namespaceOverview($services, 'demo/pkg/layer.Domain.html', $rows),
+        );
+        self::assertSame('', (new SymbolListHtml())->namespaceOverview($services, 'demo/pkg/layer.Domain.html', []));
+    }
+
+    public function testNamespaceRowLabelsTheGlobalNamespaceAndSkipsUnresolvedPackages(): void
+    {
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+        $rows = [new SymbolRow('class', 'Root', 'Root', 'demo/pkg/class.Root.html', '', [])];
+
+        self::assertSame(
+            '<tr><td>(global)</td><td class="ns-counts"> <span class="ns-count k-class">1 class</span></td></tr>',
+            (new SymbolListHtml())->namespaceRow($services, 'demo/pkg/index.html', $rows),
+        );
+    }
+
+    public function testKindCountsPluralisesEachKindInKindOrder(): void
+    {
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+        $rows = [
+            new SymbolRow('class', 'Engine', 'Demo\Engine', 'demo/pkg/class.Engine.html', '', []),
+            new SymbolRow('class', 'Wheel', 'Demo\Wheel', 'demo/pkg/class.Wheel.html', '', []),
+            new SymbolRow('interface', 'Runner', 'Demo\Runner', 'demo/pkg/interface.Runner.html', '', []),
+        ];
+
+        self::assertSame(
+            ' <span class="ns-count k-interface">1 interface</span> <span class="ns-count k-class">2 classes</span>',
+            (new SymbolListHtml())->kindCounts($services, $rows),
+        );
+        self::assertSame('', (new SymbolListHtml())->kindCounts($services, []));
+    }
+
     public function testNamespaceCellLinksTheNamespaceListingOrStaysEmptyForTheGlobalNamespace(): void
     {
         $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/pkg', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);

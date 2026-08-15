@@ -94,12 +94,16 @@ final class TestCaseHtmlTest extends TestCase
         ];
 
         self::assertSame(
-            '<div class="member-block"><h4>Dedicated tests <span class="count">2</span></h4>'
+            '<details class="usage-details test-cases" open><summary>Dedicated tests <span class="count">2</span></summary>'
             . '<ul class="usage-list">'
             . '<li><code title="Tests\Unit\EngineTest">EngineTest::testRun</code> <span class="usage-kind">calls</span></li>'
             . '<li><code title="Tests\Unit\EngineTest">EngineTest::testStop</code> <span class="usage-kind">covers</span></li>'
-            . '</ul>' . "\n" . '</div>' . "\n",
-            (new TestCaseHtml())->subSection($services, 'demo/pkg/index.html', 'Dedicated tests', $testCases),
+            . '</ul>' . "\n" . '</details>' . "\n",
+            (new TestCaseHtml())->subSection($services, 'demo/pkg/index.html', 'Dedicated tests', $testCases, true),
+        );
+        self::assertStringStartsWith(
+            '<details class="usage-details test-cases"><summary>Other tests reaching this symbol <span class="count">2</span></summary>',
+            (new TestCaseHtml())->subSection($services, 'demo/pkg/index.html', 'Other tests reaching this symbol', $testCases, false),
         );
     }
 
@@ -108,7 +112,7 @@ final class TestCaseHtmlTest extends TestCase
         $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
         $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
 
-        self::assertSame('', (new TestCaseHtml())->subSection($services, 'demo/pkg/index.html', 'Dedicated tests', []));
+        self::assertSame('', (new TestCaseHtml())->subSection($services, 'demo/pkg/index.html', 'Dedicated tests', [], true));
     }
 
     public function testItemLinksToTheTestSourceLineWhenKnown(): void

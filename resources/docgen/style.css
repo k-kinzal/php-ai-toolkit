@@ -235,6 +235,7 @@ a.chip:hover { text-decoration: none; filter: brightness(0.97); }
 .chip-kind.k-package { color: var(--kind-package); background: var(--kind-package-tint); }
 .chip-kind.k-method { color: var(--kind-class); background: var(--kind-class-tint); }
 .chip-kind.k-constant { color: var(--kind-namespace); background: var(--kind-namespace-tint); }
+.chip-kind.k-document { color: var(--kind-namespace); background: var(--kind-namespace-tint); }
 
 .chip-layer { color: var(--kind-layer); background: var(--kind-layer-tint); }
 .chip-test { color: var(--state-test); background: var(--state-test-tint); }

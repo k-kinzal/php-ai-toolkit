@@ -55,7 +55,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(UsageIndex::class)]
 final class SidebarHtmlTest extends TestCase
 {
-    public function testBuildRendersPageSectionsNamespaceSiblingsAndPackageBlock(): void
+    public function testBuildRendersPageSectionsPackageBlockAndNamespaceSiblings(): void
     {
         $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/pkg', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);
         $runner = new ClassLikeDoc('Demo\Core\Runner', 'Runner', 'Demo\Core', 'interface', 'demo/pkg', 'src/Core/Runner.php', 3, 9, false, false, [], [], [], [], [], [], [], null, null, [], false);
@@ -71,11 +71,14 @@ final class SidebarHtmlTest extends TestCase
         self::assertStringStartsWith('<div class="sb-head"><a class="sb-site" href="../../../../index.html">Demo Docs</a></div>', $html);
         self::assertStringContainsString('<div class="sb-pkg"><a href="../../../../demo/pkg/index.html">demo/pkg</a></div>', $html);
         self::assertStringContainsString('<div class="sb-title">On this page</div><ul class="sb-list"><li><a href="#methods">Methods</a></li></ul>', $html);
-        self::assertStringContainsString('<div class="sb-title"><a href="../../../../demo/pkg/Demo/Core/index.html">In Demo\Core</a></div>', $html);
+        self::assertStringContainsString('<div class="sb-title">Package</div><ul class="sb-list"><li><a href="../../../../demo/pkg/all-items.html">All items</a></li></ul>', $html);
+        self::assertStringContainsString(
+            '<div class="sb-kind">Layers</div><ul class="sb-list"><li><a href="../../../../demo/pkg/layer.Domain.html">Domain</a></li></ul></nav>'
+            . '<nav class="sb-block"><div class="sb-title"><a href="../../../../demo/pkg/Demo/Core/index.html">In Demo\Core</a></div>',
+            $html,
+        );
         self::assertStringContainsString('<div class="sb-kind">Namespaces</div><ul class="sb-list"><li><a href="../../../../demo/pkg/Demo/Core/Util/index.html">Util</a></li></ul>', $html);
         self::assertStringContainsString('<li class="is-active"><a class="k-class" href="../../../../demo/pkg/Demo/Core/class.Engine.html">Engine</a></li>', $html);
-        self::assertStringContainsString('<div class="sb-title">Package</div><ul class="sb-list"><li><a href="../../../../demo/pkg/all-items.html">All items</a></li></ul>', $html);
-        self::assertStringContainsString('<div class="sb-kind">Layers</div><ul class="sb-list"><li><a href="../../../../demo/pkg/layer.Domain.html">Domain</a></li></ul>', $html);
     }
 
     public function testBuildFallsBackToPackageListWithoutPackageScope(): void
@@ -105,11 +108,12 @@ final class SidebarHtmlTest extends TestCase
 
         self::assertStringNotContainsString('In Demo', $html);
         self::assertStringContainsString(
-            '<nav class="sb-block"><div class="sb-title">Namespaces</div><ul class="sb-list">'
+            '<nav class="sb-block"><div class="sb-title">Package</div><ul class="sb-list">'
+            . '<li><a href="../../demo/pkg/all-items.html">All items</a></li></ul></nav>'
+            . '<nav class="sb-block"><div class="sb-title">Namespaces</div><ul class="sb-list">'
             . '<li><a href="../../demo/pkg/Demo/Core/index.html" title="Demo\Core">Demo\Core</a></li></ul></nav>',
             $html,
         );
-        self::assertStringContainsString('<div class="sb-title">Package</div>', $html);
     }
 
     public function testPackageListMarksVendorPackages(): void

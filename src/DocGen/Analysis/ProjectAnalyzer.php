@@ -14,6 +14,7 @@ use function is_string;
 
 use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex;
 use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageReader;
+use PhpAiToolkit\DocGen\Analysis\Document\DocumentCollector;
 use PhpAiToolkit\DocGen\Analysis\Layer\DeptracConfigReader;
 use PhpAiToolkit\DocGen\Analysis\Layer\LayerAssigner;
 use PhpAiToolkit\DocGen\Analysis\Layer\LayerModel;
@@ -68,6 +69,9 @@ final class ProjectAnalyzer
     /** @readonly */
     private CoverageReader $coverageReader;
 
+    /** @readonly */
+    private DocumentCollector $documentCollector;
+
     /**
      * Creates a project analyzer from pipeline collaborators.
      */
@@ -81,6 +85,7 @@ final class ProjectAnalyzer
         ?DeptracConfigReader $deptracReader = null,
         ?LayerAssigner $layerAssigner = null,
         ?CoverageReader $coverageReader = null,
+        ?DocumentCollector $documentCollector = null,
     ) {
         $this->discovery = $discovery ?? new PackageDiscovery();
         $this->graphBuilder = $graphBuilder ?? new PackageGraphBuilder();
@@ -91,6 +96,7 @@ final class ProjectAnalyzer
         $this->deptracReader = $deptracReader ?? new DeptracConfigReader();
         $this->layerAssigner = $layerAssigner ?? new LayerAssigner();
         $this->coverageReader = $coverageReader ?? new CoverageReader();
+        $this->documentCollector = $documentCollector ?? new DocumentCollector();
     }
 
     /**
@@ -137,6 +143,7 @@ final class ProjectAnalyzer
             $this->layerAssignments($layers, $collected['classLikes']),
             $coverage,
             array_merge($this->vendorWarnings($config, $packages), $collected['warnings']),
+            $this->documentCollector->collect($config, $packages),
         );
     }
 

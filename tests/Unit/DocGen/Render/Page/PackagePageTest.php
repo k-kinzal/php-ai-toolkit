@@ -12,6 +12,7 @@ use PhpAiToolkit\DocGen\Analysis\Layer\LayerModel;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind;
 use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
+use PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc;
 use PhpAiToolkit\DocGen\Analysis\Parse\AstParser;
 use PhpAiToolkit\DocGen\Analysis\Parse\ClassLikeBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\ConstantBuilder;
@@ -41,11 +42,13 @@ use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
+use PhpAiToolkit\DocGen\Render\MarkdownLinks;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
 use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
 use PhpAiToolkit\DocGen\Render\Page\BreadcrumbHtml;
 use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
 use PhpAiToolkit\DocGen\Render\Page\DocTextHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentListHtml;
 use PhpAiToolkit\DocGen\Render\Page\ExampleHtml;
 use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
 use PhpAiToolkit\DocGen\Render\Page\GraphSvg;
@@ -104,7 +107,10 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(IndexPage::class)]
 #[UsesClass(LayerModel::class)]
 #[UsesClass(LayerPage::class)]
+#[UsesClass(MarkdownDoc::class)]
 #[UsesClass(MarkdownInline::class)]
+#[UsesClass(MarkdownLinks::class)]
+#[UsesClass(DocumentListHtml::class)]
 #[UsesClass(MarkdownRenderer::class)]
 #[UsesClass(MemberHtml::class)]
 #[UsesClass(MethodBuilder::class)]
@@ -161,6 +167,25 @@ final class PackagePageTest extends TestCase
         self::assertStringContainsString('<span class="crumb-current">demo/app</span>', $html);
         self::assertStringContainsString('<p class="lede">Demo application</p>', $html);
         self::assertStringNotContainsString('README', $html);
+        self::assertStringNotContainsString('href="#namespaces"', $html);
+    }
+
+    public function testRenderOrdersLayersBeforeNamespaces(): void
+    {
+        $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/app', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $app = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/app', 'Demo application', ['Demo\\' => ['src']], [], [], [], []), false);
+        $layers = new LayerModel([], ['Domain' => []]);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$app], new PackageGraph([]), [$engine], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), $layers, ['demo\core\engine' => ['Domain']], null, []);
+        $services = (new SiteRenderer())->services($model);
+
+        $html = (new PackagePage())->render($services, $app, null);
+
+        self::assertStringContainsString(
+            '<div class="sb-title">On this page</div><ul class="sb-list">'
+            . '<li><a href="#layers">Architecture layers</a></li><li><a href="#namespaces">Namespaces</a></li></ul>',
+            $html,
+        );
+        self::assertLessThan(strpos($html, '<h2 id="namespaces">'), strpos($html, '<h2 id="layers">'));
     }
 
     public function testContentRendersDescriptionDependenciesAndReadme(): void
@@ -184,6 +209,22 @@ final class PackagePageTest extends TestCase
         self::assertStringContainsString('<h2 id="readme">README<a class="anchor" href="#readme">§</a></h2>', $html);
         self::assertStringContainsString('<h2>Hello</h2>', $html);
         self::assertStringContainsString('Intro text.', $html);
+    }
+
+    public function testReadmeSectionResolvesLinksToRenderedDocuments(): void
+    {
+        $guide = new MarkdownDoc('demo/app', 'docs/guide.md', 'docs/guide.md', 'Guide');
+        $app = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/app', 'Demo application', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$app], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [$guide]);
+        $services = (new SiteRenderer())->services($model);
+
+        $html = (new PackagePage())->readmeSection($services, 'demo/app/index.html', 'demo/app', 'See [the guide](docs/guide.md) and [the tree](tree.yaml).');
+
+        self::assertStringStartsWith('<section class="readme"><h2 id="readme">README<a class="anchor" href="#readme">§</a></h2>', $html);
+        self::assertStringContainsString('<a href="../../demo/app/doc/docs/guide.md.html">the guide</a>', $html);
+        self::assertStringContainsString('<span class="md-target" title="tree.yaml">the tree</span>', $html);
+        self::assertSame('', (new PackagePage())->readmeSection($services, 'demo/app/index.html', 'demo/app', null));
+        self::assertSame('', (new PackagePage())->readmeSection($services, 'demo/app/index.html', 'demo/app', ''));
     }
 
     public function testDependencyRowsRendersInternalExternalAndRequiredBy(): void
@@ -280,7 +321,7 @@ PHP;
         self::assertStringContainsString('<h2 id="namespaces">Namespaces<a class="anchor" href="#namespaces">§</a></h2>', $html);
         self::assertStringContainsString(
             '<tr><td><a href="../../demo/app/Demo/Core/index.html">Demo\Core</a></td>'
-            . '<td class="ns-counts"> <span class="ns-count k-class">1 class</span> <span class="ns-count k-interface">1 interface</span></td></tr>',
+            . '<td class="ns-counts"> <span class="ns-count k-interface">1 interface</span> <span class="ns-count k-class">1 class</span></td></tr>',
             $html,
         );
         self::assertSame('', (new PackagePage())->namespaceOverview($services, 'demo/app/index.html', 'demo/lib'));

@@ -98,12 +98,22 @@ examples.
 ## Navigation
 
 The site drills down the way rustdoc does. `index.html` lists the packages and their dependency graph; a package page
-lists its namespaces, its item counts per kind, its architecture layers, and its README; `all-items.html` lists every
-symbol of the package grouped by kind; a layer page lists the symbols of one deptrac layer; a namespace page lists its
-child namespaces and its symbols; a symbol page documents one class, interface, trait, enum, or function.
+lists its architecture layers, its namespaces with item counts per kind, its documents, and its README; `all-items.html`
+lists every symbol of the package grouped by kind; a layer page lists the namespaces the layer spans and then its
+symbols; a namespace page lists its child namespaces and its symbols; a symbol page documents one class, interface,
+trait, enum, or function.
 
 The sidebar is scoped to the current page rather than to the whole project: the sections of the page itself, then the
-symbols of the current namespace grouped by kind with interfaces first, then the package entry points and its layers.
+widest scope first — the package entry points with its layers and documents — and then the current namespace with the
+symbols next to this page, grouped by kind with interfaces first.
+
+## Documents
+
+Every Markdown file of the repository is rendered as a page under `<package>/doc/`, titled by its first heading, and
+listed on the package page. Dependency, build, and hidden directories are pruned, and the configured `exclude` globs
+apply, so the documents are exactly the prose of the analyzed repository. Markdown links between those files resolve
+to the rendered pages, which makes a `docs/` tree readable inside the site instead of ending in dead relative paths;
+a link to anything else is rendered as plain text with the target kept as a tooltip.
 
 ## Symbol pages
 
@@ -123,8 +133,8 @@ declarations, and so on — with every group rendered the same way.
 
 The site is fully static and self-contained: relative links only, bundled CSS/JS, client-side search, light and dark
 themes, and a `.nojekyll` marker, so publishing the output directory with GitHub Pages needs no further setup. The
-top level contains `index.html`, one directory per package, `src/` (highlighted sources with line anchors), and
-`assets/`.
+top level contains `index.html`, one directory per package (with its `doc/` documents), `src/` (highlighted sources
+with line anchors), and `assets/`.
 
 ## Local Preview
 

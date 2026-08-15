@@ -244,8 +244,8 @@ final class ClassLikePage
             count($testCases),
         )
             . '<p class="section-note">Test cases that cover or call this symbol, from the coverage report and from the analyzed test sources.</p>'
-            . $this->testCaseHtml->subSection($services, $pagePath, 'Dedicated tests', $dedicated)
-            . $this->testCaseHtml->subSection($services, $pagePath, 'Other tests reaching this symbol', $others)
+            . $this->testCaseHtml->subSection($services, $pagePath, 'Dedicated tests', $dedicated, true)
+            . $this->testCaseHtml->subSection($services, $pagePath, 'Other tests reaching this symbol', $others, false)
             . '</section>' . "\n";
     }
 

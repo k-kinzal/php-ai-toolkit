@@ -21,20 +21,33 @@ use function str_replace;
  * self-contained, so a README badge must not turn into a request to a
  * remote host, and the alt text carries the same information.
  *
- * A link to an absolute URL or to a page anchor becomes an anchor element.
- * Every other target, such as a repository-relative path in a README, has
- * no counterpart in the generated site, so its text is rendered plainly
- * with the target kept in the title attribute instead of being emitted as
- * a broken link or, worse, as raw Markdown.
+ * A link to an absolute URL or to a page anchor becomes an anchor element,
+ * and a relative path is offered to the link resolver, which turns a link
+ * to a document of the same repository into a link to its rendered page.
+ * Every remaining target has no counterpart in the generated site, so its
+ * text is rendered plainly with the target kept in the title attribute
+ * instead of being emitted as a broken link or, worse, as raw Markdown.
  */
 final class MarkdownInline
 {
+    /** @readonly */
+    private ?MarkdownLinks $links;
+
+    /**
+     * Creates an inline renderer, optionally resolving document links.
+     */
+    public function __construct(?MarkdownLinks $links = null)
+    {
+        $this->links = $links;
+    }
+
     /**
      * Renders inline code, emphasis, and links of one text fragment.
      */
     public function render(string $text): string
     {
         $escaper = new HtmlText();
+        $links = $this->links;
         $codes = [];
         $protected = preg_replace_callback('/`([^`]+)`/', static function (array $match) use (&$codes, $escaper): string {
             $codes[] = '<code>' . $escaper->e($match[1]) . '</code>';
@@ -50,9 +63,14 @@ final class MarkdownInline
                 ? ''
                 : sprintf('<span class="md-target" title="%s">%s</span>', $match[2], $match[1]);
         }, $html) ?? $html;
-        $html = preg_replace_callback('/\[([^\]]+)\]\(((?:[^()\s]|\([^()\s]*\))+)\)/', static function (array $match): string {
+        $html = preg_replace_callback('/\[([^\]]+)\]\(((?:[^()\s]|\([^()\s]*\))+)\)/', static function (array $match) use ($links, $escaper): string {
             if (preg_match('#^(https?://|\#)#', $match[2]) === 1) {
                 return sprintf('<a href="%s">%s</a>', $match[2], $match[1]);
+            }
+
+            $href = $links !== null ? $links->resolve($match[2]) : null;
+            if ($href !== null) {
+                return sprintf('<a href="%s">%s</a>', $escaper->e($href), $match[1]);
             }
 
             return sprintf('<span class="md-target" title="%s">%s</span>', $match[2], $match[1]);

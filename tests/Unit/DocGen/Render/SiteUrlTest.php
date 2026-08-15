@@ -94,6 +94,12 @@ final class SiteUrlTest extends TestCase
         self::assertSame('src/src/Widget.php.html', (new SiteUrl())->sourcePage('src/Widget.php'));
     }
 
+    public function testDocumentPageNestsThePathUnderThePackageDocDirectory(): void
+    {
+        self::assertSame('demo/pkg/doc/docs/guide.md.html', (new SiteUrl())->documentPage('demo/pkg', 'docs/guide.md'));
+        self::assertSame('demo/pkg/doc/README.md.html', (new SiteUrl())->documentPage('demo/pkg', 'README.md'));
+    }
+
     public function testPrefixRepeatsParentStepPerDirectory(): void
     {
         self::assertSame('../../../', (new SiteUrl())->prefix('demo/pkg/Demo/class.Widget.html'));

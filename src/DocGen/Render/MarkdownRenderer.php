@@ -44,6 +44,14 @@ final class MarkdownRenderer
     }
 
     /**
+     * Returns a renderer that resolves links against rendered documents.
+     */
+    public function withLinks(MarkdownLinks $links): self
+    {
+        return new self(new MarkdownInline($links), $this->escaper);
+    }
+
+    /**
      * Renders one Markdown text into HTML.
      *
      * The fence closure receives the code and the info string and may return

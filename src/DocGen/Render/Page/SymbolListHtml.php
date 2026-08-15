@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace PhpAiToolkit\DocGen\Render\Page;
 
 use function count;
+use function ksort;
 
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 
 use function sprintf;
+use function strtolower;
 
 /**
  * Renders kind-grouped symbol listings.
@@ -79,6 +81,77 @@ final class SymbolListHtml
         }
 
         return $html . '</table></div>';
+    }
+
+    /**
+     * Renders the namespace overview table of a listing.
+     *
+     * A listing that spans namespaces opens with the namespaces it covers,
+     * so the shape of the scope is read before the individual symbols.
+     *
+     * @param list<SymbolRow> $rows
+     */
+    public function namespaceOverview(RenderKit $services, string $pagePath, array $rows): string
+    {
+        $groups = [];
+        foreach ($rows as $row) {
+            $groups[$row->namespace][] = $row;
+        }
+
+        if ($groups === []) {
+            return '';
+        }
+
+        ksort($groups);
+        $html = '<section><h2 id="namespaces">Namespaces<a class="anchor" href="#namespaces">§</a></h2><div class="table-wrap"><table class="symbol-table">';
+        foreach ($groups as $groupRows) {
+            $html .= $this->namespaceRow($services, $pagePath, $groupRows);
+        }
+
+        return $html . '</table></div></section>' . "\n";
+    }
+
+    /**
+     * Renders one namespace row with its symbol counts per kind.
+     *
+     * @param non-empty-list<SymbolRow> $rows
+     */
+    public function namespaceRow(RenderKit $services, string $pagePath, array $rows): string
+    {
+        $namespace = $rows[0]->namespace;
+        $packageName = $this->packageOf($services, $rows[0]);
+        $label = $services->escaper->e($namespace === '' ? '(global)' : $namespace);
+
+        return sprintf(
+            '<tr><td>%s</td><td class="ns-counts">%s</td></tr>',
+            $packageName === '' ? $label : sprintf(
+                '<a href="%s">%s</a>',
+                $services->escaper->e($services->url->href($pagePath, $services->url->namespacePage($packageName, $namespace))),
+                $label,
+            ),
+            $this->kindCounts($services, $rows),
+        );
+    }
+
+    /**
+     * Renders the per-kind symbol counts of one listing.
+     *
+     * @param list<SymbolRow> $rows
+     */
+    public function kindCounts(RenderKit $services, array $rows): string
+    {
+        $html = '';
+        foreach ($this->symbols->byKind($rows) as $kind => $kindRows) {
+            $count = count($kindRows);
+            $html .= sprintf(
+                ' <span class="ns-count k-%s">%d %s</span>',
+                $services->escaper->e($kind),
+                $count,
+                $services->escaper->e($count === 1 ? $kind : strtolower(SymbolIndex::KIND_LABELS[$kind])),
+            );
+        }
+
+        return $html;
     }
 
     /**

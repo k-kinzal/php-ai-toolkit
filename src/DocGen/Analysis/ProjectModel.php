@@ -10,6 +10,7 @@ use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex;
 use PhpAiToolkit\DocGen\Analysis\Layer\LayerModel;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
+use PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc;
 use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
@@ -34,6 +35,7 @@ use PhpAiToolkit\DocGen\Package\PackageGraph;
  * @property-read array<string, list<string>> $layerAssignments
  * @property-read ?CoverageIndex $coverage
  * @property-read list<string> $warnings
+ * @property-read list<MarkdownDoc> $documents
  */
 final class ProjectModel
 {
@@ -43,6 +45,7 @@ final class ProjectModel
      * @param list<FunctionDoc> $functions
      * @param array<string, list<string>> $layerAssignments
      * @param list<string> $warnings
+     * @param list<MarkdownDoc> $documents
      */
     public function __construct(
         /** @readonly */
@@ -73,6 +76,8 @@ final class ProjectModel
         private ?CoverageIndex $coverage,
         /** @readonly */
         private array $warnings,
+        /** @readonly */
+        private array $documents = [],
     ) {
     }
 

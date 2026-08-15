@@ -13,10 +13,13 @@ use PhpAiToolkit\DocGen\Render\RenderKit;
 
 use function sprintf;
 use function str_starts_with;
-use function strtolower;
 
 /**
  * Renders the overview page of one package.
+ *
+ * The page reads from the widest scope to the narrowest: what the package
+ * depends on, the architecture layers its symbols fall into, the namespaces
+ * inside those layers, and finally the README.
  */
 final class PackagePage
 {
@@ -35,6 +38,12 @@ final class PackagePage
     /** @readonly */
     private GraphSvg $graph;
 
+    /** @readonly */
+    private SymbolListHtml $symbolList;
+
+    /** @readonly */
+    private DocumentListHtml $documents;
+
     /**
      * Creates a package page renderer from its collaborators.
      */
@@ -44,12 +53,16 @@ final class PackagePage
         ?BreadcrumbHtml $breadcrumb = null,
         ?SymbolIndex $symbols = null,
         ?GraphSvg $graph = null,
+        ?SymbolListHtml $symbolList = null,
+        ?DocumentListHtml $documents = null,
     ) {
         $this->chrome = $chrome ?? new PageChrome();
         $this->sidebar = $sidebar ?? new SidebarHtml();
         $this->breadcrumb = $breadcrumb ?? new BreadcrumbHtml();
         $this->symbols = $symbols ?? new SymbolIndex();
         $this->graph = $graph ?? new GraphSvg();
+        $this->symbolList = $symbolList ?? new SymbolListHtml();
+        $this->documents = $documents ?? new DocumentListHtml();
     }
 
     /**
@@ -58,9 +71,17 @@ final class PackagePage
     public function render(RenderKit $services, DiscoveredPackage $package, ?string $readme): string
     {
         $pagePath = $services->url->packagePage($package->manifest->name);
-        $sections = [['id' => 'namespaces', 'label' => 'Namespaces']];
+        $sections = [];
         if ($this->layerCounts($services, $package->manifest->name) !== []) {
             $sections[] = ['id' => 'layers', 'label' => 'Architecture layers'];
+        }
+
+        if ($this->namespaceOverview($services, $pagePath, $package->manifest->name) !== '') {
+            $sections[] = ['id' => 'namespaces', 'label' => 'Namespaces'];
+        }
+
+        if ($this->documents->documents($services, $package->manifest->name) !== []) {
+            $sections[] = ['id' => 'documents', 'label' => 'Documents'];
         }
 
         if ($readme !== null && $readme !== '') {
@@ -149,21 +170,33 @@ final class PackagePage
         }
 
         $html .= $this->dependencyRows($services, $pagePath, $package);
-        $html .= $this->namespaceOverview($services, $pagePath, $package->manifest->name);
         $html .= $this->layerSection($services, $pagePath, $package->manifest->name);
-        if ($readme !== null && $readme !== '') {
-            $html .= '<section class="readme"><h2 id="readme">README<a class="anchor" href="#readme">§</a></h2>'
-                . $services->markdown->render($readme, static function (string $code, string $language) use ($services): ?string {
-                    if ($language === 'php') {
-                        return '<pre class="code-block"><code>' . $services->highlighter->highlightSnippet($code) . '</code></pre>' . "\n";
-                    }
+        $html .= $this->namespaceOverview($services, $pagePath, $package->manifest->name);
+        $html .= $this->documents->section($services, $pagePath, $package->manifest->name);
 
-                    return null;
-                })
-                . '</section>' . "\n";
+        return $html . $this->readmeSection($services, $pagePath, $package->manifest->name, $readme);
+    }
+
+    /**
+     * Renders the README of one package with resolved document links.
+     */
+    public function readmeSection(RenderKit $services, string $pagePath, string $packageName, ?string $readme): string
+    {
+        if ($readme === null || $readme === '') {
+            return '';
         }
 
-        return $html;
+        $markdown = $services->markdown
+            ->withLinks($this->documents->links($services, $pagePath, $packageName, ''))
+            ->render($readme, static function (string $code, string $language) use ($services): ?string {
+                if ($language === 'php') {
+                    return '<pre class="code-block"><code>' . $services->highlighter->highlightSnippet($code) . '</code></pre>' . "\n";
+                }
+
+                return null;
+            });
+
+        return '<section class="readme"><h2 id="readme">README<a class="anchor" href="#readme">§</a></h2>' . $markdown . '</section>' . "\n";
     }
 
     /**
@@ -240,43 +273,6 @@ final class PackagePage
      */
     public function namespaceOverview(RenderKit $services, string $pagePath, string $packageName): string
     {
-        $namespaces = [];
-        foreach ($services->model->classLikes as $classLike) {
-            if ($classLike->packageName === $packageName && !$classLike->isDev) {
-                $namespaces[$classLike->namespace][] = $classLike;
-            }
-        }
-
-        if ($namespaces === []) {
-            return '';
-        }
-
-        ksort($namespaces);
-        $html = '<section><h2 id="namespaces">Namespaces<a class="anchor" href="#namespaces">§</a></h2><div class="table-wrap"><table class="symbol-table">';
-        foreach ($namespaces as $namespace => $symbols) {
-            $kindCounts = [];
-            foreach ($symbols as $symbol) {
-                $kindCounts[$symbol->kind] = ($kindCounts[$symbol->kind] ?? 0) + 1;
-            }
-
-            $countsHtml = '';
-            foreach ($kindCounts as $kind => $kindCount) {
-                $countsHtml .= sprintf(
-                    ' <span class="ns-count k-%s">%d %s</span>',
-                    $kind,
-                    $kindCount,
-                    $services->escaper->e($kindCount === 1 ? $kind : strtolower(SymbolIndex::KIND_LABELS[$kind] ?? $kind . 's')),
-                );
-            }
-
-            $html .= sprintf(
-                '<tr><td><a href="%s">%s</a></td><td class="ns-counts">%s</td></tr>',
-                $services->escaper->e($services->url->href($pagePath, $services->url->namespacePage($packageName, $namespace))),
-                $services->escaper->e($namespace === '' ? '(global)' : $namespace),
-                $countsHtml,
-            );
-        }
-
-        return $html . '</table></div></section>' . "\n";
+        return $this->symbolList->namespaceOverview($services, $pagePath, $this->symbols->inPackage($services, $packageName));
     }
 }

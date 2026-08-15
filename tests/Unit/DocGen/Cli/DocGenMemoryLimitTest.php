@@ -14,7 +14,7 @@ final class DocGenMemoryLimitTest extends TestCase
     public function testApplyUsesRequestedLimit(): void
     {
         $previous = ini_get('memory_limit');
-        ini_set('memory_limit', '128M');
+        ini_set('memory_limit', '384M');
 
         (new DocGenMemoryLimit())->apply('1G');
         $applied = ini_get('memory_limit');
@@ -38,7 +38,7 @@ final class DocGenMemoryLimitTest extends TestCase
     public function testApplyRaisesLimitBelowTheFloor(): void
     {
         $previous = ini_get('memory_limit');
-        ini_set('memory_limit', '128M');
+        ini_set('memory_limit', '384M');
 
         (new DocGenMemoryLimit())->apply(null);
         $applied = ini_get('memory_limit');

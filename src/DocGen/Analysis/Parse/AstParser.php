@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PhpAiToolkit\DocGen\Analysis\Parse;
 
 use PhpAiToolkit\DocGen\DocGenException;
-use PhpParser\Error;
+use PhpParser\ErrorHandler\Collecting;
 use PhpParser\Node\Stmt;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
@@ -14,6 +14,11 @@ use function sprintf;
 
 /**
  * Parses PHP source into an AST with fully resolved names.
+ *
+ * Syntax errors are collected rather than thrown: the two supported
+ * php-parser majors disagree on whether the throwing handler is documented,
+ * and collecting them keeps the failure a plain return value that is turned
+ * into a DocGenException here.
  */
 final class AstParser
 {
@@ -37,10 +42,11 @@ final class AstParser
      */
     public function parse(string $code, string $file): array
     {
-        try {
-            $statements = $this->bridge->parser()->parse($code);
-        } catch (Error $error) {
-            throw new DocGenException(sprintf('Failed to parse %s: %s', $file, $error->getMessage()), 0, $error);
+        $errorHandler = new Collecting();
+        $statements = $this->bridge->parser()->parse($code, $errorHandler);
+        $errors = $errorHandler->getErrors();
+        if (isset($errors[0])) {
+            throw new DocGenException(sprintf('Failed to parse %s: %s', $file, $errors[0]->getMessage()), 0, $errors[0]);
         }
 
         if ($statements === null) {

@@ -10,6 +10,7 @@ use PhpAiToolkit\DocGen\DocGenException;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use ReflectionClass;
+use ReflectionException;
 
 /**
  * Creates a PHP parser for both nikic/php-parser 4 and 5.
@@ -26,7 +27,7 @@ final class PhpParserBridge
     /**
      * Returns a memoized parser for the newest supported PHP version.
      *
-     * @throws DocGenException when the parser factory produces no parser
+     * @throws DocGenException when the parser factory exposes no supported creation method or produces no parser
      */
     public function parser(): Parser
     {
@@ -36,10 +37,15 @@ final class PhpParserBridge
 
         $factory = new ParserFactory();
         $reflection = new ReflectionClass($factory);
-        if ($reflection->hasMethod('createForNewestSupportedVersion')) {
-            $created = $reflection->getMethod('createForNewestSupportedVersion')->invoke($factory);
-        } else {
-            $created = $reflection->getMethod('create')->invoke($factory, constant(ParserFactory::class . '::PREFER_PHP7'));
+
+        try {
+            if ($reflection->hasMethod('createForNewestSupportedVersion')) {
+                $created = $reflection->getMethod('createForNewestSupportedVersion')->invoke($factory);
+            } else {
+                $created = $reflection->getMethod('create')->invoke($factory, constant(ParserFactory::class . '::PREFER_PHP7'));
+            }
+        } catch (ReflectionException $exception) {
+            throw new DocGenException('The installed nikic/php-parser version exposes no supported parser factory method.', 0, $exception);
         }
 
         if (!$created instanceof Parser) {

@@ -29,6 +29,8 @@ final class RuleListConfigReader
      *
      * @param mixed $value
      * @return list<RuleConfig>
+     *
+     * @throws TreeGuardException when the rules section is not a list of mappings
      */
     public function read($value): array
     {

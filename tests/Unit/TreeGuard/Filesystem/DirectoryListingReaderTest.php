@@ -16,7 +16,7 @@ final class DirectoryListingReaderTest extends TestCase
 {
     public function testReadReturnsSortedFilesAndDirs(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-listing-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-listing-' . uniqid('', true);
         mkdir($dir);
         touch($dir . '/b.txt');
         touch($dir . '/a.txt');
@@ -33,6 +33,6 @@ final class DirectoryListingReaderTest extends TestCase
         $this->expectException(TreeGuardException::class);
         $this->expectExceptionMessage('Failed to read directory');
 
-        (new DirectoryListingReader())->read(sys_get_temp_dir() . '/treeguard-missing-' . bin2hex(random_bytes(4)));
+        (new DirectoryListingReader())->read(sys_get_temp_dir() . '/treeguard-missing-' . uniqid('', true));
     }
 }

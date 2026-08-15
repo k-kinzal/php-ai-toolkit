@@ -52,7 +52,7 @@ final class TreeGuardAnalyzerTest extends TestCase
 {
     public function testAnalyzeReportsViolationsForMatchedDirectories(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-analyze-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-analyze-' . uniqid('', true);
         mkdir($dir . '/src/A', 0777, true);
         touch($dir . '/src/A/One.php');
         touch($dir . '/src/A/Two.php');
@@ -71,7 +71,7 @@ final class TreeGuardAnalyzerTest extends TestCase
 
     public function testAnalyzeReturnsCleanResultWhenNoRuleMatches(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-analyze-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-analyze-' . uniqid('', true);
         mkdir($dir . '/src', 0777, true);
         touch($dir . '/src/One.php');
         $rule = new RuleConfig('tests/*', 1, null, null, null, null, null, null, null, null, false, null, null);
@@ -85,7 +85,7 @@ final class TreeGuardAnalyzerTest extends TestCase
 
     public function testAnalyzeAppliesOverlappingRulesIndependently(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-analyze-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-analyze-' . uniqid('', true);
         mkdir($dir . '/src', 0777, true);
         touch($dir . '/src/one.php');
         $first = new RuleConfig('src', null, null, null, null, ['*.txt'], null, null, null, null, false, null, null);

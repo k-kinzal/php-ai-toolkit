@@ -48,7 +48,7 @@ final class PhpFileAnalyzerTest extends TestCase
 {
     public function testAnalyzeReportsFileFunctionMethodAndComplexityViolations(): void
     {
-        $file = sys_get_temp_dir() . '/locguard-source-' . bin2hex(random_bytes(4)) . '.php';
+        $file = sys_get_temp_dir() . '/locguard-source-' . uniqid('', true) . '.php';
         file_put_contents($file, <<<'PHP'
 <?php
 
@@ -90,7 +90,7 @@ PHP);
 
     public function testAnalyzeAllowsValuesEqualToLimits(): void
     {
-        $file = sys_get_temp_dir() . '/locguard-source-' . bin2hex(random_bytes(4)) . '.php';
+        $file = sys_get_temp_dir() . '/locguard-source-' . uniqid('', true) . '.php';
         file_put_contents($file, <<<'PHP'
 <?php
 
@@ -110,7 +110,7 @@ PHP);
 
     public function testAnalyzeReportsClassLikeLimitsIndividually(): void
     {
-        $file = sys_get_temp_dir() . '/locguard-source-' . bin2hex(random_bytes(4)) . '.php';
+        $file = sys_get_temp_dir() . '/locguard-source-' . uniqid('', true) . '.php';
         file_put_contents($file, <<<'PHP'
 <?php
 
@@ -146,7 +146,7 @@ PHP);
 
     public function testAnalyzeKeepsPhysicalLineAndNclocLimitsSeparate(): void
     {
-        $file = sys_get_temp_dir() . '/locguard-source-' . bin2hex(random_bytes(4)) . '.php';
+        $file = sys_get_temp_dir() . '/locguard-source-' . uniqid('', true) . '.php';
         file_put_contents($file, <<<'PHP'
 <?php
 

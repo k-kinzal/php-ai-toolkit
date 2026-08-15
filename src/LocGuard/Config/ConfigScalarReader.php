@@ -20,6 +20,8 @@ final class ConfigScalarReader
      * Reads a non-empty string value.
      *
      * @param array<mixed> $data
+     *
+     * @throws LocGuardException when the value is not a non-empty string
      */
     public function string(array $data, string $key, string $default): string
     {
@@ -35,6 +37,8 @@ final class ConfigScalarReader
      * Reads a positive integer value.
      *
      * @param array<mixed> $data
+     *
+     * @throws LocGuardException when the value is not a positive integer
      */
     public function positiveInt(array $data, string $key, int $default): int
     {

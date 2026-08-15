@@ -90,7 +90,7 @@ final class TreeGuardAnalysisRunnerTest extends TestCase
 {
     public function testRunReturnsZeroAndWritesReportWithoutViolations(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-runner-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-runner-' . uniqid('', true);
         mkdir($dir . '/src', 0777, true);
         touch($dir . '/src/App.php');
         file_put_contents($dir . '/tree.yaml', "paths:\n  - src\n");
@@ -106,7 +106,7 @@ final class TreeGuardAnalysisRunnerTest extends TestCase
 
     public function testRunReturnsOneAndAppliesReporterOverride(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-runner-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-runner-' . uniqid('', true);
         mkdir($dir . '/src', 0777, true);
         touch($dir . '/src/notes.txt');
         file_put_contents($dir . '/tree.yaml', "paths:\n  - src\nrules:\n  - path: src\n    allow: ['*.php']\n");
@@ -123,7 +123,7 @@ final class TreeGuardAnalysisRunnerTest extends TestCase
 
     public function testRunReturnsTwoAndWritesErrorForInvalidConfig(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-runner-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-runner-' . uniqid('', true);
         mkdir($dir);
         $error = '';
         $writer = new TreeGuardOutputWriter(null, static function (string $message) use (&$error): void {

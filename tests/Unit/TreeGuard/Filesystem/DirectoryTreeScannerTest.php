@@ -28,7 +28,7 @@ final class DirectoryTreeScannerTest extends TestCase
 {
     public function testScanReturnsListingsForEveryDirectory(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-scan-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-scan-' . uniqid('', true);
         mkdir($dir . '/src/A/B', 0777, true);
         touch($dir . '/src/Root.php');
         touch($dir . '/src/A/One.php');
@@ -48,7 +48,7 @@ final class DirectoryTreeScannerTest extends TestCase
 
     public function testScanPrunesExcludedFilesAndSubtrees(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-scan-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-scan-' . uniqid('', true);
         mkdir($dir . '/src/Keep', 0777, true);
         mkdir($dir . '/src/Skip/Nested', 0777, true);
         touch($dir . '/src/Keep/Kept.php');
@@ -65,7 +65,7 @@ final class DirectoryTreeScannerTest extends TestCase
 
     public function testScanMergesMultiplePaths(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-scan-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-scan-' . uniqid('', true);
         mkdir($dir . '/src', 0777, true);
         mkdir($dir . '/skills', 0777, true);
         touch($dir . '/src/App.php');
@@ -81,7 +81,7 @@ final class DirectoryTreeScannerTest extends TestCase
 
     public function testScanRejectsMissingPath(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-scan-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-scan-' . uniqid('', true);
         mkdir($dir);
         $config = new TreeGuardConfig($dir, ['src'], [], [], new ReportConfig('ai', ['path', 'rule']));
 
@@ -93,7 +93,7 @@ final class DirectoryTreeScannerTest extends TestCase
 
     public function testScanRejectsFilePath(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-scan-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-scan-' . uniqid('', true);
         mkdir($dir);
         touch($dir . '/src');
         $config = new TreeGuardConfig($dir, ['src'], [], [], new ReportConfig('ai', ['path', 'rule']));

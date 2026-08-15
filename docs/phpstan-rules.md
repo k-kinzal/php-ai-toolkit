@@ -18,6 +18,11 @@ Rules applied to all code.
 | [ForbidSingleLinePhpDocRule](rules/ForbidSingleLinePhpDocRule.md) | Forbids single-line PHPDoc on public elements; requires multi-line format | `customRules.forbidSingleLinePhpDoc` |
 | [ForbidClassLikeNameSuffixRule](rules/ForbidClassLikeNameSuffixRule.md) | Forbids configured suffixes on class, interface, trait, and enum names | `customRules.forbiddenClassLikeNameSuffix` |
 | [NoNonPublicMethodRule](rules/NoNonPublicMethodRule.md) | Forbids private methods and forbids protected methods outside abstract classes, traits, and override methods | `customRules.nonPublicMethod` |
+| [ForbidEmptyCatchRule](rules/ForbidEmptyCatchRule.md) | Forbids catch blocks with an empty body | `customRules.emptyCatch` |
+| [RequireThrowsTagOnDirectThrowRule](rules/RequireThrowsTagOnDirectThrowRule.md) | Requires `@throws` for exceptions thrown directly in a method and not caught within it | `customRules.missingThrowsTag` |
+| [RequireExceptionChainingRule](rules/RequireExceptionChainingRule.md) | Requires new exceptions thrown inside catch blocks to chain the caught exception | `customRules.unchainedRethrow` |
+| [ForbidBroadCatchRule](rules/ForbidBroadCatchRule.md) | Forbids catching `Throwable`, `Exception`, and the `LogicException`/`Error` families outside configured boundary paths | `customRules.broadCatch` |
+| [ForbidGenericThrowsTagRule](rules/ForbidGenericThrowsTagRule.md) | Forbids `@throws \Exception` and `@throws \Throwable` tags | `customRules.genericThrowsTag` |
 
 ## Test Class
 
@@ -60,3 +65,4 @@ The following parameters can be customized in your project's `phpstan.neon`:
 | `unitTestMarker` | `'/tests/Unit/'` | Unit test path marker |
 | `forbiddenNamespacePrefixes` | `['Tests\Support', 'Tests\Supports', 'Tests\Helper', 'Tests\Helpers', 'Tests\Util', 'Tests\Utils', 'Tests\Utility', 'Tests\Utilities']` | Namespace prefixes to forbid |
 | `forbiddenClassLikeNameSuffixes` | See [`extension.neon`](../extension.neon) | Class-like declaration name suffixes to forbid |
+| `broadCatchAllowedPaths` | `[]` | fnmatch patterns of boundary files allowed to catch `Throwable`, `Exception`, and the `LogicException`/`Error` families |

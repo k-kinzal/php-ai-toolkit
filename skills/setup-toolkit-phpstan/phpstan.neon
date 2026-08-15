@@ -10,3 +10,14 @@ parameters:
         - tests
     excludePaths:
         - tests/Fixture
+    exceptions:
+        implicitThrows: false
+        check:
+            missingCheckedExceptionInThrows: true
+            tooWideThrowType: true
+        uncheckedExceptionClasses:
+            - LogicException
+            - RuntimeException
+            - Error
+            - Random\RandomException
+            - PHPUnit\Framework\MockObject\Exception

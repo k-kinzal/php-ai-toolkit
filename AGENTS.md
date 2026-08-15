@@ -23,7 +23,7 @@ When in doubt, prioritize quality over everything else. It is better to ship les
 ## Tech Stack
 
 - **Language**: PHP 8.0+
-- **Static Analysis**: PHPStan (level max + strict-rules for self-analysis)
+- **Static Analysis**: PHPStan (level max + strict-rules + checked-exception analysis for self-analysis)
 - **Testing**: PHPUnit with ParaTest for parallel execution
 - **Code Style**: PHP-CS-Fixer
 - **Package Type**: Composer phpstan-extension (auto-registered via `extra.phpstan.includes`)
@@ -34,8 +34,9 @@ The toolkit provides PHPStan and PHPUnit integrations, shared runtime services, 
 
 | Layer | Responsibility | Entry point |
 |-------|---------------|-------------|
-| **Rule** | PHPStan rules that detect AI-specific code issues (21 rules) | `src/PhpStan/Rule/` — one class per rule at the top level; single-rule collaborators live in a per-rule subdirectory named after the rule without the `Rule` suffix (for example, `src/PhpStan/Rule/TestNamingConvention/`), while collaborators used by two or more rules live in `src/PhpStan/Rule/Shared/` |
+| **Rule** | PHPStan rules that detect AI-specific code issues (26 rules) | `src/PhpStan/Rule/` — one class per rule at the top level; single-rule collaborators live in a per-rule subdirectory named after the rule without the `Rule` suffix (for example, `src/PhpStan/Rule/TestNamingConvention/`), while collaborators used by two or more rules live in `src/PhpStan/Rule/Shared/` |
 | **Support** | Test class detection shared by PHPStan rules | `src/PhpStan/Support/` |
+| **ThrowType** | Throw metadata for internal PHP functions missing from PHPStan (currently `token_get_all`) | `src/PhpStan/ThrowType/` |
 | **ErrorFormatter** | Dual-mode PHPStan error formatter — human-readable or machine-readable depending on caller | `src/PhpStan/ErrorFormatter/AiRulesErrorFormatter.php` |
 | **TestReporter** | PHPUnit extension that collects and formats test issues with AI-friendly messages | `src/PhpUnit/TestReporter/AiTestReporterExtension.php`, with `Subscriber/` and `Legacy/` |
 | **Shared** | Agent detection and format mode used by ErrorFormatter and TestReporter | `src/Shared/` (`AgentDetector`, `FormatMode`) |
@@ -43,10 +44,12 @@ The toolkit provides PHPStan and PHPUnit integrations, shared runtime services, 
 | **LocGuard CLI** | Checks source LOC, NCLOC, length, and cyclomatic complexity metrics | `src/LocGuard/` (`Cli/`, `Config/`, `Filesystem/`, `Analysis/` with `Token/`, `Complexity/`, `FunctionMetric/`, `ClassLikeMetric/`, and `FileMetric/`, and `Reporting/`), binary `bin/loc-guard`, config `loc.yaml` |
 | **TreeGuard CLI** | Enforces per-directory file and subdirectory counts, recursive subtree totals, nesting depth, file and directory naming globs and case conventions, required files, and empty-directory detection | `src/TreeGuard/` (`Cli/`, `Config/`, `Filesystem/`, `Analysis/`, `Reporting/`), binary `bin/tree-guard`, config `tree.yaml` |
 
-Integration: PHPStan loads `extension.neon`, which registers all 21 Rule services and their Support service. Optionally, `error-formatter.neon`
-registers the ErrorFormatter. PHPUnit loads the TestReporter extension via `phpunit.xml.dist`. The Installer CLI (`bin/php-ai-toolkit`), LocGuard
-(`bin/loc-guard`), and TreeGuard (`bin/tree-guard`) operate independently. `deptrac.yaml` defines LocGuard and TreeGuard as dependency-free toolkit
-layers: neither may depend on another toolkit layer.
+Integration: PHPStan loads `extension.neon`, which registers all 26 Rule services, their Support service, and the ThrowType extension service.
+Optionally, `error-formatter.neon` registers the ErrorFormatter. PHPUnit loads the TestReporter extension via `phpunit.xml.dist`. The Installer CLI
+(`bin/php-ai-toolkit`), LocGuard (`bin/loc-guard`), and TreeGuard (`bin/tree-guard`) operate independently. `deptrac.yaml` defines LocGuard and
+TreeGuard as dependency-free toolkit layers: neither may depend on another toolkit layer. Self-analysis (`phpstan.neon`) additionally enables
+PHPStan's checked-exception analysis (`exceptions.check.*` with `implicitThrows: false`): LogicException, RuntimeException, and Error families are
+unchecked; everything else must be caught or declared with `@throws`.
 
 ```
 src/
@@ -66,10 +69,11 @@ src/
     Reporting/         # AI, text, and JSON reporters
   PhpStan/
     ErrorFormatter/    # Dual-mode PHPStan error formatter
-    Rule/              # 21 top-level PHPStan rule classes
+    Rule/              # 26 top-level PHPStan rule classes
       TestNamingConvention/ # Example per-rule collaborator directory
       Shared/          # Collaborators used by multiple rules
     Support/           # Test class detection
+    ThrowType/         # Throw metadata for internal PHP functions
   PhpUnit/
     TestReporter/      # Dual-mode PHPUnit test result reporting
       Subscriber/      # PHPUnit event subscribers
@@ -95,6 +99,7 @@ tests/
       ErrorFormatter/  # Error formatter tests
       Rule/            # Rule and rule collaborator tests
       Support/         # Test class detection tests
+      ThrowType/       # Throw metadata extension tests
     PhpUnit/
       TestReporter/    # Test reporter tests
         Subscriber/    # Subscriber tests
@@ -111,7 +116,7 @@ skills/                # Nine setup skills, including setup-toolkit-tree-guard
 docs/                  # Documentation
 extension.neon         # PHPStan extension — registers all rules and services
 error-formatter.neon   # Optional error formatter (not auto-included)
-phpstan.neon           # Self-analysis config (level max + strict-rules)
+phpstan.neon           # Self-analysis config (level max + strict-rules + checked exceptions)
 phpunit.xml.dist       # PHPUnit config (strict mode + test reporter extension)
 loc.yaml               # LocGuard source-metric limits
 tree.yaml              # TreeGuard structure constraints
@@ -135,8 +140,11 @@ deptrac.yaml           # Architectural dependency rules
 - [GitHub Actions Configuration](docs/github-actions.md): CI coverage, quality gates, and workflow hardening
 
 **Rule Documentation**
+- [ForbidBroadCatchRule](docs/rules/ForbidBroadCatchRule.md): Forbids catching Throwable, Exception, and the LogicException/Error families outside configured boundary paths
 - [ForbidClassLikeNameSuffixRule](docs/rules/ForbidClassLikeNameSuffixRule.md): Forbids class, interface, trait, and enum names ending with configured generic suffixes
 - [ForbidDescriptivePhpDocInTestClassRule](docs/rules/ForbidDescriptivePhpDocInTestClassRule.md): Forbids descriptive PHPDoc text in test classes
+- [ForbidEmptyCatchRule](docs/rules/ForbidEmptyCatchRule.md): Forbids catch blocks with an empty body
+- [ForbidGenericThrowsTagRule](docs/rules/ForbidGenericThrowsTagRule.md): Forbids `@throws \Exception` and `@throws \Throwable` tags
 - [ForbiddenCommentRule](docs/rules/ForbiddenCommentRule.md): Forbids suppression comments such as `@phpstan-ignore` and `@infection-ignore-all`
 - [ForbiddenMagicMethodCallRule](docs/rules/ForbiddenMagicMethodCallRule.md): Reports direct calls to PHP magic methods like `__construct`, `__toString`, etc.
 - [ForbiddenNamespaceRule](docs/rules/ForbiddenNamespaceRule.md): Forbids namespaces that match or descend from configured namespace prefixes
@@ -153,6 +161,8 @@ deptrac.yaml           # Architectural dependency rules
 - [NoTraitUseInTestClassRule](docs/rules/NoTraitUseInTestClassRule.md): Forbids trait use statements in test classes
 - [OverrideMustHaveAttributeRule](docs/rules/OverrideMustHaveAttributeRule.md): Requires the `#[Override]` attribute when overriding a non-abstract parent method
 - [PhpUnitMockApiRule](docs/rules/PhpUnitMockApiRule.md): Restricts PHPUnit mock API to interface-only mocking and detects prohibited mock APIs
+- [RequireExceptionChainingRule](docs/rules/RequireExceptionChainingRule.md): Requires new exceptions thrown inside catch blocks to chain the caught exception
 - [RequirePhpDocOnPublicApiRule](docs/rules/RequirePhpDocOnPublicApiRule.md): Requires PHPDoc comments on public API classes, methods, properties, and constants
+- [RequireThrowsTagOnDirectThrowRule](docs/rules/RequireThrowsTagOnDirectThrowRule.md): Requires `@throws` for exceptions thrown directly in a method and not caught within it
 - [SrcUnitTestPairRule](docs/rules/SrcUnitTestPairRule.md): Ensures every class in `src/` has a matching test in `tests/Unit/` and vice versa
 - [TestNamingConventionRule](docs/rules/TestNamingConventionRule.md): Enforces PascalCase naming for test methods and data providers, and prohibits testing constructors/destructors directly

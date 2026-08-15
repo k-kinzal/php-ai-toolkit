@@ -44,6 +44,8 @@ final class ReportConfigReader
      * Reads report output configuration.
      *
      * @param mixed $value
+     *
+     * @throws TreeGuardException when the report section is not a mapping or contains unsupported values
      */
     public function read($value): ReportConfig
     {

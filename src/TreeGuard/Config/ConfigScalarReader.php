@@ -27,6 +27,8 @@ final class ConfigScalarReader
      * Reads a required or defaulted non-empty string value.
      *
      * @param array<mixed> $data
+     *
+     * @throws TreeGuardException when the value is not a non-empty string
      */
     public function string(array $data, string $key, ?string $default, string $context): string
     {
@@ -42,6 +44,8 @@ final class ConfigScalarReader
      * Reads a boolean value with a default.
      *
      * @param array<mixed> $data
+     *
+     * @throws TreeGuardException when the value is not a boolean
      */
     public function bool(array $data, string $key, bool $default, string $context): bool
     {
@@ -57,6 +61,8 @@ final class ConfigScalarReader
      * Reads an optional positive integer value, returning null when absent.
      *
      * @param array<mixed> $data
+     *
+     * @throws TreeGuardException when the value is not a positive integer
      */
     public function optionalPositiveInt(array $data, string $key, string $context): ?int
     {
@@ -76,6 +82,8 @@ final class ConfigScalarReader
      * Reads an optional naming convention value, returning null when absent.
      *
      * @param array<mixed> $data
+     *
+     * @throws TreeGuardException when the value is not a supported naming convention
      */
     public function optionalCase(array $data, string $key, string $context): ?string
     {

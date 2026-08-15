@@ -29,7 +29,7 @@ final class ConfigLoaderTest extends TestCase
 {
     public function testLoadsLocYaml(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
 paths:
@@ -76,12 +76,12 @@ YAML);
         $this->expectException(LocGuardException::class);
         $this->expectExceptionMessage('config not found');
 
-        (new ConfigLoader())->load(sys_get_temp_dir() . '/missing-locguard-' . bin2hex(random_bytes(4)) . '.yaml');
+        (new ConfigLoader())->load(sys_get_temp_dir() . '/missing-locguard-' . uniqid('', true) . '.yaml');
     }
 
     public function testLoadRejectsMalformedYaml(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/loc.yaml', "paths: [\n");
 
@@ -93,7 +93,7 @@ YAML);
 
     public function testLoadRejectsScalarTopLevelYaml(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/loc.yaml', "42\n");
 
@@ -105,7 +105,7 @@ YAML);
 
     public function testLoadRejectsInvalidPathList(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
 paths: src
@@ -119,7 +119,7 @@ YAML);
 
     public function testLoadRejectsInvalidExcludeEntry(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
 exclude:
@@ -134,7 +134,7 @@ YAML);
 
     public function testRejectsInvalidLimit(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
 limits:
@@ -149,7 +149,7 @@ YAML);
 
     public function testRejectsInvalidLimitsMapping(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
 limits: strict
@@ -163,7 +163,7 @@ YAML);
 
     public function testRejectsInvalidReporter(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
 report:
@@ -178,7 +178,7 @@ YAML);
 
     public function testRejectsInvalidReportMapping(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
 report: text
@@ -192,7 +192,7 @@ YAML);
 
     public function testRejectsEmptyReporterName(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
 report:
@@ -207,7 +207,7 @@ YAML);
 
     public function testRejectsInvalidReportOrderField(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
 report:

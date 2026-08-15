@@ -21,6 +21,8 @@ final class DirectoryListingReader
      * Returns the sorted direct file and directory names of one directory.
      *
      * @return array{files: list<string>, dirs: list<string>}
+     *
+     * @throws TreeGuardException when the directory cannot be read
      */
     public function read(string $absolutePath): array
     {

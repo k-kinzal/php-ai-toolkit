@@ -28,6 +28,8 @@ final class LimitConfigReader
      * Reads line-count and complexity limits.
      *
      * @param mixed $value
+     *
+     * @throws LocGuardException when the limits section is not a mapping
      */
     public function read($value): LimitConfig
     {

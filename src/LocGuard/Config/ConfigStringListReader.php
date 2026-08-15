@@ -22,6 +22,8 @@ final class ConfigStringListReader
      * @param array<mixed> $data
      * @param list<string> $default
      * @return list<string>
+     *
+     * @throws LocGuardException when the value is not a list of non-empty strings
      */
     public function read(array $data, string $key, array $default): array
     {

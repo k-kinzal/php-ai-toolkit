@@ -59,6 +59,14 @@ parameters:
             path: path/to/specific/file.php
 ```
 
+### `exceptions`
+
+Apply the template's `exceptions` block as-is unless the project already configures it. It enables checked-exception analysis: every exception outside the unchecked families must be caught or declared with `@throws`, `@throws` tags that are never thrown are reported, and absent `@throws` means "throws nothing" (`implicitThrows: false`).
+
+- If the project already has `exceptions` settings, union the `uncheckedExceptionClasses` lists and keep the stricter `check` flags.
+- The unchecked families are: `LogicException` (programmer errors — fix, don't catch), `RuntimeException` (environment failures — propagation is optional), `Error` (engine failures), plus `Random\RandomException` and PHPUnit's mock exception, which are practically unrecoverable.
+- Project exceptions that extend `RuntimeException` but represent conditions callers should handle (like `PDOException`) can be re-checked by declaring `@throws` at their throw sites — the toolkit's `RequireThrowsTagOnDirectThrowRule` enforces exactly this.
+
 ### `parameters.customRules`
 
 Only add if the project uses non-standard conventions:
@@ -89,6 +97,15 @@ Only add if the project uses non-standard conventions:
           srcUnitTestPairExcludePatterns:
               - '#/Migration/#'
               - '#/DataFixtures/#'
+  ```
+
+- **Boundary handlers**: Files that legitimately catch `Throwable` (CLI entry points, HTTP error middleware, worker loops) must be listed so `ForbidBroadCatchRule` allows them:
+  ```neon
+  parameters:
+      customRules:
+          broadCatchAllowedPaths:
+              - 'src/*/Cli/Application.php'
+              - 'src/Http/Middleware/ErrorHandler.php'
   ```
 
 ## Recommended Composer Scripts

@@ -116,7 +116,7 @@ final class ApplicationTest extends TestCase
 {
     public function testRunReturnsZeroWhenNoViolationsExist(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-cli-' . uniqid('', true);
         mkdir($dir);
         mkdir($dir . '/src');
         file_put_contents($dir . '/src/Example.php', <<<'PHP'
@@ -147,7 +147,7 @@ YAML);
 
     public function testRunReturnsOneWhenViolationsExist(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-cli-' . uniqid('', true);
         mkdir($dir);
         mkdir($dir . '/src');
         file_put_contents($dir . '/src/Example.php', <<<'PHP'
@@ -181,7 +181,7 @@ YAML);
 
     public function testRunUsesReporterOverride(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-cli-' . uniqid('', true);
         mkdir($dir);
         mkdir($dir . '/src');
         file_put_contents($dir . '/src/Example.php', <<<'PHP'
@@ -208,7 +208,7 @@ YAML);
     public function testRunPrintsHelpAndVersion(): void
     {
         $output = '';
-        $dir = sys_get_temp_dir() . '/locguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-cli-' . uniqid('', true);
         mkdir($dir);
         $app = new Application($dir, stdout: static function (string $message) use (&$output): void {
             $output .= $message;
@@ -225,7 +225,7 @@ YAML);
 
     public function testRunAcceptsAbsoluteConfigPathAndSeparateFormatOption(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-cli-' . uniqid('', true);
         mkdir($dir);
         mkdir($dir . '/src');
         file_put_contents($dir . '/src/Example.php', <<<'PHP'
@@ -251,7 +251,7 @@ YAML);
 
     public function testRunAcceptsEqualsConfigAndFormatOptions(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-cli-' . uniqid('', true);
         mkdir($dir);
         mkdir($dir . '/src');
         file_put_contents($dir . '/src/Example.php', <<<'PHP'
@@ -278,7 +278,7 @@ YAML);
     public function testRunReturnsTwoWhenConfigIsMissing(): void
     {
         $error = '';
-        $dir = sys_get_temp_dir() . '/locguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-cli-' . uniqid('', true);
         mkdir($dir);
         $app = new Application(
             $dir,
@@ -294,7 +294,7 @@ YAML);
     public function testRunRejectsUnknownOption(): void
     {
         $error = '';
-        $dir = sys_get_temp_dir() . '/locguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-cli-' . uniqid('', true);
         mkdir($dir);
         $app = new Application(
             $dir,
@@ -310,7 +310,7 @@ YAML);
     public function testRunRejectsMissingOptionValue(): void
     {
         $error = '';
-        $dir = sys_get_temp_dir() . '/locguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-cli-' . uniqid('', true);
         mkdir($dir);
         $app = new Application(
             $dir,
@@ -326,7 +326,7 @@ YAML);
     public function testRunRejectsMissingReporterValueBeforeNextOption(): void
     {
         $error = '';
-        $dir = sys_get_temp_dir() . '/locguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-cli-' . uniqid('', true);
         mkdir($dir);
         $app = new Application(
             $dir,

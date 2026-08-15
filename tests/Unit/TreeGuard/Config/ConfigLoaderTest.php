@@ -32,7 +32,7 @@ final class ConfigLoaderTest extends TestCase
 {
     public function testLoadParsesTreeYaml(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/tree.yaml', <<<'YAML'
 paths:
@@ -74,7 +74,7 @@ YAML);
 
     public function testLoadAppliesDefaults(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/tree.yaml', <<<'YAML'
 exclude: []
@@ -94,12 +94,12 @@ YAML);
         $this->expectException(TreeGuardException::class);
         $this->expectExceptionMessage('config not found');
 
-        (new ConfigLoader())->load(sys_get_temp_dir() . '/missing-treeguard-' . bin2hex(random_bytes(4)) . '.yaml');
+        (new ConfigLoader())->load(sys_get_temp_dir() . '/missing-treeguard-' . uniqid('', true) . '.yaml');
     }
 
     public function testLoadRejectsMalformedYaml(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/tree.yaml', "paths: [\n");
 
@@ -111,7 +111,7 @@ YAML);
 
     public function testLoadRejectsScalarTopLevelYaml(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/tree.yaml', "42\n");
 
@@ -123,7 +123,7 @@ YAML);
 
     public function testLoadRejectsUnknownRuleKey(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-config-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-config-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/tree.yaml', <<<'YAML'
 rules:

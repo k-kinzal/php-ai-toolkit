@@ -119,7 +119,7 @@ final class ForbidNonDocCommentRuleTest extends RuleTestCase
 
     public function testProcessNodeDoubleSlashCommentInsideLongArrayLiteralIsNotReported(): void
     {
-        $file = sys_get_temp_dir() . '/forbid-non-doc-comment-' . bin2hex(random_bytes(4)) . '.php';
+        $file = sys_get_temp_dir() . '/forbid-non-doc-comment-' . uniqid('', true) . '.php';
         self::assertNotFalse(file_put_contents($file, <<<'PHP'
 <?php
 

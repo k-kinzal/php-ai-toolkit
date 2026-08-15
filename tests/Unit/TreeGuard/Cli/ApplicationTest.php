@@ -98,7 +98,7 @@ final class ApplicationTest extends TestCase
 {
     public function testRunReturnsZeroWhenNoViolationsExist(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-cli-' . uniqid('', true);
         mkdir($dir . '/src', 0777, true);
         touch($dir . '/src/Example.php');
         file_put_contents($dir . '/tree.yaml', <<<'YAML'
@@ -121,7 +121,7 @@ YAML);
 
     public function testRunReturnsOneWhenViolationsExist(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-cli-' . uniqid('', true);
         mkdir($dir . '/src', 0777, true);
         touch($dir . '/src/One.php');
         touch($dir . '/src/Two.php');
@@ -144,7 +144,7 @@ YAML);
 
     public function testRunUsesReporterOverride(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-cli-' . uniqid('', true);
         mkdir($dir . '/src', 0777, true);
         touch($dir . '/src/Example.php');
         file_put_contents($dir . '/tree.yaml', <<<'YAML'
@@ -164,7 +164,7 @@ YAML);
     public function testRunPrintsHelpAndVersion(): void
     {
         $output = '';
-        $dir = sys_get_temp_dir() . '/treeguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-cli-' . uniqid('', true);
         mkdir($dir);
         $app = new Application($dir, stdout: static function (string $message) use (&$output): void {
             $output .= $message;
@@ -181,7 +181,7 @@ YAML);
 
     public function testRunAcceptsAbsoluteConfigPathAndSeparateFormatOption(): void
     {
-        $dir = sys_get_temp_dir() . '/treeguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-cli-' . uniqid('', true);
         mkdir($dir . '/src', 0777, true);
         touch($dir . '/src/Example.php');
         file_put_contents($dir . '/tree.yaml', <<<'YAML'
@@ -201,7 +201,7 @@ YAML);
     public function testRunReturnsTwoWhenConfigIsMissing(): void
     {
         $error = '';
-        $dir = sys_get_temp_dir() . '/treeguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-cli-' . uniqid('', true);
         mkdir($dir);
         $app = new Application(
             $dir,
@@ -217,7 +217,7 @@ YAML);
     public function testRunRejectsUnknownOption(): void
     {
         $error = '';
-        $dir = sys_get_temp_dir() . '/treeguard-cli-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/treeguard-cli-' . uniqid('', true);
         mkdir($dir);
         $app = new Application(
             $dir,

@@ -29,6 +29,10 @@ deptrac:
       collectors:
         - type: directory
           value: src/PhpStan/Support/.*
+    - name: PhpStanThrowType
+      collectors:
+        - type: directory
+          value: src/PhpStan/ThrowType/.*
     - name: PhpStanErrorFormatter
       collectors:
         - type: directory
@@ -49,6 +53,7 @@ deptrac:
     PhpStanRule:
       - PhpStanSupport
     PhpStanSupport: ~
+    PhpStanThrowType: ~
     PhpStanErrorFormatter:
       - Shared
     PhpUnitTestReporter:

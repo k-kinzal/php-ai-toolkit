@@ -41,6 +41,8 @@ final class PhpPathFileCollector
      * Returns PHP files under the configured path.
      *
      * @return array<string, string>
+     *
+     * @throws LocGuardException when the configured path does not exist
      */
     public function files(LocGuardConfig $config, string $path): array
     {

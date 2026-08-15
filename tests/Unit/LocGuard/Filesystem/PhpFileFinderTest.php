@@ -27,7 +27,7 @@ final class PhpFileFinderTest extends TestCase
 {
     public function testFindsPhpFilesAndAppliesExcludes(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-finder-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-finder-' . uniqid('', true);
         mkdir($dir);
         mkdir($dir . '/src');
         mkdir($dir . '/src/Generated');
@@ -48,7 +48,7 @@ final class PhpFileFinderTest extends TestCase
 
     public function testFindAcceptsAbsoluteFilePath(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-finder-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-finder-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/Example.php', '<?php');
 
@@ -65,7 +65,7 @@ final class PhpFileFinderTest extends TestCase
 
     public function testFindReturnsEmptyForExcludedSingleFile(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-finder-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-finder-' . uniqid('', true);
         mkdir($dir);
         file_put_contents($dir . '/Example.php', '<?php');
 
@@ -82,7 +82,7 @@ final class PhpFileFinderTest extends TestCase
 
     public function testFindRejectsMissingPath(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-finder-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-finder-' . uniqid('', true);
         mkdir($dir);
 
         $this->expectException(LocGuardException::class);

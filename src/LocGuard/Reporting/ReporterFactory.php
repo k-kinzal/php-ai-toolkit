@@ -15,6 +15,8 @@ final class ReporterFactory
 {
     /**
      * Creates the configured reporter.
+     *
+     * @throws LocGuardException when the reporter name is not one of: ai, text, json
      */
     public function create(string $reporter): Reporter
     {

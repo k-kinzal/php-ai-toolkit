@@ -12,6 +12,9 @@ use RuntimeException;
 #[CoversClass(TreeGuardException::class)]
 final class TreeGuardExceptionTest extends TestCase
 {
+    /**
+     * @throws TreeGuardException
+     */
     public function testIsRuntimeException(): void
     {
         $this->expectException(RuntimeException::class);

@@ -12,6 +12,9 @@ use RuntimeException;
 #[CoversClass(LocGuardException::class)]
 final class LocGuardExceptionTest extends TestCase
 {
+    /**
+     * @throws LocGuardException
+     */
     public function testIsRuntimeException(): void
     {
         $this->expectException(RuntimeException::class);

@@ -20,6 +20,8 @@ final class LocGuardCliArgumentParser
      *
      * @param list<string> $argv
      * @return array{config: string, help: bool, reporter: ?string, version: bool}
+     *
+     * @throws LocGuardException when an option is unknown or missing its value
      */
     public function parse(array $argv): array
     {

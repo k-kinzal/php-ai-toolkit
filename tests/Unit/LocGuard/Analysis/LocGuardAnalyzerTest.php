@@ -42,7 +42,7 @@ final class LocGuardAnalyzerTest extends TestCase
 {
     public function testAnalyzesConfiguredSourceFiles(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-analyzer-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-analyzer-' . uniqid('', true);
         mkdir($dir);
         mkdir($dir . '/src');
         file_put_contents($dir . '/src/Example.php', <<<'PHP'

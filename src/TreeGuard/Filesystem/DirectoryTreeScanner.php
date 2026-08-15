@@ -47,6 +47,8 @@ final class DirectoryTreeScanner
      * Returns listings for every scanned directory, keyed and sorted by relative path.
      *
      * @return array<string, DirectoryListing>
+     *
+     * @throws TreeGuardException when a configured path is not a readable directory
      */
     public function scan(TreeGuardConfig $config): array
     {

@@ -13,7 +13,7 @@ final class FileTokenParserTest extends TestCase
 {
     public function testParseReturnsTokensForReadablePhpFile(): void
     {
-        $file = sys_get_temp_dir() . '/file-token-parser-' . bin2hex(random_bytes(4)) . '.php';
+        $file = sys_get_temp_dir() . '/file-token-parser-' . uniqid('', true) . '.php';
         file_put_contents($file, '<?php echo "x";');
 
         try {
@@ -25,6 +25,6 @@ final class FileTokenParserTest extends TestCase
 
     public function testParseReturnsNullForMissingFile(): void
     {
-        self::assertNull((new FileTokenParser())->parse(sys_get_temp_dir() . '/missing-' . bin2hex(random_bytes(4)) . '.php'));
+        self::assertNull((new FileTokenParser())->parse(sys_get_temp_dir() . '/missing-' . uniqid('', true) . '.php'));
     }
 }

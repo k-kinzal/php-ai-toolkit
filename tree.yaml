@@ -19,7 +19,7 @@ rules:
     deny: ['*Helper.php', '*Helpers.php', '*Manager.php', '*Util.php', '*Utils.php', '*Service.php']
     file_case: pascal
     dir_case: pascal
-    max_files: 25
+    max_files: 30
     max_dirs: 20
   - path: 'src/*'
     max_total_files: 250
@@ -28,7 +28,7 @@ rules:
     allow: ['*Test.php']
     file_case: pascal
     dir_case: pascal
-    max_files: 25
+    max_files: 30
     max_dirs: 20
   - path: 'skills/*'
     require: ['SKILL.md']

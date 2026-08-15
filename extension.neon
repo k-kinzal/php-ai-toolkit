@@ -7,6 +7,7 @@ parametersSchema:
         unitTestMarker: string()
         forbiddenNamespacePrefixes: listOf(string())
         forbiddenClassLikeNameSuffixes: listOf(string())
+        broadCatchAllowedPaths: listOf(string())
     ])
 
 parameters:
@@ -75,8 +76,14 @@ parameters:
             - Engines
             - System
             - Systems
+        broadCatchAllowedPaths: []
 
 services:
+    aiRules.throwType.tokenGetAll:
+        class: PhpAiToolkit\PhpStan\ThrowType\TokenGetAllThrowTypeExtension
+        tags:
+            - phpstan.dynamicFunctionThrowTypeExtension
+
     aiRules.support.testClassScope:
         class: PhpAiToolkit\PhpStan\Support\TestClassScope
         arguments:
@@ -219,5 +226,32 @@ services:
             testClassScope: @aiRules.support.testClassScope
             srcMarker: %customRules.srcMarker%
             unitTestMarker: %customRules.unitTestMarker%
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidEmptyCatch:
+        class: PhpAiToolkit\PhpStan\Rule\ForbidEmptyCatchRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.requireThrowsTagOnDirectThrow:
+        class: PhpAiToolkit\PhpStan\Rule\RequireThrowsTagOnDirectThrowRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.requireExceptionChaining:
+        class: PhpAiToolkit\PhpStan\Rule\RequireExceptionChainingRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidBroadCatch:
+        class: PhpAiToolkit\PhpStan\Rule\ForbidBroadCatchRule
+        arguments:
+            broadCatchAllowedPaths: %customRules.broadCatchAllowedPaths%
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidGenericThrowsTag:
+        class: PhpAiToolkit\PhpStan\Rule\ForbidGenericThrowsTagRule
         tags:
             - phpstan.rules.rule

@@ -44,6 +44,8 @@ final class ConfigLoader
 
     /**
      * Loads and validates a LocGuard YAML configuration file.
+     *
+     * @throws LocGuardException when the file is missing, unparsable, or not a mapping
      */
     public function load(string $path): LocGuardConfig
     {

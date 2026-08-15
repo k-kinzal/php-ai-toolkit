@@ -44,6 +44,8 @@ final class ConfigLoader
 
     /**
      * Loads and validates a TreeGuard YAML configuration file.
+     *
+     * @throws TreeGuardException when the file is missing, unparsable, or not a mapping
      */
     public function load(string $path): TreeGuardConfig
     {

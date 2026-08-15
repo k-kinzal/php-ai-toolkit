@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule\NoRedundantAssertInstanceOf;
 
-use function is_a;
-
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
-use Throwable;
 
 /**
  * Compares assertInstanceOf() expected and actual static types.
@@ -24,14 +21,6 @@ final class AssertInstanceOfTypeMatcher
             return true;
         }
 
-        try {
-            return (new ObjectType($expectedTypeName))->isSuperTypeOf($actualType)->yes();
-        } catch (Throwable $exception) {
-            if (!is_a($exception, 'PHPStan\Reflection\MissingStaticAccessorInstanceException')) {
-                throw $exception;
-            }
-
-            return false;
-        }
+        return (new ObjectType($expectedTypeName))->isSuperTypeOf($actualType)->yes();
     }
 }

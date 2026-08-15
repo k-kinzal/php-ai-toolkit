@@ -15,6 +15,17 @@ parameters:
     paths:
         - src
         - tests
+    exceptions:
+        implicitThrows: false
+        check:
+            missingCheckedExceptionInThrows: true
+            tooWideThrowType: true
+        uncheckedExceptionClasses:
+            - LogicException
+            - RuntimeException
+            - Error
+            - Random\RandomException
+            - PHPUnit\Framework\MockObject\Exception
 ```
 
 ## Explanation
@@ -48,3 +59,17 @@ Formats PHPStan error output for AI agent consumption.
 Includes both `src` and `tests` in the analysis scope.
 
 **Why:** Since AI agents also generate test code, the same static analysis must apply to tests. Type errors in test code undermine test reliability.
+
+### `exceptions` (checked-exception analysis)
+
+Enables PHPStan's built-in checked-exception analysis, which is off by default and not part of `level: max` or strict-rules.
+
+**Why:** PHP exceptions are invisible to the type system, and AI-generated code exploits that: it throws without documenting, swallows what it cannot explain, and leaves `@throws` tags to rot. This configuration makes exception flow a checked contract:
+
+- `check.missingCheckedExceptionInThrows` — an exception outside the unchecked families must be caught or declared in `@throws`, transitively through the call graph.
+- `check.tooWideThrowType` — a declared `@throws` that is never thrown is reported, so tags cannot drift from the code.
+- `implicitThrows: false` — a call without `@throws` is treated as throwing nothing. Combined with [RequireThrowsTagOnDirectThrowRule](rules/RequireThrowsTagOnDirectThrowRule.md) (which requires `@throws` at every direct throw site, unchecked types included), this makes dead-catch analysis sound: a `catch` whose try block cannot throw the caught type is reported.
+
+**Taxonomy** (`uncheckedExceptionClasses`): `LogicException` and `Error` families are programmer/engine errors — they must be fixed at the source, never caught or declared (enforced by [ForbidBroadCatchRule](rules/ForbidBroadCatchRule.md)). `RuntimeException` is unchecked so that ordinary runtime failures do not force Java-style propagation annotations through every caller. `Random\RandomException` (CSPRNG failure) and PHPUnit's `MockObject\Exception` (test-framework infrastructure) are practically unrecoverable, and marking them unchecked keeps test code free of meaningless `@throws` tags.
+
+The exception-handling rules ([ForbidEmptyCatchRule](rules/ForbidEmptyCatchRule.md), [RequireExceptionChainingRule](rules/RequireExceptionChainingRule.md), [ForbidBroadCatchRule](rules/ForbidBroadCatchRule.md), [ForbidGenericThrowsTagRule](rules/ForbidGenericThrowsTagRule.md)) close the escape hatches AI agents use to silence this analysis: empty catches, broad catches, chain-dropping rethrows, and `@throws \Exception`.

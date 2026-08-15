@@ -66,7 +66,7 @@ final class LocGuardAnalysisRunnerTest extends TestCase
 {
     public function testRunWritesReportAndReturnsAnalyzerExitCode(): void
     {
-        $dir = sys_get_temp_dir() . '/locguard-runner-' . bin2hex(random_bytes(4));
+        $dir = sys_get_temp_dir() . '/locguard-runner-' . uniqid('', true);
         mkdir($dir . '/src', 0755, true);
         file_put_contents($dir . '/src/Example.php', "<?php\n");
         file_put_contents($dir . '/loc.yaml', "paths:\n  - src\n");

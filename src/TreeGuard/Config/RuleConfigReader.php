@@ -56,6 +56,8 @@ final class RuleConfigReader
      * Reads one rule block at the given list index.
      *
      * @param mixed $value
+     *
+     * @throws TreeGuardException when the rule block is not a mapping or contains unsupported keys
      */
     public function read($value, int $index): RuleConfig
     {

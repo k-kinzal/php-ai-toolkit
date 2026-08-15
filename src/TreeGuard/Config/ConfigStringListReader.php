@@ -23,6 +23,8 @@ final class ConfigStringListReader
      * @param array<mixed> $data
      * @param list<string> $default
      * @return list<string>
+     *
+     * @throws TreeGuardException when the value is not a list of non-empty strings
      */
     public function read(array $data, string $key, array $default, string $context): array
     {
@@ -47,6 +49,8 @@ final class ConfigStringListReader
      *
      * @param array<mixed> $data
      * @return ?list<string>
+     *
+     * @throws TreeGuardException when the value is not a list of non-empty strings
      */
     public function readOptional(array $data, string $key, string $context): ?array
     {

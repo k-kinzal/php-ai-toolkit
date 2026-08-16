@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace PhpAiToolkit\PhpStan\Rule\RequireExceptionChaining;
 
 use Override;
+use PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Closure;
-use PhpParser\Node\Expr\Throw_;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\TryCatch;
 use PhpParser\NodeTraverser;
@@ -24,8 +24,19 @@ use PhpParser\NodeVisitorAbstract;
  */
 final class CatchThrowVisitor extends NodeVisitorAbstract
 {
-    /** @var list<Throw_> */
+    /** @var list<Node> */
     private array $throws = [];
+
+    /** @readonly */
+    private ThrownExpression $thrown;
+
+    /**
+     * Creates the visitor from what tells a throw from any other node.
+     */
+    public function __construct(?ThrownExpression $thrown = null)
+    {
+        $this->thrown = $thrown ?? new ThrownExpression();
+    }
 
     /**
      * Collects throw statements and skips nested scopes and try blocks.
@@ -39,7 +50,7 @@ final class CatchThrowVisitor extends NodeVisitorAbstract
             return NodeTraverser::DONT_TRAVERSE_CHILDREN;
         }
 
-        if ($node instanceof Throw_) {
+        if ($this->thrown->isThrow($node)) {
             $this->throws[] = $node;
         }
 
@@ -49,7 +60,7 @@ final class CatchThrowVisitor extends NodeVisitorAbstract
     /**
      * Returns the throw statements collected during traversal.
      *
-     * @return list<Throw_>
+     * @return list<Node>
      */
     public function throws(): array
     {

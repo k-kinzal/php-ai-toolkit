@@ -11,6 +11,7 @@ use PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser;
 use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentErrorBuilder;
 use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern;
 use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentTokenAnalyzer;
+use PHPStan\Analyser\Error;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -56,16 +57,14 @@ final class ForbiddenCommentRuleTest extends RuleTestCase
 
     public function testProcessNodePhpstanIgnoreBareIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/ForbiddenComment/PhpstanIgnoreBare.php'], [
-            [
-                'No error with identifier argument.type is reported on line 5.',
-                5,
-            ],
-            [
-                'Remove phpstan-ignore comment "// @phpstan-ignore argument.type". Re-run PHPStan and fix the revealed error. AI agents must not edit ignoreErrors; ask a human operator only when suppression is genuinely justified.',
-                5,
-            ],
-        ]);
+        $errors = $this->gatherAnalyserErrors([__DIR__ . '/../../../Fixture/ForbiddenComment/PhpstanIgnoreBare.php']);
+        $messages = array_map(static fn (Error $error): string => sprintf('%d: %s', (int) $error->getLine(), $error->getMessage()), $errors);
+        sort($messages);
+
+        self::assertSame([
+            '5: No error with identifier argument.type is reported on line 5.',
+            '5: Remove phpstan-ignore comment "// @phpstan-ignore argument.type". Re-run PHPStan and fix the revealed error. AI agents must not edit ignoreErrors; ask a human operator only when suppression is genuinely justified.',
+        ], $messages);
     }
 
     public function testProcessNodeInfectionIgnoreAllIsReported(): void

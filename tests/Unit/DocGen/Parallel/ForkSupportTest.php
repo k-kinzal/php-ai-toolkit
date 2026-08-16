@@ -18,6 +18,14 @@ final class ForkSupportTest extends TestCase
         self::assertSame($support->unavailableReason() === null, $support->isAvailable());
     }
 
+    public function testRequiredFunctionsNamesWhatForkingNeeds(): void
+    {
+        $required = (new ForkSupport())->requiredFunctions();
+
+        self::assertContains('pcntl_fork', $required);
+        self::assertContains('stream_socket_pair', $required);
+    }
+
     public function testUnavailableReasonNamesTheMissingExtensionOrTheCodeCache(): void
     {
         $reason = (new ForkSupport())->unavailableReason();

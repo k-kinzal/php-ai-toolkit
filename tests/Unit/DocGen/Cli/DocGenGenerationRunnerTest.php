@@ -587,7 +587,7 @@ YAML);
                 preg_match('#\'add\'.*\'([^\']*docgen-diff-[^\']*)\'#', $command, $match);
                 $checkout = $match[1] ?? $scratch;
                 $checkouts[] = $checkout;
-                mkdir($checkout . '/src', 0777, true);
+                @mkdir($checkout . '/src', 0777, true);
                 file_put_contents($checkout . '/composer.json', '{"name": "acme/demo", "autoload": {"psr-4": {"Acme\\\\Demo\\\\": "src/"}}}');
                 file_put_contents($checkout . '/src/Greeter.php', '<?php namespace Acme\Demo; final class Greeter { public function greet(): string { return "hi"; } }');
 

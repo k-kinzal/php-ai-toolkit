@@ -14,15 +14,19 @@ use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PhpAiToolkit\DocGen\Render\TypeRenderContext;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode;
 use PHPStan\PhpDocParser\Ast\Type\CallableTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeForParameterNode;
+use PHPStan\PhpDocParser\Ast\Type\ConstTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\ObjectShapeNode;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 #[CoversClass(TypeHtml::class)]
 #[UsesClass(ClassLikeDoc::class)]
@@ -155,6 +159,36 @@ final class TypeHtmlTest extends TestCase
             '<span class="t-ext" title="Demo\Config">Config</span>[<span class="t-lit">&#039;key&#039;</span>]',
             (new TypeHtml())->miscNode($type, $context),
         );
+    }
+
+    /**
+     * @dataProvider providerConstantExpression
+     */
+    #[DataProvider('providerConstantExpression')]
+    public function testConstExprPrintsAConstantAsPhpWritesIt(ConstExprNode $expr, string $expected): void
+    {
+        self::assertSame($expected, (new TypeHtml())->constExpr($expr));
+    }
+
+    /**
+     * @return array<string, array{ConstExprNode, string}>
+     *
+     * @throws RuntimeException when the installed parser reads no constant type
+     */
+    public static function providerConstantExpression(): array
+    {
+        $cases = [];
+        foreach (['string' => ["/** @param 'key' \$x */", "'key'"], 'integer' => ['/** @param 42 $x */', '42']] as $label => $case) {
+            $doc = (new DocBlockReader())->read($case[0]);
+            $type = $doc === null ? null : ($doc->params['$x']->type ?? null);
+            if (!$type instanceof ConstTypeNode) {
+                throw new RuntimeException('The installed parser read no constant type from the snippet.');
+            }
+
+            $cases[$label] = [$type->constExpr, $case[1]];
+        }
+
+        return $cases;
     }
 
     public function testMiscNodeRendersConstTypeLiteral(): void

@@ -16,7 +16,7 @@
         "deptrac/deptrac": "^0.24 || ^1.0 || ^2.0 || ^3.0 || ^4.6",
         "friendsofphp/php-cs-fixer": "^3.4",
         "phpcompatibility/php-compatibility": "^10.0@alpha",
-        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpstan/phpstan-strict-rules": "^1.6 || ^2.0",
         "phpunit/phpunit": "^9.6 || ^10.5 || ^11 || ^12 || ^13",
         "squizlabs/php_codesniffer": "^4.0"
     },

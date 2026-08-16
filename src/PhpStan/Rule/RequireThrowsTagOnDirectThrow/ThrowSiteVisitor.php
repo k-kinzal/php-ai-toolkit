@@ -10,11 +10,11 @@ use function count;
 use function is_string;
 
 use Override;
+use PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\New_;
-use PhpParser\Node\Expr\Throw_;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\Catch_;
@@ -43,6 +43,17 @@ final class ThrowSiteVisitor extends NodeVisitorAbstract
 
     /** @var list<ThrowSite> */
     private array $sites = [];
+
+    /** @readonly */
+    private ThrownExpression $thrown;
+
+    /**
+     * Creates the visitor from what reads the thrown expression.
+     */
+    public function __construct(?ThrownExpression $thrown = null)
+    {
+        $this->thrown = $thrown ?? new ThrownExpression();
+    }
 
     /**
      * Tracks try/catch nesting and records throw statements.
@@ -82,7 +93,7 @@ final class ThrowSiteVisitor extends NodeVisitorAbstract
             return null;
         }
 
-        if ($node instanceof Throw_) {
+        if ($this->thrown->isThrow($node)) {
             $this->recordThrow($node);
         }
 
@@ -119,10 +130,10 @@ final class ThrowSiteVisitor extends NodeVisitorAbstract
     /**
      * Records one throw statement with its thrown names and active guards.
      */
-    public function recordThrow(Throw_ $node): void
+    public function recordThrow(Node $node): void
     {
         $thrownNames = [];
-        $expr = $node->expr;
+        $expr = $this->thrown->of($node);
         if ($expr instanceof New_ && $expr->class instanceof Name) {
             $thrownNames = [$expr->class];
         } elseif ($expr instanceof Variable && is_string($expr->name)) {

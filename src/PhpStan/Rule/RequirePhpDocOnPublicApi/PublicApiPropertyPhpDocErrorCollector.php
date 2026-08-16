@@ -23,10 +23,10 @@ final class PublicApiPropertyPhpDocErrorCollector
                 continue;
             }
 
-            $names = array_map(
-                static fn (\PhpParser\Node\PropertyItem $prop): string => '$' . $prop->name->toString(),
-                $property->props,
-            );
+            $names = [];
+            foreach ($property->props as $declared) {
+                $names[] = '$' . $declared->name->toString();
+            }
 
             if ($property->getDocComment() === null) {
                 $errors[] = RuleErrorBuilder::message(

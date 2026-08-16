@@ -42,10 +42,10 @@ final class NoPropertyInTestClassRule implements Rule
             return [];
         }
 
-        $names = array_map(
-            static fn (\PhpParser\Node\PropertyItem $prop): string => '$' . $prop->name->toString(),
-            $node->props,
-        );
+        $names = [];
+        foreach ($node->props as $property) {
+            $names[] = '$' . $property->name->toString();
+        }
 
         return [
             RuleErrorBuilder::message(

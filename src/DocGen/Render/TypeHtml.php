@@ -9,6 +9,8 @@ use function implode;
 use function in_array;
 
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprStringNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\CallableTypeNode;
@@ -139,7 +141,7 @@ final class TypeHtml
     public function miscNode(TypeNode $type, TypeRenderContext $context): string
     {
         if ($type instanceof ConstTypeNode) {
-            return '<span class="t-lit">' . $this->escaper->e((string) $type->constExpr) . '</span>';
+            return '<span class="t-lit">' . $this->escaper->e($this->constExpr($type->constExpr)) . '</span>';
         }
 
         if ($type instanceof ThisTypeNode) {
@@ -151,6 +153,23 @@ final class TypeHtml
         }
 
         return $this->escaper->e((string) $type);
+    }
+
+    /**
+     * Returns one constant expression as PHP writes it.
+     *
+     * A string constant is quoted here rather than by the node itself,
+     * because the two phpdoc-parser versions the toolkit supports print
+     * it differently: one keeps the quotes of the source and the other
+     * drops them, and a documented type reads as PHP either way.
+     */
+    public function constExpr(ConstExprNode $expr): string
+    {
+        if (!$expr instanceof ConstExprStringNode) {
+            return (string) $expr;
+        }
+
+        return "'" . str_replace(['\\', "'"], ['\\\\', "\\'"], $expr->value) . "'";
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpAiToolkit\DocGen\Render;
 
 use function count;
+use function file_get_contents;
 use function function_exists;
 
 use GdImage;
@@ -18,13 +19,14 @@ use function imagettftext;
 use function is_file;
 use function max;
 use function min;
-use function ob_get_clean;
-use function ob_start;
 
 use PhpAiToolkit\DocGen\DocGenException;
 
 use function round;
 use function substr;
+use function sys_get_temp_dir;
+use function tempnam;
+use function unlink;
 
 /**
  * Draws the image a link to the site is previewed with elsewhere.
@@ -114,11 +116,16 @@ final class SocialCard
         $this->body($image, $subtitle, $title);
         $this->footer($image);
 
-        ob_start();
-        imagepng($image, null, 9);
-        $png = ob_get_clean();
+        $file = tempnam(sys_get_temp_dir(), 'docgen-card-');
+        if ($file === false) {
+            throw new DocGenException('Could not draw the social preview image: no temporary file could be created for it.');
+        }
 
-        if ($png === '') {
+        imagepng($image, $file, 9);
+        $png = file_get_contents($file);
+        unlink($file);
+
+        if ($png === false || $png === '') {
             throw new DocGenException('Could not draw the social preview image: the gd extension encoded no PNG.');
         }
 

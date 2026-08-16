@@ -149,12 +149,13 @@ final class DiffWorkspaceTest extends TestCase
         file_put_contents($project . '/composer.json', '{"name": "demo/app", "autoload": {"psr-4": {"Demo\\\\": "src/"}}}');
         file_put_contents($project . '/src/Engine.php', '<?php namespace Demo; class Engine { public function run(int $times): void {} }');
         $temp = new TempDirectory();
+        $scratch = $temp->create('docgen-scratch-');
         $workspace = new DiffWorkspace(
             new GitRepository(new GitCommandRunner(static fn (string $command): array => ['status' => 0, 'output' => 'abc1234'])),
-            new GitWorktree(new GitCommandRunner(static function (string $command): array {
-                preg_match('#\'([^\']*docgen-diff-[^\']*)\'#', $command, $match);
-                $checkout = $match[1] ?? '';
-                mkdir($checkout . '/src', 0777, true);
+            new GitWorktree(new GitCommandRunner(static function (string $command) use ($scratch): array {
+                preg_match('#\'add\'.*\'([^\']*docgen-diff-[^\']*)\'#', $command, $match);
+                $checkout = $match[1] ?? $scratch;
+                @mkdir($checkout . '/src', 0777, true);
                 file_put_contents($checkout . '/composer.json', '{"name": "demo/app", "autoload": {"psr-4": {"Demo\\\\": "src/"}}}');
                 file_put_contents($checkout . '/src/Engine.php', '<?php namespace Demo; class Engine { public function run(): void {} }');
 

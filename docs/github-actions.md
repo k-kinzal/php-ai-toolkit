@@ -31,6 +31,15 @@ Refresh PHP-versioned locks without writing `config.platform.php` to the root
 `composer.json`: generate each lock in a temporary directory with a temporary
 Composer home, then copy it back as `composer.lock.php-<minor>`.
 
+The PHP 8.0 lock pins PHPStan 1.12 instead of 2.x, and is refreshed with
+`composer update --with phpstan/phpstan:^1.12`. The only deptrac line that
+installs on PHP 8.0 requires nikic/php-parser 4, while the PHPStan 2 phar
+bundles php-parser 5 under the same class names: whichever of the two is
+autoloaded first wins, so a test that loads both dies with a fatal error.
+The PHPStan 1.12 phar bundles php-parser 4 and agrees with the rest of that
+graph. `phpstan/phpstan-strict-rules` is therefore required as
+`^1.6 || ^2.0`, so both lines resolve.
+
 `composer compat` remains a named step inside the `lint` job alongside
 formatting, PHPStan, LocGuard, and Deptrac.
 

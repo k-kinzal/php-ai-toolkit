@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDoc;
 
 use PhpAiToolkit\PhpStan\Rule\Shared\AnonymousClassDetector;
+use PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 
@@ -22,6 +23,9 @@ final class SingleLinePhpDocErrorCollector
     /** @readonly */
     private SingleLinePhpDocErrorBuilder $errorBuilder;
 
+    /** @readonly */
+    private LineOrderedErrors $order;
+
     /**
      * Creates a collector from anonymous-class detection and PHPDoc error building.
      */
@@ -29,10 +33,12 @@ final class SingleLinePhpDocErrorCollector
         ?AnonymousClassDetector $anonymousClassDetector = null,
         ?SingleLinePhpDocDetector $singleLinePhpDocDetector = null,
         ?SingleLinePhpDocErrorBuilder $errorBuilder = null,
+        ?LineOrderedErrors $order = null,
     ) {
         $this->anonymousClassDetector = $anonymousClassDetector ?? new AnonymousClassDetector();
         $this->singleLinePhpDocDetector = $singleLinePhpDocDetector ?? new SingleLinePhpDocDetector();
         $this->errorBuilder = $errorBuilder ?? new SingleLinePhpDocErrorBuilder();
+        $this->order = $order ?? new LineOrderedErrors();
     }
 
     /**
@@ -77,6 +83,6 @@ final class SingleLinePhpDocErrorCollector
             }
         }
 
-        return $errors;
+        return $this->order->sorted($errors);
     }
 }

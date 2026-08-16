@@ -15,7 +15,7 @@ final class CatchThrowCollector
      * Returns the throw statements that belong to the given catch body.
      *
      * @param array<\PhpParser\Node\Stmt> $stmts
-     * @return list<\PhpParser\Node\Expr\Throw_>
+     * @return list<\PhpParser\Node>
      */
     public function collect(array $stmts): array
     {

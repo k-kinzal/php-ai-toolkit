@@ -35,11 +35,25 @@ final class ForkSupport
     }
 
     /**
+     * Returns the functions a run needs to fork its workers.
+     *
+     * The list is read through a method rather than the constant itself,
+     * because what a build of PHP provides is a question about the machine
+     * a run happens on and not about the analyzer that reads this file.
+     *
+     * @return list<string>
+     */
+    public function requiredFunctions(): array
+    {
+        return self::REQUIRED_FUNCTIONS;
+    }
+
+    /**
      * Explains why workers may not be forked, or returns null when they may.
      */
     public function unavailableReason(): ?string
     {
-        foreach (self::REQUIRED_FUNCTIONS as $function) {
+        foreach ($this->requiredFunctions() as $function) {
             if (!function_exists($function)) {
                 return 'the pcntl extension is not available';
             }

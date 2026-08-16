@@ -274,5 +274,4 @@ PHP;
 
         self::assertSame('', (new IndexPage())->packageGraph($soloServices));
     }
-
 }

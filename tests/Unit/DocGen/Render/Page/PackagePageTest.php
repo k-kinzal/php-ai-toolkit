@@ -401,5 +401,4 @@ PHP;
         self::assertSame('', (new PackagePage())->layerSection((new SiteRenderer())->services($withoutModel), 'demo/app/index.html', 'demo/app'));
         self::assertSame('', (new PackagePage())->layerSection((new SiteRenderer())->services($withoutAssignments), 'demo/app/index.html', 'demo/app'));
     }
-
 }

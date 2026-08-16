@@ -327,5 +327,4 @@ final class PageSignature
             $this->sidebars->of($services, $document->packageName, null),
         ]);
     }
-
 }

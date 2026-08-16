@@ -78,6 +78,11 @@ final class RenderCache
 
     /**
      * Reports whether one page is already on disk as it would be written.
+     *
+     * The file is asked about rather than remembered: the answer has to
+     * describe the output directory as it is now, so the stat cache of
+     * this process is dropped for the file before it is read, and a page
+     * something else rewrote is never reported as already written.
      */
     public function isFresh(string $outputRoot, string $path, string $signature): bool
     {
@@ -87,6 +92,7 @@ final class RenderCache
         }
 
         $file = $outputRoot . '/' . $path;
+        clearstatcache(true, $file);
 
         return is_file($file) && @filesize($file) === $page['size'];
     }

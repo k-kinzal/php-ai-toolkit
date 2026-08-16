@@ -157,5 +157,4 @@ final class IndexPage
             . '<div class="legend"><span class="legend-item legend-require">require</span><span class="legend-item legend-require-dev">require-dev</span><span class="legend-item legend-suggest">suggest</span></div>'
             . '</section>' . "\n";
     }
-
 }

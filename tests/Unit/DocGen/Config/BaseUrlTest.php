@@ -33,6 +33,9 @@ final class BaseUrlTest extends TestCase
         self::assertNull((new BaseUrl())->normalize('   '));
     }
 
+    /**
+     * @dataProvider providerRejectedAddresses
+     */
     #[DataProvider('providerRejectedAddresses')]
     public function testNormalizeRejectsAnAddressNothingCanBeFetchedFrom(string $value): void
     {

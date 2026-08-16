@@ -20,6 +20,9 @@
         "phpunit/phpunit": "^9.6 || ^10.5 || ^11 || ^12 || ^13",
         "squizlabs/php_codesniffer": "^4.0"
     },
+    "suggest": {
+        "ext-gd": "Draws the social preview image of a generated documentation site (needs FreeType support)"
+    },
     "autoload": {
         "psr-4": {
             "PhpAiToolkit\\": "src/"

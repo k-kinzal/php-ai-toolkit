@@ -52,6 +52,14 @@ final class RequiresPhp
     }
 }
 
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+final class RequiresPhpExtension
+{
+    public function __construct(string $extension, ?string $versionRequirement = null)
+    {
+    }
+}
+
 #[\Attribute(\Attribute::TARGET_METHOD)]
 final class RunInSeparateProcess
 {

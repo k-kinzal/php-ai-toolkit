@@ -14,6 +14,14 @@ that pass standard analysis; the tools in this toolkit catch those patterns earl
 
 When in doubt, prioritize quality over everything else. It is better to ship less with confidence than to ship more with uncertainty.
 
+## Branching Strategy
+
+This project is developed on `main` only. Commit directly to `main`, whatever the size of the change.
+
+- Do not create branches. A branch cannot be merged back here, so work left on one is stranded.
+- Do not open pull requests. They are not part of this project's workflow.
+- The common agent habit of branching before committing on a default branch does not apply here: `main` is the working branch.
+
 ## Supported Versions
 
 - **PHP**: 8.0 or later
@@ -37,143 +45,6 @@ the locks are refreshed.
 - **Testing**: PHPUnit with ParaTest for parallel execution
 - **Code Style**: PHP-CS-Fixer
 - **Package Type**: Composer phpstan-extension (auto-registered via `extra.phpstan.includes`)
-
-## Architecture
-
-The toolkit provides PHPStan and PHPUnit integrations, shared runtime services, an installer CLI, two independent guard CLIs, and a documentation generator CLI.
-
-| Layer | Responsibility | Entry point |
-|-------|---------------|-------------|
-| **Rule** | PHPStan rules that detect AI-specific code issues (26 rules) | `src/PhpStan/Rule/` — one class per rule at the top level; single-rule collaborators live in a per-rule subdirectory named after the rule without the `Rule` suffix (for example, `src/PhpStan/Rule/TestNamingConvention/`), while collaborators used by two or more rules live in `src/PhpStan/Rule/Shared/` |
-| **Support** | Test class detection shared by PHPStan rules | `src/PhpStan/Support/` |
-| **ThrowType** | Throw metadata for internal PHP functions missing from PHPStan (currently `token_get_all`) | `src/PhpStan/ThrowType/` |
-| **ErrorFormatter** | Dual-mode PHPStan error formatter — human-readable or machine-readable depending on caller | `src/PhpStan/ErrorFormatter/AiRulesErrorFormatter.php` |
-| **TestReporter** | PHPUnit extension that collects and formats test issues with AI-friendly messages | `src/PhpUnit/TestReporter/AiTestReporterExtension.php`, with `Subscriber/` and `Legacy/` |
-| **Shared** | Agent detection and format mode used by ErrorFormatter and TestReporter | `src/Shared/` (`AgentDetector`, `FormatMode`) |
-| **Installer CLI** | Installs skills and templates into target projects | `src/Installer/Cli/Application.php`, binary `bin/php-ai-toolkit` |
-| **LocGuard CLI** | Checks source LOC, NCLOC, length, and cyclomatic complexity metrics | `src/LocGuard/` (`Cli/`, `Config/`, `Filesystem/`, `Analysis/` with `Token/`, `Complexity/`, `FunctionMetric/`, `ClassLikeMetric/`, and `FileMetric/`, and `Reporting/`), binary `bin/loc-guard`, config `loc.yaml` |
-| **TreeGuard CLI** | Enforces per-directory file and subdirectory counts, recursive subtree totals, nesting depth, file and directory naming globs and case conventions, required files, and empty-directory detection, from the project root down | `src/TreeGuard/` (`Cli/`, `Config/`, `Filesystem/`, `Analysis/`, `Reporting/`), binary `bin/tree-guard`, config `tree.yaml` |
-| **DocGen CLI** | Generates a static HTML documentation site — complete PHPDoc/PHPStan/Psalm types, interface implementations and call sites, deptrac layer graphs, coverage-backed test references, rendered repository Markdown documents, doctest-php-compatible examples, per-page social preview tags with a card image drawn for the site, and an optional two-revision diff mode with three display modes, cached and incrementally updated between runs — for the project's composer packages, monorepo packages, and optionally vendor packages | `src/DocGen/` (`Cli/`, `Config/`, `Package/`, `Filesystem/`, `Git/`, `Cache/`, `Parallel/`, `Analysis/` with `Parse/`, `Doc/`, `Model/`, `Reference/`, `Doctest/`, `Document/`, `Layer/`, `Coverage/`, and `Diff/`, and `Render/` with `Page/`, `Diff/`, and `Signature/`), binary `bin/doc-gen`, config `doc.yaml`, assets `resources/docgen/` |
-
-Integration: PHPStan loads `extension.neon`, which registers all 26 Rule services, their Support service, and the ThrowType extension service.
-Optionally, `error-formatter.neon` registers the ErrorFormatter. PHPUnit loads the TestReporter extension via `phpunit.xml.dist`. The Installer CLI
-(`bin/php-ai-toolkit`), LocGuard (`bin/loc-guard`), TreeGuard (`bin/tree-guard`), and DocGen (`bin/doc-gen`) operate independently. `deptrac.yaml`
-defines Installer, LocGuard, TreeGuard, and DocGen as dependency-free toolkit layers: none may depend on another toolkit layer. Self-analysis
-(`phpstan.neon`) additionally enables PHPStan's checked-exception analysis (`exceptions.check.*` with `implicitThrows: false`): LogicException,
-RuntimeException, and Error families are unchecked; everything else must be caught or declared with `@throws`.
-
-```
-src/
-  DocGen/
-    Analysis/          # Project analysis pipeline
-      Coverage/        # PHPUnit coverage-xml report reading
-      Diff/            # Two-revision comparison of the documented model
-      Doc/             # PHPDoc parsing (phpstan/psalm-aware types)
-      Doctest/         # doctest-php-compatible example extraction
-      Document/        # Repository Markdown document collection
-      Layer/           # deptrac layer reading and assignment
-      Model/           # Documentation symbol model value objects
-      Parse/           # php-parser AST to symbol model builders
-      Reference/       # Symbol table, hierarchy, and usage indexes
-    Cache/             # Parse and page caches, and the fingerprint they are keyed on
-    Cli/               # DocGen command-line application and preview server
-    Config/            # doc.yaml loading and validation
-    Filesystem/        # PSR-4 source discovery and site file writing
-    Git/               # Revision checkout of the compared revisions
-    Package/           # Composer package and monorepo discovery
-    Parallel/          # Worker pool and job planning of both phases
-    Render/            # Static site renderer
-      Diff/            # Diff marks, display mode switch, line and block diffs
-      Page/            # Page and partial renderers
-      Signature/       # What each page is rendered from, digested
-  Installer/
-    Cli/               # Project setup application
-      Command/         # Skill installation command and collaborators
-  LocGuard/
-    Analysis/          # Source metric analysis
-      Token/           # PHP token navigation and line counting
-      Complexity/      # Cyclomatic complexity calculation
-      FunctionMetric/  # Function and method metrics
-      ClassLikeMetric/ # Class, trait, interface, and enum metrics
-      FileMetric/      # File LOC and NCLOC metrics
-    Cli/               # LocGuard command-line application
-    Config/            # loc.yaml loading and validation
-    Filesystem/        # PHP source discovery
-    Reporting/         # AI, text, and JSON reporters
-  PhpStan/
-    ErrorFormatter/    # Dual-mode PHPStan error formatter
-    Rule/              # 26 top-level PHPStan rule classes
-      TestNamingConvention/ # Example per-rule collaborator directory
-      Shared/          # Collaborators used by multiple rules
-    Support/           # Test class detection
-    ThrowType/         # Throw metadata for internal PHP functions
-  PhpUnit/
-    TestReporter/      # Dual-mode PHPUnit test result reporting
-      Subscriber/      # PHPUnit event subscribers
-      Legacy/          # PHPUnit 9 listener support
-  Shared/              # AgentDetector and FormatMode
-  TreeGuard/
-    Analysis/          # Directory structure analysis
-    Cli/               # TreeGuard command-line application
-    Config/            # tree.yaml loading and validation
-    Filesystem/        # Directory tree scanning
-    Reporting/         # AI, text, and JSON reporters
-tests/
-  Unit/                # Unit-test mirror of all seven src/ top-level directories
-    DocGen/
-      Analysis/        # Analysis tests, including all nine subdirectory mirrors
-      Cache/           # Parse and page cache tests
-      Cli/             # DocGen CLI tests
-      Config/          # DocGen configuration tests
-      Filesystem/      # DocGen filesystem tests
-      Git/             # Revision checkout tests
-      Package/         # Package discovery tests
-      Parallel/        # Worker pool and job planning tests
-      Render/          # Renderer tests, including the Page/, Diff/, and Signature/ mirrors
-    Installer/
-      Cli/             # Installer CLI tests
-    LocGuard/
-      Analysis/        # Metric analysis tests, including all five subdirectory mirrors
-      Cli/             # LocGuard CLI tests
-      Config/          # LocGuard configuration tests
-      Filesystem/      # LocGuard source discovery tests
-      Reporting/       # LocGuard reporter tests
-    PhpStan/
-      ErrorFormatter/  # Error formatter tests
-      Rule/            # Rule and rule collaborator tests
-      Support/         # Test class detection tests
-      ThrowType/       # Throw metadata extension tests
-    PhpUnit/
-      TestReporter/    # Test reporter tests
-        Subscriber/    # Subscriber tests
-        Legacy/        # PHPUnit 9 listener tests
-    Shared/            # Shared runtime service tests
-    TreeGuard/
-      Analysis/        # Directory structure analysis tests
-      Cli/             # TreeGuard CLI tests
-      Config/          # TreeGuard configuration tests
-      Filesystem/      # TreeGuard scanning tests
-      Reporting/       # TreeGuard reporter tests
-  Fixture/             # PHP fixture files consumed by rule and formatter tests
-skills/                # Ten setup skills, including setup-toolkit-doc-gen
-docs/                  # Documentation
-resources/             # DocGen bundled static assets (resources/docgen/)
-extension.neon         # PHPStan extension — registers all rules and services
-error-formatter.neon   # Optional error formatter (not auto-included)
-phpstan.neon           # Self-analysis config (level max + strict-rules + checked exceptions)
-phpunit.xml.dist       # PHPUnit config (strict mode + test reporter extension)
-loc.yaml               # LocGuard source-metric limits
-tree.yaml              # TreeGuard structure constraints
-doc.yaml               # DocGen documentation scope and cache location
-deptrac.yaml           # Architectural dependency rules
-```
-
-## Forbidden Words
-
-Some words name the act of working on the code instead of the code's subject, and they are the words an AI agent reaches for when a type or a directory has no clear responsibility yet. They are rejected by the toolchain, not by review:
-
-- `Evidence`, `Outcome`, `Probe`, and their plurals may not end a class, interface, trait, or enum name. Name the domain concept instead: `RunReport`, not `RunOutcome`; `HealthCheck`, not `HealthProbe`. Enforced by [ForbidClassLikeNameSuffixRule](docs/rules/ForbidClassLikeNameSuffixRule.md); the same words are also denied as source file name suffixes by `tree.yaml`.
-- `scripts` may not be a directory name anywhere in the repository, including the project root and `.github/`. Automation belongs in a Composer script, a workflow step, or a documented `bin/` entry point. Enforced by the `path: '**'` rule in `tree.yaml`.
 
 ## Rule Design Principles
 

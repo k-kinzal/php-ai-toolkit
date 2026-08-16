@@ -58,6 +58,15 @@ developed on `main` without pull requests — so it stays a template. See
 [DocGen Configuration](doc-gen.md) for the publishing model and the one-time
 Pages setup.
 
+## Status Badges
+
+Both workflows carry a `name` (`CI` and `Docs`) because the README status
+badges take their label from it: an unnamed workflow renders as its own file
+path. The badges point at
+`https://github.com/<owner>/<repository>/actions/workflows/<file>/badge.svg?branch=main`,
+so they report the state of `main` rather than of whatever ran last, and each
+one links to its workflow's run history.
+
 ## Workflow Hardening
 
 Actions must be pinned to full 40-character commit SHAs, with the release tag

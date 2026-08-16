@@ -25,7 +25,10 @@ use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
-use PhpAiToolkit\DocGen\DocGenException;
+use PhpAiToolkit\DocGen\Cache\CachedPageWriter;
+use PhpAiToolkit\DocGen\Cache\PageRecord;
+use PhpAiToolkit\DocGen\Cache\RenderCache;
+use PhpAiToolkit\DocGen\Cache\ToolkitFingerprint;
 use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
 use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
@@ -69,6 +72,11 @@ use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 use PhpAiToolkit\DocGen\Render\SearchIndexBuilder;
+use PhpAiToolkit\DocGen\Render\Signature\PageSignature;
+use PhpAiToolkit\DocGen\Render\Signature\SidebarDigest;
+use PhpAiToolkit\DocGen\Render\Signature\SourceDigestIndex;
+use PhpAiToolkit\DocGen\Render\Signature\SymbolReferenceScanner;
+use PhpAiToolkit\DocGen\Render\SitePages;
 use PhpAiToolkit\DocGen\Render\SiteRenderer;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
@@ -79,6 +87,15 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversClass(SiteRenderer::class)]
 #[UsesClass(AllItemsPage::class)]
+#[UsesClass(CachedPageWriter::class)]
+#[UsesClass(PageRecord::class)]
+#[UsesClass(RenderCache::class)]
+#[UsesClass(PageSignature::class)]
+#[UsesClass(SidebarDigest::class)]
+#[UsesClass(SitePages::class)]
+#[UsesClass(SourceDigestIndex::class)]
+#[UsesClass(SymbolReferenceScanner::class)]
+#[UsesClass(ToolkitFingerprint::class)]
 #[UsesClass(AssertionScanner::class)]
 #[UsesClass(AssetPublisher::class)]
 #[UsesClass(BreadcrumbHtml::class)]
@@ -216,7 +233,7 @@ final class SiteRendererTest extends TestCase
         $out = $dir . '/site';
         $renderer = new SiteRenderer();
 
-        self::assertSame(4, $renderer->renderPackagePages($renderer->services($model), $model, $out));
+        self::assertCount(4, $renderer->renderPackagePages($renderer->services($model), $model, $out, new CachedPageWriter()));
         self::assertFileExists($out . '/demo/pkg/index.html');
         self::assertFileExists($out . '/demo/pkg/all-items.html');
         self::assertFileExists($out . '/demo/pkg/layer.Domain.html');
@@ -237,7 +254,7 @@ final class SiteRendererTest extends TestCase
         $out = $dir . '/site';
         $renderer = new SiteRenderer();
 
-        self::assertSame(1, $renderer->renderDocumentPages($renderer->services($model), $model, $out));
+        self::assertCount(1, $renderer->renderDocumentPages($renderer->services($model), $model, $out, new CachedPageWriter()));
         self::assertFileExists($out . '/demo/pkg/doc/docs/guide.md.html');
         self::assertFileDoesNotExist($out . '/demo/pkg/doc/docs/absent.md.html');
         self::assertStringContainsString('Hello guide.', (string) file_get_contents($out . '/demo/pkg/doc/docs/guide.md.html'));
@@ -258,49 +275,6 @@ final class SiteRendererTest extends TestCase
         self::assertSame('demo/pkg/index.html', $kit->url->packagePage('demo/pkg'));
     }
 
-    public function testReadmeReturnsNullWhenAbsent(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-readme-' . uniqid('', true);
-        mkdir($dir, 0777, true);
-        $manifest = new ComposerManifest($dir, 'demo/pkg', '', [], [], [], [], []);
-
-        self::assertNull((new SiteRenderer())->readme(new DiscoveredPackage($manifest, false)));
-    }
-
-    public function testReadmeReturnsContentsWhenPresent(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-readme-' . uniqid('', true);
-        mkdir($dir, 0777, true);
-        file_put_contents($dir . '/README.md', "# Demo\n\nHello readme.\n");
-        $manifest = new ComposerManifest($dir, 'demo/pkg', '', [], [], [], [], []);
-
-        self::assertSame("# Demo\n\nHello readme.\n", (new SiteRenderer())->readme(new DiscoveredPackage($manifest, false)));
-    }
-
-    public function testNamespacesOfListsSortedNonDevNamespaces(): void
-    {
-        $acme = new ClassLikeDoc('Acme\A', 'A', 'Acme', 'class', 'demo/pkg', 'src/A.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], false);
-        $demo = new ClassLikeDoc('Demo\B', 'B', 'Demo', 'class', 'demo/pkg', 'src/B.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], false);
-        $dev = new ClassLikeDoc('Devs\C', 'C', 'Devs', 'class', 'demo/pkg', 'tests/C.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], true);
-        $other = new ClassLikeDoc('Other\D', 'D', 'Other', 'class', 'other/pkg', 'src/D.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], false);
-        $function = new FunctionDoc('Zeta\greet', 'greet', 'Zeta', 'demo/pkg', 'src/fn.php', 1, 2, [], new TypeSignature(null, null), null, [], false);
-        $model = new ProjectModel('T', '/tmp/docgen-root', [], new PackageGraph([]), [$demo, $acme, $dev, $other], [$function], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
-
-        self::assertSame(['Acme', 'Demo', 'Zeta'], (new SiteRenderer())->namespacesOf($model, 'demo/pkg'));
-    }
-
-    public function testSourceFilesDeduplicatesAndSorts(): void
-    {
-        $first = new ClassLikeDoc('Demo\A', 'A', 'Demo', 'class', 'demo/pkg', 'src/B.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], false);
-        $second = new ClassLikeDoc('Demo\B', 'B', 'Demo', 'class', 'demo/pkg', 'src/A.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], false);
-        $third = new ClassLikeDoc('Demo\C', 'C', 'Demo', 'class', 'demo/pkg', 'src/B.php', 3, 4, false, false, [], [], [], [], [], [], [], null, null, [], false);
-        $dev = new ClassLikeDoc('Demo\D', 'D', 'Demo', 'class', 'demo/pkg', 'tests/C.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], true);
-        $function = new FunctionDoc('Demo\greet', 'greet', 'Demo', 'demo/pkg', 'src/fn.php', 1, 2, [], new TypeSignature(null, null), null, [], false);
-        $model = new ProjectModel('T', '/tmp/docgen-root', [], new PackageGraph([]), [$first, $second, $third, $dev], [$function], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
-
-        self::assertSame(['src/A.php', 'src/B.php', 'src/fn.php', 'tests/C.php'], (new SiteRenderer())->sourceFiles($model));
-    }
-
     public function testRenderSourcePagesReadsEachFileFromTheRevisionThatHasIt(): void
     {
         $head = sys_get_temp_dir() . '/docgen-render-head-' . bin2hex(random_bytes(4));
@@ -317,9 +291,9 @@ final class SiteRendererTest extends TestCase
         $model = new ProjectModel('T', $head, [], new PackageGraph([]), [$kept, $gone, $absent], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
         $renderer = new SiteRenderer();
 
-        $count = $renderer->renderSourcePages($renderer->services($model, new DiffIndex('main', 'HEAD', $base)), $model, $out);
+        $records = $renderer->renderSourcePages($renderer->services($model, new DiffIndex('main', 'HEAD', $base)), $model, $out, new CachedPageWriter());
 
-        self::assertSame(2, $count);
+        self::assertCount(2, $records);
         self::assertFileExists($out . '/src/src/Kept.php.html');
         self::assertFileExists($out . '/src/src/Gone.php.html');
         self::assertFileDoesNotExist($out . '/src/src/Absent.php.html');
@@ -333,9 +307,9 @@ final class SiteRendererTest extends TestCase
         $model = new ProjectModel('T', '/tmp/none', [], new PackageGraph([]), [$engine, $probe], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
         $renderer = new SiteRenderer();
 
-        $count = $renderer->renderClassLikePages($renderer->services($model), $model, $out, 2);
+        $records = $renderer->renderClassLikePages($renderer->services($model), $model, $out, new CachedPageWriter(), 2);
 
-        self::assertSame(1, $count);
+        self::assertCount(1, $records);
         self::assertFileExists($out . '/demo/pkg/Demo/class.Engine.html');
         self::assertFileDoesNotExist($out . '/demo/pkg/Demo/class.Probe.html');
     }
@@ -349,34 +323,69 @@ final class SiteRendererTest extends TestCase
         $model = new ProjectModel('T', $root, [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
         $renderer = new SiteRenderer();
 
-        $count = $renderer->writeSourcePages($renderer->services($model), $root, $out, ['src/Kept.php', 'src/Absent.php']);
+        $records = $renderer->writeSourcePages($renderer->services($model), $root, $out, new CachedPageWriter(), ['src/Kept.php', 'src/Absent.php']);
 
-        self::assertSame(1, $count);
+        self::assertCount(1, $records);
         self::assertFileExists($out . '/src/src/Kept.php.html');
         self::assertFileDoesNotExist($out . '/src/src/Absent.php.html');
     }
 
-    public function testCountOfAddsUpWhatEveryWorkerReported(): void
+    public function testRenderFunctionPagesWritesOnePagePerDocumentedFunction(): void
     {
+        $out = sys_get_temp_dir() . '/docgen-render-out-' . bin2hex(random_bytes(4));
+        $greet = new FunctionDoc('Demo\\greet', 'greet', 'Demo', 'demo/pkg', 'src/fn.php', 1, 2, [], new TypeSignature(null, null), null, [], false);
+        $probe = new FunctionDoc('Demo\\probe', 'probe', 'Demo', 'demo/pkg', 'tests/fn.php', 1, 2, [], new TypeSignature(null, null), null, [], true);
+        $model = new ProjectModel('T', '/tmp/none', [], new PackageGraph([]), [], [$greet, $probe], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
         $renderer = new SiteRenderer();
 
-        self::assertSame(9, $renderer->countOf([2, 3, 4]));
-        self::assertSame(0, $renderer->countOf([]));
+        $records = $renderer->renderFunctionPages($renderer->services($model), $model, $out, new CachedPageWriter());
 
-        $this->expectException(DocGenException::class);
-        $this->expectExceptionMessage('A documentation worker reported no page count.');
-
-        $renderer->countOf([2, 'three']);
+        self::assertCount(1, $records);
+        self::assertFileExists($out . '/demo/pkg/Demo/function.greet.html');
+        self::assertFileDoesNotExist($out . '/demo/pkg/Demo/function.probe.html');
     }
 
-    public function testContentsReadsAFileOrReportsThatItCannot(): void
+    public function testNamespacePagesSkipsTheGlobalNamespace(): void
     {
-        $dir = sys_get_temp_dir() . '/docgen-render-read-' . bin2hex(random_bytes(4));
-        mkdir($dir, 0777, true);
-        file_put_contents($dir . '/file.php', '<?php echo 1;');
+        $out = sys_get_temp_dir() . '/docgen-render-out-' . bin2hex(random_bytes(4));
+        $global = new ClassLikeDoc('Loose', 'Loose', '', 'class', 'demo/pkg', 'src/Loose.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], false);
+        $scoped = new ClassLikeDoc('Demo\\Widget', 'Widget', 'Demo', 'class', 'demo/pkg', 'src/Widget.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], false);
+        $model = new ProjectModel('T', '/tmp/none', [], new PackageGraph([]), [$global, $scoped], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $renderer = new SiteRenderer();
 
-        self::assertSame('<?php echo 1;', (new SiteRenderer())->contents($dir . '/file.php'));
-        self::assertNull((new SiteRenderer())->contents($dir . '/missing.php'));
-        self::assertNull((new SiteRenderer())->contents($dir));
+        $records = $renderer->namespacePages($renderer->services($model), $model, $out, new CachedPageWriter(), 'demo/pkg');
+
+        self::assertCount(1, $records);
+        self::assertSame('demo/pkg/Demo/index.html', $records[0]->path);
+    }
+
+    public function testRenderLeavesUnchangedPagesAloneAndRemovesVanishedOnes(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-render-cache-' . bin2hex(random_bytes(4));
+        mkdir($dir . '/src', 0777, true);
+        file_put_contents($dir . '/src/Widget.php', "<?php\n\nnamespace Demo;\n\nfinal class Widget\n{\n}\n");
+        $widget = new ClassLikeDoc('Demo\\Widget', 'Widget', 'Demo', 'class', 'demo/pkg', 'src/Widget.php', 5, 7, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $gone = new ClassLikeDoc('Demo\\Gone', 'Gone', 'Demo', 'class', 'demo/pkg', 'src/Gone.php', 5, 7, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $table = new SymbolTable();
+        $table->registerClassLike($widget);
+        $manifest = new ComposerManifest($dir, 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []);
+        $package = new DiscoveredPackage($manifest, false);
+        $full = new ProjectModel('Demo Docs', $dir, [$package], new PackageGraph([]), [$widget, $gone], [], $table, new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $smaller = new ProjectModel('Demo Docs', $dir, [$package], new PackageGraph([]), [$widget], [], $table, new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $out = $dir . '/site';
+        $cache = new RenderCache($dir . '/cache', $out);
+        $cache->load();
+        $renderer = new SiteRenderer();
+
+        $renderer->render($full, $out, null, 1, $cache);
+        $written = (string) file_get_contents($out . '/src/src/Widget.php.html');
+        $again = new RenderCache($dir . '/cache', $out);
+        $again->load();
+        $renderer->render($smaller, $out, null, 1, $again);
+
+        self::assertSame(1, $again->reused());
+        self::assertSame(5, $again->rendered());
+        self::assertSame($written, file_get_contents($out . '/src/src/Widget.php.html'));
+        self::assertFileDoesNotExist($out . '/demo/pkg/Demo/class.Gone.html');
     }
 }

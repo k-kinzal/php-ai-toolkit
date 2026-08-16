@@ -7,8 +7,9 @@ description: >-
   multi-package or monorepo documentation, documenting vendor packages,
   architecture layer visualization from deptrac, per-method test coverage
   references in documentation, executable doctest examples in docs,
-  documentation that compares two git revisions, or Composer scripts and CI
-  jobs that publish generated PHP documentation.
+  documentation that compares two git revisions, incremental documentation
+  builds with a parse and page cache, or Composer scripts and CI jobs that
+  publish generated PHP documentation.
 ---
 
 # Setup DocGen (Static Documentation Site)
@@ -45,6 +46,7 @@ project root as `doc.yaml`.
 | `vendor_dev` | `[]` | The same for installed **dev** dependencies; keep it empty unless the test tooling itself needs documenting. |
 | `exclude` | `[]` | Path globs, relative to the project root, pruned from source scanning. |
 | `output` | `build/docs` | Site output directory. |
+| `cache` | `build/doc-gen-cache` | Directory the parsed sources and written pages are remembered in; `false` turns caching off. Keep it outside `output`. |
 
 The optional keys `title`, `deptrac`, and `coverage` override the site title, the deptrac config used for the
 architecture layer graph (auto-detected at `deptrac.yaml`), and the PHPUnit `--coverage-xml` report directory used
@@ -71,6 +73,12 @@ Page content and design are fixed by the generator on purpose — only the scope
 - When the project runs deptrac, keep `deptrac.yaml` at the root so the architecture graph appears automatically.
 - Generate coverage with `--coverage-xml build/coverage-xml` and set `coverage: build/coverage-xml` so every method
   links the test cases that cover it.
+- Runs are incremental by default: the next run parses only the sources that changed and rewrites only the pages
+  that changed, and reports what it reused (`Cache: 861 of 862 sources and 1365 of 1411 pages reused`). The site is
+  the same site a full run writes, byte for byte. Use `--no-cache` to prove that on demand, `--clear-cache` to start
+  over, and `--cache-dir=DIR` to keep the cache elsewhere. Add the cache directory to `.gitignore`.
+- In CI, restore the cache directory between runs (for example with `actions/cache` keyed on `composer.lock` and the
+  toolkit version) so a documentation job costs the size of the change rather than the size of the project.
 - To review what a branch changed, generate the site in diff mode: `--diff=main` compares the working tree against
   `main`, `--diff=v1.0.0..HEAD` compares two revisions. The site then marks additions and removals down to the single
   argument of a declaration and offers three display modes — the plain documentation, the marked documentation, and
@@ -85,7 +93,8 @@ Add scripts that match the project:
     "scripts": {
         "doc-gen": "doc-gen --config=doc.yaml",
         "doc-gen:serve": "doc-gen --config=doc.yaml --serve",
-        "doc-gen:diff": "doc-gen --config=doc.yaml --diff=main --serve"
+        "doc-gen:diff": "doc-gen --config=doc.yaml --diff=main --serve",
+        "doc-gen:fresh": "doc-gen --config=doc.yaml --no-cache"
     }
 }
 ```
@@ -110,4 +119,4 @@ Then preview locally with `vendor/bin/doc-gen --serve` and spot-check the index 
 
 ## References
 
-- [DocGen Configuration](vendor/k-kinzal/php-ai-toolkit/docs/doc-gen.md) — Settings, scope semantics, and CLI behavior.
+- [DocGen Configuration](vendor/k-kinzal/php-ai-toolkit/docs/doc-gen.md) — Settings, scope semantics, caching, and CLI behavior.

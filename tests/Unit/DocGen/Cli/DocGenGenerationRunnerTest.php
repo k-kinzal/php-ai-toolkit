@@ -57,6 +57,14 @@ use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageCollector;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
+use PhpAiToolkit\DocGen\Cache\CachedPageWriter;
+use PhpAiToolkit\DocGen\Cache\CacheStore;
+use PhpAiToolkit\DocGen\Cache\GenerationCache;
+use PhpAiToolkit\DocGen\Cache\PageRecord;
+use PhpAiToolkit\DocGen\Cache\ParseCache;
+use PhpAiToolkit\DocGen\Cache\RenderCache;
+use PhpAiToolkit\DocGen\Cache\SourceFileKey;
+use PhpAiToolkit\DocGen\Cache\ToolkitFingerprint;
 use PhpAiToolkit\DocGen\Cli\DocGenConfigOverrides;
 use PhpAiToolkit\DocGen\Cli\DocGenConfigPathResolver;
 use PhpAiToolkit\DocGen\Cli\DocGenGenerationRunner;
@@ -124,6 +132,11 @@ use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 use PhpAiToolkit\DocGen\Render\SearchIndexBuilder;
+use PhpAiToolkit\DocGen\Render\Signature\PageSignature;
+use PhpAiToolkit\DocGen\Render\Signature\SidebarDigest;
+use PhpAiToolkit\DocGen\Render\Signature\SourceDigestIndex;
+use PhpAiToolkit\DocGen\Render\Signature\SymbolReferenceScanner;
+use PhpAiToolkit\DocGen\Render\SitePages;
 use PhpAiToolkit\DocGen\Render\SiteRenderer;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
@@ -143,7 +156,20 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ClassLikeKind::class)]
 #[UsesClass(ClassLikeMerger::class)]
 #[UsesClass(ClassLikePage::class)]
+#[UsesClass(CacheStore::class)]
+#[UsesClass(CachedPageWriter::class)]
 #[UsesClass(ComposerLockReader::class)]
+#[UsesClass(GenerationCache::class)]
+#[UsesClass(PageRecord::class)]
+#[UsesClass(PageSignature::class)]
+#[UsesClass(ParseCache::class)]
+#[UsesClass(RenderCache::class)]
+#[UsesClass(SidebarDigest::class)]
+#[UsesClass(SitePages::class)]
+#[UsesClass(SourceDigestIndex::class)]
+#[UsesClass(SourceFileKey::class)]
+#[UsesClass(SymbolReferenceScanner::class)]
+#[UsesClass(ToolkitFingerprint::class)]
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(ComposerManifestReader::class)]
 #[UsesClass(ConfigLoader::class)]
@@ -293,7 +319,7 @@ PHP);
             },
         ));
 
-        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'help' => false, 'version' => false]));
+        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('Generated', $output);
         self::assertStringContainsString('build/docs', $output);
         self::assertSame('', $errors);
@@ -324,21 +350,25 @@ final class Greeter
 }
 PHP);
 
+        $output = '';
         $errors = '';
         $runner = new DocGenGenerationRunner($dir, null, null, null, new DocGenOutputWriter(
-            null,
+            static function (string $message) use (&$output): void {
+                $output .= $message;
+            },
             static function (string $message) use (&$errors): void {
                 $errors .= $message;
             },
         ));
 
         $previous = ini_get('memory_limit');
-        $exitCode = $runner->run(['config' => null, 'output' => null, 'vendor' => ['vendor'], 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => DocGenMemoryLimit::FLOOR, 'jobs' => null, 'base' => null, 'head' => null, 'help' => false, 'version' => false]);
+        $exitCode = $runner->run(['config' => null, 'output' => null, 'vendor' => ['vendor'], 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => DocGenMemoryLimit::FLOOR, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]);
         $applied = ini_get('memory_limit');
         ini_set('memory_limit', $previous);
 
         self::assertSame(0, $exitCode);
         self::assertSame(DocGenMemoryLimit::FLOOR, $applied);
+        self::assertStringContainsString('Generated', $output);
         self::assertStringContainsString('Warning: Vendor glob "vendor" documented no installed runtime vendor package.', $errors);
     }
 
@@ -355,7 +385,7 @@ PHP);
             },
         ));
 
-        self::assertSame(2, $runner->run(['config' => 'missing.yaml', 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'help' => false, 'version' => false]));
+        self::assertSame(2, $runner->run(['config' => 'missing.yaml', 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('DocGen error: DocGen config not found:', $errors);
         self::assertStringContainsString($dir . '/missing.yaml', $errors);
     }
@@ -394,7 +424,7 @@ YAML);
             },
         ));
 
-        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'help' => false, 'version' => false]));
+        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('public/site', $output);
         self::assertFileExists($dir . '/public/site/index.html');
     }
@@ -440,7 +470,7 @@ PHP);
             }),
         );
 
-        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => '127.0.0.1:8123', 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'help' => false, 'version' => false]));
+        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => '127.0.0.1:8123', 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('Serving documentation at http://127.0.0.1:8123', $output);
         self::assertStringContainsString(' -S ', $command);
         self::assertStringContainsString('127.0.0.1:8123', $command);
@@ -460,7 +490,7 @@ PHP);
             },
         ));
 
-        self::assertSame(2, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'help' => false, 'version' => false]));
+        self::assertSame(2, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('DocGen error: No composer packages found.', $errors);
     }
 
@@ -602,5 +632,102 @@ YAML);
 
         self::assertSame("Generated 7 pages for 0 packages into /tmp/project/build/docs\n", $output);
         self::assertSame("Warning: first warning\nWarning: second warning\n", $errors);
+    }
+
+    public function testCachesReadsBackTheCacheOfTheOutputDirectoryItIsGiven(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
+        mkdir($dir, 0777, true);
+        $config = new DocGenConfig($dir, ['.'], [], [], 'build/docs', null, null, null, [], 'build/doc-gen-cache');
+        $runner = new DocGenGenerationRunner($dir);
+
+        $cache = $runner->caches($config, $dir . '/build/docs');
+
+        self::assertInstanceOf(ParseCache::class, $cache->sources);
+        self::assertInstanceOf(RenderCache::class, $cache->pages);
+        self::assertDirectoryExists($dir . '/build/doc-gen-cache');
+    }
+
+    public function testCachesHoldsNothingForARunThatCachesNothing(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
+        mkdir($dir, 0777, true);
+        $config = new DocGenConfig($dir, ['.'], [], [], 'build/docs', null, null, null, [], null);
+
+        $cache = (new DocGenGenerationRunner($dir))->caches($config, $dir . '/build/docs');
+
+        self::assertNull($cache->sources);
+        self::assertNull($cache->pages);
+    }
+
+    public function testClearRemovesTheCacheDirectoryOfTheProject(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
+        mkdir($dir . '/build/doc-gen-cache', 0777, true);
+        file_put_contents($dir . '/build/doc-gen-cache/entry.cache', '');
+        $runner = new DocGenGenerationRunner($dir);
+
+        $runner->clear($dir, null);
+
+        self::assertDirectoryExists($dir . '/build/doc-gen-cache');
+
+        $runner->clear($dir, 'build/doc-gen-cache');
+
+        self::assertDirectoryDoesNotExist($dir . '/build/doc-gen-cache');
+    }
+
+    public function testReportCacheStatesWhatWasReusedAndKeepsWhatWasLearned(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
+        mkdir($dir, 0777, true);
+        $output = '';
+        $runner = new DocGenGenerationRunner($dir, null, null, null, new DocGenOutputWriter(
+            static function (string $message) use (&$output): void {
+                $output .= $message;
+            },
+        ));
+        $sources = new ParseCache($dir . '/cache');
+        $sources->counted(true);
+
+        $runner->reportCache(new GenerationCache($sources, new RenderCache($dir . '/cache', $dir . '/site')));
+
+        self::assertSame("Cache: 1 of 1 sources and 0 of 0 pages reused\n", $output);
+    }
+
+    public function testReportCacheSaysNothingWhenNothingIsCached(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
+        mkdir($dir, 0777, true);
+        $output = '';
+        $runner = new DocGenGenerationRunner($dir, null, null, null, new DocGenOutputWriter(
+            static function (string $message) use (&$output): void {
+                $output .= $message;
+            },
+        ));
+
+        $runner->reportCache(new GenerationCache());
+
+        self::assertSame('', $output);
+    }
+
+    public function testRunLeavesTheSiteAloneWhenNothingChanged(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
+        mkdir($dir . '/src', 0777, true);
+        file_put_contents($dir . '/composer.json', '{"name": "acme/demo", "autoload": {"psr-4": {"Acme\\\\Demo\\\\": "src/"}}}');
+        file_put_contents($dir . '/src/Greeter.php', "<?php\n\nnamespace Acme\\Demo;\n\nfinal class Greeter\n{\n}\n");
+        $output = '';
+        $arguments = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => 1, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
+        $runner = new DocGenGenerationRunner($dir, null, null, null, new DocGenOutputWriter(
+            static function (string $message) use (&$output): void {
+                $output .= $message;
+            },
+        ));
+
+        $runner->run($arguments);
+        $output = '';
+        $runner->run($arguments);
+
+        self::assertStringContainsString('Cache: 1 of 1 sources and 6 of 6 pages reused', $output);
     }
 }

@@ -72,4 +72,19 @@ final class DiffIndexTest extends TestCase
         self::assertNull((new DiffIndex('main', 'HEAD', $root))->baseSource('src/Missing.php'));
         self::assertNull((new DiffIndex('main', 'HEAD'))->baseSource('src/Engine.php'));
     }
+
+    public function testDigestNamesTheComparisonAndNotTheCheckoutItWasReadFrom(): void
+    {
+        $first = new DiffIndex('main', 'HEAD', '/tmp/checkout-one');
+        $second = new DiffIndex('main', 'HEAD', '/tmp/checkout-two');
+        $first->mark('class:demo\\widget', DiffStatus::MODIFIED);
+        $second->mark('class:demo\\widget', DiffStatus::MODIFIED);
+
+        self::assertSame($first->digest(), $second->digest());
+
+        $second->mark('class:demo\\engine', DiffStatus::ADDED);
+
+        self::assertNotSame($first->digest(), $second->digest());
+        self::assertNotSame($first->digest(), (new DiffIndex('other', 'HEAD'))->digest());
+    }
 }

@@ -20,6 +20,7 @@ use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
+use PhpAiToolkit\DocGen\Cache\ParseCache;
 use PhpAiToolkit\DocGen\Config\DocGenConfig;
 use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
@@ -84,12 +85,15 @@ final class ProjectAnalyzer
     /**
      * Analyzes one configured project into its documentation model.
      *
+     * @param ?int $workers how many workers to analyze with, or null for the default
+     * @param ?ParseCache $cache what earlier runs already parsed, if it is kept
+     *
      * @throws DocGenException when no package or source can be analyzed
      */
-    public function analyze(DocGenConfig $config, ?int $workers = null): ProjectModel
+    public function analyze(DocGenConfig $config, ?int $workers = null, ?ParseCache $cache = null): ProjectModel
     {
         $packages = $this->discovery->discover($config);
-        $collected = $this->symbolCollector->collect($config, $packages, $workers);
+        $collected = $this->symbolCollector->collect($config, $packages, $workers, $cache);
 
         $symbolTable = new SymbolTable();
         foreach ($collected['classLikes'] as $classLike) {

@@ -5,3 +5,5 @@ exclude:
   - 'tests/Fixture/*'
 
 output: build/docs
+
+cache: build/doc-gen-cache

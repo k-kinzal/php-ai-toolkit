@@ -90,6 +90,23 @@ final class DiffIndex
     }
 
     /**
+     * Digests the comparison itself, without where it was read from.
+     *
+     * The checkout of the base revision is a scratch directory of one run
+     * and says nothing about what is being compared, so two runs comparing
+     * the same revisions digest the same. What the base revision held is
+     * not part of this: a page that shows base sources digests them where
+     * it shows them.
+     */
+    public function digest(): string
+    {
+        $statuses = $this->statuses;
+        ksort($statuses);
+
+        return hash('sha256', $this->baseLabel . "\0" . $this->headLabel . "\0" . serialize($statuses));
+    }
+
+    /**
      * Returns the checkout directory of the base revision.
      */
     public function baseRoot(): ?string

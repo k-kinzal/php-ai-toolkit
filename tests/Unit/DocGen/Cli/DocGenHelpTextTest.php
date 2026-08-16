@@ -29,4 +29,28 @@ final class DocGenHelpTextTest extends TestCase
         self::assertStringContainsString('-h, --help', $text);
         self::assertStringContainsString('-V, --version', $text);
     }
+
+    public function testPurposeStatesWhatDocGenDoes(): void
+    {
+        self::assertStringContainsString('Usage: doc-gen [options]', (new DocGenHelpText())->purpose());
+    }
+
+    public function testOptionsListWhatIsDocumented(): void
+    {
+        self::assertStringContainsString('--config=FILE', (new DocGenHelpText())->options());
+    }
+
+    public function testCacheOptionsListWhatIsRememberedBetweenRuns(): void
+    {
+        $text = (new DocGenHelpText())->cacheOptions();
+
+        self::assertStringContainsString('--cache-dir=DIR', $text);
+        self::assertStringContainsString('--no-cache', $text);
+        self::assertStringContainsString('--clear-cache', $text);
+    }
+
+    public function testRunOptionsListHowARunIsCarriedOut(): void
+    {
+        self::assertStringContainsString('--jobs=N', (new DocGenHelpText())->runOptions());
+    }
 }

@@ -8,6 +8,7 @@ use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Git\TempDirectory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TempDirectory::class)]
@@ -38,6 +39,7 @@ final class TempDirectoryTest extends TestCase
         $temp->remove($second);
     }
 
+    #[WithoutErrorHandler]
     public function testCreateReportsADirectoryItCannotMake(): void
     {
         file_put_contents(rtrim(sys_get_temp_dir(), '/') . '/docgen-not-a-directory', 'blocked');

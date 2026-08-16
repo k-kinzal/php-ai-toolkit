@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpAiToolkit\DocGen\Analysis\Diff;
 
 use PhpAiToolkit\DocGen\Analysis\ProjectAnalyzer;
+use PhpAiToolkit\DocGen\Cache\ParseCache;
 use PhpAiToolkit\DocGen\Config\DocGenConfig;
 use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
@@ -61,10 +62,11 @@ final class DiffWorkspace
      * Checks both revisions out and diffs them into one session.
      *
      * @param ?int $workers how many workers to analyze with, or null for the default
+     * @param ?ParseCache $cache what earlier runs already parsed, if it is kept
      *
      * @throws DocGenException when a revision cannot be read or analyzed
      */
-    public function open(DocGenConfig $config, RevisionRange $range, ?int $workers = null): DiffSession
+    public function open(DocGenConfig $config, RevisionRange $range, ?int $workers = null, ?ParseCache $cache = null): DiffSession
     {
         $repositoryRoot = $this->repository->root($config->root);
         $basePath = null;
@@ -72,11 +74,12 @@ final class DiffWorkspace
 
         try {
             $basePath = $this->checkout($repositoryRoot, $range->base);
-            $baseModel = $this->analyzer->analyze($this->configFor($config, $basePath, null), $workers);
+            $baseModel = $this->analyzer->analyze($this->configFor($config, $basePath, null), $workers, $cache);
             $headPath = $range->head !== null ? $this->checkout($repositoryRoot, $range->head) : null;
             $headModel = $this->analyzer->analyze(
                 $headPath === null ? $config : $this->configFor($config, $headPath, $this->coverage($config)),
                 $workers,
+                $cache,
             );
             $index = new DiffIndex($this->label($repositoryRoot, $range->base), $this->headLabel($repositoryRoot, $range->head), $basePath);
 
@@ -105,8 +108,9 @@ final class DiffWorkspace
     {
         $path = $this->worktree->create($repositoryRoot, $this->repository->commit($repositoryRoot, $revision));
         $this->worktree->linkVendor($repositoryRoot, $path);
+        $canonical = realpath($path);
 
-        return $path;
+        return $canonical === false ? $path : $canonical;
     }
 
     /**
@@ -142,6 +146,7 @@ final class DiffWorkspace
             $config->deptrac,
             $coverage,
             $config->vendorDev,
+            $config->cache,
         );
     }
 

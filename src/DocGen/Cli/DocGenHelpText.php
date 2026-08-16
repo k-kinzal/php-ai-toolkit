@@ -14,6 +14,14 @@ final class DocGenHelpText
      */
     public function text(): string
     {
+        return $this->purpose() . $this->options() . $this->cacheOptions() . $this->runOptions();
+    }
+
+    /**
+     * Returns the opening lines that state what doc-gen does.
+     */
+    public function purpose(): string
+    {
         return <<<'TEXT'
 Usage: doc-gen [options]
 
@@ -22,6 +30,16 @@ current project. Without a config file, the project root and packages/* are
 documented into build/docs.
 
 Options:
+
+TEXT;
+    }
+
+    /**
+     * Returns the options that decide what is documented.
+     */
+    public function options(): string
+    {
+        return <<<'TEXT'
   --config=FILE      Configuration file (default: doc.yaml when present)
   --output=DIR       Output directory (default: build/docs)
   --vendor[=GLOBS]   Also document installed runtime (non-dev) vendor packages
@@ -43,6 +61,33 @@ Options:
   --base=REVISION    Base revision of the comparison, as --diff=REVISION
   --head=REVISION    Head revision of the comparison (default: the working
                      tree); requires --base
+
+TEXT;
+    }
+
+    /**
+     * Returns the options that decide what is remembered between runs.
+     */
+    public function cacheOptions(): string
+    {
+        return <<<'TEXT'
+  --cache-dir=DIR    Directory the parsed sources and the written pages are
+                     remembered in, so the next run only parses what
+                     changed and only rewrites the pages that changed
+                     (default: build/doc-gen-cache)
+  --no-cache         Parse every source and write every page, and remember
+                     nothing of it
+  --clear-cache      Remove the cache directory before generating
+
+TEXT;
+    }
+
+    /**
+     * Returns the options that decide how one run itself is carried out.
+     */
+    public function runOptions(): string
+    {
+        return <<<'TEXT'
   --serve[=ADDR]     Serve the generated site locally after generation
                      (default address: 127.0.0.1:8090)
   --memory-limit=X   Memory limit for the run, such as 1G or -1 (default:

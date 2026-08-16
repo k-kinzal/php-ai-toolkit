@@ -14,9 +14,26 @@ use PhpAiToolkit\DocGen\Config\DocGenConfig;
 final class DocGenConfigOverrides
 {
     /**
+     * Returns the cache directory a run keeps its caches in, if any.
+     *
+     * A run that was told to cache nothing caches nothing, whatever the
+     * project configured, because that is what the option is for.
+     *
+     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
+     */
+    public function cache(DocGenConfig $config, array $arguments): ?string
+    {
+        if ($arguments['noCache']) {
+            return null;
+        }
+
+        return $arguments['cacheDir'] ?? $config->cache;
+    }
+
+    /**
      * Rebuilds the configuration with the given CLI overrides applied.
      *
-     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, help: bool, version: bool} $arguments
+     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
      */
     public function apply(DocGenConfig $config, array $arguments): DocGenConfig
     {
@@ -30,6 +47,7 @@ final class DocGenConfigOverrides
             $config->deptrac,
             $arguments['coverage'] ?? $config->coverage,
             $arguments['vendorDev'] !== null ? array_merge($config->vendorDev, $arguments['vendorDev']) : $config->vendorDev,
+            $this->cache($config, $arguments),
         );
     }
 }

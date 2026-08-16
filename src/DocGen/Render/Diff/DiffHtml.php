@@ -299,6 +299,14 @@ final class DiffHtml
     }
 
     /**
+     * Digests the comparison a site displays, or the absence of one.
+     */
+    public function digest(): string
+    {
+        return $this->index !== null ? $this->index->digest() : 'none';
+    }
+
+    /**
      * Returns the label of the compared base revision.
      */
     public function baseLabel(): string

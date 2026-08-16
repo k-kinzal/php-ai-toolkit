@@ -9,3 +9,5 @@ vendor_dev: []
 exclude: []
 
 output: build/docs
+
+cache: build/doc-gen-cache

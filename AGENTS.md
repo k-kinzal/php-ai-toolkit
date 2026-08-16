@@ -43,7 +43,7 @@ The toolkit provides PHPStan and PHPUnit integrations, shared runtime services, 
 | **Installer CLI** | Installs skills and templates into target projects | `src/Installer/Cli/Application.php`, binary `bin/php-ai-toolkit` |
 | **LocGuard CLI** | Checks source LOC, NCLOC, length, and cyclomatic complexity metrics | `src/LocGuard/` (`Cli/`, `Config/`, `Filesystem/`, `Analysis/` with `Token/`, `Complexity/`, `FunctionMetric/`, `ClassLikeMetric/`, and `FileMetric/`, and `Reporting/`), binary `bin/loc-guard`, config `loc.yaml` |
 | **TreeGuard CLI** | Enforces per-directory file and subdirectory counts, recursive subtree totals, nesting depth, file and directory naming globs and case conventions, required files, and empty-directory detection | `src/TreeGuard/` (`Cli/`, `Config/`, `Filesystem/`, `Analysis/`, `Reporting/`), binary `bin/tree-guard`, config `tree.yaml` |
-| **DocGen CLI** | Generates a static HTML documentation site — complete PHPDoc/PHPStan/Psalm types, interface implementations and call sites, deptrac layer graphs, coverage-backed test references, rendered repository Markdown documents, doctest-php-compatible examples, and an optional two-revision diff mode with three display modes — for the project's composer packages, monorepo packages, and optionally vendor packages | `src/DocGen/` (`Cli/`, `Config/`, `Package/`, `Filesystem/`, `Git/`, `Analysis/` with `Parse/`, `Doc/`, `Model/`, `Reference/`, `Doctest/`, `Document/`, `Layer/`, `Coverage/`, and `Diff/`, and `Render/` with `Page/` and `Diff/`), binary `bin/doc-gen`, config `doc.yaml`, assets `resources/docgen/` |
+| **DocGen CLI** | Generates a static HTML documentation site — complete PHPDoc/PHPStan/Psalm types, interface implementations and call sites, deptrac layer graphs, coverage-backed test references, rendered repository Markdown documents, doctest-php-compatible examples, and an optional two-revision diff mode with three display modes, cached and incrementally updated between runs — for the project's composer packages, monorepo packages, and optionally vendor packages | `src/DocGen/` (`Cli/`, `Config/`, `Package/`, `Filesystem/`, `Git/`, `Cache/`, `Parallel/`, `Analysis/` with `Parse/`, `Doc/`, `Model/`, `Reference/`, `Doctest/`, `Document/`, `Layer/`, `Coverage/`, and `Diff/`, and `Render/` with `Page/`, `Diff/`, and `Signature/`), binary `bin/doc-gen`, config `doc.yaml`, assets `resources/docgen/` |
 
 Integration: PHPStan loads `extension.neon`, which registers all 26 Rule services, their Support service, and the ThrowType extension service.
 Optionally, `error-formatter.neon` registers the ErrorFormatter. PHPUnit loads the TestReporter extension via `phpunit.xml.dist`. The Installer CLI
@@ -65,14 +65,17 @@ src/
       Model/           # Documentation symbol model value objects
       Parse/           # php-parser AST to symbol model builders
       Reference/       # Symbol table, hierarchy, and usage indexes
+    Cache/             # Parse and page caches, and the fingerprint they are keyed on
     Cli/               # DocGen command-line application and preview server
     Config/            # doc.yaml loading and validation
     Filesystem/        # PSR-4 source discovery and site file writing
     Git/               # Revision checkout of the compared revisions
     Package/           # Composer package and monorepo discovery
+    Parallel/          # Worker pool and job planning of both phases
     Render/            # Static site renderer
       Diff/            # Diff marks, display mode switch, line and block diffs
       Page/            # Page and partial renderers
+      Signature/       # What each page is rendered from, digested
   Installer/
     Cli/               # Project setup application
       Command/         # Skill installation command and collaborators
@@ -109,12 +112,14 @@ tests/
   Unit/                # Unit-test mirror of all seven src/ top-level directories
     DocGen/
       Analysis/        # Analysis tests, including all nine subdirectory mirrors
+      Cache/           # Parse and page cache tests
       Cli/             # DocGen CLI tests
       Config/          # DocGen configuration tests
       Filesystem/      # DocGen filesystem tests
       Git/             # Revision checkout tests
       Package/         # Package discovery tests
-      Render/          # Renderer tests, including the Page/ and Diff/ mirrors
+      Parallel/        # Worker pool and job planning tests
+      Render/          # Renderer tests, including the Page/, Diff/, and Signature/ mirrors
     Installer/
       Cli/             # Installer CLI tests
     LocGuard/
@@ -149,7 +154,7 @@ phpstan.neon           # Self-analysis config (level max + strict-rules + checke
 phpunit.xml.dist       # PHPUnit config (strict mode + test reporter extension)
 loc.yaml               # LocGuard source-metric limits
 tree.yaml              # TreeGuard structure constraints
-doc.yaml               # DocGen documentation scope
+doc.yaml               # DocGen documentation scope and cache location
 deptrac.yaml           # Architectural dependency rules
 ```
 
@@ -166,7 +171,7 @@ deptrac.yaml           # Architectural dependency rules
 - [PHP-CS-Fixer Configuration](docs/php-cs-fixer.md): PHP-CS-Fixer settings and why each is needed
 - [LocGuard Configuration](docs/loc-guard.md): LocGuard source metric limits and reporting
 - [TreeGuard Configuration](docs/tree-guard.md): TreeGuard directory and file structure constraints
-- [DocGen Configuration](docs/doc-gen.md): DocGen documentation scope and generated site behavior
+- [DocGen Configuration](docs/doc-gen.md): DocGen documentation scope, caching, and generated site behavior
 - [Deptrac Configuration](docs/deptrac.md): Architectural layer discovery and dependency rules
 - [GitHub Actions Configuration](docs/github-actions.md): CI coverage, quality gates, and workflow hardening
 

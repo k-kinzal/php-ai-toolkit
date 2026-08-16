@@ -24,7 +24,7 @@ use Symfony\Component\Yaml\Yaml;
 final class ConfigLoader
 {
     /** @var list<string> */
-    private const KNOWN_KEYS = ['packages', 'vendor', 'vendor_dev', 'exclude', 'output', 'title', 'deptrac', 'coverage'];
+    private const KNOWN_KEYS = ['packages', 'vendor', 'vendor_dev', 'exclude', 'output', 'title', 'deptrac', 'coverage', 'cache'];
 
     /** @readonly */
     private ConfigScalarReader $scalarReader;
@@ -82,6 +82,7 @@ final class ConfigLoader
             $this->scalarReader->optionalString($data, 'deptrac'),
             $this->scalarReader->optionalString($data, 'coverage'),
             $this->stringListReader->read($data, 'vendor_dev', []),
+            $this->scalarReader->optionalPath($data, 'cache', DocGenConfig::DEFAULT_CACHE),
         );
     }
 }

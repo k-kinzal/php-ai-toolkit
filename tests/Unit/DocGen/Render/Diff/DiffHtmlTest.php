@@ -271,4 +271,10 @@ final class DiffHtmlTest extends TestCase
         self::assertSame('working tree', (new DiffHtml(new DiffIndex('main', 'working tree')))->headLabel());
         self::assertSame('', (new DiffHtml())->headLabel());
     }
+
+    public function testDigestNamesTheComparisonASiteDisplaysOrTheAbsenceOfOne(): void
+    {
+        self::assertSame('none', (new DiffHtml())->digest());
+        self::assertSame((new DiffIndex('main', 'HEAD'))->digest(), (new DiffHtml(new DiffIndex('main', 'HEAD')))->digest());
+    }
 }

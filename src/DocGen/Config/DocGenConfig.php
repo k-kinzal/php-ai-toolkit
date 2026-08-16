@@ -19,14 +19,21 @@ namespace PhpAiToolkit\DocGen\Config;
  * @property-read ?string $deptrac
  * @property-read ?string $coverage
  * @property-read list<string> $vendorDev
+ * @property-read ?string $cache
  */
 final class DocGenConfig
 {
+    /**
+     * Where the generation caches are kept unless a project says otherwise.
+     */
+    public const DEFAULT_CACHE = 'build/doc-gen-cache';
+
     /**
      * @param list<string> $packages
      * @param list<string> $vendor package name globs for installed runtime dependencies
      * @param list<string> $exclude
      * @param list<string> $vendorDev package name globs for installed dev dependencies
+     * @param ?string $cache the cache directory, or null to cache nothing
      */
     public function __construct(
         /** @readonly */
@@ -47,6 +54,8 @@ final class DocGenConfig
         private ?string $coverage,
         /** @readonly */
         private array $vendorDev = [],
+        /** @readonly */
+        private ?string $cache = self::DEFAULT_CACHE,
     ) {
     }
 
@@ -67,6 +76,7 @@ final class DocGenConfig
             'deptrac' => $this->deptrac,
             'coverage' => $this->coverage,
             'vendorDev' => $this->vendorDev,
+            'cache' => $this->cache,
             default => null,
         };
     }

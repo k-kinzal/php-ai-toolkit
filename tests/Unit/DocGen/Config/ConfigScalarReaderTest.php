@@ -65,4 +65,22 @@ final class ConfigScalarReaderTest extends TestCase
 
         (new ConfigScalarReader())->optionalString(['title' => ['x']], 'title');
     }
+
+    public function testOptionalPathKeepsTheDefaultAndAcceptsBeingTurnedOff(): void
+    {
+        $reader = new ConfigScalarReader();
+
+        self::assertSame('build/cache', $reader->optionalPath([], 'cache', 'build/cache'));
+        self::assertSame('other', $reader->optionalPath(['cache' => 'other'], 'cache', 'build/cache'));
+        self::assertNull($reader->optionalPath(['cache' => false], 'cache', 'build/cache'));
+        self::assertNull($reader->optionalPath(['cache' => null], 'cache', 'build/cache'));
+    }
+
+    public function testOptionalPathRejectsAValueThatIsNoPath(): void
+    {
+        $this->expectException(DocGenException::class);
+        $this->expectExceptionMessage('Invalid doc.yaml: "cache" must be a non-empty string, or false to turn it off.');
+
+        (new ConfigScalarReader())->optionalPath(['cache' => 42], 'cache', 'build/cache');
+    }
 }

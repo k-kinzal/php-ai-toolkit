@@ -25,7 +25,8 @@ The config file is optional: without `doc.yaml`, the project root and `packages/
 CLI options override the configuration: `--output=DIR`, `--vendor[=GLOBS]` (document installed runtime dependencies),
 `--vendor-dev[=GLOBS]` (document installed dev dependencies), `--coverage=DIR` (PHPUnit `--coverage-xml` report),
 `--diff=RANGE` / `--base=REVISION` / `--head=REVISION` (compare two git revisions),
-`--serve[=HOST:PORT]` (preview the generated site locally), `--memory-limit=VALUE`, and `--jobs=N`.
+`--serve[=HOST:PORT]` (preview the generated site locally), `--memory-limit=VALUE`, `--jobs=N`,
+`--cache-dir=DIR`, `--no-cache`, and `--clear-cache`.
 
 Documenting a large dependency tree needs more memory than the common 128M default, so the limit is raised to 512M
 when the environment allows less. A higher environment limit is kept as is, and `--memory-limit=1G` or
@@ -52,6 +53,56 @@ failed, and the generated site is byte for byte the same however many workers wr
 consecutive jobs and the results are merged in job order, so nothing about the site depends on which worker finished
 first.
 
+## Incremental Generation
+
+A run remembers two things in its cache directory: what every source file parsed into, and what every page of the
+site was written from. The next run parses only the files that changed, and rewrites only the pages that changed.
+
+```bash
+vendor/bin/doc-gen                       # parse and write only what changed
+vendor/bin/doc-gen --no-cache            # parse everything, write everything, remember nothing
+vendor/bin/doc-gen --clear-cache         # start from an empty cache
+vendor/bin/doc-gen --cache-dir=.docgen   # keep the cache somewhere else
+```
+
+Every run reports what it reused:
+
+```
+Generated 1411 pages for 1 packages into build/docs
+Cache: 861 of 862 sources and 1365 of 1411 pages reused
+```
+
+**The site never depends on the cache.** A cached run writes exactly the site a `--no-cache` run writes, down to the
+byte, or it writes the page again. That holds because of what the two halves are keyed on:
+
+- A **source** is remembered under the content of the file, the package it belongs to, its path in the project, and
+  the generator itself. Parsing one file reads nothing but that file, so a file that agrees on all four parses into
+  the same symbols and references it did before.
+- A **page** is remembered under a digest of everything it is rendered from: the symbol it documents, the relations,
+  call sites, test cases, and coverage the rest of the project has for it, the navigation of its scope, and what
+  every name it prints currently resolves to. The last part is what a digest of the page's own data would miss: a
+  page changes when a class it merely names appears, disappears, or moves, because that is when its links change.
+  A page is also rewritten when the file it was written to is gone or no longer has the size this cache wrote it
+  with, so an emptied or half-copied output directory is rebuilt rather than declared up to date.
+
+A page the project no longer has is removed from the output directory, so a cached run leaves no page behind that a
+full run would not have written.
+
+The cache is invalidated as a whole by the installed version of the generator — this toolkit and the parser
+libraries it reads with, each with the exact revision composer installed — so upgrading any of them never serves
+pages the previous version wrote. A generator changed without being installed again, such as a checkout of the
+toolkit being worked on or a patched vendor directory, keeps its version and therefore its cache: generate with
+`--no-cache` while changing the generator itself, or `--clear-cache` once afterwards.
+
+Both halves survive branch switching: entries are keyed by content, not by path, and an entry no run has read for a
+week is dropped. In a comparison run (`--diff`) the sources of both revisions are cached the same way, and the pages
+are reused when the same two revisions are compared again.
+
+The cache directory is a build artifact: ignore it in git, and restore it in CI (for example with `actions/cache`
+keyed on `composer.lock`) to keep documentation jobs to the size of the change. It holds one entry per source file,
+of the same order of size as the symbols that file declares, so a project of a thousand files keeps a few tens of
+megabytes.
+
 ## Configuration
 
 ```yaml
@@ -67,6 +118,8 @@ exclude:
   - 'tests/Fixture/*'
 
 output: build/docs
+
+cache: build/doc-gen-cache
 
 title: null
 deptrac: null
@@ -92,6 +145,10 @@ reported as a warning, as is every selected package that ships no autoloadable s
 
 `output` (default `build/docs`) is the site output directory. `title` (default: the root package name, else the
 project directory name) overrides the site title.
+
+`cache` (default `build/doc-gen-cache`) is the directory the parsed sources and the written pages are remembered in;
+`cache: false` turns caching off for every run of the project, as `--no-cache` does for one run. Keep it outside the
+output directory: everything below `output` is part of the published site.
 
 `deptrac` (default: `deptrac.yaml` at the project root when present) points at a deptrac configuration whose layers
 and ruleset are rendered as an architecture graph and per-class layer badges. `coverage` (default: none) points at a

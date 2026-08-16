@@ -39,7 +39,6 @@ use PhpAiToolkit\DocGen\Parallel\ForkSupport;
 use PhpAiToolkit\DocGen\Parallel\WorkerCount;
 use PhpAiToolkit\DocGen\Parallel\WorkerPool;
 use PhpAiToolkit\DocGen\Parallel\WorkScheduler;
-use PhpParser\NodeTraverser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -128,19 +127,16 @@ PHP);
         $root = (string) realpath($dir);
         $manifest = new ComposerManifest($root, 'demo/app', '', ['Demo\\' => ['src']], [], [], [], []);
         $config = new DocGenConfig($root, ['.'], [], [], 'build/docs', null, null, null);
-        $collector = new UsageCollector();
-        $traverser = new NodeTraverser();
-        $traverser->addVisitor($collector);
+        $result = (new ProjectSymbolCollector())->collectFile($config, new DiscoveredPackage($manifest, false), ['directory' => $root . '/src', 'isDev' => false], $root . '/src/App.php', 'fingerprint');
+        $symbols = $result['symbols'];
 
-        $result = (new ProjectSymbolCollector())->collectFile($config, new DiscoveredPackage($manifest, false), ['directory' => $root . '/src', 'isDev' => false], $root . '/src/App.php', $collector, $traverser);
-
-        self::assertInstanceOf(FileSymbols::class, $result);
-        self::assertCount(1, $result->classLikes);
-        self::assertSame('Demo\App', $result->classLikes[0]->fqcn);
-        $usages = $collector->usages();
-        self::assertCount(1, $usages);
-        self::assertSame('Demo\Widget', $usages[0]->targetFqcn);
-        self::assertSame('src/App.php', $usages[0]->file);
+        self::assertFalse($result['cached']);
+        self::assertInstanceOf(FileSymbols::class, $symbols);
+        self::assertCount(1, $symbols->classLikes);
+        self::assertSame('Demo\App', $symbols->classLikes[0]->fqcn);
+        self::assertCount(1, $result['usages']);
+        self::assertSame('Demo\Widget', $result['usages'][0]->targetFqcn);
+        self::assertSame('src/App.php', $result['usages'][0]->file);
     }
 
 
@@ -153,14 +149,10 @@ PHP);
         $root = (string) realpath($dir);
         $manifest = new ComposerManifest($root, 'demo/app', '', ['Demo\\' => ['src']], [], [], [], []);
         $config = new DocGenConfig($root, ['.'], [], [], 'build/docs', null, null, null);
-        $collector = new UsageCollector();
-        $traverser = new NodeTraverser();
-        $traverser->addVisitor($collector);
+        $result = (new ProjectSymbolCollector())->collectFile($config, new DiscoveredPackage($manifest, false), ['directory' => $root . '/src', 'isDev' => false], $root . '/src/Broken.php', 'fingerprint');
 
-        $result = (new ProjectSymbolCollector())->collectFile($config, new DiscoveredPackage($manifest, false), ['directory' => $root . '/src', 'isDev' => false], $root . '/src/Broken.php', $collector, $traverser);
-
-        self::assertIsString($result);
-        self::assertStringContainsString('Failed to parse src/Broken.php', $result);
+        self::assertIsString($result['symbols']);
+        self::assertStringContainsString('Failed to parse src/Broken.php', $result['symbols']);
     }
 
 
@@ -246,13 +238,14 @@ PHP);
         $config = new DocGenConfig($root, ['.'], [], [], 'build/docs', null, null, null);
         $collector = new ProjectSymbolCollector();
 
-        $parsed = $collector->parseJob($config, $collector->sourceFiles($config, [new DiscoveredPackage($manifest, false)]));
+        $parsed = $collector->parseJob($config, $collector->sourceFiles($config, [new DiscoveredPackage($manifest, false)]), 'fingerprint');
+        $symbols = $parsed[0]['symbols'];
 
-        self::assertCount(2, $parsed['symbols']);
-        self::assertInstanceOf(FileSymbols::class, $parsed['symbols'][0]);
-        self::assertSame('Demo\Alpha', $parsed['symbols'][0]->classLikes[0]->fqcn);
-        self::assertNotSame([], $parsed['usages']);
-        self::assertSame('Demo\Beta', $parsed['usages'][0]->targetFqcn);
+        self::assertCount(2, $parsed);
+        self::assertInstanceOf(FileSymbols::class, $symbols);
+        self::assertSame('Demo\Alpha', $symbols->classLikes[0]->fqcn);
+        self::assertNotSame([], $parsed[0]['usages']);
+        self::assertSame('Demo\Beta', $parsed[0]['usages'][0]->targetFqcn);
     }
 
     public function testMergedJoinsJobResultsAndDropsSymbolsAlreadySeen(): void
@@ -263,8 +256,11 @@ PHP);
         $usage = new Usage('Demo\Beta', null, 'type', 'Demo\Alpha', 'run', 'src/Alpha.php', 7, false);
 
         $merged = (new ProjectSymbolCollector())->merged([
-            ['symbols' => [new FileSymbols([$alpha], []), 'Skipped unreadable file: src/Broken.php'], 'usages' => [$usage]],
-            ['symbols' => [new FileSymbols([$again, $beta], [])], 'usages' => []],
+            [
+                ['cached' => false, 'symbols' => new FileSymbols([$alpha], []), 'usages' => [$usage]],
+                ['cached' => false, 'symbols' => 'Skipped unreadable file: src/Broken.php', 'usages' => []],
+            ],
+            [['cached' => true, 'symbols' => new FileSymbols([$again, $beta], []), 'usages' => []]],
         ]);
 
         self::assertSame(['Demo\Alpha', 'Demo\Beta'], [$merged['classLikes'][0]->fqcn, $merged['classLikes'][1]->fqcn]);
@@ -276,13 +272,58 @@ PHP);
     public function testParsedRejectsAWorkerResultThatIsNotAParseResult(): void
     {
         $collector = new ProjectSymbolCollector();
-        $symbols = new FileSymbols([], []);
+        $file = ['cached' => false, 'symbols' => new FileSymbols([], []), 'usages' => []];
 
-        self::assertSame(['symbols' => [$symbols], 'usages' => []], $collector->parsed(['symbols' => [$symbols], 'usages' => []]));
+        self::assertSame([$file], $collector->parsed([$file]));
 
         $this->expectException(DocGenException::class);
         $this->expectExceptionMessage('A documentation worker reported no parsed sources.');
 
         $collector->parsed('not a parse result');
+    }
+
+    public function testParsedFileRejectsAFileThatIsNotAParsedOne(): void
+    {
+        $collector = new ProjectSymbolCollector();
+
+        $this->expectException(DocGenException::class);
+        $this->expectExceptionMessage('A documentation worker reported an unreadable symbol reference.');
+
+        $collector->parsedFile(['cached' => false, 'symbols' => 'a warning', 'usages' => ['not a usage']]);
+    }
+
+    public function testParsedFileRejectsAFileWithoutSymbols(): void
+    {
+        $collector = new ProjectSymbolCollector();
+
+        $this->expectException(DocGenException::class);
+        $this->expectExceptionMessage('A documentation worker reported an unreadable source file.');
+
+        $collector->parsedFile(['cached' => false, 'symbols' => 42, 'usages' => []]);
+    }
+
+    public function testParseFileTurnsSourceIntoSymbolsAndUsages(): void
+    {
+        $parsed = (new ProjectSymbolCollector())->parseFile(
+            "<?php\n\nnamespace Demo;\n\nclass Alpha\n{\n    public function run(Beta \$beta): void\n    {\n    }\n}\n",
+            'src/Alpha.php',
+            'demo/app',
+            false,
+        );
+        $symbols = $parsed['symbols'];
+
+        self::assertInstanceOf(FileSymbols::class, $symbols);
+        self::assertSame('Demo\\Alpha', $symbols->classLikes[0]->fqcn);
+        self::assertSame('Demo\\Beta', $parsed['usages'][0]->targetFqcn);
+        self::assertSame('src/Alpha.php', $parsed['usages'][0]->file);
+    }
+
+    public function testParseFileReportsWhatItCouldNotParse(): void
+    {
+        $parsed = (new ProjectSymbolCollector())->parseFile('<?php class {', 'src/Broken.php', 'demo/app', false);
+
+        self::assertIsString($parsed['symbols']);
+        self::assertStringContainsString('Failed to parse src/Broken.php', $parsed['symbols']);
+        self::assertSame([], $parsed['usages']);
     }
 }

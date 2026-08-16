@@ -18,7 +18,17 @@ When in doubt, prioritize quality over everything else. It is better to ship les
 
 - **PHP**: 8.0 or later
 - **PHPStan**: ^1.12 || ^2.0
-- **PHPUnit**: ^10.5 || ^11 || ^12 || ^13
+- **PHPUnit**: ^9.6 || ^10.5 || ^11 || ^12 || ^13
+- **nikic/php-parser**: ^4.19 || ^5.0
+- **phpstan/phpdoc-parser**: ^1.33 || ^2.0
+
+Every one of those lines is exercised. The PHP 8.0 lock resolves PHPStan 1.12 with php-parser 4, phpdoc-parser 1, and
+PHPUnit 9.6, because the only deptrac line that installs on PHP 8.0 pins php-parser 4 and the PHPStan 2 phar carries
+php-parser 5 under the same class names; the PHP 8.1 and later locks resolve PHPStan 2 with php-parser 5,
+phpdoc-parser 2, and PHPUnit 10.5 or newer. Code that reads a parser node or prints a documented type therefore has to
+work under either major of both parsers: a class only one of them ships is never named, and what a rule reports is
+ordered by the rule rather than by the analyzer. See [GitHub Actions Configuration](docs/github-actions.md) for how
+the locks are refreshed.
 
 ## Tech Stack
 

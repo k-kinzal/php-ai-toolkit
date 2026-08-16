@@ -27,6 +27,7 @@
 <nav class="crumbs"><a href="../../../../index.html">src</a><span class="crumb-sep">::</span><span class="crumb-current">src/TreeGuard/Filesystem/DirectoryTreeScanner.php</span></nav>
 <div class="topbar-tools">
 <input type="search" id="search" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<a class="repo-link" href="https://github.com/k-kinzal/php-ai-toolkit" title="Repository: https://github.com/k-kinzal/php-ai-toolkit" rel="noreferrer">github.com</a>
 <button id="theme-toggle" title="Toggle theme">◐</button>
 </div>
 </header>
@@ -100,27 +101,28 @@
 <span class="src-line" id="L65"><a class="ln" href="#L65">65</a>                <span class="tok-var">$entries</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">listingReader</span>-&gt;<span class="tok-id">read</span>(<span class="tok-var">$absoluteDir</span>);</span>
 <span class="src-line" id="L66"><a class="ln" href="#L66">66</a>                <span class="tok-var">$fileNames</span> = [];</span>
 <span class="src-line" id="L67"><a class="ln" href="#L67">67</a>                <span class="tok-kw">foreach</span> (<span class="tok-var">$entries</span>[<span class="tok-str">&#039;files&#039;</span>] <span class="tok-kw">as</span> <span class="tok-var">$name</span>) {</span>
-<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>                    <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">inclusionPolicy</span>-&gt;<span class="tok-id">includes</span>(<span class="tok-var">$config</span>, <span class="tok-var">$relativeDir</span> . <span class="tok-str">&#039;/&#039;</span> . <span class="tok-var">$name</span>)) {</span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>                    <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">inclusionPolicy</span>-&gt;<span class="tok-id">includes</span>(<span class="tok-var">$config</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">pathResolver</span>-&gt;<span class="tok-id">child</span>(<span class="tok-var">$relativeDir</span>, <span class="tok-var">$name</span>))) {</span>
 <span class="src-line" id="L69"><a class="ln" href="#L69">69</a>                        <span class="tok-var">$fileNames</span>[] = <span class="tok-var">$name</span>;</span>
 <span class="src-line" id="L70"><a class="ln" href="#L70">70</a>                    }</span>
 <span class="src-line" id="L71"><a class="ln" href="#L71">71</a>                }</span>
 <span class="src-line" id="L72"><a class="ln" href="#L72">72</a>                <span class="tok-var">$dirNames</span> = [];</span>
 <span class="src-line" id="L73"><a class="ln" href="#L73">73</a>                <span class="tok-kw">foreach</span> (<span class="tok-var">$entries</span>[<span class="tok-str">&#039;dirs&#039;</span>] <span class="tok-kw">as</span> <span class="tok-var">$name</span>) {</span>
-<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>                    <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">inclusionPolicy</span>-&gt;<span class="tok-id">includes</span>(<span class="tok-var">$config</span>, <span class="tok-var">$relativeDir</span> . <span class="tok-str">&#039;/&#039;</span> . <span class="tok-var">$name</span>)) {</span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>                        <span class="tok-var">$dirNames</span>[] = <span class="tok-var">$name</span>;</span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>                        <span class="tok-var">$queue</span>[] = [<span class="tok-var">$absoluteDir</span> . <span class="tok-str">&#039;/&#039;</span> . <span class="tok-var">$name</span>, <span class="tok-var">$relativeDir</span> . <span class="tok-str">&#039;/&#039;</span> . <span class="tok-var">$name</span>];</span>
-<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>                    }</span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>                }</span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>                <span class="tok-var">$listings</span>[<span class="tok-var">$relativeDir</span>] = <span class="tok-kw">new</span> <span class="tok-id">DirectoryListing</span>(<span class="tok-var">$relativeDir</span>, <span class="tok-var">$fileNames</span>, <span class="tok-var">$dirNames</span>);</span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>            }</span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>        }</span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a></span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>        <span class="tok-id">ksort</span>(<span class="tok-var">$listings</span>);</span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a></span>
-<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>        <span class="tok-kw">return</span> <span class="tok-var">$listings</span>;</span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>    }</span>
-<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>}</span>
-<span class="src-line" id="L88"><a class="ln" href="#L88">88</a></span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>                    <span class="tok-var">$childPath</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">pathResolver</span>-&gt;<span class="tok-id">child</span>(<span class="tok-var">$relativeDir</span>, <span class="tok-var">$name</span>);</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>                    <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">inclusionPolicy</span>-&gt;<span class="tok-id">includes</span>(<span class="tok-var">$config</span>, <span class="tok-var">$childPath</span>)) {</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>                        <span class="tok-var">$dirNames</span>[] = <span class="tok-var">$name</span>;</span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>                        <span class="tok-var">$queue</span>[] = [<span class="tok-var">$absoluteDir</span> . <span class="tok-str">&#039;/&#039;</span> . <span class="tok-var">$name</span>, <span class="tok-var">$childPath</span>];</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>                    }</span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>                }</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>                <span class="tok-var">$listings</span>[<span class="tok-var">$relativeDir</span>] = <span class="tok-kw">new</span> <span class="tok-id">DirectoryListing</span>(<span class="tok-var">$relativeDir</span>, <span class="tok-var">$fileNames</span>, <span class="tok-var">$dirNames</span>);</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>            }</span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>        }</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a></span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>        <span class="tok-id">ksort</span>(<span class="tok-var">$listings</span>);</span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a></span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        <span class="tok-kw">return</span> <span class="tok-var">$listings</span>;</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>    }</span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>}</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

@@ -27,6 +27,7 @@
 <nav class="crumbs"><a href="../../../../../../index.html">src</a><span class="crumb-sep">::</span><span class="crumb-current">tests/Unit/DocGen/Analysis/Diff/DiffWorkspaceTest.php</span></nav>
 <div class="topbar-tools">
 <input type="search" id="search" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<a class="repo-link" href="https://github.com/k-kinzal/php-ai-toolkit" title="Repository: https://github.com/k-kinzal/php-ai-toolkit" rel="noreferrer">github.com</a>
 <button id="theme-toggle" title="Toggle theme">◐</button>
 </div>
 </header>
@@ -302,7 +303,7 @@
 <span class="src-line" id="L267"><a class="ln" href="#L267">267</a></span>
 <span class="src-line" id="L268"><a class="ln" href="#L268">268</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testConfigForKeepsTheDocumentedScopeAndMovesOnlyTheRoot</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L269"><a class="ln" href="#L269">269</a>    {</span>
-<span class="src-line" id="L270"><a class="ln" href="#L270">270</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/project&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>, <span class="tok-str">&#039;packages/*&#039;</span>], [<span class="tok-str">&#039;acme/*&#039;</span>], [<span class="tok-str">&#039;tests/*&#039;</span>], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-str">&#039;Demo Docs&#039;</span>, <span class="tok-str">&#039;deptrac.yaml&#039;</span>, <span class="tok-str">&#039;build/coverage-xml&#039;</span>, [<span class="tok-str">&#039;phpunit/*&#039;</span>]);</span>
+<span class="src-line" id="L270"><a class="ln" href="#L270">270</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/project&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>, <span class="tok-str">&#039;packages/*&#039;</span>], [<span class="tok-str">&#039;acme/*&#039;</span>], [<span class="tok-str">&#039;tests/*&#039;</span>], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-str">&#039;Demo Docs&#039;</span>, <span class="tok-str">&#039;deptrac.yaml&#039;</span>, <span class="tok-str">&#039;build/coverage-xml&#039;</span>, [<span class="tok-str">&#039;phpunit/*&#039;</span>], <span class="tok-str">&#039;build/doc-gen-cache&#039;</span>, <span class="tok-str">&#039;https://example.github.io/project&#039;</span>, <span class="tok-str">&#039;https://github.com/example/project&#039;</span>);</span>
 <span class="src-line" id="L271"><a class="ln" href="#L271">271</a></span>
 <span class="src-line" id="L272"><a class="ln" href="#L272">272</a>        <span class="tok-var">$moved</span> = (<span class="tok-kw">new</span> <span class="tok-id">DiffWorkspace</span>())-&gt;<span class="tok-id">configFor</span>(<span class="tok-var">$config</span>, <span class="tok-str">&#039;/tmp/checkout&#039;</span>, <span class="tok-id">null</span>);</span>
 <span class="src-line" id="L273"><a class="ln" href="#L273">273</a></span>
@@ -315,39 +316,41 @@
 <span class="src-line" id="L280"><a class="ln" href="#L280">280</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;deptrac.yaml&#039;</span>, <span class="tok-var">$moved</span>-&gt;<span class="tok-id">deptrac</span>);</span>
 <span class="src-line" id="L281"><a class="ln" href="#L281">281</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;phpunit/*&#039;</span>], <span class="tok-var">$moved</span>-&gt;<span class="tok-id">vendorDev</span>);</span>
 <span class="src-line" id="L282"><a class="ln" href="#L282">282</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>(<span class="tok-var">$moved</span>-&gt;<span class="tok-id">coverage</span>);</span>
-<span class="src-line" id="L283"><a class="ln" href="#L283">283</a>    }</span>
-<span class="src-line" id="L284"><a class="ln" href="#L284">284</a></span>
-<span class="src-line" id="L285"><a class="ln" href="#L285">285</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCoverageIsResolvedAgainstTheWorkingTreeOfTheProject</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L286"><a class="ln" href="#L286">286</a>    {</span>
-<span class="src-line" id="L287"><a class="ln" href="#L287">287</a>        <span class="tok-var">$workspace</span> = <span class="tok-kw">new</span> <span class="tok-id">DiffWorkspace</span>();</span>
-<span class="src-line" id="L288"><a class="ln" href="#L288">288</a></span>
-<span class="src-line" id="L289"><a class="ln" href="#L289">289</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(</span>
-<span class="src-line" id="L290"><a class="ln" href="#L290">290</a>            <span class="tok-str">&#039;/tmp/project/build/coverage-xml&#039;</span>,</span>
-<span class="src-line" id="L291"><a class="ln" href="#L291">291</a>            <span class="tok-var">$workspace</span>-&gt;<span class="tok-id">coverage</span>(<span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/project&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;build/coverage-xml&#039;</span>)),</span>
-<span class="src-line" id="L292"><a class="ln" href="#L292">292</a>        );</span>
-<span class="src-line" id="L293"><a class="ln" href="#L293">293</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>(<span class="tok-var">$workspace</span>-&gt;<span class="tok-id">coverage</span>(<span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/project&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>)));</span>
-<span class="src-line" id="L294"><a class="ln" href="#L294">294</a>    }</span>
-<span class="src-line" id="L295"><a class="ln" href="#L295">295</a></span>
-<span class="src-line" id="L296"><a class="ln" href="#L296">296</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLabelAsksTheRepositoryForTheShortName</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L297"><a class="ln" href="#L297">297</a>    {</span>
-<span class="src-line" id="L298"><a class="ln" href="#L298">298</a>        <span class="tok-var">$workspace</span> = <span class="tok-kw">new</span> <span class="tok-id">DiffWorkspace</span>(</span>
-<span class="src-line" id="L299"><a class="ln" href="#L299">299</a>            <span class="tok-kw">new</span> <span class="tok-id">GitRepository</span>(<span class="tok-kw">new</span> <span class="tok-id">GitCommandRunner</span>(<span class="tok-kw">static</span> <span class="tok-kw">fn</span> (<span class="tok-id">string</span> <span class="tok-var">$command</span>): <span class="tok-kw">array</span> =&gt; [<span class="tok-str">&#039;status&#039;</span> =&gt; <span class="tok-num">0</span>, <span class="tok-str">&#039;output&#039;</span> =&gt; <span class="tok-str">&#039;2f0c1a2&#039;</span>])),</span>
-<span class="src-line" id="L300"><a class="ln" href="#L300">300</a>        );</span>
-<span class="src-line" id="L301"><a class="ln" href="#L301">301</a></span>
-<span class="src-line" id="L302"><a class="ln" href="#L302">302</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;2f0c1a2&#039;</span>, <span class="tok-var">$workspace</span>-&gt;<span class="tok-id">label</span>(<span class="tok-str">&#039;/tmp/repo&#039;</span>, <span class="tok-str">&#039;main&#039;</span>));</span>
-<span class="src-line" id="L303"><a class="ln" href="#L303">303</a>    }</span>
-<span class="src-line" id="L304"><a class="ln" href="#L304">304</a></span>
-<span class="src-line" id="L305"><a class="ln" href="#L305">305</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testHeadLabelNamesTheWorkingTreeWhenNoRevisionIsCompared</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L306"><a class="ln" href="#L306">306</a>    {</span>
-<span class="src-line" id="L307"><a class="ln" href="#L307">307</a>        <span class="tok-var">$workspace</span> = <span class="tok-kw">new</span> <span class="tok-id">DiffWorkspace</span>(</span>
-<span class="src-line" id="L308"><a class="ln" href="#L308">308</a>            <span class="tok-kw">new</span> <span class="tok-id">GitRepository</span>(<span class="tok-kw">new</span> <span class="tok-id">GitCommandRunner</span>(<span class="tok-kw">static</span> <span class="tok-kw">fn</span> (<span class="tok-id">string</span> <span class="tok-var">$command</span>): <span class="tok-kw">array</span> =&gt; [<span class="tok-str">&#039;status&#039;</span> =&gt; <span class="tok-num">0</span>, <span class="tok-str">&#039;output&#039;</span> =&gt; <span class="tok-str">&#039;2f0c1a2&#039;</span>])),</span>
-<span class="src-line" id="L309"><a class="ln" href="#L309">309</a>        );</span>
-<span class="src-line" id="L310"><a class="ln" href="#L310">310</a></span>
-<span class="src-line" id="L311"><a class="ln" href="#L311">311</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-id">DiffWorkspace</span>::<span class="tok-id">WORKING_TREE</span>, <span class="tok-var">$workspace</span>-&gt;<span class="tok-id">headLabel</span>(<span class="tok-str">&#039;/tmp/repo&#039;</span>, <span class="tok-id">null</span>));</span>
-<span class="src-line" id="L312"><a class="ln" href="#L312">312</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;2f0c1a2&#039;</span>, <span class="tok-var">$workspace</span>-&gt;<span class="tok-id">headLabel</span>(<span class="tok-str">&#039;/tmp/repo&#039;</span>, <span class="tok-str">&#039;feature&#039;</span>));</span>
-<span class="src-line" id="L313"><a class="ln" href="#L313">313</a>    }</span>
-<span class="src-line" id="L314"><a class="ln" href="#L314">314</a>}</span>
-<span class="src-line" id="L315"><a class="ln" href="#L315">315</a></span>
+<span class="src-line" id="L283"><a class="ln" href="#L283">283</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;https://example.github.io/project&#039;</span>, <span class="tok-var">$moved</span>-&gt;<span class="tok-id">baseUrl</span>);</span>
+<span class="src-line" id="L284"><a class="ln" href="#L284">284</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;https://github.com/example/project&#039;</span>, <span class="tok-var">$moved</span>-&gt;<span class="tok-id">repository</span>);</span>
+<span class="src-line" id="L285"><a class="ln" href="#L285">285</a>    }</span>
+<span class="src-line" id="L286"><a class="ln" href="#L286">286</a></span>
+<span class="src-line" id="L287"><a class="ln" href="#L287">287</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCoverageIsResolvedAgainstTheWorkingTreeOfTheProject</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L288"><a class="ln" href="#L288">288</a>    {</span>
+<span class="src-line" id="L289"><a class="ln" href="#L289">289</a>        <span class="tok-var">$workspace</span> = <span class="tok-kw">new</span> <span class="tok-id">DiffWorkspace</span>();</span>
+<span class="src-line" id="L290"><a class="ln" href="#L290">290</a></span>
+<span class="src-line" id="L291"><a class="ln" href="#L291">291</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(</span>
+<span class="src-line" id="L292"><a class="ln" href="#L292">292</a>            <span class="tok-str">&#039;/tmp/project/build/coverage-xml&#039;</span>,</span>
+<span class="src-line" id="L293"><a class="ln" href="#L293">293</a>            <span class="tok-var">$workspace</span>-&gt;<span class="tok-id">coverage</span>(<span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/project&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;build/coverage-xml&#039;</span>)),</span>
+<span class="src-line" id="L294"><a class="ln" href="#L294">294</a>        );</span>
+<span class="src-line" id="L295"><a class="ln" href="#L295">295</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>(<span class="tok-var">$workspace</span>-&gt;<span class="tok-id">coverage</span>(<span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/project&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>)));</span>
+<span class="src-line" id="L296"><a class="ln" href="#L296">296</a>    }</span>
+<span class="src-line" id="L297"><a class="ln" href="#L297">297</a></span>
+<span class="src-line" id="L298"><a class="ln" href="#L298">298</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLabelAsksTheRepositoryForTheShortName</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L299"><a class="ln" href="#L299">299</a>    {</span>
+<span class="src-line" id="L300"><a class="ln" href="#L300">300</a>        <span class="tok-var">$workspace</span> = <span class="tok-kw">new</span> <span class="tok-id">DiffWorkspace</span>(</span>
+<span class="src-line" id="L301"><a class="ln" href="#L301">301</a>            <span class="tok-kw">new</span> <span class="tok-id">GitRepository</span>(<span class="tok-kw">new</span> <span class="tok-id">GitCommandRunner</span>(<span class="tok-kw">static</span> <span class="tok-kw">fn</span> (<span class="tok-id">string</span> <span class="tok-var">$command</span>): <span class="tok-kw">array</span> =&gt; [<span class="tok-str">&#039;status&#039;</span> =&gt; <span class="tok-num">0</span>, <span class="tok-str">&#039;output&#039;</span> =&gt; <span class="tok-str">&#039;2f0c1a2&#039;</span>])),</span>
+<span class="src-line" id="L302"><a class="ln" href="#L302">302</a>        );</span>
+<span class="src-line" id="L303"><a class="ln" href="#L303">303</a></span>
+<span class="src-line" id="L304"><a class="ln" href="#L304">304</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;2f0c1a2&#039;</span>, <span class="tok-var">$workspace</span>-&gt;<span class="tok-id">label</span>(<span class="tok-str">&#039;/tmp/repo&#039;</span>, <span class="tok-str">&#039;main&#039;</span>));</span>
+<span class="src-line" id="L305"><a class="ln" href="#L305">305</a>    }</span>
+<span class="src-line" id="L306"><a class="ln" href="#L306">306</a></span>
+<span class="src-line" id="L307"><a class="ln" href="#L307">307</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testHeadLabelNamesTheWorkingTreeWhenNoRevisionIsCompared</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L308"><a class="ln" href="#L308">308</a>    {</span>
+<span class="src-line" id="L309"><a class="ln" href="#L309">309</a>        <span class="tok-var">$workspace</span> = <span class="tok-kw">new</span> <span class="tok-id">DiffWorkspace</span>(</span>
+<span class="src-line" id="L310"><a class="ln" href="#L310">310</a>            <span class="tok-kw">new</span> <span class="tok-id">GitRepository</span>(<span class="tok-kw">new</span> <span class="tok-id">GitCommandRunner</span>(<span class="tok-kw">static</span> <span class="tok-kw">fn</span> (<span class="tok-id">string</span> <span class="tok-var">$command</span>): <span class="tok-kw">array</span> =&gt; [<span class="tok-str">&#039;status&#039;</span> =&gt; <span class="tok-num">0</span>, <span class="tok-str">&#039;output&#039;</span> =&gt; <span class="tok-str">&#039;2f0c1a2&#039;</span>])),</span>
+<span class="src-line" id="L311"><a class="ln" href="#L311">311</a>        );</span>
+<span class="src-line" id="L312"><a class="ln" href="#L312">312</a></span>
+<span class="src-line" id="L313"><a class="ln" href="#L313">313</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-id">DiffWorkspace</span>::<span class="tok-id">WORKING_TREE</span>, <span class="tok-var">$workspace</span>-&gt;<span class="tok-id">headLabel</span>(<span class="tok-str">&#039;/tmp/repo&#039;</span>, <span class="tok-id">null</span>));</span>
+<span class="src-line" id="L314"><a class="ln" href="#L314">314</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;2f0c1a2&#039;</span>, <span class="tok-var">$workspace</span>-&gt;<span class="tok-id">headLabel</span>(<span class="tok-str">&#039;/tmp/repo&#039;</span>, <span class="tok-str">&#039;feature&#039;</span>));</span>
+<span class="src-line" id="L315"><a class="ln" href="#L315">315</a>    }</span>
+<span class="src-line" id="L316"><a class="ln" href="#L316">316</a>}</span>
+<span class="src-line" id="L317"><a class="ln" href="#L317">317</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

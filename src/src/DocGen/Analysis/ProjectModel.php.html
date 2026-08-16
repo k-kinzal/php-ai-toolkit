@@ -27,6 +27,7 @@
 <nav class="crumbs"><a href="../../../../index.html">src</a><span class="crumb-sep">::</span><span class="crumb-current">src/DocGen/Analysis/ProjectModel.php</span></nav>
 <div class="topbar-tools">
 <input type="search" id="search" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<a class="repo-link" href="https://github.com/k-kinzal/php-ai-toolkit" title="Repository: https://github.com/k-kinzal/php-ai-toolkit" rel="noreferrer">github.com</a>
 <button id="theme-toggle" title="Toggle theme">◐</button>
 </div>
 </header>
@@ -70,83 +71,88 @@
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a><span class="tok-com"> * @property-read list&lt;string&gt; $warnings</span></span>
 <span class="src-line" id="L36"><a class="ln" href="#L36">36</a><span class="tok-com"> * @property-read list&lt;MarkdownDoc&gt; $documents</span></span>
 <span class="src-line" id="L37"><a class="ln" href="#L37">37</a><span class="tok-com"> * @property-read ?string $baseUrl</span></span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a><span class="tok-com"> */</span></span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">ProjectModel</span></span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>{</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a><span class="tok-com">     * @param list&lt;DiscoveredPackage&gt; $packages</span></span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a><span class="tok-com">     * @param list&lt;ClassLikeDoc&gt; $classLikes</span></span>
-<span class="src-line" id="L44"><a class="ln" href="#L44">44</a><span class="tok-com">     * @param list&lt;FunctionDoc&gt; $functions</span></span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a><span class="tok-com">     * @param array&lt;string, list&lt;string&gt;&gt; $layerAssignments</span></span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a><span class="tok-com">     * @param list&lt;string&gt; $warnings</span></span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a><span class="tok-com">     * @param list&lt;MarkdownDoc&gt; $documents</span></span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a><span class="tok-com">     * @param ?string $baseUrl the address the site is published at, without a trailing slash, or null when it is unknown</span></span>
-<span class="src-line" id="L49"><a class="ln" href="#L49">49</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(</span>
-<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>        <span class="tok-kw">private</span> <span class="tok-id">string</span> <span class="tok-var">$title</span>,</span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a><span class="tok-com"> * @property-read ?string $repository</span></span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a><span class="tok-com"> */</span></span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">ProjectModel</span></span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>{</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a><span class="tok-com">     * @param list&lt;DiscoveredPackage&gt; $packages</span></span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a><span class="tok-com">     * @param list&lt;ClassLikeDoc&gt; $classLikes</span></span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a><span class="tok-com">     * @param list&lt;FunctionDoc&gt; $functions</span></span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a><span class="tok-com">     * @param array&lt;string, list&lt;string&gt;&gt; $layerAssignments</span></span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a><span class="tok-com">     * @param list&lt;string&gt; $warnings</span></span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a><span class="tok-com">     * @param list&lt;MarkdownDoc&gt; $documents</span></span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a><span class="tok-com">     * @param ?string $baseUrl the address the site is published at, without a trailing slash, or null when it is unknown</span></span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a><span class="tok-com">     * @param ?string $repository the address of the repository the documented project lives in, or null when it names none</span></span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(</span>
 <span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>        <span class="tok-kw">private</span> <span class="tok-id">string</span> <span class="tok-var">$root</span>,</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>        <span class="tok-kw">private</span> <span class="tok-id">string</span> <span class="tok-var">$title</span>,</span>
 <span class="src-line" id="L55"><a class="ln" href="#L55">55</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>        <span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$packages</span>,</span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>        <span class="tok-kw">private</span> <span class="tok-id">string</span> <span class="tok-var">$root</span>,</span>
 <span class="src-line" id="L57"><a class="ln" href="#L57">57</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>        <span class="tok-kw">private</span> <span class="tok-id">PackageGraph</span> <span class="tok-var">$graph</span>,</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>        <span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$packages</span>,</span>
 <span class="src-line" id="L59"><a class="ln" href="#L59">59</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$classLikes</span>,</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-kw">private</span> <span class="tok-id">PackageGraph</span> <span class="tok-var">$graph</span>,</span>
 <span class="src-line" id="L61"><a class="ln" href="#L61">61</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>        <span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$functions</span>,</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>        <span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$classLikes</span>,</span>
 <span class="src-line" id="L63"><a class="ln" href="#L63">63</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        <span class="tok-kw">private</span> <span class="tok-id">SymbolTable</span> <span class="tok-var">$symbolTable</span>,</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        <span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$functions</span>,</span>
 <span class="src-line" id="L65"><a class="ln" href="#L65">65</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>        <span class="tok-kw">private</span> <span class="tok-id">HierarchyIndex</span> <span class="tok-var">$hierarchy</span>,</span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>        <span class="tok-kw">private</span> <span class="tok-id">SymbolTable</span> <span class="tok-var">$symbolTable</span>,</span>
 <span class="src-line" id="L67"><a class="ln" href="#L67">67</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>        <span class="tok-kw">private</span> <span class="tok-id">UsageIndex</span> <span class="tok-var">$usages</span>,</span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>        <span class="tok-kw">private</span> <span class="tok-id">HierarchyIndex</span> <span class="tok-var">$hierarchy</span>,</span>
 <span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>        <span class="tok-kw">private</span> <span class="tok-id">TestCaseIndex</span> <span class="tok-var">$testCases</span>,</span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>        <span class="tok-kw">private</span> <span class="tok-id">UsageIndex</span> <span class="tok-var">$usages</span>,</span>
 <span class="src-line" id="L71"><a class="ln" href="#L71">71</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>        <span class="tok-kw">private</span> ?<span class="tok-id">LayerModel</span> <span class="tok-var">$layers</span>,</span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>        <span class="tok-kw">private</span> <span class="tok-id">TestCaseIndex</span> <span class="tok-var">$testCases</span>,</span>
 <span class="src-line" id="L73"><a class="ln" href="#L73">73</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>        <span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$layerAssignments</span>,</span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>        <span class="tok-kw">private</span> ?<span class="tok-id">LayerModel</span> <span class="tok-var">$layers</span>,</span>
 <span class="src-line" id="L75"><a class="ln" href="#L75">75</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        <span class="tok-kw">private</span> ?<span class="tok-id">CoverageIndex</span> <span class="tok-var">$coverage</span>,</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        <span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$layerAssignments</span>,</span>
 <span class="src-line" id="L77"><a class="ln" href="#L77">77</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>        <span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$warnings</span>,</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>        <span class="tok-kw">private</span> ?<span class="tok-id">CoverageIndex</span> <span class="tok-var">$coverage</span>,</span>
 <span class="src-line" id="L79"><a class="ln" href="#L79">79</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>        <span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$documents</span> = [],</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>        <span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$warnings</span>,</span>
 <span class="src-line" id="L81"><a class="ln" href="#L81">81</a>        <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>        <span class="tok-kw">private</span> ?<span class="tok-id">string</span> <span class="tok-var">$baseUrl</span> = <span class="tok-id">null</span>,</span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>    ) {</span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>    }</span>
-<span class="src-line" id="L85"><a class="ln" href="#L85">85</a></span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L87"><a class="ln" href="#L87">87</a><span class="tok-com">     * Provides read-only access to the immutable properties.</span></span>
-<span class="src-line" id="L88"><a class="ln" href="#L88">88</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a><span class="tok-com">     * @return mixed the value of the requested property</span></span>
-<span class="src-line" id="L90"><a class="ln" href="#L90">90</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__get</span>(<span class="tok-id">string</span> <span class="tok-var">$name</span>): <span class="tok-id">mixed</span></span>
-<span class="src-line" id="L92"><a class="ln" href="#L92">92</a>    {</span>
-<span class="src-line" id="L93"><a class="ln" href="#L93">93</a>        <span class="tok-kw">return</span> <span class="tok-kw">match</span> (<span class="tok-var">$name</span>) {</span>
-<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>            <span class="tok-str">&#039;title&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">title</span>,</span>
-<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>            <span class="tok-str">&#039;root&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">root</span>,</span>
-<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>            <span class="tok-str">&#039;packages&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">packages</span>,</span>
-<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>            <span class="tok-str">&#039;graph&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">graph</span>,</span>
-<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>            <span class="tok-str">&#039;classLikes&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">classLikes</span>,</span>
-<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>            <span class="tok-str">&#039;functions&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">functions</span>,</span>
-<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>            <span class="tok-str">&#039;symbolTable&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">symbolTable</span>,</span>
-<span class="src-line" id="L101"><a class="ln" href="#L101">101</a>            <span class="tok-str">&#039;hierarchy&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">hierarchy</span>,</span>
-<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>            <span class="tok-str">&#039;usages&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">usages</span>,</span>
-<span class="src-line" id="L103"><a class="ln" href="#L103">103</a>            <span class="tok-str">&#039;testCases&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">testCases</span>,</span>
-<span class="src-line" id="L104"><a class="ln" href="#L104">104</a>            <span class="tok-str">&#039;layers&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">layers</span>,</span>
-<span class="src-line" id="L105"><a class="ln" href="#L105">105</a>            <span class="tok-str">&#039;layerAssignments&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">layerAssignments</span>,</span>
-<span class="src-line" id="L106"><a class="ln" href="#L106">106</a>            <span class="tok-str">&#039;coverage&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">coverage</span>,</span>
-<span class="src-line" id="L107"><a class="ln" href="#L107">107</a>            <span class="tok-str">&#039;warnings&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">warnings</span>,</span>
-<span class="src-line" id="L108"><a class="ln" href="#L108">108</a>            <span class="tok-str">&#039;documents&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">documents</span>,</span>
-<span class="src-line" id="L109"><a class="ln" href="#L109">109</a>            <span class="tok-str">&#039;baseUrl&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">baseUrl</span>,</span>
-<span class="src-line" id="L110"><a class="ln" href="#L110">110</a>            <span class="tok-kw">default</span> =&gt; <span class="tok-id">null</span>,</span>
-<span class="src-line" id="L111"><a class="ln" href="#L111">111</a>        };</span>
-<span class="src-line" id="L112"><a class="ln" href="#L112">112</a>    }</span>
-<span class="src-line" id="L113"><a class="ln" href="#L113">113</a>}</span>
-<span class="src-line" id="L114"><a class="ln" href="#L114">114</a></span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>        <span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$documents</span> = [],</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>        <span class="tok-com">/** @readonly */</span></span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>        <span class="tok-kw">private</span> ?<span class="tok-id">string</span> <span class="tok-var">$baseUrl</span> = <span class="tok-id">null</span>,</span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>        <span class="tok-com">/** @readonly */</span></span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        <span class="tok-kw">private</span> ?<span class="tok-id">string</span> <span class="tok-var">$repository</span> = <span class="tok-id">null</span>,</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>    ) {</span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>    }</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a></span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a><span class="tok-com">     * Provides read-only access to the immutable properties.</span></span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L93"><a class="ln" href="#L93">93</a><span class="tok-com">     * @return mixed the value of the requested property</span></span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__get</span>(<span class="tok-id">string</span> <span class="tok-var">$name</span>): <span class="tok-id">mixed</span></span>
+<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>    {</span>
+<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>        <span class="tok-kw">return</span> <span class="tok-kw">match</span> (<span class="tok-var">$name</span>) {</span>
+<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>            <span class="tok-str">&#039;title&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">title</span>,</span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>            <span class="tok-str">&#039;root&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">root</span>,</span>
+<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>            <span class="tok-str">&#039;packages&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">packages</span>,</span>
+<span class="src-line" id="L101"><a class="ln" href="#L101">101</a>            <span class="tok-str">&#039;graph&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">graph</span>,</span>
+<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>            <span class="tok-str">&#039;classLikes&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">classLikes</span>,</span>
+<span class="src-line" id="L103"><a class="ln" href="#L103">103</a>            <span class="tok-str">&#039;functions&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">functions</span>,</span>
+<span class="src-line" id="L104"><a class="ln" href="#L104">104</a>            <span class="tok-str">&#039;symbolTable&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">symbolTable</span>,</span>
+<span class="src-line" id="L105"><a class="ln" href="#L105">105</a>            <span class="tok-str">&#039;hierarchy&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">hierarchy</span>,</span>
+<span class="src-line" id="L106"><a class="ln" href="#L106">106</a>            <span class="tok-str">&#039;usages&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">usages</span>,</span>
+<span class="src-line" id="L107"><a class="ln" href="#L107">107</a>            <span class="tok-str">&#039;testCases&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">testCases</span>,</span>
+<span class="src-line" id="L108"><a class="ln" href="#L108">108</a>            <span class="tok-str">&#039;layers&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">layers</span>,</span>
+<span class="src-line" id="L109"><a class="ln" href="#L109">109</a>            <span class="tok-str">&#039;layerAssignments&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">layerAssignments</span>,</span>
+<span class="src-line" id="L110"><a class="ln" href="#L110">110</a>            <span class="tok-str">&#039;coverage&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">coverage</span>,</span>
+<span class="src-line" id="L111"><a class="ln" href="#L111">111</a>            <span class="tok-str">&#039;warnings&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">warnings</span>,</span>
+<span class="src-line" id="L112"><a class="ln" href="#L112">112</a>            <span class="tok-str">&#039;documents&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">documents</span>,</span>
+<span class="src-line" id="L113"><a class="ln" href="#L113">113</a>            <span class="tok-str">&#039;baseUrl&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">baseUrl</span>,</span>
+<span class="src-line" id="L114"><a class="ln" href="#L114">114</a>            <span class="tok-str">&#039;repository&#039;</span> =&gt; <span class="tok-var">$this</span>-&gt;<span class="tok-id">repository</span>,</span>
+<span class="src-line" id="L115"><a class="ln" href="#L115">115</a>            <span class="tok-kw">default</span> =&gt; <span class="tok-id">null</span>,</span>
+<span class="src-line" id="L116"><a class="ln" href="#L116">116</a>        };</span>
+<span class="src-line" id="L117"><a class="ln" href="#L117">117</a>    }</span>
+<span class="src-line" id="L118"><a class="ln" href="#L118">118</a>}</span>
+<span class="src-line" id="L119"><a class="ln" href="#L119">119</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

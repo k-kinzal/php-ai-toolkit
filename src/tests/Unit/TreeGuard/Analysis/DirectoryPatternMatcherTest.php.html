@@ -27,6 +27,7 @@
 <nav class="crumbs"><a href="../../../../../index.html">src</a><span class="crumb-sep">::</span><span class="crumb-current">tests/Unit/TreeGuard/Analysis/DirectoryPatternMatcherTest.php</span></nav>
 <div class="topbar-tools">
 <input type="search" id="search" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<a class="repo-link" href="https://github.com/k-kinzal/php-ai-toolkit" title="Repository: https://github.com/k-kinzal/php-ai-toolkit" rel="noreferrer">github.com</a>
 <button id="theme-toggle" title="Toggle theme">◐</button>
 </div>
 </header>
@@ -88,14 +89,30 @@
 <span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;src/PhpStan&#039;</span>, <span class="tok-str">&#039;src/PhpStan/Rule&#039;</span>));</span>
 <span class="src-line" id="L54"><a class="ln" href="#L54">54</a>    }</span>
 <span class="src-line" id="L55"><a class="ln" href="#L55">55</a></span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testMatchesGlobCharactersPerSegment</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testMatchesProjectRootWithDotAndDoubleStarOnly</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L57"><a class="ln" href="#L57">57</a>    {</span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;skills/setup-*&#039;</span>, <span class="tok-str">&#039;skills/setup-toolkit-phpstan&#039;</span>));</span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;src/[A-Z]*&#039;</span>, <span class="tok-str">&#039;src/Analysis&#039;</span>));</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;src/[A-Z]*&#039;</span>, <span class="tok-str">&#039;src/analysis&#039;</span>));</span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>    }</span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>}</span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a></span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;.&#039;</span>, <span class="tok-str">&#039;.&#039;</span>));</span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;**&#039;</span>, <span class="tok-str">&#039;.&#039;</span>));</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;*&#039;</span>, <span class="tok-str">&#039;.&#039;</span>));</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;src&#039;</span>, <span class="tok-str">&#039;.&#039;</span>));</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;.&#039;</span>, <span class="tok-str">&#039;src&#039;</span>));</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>    }</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a></span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testMatchesDirectoriesBelowProjectRoot</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>    {</span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;**&#039;</span>, <span class="tok-str">&#039;.github/workflows&#039;</span>));</span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;*&#039;</span>, <span class="tok-str">&#039;scripts&#039;</span>));</span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;src/**&#039;</span>, <span class="tok-str">&#039;src/PhpStan&#039;</span>));</span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>    }</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a></span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testMatchesGlobCharactersPerSegment</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>    {</span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;skills/setup-*&#039;</span>, <span class="tok-str">&#039;skills/setup-toolkit-phpstan&#039;</span>));</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;src/[A-Z]*&#039;</span>, <span class="tok-str">&#039;src/Analysis&#039;</span>));</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>((<span class="tok-kw">new</span> <span class="tok-id">DirectoryPatternMatcher</span>())-&gt;<span class="tok-id">matches</span>(<span class="tok-str">&#039;src/[A-Z]*&#039;</span>, <span class="tok-str">&#039;src/analysis&#039;</span>));</span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>    }</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>}</span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

@@ -8,8 +8,8 @@ description: >-
   architecture layer visualization from deptrac, per-method test coverage
   references in documentation, executable doctest examples in docs,
   documentation that compares two git revisions, incremental documentation
-  builds with a parse and page cache, or Composer scripts and CI jobs that
-  publish generated PHP documentation.
+  builds with a parse and page cache, per-pull-request documentation previews,
+  or Composer scripts and CI jobs that publish generated PHP documentation.
 ---
 
 # Setup DocGen (Static Documentation Site)
@@ -99,8 +99,53 @@ Add scripts that match the project:
 }
 ```
 
-Do not add `doc-gen` to `lint`; it is a generator, not a check. For GitHub Pages, publish the `output` directory
-(the site is fully static and already contains `.nojekyll`).
+Do not add `doc-gen` to `lint`; it is a generator, not a check.
+
+## GitHub Pages Publishing
+
+The site is fully static and already contains `.nojekyll`, so publishing it means committing the `output` directory
+to a branch that GitHub Pages serves. This skill ships two workflow templates for that, and **which of them to
+install is the user's decision — ask before writing any workflow file**:
+
+| Answer | What to install |
+|--------|-----------------|
+| No CI publishing | Nothing; `doc-gen` stays a local command. |
+| Publish the default branch | `docs.yml` only. |
+| Publish and preview pull requests | `docs.yml` and `docs-preview.yml`. |
+
+Never install `docs-preview.yml` without `docs.yml`: the preview workflow writes only below `pr/<number>/` and
+expects the site workflow to own the root of the branch.
+
+Read the templates from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-doc-gen/docs.yml` and
+`docs-preview.yml` and apply them as `.github/workflows/docs.yml` and `.github/workflows/docs-preview.yml`.
+
+- `docs.yml` runs on pushes to the default branch: it generates the site and syncs it to the root of the `gh-pages`
+  branch, keeping `pr/` and `CNAME`.
+- `docs-preview.yml` runs on pull requests: it generates the site in diff mode against the base commit, publishes it
+  to `pr/<number>/`, comments the link on the pull request, and removes that directory when the pull request closes.
+  Pull requests from forks are skipped, because their token cannot write to the branch.
+
+Adapt both to the project before applying:
+
+- Match the workflow PHP version to a version the project supports, and add the lock-file step the project's CI uses
+  (for example `cp composer.lock.php-8.4 composer.lock` when the repository keeps one lock file per PHP minor).
+- Match the generation command to the project: `vendor/bin/doc-gen --config=doc.yaml` or the Composer script.
+- Match the `on.push.branches` entry to the default branch, and `DOCS_BRANCH` to the branch Pages serves.
+- Keep the action pins as full commit SHAs with the release tag in a comment, the per-job `contents: write`
+  permission, and `pull_request` (never `pull_request_target`) as the preview trigger.
+
+Tell the user about the one-time repository setup the workflows do not do:
+
+```bash
+git switch --orphan gh-pages
+git commit --allow-empty -m 'docs: create the documentation branch'
+git push -u origin gh-pages
+git switch main
+```
+
+Then set Settings > Pages > Build and deployment > Source to "Deploy from a branch", branch `gh-pages`, folder
+`/ (root)`. The site is served at `https://<owner>.github.io/<repository>/`, and previews at
+`https://<owner>.github.io/<repository>/pr/<number>/`.
 
 ## Verification
 
@@ -117,6 +162,14 @@ Exit codes:
 
 Then preview locally with `vendor/bin/doc-gen --serve` and spot-check the index page, one class page, and search.
 
+When a workflow was installed, check it too, and say plainly that the publishing itself is only observable after the
+workflow runs on the default branch:
+
+```bash
+go run github.com/rhysd/actionlint/cmd/actionlint@latest .github/workflows/docs.yml
+```
+
 ## References
 
-- [DocGen Configuration](vendor/k-kinzal/php-ai-toolkit/docs/doc-gen.md) — Settings, scope semantics, caching, and CLI behavior.
+- [DocGen Configuration](vendor/k-kinzal/php-ai-toolkit/docs/doc-gen.md) — Settings, scope semantics, caching, publishing, and CLI behavior.
+- [GitHub Actions Configuration](vendor/k-kinzal/php-ai-toolkit/docs/github-actions.md) — Workflow hardening rules the documentation workflows follow.

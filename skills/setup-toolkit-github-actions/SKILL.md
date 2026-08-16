@@ -59,6 +59,13 @@ If a script is missing but the config exists, add the Composer script using the
 corresponding setup skill before wiring CI. If neither script nor config exists,
 do not invent the gate in CI; set up that tool first.
 
+## Out of Scope: Documentation Publishing
+
+Do not add documentation generation or GitHub Pages publishing to `ci.yml`.
+Those live in their own workflows, and their templates and the questions to ask
+before installing them belong to the `/setup-toolkit-doc-gen` skill. Point the
+user there when they ask for a docs job.
+
 ## PHP Version Coverage
 
 CI must match the project's declared support range. Do not compensate for a

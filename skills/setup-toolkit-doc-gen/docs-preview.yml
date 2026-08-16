@@ -1,0 +1,175 @@
+# Publishes a per-pull-request DocGen preview, generated in diff mode against
+# the base branch, under `pr/<number>/` of the documentation branch, and links
+# it from the pull request. Closing the pull request removes it again.
+#
+# Requires docs.yml (or an equivalent) to own the root of that branch: this
+# workflow only ever writes below `pr/<number>/`.
+#
+# Pull requests from forks are skipped: they run with a read-only token, so
+# they cannot write to the branch or comment. Publishing those needs the
+# hardened `workflow_run` pattern — build on `pull_request` and upload an
+# artifact, then publish it from a workflow that runs on the default branch.
+# Never switch this workflow to `pull_request_target`; that would run
+# untrusted code with a write token.
+name: Docs Preview
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  COMPOSER_NO_INTERACTION: '1'
+  DOCS_BRANCH: gh-pages
+
+jobs:
+  preview:
+    name: Generate and publish the pull request preview
+    if: github.event.action != 'closed' && !github.event.pull_request.head.repo.fork
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      # Diff mode checks the base revision out into a temporary worktree, so
+      # the history of both revisions has to be present.
+      - name: Check out the pull request
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pcntl
+          coverage: none
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        with:
+          dependency-versions: locked
+          composer-options: --prefer-dist
+
+      - name: Restore the DocGen cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: build/doc-gen-cache
+          key: doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-${{ github.sha }}
+          restore-keys: |
+            doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-
+            doc-gen-${{ runner.os }}-
+
+      # The checkout is the merge of the pull request into its base, so
+      # comparing it against the base commit is what the pull request changes.
+      - name: Generate the documentation in diff mode
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: vendor/bin/doc-gen --config=doc.yaml --diff="${BASE_SHA}"
+
+      - name: Check out the documentation branch
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ env.DOCS_BRANCH }}
+          path: .docs-branch
+
+      - name: Publish the preview
+        working-directory: .docs-branch
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          mkdir -p "pr/${PR_NUMBER}"
+          rsync -a --checksum --delete ../build/docs/ "pr/${PR_NUMBER}/"
+          # Jekyll is disabled for the whole site from its root, which the
+          # preview may reach before the site itself has been published.
+          touch .nojekyll
+
+          git add --all
+          if git diff --cached --quiet; then
+            echo "The ${DOCS_BRANCH} branch already serves this preview."
+            exit 0
+          fi
+
+          git -c user.name='github-actions[bot]' \
+            -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit --message "docs: preview pull request #${PR_NUMBER} at ${HEAD_SHA}"
+          git push origin "HEAD:${DOCS_BRANCH}"
+
+      - name: Comment the preview link on the pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          # Replace this with the site address when Pages serves a custom domain.
+          repository="$(printf '%s' "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')"
+          preview_url="https://${repository%%/*}.github.io/${repository#*/}/pr/${PR_NUMBER}/"
+
+          gh pr comment "${PR_NUMBER}" --edit-last --create-if-none --body \
+          "**Documentation preview:** ${preview_url}
+
+          Generated in diff mode against \`${BASE_REF}\`, so every page marks what this pull
+          request adds, removes, and changes; the display-mode switch next to the theme
+          toggle shows the plain documentation, the marked documentation, or the changes
+          alone.
+
+          Updated for ${HEAD_SHA}. The preview is removed when this pull request is closed."
+
+  cleanup:
+    name: Remove the pull request preview
+    if: github.event.action == 'closed' && !github.event.pull_request.head.repo.fork
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Check out the documentation branch
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ env.DOCS_BRANCH }}
+
+      - name: Remove the preview
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+
+          rm -rf "pr/${PR_NUMBER}"
+
+          git add --all
+          if git diff --cached --quiet; then
+            echo "The ${DOCS_BRANCH} branch carries no preview of this pull request."
+            exit 0
+          fi
+
+          git -c user.name='github-actions[bot]' \
+            -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit --message "docs: remove the preview of pull request #${PR_NUMBER}"
+          git push origin "HEAD:${DOCS_BRANCH}"
+
+      - name: Note the removal on the pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          gh pr comment "${PR_NUMBER}" --edit-last --body \
+            'The documentation preview of this pull request has been removed.' \
+            || echo 'This pull request has no preview comment.'

@@ -1,0 +1,87 @@
+# Generates the DocGen site and publishes it to the gh-pages branch, which
+# GitHub Pages serves at https://k-kinzal.github.io/php-ai-toolkit/.
+# See docs/doc-gen.md for the publishing model and the pull request preview
+# workflow this repository does not run.
+name: Docs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  COMPOSER_NO_INTERACTION: '1'
+  DOCS_BRANCH: gh-pages
+
+jobs:
+  publish:
+    name: Generate and publish the documentation site
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pcntl
+          coverage: none
+
+      - name: Select the matching lock file
+        run: cp composer.lock.php-8.4 composer.lock
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        with:
+          dependency-versions: locked
+          composer-options: --prefer-dist
+
+      - name: Restore the DocGen cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: build/doc-gen-cache
+          key: doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock.php-8.4') }}-${{ github.sha }}
+          restore-keys: |
+            doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock.php-8.4') }}-
+            doc-gen-${{ runner.os }}-
+
+      - name: Generate the documentation
+        run: composer doc-gen
+
+      - name: Check out the documentation branch
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ env.DOCS_BRANCH }}
+          path: .docs-branch
+
+      - name: Publish the site
+        working-directory: .docs-branch
+        run: |
+          set -euo pipefail
+
+          # The site owns the root of the branch; the pull request previews
+          # under pr/ and a custom Pages domain in CNAME are kept.
+          rsync -a --checksum --delete --exclude '/.git/' --exclude '/pr/' --exclude '/CNAME' ../build/docs/ ./
+
+          git add --all
+          if git diff --cached --quiet; then
+            echo "The ${DOCS_BRANCH} branch already serves this documentation."
+            exit 0
+          fi
+
+          git -c user.name='github-actions[bot]' \
+            -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit --message "docs: generate from ${GITHUB_SHA}"
+          git push origin "HEAD:${DOCS_BRANCH}"

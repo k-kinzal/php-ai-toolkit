@@ -34,6 +34,21 @@ Composer home, then copy it back as `composer.lock.php-<minor>`.
 `composer compat` remains a named step inside the `lint` job alongside
 formatting, PHPStan, LocGuard, and Deptrac.
 
+## Documentation Workflows
+
+`.github/workflows/docs.yml` is separate from `ci.yml` on purpose: it generates
+the DocGen site on every push to `main` and publishes it to the `gh-pages`
+branch, which needs `contents: write` for that one job while CI stays
+read-only. It restores the DocGen cache between runs, so a documentation job
+costs the size of the change.
+
+The `/setup-toolkit-doc-gen` skill also ships a pull request preview workflow
+(`docs-preview.yml`) that publishes a diff-mode site under `pr/<number>/` of the
+same branch and comments the link. This repository does not run it — it is
+developed on `main` without pull requests — so it stays a template. See
+[DocGen Configuration](doc-gen.md) for the publishing model and the one-time
+Pages setup.
+
 ## Workflow Hardening
 
 Actions must be pinned to full 40-character commit SHAs, with the release tag

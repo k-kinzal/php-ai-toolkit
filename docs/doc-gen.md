@@ -215,6 +215,43 @@ themes, and a `.nojekyll` marker, so publishing the output directory with GitHub
 top level contains `index.html`, one directory per package (with its `doc/` documents), `src/` (highlighted sources
 with line anchors), and `assets/`.
 
+## Publishing
+
+The site is published by committing the output directory to a branch GitHub Pages serves. Two workflow templates
+ship with the `/setup-toolkit-doc-gen` skill, in
+`vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-doc-gen/`:
+
+| Template | Trigger | What it does |
+|----------|---------|--------------|
+| `docs.yml` | push to the default branch | Generates the site and syncs it to the root of `gh-pages`, keeping `pr/` and `CNAME` |
+| `docs-preview.yml` | pull request opened, updated, reopened, or closed | Generates the site in diff mode against the base commit into `pr/<number>/`, comments the link on the pull request, and removes the directory when the pull request closes |
+
+Both check the documentation branch out with a second `actions/checkout`, sync into it with one `rsync --checksum
+--delete`, and commit only when the sync changed something. `docs.yml` owns the root of the branch and
+`docs-preview.yml` owns `pr/<number>/`, so the two never overwrite each other; installing the preview workflow alone
+would leave the root of the branch empty.
+
+The branch and the Pages source are one-time manual setup, because a workflow cannot enable Pages for a repository:
+
+```bash
+git switch --orphan gh-pages
+git commit --allow-empty -m 'docs: create the documentation branch'
+git push -u origin gh-pages
+git switch main
+```
+
+Then set Settings > Pages > Build and deployment > Source to "Deploy from a branch", branch `gh-pages`, folder
+`/ (root)`. The site is served at `https://<owner>.github.io/<repository>/` and previews at
+`https://<owner>.github.io/<repository>/pr/<number>/`.
+
+Pull requests from forks are skipped by the preview workflow: their token is read-only, so it can neither write to
+the branch nor comment. Publishing those safely needs the `workflow_run` pattern — build on `pull_request` and
+upload an artifact, publish it from a workflow that runs on the default branch — and never `pull_request_target`,
+which would run the pull request's code with a write token.
+
+This repository runs `docs.yml` (`.github/workflows/docs.yml`) and keeps `docs-preview.yml` as a template only,
+because it is developed on `main` without pull requests.
+
 ## Local Preview
 
 ```bash

@@ -1,5 +1,7 @@
 # php-ai-toolkit
 
+[![docs](https://img.shields.io/badge/docs-php--ai--toolkit-0969da?logo=php&logoColor=white)](https://k-kinzal.github.io/php-ai-toolkit/)
+
 A PHPStan extension that detects anti-patterns commonly introduced by AI code generation, plus output formatters optimized for both AI agents and humans.
 
 ## Requirements
@@ -60,6 +62,9 @@ Run the following skills in your AI agent:
 Each skill reads your project structure and generates appropriate configuration.
 
 ## Documentation
+
+The [API documentation site](https://k-kinzal.github.io/php-ai-toolkit/) is generated from the source by `doc-gen`
+and published on every push to `main`.
 
 - [PHPStan Rules](docs/phpstan-rules.md) — Custom rules and their error identifiers
 - [PHPStan Configuration](docs/phpstan.md) — PHPStan settings and why each is needed

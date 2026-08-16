@@ -188,6 +188,20 @@ final class PackagePageTest extends TestCase
         self::assertStringNotContainsString('href="#namespaces"', $html);
     }
 
+    public function testDescriptionReadsWhatThePackageSaysAboutItself(): void
+    {
+        $app = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/app', 'Demo application', ['Demo\\' => ['src']], [], [], [], []), false);
+
+        self::assertSame('Demo application', (new PackagePage())->description($app));
+    }
+
+    public function testDescriptionNamesAPackageThatSaysNothing(): void
+    {
+        $app = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/app', '', ['Demo\\' => ['src']], [], [], [], []), false);
+
+        self::assertSame('The demo/app package.', (new PackagePage())->description($app));
+    }
+
     public function testRenderOrdersLayersBeforeNamespaces(): void
     {
         $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/app', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);

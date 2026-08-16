@@ -20,12 +20,16 @@ final class AssetPublisher
     /** @readonly */
     private SiteFileWriter $writer;
 
+    /** @readonly */
+    private SocialCard $card;
+
     /**
      * Creates an asset publisher.
      */
-    public function __construct(?SiteFileWriter $writer = null)
+    public function __construct(?SiteFileWriter $writer = null, ?SocialCard $card = null)
     {
         $this->writer = $writer ?? new SiteFileWriter();
+        $this->card = $card ?? new SocialCard();
     }
 
     /**
@@ -40,6 +44,30 @@ final class AssetPublisher
         }
 
         $this->writer->write($outputRoot, '.nojekyll', '');
+    }
+
+    /**
+     * Draws the image a link to the site is previewed with, if it is asked for.
+     *
+     * A site that does not say where it is published cannot be linked to
+     * absolutely, so nothing previews it and nothing is drawn. Neither is
+     * anything drawn where the gd extension is missing: the pages then
+     * carry no image tag either, and the card is a card without a picture
+     * rather than one pointing at a missing file.
+     *
+     * @param ?string $baseUrl the address the site is published at, if it is known
+     * @param string $title the site title, printed as the headline of the card
+     * @param string $description what the documented project is, printed below it
+     *
+     * @throws DocGenException when the image cannot be drawn or written
+     */
+    public function publishCard(string $outputRoot, ?string $baseUrl, string $title, string $description): void
+    {
+        if ($baseUrl === null || !$this->card->supported()) {
+            return;
+        }
+
+        $this->writer->write($outputRoot, SocialCard::PATH, $this->card->render($title, $description));
     }
 
     /**

@@ -155,6 +155,7 @@ final class SiteRenderer
         $services = $this->services($model, $diff);
         $writer = new CachedPageWriter($this->writer, $cache);
         $this->assets->publish($outputRoot);
+        $this->assets->publishCard($outputRoot, $model->baseUrl, $model->title, $this->indexPage->description($services));
         $this->writer->write($outputRoot, 'assets/search-index.js', $this->searchIndex->build($model, $services->diff));
         $records = [$writer->write(
             $outputRoot,

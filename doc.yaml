@@ -7,3 +7,5 @@ exclude:
 output: build/docs
 
 cache: build/doc-gen-cache
+
+base_url: https://k-kinzal.github.io/php-ai-toolkit

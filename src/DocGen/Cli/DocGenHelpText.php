@@ -52,6 +52,10 @@ TEXT;
                      dependencies); combine it with --vendor to document both
   --coverage=DIR     PHPUnit --coverage-xml report directory; links methods
                      to the test cases that cover them
+  --base-url=URL     Address the site is published at, such as
+                     https://example.github.io/project; every page then
+                     carries its canonical link and the social preview
+                     tags a link shared elsewhere is rendered from
   --diff=RANGE       Compare two git revisions: BASE compares the working
                      tree against BASE, BASE..HEAD compares two revisions.
                      Every page then marks what was added and removed, and

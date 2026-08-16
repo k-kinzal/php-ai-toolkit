@@ -7,6 +7,8 @@ namespace Tests\Unit\DocGen\Render;
 use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
+use PhpAiToolkit\DocGen\Render\SocialCard;
+use PhpAiToolkit\DocGen\Render\SocialCardText;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -14,6 +16,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(AssetPublisher::class)]
 #[UsesClass(DocGenException::class)]
 #[UsesClass(SiteFileWriter::class)]
+#[UsesClass(SocialCard::class)]
+#[UsesClass(SocialCardText::class)]
 final class AssetPublisherTest extends TestCase
 {
     public function testPublishWritesAssetsAndPagesMarker(): void
@@ -31,6 +35,24 @@ final class AssetPublisherTest extends TestCase
     public function testAssetContentsReturnsBundledAssetText(): void
     {
         self::assertNotSame('', (new AssetPublisher())->assetContents('style.css'));
+    }
+
+    public function testPublishCardDrawsTheImageALinkIsPreviewedWith(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-card-' . uniqid('', true);
+
+        (new AssetPublisher())->publishCard($dir, 'https://example.github.io/demo', 'demo/project', 'One sentence.');
+
+        self::assertSame((new SocialCard())->supported(), file_exists($dir . '/' . SocialCard::PATH));
+    }
+
+    public function testPublishCardDrawsNothingForASiteWithoutAnAddress(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-card-' . uniqid('', true);
+
+        (new AssetPublisher())->publishCard($dir, null, 'demo/project', 'One sentence.');
+
+        self::assertFileDoesNotExist($dir . '/' . SocialCard::PATH);
     }
 
     public function testAssetContentsRejectsUnknownAsset(): void

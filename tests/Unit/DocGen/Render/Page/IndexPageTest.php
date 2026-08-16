@@ -172,6 +172,30 @@ final class IndexPageTest extends TestCase
         self::assertStringContainsString('<h2 id="packages">Packages<a class="anchor" href="#packages">§</a></h2>', $html);
     }
 
+    public function testDescriptionPrefersWhatTheProjectSaysAboutItself(): void
+    {
+        $hierarchy = new HierarchyIndex();
+        $hierarchy->build([]);
+        $usages = new UsageIndex();
+        $usages->build([]);
+        $app = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/app', 'Demo application', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$app], new PackageGraph([]), [], [], new SymbolTable(), $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
+
+        self::assertSame('Demo application', (new IndexPage())->description((new SiteRenderer())->services($model)));
+    }
+
+    public function testDescriptionNamesTheSiteWhenNoPackageDescribesItself(): void
+    {
+        $hierarchy = new HierarchyIndex();
+        $hierarchy->build([]);
+        $usages = new UsageIndex();
+        $usages->build([]);
+        $app = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/app', '', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$app], new PackageGraph([]), [], [], new SymbolTable(), $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
+
+        self::assertSame('API documentation of Demo Docs.', (new IndexPage())->description((new SiteRenderer())->services($model)));
+    }
+
     public function testContentRendersWarningsSection(): void
     {
         $table = new SymbolTable();

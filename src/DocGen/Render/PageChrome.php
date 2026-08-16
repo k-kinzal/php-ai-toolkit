@@ -21,18 +21,24 @@ final class PageChrome
     /** @readonly */
     private DiffModeControl $diffModes;
 
+    /** @readonly */
+    private SocialMeta $social;
+
     /**
      * Creates the page shell renderer from its topbar collaborators.
      */
-    public function __construct(?DiffModeControl $diffModes = null)
+    public function __construct(?DiffModeControl $diffModes = null, ?SocialMeta $social = null)
     {
         $this->diffModes = $diffModes ?? new DiffModeControl();
+        $this->social = $social ?? new SocialMeta();
     }
 
     /**
      * Renders one complete HTML document.
+     *
+     * @param string $description what this page documents, in one sentence, for the preview a link to it is shown with
      */
-    public function page(RenderKit $services, string $pagePath, string $title, string $breadcrumbHtml, string $sidebarHtml, string $contentHtml): string
+    public function page(RenderKit $services, string $pagePath, string $title, string $description, string $breadcrumbHtml, string $sidebarHtml, string $contentHtml): string
     {
         $escaper = $services->escaper;
         $prefix = $services->url->prefix($pagePath);
@@ -43,6 +49,7 @@ final class PageChrome
             . '<meta charset="utf-8">' . "\n"
             . '<meta name="viewport" content="width=device-width, initial-scale=1">' . "\n"
             . sprintf('<title>%s — %s</title>', $escaper->e($title), $escaper->e($services->model->title)) . "\n"
+            . $this->social->render($services, $pagePath, $title, $description)
             . sprintf('<link rel="stylesheet" href="%sassets/style.css">', $escaper->e($prefix)) . "\n"
             . $this->bootstrap($services) . "\n"
             . '</head>' . "\n"

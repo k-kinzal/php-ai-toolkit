@@ -24,6 +24,7 @@ The config file is optional: without `doc.yaml`, the project root and `packages/
 
 CLI options override the configuration: `--output=DIR`, `--vendor[=GLOBS]` (document installed runtime dependencies),
 `--vendor-dev[=GLOBS]` (document installed dev dependencies), `--coverage=DIR` (PHPUnit `--coverage-xml` report),
+`--base-url=URL` (the address the site is published at),
 `--diff=RANGE` / `--base=REVISION` / `--head=REVISION` (compare two git revisions),
 `--serve[=HOST:PORT]` (preview the generated site locally), `--memory-limit=VALUE`, `--jobs=N`,
 `--cache-dir=DIR`, `--no-cache`, and `--clear-cache`.
@@ -124,6 +125,7 @@ cache: build/doc-gen-cache
 title: null
 deptrac: null
 coverage: null
+base_url: null
 ```
 
 `packages` (default `['.', 'packages/*']`) lists directory globs, relative to the config file, that are probed for a
@@ -153,6 +155,11 @@ output directory: everything below `output` is part of the published site.
 `deptrac` (default: `deptrac.yaml` at the project root when present) points at a deptrac configuration whose layers
 and ruleset are rendered as an architecture graph and per-class layer badges. `coverage` (default: none) points at a
 PHPUnit `--coverage-xml` report directory; when set, every method shows the test cases covering it.
+
+`base_url` (default: none) is the absolute address the site is published at, such as
+`https://example.github.io/project`, without a trailing slash. It is the one thing a site of relative links cannot
+work out for itself, and it is what the social preview below is rendered from. An address that is not an absolute
+`http` or `https` URL is rejected.
 
 Unknown top-level keys in `doc.yaml` are rejected with an error.
 
@@ -214,6 +221,31 @@ The site is fully static and self-contained: relative links only, bundled CSS/JS
 themes, and a `.nojekyll` marker, so publishing the output directory with GitHub Pages needs no further setup. The
 top level contains `index.html`, one directory per package (with its `doc/` documents), `src/` (highlighted sources
 with line anchors), and `assets/`.
+
+## Social Preview
+
+A link to a page shared in a chat or on a timeline is rendered as a card by whoever receives it, from tags the page
+has to carry. Those tags name absolute addresses, so they are written only when `base_url` says where the site is
+published; without it nothing changes about the site.
+
+With it, every page carries its canonical link, a `description` read from what the page documents, and the Open
+Graph and Twitter tags a card is built from: `og:type`, `og:site_name`, `og:title`, `og:description`, `og:url`, and
+the image below. The description is the page's own — the summary line of a class, interface, trait, enum, or
+function, what a package says about itself in its manifest, or what a namespace, layer, document, or source file is
+— cut to 200 characters.
+
+The card image is drawn per site rather than shipped with the generator, so every project previews as itself: a
+1200×630 PNG at `assets/og-image.png`, in the palette of the site, with the site title, the description of the
+documented project, and the color band of the generator across the top. Drawing it needs the `gd` extension
+with FreeType support; without it the run writes no image, the pages carry no `og:image`, the card degrades to a
+`summary` card, and a warning says so — a card that names an image the site does not serve would be worse.
+
+```bash
+vendor/bin/doc-gen --base-url=https://example.github.io/project
+```
+
+overrides the configured address for one run, which is what a pull request preview published under its own
+directory wants.
 
 ## Publishing
 

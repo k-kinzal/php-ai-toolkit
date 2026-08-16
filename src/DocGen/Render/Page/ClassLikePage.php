@@ -53,6 +53,9 @@ final class ClassLikePage
     /** @readonly */
     private PrivateSurfaceHtml $privateSurface;
 
+    /** @readonly */
+    private SymbolDescription $descriptions;
+
     /**
      * Creates a class-like page renderer from its section collaborators.
      */
@@ -67,6 +70,7 @@ final class ClassLikePage
         ?TestCaseHtml $testCaseHtml = null,
         ?DiffBanner $banner = null,
         ?PrivateSurfaceHtml $privateSurface = null,
+        ?SymbolDescription $descriptions = null,
     ) {
         $this->chrome = $chrome ?? new PageChrome();
         $this->sidebar = $sidebar ?? new SidebarHtml();
@@ -78,6 +82,7 @@ final class ClassLikePage
         $this->testCaseHtml = $testCaseHtml ?? new TestCaseHtml();
         $this->banner = $banner ?? new DiffBanner();
         $this->privateSurface = $privateSurface ?? new PrivateSurfaceHtml();
+        $this->descriptions = $descriptions ?? new SymbolDescription();
     }
 
     /**
@@ -98,6 +103,7 @@ final class ClassLikePage
             $services,
             $pagePath,
             $classLike->shortName,
+            $this->descriptions->ofClassLike($classLike),
             $this->breadcrumb->build($services, $pagePath, $crumbs),
             $this->sidebar->build($services, $pagePath, new SidebarScope(
                 $classLike->packageName,

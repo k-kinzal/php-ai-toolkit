@@ -7,6 +7,7 @@ namespace PhpAiToolkit\DocGen\Cli;
 use function count;
 use function explode;
 
+use PhpAiToolkit\DocGen\Config\BaseUrl;
 use PhpAiToolkit\DocGen\DocGenException;
 
 use function preg_match;
@@ -28,20 +29,31 @@ final class DocGenCliArgumentParser
      *
      * @var list<string>
      */
-    public const VALUE_OPTIONS = ['config', 'output', 'coverage', 'memory-limit', 'jobs', 'diff', 'base', 'head', 'cache-dir'];
+    public const VALUE_OPTIONS = ['config', 'output', 'coverage', 'base-url', 'memory-limit', 'jobs', 'diff', 'base', 'head', 'cache-dir'];
+
+    /** @readonly */
+    private BaseUrl $baseUrl;
+
+    /**
+     * Creates an argument parser from its value normalizers.
+     */
+    public function __construct(?BaseUrl $baseUrl = null)
+    {
+        $this->baseUrl = $baseUrl ?? new BaseUrl();
+    }
 
     /**
      * Parses argument strings into a normalized option map.
      *
      * @param list<string> $argv
      *
-     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
      *
      * @throws DocGenException when an option is unknown or lacks a value
      */
     public function parse(array $argv): array
     {
-        $options = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
+        $options = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
         $count = count($argv);
         for ($index = 0; $index < $count; $index++) {
             $argument = $argv[$index];
@@ -101,9 +113,9 @@ final class DocGenCliArgumentParser
     /**
      * Applies one value option to the option map.
      *
-     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
+     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
      *
-     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
      *
      * @throws DocGenException when the value of the option is malformed
      */
@@ -115,6 +127,8 @@ final class DocGenCliArgumentParser
             $options['output'] = $value;
         } elseif ($name === 'coverage') {
             $options['coverage'] = $value;
+        } elseif ($name === 'base-url') {
+            $options['baseUrl'] = $this->baseUrl->normalize($value);
         } elseif ($name === 'memory-limit') {
             $options['memoryLimit'] = $this->memoryLimit($value);
         } elseif ($name === 'jobs') {
@@ -138,9 +152,9 @@ final class DocGenCliArgumentParser
      * A range without a head compares against the working tree, which is
      * what a reader looking at their own uncommitted change wants.
      *
-     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
+     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
      *
-     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
      *
      * @throws DocGenException when the range names no base revision
      */
@@ -165,9 +179,9 @@ final class DocGenCliArgumentParser
     /**
      * Rejects the option combinations that cannot be acted on.
      *
-     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
+     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
      *
-     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
      *
      * @throws DocGenException when a head revision has nothing to compare against
      */

@@ -19,7 +19,7 @@ final class DocGenConfigOverrides
      * A run that was told to cache nothing caches nothing, whatever the
      * project configured, because that is what the option is for.
      *
-     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
+     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
      */
     public function cache(DocGenConfig $config, array $arguments): ?string
     {
@@ -33,7 +33,7 @@ final class DocGenConfigOverrides
     /**
      * Rebuilds the configuration with the given CLI overrides applied.
      *
-     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
+     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
      */
     public function apply(DocGenConfig $config, array $arguments): DocGenConfig
     {
@@ -48,6 +48,7 @@ final class DocGenConfigOverrides
             $arguments['coverage'] ?? $config->coverage,
             $arguments['vendorDev'] !== null ? array_merge($config->vendorDev, $arguments['vendorDev']) : $config->vendorDev,
             $this->cache($config, $arguments),
+            $arguments['baseUrl'] ?? $config->baseUrl,
         );
     }
 }

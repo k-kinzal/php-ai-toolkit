@@ -80,6 +80,7 @@ final class DocumentPage
             $services,
             $pagePath,
             $document->title,
+            sprintf('%s, a document of the %s package.', $document->title, $document->packageName),
             $this->breadcrumb->build($services, $pagePath, $crumbs),
             $this->sidebar->build($services, $pagePath, new SidebarScope($document->packageName, null, null, [])),
             $this->content($services, $pagePath, $document, $markdown, $baseMarkdown),

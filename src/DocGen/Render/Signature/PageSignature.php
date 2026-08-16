@@ -15,6 +15,7 @@ use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Render\Page\DocumentListHtml;
 use PhpAiToolkit\DocGen\Render\Page\SymbolIndex;
 use PhpAiToolkit\DocGen\Render\RenderKit;
+use PhpAiToolkit\DocGen\Render\SocialCard;
 
 use function serialize;
 use function strtolower;
@@ -54,6 +55,9 @@ final class PageSignature
     /** @readonly */
     private DocumentListHtml $documents;
 
+    /** @readonly */
+    private SocialCard $card;
+
     private ?RenderKit $run = null;
 
     private string $runDigest = '';
@@ -68,6 +72,7 @@ final class PageSignature
         ?SymbolReferenceScanner $references = null,
         ?SymbolIndex $symbols = null,
         ?DocumentListHtml $documents = null,
+        ?SocialCard $card = null,
     ) {
         $this->toolkit = $toolkit ?? new ToolkitFingerprint();
         $this->sources = $sources ?? new SourceDigestIndex();
@@ -75,6 +80,7 @@ final class PageSignature
         $this->references = $references ?? new SymbolReferenceScanner();
         $this->symbols = $symbols ?? new SymbolIndex();
         $this->documents = $documents ?? new DocumentListHtml();
+        $this->card = $card ?? new SocialCard();
     }
 
     /**
@@ -91,6 +97,8 @@ final class PageSignature
             $this->runDigest = hash('sha256', implode("\0", [
                 $this->toolkit->value(),
                 $services->model->title,
+                (string) $services->model->baseUrl,
+                $this->card->supported() ? 'card' : 'no-card',
                 $services->diff->digest(),
             ]));
         }

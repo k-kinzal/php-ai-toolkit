@@ -17,7 +17,7 @@ final class DocGenConfigOverridesTest extends TestCase
     public function testApplyOverridesOutputAndCoverage(): void
     {
         $config = new DocGenConfig('/proj', ['.'], [], ['src/Generated'], 'build/docs', 'My Title', 'deptrac.yaml', null);
-        $arguments = ['config' => null, 'output' => 'public/docs', 'vendor' => null, 'vendorDev' => null, 'coverage' => 'build/coverage-xml', 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
+        $arguments = ['config' => null, 'output' => 'public/docs', 'vendor' => null, 'vendorDev' => null, 'coverage' => 'build/coverage-xml', 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
 
         $applied = (new DocGenConfigOverrides())->apply($config, $arguments);
 
@@ -35,7 +35,7 @@ final class DocGenConfigOverridesTest extends TestCase
     public function testApplyMergesVendorGlobsOntoConfiguredList(): void
     {
         $config = new DocGenConfig('/proj', ['.'], ['configured/*'], [], 'build/docs', null, null, null);
-        $arguments = ['config' => null, 'output' => null, 'vendor' => ['cli/*', 'extra'], 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
+        $arguments = ['config' => null, 'output' => null, 'vendor' => ['cli/*', 'extra'], 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
 
         $applied = (new DocGenConfigOverrides())->apply($config, $arguments);
 
@@ -46,7 +46,7 @@ final class DocGenConfigOverridesTest extends TestCase
     public function testApplyMergesVendorDevGlobsOntoConfiguredList(): void
     {
         $config = new DocGenConfig('/proj', ['.'], [], [], 'build/docs', null, null, null, ['configured/*']);
-        $arguments = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => ['phpunit/*'], 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
+        $arguments = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => ['phpunit/*'], 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
 
         $applied = (new DocGenConfigOverrides())->apply($config, $arguments);
 
@@ -57,7 +57,7 @@ final class DocGenConfigOverridesTest extends TestCase
     public function testApplyKeepsConfigurationWhenOverridesAreNull(): void
     {
         $config = new DocGenConfig('/proj', ['.'], ['a/*'], [], 'site', null, null, 'cov', ['b/*']);
-        $arguments = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
+        $arguments = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
 
         $applied = (new DocGenConfigOverrides())->apply($config, $arguments);
 
@@ -71,7 +71,7 @@ final class DocGenConfigOverridesTest extends TestCase
     public function testCacheKeepsTheConfiguredDirectoryUnlessTheRunSaysOtherwise(): void
     {
         $config = new DocGenConfig('/tmp/project', ['.'], [], [], 'build/docs', null, null, null, [], 'build/doc-gen-cache');
-        $arguments = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
+        $arguments = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
         $overrides = new DocGenConfigOverrides();
 
         self::assertSame('build/doc-gen-cache', $overrides->cache($config, $arguments));
@@ -83,7 +83,7 @@ final class DocGenConfigOverridesTest extends TestCase
     public function testApplyTurnsTheCacheOffForARunThatAskedFor(): void
     {
         $config = new DocGenConfig('/tmp/project', ['.'], [], [], 'build/docs', null, null, null, [], 'build/doc-gen-cache');
-        $arguments = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => true, 'clearCache' => false, 'help' => false, 'version' => false];
+        $arguments = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => true, 'clearCache' => false, 'help' => false, 'version' => false];
 
         self::assertNull((new DocGenConfigOverrides())->apply($config, $arguments)->cache);
     }

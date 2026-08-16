@@ -319,7 +319,7 @@ PHP);
             },
         ));
 
-        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('Generated', $output);
         self::assertStringContainsString('build/docs', $output);
         self::assertSame('', $errors);
@@ -362,7 +362,7 @@ PHP);
         ));
 
         $previous = ini_get('memory_limit');
-        $exitCode = $runner->run(['config' => null, 'output' => null, 'vendor' => ['vendor'], 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => DocGenMemoryLimit::FLOOR, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]);
+        $exitCode = $runner->run(['config' => null, 'output' => null, 'vendor' => ['vendor'], 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => DocGenMemoryLimit::FLOOR, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]);
         $applied = ini_get('memory_limit');
         ini_set('memory_limit', $previous);
 
@@ -385,7 +385,7 @@ PHP);
             },
         ));
 
-        self::assertSame(2, $runner->run(['config' => 'missing.yaml', 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+        self::assertSame(2, $runner->run(['config' => 'missing.yaml', 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('DocGen error: DocGen config not found:', $errors);
         self::assertStringContainsString($dir . '/missing.yaml', $errors);
     }
@@ -424,7 +424,7 @@ YAML);
             },
         ));
 
-        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('public/site', $output);
         self::assertFileExists($dir . '/public/site/index.html');
     }
@@ -470,7 +470,7 @@ PHP);
             }),
         );
 
-        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => '127.0.0.1:8123', 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => '127.0.0.1:8123', 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('Serving documentation at http://127.0.0.1:8123', $output);
         self::assertStringContainsString(' -S ', $command);
         self::assertStringContainsString('127.0.0.1:8123', $command);
@@ -490,7 +490,7 @@ PHP);
             },
         ));
 
-        self::assertSame(2, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+        self::assertSame(2, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('DocGen error: No composer packages found.', $errors);
     }
 
@@ -717,7 +717,7 @@ YAML);
         file_put_contents($dir . '/composer.json', '{"name": "acme/demo", "autoload": {"psr-4": {"Acme\\\\Demo\\\\": "src/"}}}');
         file_put_contents($dir . '/src/Greeter.php', "<?php\n\nnamespace Acme\\Demo;\n\nfinal class Greeter\n{\n}\n");
         $output = '';
-        $arguments = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => 1, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
+        $arguments = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => 1, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
         $runner = new DocGenGenerationRunner($dir, null, null, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;

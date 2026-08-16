@@ -70,6 +70,7 @@ final class SourcePage
             $services,
             $pagePath,
             $relativeFile,
+            sprintf('The source of %s.', $relativeFile),
             $this->breadcrumb->build($services, $pagePath, $crumbs),
             $this->sidebar->build($services, $pagePath, new SidebarScope(null, null, null, [])),
             $this->content($services, $relativeFile, $code, $baseCode),

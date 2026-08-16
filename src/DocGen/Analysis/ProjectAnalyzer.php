@@ -129,6 +129,7 @@ final class ProjectAnalyzer
             $coverage,
             array_merge($this->vendorWarnings($config, $packages), $collected['warnings']),
             $this->documentCollector->collect($config, $packages),
+            $config->baseUrl,
         );
     }
 

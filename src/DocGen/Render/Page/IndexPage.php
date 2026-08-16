@@ -47,10 +47,29 @@ final class IndexPage
             $services,
             'index.html',
             'Overview',
+            $this->description($services),
             '<span class="crumb-current">Overview</span>',
             $this->sidebar->build($services, 'index.html', new SidebarScope(null, null, null, [])),
             $this->content($services),
         );
+    }
+
+    /**
+     * Describes the documented project in one sentence.
+     *
+     * What a project says about itself in its own manifest describes it
+     * better than anything countable about the site, so the description of
+     * the first documented package of the project is preferred.
+     */
+    public function description(RenderKit $services): string
+    {
+        foreach ($services->model->packages as $package) {
+            if (!$package->isVendor && $package->manifest->description !== '') {
+                return $package->manifest->description;
+            }
+        }
+
+        return sprintf('API documentation of %s.', $services->model->title);
     }
 
     /**

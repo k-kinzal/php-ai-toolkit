@@ -76,7 +76,13 @@ jobs:
       - name: Generate the documentation in diff mode
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: vendor/bin/doc-gen --config=doc.yaml --diff="${BASE_SHA}"
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+
+          repository="$(printf '%s' "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')"
+          vendor/bin/doc-gen --config=doc.yaml --diff="${BASE_SHA}" \
+            --base-url="https://${repository%%/*}.github.io/${repository#*/}/pr/${PR_NUMBER}"
 
       - name: Check out the documentation branch
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0

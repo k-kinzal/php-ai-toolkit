@@ -34,6 +34,7 @@ use PhpAiToolkit\DocGen\Package\PackageGraph;
  * @property-read ?CoverageIndex $coverage
  * @property-read list<string> $warnings
  * @property-read list<MarkdownDoc> $documents
+ * @property-read ?string $baseUrl
  */
 final class ProjectModel
 {
@@ -44,6 +45,7 @@ final class ProjectModel
      * @param array<string, list<string>> $layerAssignments
      * @param list<string> $warnings
      * @param list<MarkdownDoc> $documents
+     * @param ?string $baseUrl the address the site is published at, without a trailing slash, or null when it is unknown
      */
     public function __construct(
         /** @readonly */
@@ -76,6 +78,8 @@ final class ProjectModel
         private array $warnings,
         /** @readonly */
         private array $documents = [],
+        /** @readonly */
+        private ?string $baseUrl = null,
     ) {
     }
 
@@ -102,6 +106,7 @@ final class ProjectModel
             'coverage' => $this->coverage,
             'warnings' => $this->warnings,
             'documents' => $this->documents,
+            'baseUrl' => $this->baseUrl,
             default => null,
         };
     }

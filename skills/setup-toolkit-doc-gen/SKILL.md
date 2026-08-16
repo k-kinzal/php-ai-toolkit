@@ -47,6 +47,7 @@ project root as `doc.yaml`.
 | `exclude` | `[]` | Path globs, relative to the project root, pruned from source scanning. |
 | `output` | `build/docs` | Site output directory. |
 | `cache` | `build/doc-gen-cache` | Directory the parsed sources and written pages are remembered in; `false` turns caching off. Keep it outside `output`. |
+| `base_url` | `null` | Absolute address the site is published at, without a trailing slash. Set it when the site is published; it is what the canonical links and the social preview are written from. |
 
 The optional keys `title`, `deptrac`, and `coverage` override the site title, the deptrac config used for the
 architecture layer graph (auto-detected at `deptrac.yaml`), and the PHPUnit `--coverage-xml` report directory used
@@ -133,6 +134,15 @@ Adapt both to the project before applying:
 - Match the `on.push.branches` entry to the default branch, and `DOCS_BRANCH` to the branch Pages serves.
 - Keep the action pins as full commit SHAs with the release tag in a comment, the per-job `contents: write`
   permission, and `pull_request` (never `pull_request_target`) as the preview trigger.
+
+Set `base_url` in `doc.yaml` to the published address at the same time, because that is what makes a shared link
+render as a card: every page then carries its canonical link, its own description, and the Open Graph tags, and the
+run draws `assets/og-image.png` from the site title and the project description (needs `ext-gd`; without it the
+pages simply carry no image). Add a docs badge to the README that links to the site, the way docs.rs does:
+
+```markdown
+[![docs](https://img.shields.io/badge/docs-<package>-0969da?logo=php&logoColor=white)](https://<owner>.github.io/<repository>/)
+```
 
 Tell the user about the one-time repository setup the workflows do not do:
 

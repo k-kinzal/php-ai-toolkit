@@ -57,7 +57,7 @@ final class PageChromeTest extends TestCase
         $model = new ProjectModel('Demo Docs', '/tmp/docgen-root', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
         $kit = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
 
-        $html = (new PageChrome())->page($kit, 'demo/pkg/Demo/class.Widget.html', 'Widget', '<span>BC</span>', '<ul>SIDEBAR</ul>', '<p>CONTENT</p>');
+        $html = (new PageChrome())->page($kit, 'demo/pkg/Demo/class.Widget.html', 'Widget', 'The Widget class.', '<span>BC</span>', '<ul>SIDEBAR</ul>', '<p>CONTENT</p>');
 
         self::assertStringStartsWith("<!DOCTYPE html>\n<html lang=\"en\">\n", $html);
         self::assertStringContainsString('<title>Widget — Demo Docs</title>', $html);
@@ -75,7 +75,7 @@ final class PageChromeTest extends TestCase
         $model = new ProjectModel('Demo Docs', '/tmp/docgen-root', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
         $kit = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
 
-        $html = (new PageChrome())->page($kit, 'index.html', 'Overview', '', '', '');
+        $html = (new PageChrome())->page($kit, 'index.html', 'Overview', '', '', '', '');
 
         self::assertStringContainsString('<link rel="stylesheet" href="assets/style.css">', $html);
         self::assertStringContainsString('<body data-root="">', $html);
@@ -86,7 +86,7 @@ final class PageChromeTest extends TestCase
         $model = new ProjectModel('Demo Docs', '/tmp/docgen-root', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
         $kit = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner(), new DiffHtml(new DiffIndex('main', 'HEAD')));
 
-        $html = (new PageChrome())->page($kit, 'index.html', 'Overview', '', '', '');
+        $html = (new PageChrome())->page($kit, 'index.html', 'Overview', '', '', '', '');
 
         self::assertStringContainsString('<div class="diff-modes" id="diff-modes"', $html);
         self::assertStringContainsString('docgen-diff-mode', $html);

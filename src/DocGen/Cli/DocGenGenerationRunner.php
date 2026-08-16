@@ -20,6 +20,7 @@ use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
 use PhpAiToolkit\DocGen\Git\RevisionRange;
 use PhpAiToolkit\DocGen\Render\SiteRenderer;
+use PhpAiToolkit\DocGen\Render\SocialCard;
 
 use function realpath;
 use function sprintf;
@@ -65,6 +66,9 @@ final class DocGenGenerationRunner
     /** @readonly */
     private CacheStore $store;
 
+    /** @readonly */
+    private SocialCard $card;
+
     /**
      * Creates a generation runner from pipeline collaborators.
      */
@@ -81,6 +85,7 @@ final class DocGenGenerationRunner
         ?DocGenMemoryLimit $memoryLimit = null,
         ?DiffWorkspace $workspace = null,
         ?CacheStore $store = null,
+        ?SocialCard $card = null,
     ) {
         $this->workingDirectory = $workingDirectory;
         $this->configLoader = $configLoader ?? new ConfigLoader();
@@ -94,12 +99,13 @@ final class DocGenGenerationRunner
         $this->memoryLimit = $memoryLimit ?? new DocGenMemoryLimit();
         $this->workspace = $workspace ?? new DiffWorkspace(null, null, $this->analyzer);
         $this->store = $store ?? new CacheStore();
+        $this->card = $card ?? new SocialCard();
     }
 
     /**
      * Generates the site and optionally serves it.
      *
-     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
+     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
      */
     public function run(array $arguments): int
     {
@@ -231,6 +237,13 @@ final class DocGenGenerationRunner
 
         foreach ($model->warnings as $warning) {
             $this->writer->writeError(sprintf("Warning: %s\n", $warning));
+        }
+
+        if ($model->baseUrl !== null && !$this->card->supported()) {
+            $this->writer->writeError(
+                'Warning: no social preview image was drawn, because the gd extension with FreeType support is missing.'
+                . " The pages carry their preview tags without an image.\n",
+            );
         }
     }
 

@@ -67,6 +67,7 @@ final class AllItemsPage
             $services,
             $pagePath,
             'All items',
+            sprintf('Every documented item of the %s package.', $packageName),
             $this->breadcrumb->build($services, $pagePath, $crumbs),
             $this->sidebar->build($services, $pagePath, new SidebarScope($packageName, null, null, $this->symbolList->sections($rows))),
             $this->content($services, $pagePath, $rows),

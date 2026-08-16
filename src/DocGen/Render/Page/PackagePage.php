@@ -92,10 +92,23 @@ final class PackagePage
             $services,
             $pagePath,
             $package->manifest->name,
+            $this->description($package),
             $this->breadcrumb->build($services, $pagePath, [['label' => $package->manifest->name, 'path' => null]]),
             $this->sidebar->build($services, $pagePath, new SidebarScope($package->manifest->name, null, null, $sections)),
             $this->content($services, $pagePath, $package, $readme),
         );
+    }
+
+    /**
+     * Describes one package in one sentence.
+     */
+    public function description(DiscoveredPackage $package): string
+    {
+        if ($package->manifest->description !== '') {
+            return $package->manifest->description;
+        }
+
+        return sprintf('The %s package.', $package->manifest->name);
     }
 
     /**

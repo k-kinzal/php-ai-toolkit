@@ -68,6 +68,7 @@ final class NamespacePage
             $services,
             $pagePath,
             $namespace,
+            sprintf('The %s namespace of the %s package.', $namespace, $packageName),
             $this->breadcrumb->build($services, $pagePath, $this->crumbs($services, $packageName, $namespace)),
             $this->sidebar->build($services, $pagePath, new SidebarScope($packageName, $namespace, null, $sections)),
             $this->content($services, $pagePath, $packageName, $namespace, $rows),

@@ -44,6 +44,9 @@ final class FunctionPage
     /** @readonly */
     private DiffBanner $banner;
 
+    /** @readonly */
+    private SymbolDescription $descriptions;
+
     /**
      * Creates a function page renderer from its section collaborators.
      */
@@ -57,6 +60,7 @@ final class FunctionPage
         ?UsageListHtml $usageList = null,
         ?TestCaseHtml $testCaseHtml = null,
         ?DiffBanner $banner = null,
+        ?SymbolDescription $descriptions = null,
     ) {
         $this->chrome = $chrome ?? new PageChrome();
         $this->sidebar = $sidebar ?? new SidebarHtml();
@@ -67,6 +71,7 @@ final class FunctionPage
         $this->usageList = $usageList ?? new UsageListHtml();
         $this->testCaseHtml = $testCaseHtml ?? new TestCaseHtml();
         $this->banner = $banner ?? new DiffBanner();
+        $this->descriptions = $descriptions ?? new SymbolDescription();
     }
 
     /**
@@ -92,6 +97,7 @@ final class FunctionPage
             $services,
             $pagePath,
             $function->shortName,
+            $this->descriptions->ofFunction($function),
             $this->breadcrumb->build($services, $pagePath, $crumbs),
             $this->sidebar->build($services, $pagePath, new SidebarScope($function->packageName, $function->namespace, $function->fqn, [])),
             $this->content($services, $pagePath, $function, $context),

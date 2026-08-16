@@ -76,6 +76,7 @@ final class LayerPage
             $services,
             $pagePath,
             'Layer ' . $layer,
+            sprintf('The %s architecture layer of the %s package.', $layer, $packageName),
             $this->breadcrumb->build($services, $pagePath, $crumbs),
             $this->sidebar->build($services, $pagePath, new SidebarScope($packageName, null, null, $sections)),
             $this->content($services, $pagePath, $layer, $rows),

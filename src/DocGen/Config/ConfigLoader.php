@@ -24,7 +24,7 @@ use Symfony\Component\Yaml\Yaml;
 final class ConfigLoader
 {
     /** @var list<string> */
-    private const KNOWN_KEYS = ['packages', 'vendor', 'vendor_dev', 'exclude', 'output', 'title', 'deptrac', 'coverage', 'cache'];
+    private const KNOWN_KEYS = ['packages', 'vendor', 'vendor_dev', 'exclude', 'output', 'title', 'deptrac', 'coverage', 'cache', 'base_url'];
 
     /** @readonly */
     private ConfigScalarReader $scalarReader;
@@ -32,15 +32,20 @@ final class ConfigLoader
     /** @readonly */
     private ConfigStringListReader $stringListReader;
 
+    /** @readonly */
+    private BaseUrl $baseUrl;
+
     /**
      * Creates a config loader from YAML section readers.
      */
     public function __construct(
         ?ConfigScalarReader $scalarReader = null,
         ?ConfigStringListReader $stringListReader = null,
+        ?BaseUrl $baseUrl = null,
     ) {
         $this->scalarReader = $scalarReader ?? new ConfigScalarReader();
         $this->stringListReader = $stringListReader ?? new ConfigStringListReader();
+        $this->baseUrl = $baseUrl ?? new BaseUrl();
     }
 
     /**
@@ -83,6 +88,7 @@ final class ConfigLoader
             $this->scalarReader->optionalString($data, 'coverage'),
             $this->stringListReader->read($data, 'vendor_dev', []),
             $this->scalarReader->optionalPath($data, 'cache', DocGenConfig::DEFAULT_CACHE),
+            $this->baseUrl->normalize($this->scalarReader->optionalString($data, 'base_url')),
         );
     }
 }

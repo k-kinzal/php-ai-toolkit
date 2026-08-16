@@ -4,6 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DocGen Configuration — k-kinzal/php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/php-ai-toolkit/doc/docs/doc-gen.md.html">
+<meta name="description" content="DocGen Configuration, a document of the k-kinzal/php-ai-toolkit package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="k-kinzal/php-ai-toolkit">
+<meta property="og:title" content="DocGen Configuration — k-kinzal/php-ai-toolkit">
+<meta property="og:description" content="DocGen Configuration, a document of the k-kinzal/php-ai-toolkit package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/php-ai-toolkit/doc/docs/doc-gen.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="k-kinzal/php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="../../../../assets/style.css">
 <script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.theme=t}}catch(e){}</script>
 </head>
@@ -30,7 +42,7 @@
 <p>Exit codes:</p>
 <ul><li><code>0</code>: documentation generated</li><li><code>2</code>: configuration or runtime error</li></ul>
 <p>The config file is optional: without <code>doc.yaml</code>, the project root and <code>packages/*</code> are documented into <code>build/docs</code>.</p>
-<p>CLI options override the configuration: <code>--output=DIR</code>, <code>--vendor[=GLOBS]</code> (document installed runtime dependencies), <code>--vendor-dev[=GLOBS]</code> (document installed dev dependencies), <code>--coverage=DIR</code> (PHPUnit <code>--coverage-xml</code> report), <code>--diff=RANGE</code> / <code>--base=REVISION</code> / <code>--head=REVISION</code> (compare two git revisions), <code>--serve[=HOST:PORT]</code> (preview the generated site locally), <code>--memory-limit=VALUE</code>, <code>--jobs=N</code>, <code>--cache-dir=DIR</code>, <code>--no-cache</code>, and <code>--clear-cache</code>.</p>
+<p>CLI options override the configuration: <code>--output=DIR</code>, <code>--vendor[=GLOBS]</code> (document installed runtime dependencies), <code>--vendor-dev[=GLOBS]</code> (document installed dev dependencies), <code>--coverage=DIR</code> (PHPUnit <code>--coverage-xml</code> report), <code>--base-url=URL</code> (the address the site is published at), <code>--diff=RANGE</code> / <code>--base=REVISION</code> / <code>--head=REVISION</code> (compare two git revisions), <code>--serve[=HOST:PORT]</code> (preview the generated site locally), <code>--memory-limit=VALUE</code>, <code>--jobs=N</code>, <code>--cache-dir=DIR</code>, <code>--no-cache</code>, and <code>--clear-cache</code>.</p>
 <p>Documenting a large dependency tree needs more memory than the common 128M default, so the limit is raised to 512M when the environment allows less. A higher environment limit is kept as is, and <code>--memory-limit=1G</code> or <code>--memory-limit=-1</code> overrides both.</p>
 <h3>Parallel Generation</h3>
 <p>Both expensive phases run in worker processes: the sources are parsed in parallel, and the symbol and source pages are rendered in parallel. The workers are forked after the project has been analyzed, so they inherit the documented model instead of being handed a copy of it.</p>
@@ -71,7 +83,8 @@ cache: build/doc-gen-cache
 
 title: null
 deptrac: null
-coverage: null</code></pre>
+coverage: null
+base_url: null</code></pre>
 <p><code>packages</code> (default <code>[&#039;.&#039;, &#039;packages/*&#039;]</code>) lists directory globs, relative to the config file, that are probed for a <code>composer.json</code>. This is the only scope control: the documented unit is the composer package, and its PSR-4 autoload map decides which sources are read (<code>autoload</code> as API pages, <code>autoload-dev</code> as linkable source pages). A repository without a root <code>composer.json</code> works because glob entries without a manifest are skipped.</p>
 <p><code>vendor</code> (default <code>[]</code>) and <code>vendor_dev</code> (default <code>[]</code>) list <strong>composer package name</strong> globs such as <code>k-kinzal/*</code> or <code>*</code>; matching packages installed under any discovered <code>vendor/</code> directory are documented alongside the project packages. <code>vendor</code> selects runtime dependencies and <code>vendor_dev</code> selects dev dependencies, because the dev tree is usually noise: documenting it is opt-in per glob. The split is read from <code>composer.lock</code> when one exists, and derived from the transitive closure of <code>require</code> otherwise.</p>
 <p>Directory names such as <code>vendor</code> match nothing, so every glob that documents no installed package of that kind is reported as a warning, as is every selected package that ships no autoloadable source (a phar-only package such as <code>phpstan/phpstan</code> can never be documented or linked).</p>
@@ -79,6 +92,7 @@ coverage: null</code></pre>
 <p><code>output</code> (default <code>build/docs</code>) is the site output directory. <code>title</code> (default: the root package name, else the project directory name) overrides the site title.</p>
 <p><code>cache</code> (default <code>build/doc-gen-cache</code>) is the directory the parsed sources and the written pages are remembered in; <code>cache: false</code> turns caching off for every run of the project, as <code>--no-cache</code> does for one run. Keep it outside the output directory: everything below <code>output</code> is part of the published site.</p>
 <p><code>deptrac</code> (default: <code>deptrac.yaml</code> at the project root when present) points at a deptrac configuration whose layers and ruleset are rendered as an architecture graph and per-class layer badges. <code>coverage</code> (default: none) points at a PHPUnit <code>--coverage-xml</code> report directory; when set, every method shows the test cases covering it.</p>
+<p><code>base_url</code> (default: none) is the absolute address the site is published at, such as <code>https://example.github.io/project</code>, without a trailing slash. It is the one thing a site of relative links cannot work out for itself, and it is what the social preview below is rendered from. An address that is not an absolute <code>http</code> or <code>https</code> URL is rejected.</p>
 <p>Unknown top-level keys in <code>doc.yaml</code> are rejected with an error.</p>
 <h3>Scope Semantics</h3>
 <p>The documented scope is exactly the union of the discovered packages&#039; PSR-4 autoload directories. Production autoload sources get full API pages, search entries, and navigation; <code>autoload-dev</code> sources (tests) get highlighted source pages only, so coverage references and test call sites remain linkable without polluting the API surface. Symbols reachable through more than one package autoload map are documented once, first package wins.</p>
@@ -95,6 +109,12 @@ coverage: null</code></pre>
 <p>Relations are grouped by what each reference does — implemented by, extended by, instantiated in, static calls, type declarations, and so on — with every group rendered the same way.</p>
 <h3>Output</h3>
 <p>The site is fully static and self-contained: relative links only, bundled CSS/JS, client-side search, light and dark themes, and a <code>.nojekyll</code> marker, so publishing the output directory with GitHub Pages needs no further setup. The top level contains <code>index.html</code>, one directory per package (with its <code>doc/</code> documents), <code>src/</code> (highlighted sources with line anchors), and <code>assets/</code>.</p>
+<h3>Social Preview</h3>
+<p>A link to a page shared in a chat or on a timeline is rendered as a card by whoever receives it, from tags the page has to carry. Those tags name absolute addresses, so they are written only when <code>base_url</code> says where the site is published; without it nothing changes about the site.</p>
+<p>With it, every page carries its canonical link, a <code>description</code> read from what the page documents, and the Open Graph and Twitter tags a card is built from: <code>og:type</code>, <code>og:site_name</code>, <code>og:title</code>, <code>og:description</code>, <code>og:url</code>, and the image below. The description is the page&#039;s own — the summary line of a class, interface, trait, enum, or function, what a package says about itself in its manifest, or what a namespace, layer, document, or source file is — cut to 200 characters.</p>
+<p>The card image is drawn per site rather than shipped with the generator, so every project previews as itself: a 1200×630 PNG at <code>assets/og-image.png</code>, in the palette of the site, with the site title, the description of the documented project, and the color band of the generator across the top. Drawing it needs the <code>gd</code> extension with FreeType support; without it the run writes no image, the pages carry no <code>og:image</code>, the card degrades to a <code>summary</code> card, and a warning says so — a card that names an image the site does not serve would be worse.</p>
+<pre class="code-block"><code>vendor/bin/doc-gen --base-url=https://example.github.io/project</code></pre>
+<p>overrides the configured address for one run, which is what a pull request preview published under its own directory wants.</p>
 <h3>Publishing</h3>
 <p>The site is published by committing the output directory to a branch GitHub Pages serves. Two workflow templates ship with the <code>/setup-toolkit-doc-gen</code> skill, in <code>vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-doc-gen/</code>:</p>
 <div class="table-wrap"><table><thead><tr><th>Template</th><th>Trigger</th><th>What it does</th></tr></thead><tbody><tr><td><code>docs.yml</code></td><td>push to the default branch</td><td>Generates the site and syncs it to the root of <code>gh-pages</code>, keeping <code>pr/</code> and <code>CNAME</code></td></tr><tr><td><code>docs-preview.yml</code></td><td>pull request opened, updated, reopened, or closed</td><td>Generates the site in diff mode against the base commit into <code>pr/&lt;number&gt;/</code>, comments the link on the pull request, and removes the directory when the pull request closes</td></tr></tbody></table></div>

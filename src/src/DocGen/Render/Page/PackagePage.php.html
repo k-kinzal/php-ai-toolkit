@@ -4,6 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>src/DocGen/Render/Page/PackagePage.php — k-kinzal/php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/src/src/DocGen/Render/Page/PackagePage.php.html">
+<meta name="description" content="The source of src/DocGen/Render/Page/PackagePage.php.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="k-kinzal/php-ai-toolkit">
+<meta property="og:title" content="src/DocGen/Render/Page/PackagePage.php — k-kinzal/php-ai-toolkit">
+<meta property="og:description" content="The source of src/DocGen/Render/Page/PackagePage.php.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/src/src/DocGen/Render/Page/PackagePage.php.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="k-kinzal/php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="../../../../../assets/style.css">
 <script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.theme=t}}catch(e){}</script>
 </head>
@@ -115,191 +127,204 @@
 <span class="src-line" id="L92"><a class="ln" href="#L92">92</a>            <span class="tok-var">$services</span>,</span>
 <span class="src-line" id="L93"><a class="ln" href="#L93">93</a>            <span class="tok-var">$pagePath</span>,</span>
 <span class="src-line" id="L94"><a class="ln" href="#L94">94</a>            <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>,</span>
-<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">breadcrumb</span>-&gt;<span class="tok-id">build</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, [[<span class="tok-str">&#039;label&#039;</span> =&gt; <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>, <span class="tok-str">&#039;path&#039;</span> =&gt; <span class="tok-id">null</span>]]),</span>
-<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">sidebar</span>-&gt;<span class="tok-id">build</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-kw">new</span> <span class="tok-id">SidebarScope</span>(<span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-var">$sections</span>)),</span>
-<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">content</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$package</span>, <span class="tok-var">$readme</span>),</span>
-<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>        );</span>
-<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>    }</span>
-<span class="src-line" id="L100"><a class="ln" href="#L100">100</a></span>
-<span class="src-line" id="L101"><a class="ln" href="#L101">101</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L102"><a class="ln" href="#L102">102</a><span class="tok-com">     * Counts the symbols of one package per architecture layer.</span></span>
-<span class="src-line" id="L103"><a class="ln" href="#L103">103</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L104"><a class="ln" href="#L104">104</a><span class="tok-com">     * @return array&lt;string, int&gt;</span></span>
-<span class="src-line" id="L105"><a class="ln" href="#L105">105</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L106"><a class="ln" href="#L106">106</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">layerCounts</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$packageName</span>): <span class="tok-kw">array</span></span>
-<span class="src-line" id="L107"><a class="ln" href="#L107">107</a>    {</span>
-<span class="src-line" id="L108"><a class="ln" href="#L108">108</a>        <span class="tok-var">$counts</span> = [];</span>
-<span class="src-line" id="L109"><a class="ln" href="#L109">109</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">symbols</span>-&gt;<span class="tok-id">inPackage</span>(<span class="tok-var">$services</span>, <span class="tok-var">$packageName</span>) <span class="tok-kw">as</span> <span class="tok-var">$row</span>) {</span>
-<span class="src-line" id="L110"><a class="ln" href="#L110">110</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$row</span>-&gt;<span class="tok-id">layers</span> <span class="tok-kw">as</span> <span class="tok-var">$layer</span>) {</span>
-<span class="src-line" id="L111"><a class="ln" href="#L111">111</a>                <span class="tok-var">$counts</span>[<span class="tok-var">$layer</span>] = (<span class="tok-var">$counts</span>[<span class="tok-var">$layer</span>] ?? <span class="tok-num">0</span>) + <span class="tok-num">1</span>;</span>
-<span class="src-line" id="L112"><a class="ln" href="#L112">112</a>            }</span>
-<span class="src-line" id="L113"><a class="ln" href="#L113">113</a>        }</span>
-<span class="src-line" id="L114"><a class="ln" href="#L114">114</a></span>
-<span class="src-line" id="L115"><a class="ln" href="#L115">115</a>        <span class="tok-id">ksort</span>(<span class="tok-var">$counts</span>);</span>
-<span class="src-line" id="L116"><a class="ln" href="#L116">116</a></span>
-<span class="src-line" id="L117"><a class="ln" href="#L117">117</a>        <span class="tok-kw">return</span> <span class="tok-var">$counts</span>;</span>
-<span class="src-line" id="L118"><a class="ln" href="#L118">118</a>    }</span>
-<span class="src-line" id="L119"><a class="ln" href="#L119">119</a></span>
-<span class="src-line" id="L120"><a class="ln" href="#L120">120</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L121"><a class="ln" href="#L121">121</a><span class="tok-com">     * Renders the architecture layers that contain symbols of one package.</span></span>
-<span class="src-line" id="L122"><a class="ln" href="#L122">122</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L123"><a class="ln" href="#L123">123</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">layerSection</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$pagePath</span>, <span class="tok-id">string</span> <span class="tok-var">$packageName</span>): <span class="tok-id">string</span></span>
-<span class="src-line" id="L124"><a class="ln" href="#L124">124</a>    {</span>
-<span class="src-line" id="L125"><a class="ln" href="#L125">125</a>        <span class="tok-var">$counts</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">layerCounts</span>(<span class="tok-var">$services</span>, <span class="tok-var">$packageName</span>);</span>
-<span class="src-line" id="L126"><a class="ln" href="#L126">126</a>        <span class="tok-var">$layers</span> = <span class="tok-var">$services</span>-&gt;<span class="tok-id">model</span>-&gt;<span class="tok-id">layers</span>;</span>
-<span class="src-line" id="L127"><a class="ln" href="#L127">127</a>        <span class="tok-kw">if</span> (<span class="tok-var">$counts</span> === [] || <span class="tok-var">$layers</span> === <span class="tok-id">null</span>) {</span>
-<span class="src-line" id="L128"><a class="ln" href="#L128">128</a>            <span class="tok-kw">return</span> <span class="tok-str">&#039;&#039;</span>;</span>
-<span class="src-line" id="L129"><a class="ln" href="#L129">129</a>        }</span>
-<span class="src-line" id="L130"><a class="ln" href="#L130">130</a></span>
-<span class="src-line" id="L131"><a class="ln" href="#L131">131</a>        <span class="tok-var">$nodes</span> = [];</span>
-<span class="src-line" id="L132"><a class="ln" href="#L132">132</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$counts</span> <span class="tok-kw">as</span> <span class="tok-var">$layer</span> =&gt; <span class="tok-var">$count</span>) {</span>
-<span class="src-line" id="L133"><a class="ln" href="#L133">133</a>            <span class="tok-var">$nodes</span>[] = [</span>
-<span class="src-line" id="L134"><a class="ln" href="#L134">134</a>                <span class="tok-str">&#039;id&#039;</span> =&gt; <span class="tok-var">$layer</span>,</span>
-<span class="src-line" id="L135"><a class="ln" href="#L135">135</a>                <span class="tok-str">&#039;label&#039;</span> =&gt; <span class="tok-id">sprintf</span>(<span class="tok-str">&#039;%s (%d)&#039;</span>, <span class="tok-var">$layer</span>, <span class="tok-var">$count</span>),</span>
-<span class="src-line" id="L136"><a class="ln" href="#L136">136</a>                <span class="tok-str">&#039;href&#039;</span> =&gt; <span class="tok-var">$services</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">href</span>(<span class="tok-var">$pagePath</span>, <span class="tok-var">$services</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">layerPage</span>(<span class="tok-var">$packageName</span>, <span class="tok-var">$layer</span>)),</span>
-<span class="src-line" id="L137"><a class="ln" href="#L137">137</a>                <span class="tok-str">&#039;kind&#039;</span> =&gt; <span class="tok-str">&#039;layer&#039;</span>,</span>
-<span class="src-line" id="L138"><a class="ln" href="#L138">138</a>            ];</span>
-<span class="src-line" id="L139"><a class="ln" href="#L139">139</a>        }</span>
-<span class="src-line" id="L140"><a class="ln" href="#L140">140</a></span>
-<span class="src-line" id="L141"><a class="ln" href="#L141">141</a>        <span class="tok-var">$edges</span> = [];</span>
-<span class="src-line" id="L142"><a class="ln" href="#L142">142</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$layers</span>-&gt;<span class="tok-id">ruleset</span> <span class="tok-kw">as</span> <span class="tok-var">$from</span> =&gt; <span class="tok-var">$allowed</span>) {</span>
-<span class="src-line" id="L143"><a class="ln" href="#L143">143</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$allowed</span> <span class="tok-kw">as</span> <span class="tok-var">$to</span>) {</span>
-<span class="src-line" id="L144"><a class="ln" href="#L144">144</a>                <span class="tok-kw">if</span> (<span class="tok-kw">isset</span>(<span class="tok-var">$counts</span>[<span class="tok-var">$from</span>]) &amp;&amp; <span class="tok-kw">isset</span>(<span class="tok-var">$counts</span>[<span class="tok-var">$to</span>])) {</span>
-<span class="src-line" id="L145"><a class="ln" href="#L145">145</a>                    <span class="tok-var">$edges</span>[] = [<span class="tok-str">&#039;from&#039;</span> =&gt; <span class="tok-var">$from</span>, <span class="tok-str">&#039;to&#039;</span> =&gt; <span class="tok-var">$to</span>, <span class="tok-str">&#039;kind&#039;</span> =&gt; <span class="tok-str">&#039;allowed&#039;</span>];</span>
-<span class="src-line" id="L146"><a class="ln" href="#L146">146</a>                }</span>
-<span class="src-line" id="L147"><a class="ln" href="#L147">147</a>            }</span>
-<span class="src-line" id="L148"><a class="ln" href="#L148">148</a>        }</span>
-<span class="src-line" id="L149"><a class="ln" href="#L149">149</a></span>
-<span class="src-line" id="L150"><a class="ln" href="#L150">150</a>        <span class="tok-kw">return</span> <span class="tok-str">&#039;&lt;section&#039;</span> . <span class="tok-var">$services</span>-&gt;<span class="tok-id">diff</span>-&gt;<span class="tok-id">unchanged</span>() . <span class="tok-str">&#039;&gt;&lt;h2 id=&quot;layers&quot;&gt;Architecture layers&lt;a class=&quot;anchor&quot; href=&quot;#layers&quot;&gt;§&lt;/a&gt;&lt;/h2&gt;&#039;</span></span>
-<span class="src-line" id="L151"><a class="ln" href="#L151">151</a>            . <span class="tok-str">&#039;&lt;p class=&quot;section-note&quot;&gt;Layers and allowed dependencies from &lt;code&gt;deptrac.yaml&lt;/code&gt;. Layers without an arrow are dependency-free by rule.&lt;/p&gt;&#039;</span></span>
-<span class="src-line" id="L152"><a class="ln" href="#L152">152</a>            . <span class="tok-str">&#039;&lt;div class=&quot;graph-wrap&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">graph</span>-&gt;<span class="tok-id">render</span>(<span class="tok-var">$nodes</span>, <span class="tok-var">$edges</span>) . <span class="tok-str">&#039;&lt;/div&gt;&lt;/section&gt;&#039;</span> . <span class="tok-str">&quot;\n&quot;</span>;</span>
-<span class="src-line" id="L153"><a class="ln" href="#L153">153</a>    }</span>
-<span class="src-line" id="L154"><a class="ln" href="#L154">154</a></span>
-<span class="src-line" id="L155"><a class="ln" href="#L155">155</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L156"><a class="ln" href="#L156">156</a><span class="tok-com">     * Renders the overview content of one package.</span></span>
-<span class="src-line" id="L157"><a class="ln" href="#L157">157</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L158"><a class="ln" href="#L158">158</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">content</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$pagePath</span>, <span class="tok-id">DiscoveredPackage</span> <span class="tok-var">$package</span>, ?<span class="tok-id">string</span> <span class="tok-var">$readme</span>): <span class="tok-id">string</span></span>
-<span class="src-line" id="L159"><a class="ln" href="#L159">159</a>    {</span>
-<span class="src-line" id="L160"><a class="ln" href="#L160">160</a>        <span class="tok-var">$escaper</span> = <span class="tok-var">$services</span>-&gt;<span class="tok-id">escaper</span>;</span>
-<span class="src-line" id="L161"><a class="ln" href="#L161">161</a>        <span class="tok-var">$html</span> = <span class="tok-str">&#039;&lt;div class=&quot;symbol-head&quot;&gt;&#039;</span>;</span>
-<span class="src-line" id="L162"><a class="ln" href="#L162">162</a>        <span class="tok-var">$html</span> .= <span class="tok-id">sprintf</span>(</span>
-<span class="src-line" id="L163"><a class="ln" href="#L163">163</a>            <span class="tok-str">&#039;&lt;h1&gt;&lt;span class=&quot;chip chip-kind k-package&quot;&gt;package&lt;/span&gt;%s%s&lt;/h1&gt;&#039;</span>,</span>
-<span class="src-line" id="L164"><a class="ln" href="#L164">164</a>            <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>),</span>
-<span class="src-line" id="L165"><a class="ln" href="#L165">165</a>            <span class="tok-var">$package</span>-&gt;<span class="tok-id">isVendor</span> ? <span class="tok-id">sprintf</span>(<span class="tok-str">&#039; &lt;span class=&quot;chip chip-sm chip-ghost&quot;&gt;%s&lt;/span&gt;&#039;</span>, <span class="tok-var">$package</span>-&gt;<span class="tok-id">isDevDependency</span> ? <span class="tok-str">&#039;dev dependency&#039;</span> : <span class="tok-str">&#039;vendor&#039;</span>) : <span class="tok-str">&#039;&#039;</span>,</span>
-<span class="src-line" id="L166"><a class="ln" href="#L166">166</a>        );</span>
-<span class="src-line" id="L167"><a class="ln" href="#L167">167</a>        <span class="tok-var">$html</span> .= <span class="tok-str">&#039;&lt;/div&gt;&#039;</span> . <span class="tok-str">&quot;\n&quot;</span>;</span>
-<span class="src-line" id="L168"><a class="ln" href="#L168">168</a>        <span class="tok-kw">if</span> (<span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">description</span> !== <span class="tok-str">&#039;&#039;</span>) {</span>
-<span class="src-line" id="L169"><a class="ln" href="#L169">169</a>            <span class="tok-var">$html</span> .= <span class="tok-str">&#039;&lt;p class=&quot;lede&quot;&gt;&#039;</span> . <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">description</span>) . <span class="tok-str">&#039;&lt;/p&gt;&#039;</span> . <span class="tok-str">&quot;\n&quot;</span>;</span>
-<span class="src-line" id="L170"><a class="ln" href="#L170">170</a>        }</span>
-<span class="src-line" id="L171"><a class="ln" href="#L171">171</a></span>
-<span class="src-line" id="L172"><a class="ln" href="#L172">172</a>        <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">dependencyRows</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$package</span>);</span>
-<span class="src-line" id="L173"><a class="ln" href="#L173">173</a>        <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">layerSection</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>);</span>
-<span class="src-line" id="L174"><a class="ln" href="#L174">174</a>        <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">namespaceOverview</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>);</span>
-<span class="src-line" id="L175"><a class="ln" href="#L175">175</a>        <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">documents</span>-&gt;<span class="tok-id">section</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>);</span>
-<span class="src-line" id="L176"><a class="ln" href="#L176">176</a></span>
-<span class="src-line" id="L177"><a class="ln" href="#L177">177</a>        <span class="tok-kw">return</span> <span class="tok-var">$html</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">readmeSection</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>, <span class="tok-var">$readme</span>);</span>
-<span class="src-line" id="L178"><a class="ln" href="#L178">178</a>    }</span>
-<span class="src-line" id="L179"><a class="ln" href="#L179">179</a></span>
-<span class="src-line" id="L180"><a class="ln" href="#L180">180</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L181"><a class="ln" href="#L181">181</a><span class="tok-com">     * Renders the README of one package with resolved document links.</span></span>
-<span class="src-line" id="L182"><a class="ln" href="#L182">182</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L183"><a class="ln" href="#L183">183</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">readmeSection</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$pagePath</span>, <span class="tok-id">string</span> <span class="tok-var">$packageName</span>, ?<span class="tok-id">string</span> <span class="tok-var">$readme</span>): <span class="tok-id">string</span></span>
-<span class="src-line" id="L184"><a class="ln" href="#L184">184</a>    {</span>
-<span class="src-line" id="L185"><a class="ln" href="#L185">185</a>        <span class="tok-kw">if</span> (<span class="tok-var">$readme</span> === <span class="tok-id">null</span> || <span class="tok-var">$readme</span> === <span class="tok-str">&#039;&#039;</span>) {</span>
-<span class="src-line" id="L186"><a class="ln" href="#L186">186</a>            <span class="tok-kw">return</span> <span class="tok-str">&#039;&#039;</span>;</span>
-<span class="src-line" id="L187"><a class="ln" href="#L187">187</a>        }</span>
-<span class="src-line" id="L188"><a class="ln" href="#L188">188</a></span>
-<span class="src-line" id="L189"><a class="ln" href="#L189">189</a>        <span class="tok-var">$markdown</span> = <span class="tok-var">$services</span>-&gt;<span class="tok-id">markdown</span></span>
-<span class="src-line" id="L190"><a class="ln" href="#L190">190</a>            -&gt;<span class="tok-id">withLinks</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">documents</span>-&gt;<span class="tok-id">links</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$packageName</span>, <span class="tok-str">&#039;&#039;</span>))</span>
-<span class="src-line" id="L191"><a class="ln" href="#L191">191</a>            -&gt;<span class="tok-id">render</span>(<span class="tok-var">$readme</span>, <span class="tok-kw">static</span> <span class="tok-kw">function</span> (<span class="tok-id">string</span> <span class="tok-var">$code</span>, <span class="tok-id">string</span> <span class="tok-var">$language</span>) <span class="tok-kw">use</span> (<span class="tok-var">$services</span>): ?<span class="tok-id">string</span> {</span>
-<span class="src-line" id="L192"><a class="ln" href="#L192">192</a>                <span class="tok-kw">if</span> (<span class="tok-var">$language</span> === <span class="tok-str">&#039;php&#039;</span>) {</span>
-<span class="src-line" id="L193"><a class="ln" href="#L193">193</a>                    <span class="tok-kw">return</span> <span class="tok-str">&#039;&lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;&#039;</span> . <span class="tok-var">$services</span>-&gt;<span class="tok-id">highlighter</span>-&gt;<span class="tok-id">highlightSnippet</span>(<span class="tok-var">$code</span>) . <span class="tok-str">&#039;&lt;/code&gt;&lt;/pre&gt;&#039;</span> . <span class="tok-str">&quot;\n&quot;</span>;</span>
-<span class="src-line" id="L194"><a class="ln" href="#L194">194</a>                }</span>
-<span class="src-line" id="L195"><a class="ln" href="#L195">195</a></span>
-<span class="src-line" id="L196"><a class="ln" href="#L196">196</a>                <span class="tok-kw">return</span> <span class="tok-id">null</span>;</span>
-<span class="src-line" id="L197"><a class="ln" href="#L197">197</a>            });</span>
-<span class="src-line" id="L198"><a class="ln" href="#L198">198</a></span>
-<span class="src-line" id="L199"><a class="ln" href="#L199">199</a>        <span class="tok-kw">return</span> <span class="tok-str">&#039;&lt;section class=&quot;readme&quot;&#039;</span> . <span class="tok-var">$services</span>-&gt;<span class="tok-id">diff</span>-&gt;<span class="tok-id">unchanged</span>() . <span class="tok-str">&#039;&gt;&lt;h2 id=&quot;readme&quot;&gt;README&lt;a class=&quot;anchor&quot; href=&quot;#readme&quot;&gt;§&lt;/a&gt;&lt;/h2&gt;&#039;</span> . <span class="tok-var">$markdown</span> . <span class="tok-str">&#039;&lt;/section&gt;&#039;</span> . <span class="tok-str">&quot;\n&quot;</span>;</span>
-<span class="src-line" id="L200"><a class="ln" href="#L200">200</a>    }</span>
+<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">description</span>(<span class="tok-var">$package</span>),</span>
+<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">breadcrumb</span>-&gt;<span class="tok-id">build</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, [[<span class="tok-str">&#039;label&#039;</span> =&gt; <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>, <span class="tok-str">&#039;path&#039;</span> =&gt; <span class="tok-id">null</span>]]),</span>
+<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">sidebar</span>-&gt;<span class="tok-id">build</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-kw">new</span> <span class="tok-id">SidebarScope</span>(<span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-var">$sections</span>)),</span>
+<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">content</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$package</span>, <span class="tok-var">$readme</span>),</span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>        );</span>
+<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>    }</span>
+<span class="src-line" id="L101"><a class="ln" href="#L101">101</a></span>
+<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L103"><a class="ln" href="#L103">103</a><span class="tok-com">     * Describes one package in one sentence.</span></span>
+<span class="src-line" id="L104"><a class="ln" href="#L104">104</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L105"><a class="ln" href="#L105">105</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">description</span>(<span class="tok-id">DiscoveredPackage</span> <span class="tok-var">$package</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L106"><a class="ln" href="#L106">106</a>    {</span>
+<span class="src-line" id="L107"><a class="ln" href="#L107">107</a>        <span class="tok-kw">if</span> (<span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">description</span> !== <span class="tok-str">&#039;&#039;</span>) {</span>
+<span class="src-line" id="L108"><a class="ln" href="#L108">108</a>            <span class="tok-kw">return</span> <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">description</span>;</span>
+<span class="src-line" id="L109"><a class="ln" href="#L109">109</a>        }</span>
+<span class="src-line" id="L110"><a class="ln" href="#L110">110</a></span>
+<span class="src-line" id="L111"><a class="ln" href="#L111">111</a>        <span class="tok-kw">return</span> <span class="tok-id">sprintf</span>(<span class="tok-str">&#039;The %s package.&#039;</span>, <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>);</span>
+<span class="src-line" id="L112"><a class="ln" href="#L112">112</a>    }</span>
+<span class="src-line" id="L113"><a class="ln" href="#L113">113</a></span>
+<span class="src-line" id="L114"><a class="ln" href="#L114">114</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L115"><a class="ln" href="#L115">115</a><span class="tok-com">     * Counts the symbols of one package per architecture layer.</span></span>
+<span class="src-line" id="L116"><a class="ln" href="#L116">116</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L117"><a class="ln" href="#L117">117</a><span class="tok-com">     * @return array&lt;string, int&gt;</span></span>
+<span class="src-line" id="L118"><a class="ln" href="#L118">118</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L119"><a class="ln" href="#L119">119</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">layerCounts</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$packageName</span>): <span class="tok-kw">array</span></span>
+<span class="src-line" id="L120"><a class="ln" href="#L120">120</a>    {</span>
+<span class="src-line" id="L121"><a class="ln" href="#L121">121</a>        <span class="tok-var">$counts</span> = [];</span>
+<span class="src-line" id="L122"><a class="ln" href="#L122">122</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">symbols</span>-&gt;<span class="tok-id">inPackage</span>(<span class="tok-var">$services</span>, <span class="tok-var">$packageName</span>) <span class="tok-kw">as</span> <span class="tok-var">$row</span>) {</span>
+<span class="src-line" id="L123"><a class="ln" href="#L123">123</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$row</span>-&gt;<span class="tok-id">layers</span> <span class="tok-kw">as</span> <span class="tok-var">$layer</span>) {</span>
+<span class="src-line" id="L124"><a class="ln" href="#L124">124</a>                <span class="tok-var">$counts</span>[<span class="tok-var">$layer</span>] = (<span class="tok-var">$counts</span>[<span class="tok-var">$layer</span>] ?? <span class="tok-num">0</span>) + <span class="tok-num">1</span>;</span>
+<span class="src-line" id="L125"><a class="ln" href="#L125">125</a>            }</span>
+<span class="src-line" id="L126"><a class="ln" href="#L126">126</a>        }</span>
+<span class="src-line" id="L127"><a class="ln" href="#L127">127</a></span>
+<span class="src-line" id="L128"><a class="ln" href="#L128">128</a>        <span class="tok-id">ksort</span>(<span class="tok-var">$counts</span>);</span>
+<span class="src-line" id="L129"><a class="ln" href="#L129">129</a></span>
+<span class="src-line" id="L130"><a class="ln" href="#L130">130</a>        <span class="tok-kw">return</span> <span class="tok-var">$counts</span>;</span>
+<span class="src-line" id="L131"><a class="ln" href="#L131">131</a>    }</span>
+<span class="src-line" id="L132"><a class="ln" href="#L132">132</a></span>
+<span class="src-line" id="L133"><a class="ln" href="#L133">133</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L134"><a class="ln" href="#L134">134</a><span class="tok-com">     * Renders the architecture layers that contain symbols of one package.</span></span>
+<span class="src-line" id="L135"><a class="ln" href="#L135">135</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L136"><a class="ln" href="#L136">136</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">layerSection</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$pagePath</span>, <span class="tok-id">string</span> <span class="tok-var">$packageName</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L137"><a class="ln" href="#L137">137</a>    {</span>
+<span class="src-line" id="L138"><a class="ln" href="#L138">138</a>        <span class="tok-var">$counts</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">layerCounts</span>(<span class="tok-var">$services</span>, <span class="tok-var">$packageName</span>);</span>
+<span class="src-line" id="L139"><a class="ln" href="#L139">139</a>        <span class="tok-var">$layers</span> = <span class="tok-var">$services</span>-&gt;<span class="tok-id">model</span>-&gt;<span class="tok-id">layers</span>;</span>
+<span class="src-line" id="L140"><a class="ln" href="#L140">140</a>        <span class="tok-kw">if</span> (<span class="tok-var">$counts</span> === [] || <span class="tok-var">$layers</span> === <span class="tok-id">null</span>) {</span>
+<span class="src-line" id="L141"><a class="ln" href="#L141">141</a>            <span class="tok-kw">return</span> <span class="tok-str">&#039;&#039;</span>;</span>
+<span class="src-line" id="L142"><a class="ln" href="#L142">142</a>        }</span>
+<span class="src-line" id="L143"><a class="ln" href="#L143">143</a></span>
+<span class="src-line" id="L144"><a class="ln" href="#L144">144</a>        <span class="tok-var">$nodes</span> = [];</span>
+<span class="src-line" id="L145"><a class="ln" href="#L145">145</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$counts</span> <span class="tok-kw">as</span> <span class="tok-var">$layer</span> =&gt; <span class="tok-var">$count</span>) {</span>
+<span class="src-line" id="L146"><a class="ln" href="#L146">146</a>            <span class="tok-var">$nodes</span>[] = [</span>
+<span class="src-line" id="L147"><a class="ln" href="#L147">147</a>                <span class="tok-str">&#039;id&#039;</span> =&gt; <span class="tok-var">$layer</span>,</span>
+<span class="src-line" id="L148"><a class="ln" href="#L148">148</a>                <span class="tok-str">&#039;label&#039;</span> =&gt; <span class="tok-id">sprintf</span>(<span class="tok-str">&#039;%s (%d)&#039;</span>, <span class="tok-var">$layer</span>, <span class="tok-var">$count</span>),</span>
+<span class="src-line" id="L149"><a class="ln" href="#L149">149</a>                <span class="tok-str">&#039;href&#039;</span> =&gt; <span class="tok-var">$services</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">href</span>(<span class="tok-var">$pagePath</span>, <span class="tok-var">$services</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">layerPage</span>(<span class="tok-var">$packageName</span>, <span class="tok-var">$layer</span>)),</span>
+<span class="src-line" id="L150"><a class="ln" href="#L150">150</a>                <span class="tok-str">&#039;kind&#039;</span> =&gt; <span class="tok-str">&#039;layer&#039;</span>,</span>
+<span class="src-line" id="L151"><a class="ln" href="#L151">151</a>            ];</span>
+<span class="src-line" id="L152"><a class="ln" href="#L152">152</a>        }</span>
+<span class="src-line" id="L153"><a class="ln" href="#L153">153</a></span>
+<span class="src-line" id="L154"><a class="ln" href="#L154">154</a>        <span class="tok-var">$edges</span> = [];</span>
+<span class="src-line" id="L155"><a class="ln" href="#L155">155</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$layers</span>-&gt;<span class="tok-id">ruleset</span> <span class="tok-kw">as</span> <span class="tok-var">$from</span> =&gt; <span class="tok-var">$allowed</span>) {</span>
+<span class="src-line" id="L156"><a class="ln" href="#L156">156</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$allowed</span> <span class="tok-kw">as</span> <span class="tok-var">$to</span>) {</span>
+<span class="src-line" id="L157"><a class="ln" href="#L157">157</a>                <span class="tok-kw">if</span> (<span class="tok-kw">isset</span>(<span class="tok-var">$counts</span>[<span class="tok-var">$from</span>]) &amp;&amp; <span class="tok-kw">isset</span>(<span class="tok-var">$counts</span>[<span class="tok-var">$to</span>])) {</span>
+<span class="src-line" id="L158"><a class="ln" href="#L158">158</a>                    <span class="tok-var">$edges</span>[] = [<span class="tok-str">&#039;from&#039;</span> =&gt; <span class="tok-var">$from</span>, <span class="tok-str">&#039;to&#039;</span> =&gt; <span class="tok-var">$to</span>, <span class="tok-str">&#039;kind&#039;</span> =&gt; <span class="tok-str">&#039;allowed&#039;</span>];</span>
+<span class="src-line" id="L159"><a class="ln" href="#L159">159</a>                }</span>
+<span class="src-line" id="L160"><a class="ln" href="#L160">160</a>            }</span>
+<span class="src-line" id="L161"><a class="ln" href="#L161">161</a>        }</span>
+<span class="src-line" id="L162"><a class="ln" href="#L162">162</a></span>
+<span class="src-line" id="L163"><a class="ln" href="#L163">163</a>        <span class="tok-kw">return</span> <span class="tok-str">&#039;&lt;section&#039;</span> . <span class="tok-var">$services</span>-&gt;<span class="tok-id">diff</span>-&gt;<span class="tok-id">unchanged</span>() . <span class="tok-str">&#039;&gt;&lt;h2 id=&quot;layers&quot;&gt;Architecture layers&lt;a class=&quot;anchor&quot; href=&quot;#layers&quot;&gt;§&lt;/a&gt;&lt;/h2&gt;&#039;</span></span>
+<span class="src-line" id="L164"><a class="ln" href="#L164">164</a>            . <span class="tok-str">&#039;&lt;p class=&quot;section-note&quot;&gt;Layers and allowed dependencies from &lt;code&gt;deptrac.yaml&lt;/code&gt;. Layers without an arrow are dependency-free by rule.&lt;/p&gt;&#039;</span></span>
+<span class="src-line" id="L165"><a class="ln" href="#L165">165</a>            . <span class="tok-str">&#039;&lt;div class=&quot;graph-wrap&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">graph</span>-&gt;<span class="tok-id">render</span>(<span class="tok-var">$nodes</span>, <span class="tok-var">$edges</span>) . <span class="tok-str">&#039;&lt;/div&gt;&lt;/section&gt;&#039;</span> . <span class="tok-str">&quot;\n&quot;</span>;</span>
+<span class="src-line" id="L166"><a class="ln" href="#L166">166</a>    }</span>
+<span class="src-line" id="L167"><a class="ln" href="#L167">167</a></span>
+<span class="src-line" id="L168"><a class="ln" href="#L168">168</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L169"><a class="ln" href="#L169">169</a><span class="tok-com">     * Renders the overview content of one package.</span></span>
+<span class="src-line" id="L170"><a class="ln" href="#L170">170</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L171"><a class="ln" href="#L171">171</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">content</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$pagePath</span>, <span class="tok-id">DiscoveredPackage</span> <span class="tok-var">$package</span>, ?<span class="tok-id">string</span> <span class="tok-var">$readme</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L172"><a class="ln" href="#L172">172</a>    {</span>
+<span class="src-line" id="L173"><a class="ln" href="#L173">173</a>        <span class="tok-var">$escaper</span> = <span class="tok-var">$services</span>-&gt;<span class="tok-id">escaper</span>;</span>
+<span class="src-line" id="L174"><a class="ln" href="#L174">174</a>        <span class="tok-var">$html</span> = <span class="tok-str">&#039;&lt;div class=&quot;symbol-head&quot;&gt;&#039;</span>;</span>
+<span class="src-line" id="L175"><a class="ln" href="#L175">175</a>        <span class="tok-var">$html</span> .= <span class="tok-id">sprintf</span>(</span>
+<span class="src-line" id="L176"><a class="ln" href="#L176">176</a>            <span class="tok-str">&#039;&lt;h1&gt;&lt;span class=&quot;chip chip-kind k-package&quot;&gt;package&lt;/span&gt;%s%s&lt;/h1&gt;&#039;</span>,</span>
+<span class="src-line" id="L177"><a class="ln" href="#L177">177</a>            <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>),</span>
+<span class="src-line" id="L178"><a class="ln" href="#L178">178</a>            <span class="tok-var">$package</span>-&gt;<span class="tok-id">isVendor</span> ? <span class="tok-id">sprintf</span>(<span class="tok-str">&#039; &lt;span class=&quot;chip chip-sm chip-ghost&quot;&gt;%s&lt;/span&gt;&#039;</span>, <span class="tok-var">$package</span>-&gt;<span class="tok-id">isDevDependency</span> ? <span class="tok-str">&#039;dev dependency&#039;</span> : <span class="tok-str">&#039;vendor&#039;</span>) : <span class="tok-str">&#039;&#039;</span>,</span>
+<span class="src-line" id="L179"><a class="ln" href="#L179">179</a>        );</span>
+<span class="src-line" id="L180"><a class="ln" href="#L180">180</a>        <span class="tok-var">$html</span> .= <span class="tok-str">&#039;&lt;/div&gt;&#039;</span> . <span class="tok-str">&quot;\n&quot;</span>;</span>
+<span class="src-line" id="L181"><a class="ln" href="#L181">181</a>        <span class="tok-kw">if</span> (<span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">description</span> !== <span class="tok-str">&#039;&#039;</span>) {</span>
+<span class="src-line" id="L182"><a class="ln" href="#L182">182</a>            <span class="tok-var">$html</span> .= <span class="tok-str">&#039;&lt;p class=&quot;lede&quot;&gt;&#039;</span> . <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">description</span>) . <span class="tok-str">&#039;&lt;/p&gt;&#039;</span> . <span class="tok-str">&quot;\n&quot;</span>;</span>
+<span class="src-line" id="L183"><a class="ln" href="#L183">183</a>        }</span>
+<span class="src-line" id="L184"><a class="ln" href="#L184">184</a></span>
+<span class="src-line" id="L185"><a class="ln" href="#L185">185</a>        <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">dependencyRows</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$package</span>);</span>
+<span class="src-line" id="L186"><a class="ln" href="#L186">186</a>        <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">layerSection</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>);</span>
+<span class="src-line" id="L187"><a class="ln" href="#L187">187</a>        <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">namespaceOverview</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>);</span>
+<span class="src-line" id="L188"><a class="ln" href="#L188">188</a>        <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">documents</span>-&gt;<span class="tok-id">section</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>);</span>
+<span class="src-line" id="L189"><a class="ln" href="#L189">189</a></span>
+<span class="src-line" id="L190"><a class="ln" href="#L190">190</a>        <span class="tok-kw">return</span> <span class="tok-var">$html</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">readmeSection</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>, <span class="tok-var">$readme</span>);</span>
+<span class="src-line" id="L191"><a class="ln" href="#L191">191</a>    }</span>
+<span class="src-line" id="L192"><a class="ln" href="#L192">192</a></span>
+<span class="src-line" id="L193"><a class="ln" href="#L193">193</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L194"><a class="ln" href="#L194">194</a><span class="tok-com">     * Renders the README of one package with resolved document links.</span></span>
+<span class="src-line" id="L195"><a class="ln" href="#L195">195</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L196"><a class="ln" href="#L196">196</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">readmeSection</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$pagePath</span>, <span class="tok-id">string</span> <span class="tok-var">$packageName</span>, ?<span class="tok-id">string</span> <span class="tok-var">$readme</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L197"><a class="ln" href="#L197">197</a>    {</span>
+<span class="src-line" id="L198"><a class="ln" href="#L198">198</a>        <span class="tok-kw">if</span> (<span class="tok-var">$readme</span> === <span class="tok-id">null</span> || <span class="tok-var">$readme</span> === <span class="tok-str">&#039;&#039;</span>) {</span>
+<span class="src-line" id="L199"><a class="ln" href="#L199">199</a>            <span class="tok-kw">return</span> <span class="tok-str">&#039;&#039;</span>;</span>
+<span class="src-line" id="L200"><a class="ln" href="#L200">200</a>        }</span>
 <span class="src-line" id="L201"><a class="ln" href="#L201">201</a></span>
-<span class="src-line" id="L202"><a class="ln" href="#L202">202</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L203"><a class="ln" href="#L203">203</a><span class="tok-com">     * Renders the dependency relations of one package.</span></span>
-<span class="src-line" id="L204"><a class="ln" href="#L204">204</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L205"><a class="ln" href="#L205">205</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">dependencyRows</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$pagePath</span>, <span class="tok-id">DiscoveredPackage</span> <span class="tok-var">$package</span>): <span class="tok-id">string</span></span>
-<span class="src-line" id="L206"><a class="ln" href="#L206">206</a>    {</span>
-<span class="src-line" id="L207"><a class="ln" href="#L207">207</a>        <span class="tok-var">$escaper</span> = <span class="tok-var">$services</span>-&gt;<span class="tok-id">escaper</span>;</span>
-<span class="src-line" id="L208"><a class="ln" href="#L208">208</a>        <span class="tok-var">$name</span> = <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>;</span>
-<span class="src-line" id="L209"><a class="ln" href="#L209">209</a>        <span class="tok-var">$internal</span> = [];</span>
-<span class="src-line" id="L210"><a class="ln" href="#L210">210</a>        <span class="tok-var">$requiredBy</span> = [];</span>
-<span class="src-line" id="L211"><a class="ln" href="#L211">211</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$services</span>-&gt;<span class="tok-id">model</span>-&gt;<span class="tok-id">graph</span>-&gt;<span class="tok-id">edges</span> <span class="tok-kw">as</span> <span class="tok-var">$edge</span>) {</span>
-<span class="src-line" id="L212"><a class="ln" href="#L212">212</a>            <span class="tok-kw">if</span> (<span class="tok-var">$edge</span>-&gt;<span class="tok-id">from</span> === <span class="tok-var">$name</span>) {</span>
-<span class="src-line" id="L213"><a class="ln" href="#L213">213</a>                <span class="tok-var">$internal</span>[] = <span class="tok-id">sprintf</span>(</span>
-<span class="src-line" id="L214"><a class="ln" href="#L214">214</a>                    <span class="tok-str">&#039;&lt;a href=&quot;%s&quot;&gt;%s&lt;/a&gt;%s&#039;</span>,</span>
-<span class="src-line" id="L215"><a class="ln" href="#L215">215</a>                    <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$services</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">href</span>(<span class="tok-var">$pagePath</span>, <span class="tok-var">$services</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">packagePage</span>(<span class="tok-var">$edge</span>-&gt;<span class="tok-id">to</span>))),</span>
-<span class="src-line" id="L216"><a class="ln" href="#L216">216</a>                    <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$edge</span>-&gt;<span class="tok-id">to</span>),</span>
-<span class="src-line" id="L217"><a class="ln" href="#L217">217</a>                    <span class="tok-var">$edge</span>-&gt;<span class="tok-id">kind</span> !== <span class="tok-str">&#039;require&#039;</span> ? <span class="tok-id">sprintf</span>(<span class="tok-str">&#039; &lt;span class=&quot;chip chip-sm chip-ghost&quot;&gt;%s&lt;/span&gt;&#039;</span>, <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$edge</span>-&gt;<span class="tok-id">kind</span>)) : <span class="tok-str">&#039;&#039;</span>,</span>
-<span class="src-line" id="L218"><a class="ln" href="#L218">218</a>                );</span>
-<span class="src-line" id="L219"><a class="ln" href="#L219">219</a>            }</span>
-<span class="src-line" id="L220"><a class="ln" href="#L220">220</a></span>
-<span class="src-line" id="L221"><a class="ln" href="#L221">221</a>            <span class="tok-kw">if</span> (<span class="tok-var">$edge</span>-&gt;<span class="tok-id">to</span> === <span class="tok-var">$name</span>) {</span>
-<span class="src-line" id="L222"><a class="ln" href="#L222">222</a>                <span class="tok-var">$requiredBy</span>[] = <span class="tok-id">sprintf</span>(</span>
-<span class="src-line" id="L223"><a class="ln" href="#L223">223</a>                    <span class="tok-str">&#039;&lt;a href=&quot;%s&quot;&gt;%s&lt;/a&gt;%s&#039;</span>,</span>
-<span class="src-line" id="L224"><a class="ln" href="#L224">224</a>                    <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$services</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">href</span>(<span class="tok-var">$pagePath</span>, <span class="tok-var">$services</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">packagePage</span>(<span class="tok-var">$edge</span>-&gt;<span class="tok-id">from</span>))),</span>
-<span class="src-line" id="L225"><a class="ln" href="#L225">225</a>                    <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$edge</span>-&gt;<span class="tok-id">from</span>),</span>
-<span class="src-line" id="L226"><a class="ln" href="#L226">226</a>                    <span class="tok-var">$edge</span>-&gt;<span class="tok-id">kind</span> !== <span class="tok-str">&#039;require&#039;</span> ? <span class="tok-id">sprintf</span>(<span class="tok-str">&#039; &lt;span class=&quot;chip chip-sm chip-ghost&quot;&gt;%s&lt;/span&gt;&#039;</span>, <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$edge</span>-&gt;<span class="tok-id">kind</span>)) : <span class="tok-str">&#039;&#039;</span>,</span>
-<span class="src-line" id="L227"><a class="ln" href="#L227">227</a>                );</span>
-<span class="src-line" id="L228"><a class="ln" href="#L228">228</a>            }</span>
-<span class="src-line" id="L229"><a class="ln" href="#L229">229</a>        }</span>
-<span class="src-line" id="L230"><a class="ln" href="#L230">230</a></span>
-<span class="src-line" id="L231"><a class="ln" href="#L231">231</a>        <span class="tok-var">$html</span> = <span class="tok-str">&#039;&#039;</span>;</span>
-<span class="src-line" id="L232"><a class="ln" href="#L232">232</a>        <span class="tok-kw">foreach</span> ([[<span class="tok-str">&#039;Depends on&#039;</span>, <span class="tok-var">$internal</span>], [<span class="tok-str">&#039;Required by&#039;</span>, <span class="tok-var">$requiredBy</span>], [<span class="tok-str">&#039;External dependencies&#039;</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">externalDependencies</span>(<span class="tok-var">$services</span>, <span class="tok-var">$package</span>)]] <span class="tok-kw">as</span> <span class="tok-var">$row</span>) {</span>
-<span class="src-line" id="L233"><a class="ln" href="#L233">233</a>            <span class="tok-kw">if</span> (<span class="tok-var">$row</span>[<span class="tok-num">1</span>] !== []) {</span>
-<span class="src-line" id="L234"><a class="ln" href="#L234">234</a>                <span class="tok-var">$html</span> .= <span class="tok-str">&#039;&lt;div class=&quot;relation-row&quot;&gt;&lt;span class=&quot;relation-label&quot;&gt;&#039;</span> . <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$row</span>[<span class="tok-num">0</span>]) . <span class="tok-str">&#039;&lt;/span&gt; &#039;</span> . <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, <span class="tok-var">$row</span>[<span class="tok-num">1</span>]) . <span class="tok-str">&#039;&lt;/div&gt;&#039;</span> . <span class="tok-str">&quot;\n&quot;</span>;</span>
-<span class="src-line" id="L235"><a class="ln" href="#L235">235</a>            }</span>
-<span class="src-line" id="L236"><a class="ln" href="#L236">236</a>        }</span>
-<span class="src-line" id="L237"><a class="ln" href="#L237">237</a></span>
-<span class="src-line" id="L238"><a class="ln" href="#L238">238</a>        <span class="tok-kw">return</span> <span class="tok-var">$html</span>;</span>
-<span class="src-line" id="L239"><a class="ln" href="#L239">239</a>    }</span>
-<span class="src-line" id="L240"><a class="ln" href="#L240">240</a></span>
-<span class="src-line" id="L241"><a class="ln" href="#L241">241</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L242"><a class="ln" href="#L242">242</a><span class="tok-com">     * Renders the external runtime requirements of one package.</span></span>
-<span class="src-line" id="L243"><a class="ln" href="#L243">243</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L244"><a class="ln" href="#L244">244</a><span class="tok-com">     * @return list&lt;string&gt;</span></span>
-<span class="src-line" id="L245"><a class="ln" href="#L245">245</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L246"><a class="ln" href="#L246">246</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">externalDependencies</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">DiscoveredPackage</span> <span class="tok-var">$package</span>): <span class="tok-kw">array</span></span>
-<span class="src-line" id="L247"><a class="ln" href="#L247">247</a>    {</span>
-<span class="src-line" id="L248"><a class="ln" href="#L248">248</a>        <span class="tok-var">$external</span> = [];</span>
-<span class="src-line" id="L249"><a class="ln" href="#L249">249</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">requires</span> <span class="tok-kw">as</span> <span class="tok-var">$requirement</span> =&gt; <span class="tok-var">$constraint</span>) {</span>
-<span class="src-line" id="L250"><a class="ln" href="#L250">250</a>            <span class="tok-kw">if</span> (<span class="tok-var">$requirement</span> === <span class="tok-str">&#039;php&#039;</span> || <span class="tok-id">str_starts_with</span>(<span class="tok-var">$requirement</span>, <span class="tok-str">&#039;ext-&#039;</span>)) {</span>
-<span class="src-line" id="L251"><a class="ln" href="#L251">251</a>                <span class="tok-kw">continue</span>;</span>
-<span class="src-line" id="L252"><a class="ln" href="#L252">252</a>            }</span>
+<span class="src-line" id="L202"><a class="ln" href="#L202">202</a>        <span class="tok-var">$markdown</span> = <span class="tok-var">$services</span>-&gt;<span class="tok-id">markdown</span></span>
+<span class="src-line" id="L203"><a class="ln" href="#L203">203</a>            -&gt;<span class="tok-id">withLinks</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">documents</span>-&gt;<span class="tok-id">links</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$packageName</span>, <span class="tok-str">&#039;&#039;</span>))</span>
+<span class="src-line" id="L204"><a class="ln" href="#L204">204</a>            -&gt;<span class="tok-id">render</span>(<span class="tok-var">$readme</span>, <span class="tok-kw">static</span> <span class="tok-kw">function</span> (<span class="tok-id">string</span> <span class="tok-var">$code</span>, <span class="tok-id">string</span> <span class="tok-var">$language</span>) <span class="tok-kw">use</span> (<span class="tok-var">$services</span>): ?<span class="tok-id">string</span> {</span>
+<span class="src-line" id="L205"><a class="ln" href="#L205">205</a>                <span class="tok-kw">if</span> (<span class="tok-var">$language</span> === <span class="tok-str">&#039;php&#039;</span>) {</span>
+<span class="src-line" id="L206"><a class="ln" href="#L206">206</a>                    <span class="tok-kw">return</span> <span class="tok-str">&#039;&lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;&#039;</span> . <span class="tok-var">$services</span>-&gt;<span class="tok-id">highlighter</span>-&gt;<span class="tok-id">highlightSnippet</span>(<span class="tok-var">$code</span>) . <span class="tok-str">&#039;&lt;/code&gt;&lt;/pre&gt;&#039;</span> . <span class="tok-str">&quot;\n&quot;</span>;</span>
+<span class="src-line" id="L207"><a class="ln" href="#L207">207</a>                }</span>
+<span class="src-line" id="L208"><a class="ln" href="#L208">208</a></span>
+<span class="src-line" id="L209"><a class="ln" href="#L209">209</a>                <span class="tok-kw">return</span> <span class="tok-id">null</span>;</span>
+<span class="src-line" id="L210"><a class="ln" href="#L210">210</a>            });</span>
+<span class="src-line" id="L211"><a class="ln" href="#L211">211</a></span>
+<span class="src-line" id="L212"><a class="ln" href="#L212">212</a>        <span class="tok-kw">return</span> <span class="tok-str">&#039;&lt;section class=&quot;readme&quot;&#039;</span> . <span class="tok-var">$services</span>-&gt;<span class="tok-id">diff</span>-&gt;<span class="tok-id">unchanged</span>() . <span class="tok-str">&#039;&gt;&lt;h2 id=&quot;readme&quot;&gt;README&lt;a class=&quot;anchor&quot; href=&quot;#readme&quot;&gt;§&lt;/a&gt;&lt;/h2&gt;&#039;</span> . <span class="tok-var">$markdown</span> . <span class="tok-str">&#039;&lt;/section&gt;&#039;</span> . <span class="tok-str">&quot;\n&quot;</span>;</span>
+<span class="src-line" id="L213"><a class="ln" href="#L213">213</a>    }</span>
+<span class="src-line" id="L214"><a class="ln" href="#L214">214</a></span>
+<span class="src-line" id="L215"><a class="ln" href="#L215">215</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L216"><a class="ln" href="#L216">216</a><span class="tok-com">     * Renders the dependency relations of one package.</span></span>
+<span class="src-line" id="L217"><a class="ln" href="#L217">217</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L218"><a class="ln" href="#L218">218</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">dependencyRows</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$pagePath</span>, <span class="tok-id">DiscoveredPackage</span> <span class="tok-var">$package</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L219"><a class="ln" href="#L219">219</a>    {</span>
+<span class="src-line" id="L220"><a class="ln" href="#L220">220</a>        <span class="tok-var">$escaper</span> = <span class="tok-var">$services</span>-&gt;<span class="tok-id">escaper</span>;</span>
+<span class="src-line" id="L221"><a class="ln" href="#L221">221</a>        <span class="tok-var">$name</span> = <span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span>;</span>
+<span class="src-line" id="L222"><a class="ln" href="#L222">222</a>        <span class="tok-var">$internal</span> = [];</span>
+<span class="src-line" id="L223"><a class="ln" href="#L223">223</a>        <span class="tok-var">$requiredBy</span> = [];</span>
+<span class="src-line" id="L224"><a class="ln" href="#L224">224</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$services</span>-&gt;<span class="tok-id">model</span>-&gt;<span class="tok-id">graph</span>-&gt;<span class="tok-id">edges</span> <span class="tok-kw">as</span> <span class="tok-var">$edge</span>) {</span>
+<span class="src-line" id="L225"><a class="ln" href="#L225">225</a>            <span class="tok-kw">if</span> (<span class="tok-var">$edge</span>-&gt;<span class="tok-id">from</span> === <span class="tok-var">$name</span>) {</span>
+<span class="src-line" id="L226"><a class="ln" href="#L226">226</a>                <span class="tok-var">$internal</span>[] = <span class="tok-id">sprintf</span>(</span>
+<span class="src-line" id="L227"><a class="ln" href="#L227">227</a>                    <span class="tok-str">&#039;&lt;a href=&quot;%s&quot;&gt;%s&lt;/a&gt;%s&#039;</span>,</span>
+<span class="src-line" id="L228"><a class="ln" href="#L228">228</a>                    <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$services</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">href</span>(<span class="tok-var">$pagePath</span>, <span class="tok-var">$services</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">packagePage</span>(<span class="tok-var">$edge</span>-&gt;<span class="tok-id">to</span>))),</span>
+<span class="src-line" id="L229"><a class="ln" href="#L229">229</a>                    <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$edge</span>-&gt;<span class="tok-id">to</span>),</span>
+<span class="src-line" id="L230"><a class="ln" href="#L230">230</a>                    <span class="tok-var">$edge</span>-&gt;<span class="tok-id">kind</span> !== <span class="tok-str">&#039;require&#039;</span> ? <span class="tok-id">sprintf</span>(<span class="tok-str">&#039; &lt;span class=&quot;chip chip-sm chip-ghost&quot;&gt;%s&lt;/span&gt;&#039;</span>, <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$edge</span>-&gt;<span class="tok-id">kind</span>)) : <span class="tok-str">&#039;&#039;</span>,</span>
+<span class="src-line" id="L231"><a class="ln" href="#L231">231</a>                );</span>
+<span class="src-line" id="L232"><a class="ln" href="#L232">232</a>            }</span>
+<span class="src-line" id="L233"><a class="ln" href="#L233">233</a></span>
+<span class="src-line" id="L234"><a class="ln" href="#L234">234</a>            <span class="tok-kw">if</span> (<span class="tok-var">$edge</span>-&gt;<span class="tok-id">to</span> === <span class="tok-var">$name</span>) {</span>
+<span class="src-line" id="L235"><a class="ln" href="#L235">235</a>                <span class="tok-var">$requiredBy</span>[] = <span class="tok-id">sprintf</span>(</span>
+<span class="src-line" id="L236"><a class="ln" href="#L236">236</a>                    <span class="tok-str">&#039;&lt;a href=&quot;%s&quot;&gt;%s&lt;/a&gt;%s&#039;</span>,</span>
+<span class="src-line" id="L237"><a class="ln" href="#L237">237</a>                    <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$services</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">href</span>(<span class="tok-var">$pagePath</span>, <span class="tok-var">$services</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">packagePage</span>(<span class="tok-var">$edge</span>-&gt;<span class="tok-id">from</span>))),</span>
+<span class="src-line" id="L238"><a class="ln" href="#L238">238</a>                    <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$edge</span>-&gt;<span class="tok-id">from</span>),</span>
+<span class="src-line" id="L239"><a class="ln" href="#L239">239</a>                    <span class="tok-var">$edge</span>-&gt;<span class="tok-id">kind</span> !== <span class="tok-str">&#039;require&#039;</span> ? <span class="tok-id">sprintf</span>(<span class="tok-str">&#039; &lt;span class=&quot;chip chip-sm chip-ghost&quot;&gt;%s&lt;/span&gt;&#039;</span>, <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$edge</span>-&gt;<span class="tok-id">kind</span>)) : <span class="tok-str">&#039;&#039;</span>,</span>
+<span class="src-line" id="L240"><a class="ln" href="#L240">240</a>                );</span>
+<span class="src-line" id="L241"><a class="ln" href="#L241">241</a>            }</span>
+<span class="src-line" id="L242"><a class="ln" href="#L242">242</a>        }</span>
+<span class="src-line" id="L243"><a class="ln" href="#L243">243</a></span>
+<span class="src-line" id="L244"><a class="ln" href="#L244">244</a>        <span class="tok-var">$html</span> = <span class="tok-str">&#039;&#039;</span>;</span>
+<span class="src-line" id="L245"><a class="ln" href="#L245">245</a>        <span class="tok-kw">foreach</span> ([[<span class="tok-str">&#039;Depends on&#039;</span>, <span class="tok-var">$internal</span>], [<span class="tok-str">&#039;Required by&#039;</span>, <span class="tok-var">$requiredBy</span>], [<span class="tok-str">&#039;External dependencies&#039;</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">externalDependencies</span>(<span class="tok-var">$services</span>, <span class="tok-var">$package</span>)]] <span class="tok-kw">as</span> <span class="tok-var">$row</span>) {</span>
+<span class="src-line" id="L246"><a class="ln" href="#L246">246</a>            <span class="tok-kw">if</span> (<span class="tok-var">$row</span>[<span class="tok-num">1</span>] !== []) {</span>
+<span class="src-line" id="L247"><a class="ln" href="#L247">247</a>                <span class="tok-var">$html</span> .= <span class="tok-str">&#039;&lt;div class=&quot;relation-row&quot;&gt;&lt;span class=&quot;relation-label&quot;&gt;&#039;</span> . <span class="tok-var">$escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$row</span>[<span class="tok-num">0</span>]) . <span class="tok-str">&#039;&lt;/span&gt; &#039;</span> . <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, <span class="tok-var">$row</span>[<span class="tok-num">1</span>]) . <span class="tok-str">&#039;&lt;/div&gt;&#039;</span> . <span class="tok-str">&quot;\n&quot;</span>;</span>
+<span class="src-line" id="L248"><a class="ln" href="#L248">248</a>            }</span>
+<span class="src-line" id="L249"><a class="ln" href="#L249">249</a>        }</span>
+<span class="src-line" id="L250"><a class="ln" href="#L250">250</a></span>
+<span class="src-line" id="L251"><a class="ln" href="#L251">251</a>        <span class="tok-kw">return</span> <span class="tok-var">$html</span>;</span>
+<span class="src-line" id="L252"><a class="ln" href="#L252">252</a>    }</span>
 <span class="src-line" id="L253"><a class="ln" href="#L253">253</a></span>
-<span class="src-line" id="L254"><a class="ln" href="#L254">254</a>            <span class="tok-var">$known</span> = <span class="tok-id">false</span>;</span>
-<span class="src-line" id="L255"><a class="ln" href="#L255">255</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$services</span>-&gt;<span class="tok-id">model</span>-&gt;<span class="tok-id">packages</span> <span class="tok-kw">as</span> <span class="tok-var">$candidate</span>) {</span>
-<span class="src-line" id="L256"><a class="ln" href="#L256">256</a>                <span class="tok-kw">if</span> (<span class="tok-var">$candidate</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span> === <span class="tok-var">$requirement</span>) {</span>
-<span class="src-line" id="L257"><a class="ln" href="#L257">257</a>                    <span class="tok-var">$known</span> = <span class="tok-id">true</span>;</span>
-<span class="src-line" id="L258"><a class="ln" href="#L258">258</a>                    <span class="tok-kw">break</span>;</span>
-<span class="src-line" id="L259"><a class="ln" href="#L259">259</a>                }</span>
-<span class="src-line" id="L260"><a class="ln" href="#L260">260</a>            }</span>
-<span class="src-line" id="L261"><a class="ln" href="#L261">261</a></span>
-<span class="src-line" id="L262"><a class="ln" href="#L262">262</a>            <span class="tok-kw">if</span> (!<span class="tok-var">$known</span>) {</span>
-<span class="src-line" id="L263"><a class="ln" href="#L263">263</a>                <span class="tok-var">$external</span>[] = <span class="tok-id">sprintf</span>(<span class="tok-str">&#039;&lt;code&gt;%s&lt;/code&gt; &lt;span class=&quot;dep-constraint&quot;&gt;%s&lt;/span&gt;&#039;</span>, <span class="tok-var">$services</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$requirement</span>), <span class="tok-var">$services</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$constraint</span>));</span>
-<span class="src-line" id="L264"><a class="ln" href="#L264">264</a>            }</span>
-<span class="src-line" id="L265"><a class="ln" href="#L265">265</a>        }</span>
+<span class="src-line" id="L254"><a class="ln" href="#L254">254</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L255"><a class="ln" href="#L255">255</a><span class="tok-com">     * Renders the external runtime requirements of one package.</span></span>
+<span class="src-line" id="L256"><a class="ln" href="#L256">256</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L257"><a class="ln" href="#L257">257</a><span class="tok-com">     * @return list&lt;string&gt;</span></span>
+<span class="src-line" id="L258"><a class="ln" href="#L258">258</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L259"><a class="ln" href="#L259">259</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">externalDependencies</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">DiscoveredPackage</span> <span class="tok-var">$package</span>): <span class="tok-kw">array</span></span>
+<span class="src-line" id="L260"><a class="ln" href="#L260">260</a>    {</span>
+<span class="src-line" id="L261"><a class="ln" href="#L261">261</a>        <span class="tok-var">$external</span> = [];</span>
+<span class="src-line" id="L262"><a class="ln" href="#L262">262</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$package</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">requires</span> <span class="tok-kw">as</span> <span class="tok-var">$requirement</span> =&gt; <span class="tok-var">$constraint</span>) {</span>
+<span class="src-line" id="L263"><a class="ln" href="#L263">263</a>            <span class="tok-kw">if</span> (<span class="tok-var">$requirement</span> === <span class="tok-str">&#039;php&#039;</span> || <span class="tok-id">str_starts_with</span>(<span class="tok-var">$requirement</span>, <span class="tok-str">&#039;ext-&#039;</span>)) {</span>
+<span class="src-line" id="L264"><a class="ln" href="#L264">264</a>                <span class="tok-kw">continue</span>;</span>
+<span class="src-line" id="L265"><a class="ln" href="#L265">265</a>            }</span>
 <span class="src-line" id="L266"><a class="ln" href="#L266">266</a></span>
-<span class="src-line" id="L267"><a class="ln" href="#L267">267</a>        <span class="tok-kw">return</span> <span class="tok-var">$external</span>;</span>
-<span class="src-line" id="L268"><a class="ln" href="#L268">268</a>    }</span>
-<span class="src-line" id="L269"><a class="ln" href="#L269">269</a></span>
-<span class="src-line" id="L270"><a class="ln" href="#L270">270</a></span>
-<span class="src-line" id="L271"><a class="ln" href="#L271">271</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L272"><a class="ln" href="#L272">272</a><span class="tok-com">     * Renders the namespace overview table of one package.</span></span>
-<span class="src-line" id="L273"><a class="ln" href="#L273">273</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L274"><a class="ln" href="#L274">274</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">namespaceOverview</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$pagePath</span>, <span class="tok-id">string</span> <span class="tok-var">$packageName</span>): <span class="tok-id">string</span></span>
-<span class="src-line" id="L275"><a class="ln" href="#L275">275</a>    {</span>
-<span class="src-line" id="L276"><a class="ln" href="#L276">276</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">symbolList</span>-&gt;<span class="tok-id">namespaceOverview</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">symbols</span>-&gt;<span class="tok-id">inPackage</span>(<span class="tok-var">$services</span>, <span class="tok-var">$packageName</span>));</span>
-<span class="src-line" id="L277"><a class="ln" href="#L277">277</a>    }</span>
-<span class="src-line" id="L278"><a class="ln" href="#L278">278</a>}</span>
+<span class="src-line" id="L267"><a class="ln" href="#L267">267</a>            <span class="tok-var">$known</span> = <span class="tok-id">false</span>;</span>
+<span class="src-line" id="L268"><a class="ln" href="#L268">268</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$services</span>-&gt;<span class="tok-id">model</span>-&gt;<span class="tok-id">packages</span> <span class="tok-kw">as</span> <span class="tok-var">$candidate</span>) {</span>
+<span class="src-line" id="L269"><a class="ln" href="#L269">269</a>                <span class="tok-kw">if</span> (<span class="tok-var">$candidate</span>-&gt;<span class="tok-id">manifest</span>-&gt;<span class="tok-id">name</span> === <span class="tok-var">$requirement</span>) {</span>
+<span class="src-line" id="L270"><a class="ln" href="#L270">270</a>                    <span class="tok-var">$known</span> = <span class="tok-id">true</span>;</span>
+<span class="src-line" id="L271"><a class="ln" href="#L271">271</a>                    <span class="tok-kw">break</span>;</span>
+<span class="src-line" id="L272"><a class="ln" href="#L272">272</a>                }</span>
+<span class="src-line" id="L273"><a class="ln" href="#L273">273</a>            }</span>
+<span class="src-line" id="L274"><a class="ln" href="#L274">274</a></span>
+<span class="src-line" id="L275"><a class="ln" href="#L275">275</a>            <span class="tok-kw">if</span> (!<span class="tok-var">$known</span>) {</span>
+<span class="src-line" id="L276"><a class="ln" href="#L276">276</a>                <span class="tok-var">$external</span>[] = <span class="tok-id">sprintf</span>(<span class="tok-str">&#039;&lt;code&gt;%s&lt;/code&gt; &lt;span class=&quot;dep-constraint&quot;&gt;%s&lt;/span&gt;&#039;</span>, <span class="tok-var">$services</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$requirement</span>), <span class="tok-var">$services</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$constraint</span>));</span>
+<span class="src-line" id="L277"><a class="ln" href="#L277">277</a>            }</span>
+<span class="src-line" id="L278"><a class="ln" href="#L278">278</a>        }</span>
 <span class="src-line" id="L279"><a class="ln" href="#L279">279</a></span>
+<span class="src-line" id="L280"><a class="ln" href="#L280">280</a>        <span class="tok-kw">return</span> <span class="tok-var">$external</span>;</span>
+<span class="src-line" id="L281"><a class="ln" href="#L281">281</a>    }</span>
+<span class="src-line" id="L282"><a class="ln" href="#L282">282</a></span>
+<span class="src-line" id="L283"><a class="ln" href="#L283">283</a></span>
+<span class="src-line" id="L284"><a class="ln" href="#L284">284</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L285"><a class="ln" href="#L285">285</a><span class="tok-com">     * Renders the namespace overview table of one package.</span></span>
+<span class="src-line" id="L286"><a class="ln" href="#L286">286</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L287"><a class="ln" href="#L287">287</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">namespaceOverview</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$pagePath</span>, <span class="tok-id">string</span> <span class="tok-var">$packageName</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L288"><a class="ln" href="#L288">288</a>    {</span>
+<span class="src-line" id="L289"><a class="ln" href="#L289">289</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">symbolList</span>-&gt;<span class="tok-id">namespaceOverview</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">symbols</span>-&gt;<span class="tok-id">inPackage</span>(<span class="tok-var">$services</span>, <span class="tok-var">$packageName</span>));</span>
+<span class="src-line" id="L290"><a class="ln" href="#L290">290</a>    }</span>
+<span class="src-line" id="L291"><a class="ln" href="#L291">291</a>}</span>
+<span class="src-line" id="L292"><a class="ln" href="#L292">292</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

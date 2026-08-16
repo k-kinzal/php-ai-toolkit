@@ -4,6 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>src/DocGen/Cli/DocGenConfigOverrides.php — k-kinzal/php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/src/src/DocGen/Cli/DocGenConfigOverrides.php.html">
+<meta name="description" content="The source of src/DocGen/Cli/DocGenConfigOverrides.php.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="k-kinzal/php-ai-toolkit">
+<meta property="og:title" content="src/DocGen/Cli/DocGenConfigOverrides.php — k-kinzal/php-ai-toolkit">
+<meta property="og:description" content="The source of src/DocGen/Cli/DocGenConfigOverrides.php.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/src/src/DocGen/Cli/DocGenConfigOverrides.php.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="k-kinzal/php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="../../../../assets/style.css">
 <script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.theme=t}}catch(e){}</script>
 </head>
@@ -42,7 +54,7 @@
 <span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-com">     * A run that was told to cache nothing caches nothing, whatever the</span></span>
 <span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-com">     * project configured, because that is what the option is for.</span></span>
 <span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-com">     * @param array{config: ?string, output: ?string, vendor: ?list&lt;string&gt;, vendorDev: ?list&lt;string&gt;, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments</span></span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-com">     * @param array{config: ?string, output: ?string, vendor: ?list&lt;string&gt;, vendorDev: ?list&lt;string&gt;, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments</span></span>
 <span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L24"><a class="ln" href="#L24">24</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">cache</span>(<span class="tok-id">DocGenConfig</span> <span class="tok-var">$config</span>, <span class="tok-kw">array</span> <span class="tok-var">$arguments</span>): ?<span class="tok-id">string</span></span>
 <span class="src-line" id="L25"><a class="ln" href="#L25">25</a>    {</span>
@@ -56,7 +68,7 @@
 <span class="src-line" id="L33"><a class="ln" href="#L33">33</a>    <span class="tok-com">/**</span></span>
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a><span class="tok-com">     * Rebuilds the configuration with the given CLI overrides applied.</span></span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a><span class="tok-com">     * @param array{config: ?string, output: ?string, vendor: ?list&lt;string&gt;, vendorDev: ?list&lt;string&gt;, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments</span></span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a><span class="tok-com">     * @param array{config: ?string, output: ?string, vendor: ?list&lt;string&gt;, vendorDev: ?list&lt;string&gt;, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments</span></span>
 <span class="src-line" id="L37"><a class="ln" href="#L37">37</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L38"><a class="ln" href="#L38">38</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">apply</span>(<span class="tok-id">DocGenConfig</span> <span class="tok-var">$config</span>, <span class="tok-kw">array</span> <span class="tok-var">$arguments</span>): <span class="tok-id">DocGenConfig</span></span>
 <span class="src-line" id="L39"><a class="ln" href="#L39">39</a>    {</span>
@@ -71,10 +83,11 @@
 <span class="src-line" id="L48"><a class="ln" href="#L48">48</a>            <span class="tok-var">$arguments</span>[<span class="tok-str">&#039;coverage&#039;</span>] ?? <span class="tok-var">$config</span>-&gt;<span class="tok-id">coverage</span>,</span>
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a>            <span class="tok-var">$arguments</span>[<span class="tok-str">&#039;vendorDev&#039;</span>] !== <span class="tok-id">null</span> ? <span class="tok-id">array_merge</span>(<span class="tok-var">$config</span>-&gt;<span class="tok-id">vendorDev</span>, <span class="tok-var">$arguments</span>[<span class="tok-str">&#039;vendorDev&#039;</span>]) : <span class="tok-var">$config</span>-&gt;<span class="tok-id">vendorDev</span>,</span>
 <span class="src-line" id="L50"><a class="ln" href="#L50">50</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">cache</span>(<span class="tok-var">$config</span>, <span class="tok-var">$arguments</span>),</span>
-<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>        );</span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>    }</span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>}</span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a></span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>            <span class="tok-var">$arguments</span>[<span class="tok-str">&#039;baseUrl&#039;</span>] ?? <span class="tok-var">$config</span>-&gt;<span class="tok-id">baseUrl</span>,</span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>        );</span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>    }</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>}</span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

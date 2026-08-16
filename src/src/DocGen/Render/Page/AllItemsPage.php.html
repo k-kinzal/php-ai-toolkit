@@ -4,6 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>src/DocGen/Render/Page/AllItemsPage.php — k-kinzal/php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/src/src/DocGen/Render/Page/AllItemsPage.php.html">
+<meta name="description" content="The source of src/DocGen/Render/Page/AllItemsPage.php.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="k-kinzal/php-ai-toolkit">
+<meta property="og:title" content="src/DocGen/Render/Page/AllItemsPage.php — k-kinzal/php-ai-toolkit">
+<meta property="og:description" content="The source of src/DocGen/Render/Page/AllItemsPage.php.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/src/src/DocGen/Render/Page/AllItemsPage.php.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="k-kinzal/php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="../../../../../assets/style.css">
 <script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.theme=t}}catch(e){}</script>
 </head>
@@ -90,28 +102,29 @@
 <span class="src-line" id="L67"><a class="ln" href="#L67">67</a>            <span class="tok-var">$services</span>,</span>
 <span class="src-line" id="L68"><a class="ln" href="#L68">68</a>            <span class="tok-var">$pagePath</span>,</span>
 <span class="src-line" id="L69"><a class="ln" href="#L69">69</a>            <span class="tok-str">&#039;All items&#039;</span>,</span>
-<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">breadcrumb</span>-&gt;<span class="tok-id">build</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$crumbs</span>),</span>
-<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">sidebar</span>-&gt;<span class="tok-id">build</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-kw">new</span> <span class="tok-id">SidebarScope</span>(<span class="tok-var">$packageName</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">symbolList</span>-&gt;<span class="tok-id">sections</span>(<span class="tok-var">$rows</span>))),</span>
-<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">content</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$rows</span>),</span>
-<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>        );</span>
-<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>    }</span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a></span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L77"><a class="ln" href="#L77">77</a><span class="tok-com">     * Renders the listing content of one package.</span></span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a><span class="tok-com">     * @param list&lt;SymbolRow&gt; $rows</span></span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">content</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$pagePath</span>, <span class="tok-kw">array</span> <span class="tok-var">$rows</span>): <span class="tok-id">string</span></span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>    {</span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>        <span class="tok-var">$html</span> = <span class="tok-id">sprintf</span>(</span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>            <span class="tok-str">&#039;&lt;div class=&quot;symbol-head&quot;&gt;&lt;h1&gt;All items &lt;span class=&quot;count&quot;&gt;%d&lt;/span&gt;&lt;/h1&gt;&lt;/div&gt;&#039;</span>,</span>
-<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>            <span class="tok-id">count</span>(<span class="tok-var">$rows</span>),</span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        ) . <span class="tok-str">&quot;\n&quot;</span>;</span>
-<span class="src-line" id="L87"><a class="ln" href="#L87">87</a></span>
-<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>        <span class="tok-kw">return</span> <span class="tok-var">$html</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">symbolList</span>-&gt;<span class="tok-id">groups</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$rows</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>    }</span>
-<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>}</span>
-<span class="src-line" id="L91"><a class="ln" href="#L91">91</a></span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>            <span class="tok-id">sprintf</span>(<span class="tok-str">&#039;Every documented item of the %s package.&#039;</span>, <span class="tok-var">$packageName</span>),</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">breadcrumb</span>-&gt;<span class="tok-id">build</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$crumbs</span>),</span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">sidebar</span>-&gt;<span class="tok-id">build</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-kw">new</span> <span class="tok-id">SidebarScope</span>(<span class="tok-var">$packageName</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">symbolList</span>-&gt;<span class="tok-id">sections</span>(<span class="tok-var">$rows</span>))),</span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">content</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$rows</span>),</span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>        );</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>    }</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a></span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a><span class="tok-com">     * Renders the listing content of one package.</span></span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a><span class="tok-com">     * @param list&lt;SymbolRow&gt; $rows</span></span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">content</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$pagePath</span>, <span class="tok-kw">array</span> <span class="tok-var">$rows</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>    {</span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>        <span class="tok-var">$html</span> = <span class="tok-id">sprintf</span>(</span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>            <span class="tok-str">&#039;&lt;div class=&quot;symbol-head&quot;&gt;&lt;h1&gt;All items &lt;span class=&quot;count&quot;&gt;%d&lt;/span&gt;&lt;/h1&gt;&lt;/div&gt;&#039;</span>,</span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>            <span class="tok-id">count</span>(<span class="tok-var">$rows</span>),</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>        ) . <span class="tok-str">&quot;\n&quot;</span>;</span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a></span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>        <span class="tok-kw">return</span> <span class="tok-var">$html</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">symbolList</span>-&gt;<span class="tok-id">groups</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$rows</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>    }</span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>}</span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

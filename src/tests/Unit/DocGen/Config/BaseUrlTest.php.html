@@ -68,30 +68,33 @@
 <span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>((<span class="tok-kw">new</span> <span class="tok-id">BaseUrl</span>())-&gt;<span class="tok-id">normalize</span>(<span class="tok-str">&#039;   &#039;</span>));</span>
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a>    }</span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a></span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>    #[<span class="tok-id">DataProvider</span>(<span class="tok-str">&#039;providerRejectedAddresses&#039;</span>)]</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testNormalizeRejectsAnAddressNothingCanBeFetchedFrom</span>(<span class="tok-id">string</span> <span class="tok-var">$value</span>): <span class="tok-id">void</span></span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>    {</span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectException</span>(<span class="tok-id">DocGenException</span>::<span class="tok-kw">class</span>);</span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectExceptionMessage</span>(<span class="tok-str">&#039;Invalid base_url: &#039;</span> . <span class="tok-var">$value</span>);</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a></span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        (<span class="tok-kw">new</span> <span class="tok-id">BaseUrl</span>())-&gt;<span class="tok-id">normalize</span>(<span class="tok-var">$value</span>);</span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>    }</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a><span class="tok-com">     * @dataProvider providerRejectedAddresses</span></span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>    #[<span class="tok-id">DataProvider</span>(<span class="tok-str">&#039;providerRejectedAddresses&#039;</span>)]</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testNormalizeRejectsAnAddressNothingCanBeFetchedFrom</span>(<span class="tok-id">string</span> <span class="tok-var">$value</span>): <span class="tok-id">void</span></span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>    {</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectException</span>(<span class="tok-id">DocGenException</span>::<span class="tok-kw">class</span>);</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectExceptionMessage</span>(<span class="tok-str">&#039;Invalid base_url: &#039;</span> . <span class="tok-var">$value</span>);</span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a></span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a><span class="tok-com">     * @return array&lt;string, array{string}&gt;</span></span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>    <span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">providerRejectedAddresses</span>(): <span class="tok-kw">array</span></span>
-<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>    {</span>
-<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>        <span class="tok-kw">return</span> [</span>
-<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>            <span class="tok-str">&#039;without a scheme&#039;</span> =&gt; [<span class="tok-str">&#039;example.github.io/project&#039;</span>],</span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>            <span class="tok-str">&#039;with a scheme nothing is served over&#039;</span> =&gt; [<span class="tok-str">&#039;ftp://example.github.io/project&#039;</span>],</span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>            <span class="tok-str">&#039;with a query&#039;</span> =&gt; [<span class="tok-str">&#039;https://example.github.io/project?page=1&#039;</span>],</span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>            <span class="tok-str">&#039;with a fragment&#039;</span> =&gt; [<span class="tok-str">&#039;https://example.github.io/project#top&#039;</span>],</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>            <span class="tok-str">&#039;without a host&#039;</span> =&gt; [<span class="tok-str">&#039;https:///project&#039;</span>],</span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>        ];</span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>    }</span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>}</span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a></span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        (<span class="tok-kw">new</span> <span class="tok-id">BaseUrl</span>())-&gt;<span class="tok-id">normalize</span>(<span class="tok-var">$value</span>);</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>    }</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a></span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a><span class="tok-com">     * @return array&lt;string, array{string}&gt;</span></span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>    <span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">providerRejectedAddresses</span>(): <span class="tok-kw">array</span></span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>    {</span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-kw">return</span> [</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>            <span class="tok-str">&#039;without a scheme&#039;</span> =&gt; [<span class="tok-str">&#039;example.github.io/project&#039;</span>],</span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>            <span class="tok-str">&#039;with a scheme nothing is served over&#039;</span> =&gt; [<span class="tok-str">&#039;ftp://example.github.io/project&#039;</span>],</span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>            <span class="tok-str">&#039;with a query&#039;</span> =&gt; [<span class="tok-str">&#039;https://example.github.io/project?page=1&#039;</span>],</span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>            <span class="tok-str">&#039;with a fragment&#039;</span> =&gt; [<span class="tok-str">&#039;https://example.github.io/project#top&#039;</span>],</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>            <span class="tok-str">&#039;without a host&#039;</span> =&gt; [<span class="tok-str">&#039;https:///project&#039;</span>],</span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>        ];</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>    }</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>}</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

@@ -37,6 +37,19 @@ use function get_object_vars;
 final class ClassLikeDoc
 {
     /**
+     * The property table of this symbol, built on the first read.
+     *
+     * Every other value object of the toolkit answers __get() with a match
+     * over its properties, but a symbol declares more of them than one
+     * method may branch on under the configured complexity limit, so this
+     * one builds its table once instead. Rebuilding it on every read is
+     * what a symbol that hundreds of pages ask about cannot afford.
+     *
+     * @var ?array<mixed>
+     */
+    private ?array $propertyValues = null;
+
+    /**
      * @param list<string> $extends
      * @param list<string> $implements
      * @param list<string> $traits
@@ -99,6 +112,8 @@ final class ClassLikeDoc
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        $this->propertyValues ??= get_object_vars($this);
+
+        return $this->propertyValues[$name] ?? null;
     }
 }

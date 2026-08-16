@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Model;
 
-use function get_object_vars;
-
 /**
  * One documented top-level function.
  *
@@ -63,6 +61,20 @@ final class FunctionDoc
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'fqn' => $this->fqn,
+            'shortName' => $this->shortName,
+            'namespace' => $this->namespace,
+            'packageName' => $this->packageName,
+            'file' => $this->file,
+            'startLine' => $this->startLine,
+            'endLine' => $this->endLine,
+            'parameters' => $this->parameters,
+            'returnType' => $this->returnType,
+            'docBlock' => $this->docBlock,
+            'useMap' => $this->useMap,
+            'isDev' => $this->isDev,
+            default => null,
+        };
     }
 }

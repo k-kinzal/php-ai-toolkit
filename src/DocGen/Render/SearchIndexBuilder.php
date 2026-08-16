@@ -11,7 +11,9 @@ use const JSON_UNESCAPED_UNICODE;
 
 use function mb_strimwidth;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
 use PhpAiToolkit\DocGen\Analysis\ProjectModel;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
 
 /**
  * Builds the client-side search index script.
@@ -38,9 +40,12 @@ final class SearchIndexBuilder
      * Entries are encoded one at a time and appended to the output, so a
      * large dependency tree never holds every entry as an array and as
      * encoded JSON at the same time.
+     *
+     * @param ?DiffHtml $diff the comparison the site displays, if any
      */
-    public function build(ProjectModel $model): string
+    public function build(ProjectModel $model, ?DiffHtml $diff = null): string
     {
+        $diff ??= new DiffHtml();
         $json = '';
         $separator = '';
         foreach ($model->classLikes as $classLike) {
@@ -49,9 +54,11 @@ final class SearchIndexBuilder
             }
 
             $page = $this->url->classLikePage($classLike);
-            $json .= $separator . $this->encode($this->item($classLike->shortName, $classLike->fqcn, $classLike->kind, $page, $classLike->docBlock !== null ? $classLike->docBlock->summary : ''));
+            $summary = $classLike->docBlock !== null ? $classLike->docBlock->summary : '';
+            $status = $diff->isActive() ? $diff->classLikeStatus($classLike->fqcn) : null;
+            $json .= $separator . $this->encode($this->item($classLike->shortName, $classLike->fqcn, $classLike->kind, $page, $summary, $status));
             $separator = ',';
-            foreach ($this->memberItems($classLike, $page) as $memberItem) {
+            foreach ($this->memberItems($classLike, $page, $diff) as $memberItem) {
                 $json .= $separator . $this->encode($memberItem);
             }
         }
@@ -64,6 +71,7 @@ final class SearchIndexBuilder
                     'function',
                     $this->url->functionPage($function),
                     $function->docBlock !== null ? $function->docBlock->summary : '',
+                    $diff->isActive() ? $diff->statusOf($diff->functionKey($function->fqn)) : null,
                 ));
                 $separator = ',';
             }
@@ -76,6 +84,7 @@ final class SearchIndexBuilder
                 'document',
                 $this->url->documentPage($document->packageName, $document->path),
                 $document->path,
+                $diff->isActive() ? $diff->documentStatus($document->packageName, $document->path) : null,
             ));
             $separator = ',';
         }
@@ -86,7 +95,7 @@ final class SearchIndexBuilder
     /**
      * Encodes one index entry as JSON.
      *
-     * @param array{n: string, f: string, k: string, u: string, s: string} $item
+     * @param array{n: string, f: string, k: string, u: string, s: string, d?: string} $item
      */
     public function encode(array $item): string
     {
@@ -98,10 +107,13 @@ final class SearchIndexBuilder
     /**
      * Builds the index entries of one class-like symbol's members.
      *
-     * @return list<array{n: string, f: string, k: string, u: string, s: string}>
+     * @param ?DiffHtml $diff the comparison the site displays, if any
+     *
+     * @return list<array{n: string, f: string, k: string, u: string, s: string, d?: string}>
      */
-    public function memberItems(\PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc $classLike, string $page): array
+    public function memberItems(\PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc $classLike, string $page, ?DiffHtml $diff = null): array
     {
+        $diff ??= new DiffHtml();
         $items = [];
         foreach ($classLike->methods as $method) {
             if ($method->visibility === 'private') {
@@ -114,6 +126,7 @@ final class SearchIndexBuilder
                 'method',
                 $page . '#method.' . $method->name,
                 $method->docBlock !== null ? $method->docBlock->summary : '',
+                $diff->isActive() ? $diff->statusOf($diff->methodKey($classLike->fqcn, $method->name)) : null,
             );
         }
 
@@ -125,6 +138,7 @@ final class SearchIndexBuilder
                     'constant',
                     $page . '#constant.' . $constant->name,
                     $constant->docBlock !== null ? $constant->docBlock->summary : '',
+                    $diff->isActive() ? $diff->memberStatus($classLike->fqcn, DiffKey::CONSTANT, $constant->name) : null,
                 );
             }
         }
@@ -135,16 +149,20 @@ final class SearchIndexBuilder
     /**
      * Builds one compact index entry.
      *
-     * @return array{n: string, f: string, k: string, u: string, s: string}
+     * @param ?string $status the diff state of the entry, outside a plain site
+     *
+     * @return array{n: string, f: string, k: string, u: string, s: string, d?: string}
      */
-    public function item(string $name, string $fullName, string $kind, string $urlPath, string $summary): array
+    public function item(string $name, string $fullName, string $kind, string $urlPath, string $summary, ?string $status = null): array
     {
-        return [
+        $item = [
             'n' => $name,
             'f' => $fullName,
             'k' => $kind,
             'u' => $urlPath,
             's' => mb_strimwidth($summary, 0, 120, '…'),
         ];
+
+        return $status === null ? $item : $item + ['d' => $status];
     }
 }

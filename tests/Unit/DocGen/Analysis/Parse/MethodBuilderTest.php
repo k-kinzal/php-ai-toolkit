@@ -8,6 +8,7 @@ use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
 use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use PhpAiToolkit\DocGen\Analysis\Model\MethodDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc;
+use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
 use PhpAiToolkit\DocGen\Analysis\Parse\AstParser;
 use PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 use PhpAiToolkit\DocGen\Analysis\Parse\MethodBuilder;
@@ -31,6 +32,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ParameterModifiers::class)]
 #[UsesClass(PhpDocParserBridge::class)]
 #[UsesClass(PhpParserBridge::class)]
+#[UsesClass(TypeSignature::class)]
 final class MethodBuilderTest extends TestCase
 {
     public function testBuildReadsAbstractProtectedMethod(): void

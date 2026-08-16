@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
+use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
 use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
 use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
@@ -46,6 +50,9 @@ use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml;
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
@@ -53,6 +60,7 @@ use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
 use PhpAiToolkit\DocGen\Render\Page\BreadcrumbHtml;
 use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
 use PhpAiToolkit\DocGen\Render\Page\DocTextHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
 use PhpAiToolkit\DocGen\Render\Page\ExampleHtml;
 use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
 use PhpAiToolkit\DocGen\Render\Page\GraphSvg;
@@ -61,6 +69,7 @@ use PhpAiToolkit\DocGen\Render\Page\LayerPage;
 use PhpAiToolkit\DocGen\Render\Page\MemberHtml;
 use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
 use PhpAiToolkit\DocGen\Render\Page\PackagePage;
+use PhpAiToolkit\DocGen\Render\Page\PrivateSurfaceHtml;
 use PhpAiToolkit\DocGen\Render\Page\RelationsHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SignatureHtml;
@@ -92,12 +101,17 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(ConstantBuilder::class)]
 #[UsesClass(ConstantDoc::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffIndex::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DocBlock::class)]
 #[UsesClass(DocBlockReader::class)]
 #[UsesClass(DocTag::class)]
 #[UsesClass(DoctestExtractor::class)]
 #[UsesClass(DocTextHtml::class)]
+#[UsesClass(DocumentPage::class)]
 #[UsesClass(EnumCaseBuilder::class)]
 #[UsesClass(EnumCaseDoc::class)]
 #[UsesClass(ExampleHtml::class)]
@@ -112,6 +126,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(HtmlText::class)]
 #[UsesClass(IndexPage::class)]
 #[UsesClass(LayerPage::class)]
+#[UsesClass(LineDiffer::class)]
+#[UsesClass(MarkdownDiffHtml::class)]
 #[UsesClass(MarkdownInline::class)]
 #[UsesClass(MarkdownRenderer::class)]
 #[UsesClass(MemberHtml::class)]
@@ -128,6 +144,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PhpDocParserBridge::class)]
 #[UsesClass(PhpHighlighter::class)]
 #[UsesClass(PhpParserBridge::class)]
+#[UsesClass(PrivateSurfaceHtml::class)]
 #[UsesClass(ProjectModel::class)]
 #[UsesClass(PropertyBuilder::class)]
 #[UsesClass(PropertyDoc::class)]
@@ -138,6 +155,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(SiteFileWriter::class)]
 #[UsesClass(SiteRenderer::class)]
 #[UsesClass(SiteUrl::class)]
+#[UsesClass(SourceDiffHtml::class)]
 #[UsesClass(SourcePage::class)]
 #[UsesClass(SymbolContext::class)]
 #[UsesClass(SymbolListHtml::class)]
@@ -593,5 +611,200 @@ PHP;
             '<span class="t-key">case</span> <span class="sig-name">Active</span> = <span class="t-lit">&#039;active&#039;</span>',
             $html,
         );
+    }
+
+    public function testMethodSignatureMarksTheParametersOfAComparedDeclaration(): void
+    {
+        $code = <<<'PHP'
+<?php
+
+namespace Demo;
+
+class Widget
+{
+    public function run(int $count, string $label): void
+    {
+    }
+}
+PHP;
+        $statements = (new AstParser())->parse($code, 'src/Demo/Widget.php');
+        $symbols = (new FileSymbolCollector())->collect($statements, 'demo/pkg', 'src/Demo/Widget.php', false);
+        $widget = $symbols->classLikes[0];
+        $table = new SymbolTable();
+        $table->registerClassLike($widget);
+        $index = new DiffIndex('main', 'HEAD');
+        $key = $index->keys()->member('Demo\Widget', DiffKey::METHOD, 'run');
+        $index->mark($index->keys()->parameter($key, 'label'), DiffStatus::ADDED);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), $symbols->classLikes, [], $table, new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model, $index);
+        $context = new TypeRenderContext('demo/pkg/Demo/class.Widget.html', 'Demo', [], [], [], $table);
+
+        $html = (new SignatureHtml())->methodSignature($services, $widget->methods[0], $context, $key);
+
+        self::assertStringContainsString('<span class="sig-param" data-diff="same"><span class="t-key">int</span> <span class="t-var">$count</span></span>', $html);
+        self::assertStringContainsString('<span class="sig-param" data-diff="added"><span class="t-key">string</span> <span class="t-var">$label</span></span>', $html);
+        self::assertStringNotContainsString('sig-plain', $html);
+    }
+
+    public function testParameterListRendersTheMergedListAndTheHeadOnlyList(): void
+    {
+        $code = <<<'PHP'
+<?php
+
+namespace Demo;
+
+class Widget
+{
+    public function run(int $count, string $label): void
+    {
+    }
+}
+PHP;
+        $statements = (new AstParser())->parse($code, 'src/Demo/Widget.php');
+        $symbols = (new FileSymbolCollector())->collect($statements, 'demo/pkg', 'src/Demo/Widget.php', false);
+        $widget = $symbols->classLikes[0];
+        $table = new SymbolTable();
+        $table->registerClassLike($widget);
+        $index = new DiffIndex('main', 'HEAD');
+        $key = $index->keys()->member('Demo\Widget', DiffKey::METHOD, 'run');
+        $index->mark($index->keys()->parameter($key, 'label'), DiffStatus::REMOVED);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), $symbols->classLikes, [], $table, new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model, $index);
+        $context = new TypeRenderContext('demo/pkg/Demo/class.Widget.html', 'Demo', [], [], [], $table);
+        $signature = new SignatureHtml();
+
+        $merged = $signature->parameterList($services, '', $widget->methods[0]->parameters, '', $context, $key, false);
+        $plain = $signature->parameterList($services, '', $widget->methods[0]->parameters, '', $context, $key, true);
+
+        self::assertStringContainsString('data-diff="removed"', $merged);
+        self::assertStringContainsString('$label', $merged);
+        self::assertSame('(<span class="t-key">int</span> <span class="t-var">$count</span>)', $plain);
+    }
+
+    public function testMethodSignatureShowsBothFormsWhenTheHeadDroppedAParameter(): void
+    {
+        $code = <<<'PHP'
+<?php
+
+namespace Demo;
+
+class Widget
+{
+    public function run(int $count, string $label): void
+    {
+    }
+}
+PHP;
+        $statements = (new AstParser())->parse($code, 'src/Demo/Widget.php');
+        $symbols = (new FileSymbolCollector())->collect($statements, 'demo/pkg', 'src/Demo/Widget.php', false);
+        $widget = $symbols->classLikes[0];
+        $table = new SymbolTable();
+        $table->registerClassLike($widget);
+        $index = new DiffIndex('main', 'HEAD');
+        $key = $index->keys()->member('Demo\Widget', DiffKey::METHOD, 'run');
+        $index->mark($index->keys()->parameter($key, 'label'), DiffStatus::REMOVED);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), $symbols->classLikes, [], $table, new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model, $index);
+        $context = new TypeRenderContext('demo/pkg/Demo/class.Widget.html', 'Demo', [], [], [], $table);
+
+        $html = (new SignatureHtml())->methodSignature($services, $widget->methods[0], $context, $key);
+
+        self::assertStringContainsString('<span class="sig-diff">', $html);
+        self::assertStringContainsString('<span class="sig-plain">(<span class="t-key">int</span> <span class="t-var">$count</span>)</span>', $html);
+    }
+
+    public function testHasRemovedParameterFindsTheOnesTheHeadDropped(): void
+    {
+        $code = <<<'PHP'
+<?php
+
+namespace Demo;
+
+class Widget
+{
+    public function run(int $count, string $label): void
+    {
+    }
+}
+PHP;
+        $statements = (new AstParser())->parse($code, 'src/Demo/Widget.php');
+        $symbols = (new FileSymbolCollector())->collect($statements, 'demo/pkg', 'src/Demo/Widget.php', false);
+        $widget = $symbols->classLikes[0];
+        $table = new SymbolTable();
+        $table->registerClassLike($widget);
+        $index = new DiffIndex('main', 'HEAD');
+        $key = $index->keys()->member('Demo\Widget', DiffKey::METHOD, 'run');
+        $index->mark($index->keys()->parameter($key, 'label'), DiffStatus::REMOVED);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), $symbols->classLikes, [], $table, new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model, $index);
+        $signature = new SignatureHtml();
+
+        self::assertTrue($signature->hasRemovedParameter($services, $widget->methods[0]->parameters, $key));
+        self::assertFalse($signature->hasRemovedParameter($services, $widget->methods[0]->parameters, ''));
+        self::assertFalse($signature->hasRemovedParameter($services, [], $key));
+    }
+
+    public function testIsRemovedParameterAnswersOnlyInsideAComparison(): void
+    {
+        $code = <<<'PHP'
+<?php
+
+namespace Demo;
+
+class Widget
+{
+    public function run(int $count, string $label): void
+    {
+    }
+}
+PHP;
+        $statements = (new AstParser())->parse($code, 'src/Demo/Widget.php');
+        $symbols = (new FileSymbolCollector())->collect($statements, 'demo/pkg', 'src/Demo/Widget.php', false);
+        $widget = $symbols->classLikes[0];
+        $table = new SymbolTable();
+        $table->registerClassLike($widget);
+        $index = new DiffIndex('main', 'HEAD');
+        $key = $index->keys()->member('Demo\Widget', DiffKey::METHOD, 'run');
+        $index->mark($index->keys()->parameter($key, 'label'), DiffStatus::REMOVED);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), $symbols->classLikes, [], $table, new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $signature = new SignatureHtml();
+
+        self::assertTrue($signature->isRemovedParameter((new SiteRenderer())->services($model, $index), $widget->methods[0]->parameters[1], $key));
+        self::assertFalse($signature->isRemovedParameter((new SiteRenderer())->services($model, $index), $widget->methods[0]->parameters[0], $key));
+        self::assertFalse($signature->isRemovedParameter((new SiteRenderer())->services($model), $widget->methods[0]->parameters[1], $key));
+    }
+
+    public function testMarkedParameterCarriesTheStateOfOneParameter(): void
+    {
+        $code = <<<'PHP'
+<?php
+
+namespace Demo;
+
+class Widget
+{
+    public function run(int $count): void
+    {
+    }
+}
+PHP;
+        $statements = (new AstParser())->parse($code, 'src/Demo/Widget.php');
+        $symbols = (new FileSymbolCollector())->collect($statements, 'demo/pkg', 'src/Demo/Widget.php', false);
+        $widget = $symbols->classLikes[0];
+        $table = new SymbolTable();
+        $table->registerClassLike($widget);
+        $index = new DiffIndex('main', 'HEAD');
+        $key = $index->keys()->member('Demo\Widget', DiffKey::METHOD, 'run');
+        $index->mark($index->keys()->parameter($key, 'count'), DiffStatus::MODIFIED);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), $symbols->classLikes, [], $table, new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $signature = new SignatureHtml();
+        $parameter = $widget->methods[0]->parameters[0];
+
+        self::assertSame(
+            '<span class="sig-param" data-diff="modified">RENDERED</span>',
+            $signature->markedParameter((new SiteRenderer())->services($model, $index), $parameter, 'RENDERED', $key),
+        );
+        self::assertSame('RENDERED', $signature->markedParameter((new SiteRenderer())->services($model, $index), $parameter, 'RENDERED', ''));
+        self::assertSame('RENDERED', $signature->markedParameter((new SiteRenderer())->services($model), $parameter, 'RENDERED', $key));
     }
 }

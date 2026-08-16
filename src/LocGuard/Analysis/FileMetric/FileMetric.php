@@ -33,6 +33,11 @@ final class FileMetric
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'path' => $this->path,
+            'physicalLines' => $this->physicalLines,
+            'nonCommentLines' => $this->nonCommentLines,
+            default => null,
+        };
     }
 }

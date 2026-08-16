@@ -24,11 +24,33 @@ The config file is optional: without `doc.yaml`, the project root and `packages/
 
 CLI options override the configuration: `--output=DIR`, `--vendor[=GLOBS]` (document installed runtime dependencies),
 `--vendor-dev[=GLOBS]` (document installed dev dependencies), `--coverage=DIR` (PHPUnit `--coverage-xml` report),
-`--serve[=HOST:PORT]` (preview the generated site locally), and `--memory-limit=VALUE`.
+`--diff=RANGE` / `--base=REVISION` / `--head=REVISION` (compare two git revisions),
+`--serve[=HOST:PORT]` (preview the generated site locally), `--memory-limit=VALUE`, and `--jobs=N`.
 
 Documenting a large dependency tree needs more memory than the common 128M default, so the limit is raised to 512M
 when the environment allows less. A higher environment limit is kept as is, and `--memory-limit=1G` or
 `--memory-limit=-1` overrides both.
+
+## Parallel Generation
+
+Both expensive phases run in worker processes: the sources are parsed in parallel, and the symbol and source pages
+are rendered in parallel. The workers are forked after the project has been analyzed, so they inherit the documented
+model instead of being handed a copy of it.
+
+The worker count comes from the machine unless a run says otherwise: one worker per logical CPU core, minus one for
+the process that waits for them, and never more than 16. `--jobs=N` sets the count directly, which is what a CI job
+sharing its cores with other jobs wants, and `--jobs=1` keeps everything in one process.
+
+```bash
+vendor/bin/doc-gen --jobs=4    # four workers
+vendor/bin/doc-gen --jobs=1    # one process, no workers
+```
+
+Workers need the `pcntl` extension, and they are not used while OPcache or the JIT is on for the CLI, because their
+shared memory is not safe to fill from several forked processes at once. A run without them is sequential rather than
+failed, and the generated site is byte for byte the same however many workers wrote it: the work is split into
+consecutive jobs and the results are merged in job order, so nothing about the site depends on which worker finished
+first.
 
 ## Configuration
 
@@ -144,3 +166,52 @@ vendor/bin/doc-gen --serve
 
 generates the site and serves it with the PHP built-in web server at `127.0.0.1:8090` until interrupted. Pass
 `--serve=PORT` or `--serve=HOST:PORT` to change the address.
+
+## Diff Mode
+
+```bash
+vendor/bin/doc-gen --diff=main            # main against the working tree
+vendor/bin/doc-gen --diff=v1.0.0..HEAD    # two revisions
+vendor/bin/doc-gen --base=main --serve    # the same, previewed locally
+```
+
+`--diff=BASE` compares the working tree against `BASE`; `--diff=BASE..HEAD` compares two revisions. `--base` and
+`--head` set the same two revisions separately, and `--head` without `--base` is rejected. Diff mode needs the project
+to live in a git working tree: the base revision — and the head revision when one is named — is checked out into a
+temporary worktree, the installed dependencies of the project are linked into it so a dependency is not read as newly
+added, and both checkouts are removed again whatever the run does.
+
+Both revisions are analyzed and merged into one site: what the head revision has, plus what the base revision had and
+the head dropped. Every element carries the state it is in — added, removed, modified, or unchanged — and pages show
+it down to the single argument of a declaration: a constructor that gained a parameter is shown whole, with only that
+parameter marked. Symbols are matched by name rather than by position, so moving a method inside a class is not a
+change; a documentation comment that was only reflowed is not a change either, while its wording is.
+
+Removals keep their page. A class the head revision no longer has is documented from the base revision, marked as
+removed, and its source page is rendered from the base checkout, so the source a removed symbol links to stays
+readable. Source pages merge both revisions line by line, numbered after the head revision so every `#L…` link of the
+site keeps working; documents are merged block by block, so a changed paragraph, list, table, or example is marked on
+its own.
+
+Marks use the three state hues and nothing else: **green** for what the head revision added, **red** for what it
+dropped, **amber** for what it changed. A container carries the state of its parts, so a section, a namespace, an
+architecture layer, or a package is added only when everything in it is, changed as soon as one part of it is, and
+unchanged only when nothing in it moved.
+
+The generated site serves three display modes, switched next to the theme toggle and remembered across pages:
+
+| Mode | Shows |
+|------|-------|
+| **Off** | The documentation of the head revision, without any diff marks |
+| **Diff** | Every page with its additions, removals, and changes marked |
+| **Changes** | Only what the comparison touched; a page nothing touched says so |
+
+Changes mode narrows the navigation with the page: the sidebar keeps the sections, namespaces, layers, and sibling
+symbols a revision touched and drops the rest, so the way to a change is as short as the change is visible.
+
+The mode is applied before the page is laid out, so a page never flashes the wrong colors or the whole file when the
+changes alone were asked for. Source lines and the arguments of a signature keep their neighbours in Changes mode,
+because a line or an argument cannot be read without the declaration around it.
+
+A coverage report describes the working tree, so it is only read for the head revision; the base revision is analyzed
+without one, and its methods carry no coverage figure.

@@ -86,6 +86,17 @@ final class TestIssue
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'type' => $this->type,
+            'testId' => $this->testId,
+            'testName' => $this->testName,
+            'testFile' => $this->testFile,
+            'testLine' => $this->testLine,
+            'message' => $this->message,
+            'diff' => $this->diff,
+            'sourceFile' => $this->sourceFile,
+            'sourceLine' => $this->sourceLine,
+            default => null,
+        };
     }
 }

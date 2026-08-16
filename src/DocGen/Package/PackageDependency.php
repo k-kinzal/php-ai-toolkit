@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Package;
 
-use function get_object_vars;
-
 /**
  * One dependency edge between two documented packages.
  *
@@ -37,6 +35,11 @@ final class PackageDependency
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'from' => $this->from,
+            'to' => $this->to,
+            'kind' => $this->kind,
+            default => null,
+        };
     }
 }

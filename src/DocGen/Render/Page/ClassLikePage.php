@@ -7,7 +7,10 @@ namespace PhpAiToolkit\DocGen\Render\Page;
 use function array_merge;
 use function count;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 use PhpAiToolkit\DocGen\Render\TypeRenderContext;
@@ -44,6 +47,12 @@ final class ClassLikePage
     /** @readonly */
     private TestCaseHtml $testCaseHtml;
 
+    /** @readonly */
+    private DiffBanner $banner;
+
+    /** @readonly */
+    private PrivateSurfaceHtml $privateSurface;
+
     /**
      * Creates a class-like page renderer from its section collaborators.
      */
@@ -56,6 +65,8 @@ final class ClassLikePage
         ?MemberHtml $member = null,
         ?RelationsHtml $relations = null,
         ?TestCaseHtml $testCaseHtml = null,
+        ?DiffBanner $banner = null,
+        ?PrivateSurfaceHtml $privateSurface = null,
     ) {
         $this->chrome = $chrome ?? new PageChrome();
         $this->sidebar = $sidebar ?? new SidebarHtml();
@@ -65,6 +76,8 @@ final class ClassLikePage
         $this->member = $member ?? new MemberHtml();
         $this->relations = $relations ?? new RelationsHtml();
         $this->testCaseHtml = $testCaseHtml ?? new TestCaseHtml();
+        $this->banner = $banner ?? new DiffBanner();
+        $this->privateSurface = $privateSurface ?? new PrivateSurfaceHtml();
     }
 
     /**
@@ -99,25 +112,31 @@ final class ClassLikePage
     /**
      * Lists the sections this page will render, in page order.
      *
-     * @return list<array{id: string, label: string}>
+     * Every anchor carries the state of the section it points at, so the
+     * navigation of a page narrows exactly as the page itself does.
+     *
+     * @return list<array{id: string, label: string, status: string}>
      */
     public function sections(RenderKit $services, ClassLikeDoc $classLike): array
     {
+        $constants = $this->visibleMembers($classLike->constants);
+        $properties = $this->visibleMembers($classLike->properties);
+        $methods = $this->visibleMembers($classLike->methods);
         $candidates = [
-            ['id' => 'aliases', 'label' => 'Type aliases', 'present' => ($classLike->docBlock !== null ? $classLike->docBlock->aliases : []) !== []],
-            ['id' => 'cases', 'label' => 'Cases', 'present' => $classLike->enumCases !== []],
-            ['id' => 'constants', 'label' => 'Constants', 'present' => $this->visibleMembers($classLike->constants) !== []],
-            ['id' => 'properties', 'label' => 'Properties', 'present' => $this->visibleMembers($classLike->properties) !== []],
-            ['id' => 'methods', 'label' => 'Methods', 'present' => $this->visibleMembers($classLike->methods) !== []],
-            ['id' => 'private-surface', 'label' => 'Private surface', 'present' => $this->privateMembers($classLike) !== []],
-            ['id' => 'test-cases', 'label' => 'Test cases', 'present' => $services->model->testCases->forType($classLike->fqcn) !== []],
-            ['id' => 'relations', 'label' => 'Relations', 'present' => true],
+            ['id' => 'aliases', 'label' => 'Type aliases', 'present' => ($classLike->docBlock !== null ? $classLike->docBlock->aliases : []) !== [], 'status' => $services->diff->headerStatus($classLike->fqcn)],
+            ['id' => 'cases', 'label' => 'Cases', 'present' => $classLike->enumCases !== [], 'status' => $this->sectionStatus($services, $classLike, DiffKey::ENUM_CASE, $classLike->enumCases)],
+            ['id' => 'constants', 'label' => 'Constants', 'present' => $constants !== [], 'status' => $this->sectionStatus($services, $classLike, DiffKey::CONSTANT, $constants)],
+            ['id' => 'properties', 'label' => 'Properties', 'present' => $properties !== [], 'status' => $this->sectionStatus($services, $classLike, DiffKey::PROPERTY, $properties)],
+            ['id' => 'methods', 'label' => 'Methods', 'present' => $methods !== [], 'status' => $this->sectionStatus($services, $classLike, DiffKey::METHOD, $methods)],
+            ['id' => 'private-surface', 'label' => 'Private surface', 'present' => $this->privateSurface->members($classLike) !== [], 'status' => $services->diff->combine($this->privateSurface->statuses($services, $classLike))],
+            ['id' => 'test-cases', 'label' => 'Test cases', 'present' => $services->model->testCases->forType($classLike->fqcn) !== [], 'status' => DiffStatus::SAME],
+            ['id' => 'relations', 'label' => 'Relations', 'present' => true, 'status' => DiffStatus::SAME],
         ];
 
         $sections = [];
         foreach ($candidates as $candidate) {
             if ($candidate['present']) {
-                $sections[] = ['id' => $candidate['id'], 'label' => $candidate['label']];
+                $sections[] = ['id' => $candidate['id'], 'label' => $candidate['label'], 'status' => $candidate['status']];
             }
         }
 
@@ -143,25 +162,6 @@ final class ClassLikePage
         }
 
         return $visible;
-    }
-
-    /**
-     * Collects the private members of a class-like symbol.
-     *
-     * @return list<\PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc|\PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc|\PhpAiToolkit\DocGen\Analysis\Model\MethodDoc>
-     */
-    public function privateMembers(ClassLikeDoc $classLike): array
-    {
-        $private = [];
-        foreach ([$classLike->constants, $classLike->properties, $classLike->methods] as $members) {
-            foreach ($members as $member) {
-                if ($member->visibility === 'private') {
-                    $private[] = $member;
-                }
-            }
-        }
-
-        return $private;
     }
 
     /**
@@ -208,12 +208,13 @@ final class ClassLikePage
             $classLike->startLine,
         );
         $html .= '</div></div>' . "\n";
+        $html .= $this->banner->render($services, $services->diff->classLikeStatus($classLike->fqcn));
         $html .= $this->signature->classSignature($services, $classLike, $context);
         $html .= $this->docText->render($services, $classLike->docBlock, $context);
         $html .= $this->aliasSection($services, $pagePath, $classLike, $context);
         $html .= $this->member->tagExamples($services, $classLike->docBlock);
         $html .= $this->memberSections($services, $pagePath, $classLike, $context);
-        $html .= $this->privateSurface($services, $classLike, $context);
+        $html .= $this->privateSurface->section($services, $classLike, $context);
         $html .= $this->testCaseSection($services, $pagePath, $classLike);
 
         return $html . $this->relations->build($services, $pagePath, $classLike);
@@ -240,7 +241,8 @@ final class ClassLikePage
         }
 
         return sprintf(
-            '<section><h2 id="test-cases">Test cases <span class="count">%d</span><a class="anchor" href="#test-cases">§</a></h2>',
+            '<section%s><h2 id="test-cases">Test cases <span class="count">%d</span><a class="anchor" href="#test-cases">§</a></h2>',
+            $services->diff->unchanged(),
             count($testCases),
         )
             . '<p class="section-note">Test cases that cover or call this symbol, from the coverage report and from the analyzed test sources.</p>'
@@ -273,7 +275,7 @@ final class ClassLikePage
             return '';
         }
 
-        $html = '<section><h2 id="aliases">Type Aliases<a class="anchor" href="#aliases">§</a></h2>';
+        $html = '<section' . $services->diff->header($classLike->fqcn) . '><h2 id="aliases">Type Aliases<a class="anchor" href="#aliases">§</a></h2>';
         foreach ($aliases as $alias) {
             $definition = $alias->importedFrom !== null
                 ? '<span class="t-key">import from</span> ' . $services->typeHtml->className($alias->importedFrom, $context)
@@ -296,7 +298,8 @@ final class ClassLikePage
     {
         $html = '';
         if ($classLike->enumCases !== []) {
-            $html .= '<section><h2 id="cases">Cases<a class="anchor" href="#cases">§</a></h2>';
+            $html .= '<section' . $this->sectionMark($services, $classLike, DiffKey::ENUM_CASE, $classLike->enumCases)
+                . '><h2 id="cases">Cases<a class="anchor" href="#cases">§</a></h2>';
             foreach ($classLike->enumCases as $case) {
                 $html .= $this->member->enumCase($services, $pagePath, $classLike, $case, $context);
             }
@@ -313,7 +316,8 @@ final class ClassLikePage
         }
 
         if ($constants !== []) {
-            $html .= '<section><h2 id="constants">Constants<a class="anchor" href="#constants">§</a></h2>';
+            $html .= '<section' . $this->sectionMark($services, $classLike, DiffKey::CONSTANT, $constants)
+                . '><h2 id="constants">Constants<a class="anchor" href="#constants">§</a></h2>';
             foreach ($constants as $constant) {
                 $html .= $this->member->constant($services, $pagePath, $classLike, $constant, $context);
             }
@@ -329,7 +333,8 @@ final class ClassLikePage
         }
 
         if ($properties !== []) {
-            $html .= '<section><h2 id="properties">Properties<a class="anchor" href="#properties">§</a></h2>';
+            $html .= '<section' . $this->sectionMark($services, $classLike, DiffKey::PROPERTY, $properties)
+                . '><h2 id="properties">Properties<a class="anchor" href="#properties">§</a></h2>';
             foreach ($properties as $property) {
                 $html .= $this->member->property($services, $pagePath, $classLike, $property, $context);
             }
@@ -356,7 +361,8 @@ final class ClassLikePage
             return '';
         }
 
-        $html = '<section><h2 id="methods">Methods<a class="anchor" href="#methods">§</a></h2>';
+        $html = '<section' . $this->sectionMark($services, $classLike, DiffKey::METHOD, $methods)
+            . '><h2 id="methods">Methods<a class="anchor" href="#methods">§</a></h2>';
         foreach ($methods as $method) {
             $methodContext = $this->context(
                 $services,
@@ -371,44 +377,31 @@ final class ClassLikePage
     }
 
     /**
-     * Renders the private members as their own collapsed section.
+     * Returns the combined diff attribute of one member section.
      *
-     * The section stands on its own rather than trailing the last public
-     * member, so the signatures are never read as part of it.
+     * A section is as changed as the members it holds, so a section that
+     * nothing touched steps aside when only changes are asked for, while a
+     * section holding one new member stays and shows it.
+     *
+     * @param list<\PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc|\PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc|\PhpAiToolkit\DocGen\Analysis\Model\MethodDoc|\PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc> $members
      */
-    public function privateSurface(RenderKit $services, ClassLikeDoc $classLike, TypeRenderContext $context): string
+    public function sectionMark(RenderKit $services, ClassLikeDoc $classLike, string $kind, array $members): string
     {
-        $rows = [];
-        foreach ($classLike->constants as $constant) {
-            if ($constant->visibility === 'private') {
-                $rows[] = $this->signature->constantSignature($services, $constant, $context);
-            }
+        return $services->diff->mark($this->sectionStatus($services, $classLike, $kind, $members));
+    }
+
+    /**
+     * Combines the state of the members of one section.
+     *
+     * @param list<\PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc|\PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc|\PhpAiToolkit\DocGen\Analysis\Model\MethodDoc|\PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc> $members
+     */
+    public function sectionStatus(RenderKit $services, ClassLikeDoc $classLike, string $kind, array $members): string
+    {
+        $statuses = [];
+        foreach ($members as $member) {
+            $statuses[] = $services->diff->memberStatus($classLike->fqcn, $kind, $member->name);
         }
 
-        foreach ($classLike->properties as $property) {
-            if ($property->visibility === 'private') {
-                $rows[] = $this->signature->propertySignature($services, $property, $context);
-            }
-        }
-
-        foreach ($classLike->methods as $method) {
-            if ($method->visibility === 'private') {
-                $rows[] = $this->signature->methodSignature($services, $method, $context);
-            }
-        }
-
-        if ($rows === []) {
-            return '';
-        }
-
-        $html = '<section class="private-surface"><h2 id="private-surface">Private surface'
-            . sprintf(' <span class="count">%d</span>', count($rows))
-            . '<a class="anchor" href="#private-surface">§</a></h2>'
-            . '<p class="section-note">Implementation details, listed for orientation only.</p>';
-        foreach ($rows as $row) {
-            $html .= '<pre class="member-sig private-sig"><code>' . $row . '</code></pre>';
-        }
-
-        return $html . '</section>' . "\n";
+        return $services->diff->combine($statuses);
     }
 }

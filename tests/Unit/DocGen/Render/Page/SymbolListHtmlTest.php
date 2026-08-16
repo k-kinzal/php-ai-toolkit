@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
 use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
@@ -15,6 +17,7 @@ use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
@@ -32,6 +35,9 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(SymbolListHtml::class)]
 #[UsesClass(AssertionScanner::class)]
 #[UsesClass(ClassLikeDoc::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DoctestExtractor::class)]
 #[UsesClass(FunctionDoc::class)]
 #[UsesClass(HierarchyIndex::class)]
@@ -232,9 +238,23 @@ final class SymbolListHtmlTest extends TestCase
         ];
 
         self::assertSame(
-            [['id' => 'interfaces', 'label' => 'Interfaces'], ['id' => 'functions', 'label' => 'Functions']],
+            [
+                ['id' => 'interfaces', 'label' => 'Interfaces', 'status' => DiffStatus::SAME],
+                ['id' => 'functions', 'label' => 'Functions', 'status' => DiffStatus::SAME],
+            ],
             (new SymbolListHtml())->sections($rows),
         );
         self::assertSame([], (new SymbolListHtml())->sections([]));
+    }
+
+    public function testStatusesListsTheDiffStateOfEveryRow(): void
+    {
+        $rows = [
+            new SymbolRow('class', 'Fresh', 'Demo\Fresh', 'demo/pkg/class.Fresh.html', '', [], 'Demo', DiffStatus::ADDED),
+            new SymbolRow('class', 'Kept', 'Demo\Kept', 'demo/pkg/class.Kept.html', '', [], 'Demo'),
+        ];
+
+        self::assertSame([DiffStatus::ADDED, DiffStatus::SAME], (new SymbolListHtml())->statuses($rows));
+        self::assertSame([], (new SymbolListHtml())->statuses([]));
     }
 }

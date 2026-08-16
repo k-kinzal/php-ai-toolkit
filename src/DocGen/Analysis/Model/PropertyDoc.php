@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Model;
 
-use function get_object_vars;
-
 /**
  * One property declaration, including constructor-promoted properties.
  *
@@ -50,6 +48,16 @@ final class PropertyDoc
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'name' => $this->name,
+            'visibility' => $this->visibility,
+            'isStatic' => $this->isStatic,
+            'isPromoted' => $this->isPromoted,
+            'type' => $this->type,
+            'defaultText' => $this->defaultText,
+            'docBlock' => $this->docBlock,
+            'line' => $this->line,
+            default => null,
+        };
     }
 }

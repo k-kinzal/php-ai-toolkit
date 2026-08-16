@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Package;
 
-use function get_object_vars;
-
 /**
  * One package selected for documentation.
  *
@@ -38,6 +36,11 @@ final class DiscoveredPackage
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'manifest' => $this->manifest,
+            'isVendor' => $this->isVendor,
+            'isDevDependency' => $this->isDevDependency,
+            default => null,
+        };
     }
 }

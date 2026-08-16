@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
 use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
@@ -15,7 +17,9 @@ use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
 use PhpAiToolkit\DocGen\Render\HtmlText;
+use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
 use PhpAiToolkit\DocGen\Render\Page\RelationsHtml;
 use PhpAiToolkit\DocGen\Render\Page\UsageListHtml;
@@ -31,9 +35,13 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(AssertionScanner::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(ClassLikeKind::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DoctestExtractor::class)]
 #[UsesClass(HierarchyIndex::class)]
 #[UsesClass(HtmlText::class)]
+#[UsesClass(MarkdownInline::class)]
 #[UsesClass(MarkdownRenderer::class)]
 #[UsesClass(PackageGraph::class)]
 #[UsesClass(ProjectModel::class)]

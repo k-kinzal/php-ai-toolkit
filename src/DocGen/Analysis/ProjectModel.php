@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis;
 
-use function get_object_vars;
-
 use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex;
 use PhpAiToolkit\DocGen\Analysis\Layer\LayerModel;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
@@ -88,6 +86,23 @@ final class ProjectModel
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'title' => $this->title,
+            'root' => $this->root,
+            'packages' => $this->packages,
+            'graph' => $this->graph,
+            'classLikes' => $this->classLikes,
+            'functions' => $this->functions,
+            'symbolTable' => $this->symbolTable,
+            'hierarchy' => $this->hierarchy,
+            'usages' => $this->usages,
+            'testCases' => $this->testCases,
+            'layers' => $this->layers,
+            'layerAssignments' => $this->layerAssignments,
+            'coverage' => $this->coverage,
+            'warnings' => $this->warnings,
+            'documents' => $this->documents,
+            default => null,
+        };
     }
 }

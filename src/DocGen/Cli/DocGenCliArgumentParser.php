@@ -14,6 +14,7 @@ use function sprintf;
 use function str_contains;
 use function str_starts_with;
 use function strlen;
+use function strpos;
 use function substr;
 use function trim;
 
@@ -23,17 +24,24 @@ use function trim;
 final class DocGenCliArgumentParser
 {
     /**
+     * The long options that carry a value, inline or as the next argument.
+     *
+     * @var list<string>
+     */
+    public const VALUE_OPTIONS = ['config', 'output', 'coverage', 'memory-limit', 'jobs', 'diff', 'base', 'head'];
+
+    /**
      * Parses argument strings into a normalized option map.
      *
      * @param list<string> $argv
      *
-     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, help: bool, version: bool}
+     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, help: bool, version: bool}
      *
      * @throws DocGenException when an option is unknown or lacks a value
      */
     public function parse(array $argv): array
     {
-        $options = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'help' => false, 'version' => false];
+        $options = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'help' => false, 'version' => false];
         $count = count($argv);
         for ($index = 0; $index < $count; $index++) {
             $argument = $argv[$index];
@@ -49,21 +57,118 @@ final class DocGenCliArgumentParser
                 $options['vendor'] = $this->vendorGlobs($argument, '--vendor');
             } elseif ($argument === '--vendor-dev' || str_starts_with($argument, '--vendor-dev=')) {
                 $options['vendorDev'] = $this->vendorGlobs($argument, '--vendor-dev');
-            } elseif ($this->valueOption($argument, 'config') !== null || $argument === '--config') {
-                $options['config'] = $this->take($argv, $index, 'config');
-                $index += $this->consumed($argument);
-            } elseif ($this->valueOption($argument, 'output') !== null || $argument === '--output') {
-                $options['output'] = $this->take($argv, $index, 'output');
-                $index += $this->consumed($argument);
-            } elseif ($this->valueOption($argument, 'coverage') !== null || $argument === '--coverage') {
-                $options['coverage'] = $this->take($argv, $index, 'coverage');
-                $index += $this->consumed($argument);
-            } elseif ($this->valueOption($argument, 'memory-limit') !== null || $argument === '--memory-limit') {
-                $options['memoryLimit'] = $this->memoryLimit($this->take($argv, $index, 'memory-limit'));
+            } elseif ($this->isValueOption($argument)) {
+                $name = $this->optionName($argument);
+                $options = $this->applyValueOption($options, $name, $this->take($argv, $index, $name));
                 $index += $this->consumed($argument);
             } else {
                 throw new DocGenException(sprintf('Unknown option: %s', $argument));
             }
+        }
+
+        return $this->validated($options);
+    }
+
+    /**
+     * Reports whether an argument selects one of the value options.
+     */
+    public function isValueOption(string $argument): bool
+    {
+        foreach (self::VALUE_OPTIONS as $name) {
+            if ($argument === '--' . $name || str_starts_with($argument, '--' . $name . '=')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns the name of a long option, without its inline value.
+     */
+    public function optionName(string $argument): string
+    {
+        $name = substr($argument, 2);
+        $position = strpos($name, '=');
+
+        return $position === false ? $name : substr($name, 0, $position);
+    }
+
+    /**
+     * Applies one value option to the option map.
+     *
+     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, help: bool, version: bool} $options
+     *
+     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, help: bool, version: bool}
+     *
+     * @throws DocGenException when the value of the option is malformed
+     */
+    public function applyValueOption(array $options, string $name, string $value): array
+    {
+        if ($name === 'config') {
+            $options['config'] = $value;
+        } elseif ($name === 'output') {
+            $options['output'] = $value;
+        } elseif ($name === 'coverage') {
+            $options['coverage'] = $value;
+        } elseif ($name === 'memory-limit') {
+            $options['memoryLimit'] = $this->memoryLimit($value);
+        } elseif ($name === 'jobs') {
+            $options['jobs'] = $this->jobs($value);
+        } elseif ($name === 'base') {
+            $options['base'] = $value;
+        } elseif ($name === 'head') {
+            $options['head'] = $value;
+        } else {
+            $options = $this->revisionRange($options, $value);
+        }
+
+        return $options;
+    }
+
+    /**
+     * Splits a BASE..HEAD range into the two compared revisions.
+     *
+     * A range without a head compares against the working tree, which is
+     * what a reader looking at their own uncommitted change wants.
+     *
+     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, help: bool, version: bool} $options
+     *
+     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, help: bool, version: bool}
+     *
+     * @throws DocGenException when the range names no base revision
+     */
+    public function revisionRange(array $options, string $value): array
+    {
+        $parts = explode('..', $value, 2);
+        $base = trim($parts[0]);
+        if ($base === '') {
+            throw new DocGenException(sprintf(
+                'Invalid --diff range: %s. Use BASE to compare against the working tree, or BASE..HEAD to compare two revisions.',
+                $value,
+            ));
+        }
+
+        $head = count($parts) === 2 ? trim($parts[1]) : '';
+        $options['base'] = $base;
+        $options['head'] = $head === '' ? $options['head'] : $head;
+
+        return $options;
+    }
+
+    /**
+     * Rejects the option combinations that cannot be acted on.
+     *
+     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, help: bool, version: bool} $options
+     *
+     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, help: bool, version: bool}
+     *
+     * @throws DocGenException when a head revision has nothing to compare against
+     */
+    public function validated(array $options): array
+    {
+        if ($options['head'] !== null && $options['base'] === null) {
+            throw new DocGenException('Option --head needs a revision to compare against: add --base=REVISION, or use --diff=BASE..HEAD.');
         }
 
         return $options;
@@ -174,6 +279,20 @@ final class DocGenCliArgumentParser
         }
 
         return $value;
+    }
+
+    /**
+     * Validates a worker count such as 4, or 1 for a sequential run.
+     *
+     * @throws DocGenException when the value is not a positive number
+     */
+    public function jobs(string $value): int
+    {
+        if (preg_match('/^[1-9]\d*$/', $value) !== 1) {
+            throw new DocGenException(sprintf('Invalid --jobs value: %s. Use a worker count of 1 or more, or leave it out to use the cores of this machine.', $value));
+        }
+
+        return (int) $value;
     }
 
     /**

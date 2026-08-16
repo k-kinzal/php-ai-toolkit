@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Render;
 
-use function get_object_vars;
-
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
 use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\ProjectModel;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
 
 /**
  * Shared renderer collaborators for one site generation run.
@@ -21,9 +20,13 @@ use PhpAiToolkit\DocGen\Analysis\ProjectModel;
  * @property-read TypeHtml $typeHtml
  * @property-read DoctestExtractor $doctest
  * @property-read AssertionScanner $assertions
+ * @property-read DiffHtml $diff
  */
 final class RenderKit
 {
+    /** @readonly */
+    private DiffHtml $diff;
+
     /**
      * Creates the renderer collaborators of one generation run.
      */
@@ -44,7 +47,9 @@ final class RenderKit
         private DoctestExtractor $doctest,
         /** @readonly */
         private AssertionScanner $assertions,
+        ?DiffHtml $diff = null,
     ) {
+        $this->diff = $diff ?? new DiffHtml();
     }
 
     /**
@@ -54,6 +59,17 @@ final class RenderKit
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'diff' => $this->diff,
+            'model' => $this->model,
+            'url' => $this->url,
+            'escaper' => $this->escaper,
+            'highlighter' => $this->highlighter,
+            'markdown' => $this->markdown,
+            'typeHtml' => $this->typeHtml,
+            'doctest' => $this->doctest,
+            'assertions' => $this->assertions,
+            default => null,
+        };
     }
 }

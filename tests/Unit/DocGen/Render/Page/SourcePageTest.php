@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffLine;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
+use PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher;
+use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
 use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\ProjectModel;
@@ -16,6 +22,11 @@ use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
+use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\DiffModeControl;
+use PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml;
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
@@ -23,6 +34,7 @@ use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
 use PhpAiToolkit\DocGen\Render\Page\BreadcrumbHtml;
 use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
 use PhpAiToolkit\DocGen\Render\Page\DocTextHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
 use PhpAiToolkit\DocGen\Render\Page\ExampleHtml;
 use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
 use PhpAiToolkit\DocGen\Render\Page\GraphSvg;
@@ -31,6 +43,7 @@ use PhpAiToolkit\DocGen\Render\Page\LayerPage;
 use PhpAiToolkit\DocGen\Render\Page\MemberHtml;
 use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
 use PhpAiToolkit\DocGen\Render\Page\PackagePage;
+use PhpAiToolkit\DocGen\Render\Page\PrivateSurfaceHtml;
 use PhpAiToolkit\DocGen\Render\Page\RelationsHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
@@ -56,9 +69,17 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(BreadcrumbHtml::class)]
 #[UsesClass(ClassLikePage::class)]
 #[UsesClass(ComposerManifest::class)]
+#[UsesClass(DiffBanner::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffIndex::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffLine::class)]
+#[UsesClass(DiffModeControl::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DoctestExtractor::class)]
 #[UsesClass(DocTextHtml::class)]
+#[UsesClass(DocumentPage::class)]
 #[UsesClass(ExampleHtml::class)]
 #[UsesClass(FunctionPage::class)]
 #[UsesClass(GraphSvg::class)]
@@ -66,6 +87,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(HtmlText::class)]
 #[UsesClass(IndexPage::class)]
 #[UsesClass(LayerPage::class)]
+#[UsesClass(LcsMatcher::class)]
+#[UsesClass(LineDiffer::class)]
+#[UsesClass(MarkdownDiffHtml::class)]
 #[UsesClass(MarkdownInline::class)]
 #[UsesClass(MarkdownRenderer::class)]
 #[UsesClass(MemberHtml::class)]
@@ -74,6 +98,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PackagePage::class)]
 #[UsesClass(PageChrome::class)]
 #[UsesClass(PhpHighlighter::class)]
+#[UsesClass(PrivateSurfaceHtml::class)]
 #[UsesClass(ProjectModel::class)]
 #[UsesClass(RelationsHtml::class)]
 #[UsesClass(RenderKit::class)]
@@ -84,6 +109,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(SiteFileWriter::class)]
 #[UsesClass(SiteRenderer::class)]
 #[UsesClass(SiteUrl::class)]
+#[UsesClass(SourceDiffHtml::class)]
 #[UsesClass(SymbolListHtml::class)]
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TestCaseIndex::class)]
@@ -138,5 +164,52 @@ PHP;
         self::assertStringContainsString('<span class="src-line" id="L1"><a class="ln" href="#L1">1</a>&lt;?php</span>', $html);
         self::assertStringContainsString('<span class="src-line" id="L2"><a class="ln" href="#L2">2</a>', $html);
         self::assertStringContainsString('<span class="tok-var">$count</span> = <span class="tok-num">1</span>;', $html);
+    }
+
+    public function testContentMergesBothRevisionsOfAComparedFile(): void
+    {
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model, new DiffIndex('main', 'HEAD'));
+
+        $html = (new SourcePage())->content($services, 'src/Demo/Widget.php', "<?php\n\$fresh = 1;\n", "<?php\n\$gone = 1;\n");
+
+        self::assertStringContainsString('<pre class="source" data-diff="modified"><code>', $html);
+        self::assertStringContainsString('data-diff="removed"', $html);
+        self::assertStringContainsString('data-diff="added"', $html);
+    }
+
+    public function testContentAnnouncesAFileOnlyOneRevisionHas(): void
+    {
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model, new DiffIndex('main', 'feature'));
+
+        $html = (new SourcePage())->content($services, 'src/Demo/Widget.php', null, "<?php\n");
+
+        self::assertStringContainsString('<div class="notice diff-banner" data-diff="removed">Removed in feature, compared to main.</div>', $html);
+        self::assertStringContainsString('<pre class="source" data-diff="removed"><code>', $html);
+    }
+
+    public function testListingNumbersEveryLineOfOneRevision(): void
+    {
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model);
+
+        $html = (new SourcePage())->listing($services, "<?php\n\$count = 1;");
+
+        self::assertStringContainsString('<span class="src-line" id="L1"><a class="ln" href="#L1">1</a>&lt;?php</span>', $html);
+        self::assertStringContainsString('<span class="src-line" id="L2"><a class="ln" href="#L2">2</a>', $html);
+    }
+
+    public function testStatusOfComparesTheTwoRevisionsOfOneFile(): void
+    {
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $compared = (new SiteRenderer())->services($model, new DiffIndex('main', 'HEAD'));
+        $page = new SourcePage();
+
+        self::assertSame(DiffStatus::SAME, $page->statusOf((new SiteRenderer())->services($model), '<?php', null));
+        self::assertSame(DiffStatus::REMOVED, $page->statusOf($compared, null, '<?php'));
+        self::assertSame(DiffStatus::ADDED, $page->statusOf($compared, '<?php', null));
+        self::assertSame(DiffStatus::SAME, $page->statusOf($compared, "<?php\n", "<?php\r\n"));
+        self::assertSame(DiffStatus::MODIFIED, $page->statusOf($compared, '<?php echo 1;', '<?php echo 2;'));
     }
 }

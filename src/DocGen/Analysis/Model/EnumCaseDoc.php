@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Model;
 
-use function get_object_vars;
-
 /**
  * One enum case declaration.
  *
@@ -38,6 +36,12 @@ final class EnumCaseDoc
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'name' => $this->name,
+            'valueText' => $this->valueText,
+            'docBlock' => $this->docBlock,
+            'line' => $this->line,
+            default => null,
+        };
     }
 }

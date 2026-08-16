@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
@@ -16,6 +18,7 @@ use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
 use PhpAiToolkit\DocGen\Render\SearchIndexBuilder;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -25,6 +28,9 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(SearchIndexBuilder::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(ConstantDoc::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DocBlock::class)]
 #[UsesClass(FunctionDoc::class)]
 #[UsesClass(HierarchyIndex::class)]

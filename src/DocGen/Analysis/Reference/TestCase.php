@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Reference;
 
-use function get_object_vars;
-
 /**
  * One test case that exercises a documented class or member.
  *
@@ -67,6 +65,13 @@ final class TestCase
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'testClass' => $this->testClass,
+            'testMethod' => $this->testMethod,
+            'file' => $this->file,
+            'line' => $this->line,
+            'origin' => $this->origin,
+            default => null,
+        };
     }
 }

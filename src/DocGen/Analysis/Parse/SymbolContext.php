@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Parse;
 
-use function get_object_vars;
-
 /**
  * File-level context shared by all symbols built from one source file.
  *
@@ -41,6 +39,13 @@ final class SymbolContext
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'namespace' => $this->namespace,
+            'useMap' => $this->useMap,
+            'packageName' => $this->packageName,
+            'file' => $this->file,
+            'isDev' => $this->isDev,
+            default => null,
+        };
     }
 }

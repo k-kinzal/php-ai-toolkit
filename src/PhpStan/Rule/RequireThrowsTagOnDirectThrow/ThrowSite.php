@@ -38,6 +38,11 @@ final class ThrowSite
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'thrownNames' => $this->thrownNames,
+            'guardNames' => $this->guardNames,
+            'line' => $this->line,
+            default => null,
+        };
     }
 }

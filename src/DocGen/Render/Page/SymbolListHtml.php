@@ -7,6 +7,7 @@ namespace PhpAiToolkit\DocGen\Render\Page;
 use function count;
 use function ksort;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 
@@ -46,7 +47,8 @@ final class SymbolListHtml
         $html = '';
         foreach ($this->symbols->byKind($rows) as $kind => $kindRows) {
             $html .= sprintf(
-                '<section class="items" id="%s"><h2>%s <span class="count">%d</span><a class="anchor" href="#%s">§</a></h2>',
+                '<section class="items"%s id="%s"><h2>%s <span class="count">%d</span><a class="anchor" href="#%s">§</a></h2>',
+                $services->diff->combined($this->statuses($kindRows)),
                 $services->escaper->e(SymbolIndex::KIND_ANCHORS[$kind] ?? $kind),
                 $services->escaper->e(SymbolIndex::KIND_LABELS[$kind]),
                 count($kindRows),
@@ -71,7 +73,8 @@ final class SymbolListHtml
         $html = '<div class="table-wrap"><table class="item-table">';
         foreach ($rows as $row) {
             $html .= sprintf(
-                '<tr><td><a class="item-name k-%s" href="%s">%s</a></td>%s<td class="item-summary">%s</td></tr>',
+                '<tr%s><td><a class="item-name k-%s" href="%s">%s</a></td>%s<td class="item-summary">%s</td></tr>',
+                $services->diff->mark($row->status),
                 $services->escaper->e($row->kind),
                 $services->escaper->e($services->url->href($pagePath, $row->page)),
                 $services->escaper->e($row->name),
@@ -103,7 +106,8 @@ final class SymbolListHtml
         }
 
         ksort($groups);
-        $html = '<section><h2 id="namespaces">Namespaces<a class="anchor" href="#namespaces">§</a></h2><div class="table-wrap"><table class="symbol-table">';
+        $html = '<section' . $services->diff->combined($this->statuses($rows))
+            . '><h2 id="namespaces">Namespaces<a class="anchor" href="#namespaces">§</a></h2><div class="table-wrap"><table class="symbol-table">';
         foreach ($groups as $groupRows) {
             $html .= $this->namespaceRow($services, $pagePath, $groupRows);
         }
@@ -123,7 +127,8 @@ final class SymbolListHtml
         $label = $services->escaper->e($namespace === '' ? '(global)' : $namespace);
 
         return sprintf(
-            '<tr><td>%s</td><td class="ns-counts">%s</td></tr>',
+            '<tr%s><td>%s</td><td class="ns-counts">%s</td></tr>',
+            $services->diff->combined($this->statuses($rows)),
             $packageName === '' ? $label : sprintf(
                 '<a href="%s">%s</a>',
                 $services->escaper->e($services->url->href($pagePath, $services->url->namespacePage($packageName, $namespace))),
@@ -187,17 +192,38 @@ final class SymbolListHtml
     }
 
     /**
+     * Lists the diff states of a group of rows.
+     *
+     * @param list<SymbolRow> $rows
+     *
+     * @return list<string>
+     */
+    public function statuses(array $rows): array
+    {
+        $statuses = [];
+        foreach ($rows as $row) {
+            $statuses[] = $row->status;
+        }
+
+        return $statuses;
+    }
+
+    /**
      * Renders the sidebar section anchors of a kind-grouped listing.
      *
      * @param list<SymbolRow> $rows
      *
-     * @return list<array{id: string, label: string}>
+     * @return list<array{id: string, label: string, status: string}>
      */
     public function sections(array $rows): array
     {
         $sections = [];
         foreach ($this->symbols->byKind($rows) as $kind => $kindRows) {
-            $sections[] = ['id' => SymbolIndex::KIND_ANCHORS[$kind] ?? $kind, 'label' => SymbolIndex::KIND_LABELS[$kind]];
+            $sections[] = [
+                'id' => SymbolIndex::KIND_ANCHORS[$kind] ?? $kind,
+                'label' => SymbolIndex::KIND_LABELS[$kind],
+                'status' => (new DiffStatus())->combine($this->statuses($kindRows)),
+            ];
         }
 
         return $sections;

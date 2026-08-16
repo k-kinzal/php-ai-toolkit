@@ -9,6 +9,7 @@ use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageReader;
 use PhpAiToolkit\DocGen\Analysis\Coverage\MethodCoverage;
 use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
 use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
+use PhpAiToolkit\DocGen\Analysis\Document\DocumentCollector;
 use PhpAiToolkit\DocGen\Analysis\Layer\DeptracConfigReader;
 use PhpAiToolkit\DocGen\Analysis\Layer\LayerAssigner;
 use PhpAiToolkit\DocGen\Analysis\Layer\LayerCollector;
@@ -40,12 +41,15 @@ use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\LocalTypeMap;
 use PhpAiToolkit\DocGen\Analysis\Reference\PropertyTypeScanner;
 use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
+use PhpAiToolkit\DocGen\Analysis\Reference\TestCase as ReferenceTestCase;
+use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageCollector;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
 use PhpAiToolkit\DocGen\Config\DocGenConfig;
 use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
+use PhpAiToolkit\DocGen\Filesystem\MarkdownFileFinder;
 use PhpAiToolkit\DocGen\Filesystem\SourceFileFinder;
 use PhpAiToolkit\DocGen\Package\ComposerLockReader;
 use PhpAiToolkit\DocGen\Package\ComposerManifest;
@@ -56,7 +60,6 @@ use PhpAiToolkit\DocGen\Package\PackageDiscovery;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PhpAiToolkit\DocGen\Package\PackageGraphBuilder;
 use PhpAiToolkit\DocGen\Package\VendorPackageLocator;
-use PhpParser\NodeTraverser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -78,6 +81,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(DocGenConfig::class)]
 #[UsesClass(DocGenException::class)]
 #[UsesClass(DocGenPathResolver::class)]
+#[UsesClass(DocumentCollector::class)]
 #[UsesClass(EnumCaseBuilder::class)]
 #[UsesClass(ExprTextPrinter::class)]
 #[UsesClass(FileSymbolCollector::class)]
@@ -89,6 +93,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(LayerDefinition::class)]
 #[UsesClass(LayerModel::class)]
 #[UsesClass(LocalTypeMap::class)]
+#[UsesClass(MarkdownFileFinder::class)]
 #[UsesClass(MethodBuilder::class)]
 #[UsesClass(MethodCoverage::class)]
 #[UsesClass(MethodDoc::class)]
@@ -107,6 +112,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(SourceFileFinder::class)]
 #[UsesClass(SymbolContext::class)]
 #[UsesClass(SymbolTable::class)]
+#[UsesClass(ReferenceTestCase::class)]
+#[UsesClass(TestCaseIndex::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(Usage::class)]
 #[UsesClass(UsageCollector::class)]
@@ -322,129 +329,6 @@ XML);
         $mailer = new ClassLikeDoc('Demo\Mailer', 'Mailer', 'Demo', 'class', 'demo/app', 'src/Mailer.php', 1, 5, false, false, [], [], [], [], [], [], [], null, null, [], false);
 
         self::assertSame(['demo\greeter' => ['Domain']], (new ProjectAnalyzer())->layerAssignments($layers, [$greeter, $mailer]));
-    }
-
-    public function testCollectSymbolsParsesPackageSourcesIntoSymbolLists(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-analyzer-' . bin2hex(random_bytes(4));
-        mkdir($dir . '/src', 0777, true);
-        file_put_contents($dir . '/src/Greeter.php', <<<'PHP'
-<?php
-
-namespace Demo;
-
-class Greeter
-{
-}
-PHP);
-        $root = (string) realpath($dir);
-        $manifest = new ComposerManifest($root, 'demo/app', '', ['Demo\\' => ['src']], [], [], [], []);
-        $config = new DocGenConfig($root, ['.'], [], [], 'build/docs', null, null, null);
-
-        $collected = (new ProjectAnalyzer())->collectSymbols($config, [new DiscoveredPackage($manifest, false)], new UsageCollector());
-
-        self::assertCount(1, $collected['classLikes']);
-        self::assertSame('Demo\Greeter', $collected['classLikes'][0]->fqcn);
-        self::assertSame([], $collected['functions']);
-        self::assertSame([], $collected['warnings']);
-    }
-
-    public function testCollectFileReturnsSymbolsAndRecordsUsages(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-analyzer-' . bin2hex(random_bytes(4));
-        mkdir($dir . '/src', 0777, true);
-        file_put_contents($dir . '/src/App.php', <<<'PHP'
-<?php
-
-namespace Demo;
-
-class App
-{
-    public function run(): void
-    {
-        new \Demo\Widget();
-    }
-}
-PHP);
-        $root = (string) realpath($dir);
-        $manifest = new ComposerManifest($root, 'demo/app', '', ['Demo\\' => ['src']], [], [], [], []);
-        $config = new DocGenConfig($root, ['.'], [], [], 'build/docs', null, null, null);
-        $collector = new UsageCollector();
-        $traverser = new NodeTraverser();
-        $traverser->addVisitor($collector);
-
-        $result = (new ProjectAnalyzer())->collectFile($config, new DiscoveredPackage($manifest, false), ['directory' => $root . '/src', 'isDev' => false], $root . '/src/App.php', $collector, $traverser);
-
-        self::assertInstanceOf(FileSymbols::class, $result);
-        self::assertCount(1, $result->classLikes);
-        self::assertSame('Demo\App', $result->classLikes[0]->fqcn);
-        $usages = $collector->usages();
-        self::assertCount(1, $usages);
-        self::assertSame('Demo\Widget', $usages[0]->targetFqcn);
-        self::assertSame('src/App.php', $usages[0]->file);
-    }
-
-    public function testCollectFileReturnsWarningForUnparsableFile(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-analyzer-' . bin2hex(random_bytes(4));
-        mkdir($dir . '/src', 0777, true);
-        file_put_contents($dir . '/src/Broken.php', '<?php class {');
-        $root = (string) realpath($dir);
-        $manifest = new ComposerManifest($root, 'demo/app', '', ['Demo\\' => ['src']], [], [], [], []);
-        $config = new DocGenConfig($root, ['.'], [], [], 'build/docs', null, null, null);
-        $collector = new UsageCollector();
-        $traverser = new NodeTraverser();
-        $traverser->addVisitor($collector);
-
-        $result = (new ProjectAnalyzer())->collectFile($config, new DiscoveredPackage($manifest, false), ['directory' => $root . '/src', 'isDev' => false], $root . '/src/Broken.php', $collector, $traverser);
-
-        self::assertIsString($result);
-        self::assertStringContainsString('Failed to parse src/Broken.php', $result);
-    }
-
-    public function testSourceDirectoriesListsAutoloadAndDevAutoloadDirectories(): void
-    {
-        $manifest = new ComposerManifest('/tmp/demo', 'demo/app', '', ['Demo\\' => ['src']], ['DemoTests\\' => ['tests']], [], [], []);
-
-        $sources = (new ProjectAnalyzer())->sourceDirectories(new DiscoveredPackage($manifest, false));
-
-        self::assertSame([
-            ['directory' => '/tmp/demo/src', 'isDev' => false],
-            ['directory' => '/tmp/demo/tests', 'isDev' => true],
-        ], $sources);
-    }
-
-    public function testSourceDirectoriesAddsExistingClassmapDirectories(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-analyzer-' . bin2hex(random_bytes(4));
-        mkdir($dir . '/lib/legacy', 0777, true);
-        mkdir($dir . '/tests/Fixture', 0777, true);
-        file_put_contents($dir . '/Bootstrap.php', '<?php');
-        $manifest = new ComposerManifest($dir, 'demo/app', '', ['Demo\\' => ['src']], [], [], [], [], ['lib/legacy', 'Bootstrap.php', 'missing'], ['tests/Fixture']);
-
-        $sources = (new ProjectAnalyzer())->sourceDirectories(new DiscoveredPackage($manifest, false));
-
-        self::assertSame([
-            ['directory' => $dir . '/src', 'isDev' => false],
-            ['directory' => $dir . '/lib/legacy', 'isDev' => false],
-            ['directory' => $dir . '/tests/Fixture', 'isDev' => true],
-        ], $sources);
-    }
-
-    public function testSourceDirectoriesMapsEmptyPsr4PathToPackageRoot(): void
-    {
-        $manifest = new ComposerManifest('/tmp/demo/vendor/symfony/yaml', 'symfony/yaml', '', ['Symfony\\Component\\Yaml\\' => ['']], [], [], [], []);
-
-        $sources = (new ProjectAnalyzer())->sourceDirectories(new DiscoveredPackage($manifest, true));
-
-        self::assertSame([['directory' => '/tmp/demo/vendor/symfony/yaml', 'isDev' => false]], $sources);
-    }
-
-    public function testSourceDirectoriesReturnsNothingForPharOnlyPackage(): void
-    {
-        $manifest = new ComposerManifest('/tmp/demo/vendor/phpstan/phpstan', 'phpstan/phpstan', '', [], [], [], [], []);
-
-        self::assertSame([], (new ProjectAnalyzer())->sourceDirectories(new DiscoveredPackage($manifest, true)));
     }
 
     public function testLayerModelThrowsWhenConfiguredDeptracFileIsMissing(): void

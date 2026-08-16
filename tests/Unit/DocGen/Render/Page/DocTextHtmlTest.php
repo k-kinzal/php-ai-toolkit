@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
+use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
 use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
 use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine;
@@ -20,6 +23,9 @@ use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml;
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
@@ -27,6 +33,7 @@ use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
 use PhpAiToolkit\DocGen\Render\Page\BreadcrumbHtml;
 use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
 use PhpAiToolkit\DocGen\Render\Page\DocTextHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
 use PhpAiToolkit\DocGen\Render\Page\ExampleHtml;
 use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
 use PhpAiToolkit\DocGen\Render\Page\GraphSvg;
@@ -35,6 +42,7 @@ use PhpAiToolkit\DocGen\Render\Page\LayerPage;
 use PhpAiToolkit\DocGen\Render\Page\MemberHtml;
 use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
 use PhpAiToolkit\DocGen\Render\Page\PackagePage;
+use PhpAiToolkit\DocGen\Render\Page\PrivateSurfaceHtml;
 use PhpAiToolkit\DocGen\Render\Page\RelationsHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SignatureHtml;
@@ -61,10 +69,14 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(BreadcrumbHtml::class)]
 #[UsesClass(ClassLikePage::class)]
 #[UsesClass(ComposerManifest::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DocBlock::class)]
 #[UsesClass(DocBlockReader::class)]
 #[UsesClass(DoctestExtractor::class)]
+#[UsesClass(DocumentPage::class)]
 #[UsesClass(ExampleHtml::class)]
 #[UsesClass(FunctionPage::class)]
 #[UsesClass(GraphSvg::class)]
@@ -72,6 +84,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(HtmlText::class)]
 #[UsesClass(IndexPage::class)]
 #[UsesClass(LayerPage::class)]
+#[UsesClass(LineDiffer::class)]
+#[UsesClass(MarkdownDiffHtml::class)]
 #[UsesClass(MarkdownInline::class)]
 #[UsesClass(MarkdownRenderer::class)]
 #[UsesClass(MemberHtml::class)]
@@ -81,6 +95,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PageChrome::class)]
 #[UsesClass(PhpDocParserBridge::class)]
 #[UsesClass(PhpHighlighter::class)]
+#[UsesClass(PrivateSurfaceHtml::class)]
 #[UsesClass(ProjectModel::class)]
 #[UsesClass(RelationsHtml::class)]
 #[UsesClass(RenderKit::class)]
@@ -90,6 +105,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(SiteFileWriter::class)]
 #[UsesClass(SiteRenderer::class)]
 #[UsesClass(SiteUrl::class)]
+#[UsesClass(SourceDiffHtml::class)]
 #[UsesClass(SourcePage::class)]
 #[UsesClass(SymbolListHtml::class)]
 #[UsesClass(SymbolTable::class)]

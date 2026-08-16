@@ -43,7 +43,7 @@ The toolkit provides PHPStan and PHPUnit integrations, shared runtime services, 
 | **Installer CLI** | Installs skills and templates into target projects | `src/Installer/Cli/Application.php`, binary `bin/php-ai-toolkit` |
 | **LocGuard CLI** | Checks source LOC, NCLOC, length, and cyclomatic complexity metrics | `src/LocGuard/` (`Cli/`, `Config/`, `Filesystem/`, `Analysis/` with `Token/`, `Complexity/`, `FunctionMetric/`, `ClassLikeMetric/`, and `FileMetric/`, and `Reporting/`), binary `bin/loc-guard`, config `loc.yaml` |
 | **TreeGuard CLI** | Enforces per-directory file and subdirectory counts, recursive subtree totals, nesting depth, file and directory naming globs and case conventions, required files, and empty-directory detection | `src/TreeGuard/` (`Cli/`, `Config/`, `Filesystem/`, `Analysis/`, `Reporting/`), binary `bin/tree-guard`, config `tree.yaml` |
-| **DocGen CLI** | Generates a static HTML documentation site — complete PHPDoc/PHPStan/Psalm types, interface implementations and call sites, deptrac layer graphs, coverage-backed test references, rendered repository Markdown documents, and doctest-php-compatible examples — for the project's composer packages, monorepo packages, and optionally vendor packages | `src/DocGen/` (`Cli/`, `Config/`, `Package/`, `Filesystem/`, `Analysis/` with `Parse/`, `Doc/`, `Model/`, `Reference/`, `Doctest/`, `Document/`, `Layer/`, and `Coverage/`, and `Render/` with `Page/`), binary `bin/doc-gen`, config `doc.yaml`, assets `resources/docgen/` |
+| **DocGen CLI** | Generates a static HTML documentation site — complete PHPDoc/PHPStan/Psalm types, interface implementations and call sites, deptrac layer graphs, coverage-backed test references, rendered repository Markdown documents, doctest-php-compatible examples, and an optional two-revision diff mode with three display modes — for the project's composer packages, monorepo packages, and optionally vendor packages | `src/DocGen/` (`Cli/`, `Config/`, `Package/`, `Filesystem/`, `Git/`, `Analysis/` with `Parse/`, `Doc/`, `Model/`, `Reference/`, `Doctest/`, `Document/`, `Layer/`, `Coverage/`, and `Diff/`, and `Render/` with `Page/` and `Diff/`), binary `bin/doc-gen`, config `doc.yaml`, assets `resources/docgen/` |
 
 Integration: PHPStan loads `extension.neon`, which registers all 26 Rule services, their Support service, and the ThrowType extension service.
 Optionally, `error-formatter.neon` registers the ErrorFormatter. PHPUnit loads the TestReporter extension via `phpunit.xml.dist`. The Installer CLI
@@ -57,6 +57,7 @@ src/
   DocGen/
     Analysis/          # Project analysis pipeline
       Coverage/        # PHPUnit coverage-xml report reading
+      Diff/            # Two-revision comparison of the documented model
       Doc/             # PHPDoc parsing (phpstan/psalm-aware types)
       Doctest/         # doctest-php-compatible example extraction
       Document/        # Repository Markdown document collection
@@ -67,8 +68,10 @@ src/
     Cli/               # DocGen command-line application and preview server
     Config/            # doc.yaml loading and validation
     Filesystem/        # PSR-4 source discovery and site file writing
+    Git/               # Revision checkout of the compared revisions
     Package/           # Composer package and monorepo discovery
     Render/            # Static site renderer
+      Diff/            # Diff marks, display mode switch, line and block diffs
       Page/            # Page and partial renderers
   Installer/
     Cli/               # Project setup application
@@ -105,12 +108,13 @@ src/
 tests/
   Unit/                # Unit-test mirror of all seven src/ top-level directories
     DocGen/
-      Analysis/        # Analysis tests, including all eight subdirectory mirrors
+      Analysis/        # Analysis tests, including all nine subdirectory mirrors
       Cli/             # DocGen CLI tests
       Config/          # DocGen configuration tests
       Filesystem/      # DocGen filesystem tests
+      Git/             # Revision checkout tests
       Package/         # Package discovery tests
-      Render/          # Renderer tests, including the Page/ mirror
+      Render/          # Renderer tests, including the Page/ and Diff/ mirrors
     Installer/
       Cli/             # Installer CLI tests
     LocGuard/

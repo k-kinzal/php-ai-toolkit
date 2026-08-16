@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
 use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\ProjectModel;
@@ -12,6 +15,8 @@ use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\DiffModeControl;
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
@@ -26,6 +31,11 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversClass(PageChrome::class)]
 #[UsesClass(AssertionScanner::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffIndex::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffModeControl::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DoctestExtractor::class)]
 #[UsesClass(HierarchyIndex::class)]
 #[UsesClass(HtmlText::class)]
@@ -69,5 +79,47 @@ final class PageChromeTest extends TestCase
 
         self::assertStringContainsString('<link rel="stylesheet" href="assets/style.css">', $html);
         self::assertStringContainsString('<body data-root="">', $html);
+    }
+
+    public function testPageOffersTheDisplayModesOfAComparison(): void
+    {
+        $model = new ProjectModel('Demo Docs', '/tmp/docgen-root', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $kit = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner(), new DiffHtml(new DiffIndex('main', 'HEAD')));
+
+        $html = (new PageChrome())->page($kit, 'index.html', 'Overview', '', '', '');
+
+        self::assertStringContainsString('<div class="diff-modes" id="diff-modes"', $html);
+        self::assertStringContainsString('docgen-diff-mode', $html);
+        self::assertStringContainsString('<p class="diff-empty" id="diff-empty"', $html);
+    }
+
+    public function testBootstrapRestoresTheThemeAndTheDisplayMode(): void
+    {
+        $model = new ProjectModel('Demo Docs', '/tmp/docgen-root', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $plain = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+        $compared = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner(), new DiffHtml(new DiffIndex('main', 'HEAD')));
+
+        self::assertSame(
+            '<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.theme=t}}catch(e){}</script>',
+            (new PageChrome())->bootstrap($plain),
+        );
+        self::assertStringContainsString(
+            'document.documentElement.dataset.diffMode=localStorage.getItem("docgen-diff-mode")||"inline"',
+            (new PageChrome())->bootstrap($compared),
+        );
+    }
+
+    public function testEmptyHintCarriesBothAnswersOfAComparedPage(): void
+    {
+        $model = new ProjectModel('Demo Docs', '/tmp/docgen-root', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $plain = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+        $compared = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner(), new DiffHtml(new DiffIndex('main', 'feature')));
+
+        self::assertSame('', (new PageChrome())->emptyHint($plain));
+        self::assertSame(
+            '<p class="diff-empty" id="diff-empty" data-changes="Nothing on this page changed between main and feature."'
+            . ' data-off="This page documents what main had and feature no longer has. Switch to Diff to read it." hidden></p>' . "\n",
+            (new PageChrome())->emptyHint($compared),
+        );
     }
 }

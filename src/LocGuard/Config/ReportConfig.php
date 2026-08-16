@@ -30,6 +30,10 @@ final class ReportConfig
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'reporter' => $this->reporter,
+            'orderBy' => $this->orderBy,
+            default => null,
+        };
     }
 }

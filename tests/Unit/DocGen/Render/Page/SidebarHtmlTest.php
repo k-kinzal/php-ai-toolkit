@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
+use PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher;
+use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
 use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
@@ -14,17 +19,48 @@ use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
+use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
 use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
+use PhpAiToolkit\DocGen\Render\AssetPublisher;
+use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\DiffModeControl;
+use PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml;
 use PhpAiToolkit\DocGen\Render\HtmlText;
+use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
+use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
+use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
+use PhpAiToolkit\DocGen\Render\Page\DocTextHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentListHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
+use PhpAiToolkit\DocGen\Render\Page\ExampleHtml;
+use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
+use PhpAiToolkit\DocGen\Render\Page\GraphSvg;
+use PhpAiToolkit\DocGen\Render\Page\IndexPage;
+use PhpAiToolkit\DocGen\Render\Page\LayerPage;
+use PhpAiToolkit\DocGen\Render\Page\MemberHtml;
+use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
+use PhpAiToolkit\DocGen\Render\Page\PackagePage;
+use PhpAiToolkit\DocGen\Render\Page\PrivateSurfaceHtml;
+use PhpAiToolkit\DocGen\Render\Page\RelationsHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
+use PhpAiToolkit\DocGen\Render\Page\SignatureHtml;
+use PhpAiToolkit\DocGen\Render\Page\SourcePage;
 use PhpAiToolkit\DocGen\Render\Page\SymbolIndex;
+use PhpAiToolkit\DocGen\Render\Page\SymbolListHtml;
 use PhpAiToolkit\DocGen\Render\Page\SymbolRow;
+use PhpAiToolkit\DocGen\Render\Page\TestCaseHtml;
+use PhpAiToolkit\DocGen\Render\Page\UsageListHtml;
+use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
+use PhpAiToolkit\DocGen\Render\SearchIndexBuilder;
+use PhpAiToolkit\DocGen\Render\SiteRenderer;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -32,27 +68,63 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(SidebarHtml::class)]
+#[UsesClass(AllItemsPage::class)]
 #[UsesClass(AssertionScanner::class)]
+#[UsesClass(AssetPublisher::class)]
 #[UsesClass(ClassLikeDoc::class)]
+#[UsesClass(ClassLikePage::class)]
 #[UsesClass(ComposerManifest::class)]
+#[UsesClass(DiffBanner::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffIndex::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffModeControl::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DoctestExtractor::class)]
+#[UsesClass(DocTextHtml::class)]
+#[UsesClass(DocumentListHtml::class)]
+#[UsesClass(DocumentPage::class)]
+#[UsesClass(ExampleHtml::class)]
 #[UsesClass(FunctionDoc::class)]
+#[UsesClass(FunctionPage::class)]
+#[UsesClass(GraphSvg::class)]
 #[UsesClass(HierarchyIndex::class)]
 #[UsesClass(HtmlText::class)]
+#[UsesClass(IndexPage::class)]
+#[UsesClass(LayerPage::class)]
+#[UsesClass(LcsMatcher::class)]
+#[UsesClass(LineDiffer::class)]
+#[UsesClass(MarkdownDiffHtml::class)]
+#[UsesClass(MarkdownInline::class)]
 #[UsesClass(MarkdownRenderer::class)]
+#[UsesClass(MemberHtml::class)]
+#[UsesClass(NamespacePage::class)]
 #[UsesClass(PackageGraph::class)]
+#[UsesClass(PackagePage::class)]
+#[UsesClass(PageChrome::class)]
+#[UsesClass(PrivateSurfaceHtml::class)]
 #[UsesClass(ProjectModel::class)]
+#[UsesClass(RelationsHtml::class)]
 #[UsesClass(RenderKit::class)]
+#[UsesClass(SearchIndexBuilder::class)]
 #[UsesClass(SidebarScope::class)]
+#[UsesClass(SignatureHtml::class)]
+#[UsesClass(SiteFileWriter::class)]
+#[UsesClass(SiteRenderer::class)]
 #[UsesClass(SiteUrl::class)]
+#[UsesClass(SourceDiffHtml::class)]
+#[UsesClass(SourcePage::class)]
 #[UsesClass(SymbolIndex::class)]
+#[UsesClass(SymbolListHtml::class)]
 #[UsesClass(SymbolRow::class)]
 #[UsesClass(SymbolTable::class)]
+#[UsesClass(TestCaseHtml::class)]
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(TypeHtml::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UsageIndex::class)]
+#[UsesClass(UsageListHtml::class)]
 final class SidebarHtmlTest extends TestCase
 {
     public function testBuildRendersPageSectionsPackageBlockAndNamespaceSiblings(): void
@@ -244,6 +316,43 @@ final class SidebarHtmlTest extends TestCase
 
         self::assertSame(['Domain', 'Infrastructure'], (new SidebarHtml())->packageLayers($services, 'demo/pkg'));
         self::assertSame([], (new SidebarHtml())->packageLayers($services, 'other/pkg'));
+    }
+
+    public function testLayerBlockMarksEveryLayerWithTheStateOfItsSymbols(): void
+    {
+        $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/pkg', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $runner = new ClassLikeDoc('Demo\Core\Runner', 'Runner', 'Demo\Core', 'interface', 'demo/pkg', 'src/Core/Runner.php', 3, 9, false, false, [], [], [], [], [], [], [], null, null, [], false);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $assignments = ['demo\core\engine' => ['Infrastructure'], 'demo\core\runner' => ['Domain']];
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [$engine, $runner], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, $assignments, null, []);
+        $index = new DiffIndex('main', 'HEAD');
+        $index->mark($index->keys()->classLike('Demo\Core\Engine'), DiffStatus::ADDED);
+        $services = (new SiteRenderer())->services($model, $index);
+
+        $html = (new SidebarHtml())->layerBlock($services, 'index.html', 'demo/pkg');
+
+        self::assertStringContainsString('<div class="sb-kind" data-diff="modified">Layers</div>', $html);
+        self::assertStringContainsString('<li data-diff="same"><a href="demo/pkg/layer.Domain.html">Domain</a></li>', $html);
+        self::assertStringContainsString('<li data-diff="added"><a href="demo/pkg/layer.Infrastructure.html">Infrastructure</a></li>', $html);
+        self::assertSame('', (new SidebarHtml())->layerBlock($services, 'index.html', 'other/pkg'));
+    }
+
+    public function testLayerStatusesCombineTheSymbolsOfEachLayer(): void
+    {
+        $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/pkg', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $runner = new ClassLikeDoc('Demo\Core\Runner', 'Runner', 'Demo\Core', 'interface', 'demo/pkg', 'src/Core/Runner.php', 3, 9, false, false, [], [], [], [], [], [], [], null, null, [], false);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $assignments = ['demo\core\engine' => ['Domain'], 'demo\core\runner' => ['Domain']];
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [$engine, $runner], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, $assignments, null, []);
+        $index = new DiffIndex('main', 'HEAD');
+        $index->mark($index->keys()->classLike('Demo\Core\Engine'), DiffStatus::ADDED);
+        $index->mark($index->keys()->classLike('Demo\Core\Runner'), DiffStatus::ADDED);
+
+        self::assertSame(
+            ['Domain' => DiffStatus::ADDED],
+            (new SidebarHtml())->layerStatuses((new SiteRenderer())->services($model, $index), 'demo/pkg'),
+        );
+        self::assertSame([], (new SidebarHtml())->layerStatuses((new SiteRenderer())->services($model), 'other/pkg'));
     }
 
     public function testLastSegmentReturnsTrailingNamespaceSegment(): void

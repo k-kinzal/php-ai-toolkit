@@ -41,6 +41,13 @@ final class TreeGuardConfig
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'root' => $this->root,
+            'paths' => $this->paths,
+            'exclude' => $this->exclude,
+            'rules' => $this->rules,
+            'report' => $this->report,
+            default => null,
+        };
     }
 }

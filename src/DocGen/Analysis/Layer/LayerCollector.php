@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Layer;
 
-use function get_object_vars;
-
 /**
  * One deptrac layer collector definition.
  *
@@ -32,6 +30,10 @@ final class LayerCollector
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'type' => $this->type,
+            'value' => $this->value,
+            default => null,
+        };
     }
 }

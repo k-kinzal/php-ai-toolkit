@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Render\Page;
 
-use function get_object_vars;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 
 /**
  * One symbol entry of a navigation or index listing.
@@ -16,11 +16,13 @@ use function get_object_vars;
  * @property-read string $summary
  * @property-read list<string> $layers
  * @property-read string $namespace
+ * @property-read string $status
  */
 final class SymbolRow
 {
     /**
      * @param list<string> $layers
+     * @param string $status the diff state of the listed symbol
      */
     public function __construct(
         /** @readonly */
@@ -37,6 +39,8 @@ final class SymbolRow
         private array $layers,
         /** @readonly */
         private string $namespace = '',
+        /** @readonly */
+        private string $status = DiffStatus::SAME,
     ) {
     }
 
@@ -47,6 +51,16 @@ final class SymbolRow
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'kind' => $this->kind,
+            'name' => $this->name,
+            'fqcn' => $this->fqcn,
+            'page' => $this->page,
+            'summary' => $this->summary,
+            'layers' => $this->layers,
+            'namespace' => $this->namespace,
+            'status' => $this->status,
+            default => null,
+        };
     }
 }

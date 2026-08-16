@@ -32,6 +32,10 @@ final class FileAnalysis
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'file' => $this->file,
+            'violations' => $this->violations,
+            default => null,
+        };
     }
 }

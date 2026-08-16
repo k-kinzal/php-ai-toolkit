@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Model;
 
-use function get_object_vars;
-
 /**
  * Structured view of one PHPDoc block.
  *
@@ -77,6 +75,22 @@ final class DocBlock
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'summary' => $this->summary,
+            'description' => $this->description,
+            'params' => $this->params,
+            'return' => $this->return,
+            'var' => $this->var,
+            'throws' => $this->throws,
+            'templates' => $this->templates,
+            'aliases' => $this->aliases,
+            'extendsTags' => $this->extendsTags,
+            'implementsTags' => $this->implementsTags,
+            'usesTags' => $this->usesTags,
+            'deprecated' => $this->deprecated,
+            'internal' => $this->internal,
+            'raw' => $this->raw,
+            default => null,
+        };
     }
 }

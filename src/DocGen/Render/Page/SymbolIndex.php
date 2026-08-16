@@ -52,6 +52,134 @@ final class SymbolIndex
         'function' => 'functions',
     ];
 
+    private ?RenderKit $run = null;
+
+    /** @var array<string, list<SymbolRow>> */
+    private array $rowsOfNamespace = [];
+
+    /** @var array<string, list<SymbolRow>> */
+    private array $rowsOfPackage = [];
+
+    /** @var array<string, list<string>> */
+    private array $namespacesOfPackage = [];
+
+    /** @var array<string, list<string>> */
+    private array $layersOfPackage = [];
+
+    /** @var array<string, array<string, string>> */
+    private array $layerStatusesOfPackage = [];
+
+    /**
+     * Remembers the listings of one render run.
+     *
+     * A listing is derived from the model and the comparison of one render
+     * kit, and both stand still for the whole run, so the listing built for
+     * the first page that asks answers every later page as well. This is
+     * what keeps the sidebar of a site with hundreds of pages from scanning
+     * the whole model once per page. A kit that differs from the remembered
+     * one opens a new run and drops the listings of the previous one.
+     */
+    public function openRun(RenderKit $services): void
+    {
+        if ($this->run === $services) {
+            return;
+        }
+
+        $this->run = $services;
+        $this->rowsOfNamespace = [];
+        $this->rowsOfPackage = [];
+        $this->namespacesOfPackage = [];
+        $this->layersOfPackage = [];
+        $this->layerStatusesOfPackage = [];
+    }
+
+    /**
+     * Builds the namespace listings of one package in a single pass.
+     *
+     * A site asks for the listing of every namespace it has, so scanning
+     * the whole model once per namespace would cost the square of what a
+     * project is worth. Every namespace of a package is therefore grouped
+     * in one walk over the model, the first time any listing of that
+     * package is asked for.
+     */
+    public function openPackage(RenderKit $services, string $packageName): void
+    {
+        $this->openRun($services);
+        if (isset($this->namespacesOfPackage[$packageName])) {
+            return;
+        }
+
+        $grouped = $this->classLikeRows($services, $packageName);
+        foreach ($this->functionRows($services, $packageName) as $namespace => $rows) {
+            foreach ($rows as $row) {
+                $grouped[$namespace][] = $row;
+            }
+        }
+
+        ksort($grouped);
+        foreach ($grouped as $namespace => $rows) {
+            $this->rowsOfNamespace[$packageName . "\n" . $namespace] = $this->sorted($rows);
+        }
+
+        $this->namespacesOfPackage[$packageName] = array_keys($grouped);
+    }
+
+    /**
+     * Groups the documented class-like symbols of one package by namespace.
+     *
+     * @return array<string, list<SymbolRow>>
+     */
+    public function classLikeRows(RenderKit $services, string $packageName): array
+    {
+        $grouped = [];
+        foreach ($services->model->classLikes as $classLike) {
+            if ($classLike->packageName !== $packageName || $classLike->isDev) {
+                continue;
+            }
+
+            $grouped[$classLike->namespace][] = new SymbolRow(
+                $classLike->kind,
+                $classLike->shortName,
+                $classLike->fqcn,
+                $services->url->classLikePage($classLike),
+                $classLike->docBlock !== null ? $classLike->docBlock->summary : '',
+                $services->model->layerAssignments[strtolower($classLike->fqcn)] ?? [],
+                $classLike->namespace,
+                $services->diff->classLikeStatus($classLike->fqcn),
+            );
+        }
+
+        return $grouped;
+    }
+
+    /**
+     * Groups the documented top-level functions of one package by namespace.
+     *
+     * @return array<string, list<SymbolRow>>
+     */
+    public function functionRows(RenderKit $services, string $packageName): array
+    {
+        $grouped = [];
+        foreach ($services->model->functions as $function) {
+            if ($function->packageName !== $packageName || $function->isDev) {
+                continue;
+            }
+
+            $grouped[$function->namespace][] = new SymbolRow(
+                'function',
+                $function->shortName,
+                $function->fqn,
+                $services->url->functionPage($function),
+                $function->docBlock !== null ? $function->docBlock->summary : '',
+                [],
+                $function->namespace,
+                $services->diff->statusOf($services->diff->functionKey($function->fqn)),
+            );
+        }
+
+        return $grouped;
+    }
+
     /**
      * Lists the symbols declared directly in one namespace of a package.
      *
@@ -59,36 +187,9 @@ final class SymbolIndex
      */
     public function inNamespace(RenderKit $services, string $packageName, string $namespace): array
     {
-        $rows = [];
-        foreach ($services->model->classLikes as $classLike) {
-            if ($classLike->packageName === $packageName && !$classLike->isDev && $classLike->namespace === $namespace) {
-                $rows[] = new SymbolRow(
-                    $classLike->kind,
-                    $classLike->shortName,
-                    $classLike->fqcn,
-                    $services->url->classLikePage($classLike),
-                    $classLike->docBlock !== null ? $classLike->docBlock->summary : '',
-                    $services->model->layerAssignments[strtolower($classLike->fqcn)] ?? [],
-                    $classLike->namespace,
-                );
-            }
-        }
+        $this->openPackage($services, $packageName);
 
-        foreach ($services->model->functions as $function) {
-            if ($function->packageName === $packageName && !$function->isDev && $function->namespace === $namespace) {
-                $rows[] = new SymbolRow(
-                    'function',
-                    $function->shortName,
-                    $function->fqn,
-                    $services->url->functionPage($function),
-                    $function->docBlock !== null ? $function->docBlock->summary : '',
-                    [],
-                    $function->namespace,
-                );
-            }
-        }
-
-        return $this->sorted($rows);
+        return $this->rowsOfNamespace[$packageName . "\n" . $namespace] ?? [];
     }
 
     /**
@@ -98,14 +199,19 @@ final class SymbolIndex
      */
     public function inPackage(RenderKit $services, string $packageName): array
     {
+        $this->openPackage($services, $packageName);
+        if (isset($this->rowsOfPackage[$packageName])) {
+            return $this->rowsOfPackage[$packageName];
+        }
+
         $rows = [];
-        foreach ($this->namespacesOf($services, $packageName) as $namespace) {
-            foreach ($this->inNamespace($services, $packageName, $namespace) as $row) {
+        foreach ($this->namespacesOfPackage[$packageName] ?? [] as $namespace) {
+            foreach ($this->rowsOfNamespace[$packageName . "\n" . $namespace] ?? [] as $row) {
                 $rows[] = $row;
             }
         }
 
-        return $rows;
+        return $this->rowsOfPackage[$packageName] = $rows;
     }
 
     /**
@@ -123,6 +229,57 @@ final class SymbolIndex
         }
 
         return $rows;
+    }
+
+    /**
+     * Lists the architecture layers that hold symbols of one package.
+     *
+     * @return list<string>
+     */
+    public function layersOf(RenderKit $services, string $packageName): array
+    {
+        $rows = $this->inPackage($services, $packageName);
+        if (isset($this->layersOfPackage[$packageName])) {
+            return $this->layersOfPackage[$packageName];
+        }
+
+        $layers = [];
+        foreach ($rows as $row) {
+            foreach ($row->layers as $layer) {
+                $layers[$layer] = true;
+            }
+        }
+
+        ksort($layers);
+
+        return $this->layersOfPackage[$packageName] = array_keys($layers);
+    }
+
+    /**
+     * Combines the state of the symbols of every architecture layer.
+     *
+     * @return array<string, string>
+     */
+    public function layerStatuses(RenderKit $services, string $packageName): array
+    {
+        $rows = $this->inPackage($services, $packageName);
+        if (isset($this->layerStatusesOfPackage[$packageName])) {
+            return $this->layerStatusesOfPackage[$packageName];
+        }
+
+        $byLayer = [];
+        foreach ($rows as $row) {
+            foreach ($row->layers as $layer) {
+                $byLayer[$layer][] = $row->status;
+            }
+        }
+
+        $statuses = [];
+        foreach ($byLayer as $layer => $layerStatuses) {
+            $statuses[$layer] = $services->diff->combine($layerStatuses);
+        }
+
+        return $this->layerStatusesOfPackage[$packageName] = $statuses;
     }
 
     /**
@@ -153,22 +310,9 @@ final class SymbolIndex
      */
     public function namespacesOf(RenderKit $services, string $packageName): array
     {
-        $namespaces = [];
-        foreach ($services->model->classLikes as $classLike) {
-            if ($classLike->packageName === $packageName && !$classLike->isDev) {
-                $namespaces[$classLike->namespace] = true;
-            }
-        }
+        $this->openPackage($services, $packageName);
 
-        foreach ($services->model->functions as $function) {
-            if ($function->packageName === $packageName && !$function->isDev) {
-                $namespaces[$function->namespace] = true;
-            }
-        }
-
-        ksort($namespaces);
-
-        return array_keys($namespaces);
+        return $this->namespacesOfPackage[$packageName] ?? [];
     }
 
     /**

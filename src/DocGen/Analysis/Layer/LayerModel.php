@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Layer;
 
-use function get_object_vars;
-
 /**
  * The architectural layers and allowed dependencies of a project.
  *
@@ -35,6 +33,10 @@ final class LayerModel
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'layers' => $this->layers,
+            'ruleset' => $this->ruleset,
+            default => null,
+        };
     }
 }

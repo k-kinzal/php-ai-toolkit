@@ -72,6 +72,21 @@ final class RuleConfig
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'path' => $this->path,
+            'maxFiles' => $this->maxFiles,
+            'maxDirs' => $this->maxDirs,
+            'maxTotalFiles' => $this->maxTotalFiles,
+            'maxDepth' => $this->maxDepth,
+            'allow' => $this->allow,
+            'deny' => $this->deny,
+            'allowDirs' => $this->allowDirs,
+            'denyDirs' => $this->denyDirs,
+            'require' => $this->require,
+            'forbidEmpty' => $this->forbidEmpty,
+            'fileCase' => $this->fileCase,
+            'dirCase' => $this->dirCase,
+            default => null,
+        };
     }
 }

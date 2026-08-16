@@ -36,6 +36,29 @@ use const T_VARIABLE;
 final class PhpHighlighter
 {
     /**
+     * Span class of every token id that highlights on its id alone.
+     *
+     * Source listings walk every token of every documented file, so the
+     * class of a token is looked up once in this table instead of being
+     * searched for through a chain of token comparisons.
+     *
+     * @var array<int, string>
+     */
+    private const TOKEN_CLASSES = [
+        T_COMMENT => 'tok-com',
+        T_DOC_COMMENT => 'tok-com',
+        T_CONSTANT_ENCAPSED_STRING => 'tok-str',
+        T_ENCAPSED_AND_WHITESPACE => 'tok-str',
+        T_LNUMBER => 'tok-num',
+        T_DNUMBER => 'tok-num',
+        T_VARIABLE => 'tok-var',
+        T_STRING => 'tok-id',
+        T_NAME_QUALIFIED => 'tok-id',
+        T_NAME_FULLY_QUALIFIED => 'tok-id',
+        T_NAME_RELATIVE => 'tok-id',
+    ];
+
+    /**
      * Highlights a full PHP source text into span-wrapped HTML.
      */
     public function highlight(string $code): string
@@ -72,34 +95,17 @@ final class PhpHighlighter
      */
     public function classFor(PhpToken $token): ?string
     {
-        if ($token->is([T_COMMENT, T_DOC_COMMENT])) {
-            return 'tok-com';
+        $id = $token->id;
+        if (isset(self::TOKEN_CLASSES[$id])) {
+            return self::TOKEN_CLASSES[$id];
         }
 
-        if ($token->is([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE])) {
-            return 'tok-str';
-        }
-
-        if ($token->is([T_LNUMBER, T_DNUMBER])) {
-            return 'tok-num';
-        }
-
-        if ($token->is(T_VARIABLE)) {
-            return 'tok-var';
-        }
-
-        if ($token->is([T_STRING, T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED, T_NAME_RELATIVE])) {
-            return 'tok-id';
-        }
-
-        if ($token->is(T_INLINE_HTML)) {
+        if ($id < 256 || $id === T_INLINE_HTML) {
             return null;
         }
 
-        if ($token->id >= 256 && ctype_alpha(str_starts_with($token->text, '?') ? substr($token->text, 1) : $token->text)) {
-            return 'tok-kw';
-        }
-
-        return null;
+        return ctype_alpha(str_starts_with($token->text, '?') ? substr($token->text, 1) : $token->text)
+            ? 'tok-kw'
+            : null;
     }
 }

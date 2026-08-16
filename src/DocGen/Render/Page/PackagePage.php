@@ -147,7 +147,7 @@ final class PackagePage
             }
         }
 
-        return '<section><h2 id="layers">Architecture layers<a class="anchor" href="#layers">§</a></h2>'
+        return '<section' . $services->diff->unchanged() . '><h2 id="layers">Architecture layers<a class="anchor" href="#layers">§</a></h2>'
             . '<p class="section-note">Layers and allowed dependencies from <code>deptrac.yaml</code>. Layers without an arrow are dependency-free by rule.</p>'
             . '<div class="graph-wrap">' . $this->graph->render($nodes, $edges) . '</div></section>' . "\n";
     }
@@ -196,7 +196,7 @@ final class PackagePage
                 return null;
             });
 
-        return '<section class="readme"><h2 id="readme">README<a class="anchor" href="#readme">§</a></h2>' . $markdown . '</section>' . "\n";
+        return '<section class="readme"' . $services->diff->unchanged() . '><h2 id="readme">README<a class="anchor" href="#readme">§</a></h2>' . $markdown . '</section>' . "\n";
     }
 
     /**

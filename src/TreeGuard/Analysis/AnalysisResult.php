@@ -35,7 +35,11 @@ final class AnalysisResult
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'listings' => $this->listings,
+            'violations' => $this->violations,
+            default => null,
+        };
     }
 
     /**

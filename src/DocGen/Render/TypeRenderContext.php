@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Render;
 
-use function get_object_vars;
-
 use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 
 /**
@@ -51,6 +49,14 @@ final class TypeRenderContext
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'pagePath' => $this->pagePath,
+            'namespace' => $this->namespace,
+            'useMap' => $this->useMap,
+            'templates' => $this->templates,
+            'aliases' => $this->aliases,
+            'symbolTable' => $this->symbolTable,
+            default => null,
+        };
     }
 }

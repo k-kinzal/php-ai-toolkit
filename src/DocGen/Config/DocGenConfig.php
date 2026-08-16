@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Config;
 
-use function get_object_vars;
-
 /**
  * Immutable DocGen configuration loaded from doc.yaml.
  *
@@ -59,6 +57,17 @@ final class DocGenConfig
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'root' => $this->root,
+            'packages' => $this->packages,
+            'vendor' => $this->vendor,
+            'exclude' => $this->exclude,
+            'output' => $this->output,
+            'title' => $this->title,
+            'deptrac' => $this->deptrac,
+            'coverage' => $this->coverage,
+            'vendorDev' => $this->vendorDev,
+            default => null,
+        };
     }
 }

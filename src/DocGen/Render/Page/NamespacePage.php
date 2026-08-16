@@ -120,14 +120,21 @@ final class NamespacePage
             return '';
         }
 
+        $statuses = [];
+        foreach ($children as $child) {
+            $statuses[] = $services->diff->namespaceStatus($packageName, $child);
+        }
+
         $html = sprintf(
-            '<section class="items" id="namespaces"><h2>Namespaces <span class="count">%d</span><a class="anchor" href="#namespaces">§</a></h2><div class="table-wrap"><table class="item-table">',
+            '<section class="items"%s id="namespaces"><h2>Namespaces <span class="count">%d</span><a class="anchor" href="#namespaces">§</a></h2><div class="table-wrap"><table class="item-table">',
+            $services->diff->combined($statuses),
             count($children),
         );
         foreach ($children as $child) {
             $position = strrpos($child, '\\');
             $html .= sprintf(
-                '<tr><td><a class="item-name k-namespace" href="%s">%s</a></td><td class="item-summary">%s</td></tr>',
+                '<tr%s><td><a class="item-name k-namespace" href="%s">%s</a></td><td class="item-summary">%s</td></tr>',
+                $services->diff->mark($services->diff->namespaceStatus($packageName, $child)),
                 $services->escaper->e($services->url->href($pagePath, $services->url->namespacePage($packageName, $child))),
                 $services->escaper->e($position === false ? $child : substr($child, $position + 1)),
                 $services->escaper->e($child),

@@ -51,7 +51,7 @@ final class RelationsHtml
             return '';
         }
 
-        return '<section class="relations"><h2 id="relations">Relations<a class="anchor" href="#relations">§</a></h2>' . "\n"
+        return '<section class="relations"' . $services->diff->unchanged() . '><h2 id="relations">Relations<a class="anchor" href="#relations">§</a></h2>' . "\n"
             . $rows . $groups . '</section>' . "\n";
     }
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
 use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\Layer\LayerModel;
@@ -17,10 +19,13 @@ use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
 use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\DiffModeControl;
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
 use PhpAiToolkit\DocGen\Render\Page\BreadcrumbHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentListHtml;
 use PhpAiToolkit\DocGen\Render\Page\LayerPage;
 use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
@@ -41,9 +46,14 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(BreadcrumbHtml::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(ComposerManifest::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffModeControl::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DocBlock::class)]
 #[UsesClass(DoctestExtractor::class)]
+#[UsesClass(DocumentListHtml::class)]
 #[UsesClass(HierarchyIndex::class)]
 #[UsesClass(HtmlText::class)]
 #[UsesClass(LayerModel::class)]

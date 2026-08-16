@@ -51,6 +51,17 @@ final class LimitConfig
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'maxFileLines' => $this->maxFileLines,
+            'maxFileNcloc' => $this->maxFileNcloc,
+            'maxClassLines' => $this->maxClassLines,
+            'maxTraitLines' => $this->maxTraitLines,
+            'maxInterfaceLines' => $this->maxInterfaceLines,
+            'maxEnumLines' => $this->maxEnumLines,
+            'maxFunctionLines' => $this->maxFunctionLines,
+            'maxMethodLines' => $this->maxMethodLines,
+            'maxCyclomaticComplexity' => $this->maxCyclomaticComplexity,
+            default => null,
+        };
     }
 }

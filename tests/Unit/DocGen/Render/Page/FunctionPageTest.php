@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
+use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
 use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
 use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
@@ -40,23 +43,38 @@ use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
+use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\DiffModeControl;
+use PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml;
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
+use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
 use PhpAiToolkit\DocGen\Render\Page\BreadcrumbHtml;
 use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
 use PhpAiToolkit\DocGen\Render\Page\DocTextHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentListHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
 use PhpAiToolkit\DocGen\Render\Page\ExampleHtml;
 use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
 use PhpAiToolkit\DocGen\Render\Page\GraphSvg;
 use PhpAiToolkit\DocGen\Render\Page\IndexPage;
+use PhpAiToolkit\DocGen\Render\Page\LayerPage;
 use PhpAiToolkit\DocGen\Render\Page\MemberHtml;
 use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
 use PhpAiToolkit\DocGen\Render\Page\PackagePage;
+use PhpAiToolkit\DocGen\Render\Page\PrivateSurfaceHtml;
 use PhpAiToolkit\DocGen\Render\Page\RelationsHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
+use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
 use PhpAiToolkit\DocGen\Render\Page\SignatureHtml;
 use PhpAiToolkit\DocGen\Render\Page\SourcePage;
+use PhpAiToolkit\DocGen\Render\Page\SymbolIndex;
+use PhpAiToolkit\DocGen\Render\Page\SymbolListHtml;
+use PhpAiToolkit\DocGen\Render\Page\SymbolRow;
+use PhpAiToolkit\DocGen\Render\Page\TestCaseHtml;
 use PhpAiToolkit\DocGen\Render\Page\UsageListHtml;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\PhpHighlighter;
@@ -71,6 +89,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(FunctionPage::class)]
+#[UsesClass(AllItemsPage::class)]
 #[UsesClass(AssertionScanner::class)]
 #[UsesClass(AssetPublisher::class)]
 #[UsesClass(AstParser::class)]
@@ -79,12 +98,19 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ClassLikePage::class)]
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(ConstantBuilder::class)]
+#[UsesClass(DiffBanner::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffModeControl::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DocBlock::class)]
 #[UsesClass(DocBlockReader::class)]
 #[UsesClass(DocTag::class)]
 #[UsesClass(DoctestExtractor::class)]
 #[UsesClass(DocTextHtml::class)]
+#[UsesClass(DocumentListHtml::class)]
+#[UsesClass(DocumentPage::class)]
 #[UsesClass(EnumCaseBuilder::class)]
 #[UsesClass(ExampleHtml::class)]
 #[UsesClass(ExprTextPrinter::class)]
@@ -96,6 +122,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(HierarchyIndex::class)]
 #[UsesClass(HtmlText::class)]
 #[UsesClass(IndexPage::class)]
+#[UsesClass(LayerPage::class)]
+#[UsesClass(LineDiffer::class)]
+#[UsesClass(MarkdownDiffHtml::class)]
 #[UsesClass(MarkdownInline::class)]
 #[UsesClass(MarkdownRenderer::class)]
 #[UsesClass(MemberHtml::class)]
@@ -111,19 +140,26 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PhpDocParserBridge::class)]
 #[UsesClass(PhpHighlighter::class)]
 #[UsesClass(PhpParserBridge::class)]
+#[UsesClass(PrivateSurfaceHtml::class)]
 #[UsesClass(ProjectModel::class)]
 #[UsesClass(PropertyBuilder::class)]
 #[UsesClass(RelationsHtml::class)]
 #[UsesClass(RenderKit::class)]
 #[UsesClass(SearchIndexBuilder::class)]
 #[UsesClass(SidebarHtml::class)]
+#[UsesClass(SidebarScope::class)]
 #[UsesClass(SignatureHtml::class)]
 #[UsesClass(SiteFileWriter::class)]
 #[UsesClass(SiteRenderer::class)]
 #[UsesClass(SiteUrl::class)]
+#[UsesClass(SourceDiffHtml::class)]
 #[UsesClass(SourcePage::class)]
 #[UsesClass(SymbolContext::class)]
+#[UsesClass(SymbolIndex::class)]
+#[UsesClass(SymbolListHtml::class)]
+#[UsesClass(SymbolRow::class)]
 #[UsesClass(SymbolTable::class)]
+#[UsesClass(TestCaseHtml::class)]
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(TypeHtml::class)]
 #[UsesClass(TypeRenderContext::class)]

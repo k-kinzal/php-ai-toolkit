@@ -41,6 +41,12 @@ final class LegacyTestDescriptor
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'id' => $this->id,
+            'name' => $this->name,
+            'file' => $this->file,
+            'line' => $this->line,
+            default => null,
+        };
     }
 }

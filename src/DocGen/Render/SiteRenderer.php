@@ -5,15 +5,24 @@ declare(strict_types=1);
 namespace PhpAiToolkit\DocGen\Render;
 
 use function array_keys;
+use function count;
 use function file_get_contents;
+use function filesize;
 use function is_file;
+use function is_int;
 use function ksort;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
 use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
+use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
 use PhpAiToolkit\DocGen\Analysis\ProjectModel;
+use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
+use PhpAiToolkit\DocGen\Parallel\WorkerPool;
+use PhpAiToolkit\DocGen\Parallel\WorkScheduler;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
 use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
 use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
 use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
@@ -72,6 +81,12 @@ final class SiteRenderer
     /** @readonly */
     private DocumentPage $documentPage;
 
+    /** @readonly */
+    private WorkerPool $workers;
+
+    /** @readonly */
+    private WorkScheduler $scheduler;
+
     /**
      * Creates a site renderer from its page and asset collaborators.
      */
@@ -90,7 +105,11 @@ final class SiteRenderer
         ?LayerPage $layerPage = null,
         ?SidebarHtml $sidebar = null,
         ?DocumentPage $documentPage = null,
+        ?WorkerPool $workers = null,
+        ?WorkScheduler $scheduler = null,
     ) {
+        $this->workers = $workers ?? new WorkerPool();
+        $this->scheduler = $scheduler ?? new WorkScheduler();
         $this->writer = $writer ?? new SiteFileWriter();
         $this->assets = $assets ?? new AssetPublisher();
         $this->searchIndex = $searchIndex ?? new SearchIndexBuilder();
@@ -110,24 +129,20 @@ final class SiteRenderer
     /**
      * Renders the whole site into the output directory.
      *
+     * @param ?DiffIndex $diff the comparison the site displays, if any
+     *
      * @return int the number of written HTML pages
      */
-    public function render(ProjectModel $model, string $outputRoot): int
+    public function render(ProjectModel $model, string $outputRoot, ?DiffIndex $diff = null, ?int $workers = null): int
     {
-        $services = $this->services($model);
+        $services = $this->services($model, $diff);
         $this->assets->publish($outputRoot);
-        $this->writer->write($outputRoot, 'assets/search-index.js', $this->searchIndex->build($model));
+        $this->writer->write($outputRoot, 'assets/search-index.js', $this->searchIndex->build($model, $services->diff));
         $count = 0;
         $this->writer->write($outputRoot, 'index.html', $this->indexPage->render($services));
         $count++;
         $count += $this->renderPackagePages($services, $model, $outputRoot);
-        foreach ($model->classLikes as $classLike) {
-            if (!$classLike->isDev) {
-                $this->writer->write($outputRoot, $this->url->classLikePage($classLike), $this->classLikePage->render($services, $classLike));
-                $count++;
-            }
-        }
-
+        $count += $this->renderClassLikePages($services, $model, $outputRoot, $workers);
         foreach ($model->functions as $function) {
             if (!$function->isDev) {
                 $this->writer->write($outputRoot, $this->url->functionPage($function), $this->functionPage->render($services, $function));
@@ -136,15 +151,133 @@ final class SiteRenderer
         }
 
         $count += $this->renderDocumentPages($services, $model, $outputRoot);
-        foreach ($this->sourceFiles($model) as $relativeFile) {
-            $code = is_file($model->root . '/' . $relativeFile) ? file_get_contents($model->root . '/' . $relativeFile) : false;
-            if ($code !== false) {
-                $this->writer->write($outputRoot, $this->url->sourcePage($relativeFile), $this->sourcePage->render($services, $relativeFile, $code));
-                $count++;
+
+        return $count + $this->renderSourcePages($services, $model, $outputRoot, $workers);
+    }
+
+    /**
+     * Renders one page per documented class-like symbol.
+     *
+     * This is the largest and the most expensive group of pages a site has,
+     * so it is the group that is split across workers. Each page is written
+     * by exactly one process and depends on nothing but the finished model,
+     * so the site does not depend on how the work was divided.
+     *
+     * @param ?int $workers how many workers to use, or null for the default
+     *
+     * @return int the number of written pages
+     *
+     * @throws DocGenException when a worker cannot finish its pages
+     */
+    public function renderClassLikePages(RenderKit $services, ProjectModel $model, string $outputRoot, ?int $workers = null): int
+    {
+        $documented = [];
+        foreach ($model->classLikes as $classLike) {
+            if (!$classLike->isDev) {
+                $documented[] = $classLike;
             }
         }
 
+        return $this->countOf($this->workers->map(
+            $this->scheduler->plan($documented, static fn (ClassLikeDoc $classLike): int => $classLike->endLine - $classLike->startLine, $workers),
+            function (array $job) use ($services, $outputRoot): int {
+                foreach ($job as $classLike) {
+                    $this->writer->write($outputRoot, $this->url->classLikePage($classLike), $this->classLikePage->render($services, $classLike));
+                }
+
+                return count($job);
+            },
+        ));
+    }
+
+    /**
+     * Adds up the page counts every worker reported.
+     *
+     * A count comes from a worker process, so nothing about it is
+     * guaranteed by the type system that produced it. A worker that
+     * reported anything else wrote pages this run cannot account for, and
+     * a site of unknown completeness is not a site worth reporting.
+     *
+     * @param list<mixed> $results
+     *
+     * @throws DocGenException when a worker reported something else
+     */
+    public function countOf(array $results): int
+    {
+        $count = 0;
+        foreach ($results as $result) {
+            if (!is_int($result)) {
+                throw new DocGenException('A documentation worker reported no page count.');
+            }
+
+            $count += $result;
+        }
+
         return $count;
+    }
+
+    /**
+     * Renders one highlighted page per source file of the model.
+     *
+     * A file that only the base revision had is rendered from the base
+     * checkout, so the source a removed symbol links to stays readable.
+     *
+     * Highlighting every line of every documented file is the second most
+     * expensive group of pages, so it is split across workers as well.
+     *
+     * @param ?int $workers how many workers to use, or null for the default
+     *
+     * @return int the number of written pages
+     *
+     * @throws DocGenException when a worker cannot finish its pages
+     */
+    public function renderSourcePages(RenderKit $services, ProjectModel $model, string $outputRoot, ?int $workers = null): int
+    {
+        $files = $this->sourceFiles($model);
+        $root = $model->root;
+
+        return $this->countOf($this->workers->map(
+            $this->scheduler->plan($files, static fn (string $file): int => (int) @filesize($root . '/' . $file), $workers),
+            fn (array $job): int => $this->writeSourcePages($services, $root, $outputRoot, $job),
+        ));
+    }
+
+    /**
+     * Writes the source pages of one job and reports how many it wrote.
+     *
+     * @param list<string> $files project-relative source files
+     *
+     * @throws DocGenException when a page cannot be written
+     */
+    public function writeSourcePages(RenderKit $services, string $root, string $outputRoot, array $files): int
+    {
+        $count = 0;
+        foreach ($files as $relativeFile) {
+            $code = $this->contents($root . '/' . $relativeFile);
+            $baseCode = $services->diff->baseSource($relativeFile);
+            if ($code === null && $baseCode === null) {
+                continue;
+            }
+
+            $this->writer->write(
+                $outputRoot,
+                $this->url->sourcePage($relativeFile),
+                $this->sourcePage->render($services, $relativeFile, $code, $baseCode),
+            );
+            $count++;
+        }
+
+        return $count;
+    }
+
+    /**
+     * Reads one file, or returns null when it cannot be read.
+     */
+    public function contents(string $path): ?string
+    {
+        $contents = is_file($path) ? file_get_contents($path) : false;
+
+        return $contents === false ? null : $contents;
     }
 
     /**
@@ -203,16 +336,18 @@ final class SiteRenderer
     {
         $count = 0;
         foreach ($model->documents as $document) {
-            $path = $model->root . '/' . $document->file;
-            $markdown = is_file($path) ? file_get_contents($path) : false;
-            if ($markdown !== false) {
-                $this->writer->write(
-                    $outputRoot,
-                    $this->url->documentPage($document->packageName, $document->path),
-                    $this->documentPage->render($services, $document, $markdown),
-                );
-                $count++;
+            $markdown = $this->contents($model->root . '/' . $document->file);
+            $baseMarkdown = $services->diff->baseSource($document->file);
+            if ($markdown === null && $baseMarkdown === null) {
+                continue;
             }
+
+            $this->writer->write(
+                $outputRoot,
+                $this->url->documentPage($document->packageName, $document->path),
+                $this->documentPage->render($services, $document, $markdown, $baseMarkdown),
+            );
+            $count++;
         }
 
         return $count;
@@ -220,8 +355,10 @@ final class SiteRenderer
 
     /**
      * Builds the shared render services of one generation run.
+     *
+     * @param ?DiffIndex $diff the comparison the site displays, if any
      */
-    public function services(ProjectModel $model): RenderKit
+    public function services(ProjectModel $model, ?DiffIndex $diff = null): RenderKit
     {
         return new RenderKit(
             $model,
@@ -232,6 +369,7 @@ final class SiteRenderer
             new TypeHtml(null, $this->url),
             new DoctestExtractor(),
             new AssertionScanner(),
+            new DiffHtml($diff),
         );
     }
 

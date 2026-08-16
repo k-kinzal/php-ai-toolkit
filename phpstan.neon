@@ -26,6 +26,11 @@ parameters:
     customRules:
         broadCatchAllowedPaths:
             - 'src/PhpStan/Rule/Shared/FileTokenParser.php'
+            # A forked documentation worker is a process boundary: whatever
+            # goes wrong inside it has to be turned into a message the parent
+            # can report, because a failure that only reaches the worker's
+            # own stack would leave the run with a silently incomplete site.
+            - 'src/DocGen/Parallel/WorkerPool.php'
     ignoreErrors:
         # PHPStan's ErrorFormatterTestCase and related internal classes
         # (ErrorsConsoleStyle, SymfonyOutput, SymfonyStyle) are not marked

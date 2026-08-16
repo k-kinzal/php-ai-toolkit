@@ -6,15 +6,17 @@ description: >-
   docs.rs-style documentation site, GitHub Pages documentation hosting,
   multi-package or monorepo documentation, documenting vendor packages,
   architecture layer visualization from deptrac, per-method test coverage
-  references in documentation, executable doctest examples in docs, or
-  Composer scripts and CI jobs that publish generated PHP documentation.
+  references in documentation, executable doctest examples in docs,
+  documentation that compares two git revisions, or Composer scripts and CI
+  jobs that publish generated PHP documentation.
 ---
 
 # Setup DocGen (Static Documentation Site)
 
 This skill configures `doc-gen`, the php-ai-toolkit CLI that generates a dense, fully cross-linked static HTML
 documentation site — complete types, interface implementations, call sites, architecture layers, coverage-backed
-test references, and runnable doctest examples — for the composer packages of a project.
+test references, runnable doctest examples, and an optional comparison of two git revisions — for the composer
+packages of a project.
 
 ## Prerequisites
 
@@ -69,6 +71,10 @@ Page content and design are fixed by the generator on purpose — only the scope
 - When the project runs deptrac, keep `deptrac.yaml` at the root so the architecture graph appears automatically.
 - Generate coverage with `--coverage-xml build/coverage-xml` and set `coverage: build/coverage-xml` so every method
   links the test cases that cover it.
+- To review what a branch changed, generate the site in diff mode: `--diff=main` compares the working tree against
+  `main`, `--diff=v1.0.0..HEAD` compares two revisions. The site then marks additions and removals down to the single
+  argument of a declaration and offers three display modes — the plain documentation, the marked documentation, and
+  the changes alone. Diff mode needs a git working tree and analyzes both revisions, so it takes about twice as long.
 
 ## Recommended Composer Scripts
 
@@ -78,7 +84,8 @@ Add scripts that match the project:
 {
     "scripts": {
         "doc-gen": "doc-gen --config=doc.yaml",
-        "doc-gen:serve": "doc-gen --config=doc.yaml --serve"
+        "doc-gen:serve": "doc-gen --config=doc.yaml --serve",
+        "doc-gen:diff": "doc-gen --config=doc.yaml --diff=main --serve"
     }
 }
 ```

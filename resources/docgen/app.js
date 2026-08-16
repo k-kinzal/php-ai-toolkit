@@ -1,4 +1,4 @@
-/* DocGen client script: search, theme toggle, copy buttons, mobile nav. */
+/* DocGen client script: search, theme toggle, diff modes, copy buttons, mobile nav. */
 (function () {
   'use strict';
 
@@ -9,6 +9,17 @@
 
   function items() {
     return window.__DOCGEN_INDEX__ || [];
+  }
+
+  function diffMode() {
+    return document.documentElement.dataset.diffMode || '';
+  }
+
+  function inMode(item, mode) {
+    if (!item.d) { return true; }
+    if (mode === 'off') { return item.d !== 'removed'; }
+    if (mode === 'changes') { return item.d !== 'same'; }
+    return true;
   }
 
   function score(item, query) {
@@ -28,8 +39,9 @@
     if (query === '') { return []; }
     var hits = [];
     var list = items();
+    var mode = diffMode();
     for (var i = 0; i < list.length; i++) {
-      var s = score(list[i], query);
+      var s = inMode(list[i], mode) ? score(list[i], query) : -1;
       if (s !== -1) { hits.push({ s: s, len: list[i].n.length, item: list[i] }); }
     }
     hits.sort(function (a, b) { return a.s - b.s || a.len - b.len || (a.item.n < b.item.n ? -1 : 1); });
@@ -132,5 +144,47 @@
     navToggle.addEventListener('click', function () {
       document.body.classList.toggle('nav-open');
     });
+  }
+
+  var diffModes = document.getElementById('diff-modes');
+
+  function updateEmptyHint(mode) {
+    var hint = document.getElementById('diff-empty');
+    if (!hint) { return; }
+    var changed = document.querySelector('.content [data-diff]:not([data-diff="same"])');
+    var removedPage = document.querySelector('.content .diff-banner[data-diff="removed"]');
+    if (mode === 'changes' && !changed) {
+      hint.textContent = hint.getAttribute('data-changes') || '';
+      hint.hidden = false;
+      return;
+    }
+    if (mode === 'off' && removedPage) {
+      hint.textContent = hint.getAttribute('data-off') || '';
+      hint.hidden = false;
+      return;
+    }
+    hint.hidden = true;
+  }
+
+  function applyDiffMode(mode) {
+    document.documentElement.dataset.diffMode = mode;
+    try { localStorage.setItem('docgen-diff-mode', mode); } catch (error) { /* private mode */ }
+    if (diffModes) {
+      var buttons = diffModes.querySelectorAll('.diff-mode');
+      for (var i = 0; i < buttons.length; i++) {
+        var active = buttons[i].getAttribute('data-diff-mode') === mode;
+        buttons[i].classList.toggle('is-active', active);
+        buttons[i].setAttribute('aria-pressed', active ? 'true' : 'false');
+      }
+    }
+    updateEmptyHint(mode);
+  }
+
+  if (diffModes) {
+    diffModes.addEventListener('click', function (event) {
+      var button = event.target.closest ? event.target.closest('.diff-mode') : null;
+      if (button) { applyDiffMode(button.getAttribute('data-diff-mode') || 'inline'); }
+    });
+    applyDiffMode(diffMode() || 'inline');
   }
 })();

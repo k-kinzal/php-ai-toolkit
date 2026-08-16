@@ -6,6 +6,9 @@ namespace Tests\Unit\DocGen\Render\Page;
 
 use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex;
 use PhpAiToolkit\DocGen\Analysis\Coverage\MethodCoverage;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
+use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
 use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
 use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine;
@@ -18,6 +21,7 @@ use PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
 use PhpAiToolkit\DocGen\Analysis\Model\DocTag;
 use PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc;
+use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\MethodDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc;
@@ -50,6 +54,9 @@ use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml;
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
@@ -57,6 +64,7 @@ use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
 use PhpAiToolkit\DocGen\Render\Page\BreadcrumbHtml;
 use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
 use PhpAiToolkit\DocGen\Render\Page\DocTextHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
 use PhpAiToolkit\DocGen\Render\Page\ExampleHtml;
 use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
 use PhpAiToolkit\DocGen\Render\Page\GraphSvg;
@@ -65,6 +73,7 @@ use PhpAiToolkit\DocGen\Render\Page\LayerPage;
 use PhpAiToolkit\DocGen\Render\Page\MemberHtml;
 use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
 use PhpAiToolkit\DocGen\Render\Page\PackagePage;
+use PhpAiToolkit\DocGen\Render\Page\PrivateSurfaceHtml;
 use PhpAiToolkit\DocGen\Render\Page\RelationsHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SignatureHtml;
@@ -99,6 +108,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ConstantBuilder::class)]
 #[UsesClass(ConstantDoc::class)]
 #[UsesClass(CoverageIndex::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DocBlock::class)]
 #[UsesClass(DocBlockReader::class)]
@@ -106,6 +118,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(DocTag::class)]
 #[UsesClass(DoctestExtractor::class)]
 #[UsesClass(DocTextHtml::class)]
+#[UsesClass(DocumentPage::class)]
 #[UsesClass(EnumCaseBuilder::class)]
 #[UsesClass(EnumCaseDoc::class)]
 #[UsesClass(ExampleHtml::class)]
@@ -113,12 +126,15 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(FileSymbolCollector::class)]
 #[UsesClass(FileSymbols::class)]
 #[UsesClass(FunctionBuilder::class)]
+#[UsesClass(FunctionDoc::class)]
 #[UsesClass(FunctionPage::class)]
 #[UsesClass(GraphSvg::class)]
 #[UsesClass(HierarchyIndex::class)]
 #[UsesClass(HtmlText::class)]
 #[UsesClass(IndexPage::class)]
 #[UsesClass(LayerPage::class)]
+#[UsesClass(LineDiffer::class)]
+#[UsesClass(MarkdownDiffHtml::class)]
 #[UsesClass(MarkdownInline::class)]
 #[UsesClass(MarkdownRenderer::class)]
 #[UsesClass(MethodBuilder::class)]
@@ -135,6 +151,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PhpDocParserBridge::class)]
 #[UsesClass(PhpHighlighter::class)]
 #[UsesClass(PhpParserBridge::class)]
+#[UsesClass(PrivateSurfaceHtml::class)]
 #[UsesClass(ProjectModel::class)]
 #[UsesClass(PropertyBuilder::class)]
 #[UsesClass(PropertyDoc::class)]
@@ -147,6 +164,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(SiteFileWriter::class)]
 #[UsesClass(SiteRenderer::class)]
 #[UsesClass(SiteUrl::class)]
+#[UsesClass(SourceDiffHtml::class)]
 #[UsesClass(SourcePage::class)]
 #[UsesClass(SymbolContext::class)]
 #[UsesClass(SymbolListHtml::class)]

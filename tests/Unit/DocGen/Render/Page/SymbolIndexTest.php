@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
 use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
@@ -18,7 +21,9 @@ use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
 use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
 use PhpAiToolkit\DocGen\Render\HtmlText;
+use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
 use PhpAiToolkit\DocGen\Render\Page\SymbolIndex;
 use PhpAiToolkit\DocGen\Render\Page\SymbolRow;
@@ -34,12 +39,17 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(AssertionScanner::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(ComposerManifest::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffIndex::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DocBlock::class)]
 #[UsesClass(DoctestExtractor::class)]
 #[UsesClass(FunctionDoc::class)]
 #[UsesClass(HierarchyIndex::class)]
 #[UsesClass(HtmlText::class)]
+#[UsesClass(MarkdownInline::class)]
 #[UsesClass(MarkdownRenderer::class)]
 #[UsesClass(PackageGraph::class)]
 #[UsesClass(ProjectModel::class)]
@@ -81,6 +91,107 @@ final class SymbolIndexTest extends TestCase
         self::assertSame('Makes a value.', $rows[2]->summary);
         self::assertSame([], $rows[2]->layers);
         self::assertSame('Demo\Core', $rows[2]->namespace);
+    }
+
+    public function testOpenRunDropsTheListingsOfTheRenderKitBefore(): void
+    {
+        $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/pkg', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $runner = new ClassLikeDoc('Demo\Core\Runner', 'Runner', 'Demo\Core', 'interface', 'demo/pkg', 'src/Core/Runner.php', 3, 9, false, false, [], [], [], [], [], [], [], null, null, [], false);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $before = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [$engine], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $after = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [$engine, $runner], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $index = new SymbolIndex();
+
+        self::assertCount(1, $index->inPackage(new RenderKit($before, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner()), 'demo/pkg'));
+        self::assertCount(2, $index->inPackage(new RenderKit($after, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner()), 'demo/pkg'));
+    }
+
+    public function testOpenPackageBuildsEveryNamespaceListingOnlyOnce(): void
+    {
+        $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/pkg', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $text = new ClassLikeDoc('Demo\Core\Util\Text', 'Text', 'Demo\Core\Util', 'class', 'demo/pkg', 'src/Core/Util/Text.php', 4, 11, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [$engine, $text], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+        $index = new SymbolIndex();
+
+        $index->openPackage($services, 'demo/pkg');
+        $index->openPackage($services, 'demo/pkg');
+
+        self::assertSame(['Demo\Core', 'Demo\Core\Util'], $index->namespacesOf($services, 'demo/pkg'));
+        self::assertCount(1, $index->inNamespace($services, 'demo/pkg', 'Demo\Core'));
+        self::assertSame([], $index->inNamespace($services, 'demo/pkg', 'Demo\Missing'));
+        self::assertSame([], $index->namespacesOf($services, 'other/pkg'));
+    }
+
+    public function testClassLikeRowsGroupsProductionClassLikesByNamespace(): void
+    {
+        $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/pkg', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $text = new ClassLikeDoc('Demo\Core\Util\Text', 'Text', 'Demo\Core\Util', 'class', 'demo/pkg', 'src/Core/Util/Text.php', 4, 11, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $probe = new ClassLikeDoc('Demo\Core\Probe', 'Probe', 'Demo\Core', 'class', 'demo/pkg', 'tests/Probe.php', 4, 11, false, true, [], [], [], [], [], [], [], null, null, [], true);
+        $alien = new ClassLikeDoc('Demo\Core\Alien', 'Alien', 'Demo\Core', 'class', 'other/pkg', 'src/Alien.php', 4, 11, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [$engine, $text, $probe, $alien], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, ['demo\core\engine' => ['Domain']], null, []);
+        $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+
+        $grouped = (new SymbolIndex())->classLikeRows($services, 'demo/pkg');
+
+        self::assertSame(['Demo\Core', 'Demo\Core\Util'], array_keys($grouped));
+        self::assertCount(1, $grouped['Demo\Core']);
+        self::assertSame('Engine', $grouped['Demo\Core'][0]->name);
+        self::assertSame(['Domain'], $grouped['Demo\Core'][0]->layers);
+        self::assertSame('Text', $grouped['Demo\Core\Util'][0]->name);
+        self::assertSame([], (new SymbolIndex())->classLikeRows($services, 'missing/pkg'));
+    }
+
+    public function testFunctionRowsGroupsProductionFunctionsByNamespace(): void
+    {
+        $make = new FunctionDoc('Demo\Api\make', 'make', 'Demo\Api', 'demo/pkg', 'src/Api/functions.php', 7, 10, [], new TypeSignature('int', null), new DocBlock('Makes a value.', '', [], null, null, [], [], [], [], [], [], null, false, ''), [], false);
+        $probe = new FunctionDoc('Demo\Api\probe', 'probe', 'Demo\Api', 'demo/pkg', 'tests/functions.php', 7, 10, [], new TypeSignature('int', null), null, [], true);
+        $alien = new FunctionDoc('Demo\Api\alien', 'alien', 'Demo\Api', 'other/pkg', 'src/functions.php', 7, 10, [], new TypeSignature('int', null), null, [], false);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [], [$make, $probe, $alien], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+
+        $grouped = (new SymbolIndex())->functionRows($services, 'demo/pkg');
+
+        self::assertSame(['Demo\Api'], array_keys($grouped));
+        self::assertCount(1, $grouped['Demo\Api']);
+        self::assertSame('function', $grouped['Demo\Api'][0]->kind);
+        self::assertSame('make', $grouped['Demo\Api'][0]->name);
+        self::assertSame('Makes a value.', $grouped['Demo\Api'][0]->summary);
+        self::assertSame([], (new SymbolIndex())->functionRows($services, 'missing/pkg'));
+    }
+
+    public function testLayersOfListsAssignedLayersSortedAndUnique(): void
+    {
+        $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/pkg', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $runner = new ClassLikeDoc('Demo\Core\Runner', 'Runner', 'Demo\Core', 'interface', 'demo/pkg', 'src/Core/Runner.php', 3, 9, false, false, [], [], [], [], [], [], [], null, null, [], false);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $assignments = ['demo\core\engine' => ['Infrastructure', 'Domain'], 'demo\core\runner' => ['Domain']];
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [$engine, $runner], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, $assignments, null, []);
+        $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+
+        self::assertSame(['Domain', 'Infrastructure'], (new SymbolIndex())->layersOf($services, 'demo/pkg'));
+        self::assertSame([], (new SymbolIndex())->layersOf($services, 'other/pkg'));
+    }
+
+    public function testLayerStatusesCombineTheStateOfTheSymbolsOfEachLayer(): void
+    {
+        $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/pkg', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $runner = new ClassLikeDoc('Demo\Core\Runner', 'Runner', 'Demo\Core', 'interface', 'demo/pkg', 'src/Core/Runner.php', 3, 9, false, false, [], [], [], [], [], [], [], null, null, [], false);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $assignments = ['demo\core\engine' => ['Infrastructure'], 'demo\core\runner' => ['Domain']];
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [$engine, $runner], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, $assignments, null, []);
+        $diff = new DiffIndex('main', 'HEAD');
+        $diff->mark($diff->keys()->classLike('Demo\Core\Engine'), DiffStatus::ADDED);
+        $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner(), new DiffHtml($diff));
+
+        self::assertSame(
+            ['Domain' => DiffStatus::SAME, 'Infrastructure' => DiffStatus::ADDED],
+            (new SymbolIndex())->layerStatuses($services, 'demo/pkg'),
+        );
+        self::assertSame([], (new SymbolIndex())->layerStatuses($services, 'other/pkg'));
     }
 
     public function testInPackageWalksEveryNamespaceOfThePackage(): void

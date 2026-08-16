@@ -36,6 +36,11 @@ final class DirectoryListing
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'relativePath' => $this->relativePath,
+            'fileNames' => $this->fileNames,
+            'dirNames' => $this->dirNames,
+            default => null,
+        };
     }
 }

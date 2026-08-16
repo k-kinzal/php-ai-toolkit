@@ -8,6 +8,7 @@ use function count;
 use function html_entity_decode;
 use function implode;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind;
 use PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc;
@@ -62,7 +63,7 @@ final class SignatureHtml
         $html .= $this->parentClause($services, 'implements', $classLike->implements, $classLike->docBlock !== null ? $classLike->docBlock->implementsTags : [], $context);
         $html .= $this->parentClause($services, 'uses', $classLike->traits, $classLike->docBlock !== null ? $classLike->docBlock->usesTags : [], $context);
 
-        return '<pre class="signature"><code>' . $html . '</code></pre>' . "\n";
+        return '<pre class="signature"' . $services->diff->header($classLike->fqcn) . '><code>' . $html . '</code></pre>' . "\n";
     }
 
     /**
@@ -133,8 +134,10 @@ final class SignatureHtml
 
     /**
      * Renders one method signature.
+     *
+     * @param string $ownerKey the diff key the parameter states are under
      */
-    public function methodSignature(RenderKit $services, MethodDoc $method, TypeRenderContext $context): string
+    public function methodSignature(RenderKit $services, MethodDoc $method, TypeRenderContext $context, string $ownerKey = ''): string
     {
         $keywords = [];
         if ($method->isFinal) {
@@ -160,13 +163,15 @@ final class SignatureHtml
             $context,
         );
 
-        return $this->callableSignature($services, $head, $method->parameters, $return !== '' ? ': ' . $return : '', $context);
+        return $this->callableSignature($services, $head, $method->parameters, $return !== '' ? ': ' . $return : '', $context, $ownerKey);
     }
 
     /**
      * Renders one function signature.
+     *
+     * @param string $ownerKey the diff key the parameter states are under
      */
-    public function functionSignature(RenderKit $services, FunctionDoc $function, TypeRenderContext $context): string
+    public function functionSignature(RenderKit $services, FunctionDoc $function, TypeRenderContext $context, string $ownerKey = ''): string
     {
         $head = '<span class="t-key">function</span> <span class="sig-name">' . $services->escaper->e($function->shortName) . '</span>'
             . $this->templateList($services, $function->docBlock !== null ? $function->docBlock->templates : [], $context);
@@ -176,30 +181,105 @@ final class SignatureHtml
             $context,
         );
 
-        return $this->callableSignature($services, $head, $function->parameters, $return !== '' ? ': ' . $return : '', $context);
+        return $this->callableSignature($services, $head, $function->parameters, $return !== '' ? ': ' . $return : '', $context, $ownerKey);
     }
 
     /**
      * Renders a callable head with its parameter list, wrapping when long.
      *
      * @param list<\PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
+     * @param string $ownerKey the diff key the parameter states are under
      */
-    public function callableSignature(RenderKit $services, string $head, array $parameters, string $returnSuffix, TypeRenderContext $context): string
+    public function callableSignature(RenderKit $services, string $head, array $parameters, string $returnSuffix, TypeRenderContext $context, string $ownerKey = ''): string
+    {
+        $merged = $this->parameterList($services, $head, $parameters, $returnSuffix, $context, $ownerKey, false);
+        if (!$this->hasRemovedParameter($services, $parameters, $ownerKey)) {
+            return $head . $merged . $returnSuffix;
+        }
+
+        return $head
+            . '<span class="sig-diff">' . $merged . '</span>'
+            . '<span class="sig-plain">' . $this->parameterList($services, $head, $parameters, $returnSuffix, $context, $ownerKey, true) . '</span>'
+            . $returnSuffix;
+    }
+
+    /**
+     * Renders the parenthesized parameter list of a declaration.
+     *
+     * A declaration that lost a parameter is rendered twice: once merged
+     * with what the base revision had, and once as the head revision alone.
+     * One of the two is displayed, so the plain view of a signature is
+     * never a merged signature with a gap in it.
+     *
+     * @param list<\PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
+     * @param string $ownerKey the diff key the parameter states are under
+     * @param bool $headOnly whether the parameters the head dropped are skipped
+     */
+    public function parameterList(RenderKit $services, string $head, array $parameters, string $returnSuffix, TypeRenderContext $context, string $ownerKey, bool $headOnly): string
     {
         $rendered = [];
-        $plainLength = 0;
+        $plainLength = strlen(html_entity_decode(strip_tags($head . $returnSuffix), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
         foreach ($parameters as $parameter) {
+            if ($headOnly && $this->isRemovedParameter($services, $parameter, $ownerKey)) {
+                continue;
+            }
+
             $html = $this->parameter($services, $parameter, $context);
-            $rendered[] = $html;
+            $rendered[] = $headOnly ? $html : $this->markedParameter($services, $parameter, $html, $ownerKey);
             $plainLength += strlen(html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) + 2;
         }
 
-        $plainLength += strlen(html_entity_decode(strip_tags($head . $returnSuffix), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
         if ($plainLength > self::WRAP_LENGTH && count($rendered) > 1) {
-            return $head . "(\n    " . implode(",\n    ", $rendered) . ",\n)" . $returnSuffix;
+            return "(\n    " . implode(",\n    ", $rendered) . ",\n)";
         }
 
-        return $head . '(' . implode(', ', $rendered) . ')' . $returnSuffix;
+        return '(' . implode(', ', $rendered) . ')';
+    }
+
+    /**
+     * Reports whether the head revision dropped one of the parameters.
+     *
+     * @param list<\PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
+     * @param string $ownerKey the diff key the parameter states are under
+     */
+    public function hasRemovedParameter(RenderKit $services, array $parameters, string $ownerKey): bool
+    {
+        foreach ($parameters as $parameter) {
+            if ($this->isRemovedParameter($services, $parameter, $ownerKey)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Reports whether one parameter is gone in the head revision.
+     *
+     * @param string $ownerKey the diff key the parameter states are under
+     */
+    public function isRemovedParameter(RenderKit $services, \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc $parameter, string $ownerKey): bool
+    {
+        return $ownerKey !== ''
+            && $services->diff->isActive()
+            && $services->diff->parameterStatus($ownerKey, $parameter->name) === DiffStatus::REMOVED;
+    }
+
+    /**
+     * Marks one rendered parameter with the state it is in.
+     *
+     * The mark sits on the parameter alone, so a declaration that gained an
+     * argument shows the whole declaration with only that line highlighted.
+     *
+     * @param string $ownerKey the diff key the parameter states are under
+     */
+    public function markedParameter(RenderKit $services, \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc $parameter, string $html, string $ownerKey): string
+    {
+        if ($ownerKey === '' || !$services->diff->isActive()) {
+            return $html;
+        }
+
+        return '<span class="sig-param"' . $services->diff->parameter($ownerKey, $parameter->name) . '>' . $html . '</span>';
     }
 
     /**

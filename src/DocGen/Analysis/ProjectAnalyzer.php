@@ -6,11 +6,8 @@ namespace PhpAiToolkit\DocGen\Analysis;
 
 use function array_merge;
 use function basename;
-use function file_get_contents;
 use function fnmatch;
-use function is_dir;
 use function is_file;
-use function is_string;
 
 use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex;
 use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageReader;
@@ -18,24 +15,19 @@ use PhpAiToolkit\DocGen\Analysis\Document\DocumentCollector;
 use PhpAiToolkit\DocGen\Analysis\Layer\DeptracConfigReader;
 use PhpAiToolkit\DocGen\Analysis\Layer\LayerAssigner;
 use PhpAiToolkit\DocGen\Analysis\Layer\LayerModel;
-use PhpAiToolkit\DocGen\Analysis\Parse\AstParser;
-use PhpAiToolkit\DocGen\Analysis\Parse\FileSymbolCollector;
+use PhpAiToolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
 use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\UsageCollector;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
 use PhpAiToolkit\DocGen\Config\DocGenConfig;
 use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
-use PhpAiToolkit\DocGen\Filesystem\SourceFileFinder;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageDiscovery;
 use PhpAiToolkit\DocGen\Package\PackageGraphBuilder;
-use PhpParser\NodeTraverser;
 
 use function sprintf;
-use function strtolower;
 
 /**
  * Runs the full analysis pipeline from configuration to project model.
@@ -49,16 +41,10 @@ final class ProjectAnalyzer
     private PackageGraphBuilder $graphBuilder;
 
     /** @readonly */
-    private SourceFileFinder $fileFinder;
-
-    /** @readonly */
     private DocGenPathResolver $pathResolver;
 
     /** @readonly */
-    private AstParser $astParser;
-
-    /** @readonly */
-    private FileSymbolCollector $symbolCollector;
+    private ProjectSymbolCollector $symbolCollector;
 
     /** @readonly */
     private DeptracConfigReader $deptracReader;
@@ -78,10 +64,8 @@ final class ProjectAnalyzer
     public function __construct(
         ?PackageDiscovery $discovery = null,
         ?PackageGraphBuilder $graphBuilder = null,
-        ?SourceFileFinder $fileFinder = null,
         ?DocGenPathResolver $pathResolver = null,
-        ?AstParser $astParser = null,
-        ?FileSymbolCollector $symbolCollector = null,
+        ?ProjectSymbolCollector $symbolCollector = null,
         ?DeptracConfigReader $deptracReader = null,
         ?LayerAssigner $layerAssigner = null,
         ?CoverageReader $coverageReader = null,
@@ -89,10 +73,8 @@ final class ProjectAnalyzer
     ) {
         $this->discovery = $discovery ?? new PackageDiscovery();
         $this->graphBuilder = $graphBuilder ?? new PackageGraphBuilder();
-        $this->fileFinder = $fileFinder ?? new SourceFileFinder();
         $this->pathResolver = $pathResolver ?? new DocGenPathResolver();
-        $this->astParser = $astParser ?? new AstParser();
-        $this->symbolCollector = $symbolCollector ?? new FileSymbolCollector();
+        $this->symbolCollector = $symbolCollector ?? new ProjectSymbolCollector();
         $this->deptracReader = $deptracReader ?? new DeptracConfigReader();
         $this->layerAssigner = $layerAssigner ?? new LayerAssigner();
         $this->coverageReader = $coverageReader ?? new CoverageReader();
@@ -104,11 +86,10 @@ final class ProjectAnalyzer
      *
      * @throws DocGenException when no package or source can be analyzed
      */
-    public function analyze(DocGenConfig $config): ProjectModel
+    public function analyze(DocGenConfig $config, ?int $workers = null): ProjectModel
     {
         $packages = $this->discovery->discover($config);
-        $usageCollector = new UsageCollector();
-        $collected = $this->collectSymbols($config, $packages, $usageCollector);
+        $collected = $this->symbolCollector->collect($config, $packages, $workers);
 
         $symbolTable = new SymbolTable();
         foreach ($collected['classLikes'] as $classLike) {
@@ -122,10 +103,10 @@ final class ProjectAnalyzer
         $hierarchy = new HierarchyIndex();
         $hierarchy->build($collected['classLikes']);
         $usages = new UsageIndex();
-        $usages->build($usageCollector->usages());
+        $usages->build($collected['usages']);
         $coverage = $this->coverageIndex($config);
         $testCases = new TestCaseIndex();
-        $testCases->build($usageCollector->usages(), $collected['classLikes'], $coverage);
+        $testCases->build($collected['usages'], $collected['classLikes'], $coverage);
         $layers = $this->layerModel($config);
 
         return new ProjectModel(
@@ -220,7 +201,7 @@ final class ProjectAnalyzer
     {
         $warnings = [];
         foreach ($packages as $package) {
-            if ($package->isVendor && $this->sourceDirectories($package) === []) {
+            if ($package->isVendor && $this->symbolCollector->sourceDirectories($package) === []) {
                 $warnings[] = sprintf(
                     'Vendor package "%s" declares no PSR-4 or classmap autoload source, so its classes cannot be documented or linked. Packages that autoload only "files" entries, such as a phar bootstrap, cannot be documented: drop "%s" from the vendor globs.',
                     $package->manifest->name,
@@ -254,120 +235,6 @@ final class ProjectAnalyzer
         }
 
         return $assignments;
-    }
-
-    /**
-     * Parses all package sources into deduplicated symbol lists.
-     *
-     * @param list<DiscoveredPackage> $packages
-     *
-     * @return array{classLikes: list<Model\ClassLikeDoc>, functions: list<Model\FunctionDoc>, warnings: list<string>}
-     */
-    public function collectSymbols(DocGenConfig $config, array $packages, UsageCollector $usageCollector): array
-    {
-        $traverser = new NodeTraverser();
-        $traverser->addVisitor($usageCollector);
-        $classLikes = [];
-        $functions = [];
-        $warnings = [];
-        $seenFiles = [];
-        $seenSymbols = [];
-        foreach ($packages as $package) {
-            foreach ($this->sourceDirectories($package) as $source) {
-                foreach ($this->fileFinder->find($source['directory'], $config->root, $config->exclude) as $file) {
-                    if (isset($seenFiles[$file])) {
-                        continue;
-                    }
-
-                    $seenFiles[$file] = true;
-                    $symbols = $this->collectFile($config, $package, $source, $file, $usageCollector, $traverser);
-                    if (is_string($symbols)) {
-                        $warnings[] = $symbols;
-                        continue;
-                    }
-
-                    foreach ($symbols->classLikes as $classLike) {
-                        if (!isset($seenSymbols[strtolower($classLike->fqcn)])) {
-                            $seenSymbols[strtolower($classLike->fqcn)] = true;
-                            $classLikes[] = $classLike;
-                        }
-                    }
-
-                    foreach ($symbols->functions as $function) {
-                        if (!isset($seenSymbols[strtolower($function->fqn) . '()'])) {
-                            $seenSymbols[strtolower($function->fqn) . '()'] = true;
-                            $functions[] = $function;
-                        }
-                    }
-                }
-            }
-        }
-
-        return ['classLikes' => $classLikes, 'functions' => $functions, 'warnings' => $warnings];
-    }
-
-    /**
-     * Parses one source file and feeds it into the usage collector.
-     *
-     * @param array{directory: string, isDev: bool} $source
-     *
-     * @return Parse\FileSymbols|string the symbols, or a warning message
-     */
-    public function collectFile(DocGenConfig $config, DiscoveredPackage $package, array $source, string $file, UsageCollector $usageCollector, NodeTraverser $traverser)
-    {
-        $code = file_get_contents($file);
-        if ($code === false) {
-            return sprintf('Skipped unreadable file: %s', $file);
-        }
-
-        $relative = $this->pathResolver->relative($config->root, $file);
-        try {
-            $statements = $this->astParser->parse($code, $relative);
-        } catch (DocGenException $exception) {
-            return $exception->getMessage();
-        }
-
-        $symbols = $this->symbolCollector->collect($statements, $package->manifest->name, $relative, $source['isDev']);
-        $usageCollector->beginFile($relative, $source['isDev']);
-        $traverser->traverse($statements);
-
-        return $symbols;
-    }
-
-    /**
-     * Lists the autoload source directories of one package.
-     *
-     * PSR-4 prefixes always map to directories and are taken as declared; an
-     * empty prefix path is the package root. Classmap entries may name a
-     * directory or a single file, so only the entries that exist as a
-     * directory are kept; single classmap files are not documented.
-     *
-     * @return list<array{directory: string, isDev: bool}>
-     */
-    public function sourceDirectories(DiscoveredPackage $package): array
-    {
-        $sources = [];
-        foreach ([['map' => $package->manifest->autoload, 'isDev' => false], ['map' => $package->manifest->devAutoload, 'isDev' => true]] as $section) {
-            foreach ($section['map'] as $directories) {
-                foreach ($directories as $directory) {
-                    $sources[] = [
-                        'directory' => $directory === '' ? $package->manifest->directory : $this->pathResolver->resolve($package->manifest->directory, $directory),
-                        'isDev' => $section['isDev'],
-                    ];
-                }
-            }
-        }
-
-        foreach ([['paths' => $package->manifest->classmap, 'isDev' => false], ['paths' => $package->manifest->devClassmap, 'isDev' => true]] as $section) {
-            foreach ($section['paths'] as $path) {
-                $directory = $this->pathResolver->resolve($package->manifest->directory, $path);
-                if (is_dir($directory)) {
-                    $sources[] = ['directory' => $directory, 'isDev' => $section['isDev']];
-                }
-            }
-        }
-
-        return $sources;
     }
 
     /**

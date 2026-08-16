@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Render\Page;
 
-use function get_object_vars;
-
 /**
  * Navigation scope of one rendered page.
  *
@@ -16,12 +14,12 @@ use function get_object_vars;
  * @property-read ?string $packageName
  * @property-read ?string $namespace
  * @property-read ?string $activeFqcn
- * @property-read list<array{id: string, label: string}> $sections
+ * @property-read list<array{id: string, label: string, status?: string}> $sections
  */
 final class SidebarScope
 {
     /**
-     * @param list<array{id: string, label: string}> $sections
+     * @param list<array{id: string, label: string, status?: string}> $sections
      */
     public function __construct(
         /** @readonly */
@@ -42,6 +40,12 @@ final class SidebarScope
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'packageName' => $this->packageName,
+            'namespace' => $this->namespace,
+            'activeFqcn' => $this->activeFqcn,
+            'sections' => $this->sections,
+            default => null,
+        };
     }
 }

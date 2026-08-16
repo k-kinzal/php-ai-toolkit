@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Render\Page;
 
-use function array_keys;
-use function ksort;
-
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 
 use function sprintf;
@@ -77,7 +75,8 @@ final class SidebarHtml
         $html = '<nav class="sb-block"><div class="sb-title">Packages</div><ul class="sb-list">';
         foreach ($services->model->packages as $package) {
             $html .= sprintf(
-                '<li><a href="%s">%s</a>%s</li>',
+                '<li%s><a href="%s">%s</a>%s</li>',
+                $services->diff->mark($services->diff->packageStatus($package->manifest->name)),
                 $escaper->e($services->url->href($pagePath, $services->url->packagePage($package->manifest->name))),
                 $escaper->e($package->manifest->name),
                 $package->isVendor ? sprintf('<span class="sb-note">%s</span>', $package->isDevDependency ? 'dev' : 'vendor') : '',
@@ -99,7 +98,8 @@ final class SidebarHtml
         $html = '<nav class="sb-block"><div class="sb-title">On this page</div><ul class="sb-list">';
         foreach ($scope->sections as $section) {
             $html .= sprintf(
-                '<li><a href="#%s">%s</a></li>',
+                '<li%s><a href="#%s">%s</a></li>',
+                $services->diff->mark($section['status'] ?? DiffStatus::SAME),
                 $services->escaper->e($section['id']),
                 $services->escaper->e($section['label']),
             );
@@ -126,7 +126,8 @@ final class SidebarHtml
             $html .= '<div class="sb-kind">Namespaces</div><ul class="sb-list">';
             foreach ($children as $child) {
                 $html .= sprintf(
-                    '<li><a href="%s">%s</a></li>',
+                    '<li%s><a href="%s">%s</a></li>',
+                    $services->diff->mark($services->diff->namespaceStatus($packageName, $child)),
                     $escaper->e($services->url->href($pagePath, $services->url->namespacePage($packageName, $child))),
                     $escaper->e($this->lastSegment($child)),
                 );
@@ -154,7 +155,8 @@ final class SidebarHtml
         $html = '<nav class="sb-block"><div class="sb-title">Namespaces</div><ul class="sb-list">';
         foreach ($namespaces as $namespace) {
             $html .= sprintf(
-                '<li><a href="%s" title="%s">%s</a></li>',
+                '<li%s><a href="%s" title="%s">%s</a></li>',
+                $services->diff->mark($services->diff->namespaceStatus($packageName, $namespace)),
                 $services->escaper->e($services->url->href($pagePath, $services->url->namespacePage($packageName, $namespace))),
                 $services->escaper->e($namespace === '' ? 'global namespace' : $namespace),
                 $services->escaper->e($namespace === '' ? '(global)' : $namespace),
@@ -172,12 +174,22 @@ final class SidebarHtml
         $rows = $this->symbols->inNamespace($services, (string) $scope->packageName, (string) $scope->namespace);
         $html = '';
         foreach ($this->symbols->byKind($rows) as $kind => $kindRows) {
-            $html .= sprintf('<div class="sb-kind">%s</div><ul class="sb-list">', $services->escaper->e(SymbolIndex::KIND_LABELS[$kind]));
+            $statuses = [];
+            foreach ($kindRows as $row) {
+                $statuses[] = $row->status;
+            }
+
+            $html .= sprintf(
+                '<div class="sb-kind"%s>%s</div><ul class="sb-list">',
+                $services->diff->combined($statuses),
+                $services->escaper->e(SymbolIndex::KIND_LABELS[$kind]),
+            );
             foreach ($kindRows as $row) {
                 $active = $scope->activeFqcn !== null && strtolower($row->fqcn) === strtolower($scope->activeFqcn);
                 $html .= sprintf(
-                    '<li%s><a class="k-%s" href="%s">%s</a></li>',
+                    '<li%s%s><a class="k-%s" href="%s">%s</a></li>',
                     $active ? ' class="is-active"' : '',
+                    $services->diff->mark($row->status),
                     $services->escaper->e($row->kind),
                     $services->escaper->e($services->url->href($pagePath, $row->page)),
                     $services->escaper->e($row->name),
@@ -197,29 +209,66 @@ final class SidebarHtml
     {
         $escaper = $services->escaper;
         $documents = $this->documents->documents($services, $packageName);
+        $documentStatuses = [];
+        foreach ($documents as $document) {
+            $documentStatuses[] = $services->diff->documentStatus($packageName, $document->path);
+        }
+
         $html = sprintf(
-            '<nav class="sb-block"><div class="sb-title">Package</div><ul class="sb-list"><li><a href="%s">All items</a></li>%s</ul>',
+            '<nav class="sb-block"><div class="sb-title">Package</div><ul class="sb-list"><li%s><a href="%s">All items</a></li>%s</ul>',
+            $services->diff->mark($services->diff->packageStatus($packageName)),
             $escaper->e($services->url->href($pagePath, $services->url->allItemsPage($packageName))),
             $documents === [] ? '' : sprintf(
-                '<li><a href="%s#documents">Documents</a></li>',
+                '<li%s><a href="%s#documents">Documents</a></li>',
+                $services->diff->combined($documentStatuses),
                 $escaper->e($services->url->href($pagePath, $services->url->packagePage($packageName))),
             ),
         );
-        $layers = $this->packageLayers($services, $packageName);
-        if ($layers !== []) {
-            $html .= '<div class="sb-kind">Layers</div><ul class="sb-list">';
-            foreach ($layers as $layer) {
-                $html .= sprintf(
-                    '<li><a href="%s">%s</a></li>',
-                    $escaper->e($services->url->href($pagePath, $services->url->layerPage($packageName, $layer))),
-                    $escaper->e($layer),
-                );
-            }
 
-            $html .= '</ul>';
+        return $html . $this->layerBlock($services, $pagePath, $packageName) . '</nav>';
+    }
+
+    /**
+     * Renders the architecture layer list of one package.
+     *
+     * A layer is as changed as the symbols it holds, so the navigation
+     * narrows to the layers a revision touched when only changes are asked
+     * for, instead of listing an architecture nothing happened in.
+     */
+    public function layerBlock(RenderKit $services, string $pagePath, string $packageName): string
+    {
+        $layers = $this->packageLayers($services, $packageName);
+        if ($layers === []) {
+            return '';
         }
 
-        return $html . '</nav>';
+        $statuses = $this->layerStatuses($services, $packageName);
+        $combined = [];
+        foreach ($layers as $layer) {
+            $combined[] = $statuses[$layer] ?? DiffStatus::SAME;
+        }
+
+        $html = sprintf('<div class="sb-kind"%s>Layers</div><ul class="sb-list">', $services->diff->combined($combined));
+        foreach ($layers as $layer) {
+            $html .= sprintf(
+                '<li%s><a href="%s">%s</a></li>',
+                $services->diff->mark($statuses[$layer] ?? DiffStatus::SAME),
+                $services->escaper->e($services->url->href($pagePath, $services->url->layerPage($packageName, $layer))),
+                $services->escaper->e($layer),
+            );
+        }
+
+        return $html . '</ul>';
+    }
+
+    /**
+     * Combines the state of the symbols of every architecture layer.
+     *
+     * @return array<string, string>
+     */
+    public function layerStatuses(RenderKit $services, string $packageName): array
+    {
+        return $this->symbols->layerStatuses($services, $packageName);
     }
 
     /**
@@ -229,16 +278,7 @@ final class SidebarHtml
      */
     public function packageLayers(RenderKit $services, string $packageName): array
     {
-        $layers = [];
-        foreach ($this->symbols->inPackage($services, $packageName) as $row) {
-            foreach ($row->layers as $layer) {
-                $layers[$layer] = true;
-            }
-        }
-
-        ksort($layers);
-
-        return array_keys($layers);
+        return $this->symbols->layersOf($services, $packageName);
     }
 
     /**

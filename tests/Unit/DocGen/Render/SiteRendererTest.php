@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffLine;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
+use PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher;
+use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
 use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
@@ -19,11 +25,17 @@ use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
+use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
 use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
+use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\DiffModeControl;
+use PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml;
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownLinks;
@@ -42,6 +54,7 @@ use PhpAiToolkit\DocGen\Render\Page\LayerPage;
 use PhpAiToolkit\DocGen\Render\Page\MemberHtml;
 use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
 use PhpAiToolkit\DocGen\Render\Page\PackagePage;
+use PhpAiToolkit\DocGen\Render\Page\PrivateSurfaceHtml;
 use PhpAiToolkit\DocGen\Render\Page\RelationsHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
@@ -74,10 +87,19 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ClassLikePage::class)]
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(ConstantDoc::class)]
+#[UsesClass(DiffBanner::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffIndex::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffLine::class)]
+#[UsesClass(DiffModeControl::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DocBlock::class)]
 #[UsesClass(DoctestExtractor::class)]
 #[UsesClass(DocTextHtml::class)]
+#[UsesClass(DocumentListHtml::class)]
+#[UsesClass(DocumentPage::class)]
 #[UsesClass(ExampleHtml::class)]
 #[UsesClass(FunctionDoc::class)]
 #[UsesClass(FunctionPage::class)]
@@ -86,11 +108,12 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(HtmlText::class)]
 #[UsesClass(IndexPage::class)]
 #[UsesClass(LayerPage::class)]
+#[UsesClass(LcsMatcher::class)]
+#[UsesClass(LineDiffer::class)]
+#[UsesClass(MarkdownDiffHtml::class)]
 #[UsesClass(MarkdownDoc::class)]
 #[UsesClass(MarkdownInline::class)]
 #[UsesClass(MarkdownLinks::class)]
-#[UsesClass(DocumentListHtml::class)]
-#[UsesClass(DocumentPage::class)]
 #[UsesClass(MarkdownRenderer::class)]
 #[UsesClass(MemberHtml::class)]
 #[UsesClass(MethodDoc::class)]
@@ -99,6 +122,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PackagePage::class)]
 #[UsesClass(PageChrome::class)]
 #[UsesClass(PhpHighlighter::class)]
+#[UsesClass(PrivateSurfaceHtml::class)]
 #[UsesClass(ProjectModel::class)]
 #[UsesClass(RelationsHtml::class)]
 #[UsesClass(RenderKit::class)]
@@ -108,6 +132,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(SignatureHtml::class)]
 #[UsesClass(SiteFileWriter::class)]
 #[UsesClass(SiteUrl::class)]
+#[UsesClass(SourceDiffHtml::class)]
 #[UsesClass(SourcePage::class)]
 #[UsesClass(SymbolIndex::class)]
 #[UsesClass(SymbolListHtml::class)]
@@ -274,5 +299,84 @@ final class SiteRendererTest extends TestCase
         $model = new ProjectModel('T', '/tmp/docgen-root', [], new PackageGraph([]), [$first, $second, $third, $dev], [$function], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
 
         self::assertSame(['src/A.php', 'src/B.php', 'src/fn.php', 'tests/C.php'], (new SiteRenderer())->sourceFiles($model));
+    }
+
+    public function testRenderSourcePagesReadsEachFileFromTheRevisionThatHasIt(): void
+    {
+        $head = sys_get_temp_dir() . '/docgen-render-head-' . bin2hex(random_bytes(4));
+        $base = sys_get_temp_dir() . '/docgen-render-base-' . bin2hex(random_bytes(4));
+        $out = sys_get_temp_dir() . '/docgen-render-out-' . bin2hex(random_bytes(4));
+        mkdir($head . '/src', 0777, true);
+        mkdir($base . '/src', 0777, true);
+        file_put_contents($head . '/src/Kept.php', '<?php');
+        file_put_contents($base . '/src/Kept.php', '<?php');
+        file_put_contents($base . '/src/Gone.php', '<?php');
+        $kept = new ClassLikeDoc('Demo\Kept', 'Kept', 'Demo', 'class', 'demo/pkg', 'src/Kept.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], false);
+        $gone = new ClassLikeDoc('Demo\Gone', 'Gone', 'Demo', 'class', 'demo/pkg', 'src/Gone.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], false);
+        $absent = new ClassLikeDoc('Demo\Absent', 'Absent', 'Demo', 'class', 'demo/pkg', 'src/Absent.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], false);
+        $model = new ProjectModel('T', $head, [], new PackageGraph([]), [$kept, $gone, $absent], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $renderer = new SiteRenderer();
+
+        $count = $renderer->renderSourcePages($renderer->services($model, new DiffIndex('main', 'HEAD', $base)), $model, $out);
+
+        self::assertSame(2, $count);
+        self::assertFileExists($out . '/src/src/Kept.php.html');
+        self::assertFileExists($out . '/src/src/Gone.php.html');
+        self::assertFileDoesNotExist($out . '/src/src/Absent.php.html');
+    }
+
+    public function testRenderClassLikePagesWritesOnePagePerDocumentedSymbol(): void
+    {
+        $out = sys_get_temp_dir() . '/docgen-render-out-' . bin2hex(random_bytes(4));
+        $engine = new ClassLikeDoc('Demo\Engine', 'Engine', 'Demo', 'class', 'demo/pkg', 'src/Engine.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], false);
+        $probe = new ClassLikeDoc('Demo\Probe', 'Probe', 'Demo', 'class', 'demo/pkg', 'tests/Probe.php', 1, 2, false, false, [], [], [], [], [], [], [], null, null, [], true);
+        $model = new ProjectModel('T', '/tmp/none', [], new PackageGraph([]), [$engine, $probe], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $renderer = new SiteRenderer();
+
+        $count = $renderer->renderClassLikePages($renderer->services($model), $model, $out, 2);
+
+        self::assertSame(1, $count);
+        self::assertFileExists($out . '/demo/pkg/Demo/class.Engine.html');
+        self::assertFileDoesNotExist($out . '/demo/pkg/Demo/class.Probe.html');
+    }
+
+    public function testWriteSourcePagesSkipsFilesNoRevisionHas(): void
+    {
+        $root = sys_get_temp_dir() . '/docgen-render-src-' . bin2hex(random_bytes(4));
+        $out = sys_get_temp_dir() . '/docgen-render-out-' . bin2hex(random_bytes(4));
+        mkdir($root . '/src', 0777, true);
+        file_put_contents($root . '/src/Kept.php', '<?php');
+        $model = new ProjectModel('T', $root, [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $renderer = new SiteRenderer();
+
+        $count = $renderer->writeSourcePages($renderer->services($model), $root, $out, ['src/Kept.php', 'src/Absent.php']);
+
+        self::assertSame(1, $count);
+        self::assertFileExists($out . '/src/src/Kept.php.html');
+        self::assertFileDoesNotExist($out . '/src/src/Absent.php.html');
+    }
+
+    public function testCountOfAddsUpWhatEveryWorkerReported(): void
+    {
+        $renderer = new SiteRenderer();
+
+        self::assertSame(9, $renderer->countOf([2, 3, 4]));
+        self::assertSame(0, $renderer->countOf([]));
+
+        $this->expectException(DocGenException::class);
+        $this->expectExceptionMessage('A documentation worker reported no page count.');
+
+        $renderer->countOf([2, 'three']);
+    }
+
+    public function testContentsReadsAFileOrReportsThatItCannot(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-render-read-' . bin2hex(random_bytes(4));
+        mkdir($dir, 0777, true);
+        file_put_contents($dir . '/file.php', '<?php echo 1;');
+
+        self::assertSame('<?php echo 1;', (new SiteRenderer())->contents($dir . '/file.php'));
+        self::assertNull((new SiteRenderer())->contents($dir . '/missing.php'));
+        self::assertNull((new SiteRenderer())->contents($dir));
     }
 }

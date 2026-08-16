@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Parse;
 
-use function get_object_vars;
-
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
 
@@ -36,6 +34,10 @@ final class FileSymbols
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'classLikes' => $this->classLikes,
+            'functions' => $this->functions,
+            default => null,
+        };
     }
 }

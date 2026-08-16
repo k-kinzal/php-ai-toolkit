@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Model;
 
-use function get_object_vars;
-
 /**
  * The complete type of one declaration site.
  *
@@ -35,6 +33,10 @@ final class TypeSignature
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'native' => $this->native,
+            'annotated' => $this->annotated,
+            default => null,
+        };
     }
 }

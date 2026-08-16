@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Model;
 
-use function get_object_vars;
-
 /**
  * One method declaration of a documented class-like symbol.
  *
@@ -56,6 +54,18 @@ final class MethodDoc
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'name' => $this->name,
+            'visibility' => $this->visibility,
+            'isStatic' => $this->isStatic,
+            'isAbstract' => $this->isAbstract,
+            'isFinal' => $this->isFinal,
+            'parameters' => $this->parameters,
+            'returnType' => $this->returnType,
+            'docBlock' => $this->docBlock,
+            'startLine' => $this->startLine,
+            'endLine' => $this->endLine,
+            default => null,
+        };
     }
 }

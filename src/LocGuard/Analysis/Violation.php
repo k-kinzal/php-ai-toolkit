@@ -42,6 +42,14 @@ final class Violation
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'path' => $this->path,
+            'line' => $this->line,
+            'rule' => $this->rule,
+            'actual' => $this->actual,
+            'limit' => $this->limit,
+            'message' => $this->message,
+            default => null,
+        };
     }
 }

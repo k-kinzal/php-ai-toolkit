@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
+use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
 use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
 use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
@@ -47,6 +51,11 @@ use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
+use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\DiffModeControl;
+use PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml;
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
@@ -54,6 +63,8 @@ use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
 use PhpAiToolkit\DocGen\Render\Page\BreadcrumbHtml;
 use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
 use PhpAiToolkit\DocGen\Render\Page\DocTextHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentListHtml;
+use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
 use PhpAiToolkit\DocGen\Render\Page\ExampleHtml;
 use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
 use PhpAiToolkit\DocGen\Render\Page\GraphSvg;
@@ -62,6 +73,7 @@ use PhpAiToolkit\DocGen\Render\Page\LayerPage;
 use PhpAiToolkit\DocGen\Render\Page\MemberHtml;
 use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
 use PhpAiToolkit\DocGen\Render\Page\PackagePage;
+use PhpAiToolkit\DocGen\Render\Page\PrivateSurfaceHtml;
 use PhpAiToolkit\DocGen\Render\Page\RelationsHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
@@ -96,12 +108,20 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(ConstantBuilder::class)]
 #[UsesClass(ConstantDoc::class)]
+#[UsesClass(DiffBanner::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffIndex::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffModeControl::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DocBlock::class)]
 #[UsesClass(DocBlockReader::class)]
 #[UsesClass(DocTag::class)]
 #[UsesClass(DoctestExtractor::class)]
 #[UsesClass(DocTextHtml::class)]
+#[UsesClass(DocumentListHtml::class)]
+#[UsesClass(DocumentPage::class)]
 #[UsesClass(EnumCaseBuilder::class)]
 #[UsesClass(EnumCaseDoc::class)]
 #[UsesClass(ExampleHtml::class)]
@@ -115,6 +135,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(HtmlText::class)]
 #[UsesClass(IndexPage::class)]
 #[UsesClass(LayerPage::class)]
+#[UsesClass(LineDiffer::class)]
+#[UsesClass(MarkdownDiffHtml::class)]
 #[UsesClass(MarkdownInline::class)]
 #[UsesClass(MarkdownRenderer::class)]
 #[UsesClass(MemberHtml::class)]
@@ -130,10 +152,11 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PhpDocParserBridge::class)]
 #[UsesClass(PhpHighlighter::class)]
 #[UsesClass(PhpParserBridge::class)]
+#[UsesClass(PrivateSurfaceHtml::class)]
 #[UsesClass(ProjectModel::class)]
-#[UsesClass(ReferenceTestCase::class)]
 #[UsesClass(PropertyBuilder::class)]
 #[UsesClass(PropertyDoc::class)]
+#[UsesClass(ReferenceTestCase::class)]
 #[UsesClass(RelationsHtml::class)]
 #[UsesClass(RenderKit::class)]
 #[UsesClass(SearchIndexBuilder::class)]
@@ -143,6 +166,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(SiteFileWriter::class)]
 #[UsesClass(SiteRenderer::class)]
 #[UsesClass(SiteUrl::class)]
+#[UsesClass(SourceDiffHtml::class)]
 #[UsesClass(SourcePage::class)]
 #[UsesClass(SymbolContext::class)]
 #[UsesClass(SymbolIndex::class)]
@@ -485,62 +509,6 @@ PHP;
         self::assertSame('', (new ClassLikePage())->methodSection($services, $pagePath, $plain));
     }
 
-    public function testPrivateSurfaceListsOnlyPrivateMembers(): void
-    {
-        $code = <<<'PHP'
-<?php
-
-namespace Demo;
-
-final class Widget
-{
-    public const LIMIT = 3;
-
-    private const SECRET = 'hidden';
-
-    private string $token = '';
-
-    private function seed(): void
-    {
-    }
-}
-
-class Plain
-{
-}
-PHP;
-        $statements = (new AstParser())->parse($code, 'src/Demo/Widget.php');
-        $symbols = (new FileSymbolCollector())->collect($statements, 'demo/pkg', 'src/Demo/Widget.php', false);
-        $widget = $symbols->classLikes[0];
-        $plain = $symbols->classLikes[1];
-        $table = new SymbolTable();
-        $table->registerClassLike($symbols->classLikes[0]);
-        $table->registerClassLike($symbols->classLikes[1]);
-        $hierarchy = new HierarchyIndex();
-        $hierarchy->build($symbols->classLikes);
-        $usages = new UsageIndex();
-        $usages->build([]);
-        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
-        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), $symbols->classLikes, $symbols->functions, $table, $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
-        $services = (new SiteRenderer())->services($model);
-        $context = new TypeRenderContext('demo/pkg/Demo/class.Widget.html', 'Demo', [], [], [], $table);
-
-        $html = (new ClassLikePage())->privateSurface($services, $widget, $context);
-
-        self::assertStringStartsWith(
-            '<section class="private-surface"><h2 id="private-surface">Private surface <span class="count">3</span>'
-            . '<a class="anchor" href="#private-surface">§</a></h2>'
-            . '<p class="section-note">Implementation details, listed for orientation only.</p>'
-            . '<pre class="member-sig private-sig"><code>',
-            $html,
-        );
-        self::assertStringContainsString('<span class="sig-name">SECRET</span>', $html);
-        self::assertStringContainsString('<span class="t-var">$token</span>', $html);
-        self::assertStringContainsString('<span class="sig-name">seed</span>', $html);
-        self::assertStringNotContainsString('<span class="sig-name">LIMIT</span>', $html);
-        self::assertSame('', (new ClassLikePage())->privateSurface($services, $plain, $context));
-    }
-
     public function testSectionsListsPresentSectionsInPageOrder(): void
     {
         $constants = [new ConstantDoc('LIMIT', 'public', '3', null, 6), new ConstantDoc('SECRET', 'private', "'x'", null, 8)];
@@ -553,12 +521,12 @@ PHP;
         $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
 
         self::assertSame([
-            ['id' => 'constants', 'label' => 'Constants'],
-            ['id' => 'properties', 'label' => 'Properties'],
-            ['id' => 'methods', 'label' => 'Methods'],
-            ['id' => 'private-surface', 'label' => 'Private surface'],
-            ['id' => 'test-cases', 'label' => 'Test cases'],
-            ['id' => 'relations', 'label' => 'Relations'],
+            ['id' => 'constants', 'label' => 'Constants', 'status' => DiffStatus::SAME],
+            ['id' => 'properties', 'label' => 'Properties', 'status' => DiffStatus::SAME],
+            ['id' => 'methods', 'label' => 'Methods', 'status' => DiffStatus::SAME],
+            ['id' => 'private-surface', 'label' => 'Private surface', 'status' => DiffStatus::SAME],
+            ['id' => 'test-cases', 'label' => 'Test cases', 'status' => DiffStatus::SAME],
+            ['id' => 'relations', 'label' => 'Relations', 'status' => DiffStatus::SAME],
         ], (new ClassLikePage())->sections($services, $widget));
     }
 
@@ -568,7 +536,10 @@ PHP;
         $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [$bare], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
         $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
 
-        self::assertSame([['id' => 'relations', 'label' => 'Relations']], (new ClassLikePage())->sections($services, $bare));
+        self::assertSame(
+            [['id' => 'relations', 'label' => 'Relations', 'status' => DiffStatus::SAME]],
+            (new ClassLikePage())->sections($services, $bare),
+        );
     }
 
     public function testVisibleMembersDropsPrivateMembers(): void
@@ -585,21 +556,6 @@ PHP;
         self::assertSame('run', $visible[0]->name);
         self::assertSame('boot', $visible[1]->name);
         self::assertSame([], (new ClassLikePage())->visibleMembers([]));
-    }
-
-    public function testPrivateMembersCollectsConstantsPropertiesAndMethodsInThatOrder(): void
-    {
-        $constants = [new ConstantDoc('LIMIT', 'public', '3', null, 6), new ConstantDoc('SECRET', 'private', "'x'", null, 8)];
-        $properties = [new PropertyDoc('token', 'private', false, false, new TypeSignature('string', null), "''", null, 10)];
-        $methods = [new MethodDoc('run', 'public', false, false, false, [], new TypeSignature('int', null), null, 12, 15), new MethodDoc('seed', 'private', false, false, false, [], new TypeSignature('void', null), null, 17, 19)];
-        $widget = new ClassLikeDoc('Demo\Widget', 'Widget', 'Demo', 'class', 'demo/pkg', 'src/Demo/Widget.php', 5, 20, false, true, [], [], [], $constants, $properties, $methods, [], null, null, [], false);
-
-        $private = (new ClassLikePage())->privateMembers($widget);
-
-        self::assertCount(3, $private);
-        self::assertSame('SECRET', $private[0]->name);
-        self::assertSame('token', $private[1]->name);
-        self::assertSame('seed', $private[2]->name);
     }
 
     public function testTestCaseSectionSplitsDedicatedTestsFromOtherTests(): void
@@ -638,5 +594,65 @@ PHP;
         self::assertTrue((new ClassLikePage())->isDedicatedTest('WidgetTest', 'Widget'));
         self::assertFalse((new ClassLikePage())->isDedicatedTest('Tests\Unit\Demo\AppTest', 'Widget'));
         self::assertFalse((new ClassLikePage())->isDedicatedTest('Tests\Unit\Demo\WidgetFactoryTest', 'Widget'));
+    }
+
+    public function testSectionStatusCombinesTheStatesOfTheMembersOfOneSection(): void
+    {
+        $methods = [
+            new MethodDoc('run', 'public', false, false, false, [], new TypeSignature('int', null), null, 12, 15),
+            new MethodDoc('stop', 'public', false, false, false, [], new TypeSignature('void', null), null, 17, 19),
+        ];
+        $widget = new ClassLikeDoc('Demo\Widget', 'Widget', 'Demo', 'class', 'demo/pkg', 'src/Demo/Widget.php', 5, 20, false, true, [], [], [], [], [], $methods, [], null, null, [], false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [$widget], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $index = new DiffIndex('main', 'HEAD');
+        $index->mark($index->keys()->member('Demo\Widget', DiffKey::METHOD, 'run'), DiffStatus::ADDED);
+        $index->mark($index->keys()->member('Demo\Widget', DiffKey::METHOD, 'stop'), DiffStatus::ADDED);
+        $page = new ClassLikePage();
+
+        self::assertSame(
+            DiffStatus::ADDED,
+            $page->sectionStatus((new SiteRenderer())->services($model, $index), $widget, DiffKey::METHOD, $methods),
+        );
+        self::assertSame(
+            DiffStatus::SAME,
+            $page->sectionStatus((new SiteRenderer())->services($model, $index), $widget, DiffKey::CONSTANT, []),
+        );
+    }
+
+    public function testSectionMarkCombinesTheStatesOfTheMembersOfOneSection(): void
+    {
+        $code = <<<'PHP'
+<?php
+
+namespace Demo;
+
+class Widget
+{
+    public function run(): void
+    {
+    }
+
+    public function stop(): void
+    {
+    }
+}
+PHP;
+        $statements = (new AstParser())->parse($code, 'src/Demo/Widget.php');
+        $symbols = (new FileSymbolCollector())->collect($statements, 'demo/pkg', 'src/Demo/Widget.php', false);
+        $widget = $symbols->classLikes[0];
+        $index = new DiffIndex('main', 'HEAD');
+        $index->mark($index->keys()->member('Demo\Widget', DiffKey::METHOD, 'run'), DiffStatus::ADDED);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), $symbols->classLikes, [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $page = new ClassLikePage();
+
+        self::assertSame(
+            ' data-diff="modified"',
+            $page->sectionMark((new SiteRenderer())->services($model, $index), $widget, DiffKey::METHOD, $widget->methods),
+        );
+        self::assertSame(
+            ' data-diff="same"',
+            $page->sectionMark((new SiteRenderer())->services($model, $index), $widget, DiffKey::CONSTANT, []),
+        );
+        self::assertSame('', $page->sectionMark((new SiteRenderer())->services($model), $widget, DiffKey::METHOD, $widget->methods));
     }
 }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Doctest;
 
-use function get_object_vars;
-
 /**
  * One example line classified by its doctest assertion marker.
  *
@@ -44,6 +42,13 @@ final class AssertionLine
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'text' => $this->text,
+            'code' => $this->code,
+            'marker' => $this->marker,
+            'expected' => $this->expected,
+            'exceptionMessage' => $this->exceptionMessage,
+            default => null,
+        };
     }
 }

@@ -72,13 +72,20 @@ final class DocumentListHtml
             return '';
         }
 
+        $statuses = [];
+        foreach ($documents as $document) {
+            $statuses[] = $services->diff->documentStatus($packageName, $document->path);
+        }
+
         $html = sprintf(
-            '<section><h2 id="documents">Documents <span class="count">%d</span><a class="anchor" href="#documents">§</a></h2>',
+            '<section%s><h2 id="documents">Documents <span class="count">%d</span><a class="anchor" href="#documents">§</a></h2>',
+            $services->diff->combined($statuses),
             count($documents),
         ) . '<div class="table-wrap"><table class="symbol-table">';
         foreach ($documents as $document) {
             $html .= sprintf(
-                '<tr><td><a href="%s">%s</a></td><td class="item-ns">%s</td></tr>',
+                '<tr%s><td><a href="%s">%s</a></td><td class="item-ns">%s</td></tr>',
+                $services->diff->mark($services->diff->documentStatus($packageName, $document->path)),
                 $services->escaper->e($services->url->href($pagePath, $services->url->documentPage($packageName, $document->path))),
                 $services->escaper->e($document->title),
                 $services->escaper->e($document->path),

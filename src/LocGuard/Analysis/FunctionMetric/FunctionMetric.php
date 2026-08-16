@@ -55,6 +55,15 @@ final class FunctionMetric
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'cyclomaticComplexity' => $this->cyclomaticComplexity,
+            'kind' => $this->kind,
+            'name' => $this->name,
+            'startLine' => $this->startLine,
+            'endLine' => $this->endLine,
+            'bodyStartIndex' => $this->bodyStartIndex,
+            'bodyEndIndex' => $this->bodyEndIndex,
+            default => null,
+        };
     }
 }

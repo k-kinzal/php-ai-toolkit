@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpAiToolkit\DocGen\Render\Page;
 
 use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
+use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 use PhpAiToolkit\DocGen\Render\TypeRenderContext;
@@ -40,6 +41,9 @@ final class FunctionPage
     /** @readonly */
     private TestCaseHtml $testCaseHtml;
 
+    /** @readonly */
+    private DiffBanner $banner;
+
     /**
      * Creates a function page renderer from its section collaborators.
      */
@@ -52,6 +56,7 @@ final class FunctionPage
         ?MemberHtml $member = null,
         ?UsageListHtml $usageList = null,
         ?TestCaseHtml $testCaseHtml = null,
+        ?DiffBanner $banner = null,
     ) {
         $this->chrome = $chrome ?? new PageChrome();
         $this->sidebar = $sidebar ?? new SidebarHtml();
@@ -61,6 +66,7 @@ final class FunctionPage
         $this->member = $member ?? new MemberHtml();
         $this->usageList = $usageList ?? new UsageListHtml();
         $this->testCaseHtml = $testCaseHtml ?? new TestCaseHtml();
+        $this->banner = $banner ?? new DiffBanner();
     }
 
     /**
@@ -107,9 +113,12 @@ final class FunctionPage
             $function->startLine,
         );
         $html .= '</div>' . "\n";
-        $html .= '<pre class="signature"><code>' . $this->signature->functionSignature($services, $function, $context) . '</code></pre>' . "\n";
+        $key = $services->diff->functionKey($function->fqn);
+        $html .= $this->banner->render($services, $services->diff->statusOf($key));
+        $html .= '<pre class="signature"' . $services->diff->attribute($key) . '><code>'
+            . $this->signature->functionSignature($services, $function, $context, $key) . '</code></pre>' . "\n";
         $html .= $this->docText->render($services, $function->docBlock, $context);
-        $html .= $this->member->signatureTable($services, $function->parameters, $function->returnType, $function->docBlock, $context);
+        $html .= $this->member->signatureTable($services, $function->parameters, $function->returnType, $function->docBlock, $context, $key);
         $html .= $this->member->tagExamples($services, $function->docBlock);
         $html .= $this->testCaseHtml->section($services, $pagePath, $services->model->testCases->forType($function->fqn));
 

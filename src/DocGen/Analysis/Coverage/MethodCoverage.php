@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Coverage;
 
-use function get_object_vars;
-
 /**
  * Coverage figures of one method as reported by the PHPUnit XML report.
  *
@@ -35,6 +33,11 @@ final class MethodCoverage
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'executable' => $this->executable,
+            'executed' => $this->executed,
+            'percent' => $this->percent,
+            default => null,
+        };
     }
 }

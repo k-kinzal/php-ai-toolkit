@@ -28,6 +28,7 @@ use PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use PhpAiToolkit\DocGen\Analysis\Parse\PropertyBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext;
+use PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -56,6 +57,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PropertyDoc::class)]
 #[UsesClass(SymbolContext::class)]
 #[UsesClass(TypeSignature::class)]
+#[UsesClass(UseMapCollector::class)]
 final class FileSymbolCollectorTest extends TestCase
 {
     public function testCollectBuildsNamespacedClassLike(): void

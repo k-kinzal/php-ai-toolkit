@@ -17,9 +17,100 @@ final class DocGenCliArgumentParserTest extends TestCase
     public function testParseReturnsInactiveDefaults(): void
     {
         self::assertSame(
-            ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'help' => false, 'version' => false],
+            ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'help' => false, 'version' => false],
             (new DocGenCliArgumentParser())->parse([]),
         );
+    }
+
+    public function testParseReadsDiffRangeAsBaseAndHead(): void
+    {
+        $options = (new DocGenCliArgumentParser())->parse(['--diff=main..HEAD']);
+
+        self::assertSame('main', $options['base']);
+        self::assertSame('HEAD', $options['head']);
+    }
+
+    public function testParseReadsDiffWithoutHeadAsWorkingTreeComparison(): void
+    {
+        $options = (new DocGenCliArgumentParser())->parse(['--diff', 'v1.0.0']);
+
+        self::assertSame('v1.0.0', $options['base']);
+        self::assertNull($options['head']);
+    }
+
+    public function testParseReadsSeparateBaseAndHeadOptions(): void
+    {
+        $options = (new DocGenCliArgumentParser())->parse(['--base=main', '--head', 'feature']);
+
+        self::assertSame('main', $options['base']);
+        self::assertSame('feature', $options['head']);
+    }
+
+    public function testParseRejectsHeadWithoutBase(): void
+    {
+        $this->expectException(DocGenException::class);
+        $this->expectExceptionMessage('Option --head needs a revision to compare against: add --base=REVISION, or use --diff=BASE..HEAD.');
+
+        (new DocGenCliArgumentParser())->parse(['--head=HEAD']);
+    }
+
+    public function testParseRejectsDiffRangeWithoutBaseRevision(): void
+    {
+        $this->expectException(DocGenException::class);
+        $this->expectExceptionMessage('Invalid --diff range: ..HEAD. Use BASE to compare against the working tree, or BASE..HEAD to compare two revisions.');
+
+        (new DocGenCliArgumentParser())->parse(['--diff=..HEAD']);
+    }
+
+    public function testIsValueOptionRecognizesEveryOptionThatCarriesAValue(): void
+    {
+        $parser = new DocGenCliArgumentParser();
+
+        self::assertTrue($parser->isValueOption('--diff'));
+        self::assertTrue($parser->isValueOption('--base=main'));
+        self::assertTrue($parser->isValueOption('--head=HEAD'));
+        self::assertTrue($parser->isValueOption('--output=build'));
+        self::assertTrue($parser->isValueOption('--memory-limit'));
+        self::assertFalse($parser->isValueOption('--serve'));
+        self::assertFalse($parser->isValueOption('--diffuse'));
+    }
+
+    public function testOptionNameStripsThePrefixAndTheInlineValue(): void
+    {
+        $parser = new DocGenCliArgumentParser();
+
+        self::assertSame('diff', $parser->optionName('--diff=main..HEAD'));
+        self::assertSame('base', $parser->optionName('--base'));
+    }
+
+    public function testApplyValueOptionAssignsEveryValueOption(): void
+    {
+        $parser = new DocGenCliArgumentParser();
+        $defaults = $parser->parse([]);
+
+        self::assertSame('doc.yaml', $parser->applyValueOption($defaults, 'config', 'doc.yaml')['config']);
+        self::assertSame('build/site', $parser->applyValueOption($defaults, 'output', 'build/site')['output']);
+        self::assertSame('build/cov', $parser->applyValueOption($defaults, 'coverage', 'build/cov')['coverage']);
+        self::assertSame('1G', $parser->applyValueOption($defaults, 'memory-limit', '1G')['memoryLimit']);
+        self::assertSame('main', $parser->applyValueOption($defaults, 'base', 'main')['base']);
+        self::assertSame('HEAD', $parser->applyValueOption($defaults, 'head', 'HEAD')['head']);
+        self::assertSame('v2', $parser->applyValueOption($defaults, 'diff', 'v1..v2')['head']);
+    }
+
+    public function testRevisionRangeKeepsAnEarlierHeadWhenTheRangeOmitsOne(): void
+    {
+        $parser = new DocGenCliArgumentParser();
+        $options = $parser->parse(['--head=feature', '--base=main']);
+
+        self::assertSame('feature', $parser->revisionRange($options, 'v1.0.0')['head']);
+        self::assertSame('v1.0.0', $parser->revisionRange($options, 'v1.0.0')['base']);
+    }
+
+    public function testValidatedAcceptsABaseWithoutAHead(): void
+    {
+        $parser = new DocGenCliArgumentParser();
+
+        self::assertSame('main', $parser->validated($parser->parse(['--base=main']))['base']);
     }
 
     public function testParseRecognizesHelpOptions(): void
@@ -62,6 +153,27 @@ final class DocGenCliArgumentParserTest extends TestCase
         $this->expectExceptionMessage('Invalid --memory-limit value: 12MB.');
 
         (new DocGenCliArgumentParser())->memoryLimit('12MB');
+    }
+
+    public function testJobsAcceptsAWorkerCountOfOneOrMore(): void
+    {
+        self::assertSame(1, (new DocGenCliArgumentParser())->jobs('1'));
+        self::assertSame(12, (new DocGenCliArgumentParser())->jobs('12'));
+    }
+
+    public function testJobsRejectsAnythingThatIsNotAWorkerCount(): void
+    {
+        $this->expectException(DocGenException::class);
+        $this->expectExceptionMessage('Invalid --jobs value: 0.');
+
+        (new DocGenCliArgumentParser())->jobs('0');
+    }
+
+    public function testParseReadsTheWorkerCountAndLeavesItUnsetByDefault(): void
+    {
+        self::assertSame(4, (new DocGenCliArgumentParser())->parse(['--jobs=4'])['jobs']);
+        self::assertSame(2, (new DocGenCliArgumentParser())->parse(['--jobs', '2'])['jobs']);
+        self::assertNull((new DocGenCliArgumentParser())->parse([])['jobs']);
     }
 
     public function testParseUsesDefaultServeAddress(): void

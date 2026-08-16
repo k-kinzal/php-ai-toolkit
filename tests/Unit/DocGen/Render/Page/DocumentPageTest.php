@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
+use PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher;
+use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
 use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
 use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc;
@@ -16,19 +21,40 @@ use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
+use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\DiffModeControl;
+use PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml;
+use PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml;
 use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownLinks;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
+use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
 use PhpAiToolkit\DocGen\Render\Page\BreadcrumbHtml;
+use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
+use PhpAiToolkit\DocGen\Render\Page\DocTextHtml;
 use PhpAiToolkit\DocGen\Render\Page\DocumentListHtml;
 use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
+use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
+use PhpAiToolkit\DocGen\Render\Page\GraphSvg;
+use PhpAiToolkit\DocGen\Render\Page\IndexPage;
+use PhpAiToolkit\DocGen\Render\Page\LayerPage;
+use PhpAiToolkit\DocGen\Render\Page\MemberHtml;
+use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
+use PhpAiToolkit\DocGen\Render\Page\PackagePage;
+use PhpAiToolkit\DocGen\Render\Page\PrivateSurfaceHtml;
+use PhpAiToolkit\DocGen\Render\Page\RelationsHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
+use PhpAiToolkit\DocGen\Render\Page\SourcePage;
 use PhpAiToolkit\DocGen\Render\Page\SymbolIndex;
+use PhpAiToolkit\DocGen\Render\Page\SymbolListHtml;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
+use PhpAiToolkit\DocGen\Render\SearchIndexBuilder;
+use PhpAiToolkit\DocGen\Render\SiteRenderer;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -36,28 +62,54 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(DocumentPage::class)]
+#[UsesClass(AllItemsPage::class)]
 #[UsesClass(AssertionScanner::class)]
 #[UsesClass(AssetPublisher::class)]
 #[UsesClass(BreadcrumbHtml::class)]
+#[UsesClass(ClassLikePage::class)]
 #[UsesClass(ComposerManifest::class)]
+#[UsesClass(DiffBanner::class)]
+#[UsesClass(DiffHtml::class)]
+#[UsesClass(DiffIndex::class)]
+#[UsesClass(DiffKey::class)]
+#[UsesClass(DiffModeControl::class)]
+#[UsesClass(DiffStatus::class)]
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DoctestExtractor::class)]
+#[UsesClass(DocTextHtml::class)]
 #[UsesClass(DocumentListHtml::class)]
+#[UsesClass(FunctionPage::class)]
+#[UsesClass(GraphSvg::class)]
 #[UsesClass(HierarchyIndex::class)]
 #[UsesClass(HtmlText::class)]
+#[UsesClass(IndexPage::class)]
+#[UsesClass(LayerPage::class)]
+#[UsesClass(LcsMatcher::class)]
+#[UsesClass(LineDiffer::class)]
+#[UsesClass(MarkdownDiffHtml::class)]
 #[UsesClass(MarkdownDoc::class)]
 #[UsesClass(MarkdownInline::class)]
 #[UsesClass(MarkdownLinks::class)]
 #[UsesClass(MarkdownRenderer::class)]
+#[UsesClass(MemberHtml::class)]
+#[UsesClass(NamespacePage::class)]
 #[UsesClass(PackageGraph::class)]
+#[UsesClass(PackagePage::class)]
 #[UsesClass(PageChrome::class)]
 #[UsesClass(PhpHighlighter::class)]
+#[UsesClass(PrivateSurfaceHtml::class)]
 #[UsesClass(ProjectModel::class)]
+#[UsesClass(RelationsHtml::class)]
 #[UsesClass(RenderKit::class)]
+#[UsesClass(SearchIndexBuilder::class)]
 #[UsesClass(SidebarHtml::class)]
 #[UsesClass(SidebarScope::class)]
+#[UsesClass(SiteRenderer::class)]
 #[UsesClass(SiteUrl::class)]
+#[UsesClass(SourceDiffHtml::class)]
+#[UsesClass(SourcePage::class)]
 #[UsesClass(SymbolIndex::class)]
+#[UsesClass(SymbolListHtml::class)]
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(TypeHtml::class)]
@@ -113,5 +165,27 @@ final class DocumentPageTest extends TestCase
         self::assertStringContainsString('<a href="../../../../demo/pkg/doc/docs/rules/Rule.md.html">the rule</a>', $html);
         self::assertStringContainsString('<span class="md-target" title="tree.yaml">the tree</span>', $html);
         self::assertStringContainsString('<pre class="code-block"><code>&lt;?<span class="tok-id">php</span> <span class="tok-kw">echo</span>', $html);
+    }
+
+    public function testBodyMarksTheChangedBlocksOfAComparedDocument(): void
+    {
+        $guide = new MarkdownDoc('demo/pkg', 'docs/guide.md', 'docs/guide.md', 'Guide');
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [$guide]);
+        $services = (new SiteRenderer())->services($model, new DiffIndex('main', 'HEAD'));
+
+        $html = (new DocumentPage())->body($services, 'demo/pkg/doc/docs/guide.md.html', $guide, "Intro.\n\nNew part.\n", "Intro.\n");
+
+        self::assertStringContainsString('<div class="doc-block" data-diff="same"><p>Intro.</p>', $html);
+        self::assertStringContainsString('<div class="doc-block" data-diff="added"><p>New part.</p>', $html);
+    }
+
+    public function testFenceHighlightsPhpAndLeavesOtherLanguagesToTheRenderer(): void
+    {
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model);
+        $fence = (new DocumentPage())->fence($services);
+
+        self::assertNull($fence('echo 1;', 'bash'));
+        self::assertStringContainsString('<pre class="code-block"><code><span class="tok-kw">echo</span>', (string) $fence('echo 1;', 'php'));
     }
 }

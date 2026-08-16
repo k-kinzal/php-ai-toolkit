@@ -6,6 +6,7 @@ namespace PhpAiToolkit\DocGen\Render\Page;
 
 use function in_array;
 
+use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
@@ -75,14 +76,15 @@ final class MemberHtml
     public function method(RenderKit $services, string $pagePath, ClassLikeDoc $owner, MethodDoc $method, TypeRenderContext $context): string
     {
         $anchor = 'method.' . $method->name;
-        $html = sprintf('<div class="member" id="%s">', $services->escaper->e($anchor));
+        $key = $services->diff->methodKey($owner->fqcn, $method->name);
+        $html = sprintf('<div class="member"%s id="%s">', $services->diff->attribute($key), $services->escaper->e($anchor));
         $html .= '<div class="member-head">';
-        $html .= '<pre class="member-sig"><code>' . $this->signature->methodSignature($services, $method, $context) . '</code></pre>';
+        $html .= '<pre class="member-sig"><code>' . $this->signature->methodSignature($services, $method, $context, $key) . '</code></pre>';
         $html .= $this->meta($services, $pagePath, $owner->file, $method->startLine, $method->endLine, $anchor);
         $html .= '</div>';
         $html .= '<div class="member-body">';
         $html .= $this->docText->render($services, $method->docBlock, $context);
-        $html .= $this->paramTable($services, $method, $context);
+        $html .= $this->paramTable($services, $method, $context, $key);
         $html .= $this->tagExamples($services, $method->docBlock);
         $html .= $this->testCases->section($services, $pagePath, $services->model->testCases->forMember($owner->fqcn, $method->name));
         $html .= $this->usageList->section($services, $pagePath, 'Called from', $this->callers($services, $owner, $method), false);
@@ -114,7 +116,7 @@ final class MemberHtml
     public function property(RenderKit $services, string $pagePath, ClassLikeDoc $owner, PropertyDoc $property, TypeRenderContext $context): string
     {
         $anchor = 'property.' . $property->name;
-        $html = sprintf('<div class="member" id="%s">', $services->escaper->e($anchor));
+        $html = sprintf('<div class="member"%s id="%s">', $services->diff->property($owner->fqcn, $property->name), $services->escaper->e($anchor));
         $html .= '<div class="member-head">';
         $html .= '<pre class="member-sig"><code>' . $this->signature->propertySignature($services, $property, $context) . '</code></pre>';
         $html .= $this->meta($services, $pagePath, $owner->file, $property->line, $property->line, $anchor);
@@ -130,7 +132,7 @@ final class MemberHtml
     public function constant(RenderKit $services, string $pagePath, ClassLikeDoc $owner, ConstantDoc $constant, TypeRenderContext $context): string
     {
         $anchor = 'constant.' . $constant->name;
-        $html = sprintf('<div class="member" id="%s">', $services->escaper->e($anchor));
+        $html = sprintf('<div class="member"%s id="%s">', $services->diff->constant($owner->fqcn, $constant->name), $services->escaper->e($anchor));
         $html .= '<div class="member-head">';
         $html .= '<pre class="member-sig"><code>' . $this->signature->constantSignature($services, $constant, $context) . '</code></pre>';
         $html .= $this->meta($services, $pagePath, $owner->file, $constant->line, $constant->line, $anchor);
@@ -146,7 +148,7 @@ final class MemberHtml
     public function enumCase(RenderKit $services, string $pagePath, ClassLikeDoc $owner, EnumCaseDoc $case, TypeRenderContext $context): string
     {
         $anchor = 'case.' . $case->name;
-        $html = sprintf('<div class="member" id="%s">', $services->escaper->e($anchor));
+        $html = sprintf('<div class="member"%s id="%s">', $services->diff->enumCase($owner->fqcn, $case->name), $services->escaper->e($anchor));
         $html .= '<div class="member-head">';
         $html .= '<pre class="member-sig"><code>' . $this->signature->caseSignature($services, $case) . '</code></pre>';
         $html .= $this->meta($services, $pagePath, $owner->file, $case->line, $case->line, $anchor);
@@ -194,10 +196,12 @@ final class MemberHtml
      *
      * Every parameter is listed with its documented type, whether or not the
      * PHPDoc adds prose, because the type itself is documentation.
+     *
+     * @param string $ownerKey the diff key the parameter states are under
      */
-    public function paramTable(RenderKit $services, MethodDoc $method, TypeRenderContext $context): string
+    public function paramTable(RenderKit $services, MethodDoc $method, TypeRenderContext $context, string $ownerKey = ''): string
     {
-        return $this->signatureTable($services, $method->parameters, $method->returnType, $method->docBlock, $context);
+        return $this->signatureTable($services, $method->parameters, $method->returnType, $method->docBlock, $context, $ownerKey);
     }
 
     /**
@@ -208,43 +212,54 @@ final class MemberHtml
      * share the rendering, so both read the same way.
      *
      * @param list<ParameterDoc> $parameters
+     * @param string $ownerKey the diff key the parameter states are under
      */
-    public function signatureTable(RenderKit $services, array $parameters, TypeSignature $returnType, ?DocBlock $docBlock, TypeRenderContext $context): string
+    public function signatureTable(RenderKit $services, array $parameters, TypeSignature $returnType, ?DocBlock $docBlock, TypeRenderContext $context, string $ownerKey = ''): string
     {
-        return $this->parameterSection($services, $parameters, $context)
-            . $this->returnSection($services, $returnType, $context)
-            . $this->throwsSection($services, $docBlock, $context);
+        return $this->parameterSection($services, $parameters, $context, $ownerKey)
+            . $this->returnSection($services, $returnType, $context, $ownerKey)
+            . $this->throwsSection($services, $docBlock, $context, $ownerKey);
     }
 
     /**
      * Renders the parameter block of a callable declaration.
      *
      * @param list<ParameterDoc> $parameters
+     * @param string $ownerKey the diff key the parameter states are under
      */
-    public function parameterSection(RenderKit $services, array $parameters, TypeRenderContext $context): string
+    public function parameterSection(RenderKit $services, array $parameters, TypeRenderContext $context, string $ownerKey = ''): string
     {
         if ($parameters === []) {
             return '';
         }
 
         $rows = '';
+        $statuses = [];
         foreach ($parameters as $parameter) {
             $annotated = $parameter->type->annotated;
+            $statuses[] = $ownerKey === '' ? DiffStatus::SAME : $services->diff->parameterStatus($ownerKey, $parameter->name);
             $rows .= sprintf(
-                '<tr><td><code class="t-var">$%s</code></td><td><code>%s</code></td><td>%s</td></tr>',
+                '<tr%s><td><code class="t-var">$%s</code></td><td><code>%s</code></td><td>%s</td></tr>',
+                $ownerKey === '' ? '' : $services->diff->parameter($ownerKey, $parameter->name),
                 $services->escaper->e($parameter->name),
                 $services->typeHtml->render($annotated !== null ? $annotated->type : null, $parameter->type->native, $context),
                 $services->escaper->e($parameter->description),
             );
         }
 
-        return $this->block('Parameters', '<div class="table-wrap"><table class="param-table">' . $rows . '</table></div>');
+        return $this->block(
+            'Parameters',
+            '<div class="table-wrap"><table class="param-table">' . $rows . '</table></div>',
+            $ownerKey === '' ? '' : $services->diff->combined($statuses),
+        );
     }
 
     /**
      * Renders the return block, or nothing for a void declaration.
+     *
+     * @param string $ownerKey the diff key of the declaration
      */
-    public function returnSection(RenderKit $services, TypeSignature $returnType, TypeRenderContext $context): string
+    public function returnSection(RenderKit $services, TypeSignature $returnType, TypeRenderContext $context, string $ownerKey = ''): string
     {
         $annotated = $returnType->annotated;
         $type = $services->typeHtml->render($annotated !== null ? $annotated->type : null, $returnType->native, $context);
@@ -258,13 +273,15 @@ final class MemberHtml
             '<div class="type-row"><code>%s</code>%s</div>',
             $type,
             $description !== '' ? ' <span class="type-note">' . $services->escaper->e($description) . '</span>' : '',
-        ));
+        ), $ownerKey === '' ? '' : $services->diff->returnType($ownerKey));
     }
 
     /**
      * Renders the throws block of a member.
+     *
+     * @param string $ownerKey the diff key of the declaration
      */
-    public function throwsSection(RenderKit $services, ?DocBlock $docBlock, TypeRenderContext $context): string
+    public function throwsSection(RenderKit $services, ?DocBlock $docBlock, TypeRenderContext $context, string $ownerKey = ''): string
     {
         if ($docBlock === null || $docBlock->throws === []) {
             return '';
@@ -279,15 +296,17 @@ final class MemberHtml
             );
         }
 
-        return $this->block('Throws', $rows);
+        return $this->block('Throws', $rows, $ownerKey === '' ? '' : $services->diff->throwsTags($ownerKey));
     }
 
     /**
      * Wraps one labeled block of a member body.
+     *
+     * @param string $attribute the diff attribute of the block, if any
      */
-    public function block(string $label, string $body): string
+    public function block(string $label, string $body, string $attribute = ''): string
     {
-        return sprintf('<div class="member-block"><h4>%s</h4>%s</div>', (new HtmlText())->e($label), $body) . "\n";
+        return sprintf('<div class="member-block"%s><h4>%s</h4>%s</div>', $attribute, (new HtmlText())->e($label), $body) . "\n";
     }
 
     /**

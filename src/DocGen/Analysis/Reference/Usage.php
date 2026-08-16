@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Reference;
 
-use function get_object_vars;
-
 /**
  * One reference to a documented symbol found in source code.
  *
@@ -53,6 +51,16 @@ final class Usage
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'targetFqcn' => $this->targetFqcn,
+            'member' => $this->member,
+            'kind' => $this->kind,
+            'fromFqcn' => $this->fromFqcn,
+            'fromMember' => $this->fromMember,
+            'file' => $this->file,
+            'line' => $this->line,
+            'fromDev' => $this->fromDev,
+            default => null,
+        };
     }
 }

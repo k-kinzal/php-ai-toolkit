@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Package;
 
-use function get_object_vars;
-
 /**
  * Immutable view of one composer.json manifest.
  *
@@ -67,6 +65,18 @@ final class ComposerManifest
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'directory' => $this->directory,
+            'name' => $this->name,
+            'description' => $this->description,
+            'autoload' => $this->autoload,
+            'devAutoload' => $this->devAutoload,
+            'requires' => $this->requires,
+            'devRequires' => $this->devRequires,
+            'suggests' => $this->suggests,
+            'classmap' => $this->classmap,
+            'devClassmap' => $this->devClassmap,
+            default => null,
+        };
     }
 }

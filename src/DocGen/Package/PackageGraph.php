@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Package;
 
-use function get_object_vars;
-
 /**
  * Dependency edges between the documented packages.
  *
@@ -29,6 +27,9 @@ final class PackageGraph
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'edges' => $this->edges,
+            default => null,
+        };
     }
 }

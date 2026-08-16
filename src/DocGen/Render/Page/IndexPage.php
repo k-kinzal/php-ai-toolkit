@@ -87,10 +87,17 @@ final class IndexPage
             }
         }
 
-        $html = '<section><h2 id="packages">Packages<a class="anchor" href="#packages">§</a></h2><div class="table-wrap"><table class="symbol-table">';
+        $statuses = [];
+        foreach ($services->model->packages as $package) {
+            $statuses[] = $services->diff->packageStatus($package->manifest->name);
+        }
+
+        $html = '<section' . $services->diff->combined($statuses)
+            . '><h2 id="packages">Packages<a class="anchor" href="#packages">§</a></h2><div class="table-wrap"><table class="symbol-table">';
         foreach ($services->model->packages as $package) {
             $html .= sprintf(
-                '<tr><td><a href="%s">%s</a>%s</td><td class="pkg-count">%d symbols</td><td>%s</td></tr>',
+                '<tr%s><td><a href="%s">%s</a>%s</td><td class="pkg-count">%d symbols</td><td>%s</td></tr>',
+                $services->diff->mark($services->diff->packageStatus($package->manifest->name)),
                 $escaper->e($services->url->packagePage($package->manifest->name)),
                 $escaper->e($package->manifest->name),
                 $package->isVendor ? sprintf(' <span class="chip chip-sm chip-ghost">%s</span>', $package->isDevDependency ? 'dev dependency' : 'vendor') : '',
@@ -126,7 +133,7 @@ final class IndexPage
             $edges[] = ['from' => $edge->from, 'to' => $edge->to, 'kind' => $edge->kind];
         }
 
-        return '<section><h2 id="package-graph">Package Dependencies<a class="anchor" href="#package-graph">§</a></h2>'
+        return '<section' . $services->diff->unchanged() . '><h2 id="package-graph">Package Dependencies<a class="anchor" href="#package-graph">§</a></h2>'
             . '<div class="graph-wrap">' . $this->graph->render($nodes, $edges) . '</div>'
             . '<div class="legend"><span class="legend-item legend-require">require</span><span class="legend-item legend-require-dev">require-dev</span><span class="legend-item legend-suggest">suggest</span></div>'
             . '</section>' . "\n";

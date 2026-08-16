@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Doctest;
 
-use function get_object_vars;
-
 /**
  * One executable example extracted from a PHPDoc block.
  *
@@ -41,6 +39,12 @@ final class DocExample
      */
     public function __get(string $name): mixed
     {
-        return get_object_vars($this)[$name] ?? null;
+        return match ($name) {
+            'description' => $this->description,
+            'code' => $this->code,
+            'source' => $this->source,
+            'index' => $this->index,
+            default => null,
+        };
     }
 }

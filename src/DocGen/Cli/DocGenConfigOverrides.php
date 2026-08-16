@@ -16,7 +16,7 @@ final class DocGenConfigOverrides
     /**
      * Rebuilds the configuration with the given CLI overrides applied.
      *
-     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, help: bool, version: bool} $arguments
+     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, help: bool, version: bool} $arguments
      */
     public function apply(DocGenConfig $config, array $arguments): DocGenConfig
     {

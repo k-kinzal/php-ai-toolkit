@@ -79,6 +79,16 @@
   --state-neutral: var(--p-fg-muted);
   --state-neutral-tint: var(--p-slate-tint);
 
+  /* roles — diff, on the state hues only: green adds, red removes, yellow
+     changes. Identity hues stay with the symbols they belong to, so a mark
+     is never read as a kind. */
+  --diff-added: var(--p-green);
+  --diff-added-tint: var(--p-green-tint);
+  --diff-removed: var(--p-red);
+  --diff-removed-tint: var(--p-red-tint);
+  --diff-modified: var(--p-yellow);
+  --diff-modified-tint: var(--p-yellow-tint);
+
   /* roles — syntax, text weight only */
   --syn-kw: var(--p-violet);
   --syn-str: var(--p-teal);
@@ -702,6 +712,152 @@ pre.source { padding: var(--sp-3) 0; font-size: var(--text-sm); }
 .alias-def { border-top: none; padding: var(--sp-1) 0; }
 
 .readme { margin-top: var(--sp-6); border-top: 2px solid var(--border-muted); padding-top: var(--sp-2); }
+
+/* ---- Diff display ----
+ *
+ * One generated site serves the three display modes. Every element that a
+ * comparison touched carries its state as data-diff, and the mode on the
+ * root element decides what that state looks like: nothing in "off", green
+ * and red in "inline", and green and red alone in "changes".
+ */
+
+.diff-range {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.diff-arrow { color: var(--fg-subtle); }
+
+.diff-modes {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.diff-mode {
+  background: none;
+  border: none;
+  border-left: 1px solid var(--border);
+  color: var(--fg-muted);
+  font: inherit;
+  font-size: var(--text-sm);
+  padding: var(--sp-1) var(--sp-3);
+  cursor: pointer;
+}
+
+.diff-mode:first-child { border-left: none; }
+
+.diff-mode:hover { background: var(--bg-hover); color: var(--fg); }
+
+.diff-mode.is-active { background: var(--link); color: var(--bg); font-weight: 600; }
+
+.diff-empty { color: var(--fg-muted); font-size: var(--text-md); }
+
+.doc-block { margin: 0; }
+
+.sig-plain { display: none; }
+
+/* The state colors, in the two modes that show them. */
+
+:root:not([data-diff-mode="off"]) [data-diff="added"] {
+  --diff-fg: var(--diff-added);
+  --diff-bg: var(--diff-added-tint);
+}
+
+:root:not([data-diff-mode="off"]) [data-diff="removed"] {
+  --diff-fg: var(--diff-removed);
+  --diff-bg: var(--diff-removed-tint);
+}
+
+:root:not([data-diff-mode="off"]) [data-diff="modified"] {
+  --diff-fg: var(--diff-modified);
+  --diff-bg: transparent;
+}
+
+:root:not([data-diff-mode="off"]) .member[data-diff="added"],
+:root:not([data-diff-mode="off"]) .member[data-diff="removed"],
+:root:not([data-diff-mode="off"]) .member[data-diff="modified"],
+:root:not([data-diff-mode="off"]) .doc-block[data-diff="added"],
+:root:not([data-diff-mode="off"]) .doc-block[data-diff="removed"],
+:root:not([data-diff-mode="off"]) .private-sig[data-diff="added"],
+:root:not([data-diff-mode="off"]) .private-sig[data-diff="removed"],
+:root:not([data-diff-mode="off"]) .private-sig[data-diff="modified"],
+:root:not([data-diff-mode="off"]) pre.signature[data-diff="added"],
+:root:not([data-diff-mode="off"]) pre.signature[data-diff="removed"],
+:root:not([data-diff-mode="off"]) pre.signature[data-diff="modified"] {
+  background: var(--diff-bg);
+  box-shadow: inset 3px 0 0 var(--diff-fg);
+  border-radius: var(--radius-sm);
+  padding-left: var(--sp-5);
+}
+
+:root:not([data-diff-mode="off"]) .member[data-diff="removed"] .member-sig,
+:root:not([data-diff-mode="off"]) .doc-block[data-diff="removed"] { opacity: 0.85; }
+
+:root:not([data-diff-mode="off"]) .diff-banner {
+  border-left-color: var(--diff-fg);
+  background: var(--diff-bg);
+  color: var(--fg);
+}
+
+:root:not([data-diff-mode="off"]) .sig-param[data-diff="added"],
+:root:not([data-diff-mode="off"]) .sig-param[data-diff="removed"],
+:root:not([data-diff-mode="off"]) .sig-param[data-diff="modified"] {
+  background: var(--diff-bg);
+  box-shadow: 0 0 0 2px var(--diff-bg);
+  border-radius: 2px;
+}
+
+:root:not([data-diff-mode="off"]) .sig-param[data-diff="removed"] {
+  text-decoration: line-through;
+  text-decoration-color: var(--diff-removed);
+}
+
+:root:not([data-diff-mode="off"]) .sig-param[data-diff="modified"] { box-shadow: inset 0 -2px 0 var(--diff-modified); }
+
+/* Listing rows and navigation entries are single lines rather than blocks
+ * with their own marked parts, so they carry the state as a fill: a scan of
+ * a table or of the sidebar shows what the revision touched. */
+
+:root:not([data-diff-mode="off"]) tr[data-diff="added"] > td,
+:root:not([data-diff-mode="off"]) tr[data-diff="removed"] > td,
+:root:not([data-diff-mode="off"]) .sb-list li[data-diff="added"],
+:root:not([data-diff-mode="off"]) .sb-list li[data-diff="removed"] { background: var(--diff-bg); }
+
+:root:not([data-diff-mode="off"]) tr[data-diff="modified"] > td,
+:root:not([data-diff-mode="off"]) .sb-list li[data-diff="modified"] { background: var(--diff-modified-tint); }
+
+:root:not([data-diff-mode="off"]) tr[data-diff="added"] > td:first-child,
+:root:not([data-diff-mode="off"]) tr[data-diff="removed"] > td:first-child,
+:root:not([data-diff-mode="off"]) tr[data-diff="modified"] > td:first-child,
+:root:not([data-diff-mode="off"]) .sb-list li[data-diff="added"],
+:root:not([data-diff-mode="off"]) .sb-list li[data-diff="removed"],
+:root:not([data-diff-mode="off"]) .sb-list li[data-diff="modified"] { box-shadow: inset 2px 0 0 var(--diff-fg); }
+
+:root:not([data-diff-mode="off"]) .sb-list li[data-diff="removed"] > a { text-decoration: line-through; }
+
+:root:not([data-diff-mode="off"]) .src-line[data-diff="added"],
+:root:not([data-diff-mode="off"]) .src-line[data-diff="removed"] { background: var(--diff-bg); }
+
+:root:not([data-diff-mode="off"]) .src-line[data-diff="added"] .ln,
+:root:not([data-diff-mode="off"]) .src-line[data-diff="removed"] .ln { color: var(--diff-fg); opacity: 1; }
+
+/* Off: the head revision alone, as if nothing were being compared. */
+
+[data-diff-mode="off"] [data-diff="removed"] { display: none; }
+
+[data-diff-mode="off"] .sig-diff { display: none; }
+
+[data-diff-mode="off"] .sig-plain { display: inline; }
+
+/* Changes: what the revision touched, and nothing else. Source lines and
+ * signature parameters keep their neighbours, because a line or an argument
+ * without the declaration around it cannot be read. */
+
+[data-diff-mode="changes"] [data-diff="same"]:not(.src-line):not(.sig-param) { display: none; }
 
 /* ---- Responsive ---- */
 

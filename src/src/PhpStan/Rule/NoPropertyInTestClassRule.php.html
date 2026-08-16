@@ -77,10 +77,10 @@
 <span class="src-line" id="L42"><a class="ln" href="#L42">42</a>            <span class="tok-kw">return</span> [];</span>
 <span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        }</span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a></span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        <span class="tok-var">$names</span> = <span class="tok-id">array_map</span>(</span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>            <span class="tok-kw">static</span> <span class="tok-kw">fn</span> (<span class="tok-id">\PhpParser\Node\PropertyItem</span> <span class="tok-var">$prop</span>): <span class="tok-id">string</span> =&gt; <span class="tok-str">&#039;$&#039;</span> . <span class="tok-var">$prop</span>-&gt;<span class="tok-id">name</span>-&gt;<span class="tok-id">toString</span>(),</span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>            <span class="tok-var">$node</span>-&gt;<span class="tok-id">props</span>,</span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>        );</span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        <span class="tok-var">$names</span> = [];</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$node</span>-&gt;<span class="tok-id">props</span> <span class="tok-kw">as</span> <span class="tok-var">$property</span>) {</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>            <span class="tok-var">$names</span>[] = <span class="tok-str">&#039;$&#039;</span> . <span class="tok-var">$property</span>-&gt;<span class="tok-id">name</span>-&gt;<span class="tok-id">toString</span>();</span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>        }</span>
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a></span>
 <span class="src-line" id="L50"><a class="ln" href="#L50">50</a>        <span class="tok-kw">return</span> [</span>
 <span class="src-line" id="L51"><a class="ln" href="#L51">51</a>            <span class="tok-id">RuleErrorBuilder</span>::<span class="tok-id">message</span>(</span>

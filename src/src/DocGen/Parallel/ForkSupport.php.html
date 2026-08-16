@@ -70,44 +70,58 @@
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a>    }</span>
 <span class="src-line" id="L36"><a class="ln" href="#L36">36</a></span>
 <span class="src-line" id="L37"><a class="ln" href="#L37">37</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a><span class="tok-com">     * Explains why workers may not be forked, or returns null when they may.</span></span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">unavailableReason</span>(): ?<span class="tok-id">string</span></span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>    {</span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        <span class="tok-kw">foreach</span> (<span class="tok-id">self</span>::<span class="tok-id">REQUIRED_FUNCTIONS</span> <span class="tok-kw">as</span> <span class="tok-var">$function</span>) {</span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>            <span class="tok-kw">if</span> (!<span class="tok-id">function_exists</span>(<span class="tok-var">$function</span>)) {</span>
-<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>                <span class="tok-kw">return</span> <span class="tok-str">&#039;the pcntl extension is not available&#039;</span>;</span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>            }</span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        }</span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a></span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">isSharedCodeCacheEnabled</span>() ? <span class="tok-str">&#039;OPcache or JIT is enabled for the CLI&#039;</span> : <span class="tok-id">null</span>;</span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a><span class="tok-com">     * Returns the functions a run needs to fork its workers.</span></span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a><span class="tok-com">     * The list is read through a method rather than the constant itself,</span></span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a><span class="tok-com">     * because what a build of PHP provides is a question about the machine</span></span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a><span class="tok-com">     * a run happens on and not about the analyzer that reads this file.</span></span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a><span class="tok-com">     * @return list&lt;string&gt;</span></span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">requiredFunctions</span>(): <span class="tok-kw">array</span></span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>    {</span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>        <span class="tok-kw">return</span> <span class="tok-id">self</span>::<span class="tok-id">REQUIRED_FUNCTIONS</span>;</span>
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a>    }</span>
 <span class="src-line" id="L50"><a class="ln" href="#L50">50</a></span>
 <span class="src-line" id="L51"><a class="ln" href="#L51">51</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a><span class="tok-com">     * Reports whether a code cache is shared with the forked children.</span></span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a><span class="tok-com">     * OPcache and the JIT keep compiled code in shared memory that is not</span></span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a><span class="tok-com">     * safe to populate from several forked children at once, so a run that</span></span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a><span class="tok-com">     * has either of them turned on stays sequential rather than risking a</span></span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a><span class="tok-com">     * site generated from corrupted code.</span></span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">isSharedCodeCacheEnabled</span>(): <span class="tok-id">bool</span></span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>    {</span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>        <span class="tok-kw">if</span> (!<span class="tok-id">function_exists</span>(<span class="tok-str">&#039;opcache_get_status&#039;</span>)) {</span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>            <span class="tok-kw">return</span> <span class="tok-id">false</span>;</span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>        }</span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a><span class="tok-com">     * Explains why workers may not be forked, or returns null when they may.</span></span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">unavailableReason</span>(): ?<span class="tok-id">string</span></span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>    {</span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">requiredFunctions</span>() <span class="tok-kw">as</span> <span class="tok-var">$function</span>) {</span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>            <span class="tok-kw">if</span> (!<span class="tok-id">function_exists</span>(<span class="tok-var">$function</span>)) {</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>                <span class="tok-kw">return</span> <span class="tok-str">&#039;the pcntl extension is not available&#039;</span>;</span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>            }</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        }</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a></span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">isSharedCodeCacheEnabled</span>() ? <span class="tok-str">&#039;OPcache or JIT is enabled for the CLI&#039;</span> : <span class="tok-id">null</span>;</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>    }</span>
 <span class="src-line" id="L64"><a class="ln" href="#L64">64</a></span>
-<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>        <span class="tok-var">$status</span> = @<span class="tok-id">opcache_get_status</span>(<span class="tok-id">false</span>);</span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>        <span class="tok-kw">if</span> (<span class="tok-var">$status</span> === <span class="tok-id">false</span>) {</span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>            <span class="tok-kw">return</span> <span class="tok-id">false</span>;</span>
-<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>        }</span>
-<span class="src-line" id="L69"><a class="ln" href="#L69">69</a></span>
-<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>        <span class="tok-var">$jit</span> = <span class="tok-var">$status</span>[<span class="tok-str">&#039;jit&#039;</span>] ?? <span class="tok-id">null</span>;</span>
-<span class="src-line" id="L71"><a class="ln" href="#L71">71</a></span>
-<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>        <span class="tok-kw">return</span> (<span class="tok-var">$status</span>[<span class="tok-str">&#039;opcache_enabled&#039;</span>] ?? <span class="tok-id">false</span>) === <span class="tok-id">true</span> || (<span class="tok-id">is_array</span>(<span class="tok-var">$jit</span>) &amp;&amp; (<span class="tok-var">$jit</span>[<span class="tok-str">&#039;enabled&#039;</span>] ?? <span class="tok-id">false</span>) === <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>    }</span>
-<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>}</span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a></span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a><span class="tok-com">     * Reports whether a code cache is shared with the forked children.</span></span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a><span class="tok-com">     * OPcache and the JIT keep compiled code in shared memory that is not</span></span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a><span class="tok-com">     * safe to populate from several forked children at once, so a run that</span></span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a><span class="tok-com">     * has either of them turned on stays sequential rather than risking a</span></span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a><span class="tok-com">     * site generated from corrupted code.</span></span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">isSharedCodeCacheEnabled</span>(): <span class="tok-id">bool</span></span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>    {</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>        <span class="tok-kw">if</span> (!<span class="tok-id">function_exists</span>(<span class="tok-str">&#039;opcache_get_status&#039;</span>)) {</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>            <span class="tok-kw">return</span> <span class="tok-id">false</span>;</span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>        }</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a></span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>        <span class="tok-var">$status</span> = @<span class="tok-id">opcache_get_status</span>(<span class="tok-id">false</span>);</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>        <span class="tok-kw">if</span> (<span class="tok-var">$status</span> === <span class="tok-id">false</span>) {</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>            <span class="tok-kw">return</span> <span class="tok-id">false</span>;</span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>        }</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a></span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>        <span class="tok-var">$jit</span> = <span class="tok-var">$status</span>[<span class="tok-str">&#039;jit&#039;</span>] ?? <span class="tok-id">null</span>;</span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a></span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        <span class="tok-kw">return</span> (<span class="tok-var">$status</span>[<span class="tok-str">&#039;opcache_enabled&#039;</span>] ?? <span class="tok-id">false</span>) === <span class="tok-id">true</span> || (<span class="tok-id">is_array</span>(<span class="tok-var">$jit</span>) &amp;&amp; (<span class="tok-var">$jit</span>[<span class="tok-str">&#039;enabled&#039;</span>] ?? <span class="tok-id">false</span>) === <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>    }</span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>}</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

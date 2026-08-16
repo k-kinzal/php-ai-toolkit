@@ -58,10 +58,10 @@
 <span class="src-line" id="L23"><a class="ln" href="#L23">23</a>                <span class="tok-kw">continue</span>;</span>
 <span class="src-line" id="L24"><a class="ln" href="#L24">24</a>            }</span>
 <span class="src-line" id="L25"><a class="ln" href="#L25">25</a></span>
-<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>            <span class="tok-var">$names</span> = <span class="tok-id">array_map</span>(</span>
-<span class="src-line" id="L27"><a class="ln" href="#L27">27</a>                <span class="tok-kw">static</span> <span class="tok-kw">fn</span> (<span class="tok-id">\PhpParser\Node\PropertyItem</span> <span class="tok-var">$prop</span>): <span class="tok-id">string</span> =&gt; <span class="tok-str">&#039;$&#039;</span> . <span class="tok-var">$prop</span>-&gt;<span class="tok-id">name</span>-&gt;<span class="tok-id">toString</span>(),</span>
-<span class="src-line" id="L28"><a class="ln" href="#L28">28</a>                <span class="tok-var">$property</span>-&gt;<span class="tok-id">props</span>,</span>
-<span class="src-line" id="L29"><a class="ln" href="#L29">29</a>            );</span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>            <span class="tok-var">$names</span> = [];</span>
+<span class="src-line" id="L27"><a class="ln" href="#L27">27</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$property</span>-&gt;<span class="tok-id">props</span> <span class="tok-kw">as</span> <span class="tok-var">$declared</span>) {</span>
+<span class="src-line" id="L28"><a class="ln" href="#L28">28</a>                <span class="tok-var">$names</span>[] = <span class="tok-str">&#039;$&#039;</span> . <span class="tok-var">$declared</span>-&gt;<span class="tok-id">name</span>-&gt;<span class="tok-id">toString</span>();</span>
+<span class="src-line" id="L29"><a class="ln" href="#L29">29</a>            }</span>
 <span class="src-line" id="L30"><a class="ln" href="#L30">30</a></span>
 <span class="src-line" id="L31"><a class="ln" href="#L31">31</a>            <span class="tok-kw">if</span> (<span class="tok-var">$property</span>-&gt;<span class="tok-id">getDocComment</span>() === <span class="tok-id">null</span>) {</span>
 <span class="src-line" id="L32"><a class="ln" href="#L32">32</a>                <span class="tok-var">$errors</span>[] = <span class="tok-id">RuleErrorBuilder</span>::<span class="tok-id">message</span>(</span>

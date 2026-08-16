@@ -186,6 +186,13 @@ services:
         tags:
             - phpstan.rules.rule
 
+    aiRules.rule.noBrokenCodeExpectation:
+        class: PhpAiToolkit\PhpStan\Rule\NoBrokenCodeExpectationRule
+        arguments:
+            testClassScope: @aiRules.support.testClassScope
+        tags:
+            - phpstan.rules.rule
+
     aiRules.rule.noTraitUseInTestClass:
         class: PhpAiToolkit\PhpStan\Rule\NoTraitUseInTestClassRule
         arguments:

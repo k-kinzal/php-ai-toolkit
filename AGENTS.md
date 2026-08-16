@@ -74,6 +74,7 @@ the locks are refreshed.
 - [ForbiddenNamespaceRule](docs/rules/ForbiddenNamespaceRule.md): Forbids namespaces that match or descend from configured namespace prefixes
 - [ForbidNonDocCommentRule](docs/rules/ForbidNonDocCommentRule.md): Forbids all non-PHPDoc comments (`//`, `/* */`, `#`)
 - [ForbidSingleLinePhpDocRule](docs/rules/ForbidSingleLinePhpDocRule.md): Forbids single-line PHPDoc comments on public API elements
+- [NoBrokenCodeExpectationRule](docs/rules/NoBrokenCodeExpectationRule.md): Forbids expecting Throwable and the LogicException/Error families in PHPUnit exception expectations
 - [NoClassConstantInTestClassRule](docs/rules/NoClassConstantInTestClassRule.md): Forbids class constant declarations in test classes
 - [NoControlFlowInTestMethodRule](docs/rules/NoControlFlowInTestMethodRule.md): Forbids control flow statements (if/for/while, etc.) inside test methods
 - [NoHelperMethodInTestClassRule](docs/rules/NoHelperMethodInTestClassRule.md): Forbids methods in test classes other than test methods, data providers, and framework hooks

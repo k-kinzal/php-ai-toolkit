@@ -24,13 +24,17 @@ final class PageChrome
     /** @readonly */
     private SocialMeta $social;
 
+    /** @readonly */
+    private RepositoryLink $repository;
+
     /**
      * Creates the page shell renderer from its topbar collaborators.
      */
-    public function __construct(?DiffModeControl $diffModes = null, ?SocialMeta $social = null)
+    public function __construct(?DiffModeControl $diffModes = null, ?SocialMeta $social = null, ?RepositoryLink $repository = null)
     {
         $this->diffModes = $diffModes ?? new DiffModeControl();
         $this->social = $social ?? new SocialMeta();
+        $this->repository = $repository ?? new RepositoryLink();
     }
 
     /**
@@ -62,6 +66,7 @@ final class PageChrome
             . '<div class="topbar-tools">' . "\n"
             . '<input type="search" id="search" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">' . "\n"
             . $this->diffModes->render($services)
+            . $this->repository->topbar($services)
             . '<button id="theme-toggle" title="Toggle theme">◐</button>' . "\n"
             . '</div>' . "\n"
             . '</header>' . "\n"

@@ -21,6 +21,7 @@ namespace PhpAiToolkit\DocGen\Config;
  * @property-read list<string> $vendorDev
  * @property-read ?string $cache
  * @property-read ?string $baseUrl
+ * @property-read ?string $repository
  */
 final class DocGenConfig
 {
@@ -36,6 +37,7 @@ final class DocGenConfig
      * @param list<string> $vendorDev package name globs for installed dev dependencies
      * @param ?string $cache the cache directory, or null to cache nothing
      * @param ?string $baseUrl the address the site is published at, without a trailing slash, or null when it is unknown
+     * @param ?string $repository the address of the repository the project lives in, or null to read it from the root package
      */
     public function __construct(
         /** @readonly */
@@ -60,6 +62,8 @@ final class DocGenConfig
         private ?string $cache = self::DEFAULT_CACHE,
         /** @readonly */
         private ?string $baseUrl = null,
+        /** @readonly */
+        private ?string $repository = null,
     ) {
     }
 
@@ -82,6 +86,7 @@ final class DocGenConfig
             'vendorDev' => $this->vendorDev,
             'cache' => $this->cache,
             'baseUrl' => $this->baseUrl,
+            'repository' => $this->repository,
             default => null,
         };
     }

@@ -24,7 +24,7 @@ use Symfony\Component\Yaml\Yaml;
 final class ConfigLoader
 {
     /** @var list<string> */
-    private const KNOWN_KEYS = ['packages', 'vendor', 'vendor_dev', 'exclude', 'output', 'title', 'deptrac', 'coverage', 'cache', 'base_url'];
+    private const KNOWN_KEYS = ['packages', 'vendor', 'vendor_dev', 'exclude', 'output', 'title', 'deptrac', 'coverage', 'cache', 'base_url', 'repository'];
 
     /** @readonly */
     private ConfigScalarReader $scalarReader;
@@ -35,6 +35,9 @@ final class ConfigLoader
     /** @readonly */
     private BaseUrl $baseUrl;
 
+    /** @readonly */
+    private RepositoryUrl $repository;
+
     /**
      * Creates a config loader from YAML section readers.
      */
@@ -42,10 +45,12 @@ final class ConfigLoader
         ?ConfigScalarReader $scalarReader = null,
         ?ConfigStringListReader $stringListReader = null,
         ?BaseUrl $baseUrl = null,
+        ?RepositoryUrl $repository = null,
     ) {
         $this->scalarReader = $scalarReader ?? new ConfigScalarReader();
         $this->stringListReader = $stringListReader ?? new ConfigStringListReader();
         $this->baseUrl = $baseUrl ?? new BaseUrl();
+        $this->repository = $repository ?? new RepositoryUrl();
     }
 
     /**
@@ -89,6 +94,7 @@ final class ConfigLoader
             $this->stringListReader->read($data, 'vendor_dev', []),
             $this->scalarReader->optionalPath($data, 'cache', DocGenConfig::DEFAULT_CACHE),
             $this->baseUrl->normalize($this->scalarReader->optionalString($data, 'base_url')),
+            $this->repository->normalize($this->scalarReader->optionalString($data, 'repository')),
         );
     }
 }

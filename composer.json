@@ -4,6 +4,12 @@
     "type": "phpstan-extension",
     "license": "MIT",
     "keywords": ["phpstan", "phpunit", "ai", "toolkit", "static analysis", "custom rules", "templates"],
+    "homepage": "https://k-kinzal.github.io/php-ai-toolkit/",
+    "support": {
+        "source": "https://github.com/k-kinzal/php-ai-toolkit",
+        "issues": "https://github.com/k-kinzal/php-ai-toolkit/issues",
+        "docs": "https://k-kinzal.github.io/php-ai-toolkit/"
+    },
     "require": {
         "php": "^8.0",
         "nikic/php-parser": "^4.19 || ^5.0",

@@ -94,6 +94,16 @@ final class PageSignatureTest extends TestCase
         self::assertNotSame($signatures->run($services), $signatures->run($renderer->services($renamed)));
     }
 
+    public function testRunDigestsTheRepositoryEveryPageLinksBackTo(): void
+    {
+        $renderer = new SiteRenderer();
+        $model = new ProjectModel('Demo Docs', '/tmp/demo', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $linked = new ProjectModel('Demo Docs', '/tmp/demo', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, 'https://github.com/example/project');
+        $signatures = new PageSignature();
+
+        self::assertNotSame($signatures->run($renderer->services($model)), $signatures->run($renderer->services($linked)));
+    }
+
     public function testOfDigestsThePartsAndTheNamesInThem(): void
     {
         $renderer = new SiteRenderer();

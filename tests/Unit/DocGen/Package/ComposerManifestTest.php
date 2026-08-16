@@ -24,6 +24,7 @@ final class ComposerManifestTest extends TestCase
             ['acme/extra' => 'Adds extra features'],
             ['lib/legacy'],
             ['tests/Fixture'],
+            'https://github.com/acme/lib',
         );
 
         self::assertSame('/projects/lib', $manifest->directory);
@@ -36,6 +37,7 @@ final class ComposerManifestTest extends TestCase
         self::assertSame(['acme/extra' => 'Adds extra features'], $manifest->suggests);
         self::assertSame(['lib/legacy'], $manifest->classmap);
         self::assertSame(['tests/Fixture'], $manifest->devClassmap);
+        self::assertSame('https://github.com/acme/lib', $manifest->repository);
     }
 
     public function testStoresEmptyMapsForBareManifest(): void
@@ -52,5 +54,6 @@ final class ComposerManifestTest extends TestCase
         self::assertSame([], $manifest->suggests);
         self::assertSame([], $manifest->classmap);
         self::assertSame([], $manifest->devClassmap);
+        self::assertSame('', $manifest->repository);
     }
 }

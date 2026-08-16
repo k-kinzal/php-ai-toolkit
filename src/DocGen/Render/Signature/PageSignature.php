@@ -98,6 +98,7 @@ final class PageSignature
                 $this->toolkit->value(),
                 $services->model->title,
                 (string) $services->model->baseUrl,
+                (string) $services->model->repository,
                 $this->card->supported() ? 'card' : 'no-card',
                 $services->diff->digest(),
             ]));

@@ -49,6 +49,7 @@ final class DocGenConfigOverrides
             $arguments['vendorDev'] !== null ? array_merge($config->vendorDev, $arguments['vendorDev']) : $config->vendorDev,
             $this->cache($config, $arguments),
             $arguments['baseUrl'] ?? $config->baseUrl,
+            $config->repository,
         );
     }
 }

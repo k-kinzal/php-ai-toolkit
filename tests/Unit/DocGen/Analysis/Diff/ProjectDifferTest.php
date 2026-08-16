@@ -115,12 +115,14 @@ final class ProjectDifferTest extends TestCase
 
         $model = (new ProjectDiffer())->diff(
             new ProjectModel('Demo', '/tmp/base', [$package], new PackageGraph([]), $baseSymbols->classLikes, [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, ['demo\gone' => ['Domain']], null, []),
-            new ProjectModel('Demo', '/tmp/head', [$package], new PackageGraph([]), $headSymbols->classLikes, [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, ['demo\engine' => ['Domain']], null, ['a warning']),
+            new ProjectModel('Demo', '/tmp/head', [$package], new PackageGraph([]), $headSymbols->classLikes, [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, ['demo\engine' => ['Domain']], null, ['a warning'], [], 'https://example.github.io/demo/pr/7', 'https://github.com/example/demo'),
             $index,
         );
 
         self::assertSame('/tmp/head', $model->root);
         self::assertSame(['a warning'], $model->warnings);
+        self::assertSame('https://example.github.io/demo/pr/7', $model->baseUrl);
+        self::assertSame('https://github.com/example/demo', $model->repository);
         self::assertCount(3, $model->classLikes);
         self::assertSame(['Domain'], $model->layerAssignments['demo\gone']);
         self::assertNotNull($model->symbolTable->classLike('Demo\Gone'));

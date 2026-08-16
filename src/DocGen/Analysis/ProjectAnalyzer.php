@@ -130,7 +130,34 @@ final class ProjectAnalyzer
             array_merge($this->vendorWarnings($config, $packages), $collected['warnings']),
             $this->documentCollector->collect($config, $packages),
             $config->baseUrl,
+            $this->repositoryFor($config, $packages),
         );
+    }
+
+    /**
+     * Determines the repository the documented project lives in.
+     *
+     * A project that configures an address means that one: it is the answer
+     * where a repository has moved, where the manifest of the project says
+     * nothing, and where the site is generated from a checkout that is not
+     * the published one. Otherwise the root package answers for the project,
+     * because a package already declares where its sources are browsable.
+     *
+     * @param list<DiscoveredPackage> $packages
+     */
+    public function repositoryFor(DocGenConfig $config, array $packages): ?string
+    {
+        if ($config->repository !== null) {
+            return $config->repository;
+        }
+
+        foreach ($packages as $package) {
+            if (!$package->isVendor && realpath($package->manifest->directory) === realpath($config->root)) {
+                return $package->manifest->repository === '' ? null : $package->manifest->repository;
+            }
+        }
+
+        return null;
     }
 
     /**

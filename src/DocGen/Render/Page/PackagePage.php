@@ -10,6 +10,7 @@ use function ksort;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\RenderKit;
+use PhpAiToolkit\DocGen\Render\RepositoryLink;
 
 use function sprintf;
 use function str_starts_with;
@@ -44,6 +45,9 @@ final class PackagePage
     /** @readonly */
     private DocumentListHtml $documents;
 
+    /** @readonly */
+    private RepositoryLink $repository;
+
     /**
      * Creates a package page renderer from its collaborators.
      */
@@ -55,6 +59,7 @@ final class PackagePage
         ?GraphSvg $graph = null,
         ?SymbolListHtml $symbolList = null,
         ?DocumentListHtml $documents = null,
+        ?RepositoryLink $repository = null,
     ) {
         $this->chrome = $chrome ?? new PageChrome();
         $this->sidebar = $sidebar ?? new SidebarHtml();
@@ -63,6 +68,7 @@ final class PackagePage
         $this->graph = $graph ?? new GraphSvg();
         $this->symbolList = $symbolList ?? new SymbolListHtml();
         $this->documents = $documents ?? new DocumentListHtml();
+        $this->repository = $repository ?? new RepositoryLink();
     }
 
     /**
@@ -242,13 +248,34 @@ final class PackagePage
         }
 
         $html = '';
-        foreach ([['Depends on', $internal], ['Required by', $requiredBy], ['External dependencies', $this->externalDependencies($services, $package)]] as $row) {
+        foreach ([['Repository', $this->repositoryLinks($services, $package)], ['Depends on', $internal], ['Required by', $requiredBy], ['External dependencies', $this->externalDependencies($services, $package)]] as $row) {
             if ($row[1] !== []) {
                 $html .= '<div class="relation-row"><span class="relation-label">' . $escaper->e($row[0]) . '</span> ' . implode(', ', $row[1]) . '</div>' . "\n";
             }
         }
 
         return $html;
+    }
+
+    /**
+     * Renders where the sources of one package can be browsed.
+     *
+     * A package of the project answers with the repository the project
+     * lives in, which is what an address configured for the site is for; a
+     * documented dependency answers with what its own manifest declares,
+     * because it is published from somewhere else entirely.
+     *
+     * @return list<string>
+     */
+    public function repositoryLinks(RenderKit $services, DiscoveredPackage $package): array
+    {
+        $url = $package->isVendor ? null : $services->model->repository;
+        $url ??= $package->manifest->repository === '' ? null : $package->manifest->repository;
+        if ($url === null) {
+            return [];
+        }
+
+        return [$this->repository->full($services, $url)];
     }
 
     /**

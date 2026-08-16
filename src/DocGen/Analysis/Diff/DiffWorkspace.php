@@ -129,7 +129,10 @@ final class DiffWorkspace
      * Builds the configuration that documents one checkout.
      *
      * The documented scope is the configured one; only the root it is read
-     * from moves, so both revisions are documented by the same rules.
+     * from moves, so both revisions are documented by the same rules. Where
+     * the site is published and which repository it documents are properties
+     * of the comparison rather than of a revision in it, so both revisions
+     * carry what the run was configured with.
      *
      * @param string $root the checkout the revision was written to
      * @param ?string $coverage the coverage report of the revision, if any
@@ -147,6 +150,8 @@ final class DiffWorkspace
             $coverage,
             $config->vendorDev,
             $config->cache,
+            $config->baseUrl,
+            $config->repository,
         );
     }
 

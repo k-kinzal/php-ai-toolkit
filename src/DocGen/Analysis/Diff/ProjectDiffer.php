@@ -89,6 +89,8 @@ final class ProjectDiffer
             $head->coverage,
             $head->warnings,
             $this->documents->merge($base, $head, $index),
+            $head->baseUrl,
+            $head->repository,
         );
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Package;
 
+use PhpAiToolkit\DocGen\Config\RepositoryUrl;
 use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\ComposerManifestReader;
@@ -15,6 +16,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(ComposerManifestReader::class)]
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(DocGenException::class)]
+#[UsesClass(RepositoryUrl::class)]
 final class ComposerManifestReaderTest extends TestCase
 {
     public function testReadParsesFullManifest(): void
@@ -29,7 +31,9 @@ final class ComposerManifestReaderTest extends TestCase
     "autoload-dev": {"psr-4": {"Acme\\Full\\Tests\\": ["tests/", "extra"]}, "classmap": ["tests/Fixture/"]},
     "require": {"php": ">=8.0", "acme/dep": "^1.0"},
     "require-dev": {"phpunit/phpunit": "^11.0"},
-    "suggest": {"acme/extra": "Adds extra features"}
+    "suggest": {"acme/extra": "Adds extra features"},
+    "homepage": "https://acme.example.com",
+    "support": {"source": "https://github.com/acme/full/"}
 }
 JSON);
 
@@ -45,6 +49,7 @@ JSON);
         self::assertSame(['acme/extra' => 'Adds extra features'], $manifest->suggests);
         self::assertSame(['lib/legacy'], $manifest->classmap);
         self::assertSame(['tests/Fixture'], $manifest->devClassmap);
+        self::assertSame('https://github.com/acme/full', $manifest->repository);
     }
 
     public function testReadFallsBackToDirectoryBasenameWhenNameIsMissing(): void
@@ -64,6 +69,7 @@ JSON);
         self::assertSame([], $manifest->suggests);
         self::assertSame([], $manifest->classmap);
         self::assertSame([], $manifest->devClassmap);
+        self::assertSame('', $manifest->repository);
     }
 
     public function testReadNormalizesPsr4StringAndArrayPaths(): void
@@ -198,5 +204,26 @@ JSON);
 
         self::assertSame([], $reader->constraintMap(null));
         self::assertSame([], $reader->constraintMap('^1.0'));
+    }
+
+    public function testRepositoryPrefersTheDeclaredSourceOverTheHomepage(): void
+    {
+        $repository = (new ComposerManifestReader())->repository([
+            'homepage' => 'https://acme.example.com',
+            'support' => ['source' => 'https://github.com/acme/lib'],
+        ]);
+
+        self::assertSame('https://github.com/acme/lib', $repository);
+    }
+
+    public function testRepositoryFallsBackToTheHomepageAndThenToNothing(): void
+    {
+        $reader = new ComposerManifestReader();
+
+        self::assertSame('https://github.com/acme/lib', $reader->repository(['homepage' => 'https://github.com/acme/lib']));
+        self::assertSame('https://github.com/acme/lib', $reader->repository(['support' => 'issues@acme.example.com', 'homepage' => 'https://github.com/acme/lib']));
+        self::assertSame('', $reader->repository(['support' => ['source' => 'git@github.com:acme/lib.git']]));
+        self::assertSame('', $reader->repository(['name' => 'acme/lib']));
+        self::assertSame('', $reader->repository('acme/lib'));
     }
 }

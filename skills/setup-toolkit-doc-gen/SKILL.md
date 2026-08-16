@@ -48,6 +48,7 @@ project root as `doc.yaml`.
 | `output` | `build/docs` | Site output directory. |
 | `cache` | `build/doc-gen-cache` | Directory the parsed sources and written pages are remembered in; `false` turns caching off. Keep it outside `output`. |
 | `base_url` | `null` | Absolute address the site is published at, without a trailing slash. Set it when the site is published; it is what the canonical links and the social preview are written from. |
+| `repository` | `null` | Absolute address of the repository the project lives in, which every page links back to. Leave it unset while the root `composer.json` declares `support.source` or `homepage`; set it to override what the project's packages declare. |
 
 The optional keys `title`, `deptrac`, and `coverage` override the site title, the deptrac config used for the
 architecture layer graph (auto-detected at `deptrac.yaml`), and the PHPUnit `--coverage-xml` report directory used
@@ -143,6 +144,11 @@ pages simply carry no image). Add a docs badge to the README that links to the s
 ```markdown
 [![docs](https://img.shields.io/badge/docs-<package>-0969da?logo=php&logoColor=white)](https://<owner>.github.io/<repository>/)
 ```
+
+Close the loop the other way too: the site links back to the repository from every page, reading the address from
+`support.source` (then `homepage`) in the package's `composer.json`. Add those entries where the project declares
+neither — `support.docs` and `homepage` can point at the published site — and set `repository` in `doc.yaml` only to
+override what the manifests declare.
 
 Tell the user about the one-time repository setup the workflows do not do:
 

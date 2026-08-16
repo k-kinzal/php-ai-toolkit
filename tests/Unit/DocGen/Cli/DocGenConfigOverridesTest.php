@@ -56,7 +56,7 @@ final class DocGenConfigOverridesTest extends TestCase
 
     public function testApplyKeepsConfigurationWhenOverridesAreNull(): void
     {
-        $config = new DocGenConfig('/proj', ['.'], ['a/*'], [], 'site', null, null, 'cov', ['b/*']);
+        $config = new DocGenConfig('/proj', ['.'], ['a/*'], [], 'site', null, null, 'cov', ['b/*'], 'build/doc-gen-cache', 'https://example.github.io/project', 'https://github.com/example/project');
         $arguments = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
 
         $applied = (new DocGenConfigOverrides())->apply($config, $arguments);
@@ -66,6 +66,8 @@ final class DocGenConfigOverridesTest extends TestCase
         self::assertSame('site', $applied->output);
         self::assertSame('cov', $applied->coverage);
         self::assertNull($applied->title);
+        self::assertSame('https://example.github.io/project', $applied->baseUrl);
+        self::assertSame('https://github.com/example/project', $applied->repository);
     }
 
     public function testCacheKeepsTheConfiguredDirectoryUnlessTheRunSaysOtherwise(): void

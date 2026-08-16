@@ -385,6 +385,17 @@ a.k-namespace { color: var(--kind-namespace); }
   cursor: pointer;
 }
 
+.topbar-tools .repo-link {
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-1) var(--sp-3);
+}
+
+.topbar-tools .repo-link:hover { color: var(--link); border-color: var(--link); text-decoration: none; }
+
 .search-results {
   position: fixed;
   top: 46px;

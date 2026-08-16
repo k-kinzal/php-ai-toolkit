@@ -13,6 +13,7 @@ use function is_string;
 use function json_decode;
 use function json_last_error_msg;
 
+use PhpAiToolkit\DocGen\Config\RepositoryUrl;
 use PhpAiToolkit\DocGen\DocGenException;
 
 use function rtrim;
@@ -24,6 +25,17 @@ use function str_replace;
  */
 final class ComposerManifestReader
 {
+    /** @readonly */
+    private RepositoryUrl $repositoryUrl;
+
+    /**
+     * Creates a manifest reader.
+     */
+    public function __construct(?RepositoryUrl $repositoryUrl = null)
+    {
+        $this->repositoryUrl = $repositoryUrl ?? new RepositoryUrl();
+    }
+
     /**
      * Reads and validates one composer.json file.
      *
@@ -61,7 +73,30 @@ final class ComposerManifestReader
             $this->constraintMap($data['suggest'] ?? null),
             $this->classmapList($data['autoload'] ?? null),
             $this->classmapList($data['autoload-dev'] ?? null),
+            $this->repository($data),
         );
+    }
+
+    /**
+     * Reads where one manifest says its sources can be browsed.
+     *
+     * A package states that under "support.source", which is what composer
+     * itself links a package to its code with. Where a package states no
+     * source, its "homepage" is the only address it offers a reader, so it
+     * stands in for one; a package that states neither is documented
+     * without a link to anywhere.
+     */
+    public function repository(mixed $data): string
+    {
+        if (!is_array($data)) {
+            return '';
+        }
+
+        $support = is_array($data['support'] ?? null) ? $data['support'] : [];
+
+        return $this->repositoryUrl->read($support['source'] ?? null)
+            ?? $this->repositoryUrl->read($data['homepage'] ?? null)
+            ?? '';
     }
 
     /**

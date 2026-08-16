@@ -267,7 +267,7 @@ final class DiffWorkspaceTest extends TestCase
 
     public function testConfigForKeepsTheDocumentedScopeAndMovesOnlyTheRoot(): void
     {
-        $config = new DocGenConfig('/tmp/project', ['.', 'packages/*'], ['acme/*'], ['tests/*'], 'build/docs', 'Demo Docs', 'deptrac.yaml', 'build/coverage-xml', ['phpunit/*']);
+        $config = new DocGenConfig('/tmp/project', ['.', 'packages/*'], ['acme/*'], ['tests/*'], 'build/docs', 'Demo Docs', 'deptrac.yaml', 'build/coverage-xml', ['phpunit/*'], 'build/doc-gen-cache', 'https://example.github.io/project', 'https://github.com/example/project');
 
         $moved = (new DiffWorkspace())->configFor($config, '/tmp/checkout', null);
 
@@ -280,6 +280,8 @@ final class DiffWorkspaceTest extends TestCase
         self::assertSame('deptrac.yaml', $moved->deptrac);
         self::assertSame(['phpunit/*'], $moved->vendorDev);
         self::assertNull($moved->coverage);
+        self::assertSame('https://example.github.io/project', $moved->baseUrl);
+        self::assertSame('https://github.com/example/project', $moved->repository);
     }
 
     public function testCoverageIsResolvedAgainstTheWorkingTreeOfTheProject(): void

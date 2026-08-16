@@ -126,6 +126,7 @@ title: null
 deptrac: null
 coverage: null
 base_url: null
+repository: null
 ```
 
 `packages` (default `['.', 'packages/*']`) lists directory globs, relative to the config file, that are probed for a
@@ -160,6 +161,12 @@ PHPUnit `--coverage-xml` report directory; when set, every method shows the test
 `https://example.github.io/project`, without a trailing slash. It is the one thing a site of relative links cannot
 work out for itself, and it is what the social preview below is rendered from. An address that is not an absolute
 `http` or `https` URL is rejected.
+
+`repository` (default: what the root package's `composer.json` declares) is the address of the repository the
+documented project lives in, and it is what the link back to the code below leads to. It overrides what the project's
+own packages declare, which is the answer where a repository has moved, where the manifest declares nothing, and
+where the site is generated from a checkout that is not the published one. An address that is not an absolute `http`
+or `https` URL is rejected.
 
 Unknown top-level keys in `doc.yaml` are rejected with an error.
 
@@ -221,6 +228,21 @@ The site is fully static and self-contained: relative links only, bundled CSS/JS
 themes, and a `.nojekyll` marker, so publishing the output directory with GitHub Pages needs no further setup. The
 top level contains `index.html`, one directory per package (with its `doc/` documents), `src/` (highlighted sources
 with line anchors), and `assets/`.
+
+## Back to the Repository
+
+A generated site is the read side of a repository, so every page carries the way back to it: the page shell links the
+host of the repository next to the theme toggle, and a package page names it in full as its `Repository` row.
+
+The address is read from the `composer.json` of the package itself — `support.source` first, because that is what
+composer links a package to its code with, and `homepage` after it, because it is the only address a package that
+declares no source offers a reader. Only an absolute `http` or `https` address is linked, so a `git@…` or `git://`
+source is ignored rather than rendered as a link a browser cannot follow. `repository` in `doc.yaml` overrides what
+the project's own packages declare; a documented dependency always links to what its own manifest says, because it is
+published from somewhere else. A package that says nothing gets no link rather than a guess.
+
+The other direction is the repository's own: the site is published at one address, so a link to it from the README,
+from `homepage`, or from `support.docs` in `composer.json` closes the loop.
 
 ## Social Preview
 

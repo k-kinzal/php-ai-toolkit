@@ -35,6 +35,7 @@ use PhpAiToolkit\DocGen\Package\PackageGraph;
  * @property-read list<string> $warnings
  * @property-read list<MarkdownDoc> $documents
  * @property-read ?string $baseUrl
+ * @property-read ?string $repository
  */
 final class ProjectModel
 {
@@ -46,6 +47,7 @@ final class ProjectModel
      * @param list<string> $warnings
      * @param list<MarkdownDoc> $documents
      * @param ?string $baseUrl the address the site is published at, without a trailing slash, or null when it is unknown
+     * @param ?string $repository the address of the repository the documented project lives in, or null when it names none
      */
     public function __construct(
         /** @readonly */
@@ -80,6 +82,8 @@ final class ProjectModel
         private array $documents = [],
         /** @readonly */
         private ?string $baseUrl = null,
+        /** @readonly */
+        private ?string $repository = null,
     ) {
     }
 
@@ -107,6 +111,7 @@ final class ProjectModel
             'warnings' => $this->warnings,
             'documents' => $this->documents,
             'baseUrl' => $this->baseUrl,
+            'repository' => $this->repository,
             default => null,
         };
     }

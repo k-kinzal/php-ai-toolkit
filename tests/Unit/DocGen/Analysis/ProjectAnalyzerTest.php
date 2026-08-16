@@ -442,4 +442,35 @@ XML);
 
         self::assertSame('demo-docs', (new ProjectAnalyzer())->titleFor($config, [$vendorPackage]));
     }
+
+    public function testRepositoryForPrefersTheConfiguredAddress(): void
+    {
+        $config = new DocGenConfig('/tmp/demo', ['.'], [], [], 'build/docs', null, null, null, [], null, null, 'https://github.com/example/configured');
+        $root = new DiscoveredPackage(new ComposerManifest('/tmp/demo', 'demo/app', '', [], [], [], [], [], [], [], 'https://github.com/example/declared'), false);
+
+        self::assertSame('https://github.com/example/configured', (new ProjectAnalyzer())->repositoryFor($config, [$root]));
+    }
+
+    public function testRepositoryForReadsTheRootPackageWhenNothingIsConfigured(): void
+    {
+        $directory = sys_get_temp_dir() . '/docgen-repository-' . uniqid('', true);
+        mkdir($directory, 0777, true);
+        $config = new DocGenConfig($directory, ['.'], [], [], 'build/docs', null, null, null);
+        $vendor = new DiscoveredPackage(new ComposerManifest($directory, 'acme/lib', '', [], [], [], [], [], [], [], 'https://github.com/acme/lib'), true);
+        $root = new DiscoveredPackage(new ComposerManifest($directory, 'demo/app', '', [], [], [], [], [], [], [], 'https://github.com/example/declared'), false);
+
+        self::assertSame('https://github.com/example/declared', (new ProjectAnalyzer())->repositoryFor($config, [$vendor, $root]));
+    }
+
+    public function testRepositoryForNamesNothingWhereNeitherSaysWhereTheCodeLives(): void
+    {
+        $directory = sys_get_temp_dir() . '/docgen-repository-' . uniqid('', true);
+        mkdir($directory, 0777, true);
+        $config = new DocGenConfig($directory, ['.'], [], [], 'build/docs', null, null, null);
+        $root = new DiscoveredPackage(new ComposerManifest($directory, 'demo/app', '', [], [], [], [], []), false);
+        $elsewhere = new DiscoveredPackage(new ComposerManifest('/tmp/other', 'demo/other', '', [], [], [], [], [], [], [], 'https://github.com/example/other'), false);
+
+        self::assertNull((new ProjectAnalyzer())->repositoryFor($config, [$root]));
+        self::assertNull((new ProjectAnalyzer())->repositoryFor($config, [$elsewhere]));
+    }
 }

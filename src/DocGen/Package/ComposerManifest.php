@@ -22,6 +22,7 @@ namespace PhpAiToolkit\DocGen\Package;
  * @property-read array<string, string> $suggests
  * @property-read list<string> $classmap
  * @property-read list<string> $devClassmap
+ * @property-read string $repository
  */
 final class ComposerManifest
 {
@@ -33,6 +34,7 @@ final class ComposerManifest
      * @param array<string, string> $suggests
      * @param list<string> $classmap paths of the autoload.classmap section
      * @param list<string> $devClassmap paths of the autoload-dev.classmap section
+     * @param string $repository the address the package declares its sources are browsable at, empty when it declares none
      */
     public function __construct(
         /** @readonly */
@@ -55,6 +57,8 @@ final class ComposerManifest
         private array $classmap = [],
         /** @readonly */
         private array $devClassmap = [],
+        /** @readonly */
+        private string $repository = '',
     ) {
     }
 
@@ -76,6 +80,7 @@ final class ComposerManifest
             'suggests' => $this->suggests,
             'classmap' => $this->classmap,
             'devClassmap' => $this->devClassmap,
+            'repository' => $this->repository,
             default => null,
         };
     }

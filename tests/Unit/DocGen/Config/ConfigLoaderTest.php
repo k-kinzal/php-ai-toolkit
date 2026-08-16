@@ -4,20 +4,24 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Config;
 
+use PhpAiToolkit\DocGen\Config\BaseUrl;
 use PhpAiToolkit\DocGen\Config\ConfigLoader;
 use PhpAiToolkit\DocGen\Config\ConfigScalarReader;
 use PhpAiToolkit\DocGen\Config\ConfigStringListReader;
 use PhpAiToolkit\DocGen\Config\DocGenConfig;
+use PhpAiToolkit\DocGen\Config\RepositoryUrl;
 use PhpAiToolkit\DocGen\DocGenException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ConfigLoader::class)]
+#[UsesClass(BaseUrl::class)]
 #[UsesClass(ConfigScalarReader::class)]
 #[UsesClass(ConfigStringListReader::class)]
 #[UsesClass(DocGenConfig::class)]
 #[UsesClass(DocGenException::class)]
+#[UsesClass(RepositoryUrl::class)]
 final class ConfigLoaderTest extends TestCase
 {
     public function testLoadAppliesDefaultsForEmptyMapping(): void
@@ -37,6 +41,8 @@ final class ConfigLoaderTest extends TestCase
         self::assertNull($config->title);
         self::assertNull($config->deptrac);
         self::assertNull($config->coverage);
+        self::assertNull($config->baseUrl);
+        self::assertNull($config->repository);
     }
 
     public function testLoadRoundTripsAllKeys(): void
@@ -57,6 +63,8 @@ output: public/docs
 title: My Project
 deptrac: deptrac.yaml
 coverage: build/coverage.xml
+base_url: https://example.github.io/project/
+repository: https://github.com/example/project/
 YAML);
 
         $config = (new ConfigLoader())->load($dir . '/doc.yaml');
@@ -70,6 +78,20 @@ YAML);
         self::assertSame('My Project', $config->title);
         self::assertSame('deptrac.yaml', $config->deptrac);
         self::assertSame('build/coverage.xml', $config->coverage);
+        self::assertSame('https://example.github.io/project', $config->baseUrl);
+        self::assertSame('https://github.com/example/project', $config->repository);
+    }
+
+    public function testLoadRejectsARepositoryNoPageCanLinkTo(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-config-' . uniqid('', true);
+        mkdir($dir, 0777, true);
+        file_put_contents($dir . '/doc.yaml', 'repository: git@github.com:example/project.git');
+
+        $this->expectException(DocGenException::class);
+        $this->expectExceptionMessage('Invalid repository: git@github.com:example/project.git.');
+
+        (new ConfigLoader())->load($dir . '/doc.yaml');
     }
 
     public function testLoadRejectsUnknownTopLevelKey(): void

@@ -23,6 +23,9 @@ final class DocGenConfigTest extends TestCase
             'deptrac.yaml',
             'build/coverage.xml',
             ['phpunit/*'],
+            'build/doc-gen-cache',
+            'https://example.github.io/project',
+            'https://github.com/example/project',
         );
 
         self::assertSame('/project', $config->root);
@@ -34,6 +37,9 @@ final class DocGenConfigTest extends TestCase
         self::assertSame('My Project', $config->title);
         self::assertSame('deptrac.yaml', $config->deptrac);
         self::assertSame('build/coverage.xml', $config->coverage);
+        self::assertSame('build/doc-gen-cache', $config->cache);
+        self::assertSame('https://example.github.io/project', $config->baseUrl);
+        self::assertSame('https://github.com/example/project', $config->repository);
     }
 
     public function testStoresNullsForAbsentOptionalValues(): void
@@ -47,5 +53,7 @@ final class DocGenConfigTest extends TestCase
         self::assertNull($config->title);
         self::assertNull($config->deptrac);
         self::assertNull($config->coverage);
+        self::assertNull($config->baseUrl);
+        self::assertNull($config->repository);
     }
 }

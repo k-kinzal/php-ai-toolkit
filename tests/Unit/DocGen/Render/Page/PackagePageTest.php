@@ -78,6 +78,7 @@ use PhpAiToolkit\DocGen\Render\Page\UsageListHtml;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
+use PhpAiToolkit\DocGen\Render\RepositoryLink;
 use PhpAiToolkit\DocGen\Render\SearchIndexBuilder;
 use PhpAiToolkit\DocGen\Render\SiteRenderer;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
@@ -145,6 +146,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PropertyBuilder::class)]
 #[UsesClass(RelationsHtml::class)]
 #[UsesClass(RenderKit::class)]
+#[UsesClass(RepositoryLink::class)]
 #[UsesClass(SearchIndexBuilder::class)]
 #[UsesClass(SidebarHtml::class)]
 #[UsesClass(SidebarScope::class)]
@@ -297,6 +299,50 @@ final class PackagePageTest extends TestCase
             '<div class="relation-row"><span class="relation-label">Required by</span> <a href="../../demo/app/index.html">demo/app</a>, '
             . '<a href="../../demo/app/index.html">demo/app</a> <span class="chip chip-sm chip-ghost">suggest</span></div>',
             $libRows,
+        );
+    }
+
+    public function testRepositoryLinksAnswerWithTheProjectForItsOwnPackagesAndWithTheManifestForDependencies(): void
+    {
+        $app = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/app', 'Demo application', ['Demo\\' => ['src']], [], [], [], [], [], [], 'https://github.com/example/app'), false);
+        $vendor = new DiscoveredPackage(new ComposerManifest('/tmp/none/vendor/acme/lib', 'acme/lib', 'Acme library', [], [], [], [], [], [], [], 'https://github.com/acme/lib'), true);
+        $bare = new DiscoveredPackage(new ComposerManifest('/tmp/none/vendor/acme/bare', 'acme/bare', 'Bare library', [], [], [], [], []), true);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$app, $vendor, $bare], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, 'https://github.com/example/project');
+        $services = (new SiteRenderer())->services($model);
+
+        self::assertSame(
+            ['<a class="repo-link" href="https://github.com/example/project" title="Repository: https://github.com/example/project" rel="noreferrer">github.com/example/project</a>'],
+            (new PackagePage())->repositoryLinks($services, $app),
+        );
+        self::assertSame(
+            ['<a class="repo-link" href="https://github.com/acme/lib" title="Repository: https://github.com/acme/lib" rel="noreferrer">github.com/acme/lib</a>'],
+            (new PackagePage())->repositoryLinks($services, $vendor),
+        );
+        self::assertSame([], (new PackagePage())->repositoryLinks($services, $bare));
+    }
+
+    public function testRepositoryLinksFallBackToWhatAPackageOfTheProjectDeclaresItself(): void
+    {
+        $app = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/app', 'Demo application', ['Demo\\' => ['src']], [], [], [], [], [], [], 'https://github.com/example/app'), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$app], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model);
+
+        self::assertSame(
+            ['<a class="repo-link" href="https://github.com/example/app" title="Repository: https://github.com/example/app" rel="noreferrer">github.com/example/app</a>'],
+            (new PackagePage())->repositoryLinks($services, $app),
+        );
+    }
+
+    public function testDependencyRowsNamesTheRepositoryBeforeWhatThePackageDependsOn(): void
+    {
+        $app = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/app', 'Demo application', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$app], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, 'https://github.com/example/project');
+        $services = (new SiteRenderer())->services($model);
+
+        self::assertStringStartsWith(
+            '<div class="relation-row"><span class="relation-label">Repository</span> '
+            . '<a class="repo-link" href="https://github.com/example/project" title="Repository: https://github.com/example/project" rel="noreferrer">github.com/example/project</a></div>',
+            (new PackagePage())->dependencyRows($services, 'demo/app/index.html', $app),
         );
     }
 

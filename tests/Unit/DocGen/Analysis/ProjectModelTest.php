@@ -44,7 +44,7 @@ final class ProjectModelTest extends TestCase
         $hierarchy->build([$classLike]);
         $usages = new UsageIndex();
 
-        $model = new ProjectModel('Demo Docs', '/tmp/demo', [$package], $graph, [$classLike], [], $symbolTable, $hierarchy, $usages, new TestCaseIndex(), null, [], null, ['one warning']);
+        $model = new ProjectModel('Demo Docs', '/tmp/demo', [$package], $graph, [$classLike], [], $symbolTable, $hierarchy, $usages, new TestCaseIndex(), null, [], null, ['one warning'], [], 'https://example.github.io/demo', 'https://github.com/example/demo');
 
         self::assertSame('Demo Docs', $model->title);
         self::assertSame('/tmp/demo', $model->root);
@@ -59,6 +59,8 @@ final class ProjectModelTest extends TestCase
         self::assertSame([], $model->layerAssignments);
         self::assertNull($model->coverage);
         self::assertSame(['one warning'], $model->warnings);
+        self::assertSame('https://example.github.io/demo', $model->baseUrl);
+        self::assertSame('https://github.com/example/demo', $model->repository);
     }
 
     public function testStoresOptionalLayerAndCoverageData(): void
@@ -72,5 +74,7 @@ final class ProjectModelTest extends TestCase
         self::assertSame(['demo\greeter' => ['Domain']], $model->layerAssignments);
         self::assertSame($coverage, $model->coverage);
         self::assertSame([], $model->warnings);
+        self::assertNull($model->baseUrl);
+        self::assertNull($model->repository);
     }
 }

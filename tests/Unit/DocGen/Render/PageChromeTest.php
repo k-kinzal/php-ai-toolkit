@@ -23,6 +23,7 @@ use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
+use PhpAiToolkit\DocGen\Render\RepositoryLink;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -45,6 +46,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PhpHighlighter::class)]
 #[UsesClass(ProjectModel::class)]
 #[UsesClass(RenderKit::class)]
+#[UsesClass(RepositoryLink::class)]
 #[UsesClass(SiteUrl::class)]
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TestCaseIndex::class)]
@@ -68,6 +70,19 @@ final class PageChromeTest extends TestCase
         self::assertStringContainsString("<main class=\"content\">\n<p>CONTENT</p></main>", $html);
         self::assertStringContainsString('<script src="../../../assets/search-index.js" defer></script>', $html);
         self::assertStringContainsString('<script src="../../../assets/app.js" defer></script>', $html);
+    }
+
+    public function testPageCarriesTheWayBackToTheDocumentedRepository(): void
+    {
+        $model = new ProjectModel('Demo Docs', '/tmp/docgen-root', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, 'https://github.com/example/project');
+        $kit = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+
+        $html = (new PageChrome())->page($kit, 'demo/pkg/Demo/class.Widget.html', 'Widget', '', '', '', '');
+
+        self::assertStringContainsString(
+            '<a class="repo-link" href="https://github.com/example/project" title="Repository: https://github.com/example/project" rel="noreferrer">github.com</a>',
+            $html,
+        );
     }
 
     public function testPageOmitsPrefixForRootPage(): void

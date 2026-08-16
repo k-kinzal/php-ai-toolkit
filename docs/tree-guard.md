@@ -26,11 +26,15 @@ Example `tree.yaml`:
 
 ```yaml
 paths:
-  - src
+  - '.'
 
-exclude: []
+exclude:
+  - '.git'
+  - 'vendor'
 
 rules:
+  - path: '**'
+    deny_dirs: ['scripts', 'Scripts']
   - path: 'src/**'
     forbid_empty: true
     allow: ['*.php']
@@ -52,6 +56,8 @@ report:
 
 `paths` (default `['src']`) lists the directories to scan, relative to the config file directory. Each entry must exist and be a directory.
 
+The entry `.` scans the project root itself, which is how a rule reaches the root directory, dotted directories such as `.github`, and everything else outside the source roots. The root is reported as the path `.`, and every directory below it keeps its plain root-relative path (`src`, `.github/workflows`), so rules written for a source root match the same directories whether the scan starts at `.` or at `src`. Pair `.` with `exclude` entries for vendored and generated directories such as `vendor`, `build`, `node_modules`, and `.git`.
+
 `exclude` (default `[]`) removes entries from analysis. An excluded file disappears from its directory listing; an excluded directory is pruned together with its whole subtree.
 
 `rules` (default `[]`) is a list of rule blocks. Each block has a required `path` pattern and any number of constraints. Every rule whose pattern matches a directory is applied to it independently; there is no override or merge between overlapping rules. Violations carry the originating pattern, so each rule's findings stay identifiable.
@@ -67,6 +73,8 @@ Unknown keys in a rule block are rejected with an error. A typo such as `max_fil
 - Patterns are anchored at both ends: `PhpStan/Rule` does not match `src/PhpStan/Rule`.
 
 Examples: `src` matches only `src`; `src/*` matches only direct children of `src`; `src/**` matches `src` and everything below it; `**/Rule` matches a directory named `Rule` at any depth.
+
+The project root carries no path segment, so only `.` and `**` match it: `.` constrains the root alone, `**` constrains the root together with every directory below it, and `*` matches the directories directly inside the root instead.
 
 `exclude` uses a different mechanism: each entry is a plain `fnmatch` glob applied to the whole relative path (LocGuard-compatible), where `*` can cross `/` boundaries.
 
@@ -100,6 +108,19 @@ To express "this directory must contain exactly this file", combine `require` wi
 The limit value itself is allowed. A directory with exactly 25 files passes when `max_files` is `25`; a directory with 26 files fails.
 
 Case conventions are matched with these patterns: pascal `^[A-Z][A-Za-z0-9]*$`, camel `^[a-z][A-Za-z0-9]*$`, snake `^[a-z0-9]+(_[a-z0-9]+)*$`, kebab `^[a-z0-9]+(-[a-z0-9]+)*$`. For files, only the stem before the first dot is checked (`AiReporter.php` → `AiReporter`).
+
+## Forbidden Directory Names
+
+The shipped configuration bans the directory name `scripts` (and `Scripts`) across the whole project with a `path: '**'` rule, so it is rejected in the project root, under `.github/`, and at any depth inside a source root. A `scripts` directory collects one-off files that nothing runs in CI and nothing analyzes: put automation in a Composer script, a Makefile target, a workflow step, or a real CLI entry point under `bin/` instead, so the same tooling and review that cover the rest of the project cover it too.
+
+Add further bans to the same rule when a project wants more directory names gone:
+
+```yaml
+  - path: '**'
+    deny_dirs: ['scripts', 'Scripts', 'misc', 'tmp']
+```
+
+Directory globs are case-sensitive, so list every casing the project needs to reject. Forbidden words in class-like names are enforced separately by [ForbidClassLikeNameSuffixRule](rules/ForbidClassLikeNameSuffixRule.md).
 
 ## Rule Identifiers
 

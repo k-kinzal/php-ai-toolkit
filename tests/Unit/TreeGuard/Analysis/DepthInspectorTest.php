@@ -8,6 +8,7 @@ use PhpAiToolkit\TreeGuard\Analysis\DepthInspector;
 use PhpAiToolkit\TreeGuard\Analysis\Violation;
 use PhpAiToolkit\TreeGuard\Config\RuleConfig;
 use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
+use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -15,6 +16,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(DepthInspector::class)]
 #[UsesClass(DirectoryListing::class)]
 #[UsesClass(RuleConfig::class)]
+#[UsesClass(TreeGuardPathResolver::class)]
 #[UsesClass(Violation::class)]
 final class DepthInspectorTest extends TestCase
 {
@@ -64,5 +66,22 @@ final class DepthInspectorTest extends TestCase
         self::assertSame('Directory "src/A/B" is nested 2 levels below "src" but the limit is 1. Flatten the directory structure.', $violations[0]->message);
         self::assertSame('src/A/B/C', $violations[1]->path);
         self::assertSame(3, $violations[1]->actual);
+    }
+
+    public function testInspectCountsDepthFromProjectRoot(): void
+    {
+        $rule = new RuleConfig('.', null, null, null, 1, null, null, null, null, null, false, null, null);
+        $listing = new DirectoryListing('.', [], ['src']);
+        $listings = [
+            '.' => $listing,
+            'src' => new DirectoryListing('src', [], ['A']),
+            'src/A' => new DirectoryListing('src/A', [], []),
+        ];
+
+        $violations = (new DepthInspector())->inspect($rule, $listing, $listings);
+
+        self::assertCount(1, $violations);
+        self::assertSame('src/A', $violations[0]->path);
+        self::assertSame(2, $violations[0]->actual);
     }
 }

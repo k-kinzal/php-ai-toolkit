@@ -65,15 +65,16 @@ final class DirectoryTreeScanner
                 $entries = $this->listingReader->read($absoluteDir);
                 $fileNames = [];
                 foreach ($entries['files'] as $name) {
-                    if ($this->inclusionPolicy->includes($config, $relativeDir . '/' . $name)) {
+                    if ($this->inclusionPolicy->includes($config, $this->pathResolver->child($relativeDir, $name))) {
                         $fileNames[] = $name;
                     }
                 }
                 $dirNames = [];
                 foreach ($entries['dirs'] as $name) {
-                    if ($this->inclusionPolicy->includes($config, $relativeDir . '/' . $name)) {
+                    $childPath = $this->pathResolver->child($relativeDir, $name);
+                    if ($this->inclusionPolicy->includes($config, $childPath)) {
                         $dirNames[] = $name;
-                        $queue[] = [$absoluteDir . '/' . $name, $relativeDir . '/' . $name];
+                        $queue[] = [$absoluteDir . '/' . $name, $childPath];
                     }
                 }
                 $listings[$relativeDir] = new DirectoryListing($relativeDir, $fileNames, $dirNames);

@@ -79,6 +79,26 @@ final class DirectoryTreeScannerTest extends TestCase
         self::assertSame(['App.php'], $listings['src']->fileNames);
     }
 
+    public function testScanReturnsRootRelativePathsWhenScanningProjectRoot(): void
+    {
+        $dir = sys_get_temp_dir() . '/treeguard-scan-' . uniqid('', true);
+        mkdir($dir . '/.github/workflows', 0777, true);
+        mkdir($dir . '/scripts', 0777, true);
+        mkdir($dir . '/vendor/package', 0777, true);
+        touch($dir . '/composer.json');
+        touch($dir . '/.github/workflows/ci.yml');
+        touch($dir . '/scripts/build.sh');
+        touch($dir . '/vendor/package/Dropped.php');
+        $config = new TreeGuardConfig($dir, ['.'], ['vendor'], [], new ReportConfig('ai', ['path', 'rule']));
+
+        $listings = (new DirectoryTreeScanner())->scan($config);
+
+        self::assertSame(['.', '.github', '.github/workflows', 'scripts'], array_keys($listings));
+        self::assertSame(['composer.json'], $listings['.']->fileNames);
+        self::assertSame(['.github', 'scripts'], $listings['.']->dirNames);
+        self::assertSame(['build.sh'], $listings['scripts']->fileNames);
+    }
+
     public function testScanRejectsMissingPath(): void
     {
         $dir = sys_get_temp_dir() . '/treeguard-scan-' . uniqid('', true);

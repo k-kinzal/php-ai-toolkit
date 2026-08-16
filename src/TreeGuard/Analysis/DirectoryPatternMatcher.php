@@ -16,6 +16,9 @@ use function trim;
  * "src" itself. Every other segment is matched with fnmatch against exactly
  * one path segment, so "*" never crosses a "/" boundary. Patterns are
  * anchored at both ends.
+ *
+ * The project root is the path "." and carries no segment at all, so only "."
+ * and "**" match it; "*" matches the directories directly below it instead.
  */
 final class DirectoryPatternMatcher
 {
@@ -24,8 +27,10 @@ final class DirectoryPatternMatcher
      */
     public function matches(string $pattern, string $path): bool
     {
-        $patternSegments = explode('/', trim($pattern, '/'));
-        $pathSegments = explode('/', trim($path, '/'));
+        $pattern = trim($pattern, '/');
+        $path = trim($path, '/');
+        $patternSegments = $pattern === '' || $pattern === '.' ? [] : explode('/', $pattern);
+        $pathSegments = $path === '' || $path === '.' ? [] : explode('/', $path);
         $patternCount = count($patternSegments);
         $pathCount = count($pathSegments);
         $patternIndex = 0;

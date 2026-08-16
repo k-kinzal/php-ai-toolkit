@@ -73,6 +73,8 @@ class UserReader
 
 Generic suffixes such as `Helper`, `Manager`, and `Data` often hide the real responsibility of a type. They make it harder for humans and AI agents to infer the correct boundary, dependency direction, and behavior from the type name.
 
+The default list also bans `Evidence`, `Outcome`, and `Probe` (and their plurals). These name the act of working on the code — collecting proof, recording a result, poking at a system — rather than anything in the domain, and they are the vocabulary AI agents reach for when a type has no clear responsibility yet. `RunOutcome` and `HealthProbe` say nothing that `RunReport` and `HealthCheck` do not say better.
+
 A class-like name should describe the domain role or technical contract directly.
 
 ## How to Fix

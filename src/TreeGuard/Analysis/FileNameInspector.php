@@ -9,6 +9,7 @@ use function implode;
 
 use PhpAiToolkit\TreeGuard\Config\RuleConfig;
 use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
+use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 
 use function sprintf;
 
@@ -24,12 +25,16 @@ final class FileNameInspector
     /** @readonly */
     private CaseConventionMatcher $caseMatcher;
 
+    /** @readonly */
+    private TreeGuardPathResolver $pathResolver;
+
     /**
-     * Creates an inspector from naming convention matching.
+     * Creates an inspector from naming convention matching and path composition.
      */
-    public function __construct(?CaseConventionMatcher $caseMatcher = null)
+    public function __construct(?CaseConventionMatcher $caseMatcher = null, ?TreeGuardPathResolver $pathResolver = null)
     {
         $this->caseMatcher = $caseMatcher ?? new CaseConventionMatcher();
+        $this->pathResolver = $pathResolver ?? new TreeGuardPathResolver();
     }
 
     /**
@@ -41,7 +46,7 @@ final class FileNameInspector
     {
         $violations = [];
         foreach ($listing->fileNames as $name) {
-            $path = $listing->relativePath . '/' . $name;
+            $path = $this->pathResolver->child($listing->relativePath, $name);
             foreach ($rule->deny ?? [] as $pattern) {
                 if (fnmatch($pattern, $name)) {
                     $violations[] = new Violation($path, 'denied_file', $rule->path, null, null, sprintf('File "%s" matches denied pattern "%s". Rename or remove it.', $path, $pattern));

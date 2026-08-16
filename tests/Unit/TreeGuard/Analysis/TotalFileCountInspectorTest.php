@@ -8,6 +8,7 @@ use PhpAiToolkit\TreeGuard\Analysis\TotalFileCountInspector;
 use PhpAiToolkit\TreeGuard\Analysis\Violation;
 use PhpAiToolkit\TreeGuard\Config\RuleConfig;
 use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
+use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -15,6 +16,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(TotalFileCountInspector::class)]
 #[UsesClass(DirectoryListing::class)]
 #[UsesClass(RuleConfig::class)]
+#[UsesClass(TreeGuardPathResolver::class)]
 #[UsesClass(Violation::class)]
 final class TotalFileCountInspectorTest extends TestCase
 {
@@ -55,6 +57,22 @@ final class TotalFileCountInspectorTest extends TestCase
         self::assertSame(3, $violations[0]->actual);
         self::assertSame(2, $violations[0]->limit);
         self::assertSame('Directory "src" contains 3 files in total but the limit is 2. Restructure or split the subtree.', $violations[0]->message);
+    }
+
+    public function testInspectCountsWholeProjectFromRootOnce(): void
+    {
+        $rule = new RuleConfig('.', null, null, 2, null, null, null, null, null, null, false, null, null);
+        $listing = new DirectoryListing('.', ['composer.json'], ['src']);
+        $listings = [
+            '.' => $listing,
+            'src' => new DirectoryListing('src', ['One.php', 'Two.php'], []),
+        ];
+
+        $violations = (new TotalFileCountInspector())->inspect($rule, $listing, $listings);
+
+        self::assertCount(1, $violations);
+        self::assertSame('.', $violations[0]->path);
+        self::assertSame(3, $violations[0]->actual);
     }
 
     public function testInspectIgnoresSiblingsSharingNamePrefix(): void

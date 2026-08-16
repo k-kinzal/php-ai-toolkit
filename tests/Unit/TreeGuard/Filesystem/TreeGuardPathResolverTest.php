@@ -30,4 +30,27 @@ final class TreeGuardPathResolverTest extends TestCase
     {
         self::assertSame('/other/src', (new TreeGuardPathResolver())->relative('/project', '/other/src'));
     }
+
+    public function testAbsoluteResolvesProjectRootPath(): void
+    {
+        self::assertSame('/project', (new TreeGuardPathResolver())->absolute('/project', '.'));
+        self::assertSame('/project', (new TreeGuardPathResolver())->absolute('/project', './'));
+    }
+
+    public function testRelativeReturnsDotForProjectRoot(): void
+    {
+        self::assertSame('.', (new TreeGuardPathResolver())->relative('/project', '/project'));
+    }
+
+    public function testChildJoinsNameOntoDirectory(): void
+    {
+        self::assertSame('src/A', (new TreeGuardPathResolver())->child('src', 'A'));
+        self::assertSame('src', (new TreeGuardPathResolver())->child('.', 'src'));
+    }
+
+    public function testDescendantPrefixIsEmptyForProjectRoot(): void
+    {
+        self::assertSame('src/', (new TreeGuardPathResolver())->descendantPrefix('src'));
+        self::assertSame('', (new TreeGuardPathResolver())->descendantPrefix('.'));
+    }
 }

@@ -76,6 +76,12 @@ parameters:
             - Engines
             - System
             - Systems
+            - Evidence
+            - Evidences
+            - Outcome
+            - Outcomes
+            - Probe
+            - Probes
         broadCatchAllowedPaths: []
 
 services:

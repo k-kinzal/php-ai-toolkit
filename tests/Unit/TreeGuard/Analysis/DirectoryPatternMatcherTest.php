@@ -53,6 +53,22 @@ final class DirectoryPatternMatcherTest extends TestCase
         self::assertFalse((new DirectoryPatternMatcher())->matches('src/PhpStan', 'src/PhpStan/Rule'));
     }
 
+    public function testMatchesProjectRootWithDotAndDoubleStarOnly(): void
+    {
+        self::assertTrue((new DirectoryPatternMatcher())->matches('.', '.'));
+        self::assertTrue((new DirectoryPatternMatcher())->matches('**', '.'));
+        self::assertFalse((new DirectoryPatternMatcher())->matches('*', '.'));
+        self::assertFalse((new DirectoryPatternMatcher())->matches('src', '.'));
+        self::assertFalse((new DirectoryPatternMatcher())->matches('.', 'src'));
+    }
+
+    public function testMatchesDirectoriesBelowProjectRoot(): void
+    {
+        self::assertTrue((new DirectoryPatternMatcher())->matches('**', '.github/workflows'));
+        self::assertTrue((new DirectoryPatternMatcher())->matches('*', 'scripts'));
+        self::assertTrue((new DirectoryPatternMatcher())->matches('src/**', 'src/PhpStan'));
+    }
+
     public function testMatchesGlobCharactersPerSegment(): void
     {
         self::assertTrue((new DirectoryPatternMatcher())->matches('skills/setup-*', 'skills/setup-toolkit-phpstan'));

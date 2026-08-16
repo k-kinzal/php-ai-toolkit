@@ -16,6 +16,7 @@ use PhpAiToolkit\TreeGuard\Analysis\TotalFileCountInspector;
 use PhpAiToolkit\TreeGuard\Analysis\Violation;
 use PhpAiToolkit\TreeGuard\Config\RuleConfig;
 use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
+use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -31,6 +32,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(RequiredFileInspector::class)]
 #[UsesClass(RuleConfig::class)]
 #[UsesClass(TotalFileCountInspector::class)]
+#[UsesClass(TreeGuardPathResolver::class)]
 #[UsesClass(Violation::class)]
 final class DirectoryRuleInspectorTest extends TestCase
 {

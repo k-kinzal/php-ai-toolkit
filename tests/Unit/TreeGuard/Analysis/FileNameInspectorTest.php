@@ -9,6 +9,7 @@ use PhpAiToolkit\TreeGuard\Analysis\FileNameInspector;
 use PhpAiToolkit\TreeGuard\Analysis\Violation;
 use PhpAiToolkit\TreeGuard\Config\RuleConfig;
 use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
+use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -17,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(CaseConventionMatcher::class)]
 #[UsesClass(DirectoryListing::class)]
 #[UsesClass(RuleConfig::class)]
+#[UsesClass(TreeGuardPathResolver::class)]
 #[UsesClass(Violation::class)]
 final class FileNameInspectorTest extends TestCase
 {

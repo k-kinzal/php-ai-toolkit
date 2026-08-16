@@ -52,7 +52,7 @@ The toolkit provides PHPStan and PHPUnit integrations, shared runtime services, 
 | **Shared** | Agent detection and format mode used by ErrorFormatter and TestReporter | `src/Shared/` (`AgentDetector`, `FormatMode`) |
 | **Installer CLI** | Installs skills and templates into target projects | `src/Installer/Cli/Application.php`, binary `bin/php-ai-toolkit` |
 | **LocGuard CLI** | Checks source LOC, NCLOC, length, and cyclomatic complexity metrics | `src/LocGuard/` (`Cli/`, `Config/`, `Filesystem/`, `Analysis/` with `Token/`, `Complexity/`, `FunctionMetric/`, `ClassLikeMetric/`, and `FileMetric/`, and `Reporting/`), binary `bin/loc-guard`, config `loc.yaml` |
-| **TreeGuard CLI** | Enforces per-directory file and subdirectory counts, recursive subtree totals, nesting depth, file and directory naming globs and case conventions, required files, and empty-directory detection | `src/TreeGuard/` (`Cli/`, `Config/`, `Filesystem/`, `Analysis/`, `Reporting/`), binary `bin/tree-guard`, config `tree.yaml` |
+| **TreeGuard CLI** | Enforces per-directory file and subdirectory counts, recursive subtree totals, nesting depth, file and directory naming globs and case conventions, required files, and empty-directory detection, from the project root down | `src/TreeGuard/` (`Cli/`, `Config/`, `Filesystem/`, `Analysis/`, `Reporting/`), binary `bin/tree-guard`, config `tree.yaml` |
 | **DocGen CLI** | Generates a static HTML documentation site — complete PHPDoc/PHPStan/Psalm types, interface implementations and call sites, deptrac layer graphs, coverage-backed test references, rendered repository Markdown documents, doctest-php-compatible examples, per-page social preview tags with a card image drawn for the site, and an optional two-revision diff mode with three display modes, cached and incrementally updated between runs — for the project's composer packages, monorepo packages, and optionally vendor packages | `src/DocGen/` (`Cli/`, `Config/`, `Package/`, `Filesystem/`, `Git/`, `Cache/`, `Parallel/`, `Analysis/` with `Parse/`, `Doc/`, `Model/`, `Reference/`, `Doctest/`, `Document/`, `Layer/`, `Coverage/`, and `Diff/`, and `Render/` with `Page/`, `Diff/`, and `Signature/`), binary `bin/doc-gen`, config `doc.yaml`, assets `resources/docgen/` |
 
 Integration: PHPStan loads `extension.neon`, which registers all 26 Rule services, their Support service, and the ThrowType extension service.
@@ -167,6 +167,13 @@ tree.yaml              # TreeGuard structure constraints
 doc.yaml               # DocGen documentation scope and cache location
 deptrac.yaml           # Architectural dependency rules
 ```
+
+## Forbidden Words
+
+Some words name the act of working on the code instead of the code's subject, and they are the words an AI agent reaches for when a type or a directory has no clear responsibility yet. They are rejected by the toolchain, not by review:
+
+- `Evidence`, `Outcome`, `Probe`, and their plurals may not end a class, interface, trait, or enum name. Name the domain concept instead: `RunReport`, not `RunOutcome`; `HealthCheck`, not `HealthProbe`. Enforced by [ForbidClassLikeNameSuffixRule](docs/rules/ForbidClassLikeNameSuffixRule.md); the same words are also denied as source file name suffixes by `tree.yaml`.
+- `scripts` may not be a directory name anywhere in the repository, including the project root and `.github/`. Automation belongs in a Composer script, a workflow step, or a documented `bin/` entry point. Enforced by the `path: '**'` rule in `tree.yaml`.
 
 ## Rule Design Principles
 

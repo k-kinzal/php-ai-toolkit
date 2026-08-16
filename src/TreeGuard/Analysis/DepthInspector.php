@@ -6,6 +6,7 @@ namespace PhpAiToolkit\TreeGuard\Analysis;
 
 use PhpAiToolkit\TreeGuard\Config\RuleConfig;
 use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
+use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 
 use function sprintf;
 use function strlen;
@@ -20,6 +21,17 @@ use function substr_count;
  */
 final class DepthInspector
 {
+    /** @readonly */
+    private TreeGuardPathResolver $pathResolver;
+
+    /**
+     * Creates an inspector from path composition.
+     */
+    public function __construct(?TreeGuardPathResolver $pathResolver = null)
+    {
+        $this->pathResolver = $pathResolver ?? new TreeGuardPathResolver();
+    }
+
     /**
      * Returns max_depth violations for descendants of the directory.
      *
@@ -33,9 +45,9 @@ final class DepthInspector
         }
 
         $violations = [];
-        $prefix = $listing->relativePath . '/';
+        $prefix = $this->pathResolver->descendantPrefix($listing->relativePath);
         foreach ($listings as $relativePath => $descendant) {
-            if (!str_starts_with($relativePath, $prefix)) {
+            if ($relativePath === $listing->relativePath || !str_starts_with($relativePath, $prefix)) {
                 continue;
             }
             $depth = substr_count(substr($relativePath, strlen($prefix)), '/') + 1;

@@ -9,6 +9,7 @@ use PhpAiToolkit\TreeGuard\Analysis\DirNameInspector;
 use PhpAiToolkit\TreeGuard\Analysis\Violation;
 use PhpAiToolkit\TreeGuard\Config\RuleConfig;
 use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
+use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -17,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(CaseConventionMatcher::class)]
 #[UsesClass(DirectoryListing::class)]
 #[UsesClass(RuleConfig::class)]
+#[UsesClass(TreeGuardPathResolver::class)]
 #[UsesClass(Violation::class)]
 final class DirNameInspectorTest extends TestCase
 {
@@ -75,6 +77,18 @@ final class DirNameInspectorTest extends TestCase
         self::assertSame('src/helpers', $violations[0]->path);
         self::assertSame('dir_case', $violations[0]->rule);
         self::assertSame('Directory name "helpers" in "src" does not follow the pascal convention. Rename it.', $violations[0]->message);
+    }
+
+    public function testInspectReportsDeniedDirDirectlyInProjectRoot(): void
+    {
+        $rule = new RuleConfig('**', null, null, null, null, null, null, null, ['scripts'], null, false, null, null);
+        $listing = new DirectoryListing('.', [], ['scripts']);
+
+        $violations = (new DirNameInspector())->inspect($rule, $listing);
+
+        self::assertCount(1, $violations);
+        self::assertSame('scripts', $violations[0]->path);
+        self::assertSame('Directory "scripts" matches denied pattern "scripts". Rename or remove it.', $violations[0]->message);
     }
 
     public function testMatchesAnyChecksEachPattern(): void

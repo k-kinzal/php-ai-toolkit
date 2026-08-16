@@ -1,9 +1,17 @@
 paths:
-  - src
+  - '.'
 
-exclude: []
+exclude:
+  - '.git'
+  - '.idea'
+  - 'build'
+  - 'node_modules'
+  - 'var'
+  - 'vendor'
 
 rules:
+  - path: '**'
+    deny_dirs: ['scripts', 'Scripts']
   - path: 'src/**'
     forbid_empty: true
     allow: ['*.php']

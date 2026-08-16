@@ -8,6 +8,7 @@ use function count;
 
 use PhpAiToolkit\TreeGuard\Config\RuleConfig;
 use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
+use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 
 use function sprintf;
 
@@ -16,6 +17,17 @@ use function sprintf;
  */
 final class TotalFileCountInspector
 {
+    /** @readonly */
+    private TreeGuardPathResolver $pathResolver;
+
+    /**
+     * Creates an inspector from path composition.
+     */
+    public function __construct(?TreeGuardPathResolver $pathResolver = null)
+    {
+        $this->pathResolver = $pathResolver ?? new TreeGuardPathResolver();
+    }
+
     /**
      * Returns max_total_files violations for the directory subtree.
      *
@@ -28,10 +40,10 @@ final class TotalFileCountInspector
             return [];
         }
 
-        $prefix = $listing->relativePath . '/';
+        $prefix = $this->pathResolver->descendantPrefix($listing->relativePath);
         $total = count($listing->fileNames);
         foreach ($listings as $relativePath => $descendant) {
-            if (str_starts_with($relativePath, $prefix)) {
+            if ($relativePath !== $listing->relativePath && str_starts_with($relativePath, $prefix)) {
                 $total += count($descendant->fileNames);
             }
         }

@@ -1,11 +1,19 @@
 paths:
-  - src
-  - tests/Unit
-  - skills
+  - '.'
 
-exclude: []
+exclude:
+  - '.claude'
+  - '.deptrac.cache'
+  - '.git'
+  - '.idea'
+  - '.phpunit.cache'
+  - 'build'
+  - 'node_modules'
+  - 'vendor'
 
 rules:
+  - path: '**'
+    deny_dirs: ['scripts', 'Scripts']
   - path: 'src'
     allow: []
     max_dirs: 8
@@ -16,7 +24,19 @@ rules:
   - path: 'src/**'
     forbid_empty: true
     allow: ['*.php']
-    deny: ['*Helper.php', '*Helpers.php', '*Manager.php', '*Util.php', '*Utils.php', '*Service.php']
+    deny:
+      - '*Helper.php'
+      - '*Helpers.php'
+      - '*Manager.php'
+      - '*Util.php'
+      - '*Utils.php'
+      - '*Service.php'
+      - '*Evidence.php'
+      - '*Evidences.php'
+      - '*Outcome.php'
+      - '*Outcomes.php'
+      - '*Probe.php'
+      - '*Probes.php'
     file_case: pascal
     dir_case: pascal
     max_files: 30

@@ -32,6 +32,14 @@ composer require --dev k-kinzal/php-ai-toolkit
 
 Read the template from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-tree-guard/tree.yaml` and apply it to the project root as `tree.yaml`.
 
+The starter template scans the project root (`paths: ['.']`) so that structure rules reach every directory of the repository, including the root itself and dotted directories such as `.github`. Keep `exclude` limited to generated and vendored directories, and add the ones the project actually has.
+
+The starter template forbids everywhere:
+
+| Setting | Default | Meaning |
+|---------|---------|---------|
+| `deny_dirs` | `['scripts', 'Scripts']` | No directory named `scripts` anywhere, including the project root and `.github/`. Put automation in Composer scripts, a Makefile, or a workflow step instead of a loose script directory that AI agents fill with one-off files. |
+
 The starter template enforces on `src/`:
 
 | Setting | Default | Meaning |
@@ -47,7 +55,7 @@ The limit value itself is allowed. For example, a directory with exactly 25 file
 
 ## Pattern Semantics
 
-`rules[].path` patterns match whole relative directory paths segment by segment. A `**` segment matches zero or more segments, so `src/**` also matches `src` itself. Other segments match exactly one path segment with fnmatch, so `*` never crosses `/`. See the reference documentation for details.
+`rules[].path` patterns match whole relative directory paths segment by segment. A `**` segment matches zero or more segments, so `src/**` also matches `src` itself. Other segments match exactly one path segment with fnmatch, so `*` never crosses `/`. The project root is the path `.` and carries no segment, so only `.` and `**` match it. See the reference documentation for details.
 
 ## Adapting to the Project
 
@@ -55,7 +63,7 @@ Adapt rules to the discovered layout instead of copying blindly:
 
 - Scan production roots discovered from Composer autoload. Add `tests/Unit` with `allow: ['*Test.php']` when the project pairs tests with sources.
 - Add `max_depth` (for example `3`) on the root rule when the project keeps namespaces shallow.
-- Add `deny` globs for forbidden name patterns such as `'*Helper.php'` when the project bans them.
+- Add `deny` globs for forbidden name patterns such as `'*Helper.php'` when the project bans them, and `deny_dirs` globs on `path: '**'` for directory names the project bans everywhere.
 - Add `require: ['README.md']` style rules for directories that must carry a specific file.
 - Use `exclude` for generated directories only. Do not add broad excludes just to make violations pass; fix the structure or report the exact directories that need a project-level decision.
 

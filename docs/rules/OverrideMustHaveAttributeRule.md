@@ -34,6 +34,21 @@ class UserRepository extends BaseRepository
 - Methods that implement an abstract parent method (these are implementations, not overrides)
 - Methods that do not exist in the parent class
 - Methods already annotated with `#[Override]`
+- Constructors, even when the parent declares one
+- Methods whose parent counterpart is `private`
+
+The last two are the cases PHP refuses the attribute on. A constructor never
+overrides the parent constructor, and a private parent method is invisible to
+the child, so a child method of the same name declares something new. Writing
+`#[\Override]` there is a fatal error from PHP 8.3 on:
+
+```
+PHP Fatal error: Child::__construct() has #[\Override] attribute,
+but no matching parent method exists
+```
+
+Reporting them would mean asking for code that does not run, so the rule stays
+quiet even though the method names line up.
 
 ## Why This Is an Error
 

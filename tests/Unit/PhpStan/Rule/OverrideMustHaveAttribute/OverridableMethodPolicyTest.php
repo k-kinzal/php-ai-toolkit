@@ -1,0 +1,46 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\PhpStan\Rule\OverrideMustHaveAttribute;
+
+use PhpAiToolkit\PhpStan\Rule\OverrideMustHaveAttribute\OverridableMethodPolicy;
+use PHPStan\Reflection\MethodReflection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
+
+#[CoversClass(OverridableMethodPolicy::class)]
+final class OverridableMethodPolicyTest extends TestCase
+{
+    public function testAllowsReturnsTrueForVisibleParentMethod(): void
+    {
+        $parentMethod = $this->createStub(MethodReflection::class);
+        $parentMethod->method('isPrivate')->willReturn(false);
+
+        self::assertTrue((new OverridableMethodPolicy())->allows('run', $parentMethod));
+    }
+
+    public function testAllowsReturnsFalseForConstructor(): void
+    {
+        $parentMethod = $this->createStub(MethodReflection::class);
+        $parentMethod->method('isPrivate')->willReturn(false);
+
+        self::assertFalse((new OverridableMethodPolicy())->allows('__construct', $parentMethod));
+    }
+
+    public function testAllowsReturnsFalseForConstructorSpelledInMixedCase(): void
+    {
+        $parentMethod = $this->createStub(MethodReflection::class);
+        $parentMethod->method('isPrivate')->willReturn(false);
+
+        self::assertFalse((new OverridableMethodPolicy())->allows('__CONSTRUCT', $parentMethod));
+    }
+
+    public function testAllowsReturnsFalseForPrivateParentMethod(): void
+    {
+        $parentMethod = $this->createStub(MethodReflection::class);
+        $parentMethod->method('isPrivate')->willReturn(true);
+
+        self::assertFalse((new OverridableMethodPolicy())->allows('hidden', $parentMethod));
+    }
+}

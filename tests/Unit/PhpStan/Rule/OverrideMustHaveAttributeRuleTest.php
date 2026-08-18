@@ -48,4 +48,9 @@ final class OverrideMustHaveAttributeRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../Fixture/OverrideMustHaveAttribute/AbstractImpl.php'], []);
     }
+
+    public function testProcessNodeConstructorAndPrivateParentMethodAreNotReported(): void
+    {
+        $this->analyse([__DIR__ . '/../../../Fixture/OverrideMustHaveAttribute/WithoutOverridableParent.php'], []);
+    }
 }

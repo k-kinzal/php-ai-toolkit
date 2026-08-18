@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
+use PhpAiToolkit\PhpStan\Rule\OverrideMustHaveAttribute\OverridableMethodPolicy;
 use PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
@@ -12,6 +13,12 @@ use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\TrinaryLogic;
 
 /**
+ * Requires #[\Override] on methods that override a non-abstract parent method.
+ *
+ * Implementing an abstract parent method is an implementation rather than an
+ * override, so it is not reported. Neither are the methods PHP refuses the
+ * attribute on; see OverridableMethodPolicy for which ones those are and why.
+ *
  * @implements Rule<\PhpParser\Node\Stmt\ClassMethod>
  */
 final class OverrideMustHaveAttributeRule implements Rule
@@ -19,12 +26,18 @@ final class OverrideMustHaveAttributeRule implements Rule
     /** @readonly */
     private OverrideAttributeDetector $overrideAttributeDetector;
 
+    /** @readonly */
+    private OverridableMethodPolicy $overridableMethodPolicy;
+
     /**
-     * Creates a rule from override attribute detection.
+     * Creates a rule from override attribute detection and the override policy.
      */
-    public function __construct(?OverrideAttributeDetector $overrideAttributeDetector = null)
-    {
+    public function __construct(
+        ?OverrideAttributeDetector $overrideAttributeDetector = null,
+        ?OverridableMethodPolicy $overridableMethodPolicy = null,
+    ) {
         $this->overrideAttributeDetector = $overrideAttributeDetector ?? new OverrideAttributeDetector();
+        $this->overridableMethodPolicy = $overridableMethodPolicy ?? new OverridableMethodPolicy();
     }
 
     /**
@@ -63,6 +76,10 @@ final class OverrideMustHaveAttributeRule implements Rule
         $parentMethod = $parentClass->getMethod($methodName, $scope);
         $isAbstract = $parentMethod->isAbstract();
         if ($isAbstract instanceof TrinaryLogic ? $isAbstract->yes() : $isAbstract === true) {
+            return [];
+        }
+
+        if (!$this->overridableMethodPolicy->allows($methodName, $parentMethod)) {
             return [];
         }
 

@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
+use PhpAiToolkit\PhpStan\Rule\RequireThrowsTagOnDirectThrow\MissingThrowsTagErrorBuilder;
 use PhpAiToolkit\PhpStan\Rule\RequireThrowsTagOnDirectThrow\ThrowsDeclarationInspector;
 use PhpAiToolkit\PhpStan\Rule\RequireThrowsTagOnDirectThrow\ThrowSiteCollector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
-use PHPStan\Rules\RuleErrorBuilder;
-
-use function sprintf;
 
 /**
  * Requires a @throws tag for every exception thrown directly in a method body
@@ -33,15 +31,21 @@ final class RequireThrowsTagOnDirectThrowRule implements Rule
     /** @readonly */
     private ThrowsDeclarationInspector $throwsDeclarationInspector;
 
+    /** @readonly */
+    private MissingThrowsTagErrorBuilder $missingThrowsTagErrorBuilder;
+
     /**
-     * Creates the rule from throw-site collection and declaration inspection.
+     * Creates the rule from throw-site collection, declaration inspection, and
+     * error building.
      */
     public function __construct(
         ?ThrowSiteCollector $throwSiteCollector = null,
         ?ThrowsDeclarationInspector $throwsDeclarationInspector = null,
+        ?MissingThrowsTagErrorBuilder $missingThrowsTagErrorBuilder = null,
     ) {
         $this->throwSiteCollector = $throwSiteCollector ?? new ThrowSiteCollector();
         $this->throwsDeclarationInspector = $throwsDeclarationInspector ?? new ThrowsDeclarationInspector();
+        $this->missingThrowsTagErrorBuilder = $missingThrowsTagErrorBuilder ?? new MissingThrowsTagErrorBuilder();
     }
 
     /**
@@ -81,17 +85,11 @@ final class RequireThrowsTagOnDirectThrowRule implements Rule
         $errors = [];
         foreach ($sites as $site) {
             foreach ($this->throwsDeclarationInspector->uncoveredClassNames($site, $scope, $declaredThrowType) as $thrownClassName) {
-                $errors[] = RuleErrorBuilder::message(
-                    sprintf(
-                        'Declare "@throws \%s" in the PHPDoc of %s() or catch the exception inside the method. The exception thrown here escapes %s() without being declared.',
-                        $thrownClassName,
-                        $methodName,
-                        $methodName
-                    )
-                )
-                    ->identifier('customRules.missingThrowsTag')
-                    ->line($site->line)
-                    ->build();
+                $errors[] = $this->missingThrowsTagErrorBuilder->undeclaredThrow(
+                    $thrownClassName,
+                    $methodName,
+                    $site->line
+                );
             }
         }
 

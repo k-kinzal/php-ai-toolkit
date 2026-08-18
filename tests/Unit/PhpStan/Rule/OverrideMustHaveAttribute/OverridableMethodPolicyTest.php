@@ -14,7 +14,7 @@ final class OverridableMethodPolicyTest extends TestCase
 {
     public function testAllowsReturnsTrueForVisibleParentMethod(): void
     {
-        $parentMethod = $this->createStub(MethodReflection::class);
+        $parentMethod = self::createStub(MethodReflection::class);
         $parentMethod->method('isPrivate')->willReturn(false);
 
         self::assertTrue((new OverridableMethodPolicy())->allows('run', $parentMethod));
@@ -22,7 +22,7 @@ final class OverridableMethodPolicyTest extends TestCase
 
     public function testAllowsReturnsFalseForConstructor(): void
     {
-        $parentMethod = $this->createStub(MethodReflection::class);
+        $parentMethod = self::createStub(MethodReflection::class);
         $parentMethod->method('isPrivate')->willReturn(false);
 
         self::assertFalse((new OverridableMethodPolicy())->allows('__construct', $parentMethod));
@@ -30,7 +30,7 @@ final class OverridableMethodPolicyTest extends TestCase
 
     public function testAllowsReturnsFalseForConstructorSpelledInMixedCase(): void
     {
-        $parentMethod = $this->createStub(MethodReflection::class);
+        $parentMethod = self::createStub(MethodReflection::class);
         $parentMethod->method('isPrivate')->willReturn(false);
 
         self::assertFalse((new OverridableMethodPolicy())->allows('__CONSTRUCT', $parentMethod));
@@ -38,7 +38,7 @@ final class OverridableMethodPolicyTest extends TestCase
 
     public function testAllowsReturnsFalseForPrivateParentMethod(): void
     {
-        $parentMethod = $this->createStub(MethodReflection::class);
+        $parentMethod = self::createStub(MethodReflection::class);
         $parentMethod->method('isPrivate')->willReturn(true);
 
         self::assertFalse((new OverridableMethodPolicy())->allows('hidden', $parentMethod));

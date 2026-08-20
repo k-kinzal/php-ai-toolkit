@@ -1,0 +1,44 @@
+{
+    // Mutation testing gate for changed lines only. Run by `composer infection:pr`
+    // and by the `mutation` job of .github/workflows/ci.yml on every pull request,
+    // together with --git-diff-lines --git-diff-base=origin/main.
+    //
+    // New and modified code carries no legacy debt, so it is held to a higher bar
+    // than the whole tree in infection.json5. `ignoreMsiWithNoMutations` keeps a
+    // change that mutates nothing — documentation, tests, configuration — from
+    // scoring 0% and failing.
+    //
+    // Lowering a threshold, disabling a mutator, or widening `source.excludes` to
+    // make a red build green removes the safety net this file exists to provide —
+    // fix the tests instead, and ask a human operator when an exception is
+    // genuinely justified.
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": [
+            "src"
+        ],
+        // Kept in sync with infection.json5: the PHPUnit 9.6 listener is only covered
+        // by tests that run under phpunit9.xml.dist on PHP 8.0.
+        "excludes": [
+            "PhpUnit/TestReporter/Legacy"
+        ]
+    },
+    "mutators": {
+        "@default": true
+    },
+    "minMsi": 90,
+    "minCoveredMsi": 95,
+    "ignoreMsiWithNoMutations": true,
+    "timeout": 10,
+    // Kept out of the report directory: Infection wipes its temporary directory when
+    // the run finishes.
+    "tmpDir": "build/infection-tmp",
+    "logs": {
+        "text": "build/infection/escaped.log",
+        "summary": "build/infection/summary.log",
+        "github": true
+    },
+    // Kept in sync with infection.json5. See that file for why the flag is needed.
+    "testFrameworkExtraArgs": "--no-extensions",
+    "testFramework": "phpunit"
+}

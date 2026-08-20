@@ -43,6 +43,16 @@ graph. `phpstan/phpstan-strict-rules` is therefore required as
 `composer compat` remains a named step inside the `lint` job alongside
 formatting, PHPStan, LocGuard, and Deptrac.
 
+## Mutation Testing Job
+
+`ci.yml` runs mutation testing in a `mutation` job rather than as a step of `lint`,
+because it needs a coverage driver, a full-depth checkout, and minutes rather than
+seconds. It is not a matrix: the mutation score does not depend on the PHP version,
+so it is scored once on PHP 8.4 while the `tests` matrix covers the rest. The job
+picks its gate from the event — `composer infection:pr` scores the lines a pull
+request changed against the stricter thresholds, `composer infection` scores the
+whole source tree on `main`. See [Infection Configuration](infection.md).
+
 ## Documentation Workflows
 
 `.github/workflows/docs.yml` is separate from `ci.yml` on purpose: it generates

@@ -21,6 +21,7 @@
         "brianium/paratest": "^6.11 || ^7",
         "deptrac/deptrac": "^0.24 || ^1.0 || ^2.0 || ^3.0 || ^4.6",
         "friendsofphp/php-cs-fixer": "^3.4",
+        "infection/infection": "^0.26.19 || ^0.27 || ^0.28 || ^0.29 || ^0.30 || ^0.31 || ^0.32 || ^0.33 || ^0.34 || ^0.35",
         "phpcompatibility/php-compatibility": "^10.0@alpha",
         "phpstan/phpstan-strict-rules": "^1.6 || ^2.0",
         "phpunit/phpunit": "^9.6 || ^10.5 || ^11 || ^12 || ^13",
@@ -52,6 +53,20 @@
         "test:unit": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist",
         "test:unit:legacy": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit9.xml.dist",
         "test:coverage": "@php -d memory_limit=1G -d xdebug.mode=coverage vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-xml build/coverage-xml",
+        "infection": [
+            "Composer\\Config::disableProcessTimeout",
+            "@infection:coverage",
+            "@php -d memory_limit=1G vendor/bin/infection --configuration=infection.json5 --threads=max --coverage=build/infection-coverage --skip-initial-tests"
+        ],
+        "infection:pr": [
+            "Composer\\Config::disableProcessTimeout",
+            "@infection:coverage",
+            "@php -d memory_limit=1G vendor/bin/infection --configuration=infection-pr.json5 --threads=max --coverage=build/infection-coverage --skip-initial-tests --git-diff-lines --git-diff-base=origin/main"
+        ],
+        "infection:coverage": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php -d memory_limit=1G -d xdebug.mode=coverage vendor/bin/phpunit --configuration phpunit.xml.dist --no-extensions --do-not-fail-on-risky --coverage-xml build/infection-coverage/coverage-xml --log-junit build/infection-coverage/junit.xml"
+        ],
         "lint": [
             "@format:check",
             "@phpstan",
@@ -73,7 +88,8 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "infection/extension-installer": true
         }
     }
 }

@@ -1,0 +1,53 @@
+{
+    // Mutation testing gate for the whole source tree. Run by `composer infection`
+    // and by the `mutation` job of .github/workflows/ci.yml on every push to main.
+    //
+    // The thresholds below are a ratchet. main scores 82.02% (6845 of 8354 mutants
+    // killed, mutation code coverage 100%); they sit a point under that so a mutant
+    // classified differently by the PHP version CI scores on cannot turn the build
+    // red on its own, while a suite that stops verifying — which loses mutants by
+    // the dozen — still does. Raise them when the score rises.
+    //
+    // Lowering a threshold, disabling a mutator, or widening `source.excludes` to
+    // make a red build green removes the safety net this file exists to provide —
+    // fix the tests instead, and ask a human operator when an exception is
+    // genuinely justified.
+    //
+    // Changed lines are held to the higher bar in infection-pr.json5. Keep the two
+    // files identical apart from the thresholds and the reporting they need.
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": [
+            "src"
+        ],
+        // The PHPUnit 9.6 listener is exercised by tests/Unit/PhpUnit/TestReporter/Legacy,
+        // which only runs under phpunit9.xml.dist on PHP 8.0. Mutation testing runs on a
+        // single modern PHP version, where phpunit.xml.dist excludes those tests, so every
+        // mutant here would be reported as uncovered rather than as a missing test.
+        "excludes": [
+            "PhpUnit/TestReporter/Legacy"
+        ]
+    },
+    "mutators": {
+        "@default": true
+    },
+    "minMsi": 81,
+    "minCoveredMsi": 81,
+    "timeout": 10,
+    // Infection wipes its temporary directory when the run finishes, so it must not
+    // be the directory the reports are written to.
+    "tmpDir": "build/infection-tmp",
+    "logs": {
+        "text": "build/infection/escaped.log",
+        "summary": "build/infection/summary.log",
+        "perMutator": "build/infection/per-mutator.md",
+        "json": "build/infection/infection.json"
+    },
+    // Keeps the toolkit's AI test reporter out of the mutation runs. In AI mode the
+    // reporter replaces PHPUnit's result output, and Infection reads that output to
+    // tell a killed mutant from an escaped one: without this flag every mutant would
+    // count as killed whenever an agent runs the gate. Drop it only if the project
+    // registers no PHPUnit extension that replaces the result output.
+    "testFrameworkExtraArgs": "--no-extensions",
+    "testFramework": "phpunit"
+}

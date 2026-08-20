@@ -66,6 +66,13 @@ Those live in their own workflows, and their templates and the questions to ask
 before installing them belong to the `/setup-toolkit-doc-gen` skill. Point the
 user there when they ask for a docs job.
 
+## Out of Scope: Mutation Testing
+
+Do not write a mutation testing job from scratch. `/setup-toolkit-infection` ships
+the job together with the configuration it depends on, because the job needs a
+coverage driver, `fetch-depth: 0`, and a different Composer script per event. Point
+the user there when they ask for an Infection job.
+
 ## PHP Version Coverage
 
 CI must match the project's declared support range. Do not compensate for a

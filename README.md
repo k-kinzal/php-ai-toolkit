@@ -55,6 +55,7 @@ Run the following skills in your AI agent:
 
 - `/setup-toolkit-phpstan` — PHPStan at level max with strict rules and AI error formatter
 - `/setup-toolkit-phpunit` — PHPUnit with strict configuration and AI test reporter
+- `/setup-toolkit-infection` — Infection mutation testing with a whole-tree threshold and a stricter one for pull requests
 - `/setup-toolkit-php-cs-fixer` — PHP-CS-Fixer configuration
 - `/setup-toolkit-loc-guard` — LocGuard metrics checks for production source complexity and length limits
 - `/setup-toolkit-tree-guard` — TreeGuard directory and file structure constraints
@@ -73,6 +74,7 @@ and published on every push to `main`.
 - [PHPStan Rules](docs/phpstan-rules.md) — Custom rules and their error identifiers
 - [PHPStan Configuration](docs/phpstan.md) — PHPStan settings and why each is needed
 - [PHPUnit Configuration](docs/phpunit.md) — PHPUnit settings and why each is needed
+- [Infection Configuration](docs/infection.md) — Mutation testing thresholds, and why they differ between the whole tree and a pull request
 - [PHP-CS-Fixer Configuration](docs/php-cs-fixer.md) — PHP-CS-Fixer settings and why each is needed
 - [LocGuard Configuration](docs/loc-guard.md) — Production source metrics checks and thresholds
 - [TreeGuard Configuration](docs/tree-guard.md) — Directory and file structure constraints

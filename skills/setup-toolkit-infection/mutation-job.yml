@@ -1,0 +1,43 @@
+# Mutation testing job for .github/workflows/ci.yml.
+#
+# Merge this job into the existing `jobs:` mapping; do not create a second
+# workflow for it. Mutation testing runs on one PHP version because it is
+# expensive and the mutation score does not depend on the runtime. Pick the
+# highest PHP version the project supports, and drop the `cp` step when the
+# project keeps a single composer.lock.
+#
+# Pull requests are scored on their changed lines against the stricter
+# infection-pr.json5; the default branch is scored on the whole source tree
+# against infection.json5.
+  mutation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          # `composer infection:pr` diffs against the base branch, which needs
+          # more than the single commit a shallow clone provides.
+          fetch-depth: 0
+
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.4'
+          extensions: mbstring
+          # Infection needs a coverage driver. pcov is several times faster than
+          # Xdebug and Infection collects nothing Xdebug alone can provide.
+          coverage: pcov
+
+      - run: cp composer.lock.php-8.4 composer.lock
+
+      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        with:
+          dependency-versions: locked
+          composer-options: --prefer-dist
+
+      - name: Mutation testing on changed lines
+        if: github.event_name == 'pull_request'
+        run: composer infection:pr
+
+      - name: Mutation testing on the whole source tree
+        if: github.event_name != 'pull_request'
+        run: composer infection

@@ -24,6 +24,7 @@ Rules applied to all code.
 | [ForbidBroadCatchRule](rules/ForbidBroadCatchRule.md) | Forbids catching `Throwable`, `Exception`, and the `LogicException`/`Error` families outside configured boundary paths | `customRules.broadCatch` |
 | [ForbidGenericThrowsTagRule](rules/ForbidGenericThrowsTagRule.md) | Forbids `@throws \Exception` and `@throws \Throwable` tags | `customRules.genericThrowsTag` |
 | [NamespaceVisibilityRule](rules/NamespaceVisibilityRule.md) | Enforces the namespace visibility scopes declared with `@visibility`, the PHP counterpart of Rust's `pub(crate)`, `pub(super)`, and `pub(in path)` | `customRules.namespaceVisibility`, `customRules.namespaceVisibilityTag` |
+| [RequireExhaustiveDispatchRule](rules/RequireExhaustiveDispatchRule.md) | Requires a `switch` or `match` over a closed type — an enum, a bool, a union of literals, a union of classes — to name a branch for every one of its values, the way Rust and Kotlin check a match over a closed type | `customRules.exhaustiveDispatch`, `customRules.exhaustiveDispatchDefault` |
 
 ## Test Class
 

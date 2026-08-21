@@ -1,10 +1,9 @@
 {
-    // Mutation testing gate. `composer infection` scores the whole source tree and
-    // `composer infection:pr` scores only the lines a change touches; the `mutation`
-    // job of .github/workflows/ci.yml picks between them by event. One configuration
-    // file, thresholds per run: the changed-lines bar is passed as --min-msi and
-    // --min-covered-msi by the Composer script, which is how Infection is meant to be
-    // driven in CI.
+    // Mutation testing gate. The `mutation` job of .github/workflows/ci.yml scores
+    // the whole source tree on the default branch and only the lines a change touches
+    // on a pull request. One configuration file, thresholds per run: the changed-lines
+    // bar is passed as --min-msi and --min-covered-msi by the workflow step, which is
+    // how Infection is meant to be driven in CI.
     //
     // The thresholds below are the whole-tree ratchet. Measure the project first and
     // set them to the score the default branch already reaches, rounded down, so that

@@ -17,45 +17,56 @@ have switched off.
 
 ## Commands
 
+The gate runs in CI, and the commands live in `.github/workflows/ci.yml` rather than
+in Composer scripts. Wrapping a CI-only gate in Composer would add a layer to look
+through, a second place for the flags to drift from the workflow, and a 300-second
+process timeout to work around.
+
+Run it locally in two steps — first the coverage report, then the score:
+
 ```bash
-composer infection            # whole source tree, thresholds from infection.json5
-composer infection:pr         # changed lines only, stricter thresholds on the command line
-composer infection:coverage   # coverage report both of the above consume
+php -d memory_limit=1G -d xdebug.mode=coverage vendor/bin/phpunit \
+  --configuration phpunit.xml.dist --no-extensions --do-not-fail-on-risky \
+  --coverage-xml build/infection-coverage/coverage-xml \
+  --log-junit build/infection-coverage/junit.xml
+
+php -d memory_limit=1G vendor/bin/infection --configuration=infection.json5 \
+  --threads=max --coverage=build/infection-coverage --skip-initial-tests
 ```
+
+That second command is the whole-tree gate. For the changed-lines gate, add
+`--git-diff-lines --git-diff-base=origin/main --ignore-msi-with-no-mutations
+--min-msi=85 --min-covered-msi=85`.
 
 Exit codes:
 
 - `0`: every threshold was met
 - non-zero: a threshold was missed, or Infection could not run
 
-Both gates regenerate the coverage report before scoring, so a stale report can
-never be scored. `composer infection:coverage` exists to be called by them, not on
-its own.
-
-All three scripts start with `Composer\Config::disableProcessTimeout`. Composer
-kills a script after 300 seconds, and scoring 8831 mutants takes ten to thirteen
-minutes on seven threads; without the call the gate dies partway through with a
-process timeout instead of a score.
+Regenerate the coverage report whenever the source has changed since the last one.
+`--skip-initial-tests` means Infection trusts what it is handed: a stale report
+scores mutants against tests that no longer match the code. CI regenerates it in the
+step before every run.
 
 ## One Configuration, Two Thresholds
 
 `infection.json5` is the only configuration file. What differs between the two gates
 is a pair of command-line thresholds, which is how Infection is meant to be driven:
-the file carries the scope, the mutators, and the whole-tree ratchet, and
-`composer infection:pr` overrides the ratchet for the lines a change touches.
+the file carries the scope, the mutators, and the whole-tree ratchet, and the
+changed-lines step overrides the ratchet for the lines a diff touches.
 
 | Gate | Scope | Runs on | `minMsi` | `minCoveredMsi` |
 |------|-------|---------|----------|-----------------|
-| `composer infection` | whole `src` tree | pushes to `main` | 81 (file) | 81 (file) |
-| `composer infection:pr` | lines the change touches | pull requests | 85 (flag) | 85 (flag) |
+| whole source tree | all of `src` | pushes to `main` | 81 (file) | 81 (file) |
+| changed lines | what the diff touches | pull requests | 85 (flag) | 85 (flag) |
 
 Keeping one file means the two gates cannot drift apart: a mutator disabled for one
 would otherwise leave the two measuring different things. The cost is that the
-changed-lines numbers live in `composer.json` rather than behind the deny list that
+changed-lines numbers live in the workflow rather than behind the deny list that
 protects `infection.json5`; the ratchet that guards the whole tree is the one under
 lock.
 
-`composer infection:pr` also passes `--ignore-msi-with-no-mutations`, so a change
+The changed-lines step also passes `--ignore-msi-with-no-mutations`, so a change
 that produces no mutants at all — documentation, tests, configuration — is not
 scored as 0%. That flag is deliberately not in the file: on a whole-tree run it
 would turn a misconfigured `source.directories` into a silent pass.
@@ -74,11 +85,11 @@ Infection reports two scores, and both are enforced:
 - **Covered MSI** — killed mutants over the mutants in covered code only. It falls
   when tests execute code without asserting anything about it.
 
-The whole-tree numbers are a ratchet. `main` currently scores 82.65%: of the 8831
-mutants generated from `src`, 7288 are killed by the test suite, 11 time out, and
-1532 survive. Mutation code coverage is 100%, so MSI and Covered MSI are the same
-number here — every mutant is reachable by some test, and the 17% that survive are
-code the tests run without checking.
+The whole-tree numbers are a ratchet. `main` scores 82.49% as of this commit: of the
+9310 mutants generated from `src`, 7672 are killed by the test suite, 7 time out,
+1 errors out, and 1630 survive. Mutation code coverage is 100%, so MSI and Covered
+MSI are the same number here — every mutant is reachable by some test, and the 17%
+that survive are code the tests run without checking.
 
 The thresholds sit a point below that, at 81, because CI scores mutants on PHP 8.4
 while the measurement was taken on PHP 8.5: a threshold resting exactly on the
@@ -92,9 +103,9 @@ being written now can be held to a bar the whole tree cannot reach yet, and that
 the only moment when enforcing it is cheap.
 
 85 is where this codebase's own idiom puts the ceiling. The largest single source of
-surviving mutants is `Coalesce`: 448 mutants, 99 killed, 349 escaped. Nearly all of
+surviving mutants is `Coalesce`: 482 mutants, 104 killed, 378 escaped. Nearly all of
 them come from optional constructor injection — `$this->x = $x ?? new X()`, which
-appears at 481 sites in `src` — where the mutant reorders the operands into
+appears at 509 sites in `src` — where the mutant reorders the operands into
 `new X() ?? $x`. Every collaborator injected this way is a stateless `final` class,
 so the injected instance and a fresh one behave identically, and no test can tell
 them apart: killing such a mutant would need reflection, which
@@ -103,13 +114,14 @@ They are equivalent mutants, and `ForbiddenCommentRule` rejects the
 `@infection-ignore-all` that would otherwise silence them.
 
 If every `Coalesce` escape were equivalent, the whole tree would top out near 87%.
-Measured against real work rather than a round number: the 22 source files that
-separate `main` from `origin/main` produce 488 mutants on their changed lines and
-score 91.8%, while a four-file slice of the same range produces 19 and scores
-89.47%, dragged down by two of those constructors. Small diffs are noisy — two
-unkillable mutants in twenty cost ten points on their own — so the bar sits where
-both survive. A bar of 90 would have failed the second one, and a gate that fails
-honest work gets met by shrinking pull requests rather than by testing them.
+Measured against real work rather than a round number: the source files that
+separate `main` from `origin/main` produce 984 mutants on their changed lines and
+score 86.89%, an earlier slice of the same range produced 488 and scored 91.8%, and
+a four-file slice produced 19 and scored 89.47% — dragged down by two of those
+constructors. Small diffs are noisy: two unkillable mutants in twenty cost ten
+points on their own. The bar sits where all three survive. A bar of 90 would have
+failed two of them, and a gate that fails honest work gets met by shrinking pull
+requests rather than by testing them.
 
 Lowering a threshold, disabling a mutator, widening `source.excludes`, or narrowing
 `source.directories` all turn a red build green by measuring less. None of them is
@@ -137,7 +149,7 @@ reads `PhpUnit/TestReporter/Legacy`.
 ## Why Coverage Is Generated Separately
 
 Both gates run Infection with `--coverage` and `--skip-initial-tests` against a
-report produced by `composer infection:coverage`. Infection's own initial test run
+report produced by the PHPUnit step before them. Infection's own initial test run
 cannot survive this project's PHPUnit configuration:
 
 - Infection stops the initial test process at the first byte on STDERR. The AI test
@@ -151,11 +163,11 @@ cannot survive this project's PHPUnit configuration:
   coverage report containing a single test and scores a handful of mutants as if it
   had scored them all.
 
-`composer infection:coverage` runs PHPUnit with the project's own configuration,
-which has no `stopOnDefect`, and passes `--do-not-fail-on-risky` so that the
-pre-existing coverage-metadata warnings do not fail a run whose only job is to
-produce a report. Test failures still stop it, and `composer test:unit` still
-enforces the strict settings on every PHP version in CI.
+The coverage step runs PHPUnit with the project's own configuration, which has no
+`stopOnDefect`, and passes `--do-not-fail-on-risky` so that the pre-existing
+coverage-metadata warnings do not fail a run whose only job is to produce a report.
+Test failures still stop it, and `composer test:unit` still enforces the strict
+settings on every PHP version in CI.
 
 Both configurations also pass `"testFrameworkExtraArgs": "--no-extensions"`, which
 keeps the AI test reporter out of the mutant runs. In AI mode the reporter replaces
@@ -172,10 +184,9 @@ every mutant as killed.
 - `per-mutator.md` — score per mutator, which shows whether escapes cluster
 - `infection.json` — the same data for tooling
 
-`composer infection:pr` writes the same reports, scoped to the mutants it
-generated. On GitHub Actions, Infection additionally annotates the pull request
-diff with each surviving mutant; it detects the runner itself, so nothing in the
-configuration turns that on.
+A changed-lines run writes the same reports, scoped to the mutants it generated.
+Both CI steps pass `--logger-github`, so every surviving mutant also arrives as an
+annotation on the diff being reviewed rather than only in a log file nobody opens.
 
 `tmpDir` is `build/infection-tmp`, deliberately not the report directory: Infection
 wipes its temporary directory when the run finishes, and reports written inside it
@@ -188,10 +199,13 @@ disappear with it. Neither directory is tracked by Git.
 times faster than Xdebug for this purpose. The job checks out with `fetch-depth: 0`
 because scoring a pull request means diffing it against its base branch.
 
-The job picks its gate from the event: `composer infection:pr` on `pull_request`,
-`composer infection` otherwise. Unlike `tests` and `lint`, it is not a matrix.
-Mutation testing is expensive and the mutation score does not depend on the PHP
-version, so one version is scored and the rest are covered by the test matrix.
+The job generates the coverage report, then picks its gate from the event: the
+changed-lines step runs on `pull_request` and takes its base from
+`origin/${GITHUB_BASE_REF}`, so a pull request against any branch is scored against
+that branch; the whole-tree step runs on everything else. Unlike `tests` and `lint`,
+the job is not a matrix. Mutation testing is expensive and the mutation score does
+not depend on the PHP version, so one version is scored and the rest are covered by
+the test matrix.
 
 ## PHP Version Support
 
@@ -214,6 +228,5 @@ cannot edit it; a human operator can. Raising a threshold after the score improv
 is the routine edit, and it is a one-line change.
 
 The changed-lines thresholds are the exception: they are `--min-msi` and
-`--min-covered-msi` in the `infection:pr` Composer script, and `composer.json`
-cannot join the deny list without blocking every dependency change. Review them the
-way any other number in that file gets reviewed.
+`--min-covered-msi` in the workflow, which has to stay editable for CI work. Review
+them the way any other number in `.github/workflows/ci.yml` gets reviewed.

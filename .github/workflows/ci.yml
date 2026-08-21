@@ -120,10 +120,38 @@ jobs:
           dependency-versions: locked
           composer-options: --prefer-dist
 
+      - name: Generate coverage for mutation testing
+        run: >-
+          php -d memory_limit=1G vendor/bin/phpunit
+          --configuration phpunit.xml.dist
+          --no-extensions
+          --do-not-fail-on-risky
+          --coverage-xml build/infection-coverage/coverage-xml
+          --log-junit build/infection-coverage/junit.xml
+
       - name: Mutation testing on changed lines
         if: github.event_name == 'pull_request'
-        run: composer infection:pr
+        run: >-
+          php -d memory_limit=1G vendor/bin/infection
+          --configuration=infection.json5
+          --threads=max
+          --coverage=build/infection-coverage
+          --skip-initial-tests
+          --git-diff-lines
+          --git-diff-base="origin/${GITHUB_BASE_REF}"
+          --ignore-msi-with-no-mutations
+          --min-msi=85
+          --min-covered-msi=85
+          --no-progress
+          --logger-github
 
       - name: Mutation testing on the whole source tree
         if: github.event_name != 'pull_request'
-        run: composer infection
+        run: >-
+          php -d memory_limit=1G vendor/bin/infection
+          --configuration=infection.json5
+          --threads=max
+          --coverage=build/infection-coverage
+          --skip-initial-tests
+          --no-progress
+          --logger-github

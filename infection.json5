@@ -1,13 +1,12 @@
 {
-    // Mutation testing gate. `composer infection` scores the whole source tree and
-    // `composer infection:pr` scores only the lines a change touches; the `mutation`
-    // job of .github/workflows/ci.yml picks between them by event. One configuration
-    // file, thresholds per run: the changed-lines bar is passed as --min-msi and
-    // --min-covered-msi by the Composer script, which is how Infection is meant to be
-    // driven in CI.
+    // Mutation testing gate. The `mutation` job of .github/workflows/ci.yml scores
+    // the whole source tree on the default branch and only the lines a change touches
+    // on a pull request. One configuration file, thresholds per run: the changed-lines
+    // bar is passed as --min-msi and --min-covered-msi by the workflow step, which is
+    // how Infection is meant to be driven in CI.
     //
-    // The thresholds below are the whole-tree ratchet. main scores 82.65% (7288 of
-    // 8831 mutants killed, mutation code coverage 100%); they sit a point under that
+    // The thresholds below are the whole-tree ratchet. main scores 82.49% (7672 of
+    // 9310 mutants killed, mutation code coverage 100%); they sit a point under that
     // so a mutant classified differently by the PHP version CI scores on cannot turn
     // the build red on its own, while a suite that stops verifying — which loses
     // mutants by the dozen — still does. Raise them when the score rises.

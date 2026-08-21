@@ -49,9 +49,11 @@ formatting, PHPStan, LocGuard, and Deptrac.
 because it needs a coverage driver, a full-depth checkout, and minutes rather than
 seconds. It is not a matrix: the mutation score does not depend on the PHP version,
 so it is scored once on PHP 8.4 while the `tests` matrix covers the rest. The job
-picks its gate from the event — `composer infection:pr` scores the lines a pull
-request changed against the stricter thresholds, `composer infection` scores the
-whole source tree on `main`. See [Infection Configuration](infection.md).
+picks its gate from the event — one step scores the lines a pull request changed
+against stricter thresholds, the other scores the whole source tree on `main`. Its
+commands are written into the workflow rather than wrapped in Composer scripts: the
+gate only ever runs here, so a wrapper would add a layer to look through and a
+second place for the flags to drift. See [Infection Configuration](infection.md).
 
 ## Documentation Workflows
 

@@ -200,72 +200,53 @@ The gate is only as honest as the coverage report it is handed. Regenerate cover
 in the same command that runs Infection — the Composer scripts below do — so a stale
 report can never be scored.
 
-## Recommended Composer Scripts
+## Do Not Wrap It in Composer Scripts
 
-```json
-{
-    "scripts": {
-        "infection": [
-            "Composer\\Config::disableProcessTimeout",
-            "@infection:coverage",
-            "@php -d memory_limit=1G vendor/bin/infection --configuration=infection.json5 --threads=max --coverage=build/infection-coverage --skip-initial-tests"
-        ],
-        "infection:pr": [
-            "Composer\\Config::disableProcessTimeout",
-            "@infection:coverage",
-            "@php -d memory_limit=1G vendor/bin/infection --configuration=infection.json5 --threads=max --coverage=build/infection-coverage --skip-initial-tests --git-diff-lines --git-diff-base=origin/main --min-msi=85 --min-covered-msi=85 --ignore-msi-with-no-mutations"
-        ],
-        "infection:coverage": [
-            "Composer\\Config::disableProcessTimeout",
-            "@php -d memory_limit=1G -d xdebug.mode=coverage vendor/bin/phpunit --no-extensions --do-not-fail-on-risky --coverage-xml build/infection-coverage/coverage-xml --log-junit build/infection-coverage/junit.xml"
-        ]
-    }
-}
+Write the commands into the workflow. This gate runs in CI, so a Composer script
+would add a layer to look through, a second place for the flags to drift from the
+job that actually runs them, and Composer's 300-second process timeout to work
+around — a mutation run on a suite of any size takes longer than that, and the
+script dies partway through with a process timeout instead of a score.
+
+Composer scripts earn their place when a command is run by hand on every save, like
+`composer lint`. Mutation testing is not that command, and it does not belong inside
+`composer lint` either: those gates are seconds, this one is minutes.
+
+Document the two local commands in the project's own docs instead:
+
+```bash
+php -d memory_limit=1G -d xdebug.mode=coverage vendor/bin/phpunit \
+  --no-extensions --do-not-fail-on-risky \
+  --coverage-xml build/infection-coverage/coverage-xml \
+  --log-junit build/infection-coverage/junit.xml
+
+php -d memory_limit=1G vendor/bin/infection --configuration=infection.json5 \
+  --threads=max --coverage=build/infection-coverage --skip-initial-tests
 ```
 
-`Composer\Config::disableProcessTimeout` is not optional. Composer kills a script
-after 300 seconds by default, and a mutation run on a suite of any size takes
-longer: without it the gate dies partway through with a process timeout instead of a
-score.
-
-Point `--git-diff-base` at the project's default branch. `--do-not-fail-on-risky`
-belongs to the coverage run only: it relaxes the exit code of a run whose purpose is
-to produce a coverage report, while `composer test` keeps enforcing the strict
-PHPUnit settings. Drop the flag if the project's suite is green with coverage
-enabled.
-
-Do not add `infection` to `composer lint`. Mutation testing costs minutes, and the
-lint gates are meant to be run on every save.
+`--do-not-fail-on-risky` belongs to the coverage run only: it relaxes the exit code
+of a run whose purpose is to produce a coverage report, while `composer test` keeps
+enforcing the strict PHPUnit settings. Drop the flag if the project's suite is green
+with coverage enabled.
 
 ## CI Wiring
 
 Merge `mutation-job.yml` into `.github/workflows/ci.yml` as a separate job. It needs
-three things the other jobs do not:
+four things the other jobs do not:
 
 - `fetch-depth: 0` on checkout, so the pull request can be diffed against its base.
 - A coverage driver: `coverage: pcov` in `setup-php`.
-- A branch on the event: `composer infection:pr` for `pull_request`, `composer
-  infection` otherwise.
+- A step that produces the coverage report before Infection reads it.
+- A branch on the event: a changed-lines step guarded by
+  `if: github.event_name == 'pull_request'`, a whole-tree step guarded by the
+  negation.
 
-If pull requests target branches other than the default one, pass the base through
-an environment variable rather than interpolating it into the shell:
-
-```yaml
-      - name: Mutation testing on changed lines
-        if: github.event_name == 'pull_request'
-        env:
-          BASE_REF: ${{ github.event.pull_request.base.ref }}
-        run: |
-          composer infection:coverage
-          vendor/bin/infection --configuration=infection.json5 --threads=max \
-            --coverage=build/infection-coverage --skip-initial-tests \
-            --git-diff-lines --git-diff-base="origin/$BASE_REF" \
-            --min-msi=85 --min-covered-msi=85 --ignore-msi-with-no-mutations
-```
-
-Calling Infection directly means the coverage step has to be called with it, and
-the flags in the workflow have to stay in step with the Composer script. Prefer
-`composer infection:pr` and a fixed base branch when the project has one.
+Take the base branch from `origin/${GITHUB_BASE_REF}` rather than hardcoding the
+default branch. GitHub sets that variable on pull request events, so a pull request
+against a release branch is scored against that branch. Read it as a shell
+environment variable rather than through `${{ github.event.pull_request.base.ref }}`
+interpolation: a branch name pasted into the shell as literal text is a script
+injection waiting to happen.
 
 ## Protecting the Configuration
 
@@ -283,11 +264,7 @@ treat these files the way the project treats its other non-negotiable configurat
 
 ## Verification
 
-```bash
-composer infection
-```
-
-Exit codes:
+Run the two local commands above, or push the branch and read the job. Exit codes:
 
 - `0`: every threshold met
 - Non-zero: a threshold was missed, or Infection could not run

@@ -53,20 +53,6 @@
         "test:unit": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist",
         "test:unit:legacy": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit9.xml.dist",
         "test:coverage": "@php -d memory_limit=1G -d xdebug.mode=coverage vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-xml build/coverage-xml",
-        "infection": [
-            "Composer\\Config::disableProcessTimeout",
-            "@infection:coverage",
-            "@php -d memory_limit=1G vendor/bin/infection --configuration=infection.json5 --threads=max --coverage=build/infection-coverage --skip-initial-tests"
-        ],
-        "infection:pr": [
-            "Composer\\Config::disableProcessTimeout",
-            "@infection:coverage",
-            "@php -d memory_limit=1G vendor/bin/infection --configuration=infection.json5 --threads=max --coverage=build/infection-coverage --skip-initial-tests --git-diff-lines --git-diff-base=origin/main --min-msi=85 --min-covered-msi=85 --ignore-msi-with-no-mutations"
-        ],
-        "infection:coverage": [
-            "Composer\\Config::disableProcessTimeout",
-            "@php -d memory_limit=1G -d xdebug.mode=coverage vendor/bin/phpunit --configuration phpunit.xml.dist --no-extensions --do-not-fail-on-risky --coverage-xml build/infection-coverage/coverage-xml --log-junit build/infection-coverage/junit.xml"
-        ],
         "lint": [
             "@format:check",
             "@phpstan",

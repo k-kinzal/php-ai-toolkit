@@ -79,7 +79,7 @@ final class DispatchInspector
             return [];
         }
 
-        return [$this->errorBuilder->buildMatchCatchAll($unhandled, $node->getStartLine())];
+        return [$this->errorBuilder->buildMatchCatchAll($this->errorBuilder->labels($unhandled), null, $node->getStartLine())];
     }
 
     /**
@@ -109,10 +109,10 @@ final class DispatchInspector
         }
 
         if ($hasDefaultCase) {
-            return [$this->errorBuilder->buildSwitchCatchAll($unhandled, $node->getStartLine())];
+            return [$this->errorBuilder->buildSwitchCatchAll($this->errorBuilder->labels($unhandled), null, $node->getStartLine())];
         }
 
-        return [$this->errorBuilder->buildSwitchUnhandled($unhandled, $node->getStartLine())];
+        return [$this->errorBuilder->buildSwitchUnhandled($this->errorBuilder->labels($unhandled), null, $node->getStartLine())];
     }
 
     /**

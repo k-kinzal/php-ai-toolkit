@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.exhaustiveDispatch`, `customRules.exhaustiveDispatchDefault` |
 | Scope | Every `switch` statement and every `match` expression |
+| Rule classes | `RequireExhaustiveDispatchRule`, `RequireExhaustiveClassDispatchRule` |
 | Configurable | No |
 
 ## What It Detects
@@ -58,11 +59,12 @@ that list; where there is none, the dispatch is left alone.
 | A nullable closed type, e.g. `?Suit` | `null` plus the cases |
 | A union of classes, e.g. `Circle\|Square\|Triangle` | those classes |
 | `$shape::class` where every class of the union is `final` | those class names, as literal strings |
+| `$shape::class` / `get_class($shape)` where `$shape` is an interface or abstract class | every class below it in the analysed code |
 | Anything narrowed to fewer values earlier in the method | only what is left |
-| `string`, `int`, `object`, an interface, an extensible class | *(open — not reported)* |
+| `string`, `int`, `object`, an object subject that is not read through its class name | *(open — not reported)* |
 
-A union of classes is PHP's spelling of a sealed hierarchy, and it is read as one only where each
-branch carries its own condition, which is what `match (true)` and `switch (true)` do:
+A union of classes is one of PHP's two spellings of a sealed hierarchy, and it is read as one
+where each branch carries its own condition, which is what `match (true)` and `switch (true)` do:
 
 ```php
 // ERROR: Match expression sends Triangle to its "default" arm. ...
@@ -72,6 +74,56 @@ return match (true) {
     default => throw new LogicException('unreachable'),
 };
 ```
+
+### Interfaces and abstract classes
+
+The other spelling needs no union, and no annotation either. `match ($shape::class)` and
+`switch (get_class($shape))` name the object the table is answering for, so the classes it has to
+cover follow from that object's type — and the classes below an interface or an abstract class are
+read out of the analysed code itself:
+
+```php
+interface Payment {}
+final class Visa implements Payment {}
+final class MasterCard implements Payment {}
+final class BankTransfer implements Payment {}
+
+// ERROR: Match expression sends BankTransfer to its "default" arm. Write an arm for each of
+// those values so that a value added to the closed type is reported here instead of silently
+// taking "default".
+return match ($payment::class) {
+    Visa::class => $this->card($payment),
+    MasterCard::class => $this->card($payment),
+    default => throw new LogicException('unreachable'),
+};
+```
+
+Adding a fourth implementation of `Payment` anywhere in the project now fails analysis at this
+line, which is the guarantee Kotlin gets from `sealed class` and Java from `sealed interface`.
+
+Two things follow from where the list comes from:
+
+- The classes are gathered from the analysed paths, so the hierarchy is closed within them and
+  nothing is claimed about code outside. That is the same boundary Kotlin draws (same module) and
+  Java draws (same module, `permits` aside): a downstream implementation is invisible, and this
+  check does not pretend otherwise.
+- Because a class list is only complete once every file has been read, these errors are produced
+  after the analysis rather than while the file is being read. They carry their file and line the
+  same way, so `ignoreErrors` and editor navigation are unaffected.
+
+`match (true)` is deliberately **not** read this way. Its subject is the constant `true`, so the
+construct never states which type it is answering for, and any condition at all may sit in an arm:
+
+```php
+match (true) {
+    $c instanceof ImportCommand => $this->import($c),
+    $size > 10 => $this->chunked($c),        // nothing says this table is about commands
+    default => $this->generic($c),
+}
+```
+
+There is no set of classes such a table can be held to. Where the intent is a total dispatch over a
+hierarchy, `$shape::class` says so; where it is a union type, the signature says so.
 
 ### The two identifiers
 
@@ -88,16 +140,13 @@ return match (true) {
 - A dispatch that claims none of the values. That is a comparison which happens to sit on a closed
   type, not a half-finished dispatch — `if`-style code and single-branch `switch (true)` filters
   stay quiet.
-- A dispatch over an interface or an extensible class. PHP has no `sealed`, so such a type is open:
-  `match (true) { $e instanceof NotFoundException => 404, default => 500 }` over `Throwable` is a
-  deliberate partial handling and is left alone. Write the union of the classes to say otherwise.
-- `switch (get_class($shape))`. `get_class()` is typed `class-string<Circle>|class-string<Square>`
-  rather than the literal class names, so there is no closed set of values to check. Write
-  `$shape::class`, which the analyzer resolves to the literal names — and which this rule therefore
-  does check — whenever every class of the union is `final`.
-- `match ($shape::class)` where one class of the union is not `final`. `case Circle::class` does not
-  match a subclass of `Circle`, so the analyzer keeps the value as `class-string<Circle>` rather
-  than one literal name, and the dispatch is left alone. Use `instanceof` conditions there.
+- A `match (true)` or `switch (true)` over an interface or an abstract class. That form states no
+  subject, so `match (true) { $e instanceof NotFoundException => 404, default => 500 }` over
+  `Throwable` is left alone. Over a union type it is checked, because the union states the set.
+- A class-name dispatch whose branches are not all class names. One arm comparing against a plain
+  string means the table is not answering for a set of classes, so nothing is required of it.
+- A class-name dispatch that names no class of the subject's hierarchy at all. Like the
+  claims-nothing case above, that is a comparison rather than a table.
 - A subject with more than 32 values. Past that the list stops being something a reader can act on,
   and the type is almost certainly not a hand-written set of alternatives.
 
@@ -151,25 +200,36 @@ return match (true) {
 };
 ```
 
-### Spell the sealed hierarchy as a union
+### Say which type the table is answering for
 
-PHP has no `sealed` keyword, and an interface with three implementations today can have a fourth
-tomorrow, so the rule will not guess. Name the alternatives in the signature and the hierarchy
-becomes closed at every call site, in plain PHP:
+`match (true)` states nothing about its subject, so a hierarchy dispatch written that way is not
+checked. Either read the class name, which names the object:
+
+```php
+-return match (true) {
+-    $shape instanceof Circle => $shape->area(),
++return match ($shape::class) {
++    Circle::class => $shape->area(),
+```
+
+or name the alternatives in the signature, which turns the parameter itself into a closed type:
 
 ```php
 -public function area(Shape $shape): float
 +public function area(Circle|Square|Triangle $shape): float
 ```
 
-The union can also be given a name once with a PHPDoc type alias, so it does not have to be
-repeated:
+The union can be given a name once with a PHPDoc type alias, so it does not have to be repeated:
 
 ```php
 /**
  * @phpstan-type Shapes Circle|Square|Triangle
  */
 ```
+
+Note that `case Circle::class` matches `Circle` and not a subclass of it, so a class-name dispatch
+treats every instantiable subclass as its own value to answer for. That is exact rather than
+strict: it is what the comparison actually does at runtime.
 
 ### Turn the hierarchy into an enum
 

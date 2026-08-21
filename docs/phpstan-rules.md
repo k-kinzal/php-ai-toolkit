@@ -23,7 +23,7 @@ Rules applied to all code.
 | [RequireExceptionChainingRule](rules/RequireExceptionChainingRule.md) | Requires new exceptions thrown inside catch blocks to chain the caught exception | `customRules.unchainedRethrow` |
 | [ForbidBroadCatchRule](rules/ForbidBroadCatchRule.md) | Forbids catching `Throwable`, `Exception`, and the `LogicException`/`Error` families outside configured boundary paths | `customRules.broadCatch` |
 | [ForbidGenericThrowsTagRule](rules/ForbidGenericThrowsTagRule.md) | Forbids `@throws \Exception` and `@throws \Throwable` tags | `customRules.genericThrowsTag` |
-| [RequireExhaustiveDispatchRule](rules/RequireExhaustiveDispatchRule.md) | Requires a `switch` or `match` over a closed type — an enum, a bool, a union of literals, a union of classes — to name a branch for every one of its values, the way Rust and Kotlin check a match over a closed type | `customRules.exhaustiveDispatch`, `customRules.exhaustiveDispatchDefault` |
+| [RequireExhaustiveDispatchRule](rules/RequireExhaustiveDispatchRule.md) | Requires a `switch` or `match` over a closed type — an enum, a bool, a union of literals, a union of classes, or the class name of a sealed hierarchy — to name a branch for every one of its values, the way Rust and Kotlin check a match over a closed type | `customRules.exhaustiveDispatch`, `customRules.exhaustiveDispatchDefault` |
 
 ## Test Class
 

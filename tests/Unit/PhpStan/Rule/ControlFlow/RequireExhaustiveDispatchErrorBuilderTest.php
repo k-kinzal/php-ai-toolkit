@@ -6,6 +6,7 @@ namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
 use PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder;
 use PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors;
+use PHPStan\Rules\FileRuleError;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\NullType;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -18,7 +19,7 @@ final class RequireExhaustiveDispatchErrorBuilderTest extends TestCase
 {
     public function testBuildMatchCatchAllNamesTheArmAndTheValues(): void
     {
-        $error = (new RequireExhaustiveDispatchErrorBuilder())->buildMatchCatchAll([new ConstantStringType('safe')], 12);
+        $error = (new RequireExhaustiveDispatchErrorBuilder())->buildMatchCatchAll(["'safe'"], null, 12);
 
         self::assertSame(
             'Match expression sends \'safe\' to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
@@ -28,7 +29,7 @@ final class RequireExhaustiveDispatchErrorBuilderTest extends TestCase
 
     public function testBuildMatchCatchAllCarriesTheIdentifierAndTheLine(): void
     {
-        $error = (new RequireExhaustiveDispatchErrorBuilder())->buildMatchCatchAll([new NullType()], 12);
+        $error = (new RequireExhaustiveDispatchErrorBuilder())->buildMatchCatchAll(['null'], null, 12);
 
         self::assertSame(
             [RequireExhaustiveDispatchErrorBuilder::CATCH_ALL_IDENTIFIER, 12],
@@ -38,7 +39,7 @@ final class RequireExhaustiveDispatchErrorBuilderTest extends TestCase
 
     public function testBuildSwitchCatchAllNamesTheCaseAndTheValues(): void
     {
-        $error = (new RequireExhaustiveDispatchErrorBuilder())->buildSwitchCatchAll([new ConstantStringType('safe')], 3);
+        $error = (new RequireExhaustiveDispatchErrorBuilder())->buildSwitchCatchAll(["'safe'"], null, 3);
 
         self::assertSame(
             'Switch statement sends \'safe\' to its "default" case. Write a "case" for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
@@ -48,7 +49,7 @@ final class RequireExhaustiveDispatchErrorBuilderTest extends TestCase
 
     public function testBuildSwitchCatchAllCarriesTheIdentifierAndTheLine(): void
     {
-        $error = (new RequireExhaustiveDispatchErrorBuilder())->buildSwitchCatchAll([new NullType()], 3);
+        $error = (new RequireExhaustiveDispatchErrorBuilder())->buildSwitchCatchAll(['null'], null, 3);
 
         self::assertSame(
             [RequireExhaustiveDispatchErrorBuilder::CATCH_ALL_IDENTIFIER, 3],
@@ -58,7 +59,7 @@ final class RequireExhaustiveDispatchErrorBuilderTest extends TestCase
 
     public function testBuildSwitchUnhandledNamesTheValuesThatFallThrough(): void
     {
-        $error = (new RequireExhaustiveDispatchErrorBuilder())->buildSwitchUnhandled([new ConstantStringType('dry')], 7);
+        $error = (new RequireExhaustiveDispatchErrorBuilder())->buildSwitchUnhandled(["'dry'"], null, 7);
 
         self::assertSame(
             'Switch statement does not handle \'dry\'. Write a "case" for each of those values: the subject holds a closed set of values and this switch has no "default", so those fall through it unhandled.',
@@ -68,7 +69,7 @@ final class RequireExhaustiveDispatchErrorBuilderTest extends TestCase
 
     public function testBuildSwitchUnhandledCarriesTheIdentifierAndTheLine(): void
     {
-        $error = (new RequireExhaustiveDispatchErrorBuilder())->buildSwitchUnhandled([new NullType()], 7);
+        $error = (new RequireExhaustiveDispatchErrorBuilder())->buildSwitchUnhandled(['null'], null, 7);
 
         self::assertSame(
             [RequireExhaustiveDispatchErrorBuilder::UNHANDLED_IDENTIFIER, 7],
@@ -76,11 +77,33 @@ final class RequireExhaustiveDispatchErrorBuilderTest extends TestCase
         );
     }
 
+    public function testBuildLeavesTheFileToPhpStanWhenNoneIsNamed(): void
+    {
+        $error = (new RequireExhaustiveDispatchErrorBuilder())->build('Anything.', 'customRules.example', null, 4);
+
+        self::assertNotInstanceOf(FileRuleError::class, $error);
+    }
+
+    public function testBuildCarriesTheNamedFile(): void
+    {
+        $error = (new RequireExhaustiveDispatchErrorBuilder())->build('Anything.', 'customRules.example', __FILE__, 4);
+
+        self::assertSame(__FILE__, $error instanceof FileRuleError ? $error->getFile() : null);
+    }
+
+    public function testLabelsWritesEveryValueTheWayItIsRead(): void
+    {
+        self::assertSame(
+            ['null', "'fast'"],
+            (new RequireExhaustiveDispatchErrorBuilder())->labels([new NullType(), new ConstantStringType('fast')]),
+        );
+    }
+
     public function testDescribeJoinsEveryValue(): void
     {
         self::assertSame(
             "null, 'fast'",
-            (new RequireExhaustiveDispatchErrorBuilder())->describe([new NullType(), new ConstantStringType('fast')]),
+            (new RequireExhaustiveDispatchErrorBuilder())->describe(['null', "'fast'"]),
         );
     }
 }

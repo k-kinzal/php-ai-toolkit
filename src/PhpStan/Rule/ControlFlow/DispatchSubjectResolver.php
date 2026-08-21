@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule\ControlFlow;
 
+use function count;
+
 use PhpParser\PrettyPrinter\Standard;
 use PHPStan\Analyser\Scope;
 
@@ -14,6 +16,10 @@ use PHPStan\Analyser\Scope;
  * `match (true)` and `switch (true)`, where the subject is a constant and every branch
  * carries its own condition; there the subject is whatever those conditions narrow, and
  * all of them have to narrow the same expression for the construct to be one dispatch.
+ *
+ * `match ($shape::class)` names its subject a third way: the construct branches on a class
+ * name, and the object whose class that is decides which classes the branches have to
+ * cover.
  */
 final class DispatchSubjectResolver
 {
@@ -41,6 +47,37 @@ final class DispatchSubjectResolver
         }
 
         return $this->commonSubject($branchConditions);
+    }
+
+    /**
+     * Returns the object whose class name a subject reads, or null when it reads none.
+     *
+     * `match ($shape::class)` and `switch (get_class($shape))` are the two ways PHP has of
+     * saying "branch on which class this is". Both name the object in the subject, which is
+     * what makes the set of classes the branches are answering for unambiguous.
+     */
+    public function namedObject(\PhpParser\Node\Expr $condition): ?\PhpParser\Node\Expr
+    {
+        if (
+            $condition instanceof \PhpParser\Node\Expr\ClassConstFetch
+            && $condition->class instanceof \PhpParser\Node\Expr
+            && $condition->name instanceof \PhpParser\Node\Identifier
+            && $condition->name->toLowerString() === 'class'
+        ) {
+            return $condition->class;
+        }
+
+        if (
+            $condition instanceof \PhpParser\Node\Expr\FuncCall
+            && $condition->name instanceof \PhpParser\Node\Name
+            && $condition->name->toLowerString() === 'get_class'
+            && count($condition->args) === 1
+            && $condition->args[0] instanceof \PhpParser\Node\Arg
+        ) {
+            return $condition->args[0]->value;
+        }
+
+        return null;
     }
 
     /**

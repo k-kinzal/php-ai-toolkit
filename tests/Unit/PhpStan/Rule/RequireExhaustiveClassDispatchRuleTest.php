@@ -164,16 +164,29 @@ final class RequireExhaustiveClassDispatchRuleTest extends RuleTestCase
             __DIR__ . '/../../../Fixture/RequireExhaustiveDispatch/HierarchyDispatch.php',
         ], [
             [
-                'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\BankTransfer to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\BankTransfer, Tests\\Fixture\\RequireExhaustiveDispatch\\Wallet to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 11,
             ],
             [
-                'Switch statement does not handle Tests\\Fixture\\RequireExhaustiveDispatch\\BankTransfer. Write a "case" for each of those values: the subject holds a closed set of values and this switch has no "default", so those fall through it unhandled.',
-                30,
+                'Switch statement does not handle Tests\\Fixture\\RequireExhaustiveDispatch\\BankTransfer, Tests\\Fixture\\RequireExhaustiveDispatch\\Wallet. Write a "case" for each of those values: the subject holds a closed set of values and this switch has no "default", so those fall through it unhandled.',
+                31,
             ],
             [
                 'Switch statement sends Tests\\Fixture\\RequireExhaustiveDispatch\\MasterCard to its "default" case. Write a "case" for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
-                42,
+                43,
+            ],
+        ]);
+    }
+
+    public function testProcessNodeReadsAClassNameDispatchOverAUnionOfFinalClasses(): void
+    {
+        $this->analyse([
+            __DIR__ . '/../../../Fixture/RequireExhaustiveDispatch/Shapes.php',
+            __DIR__ . '/../../../Fixture/RequireExhaustiveDispatch/ShapeDispatch.php',
+        ], [
+            [
+                'Switch statement sends Tests\\Fixture\\RequireExhaustiveDispatch\\Square, Tests\\Fixture\\RequireExhaustiveDispatch\\Triangle to its "default" case. Write a "case" for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                63,
             ],
         ]);
     }

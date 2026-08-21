@@ -43,4 +43,23 @@ final class ConstantSubjectDispatch
             default => 'no',
         };
     }
+
+    /**
+     * @param 1|2|3 $level
+     */
+    public function integerUnionMatch(int $level): string
+    {
+        return match ($level) {
+            1 => 'low',
+            default => 'high',
+        };
+    }
+
+    public function backedEnumValueMatch(Suit $suit): string
+    {
+        return match ($suit->value) {
+            'hearts' => 'red',
+            default => 'other',
+        };
+    }
 }

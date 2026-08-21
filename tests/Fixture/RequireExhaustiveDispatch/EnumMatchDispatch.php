@@ -6,6 +6,13 @@ namespace Tests\Fixture\RequireExhaustiveDispatch;
 
 final class EnumMatchDispatch
 {
+    private Suit $suit;
+
+    public function __construct(Suit $suit)
+    {
+        $this->suit = $suit;
+    }
+
     public function partialWithDefault(Suit $suit): string
     {
         return match ($suit) {
@@ -55,5 +62,65 @@ final class EnumMatchDispatch
             Suit::Diamonds => 'diamonds',
             default => 'unknown',
         };
+    }
+
+    public function propertySubjectMatch(): string
+    {
+        return match ($this->suit) {
+            Suit::Hearts => 'hearts',
+            default => 'other',
+        };
+    }
+
+    public function methodCallSubjectMatch(): string
+    {
+        return match ($this->suit()) {
+            Suit::Hearts => 'hearts',
+            default => 'other',
+        };
+    }
+
+    public function staticCallSubjectMatch(): string
+    {
+        return match (self::pick()) {
+            Suit::Hearts => 'hearts',
+            default => 'other',
+        };
+    }
+
+    public function arrayOffsetSubjectMatch(Suit $first, Suit $second): string
+    {
+        $suits = [$first, $second];
+
+        return match ($suits[0]) {
+            Suit::Hearts => 'hearts',
+            default => 'other',
+        };
+    }
+
+    public function conditionFormMatch(Suit $suit): string
+    {
+        return match (true) {
+            $suit === Suit::Hearts => 'hearts',
+            default => 'other',
+        };
+    }
+
+    public function inArrayConditionMatch(Suit $suit): string
+    {
+        return match (true) {
+            in_array($suit, [Suit::Hearts, Suit::Diamonds], true) => 'red',
+            default => 'other',
+        };
+    }
+
+    public function suit(): Suit
+    {
+        return $this->suit;
+    }
+
+    public static function pick(): Suit
+    {
+        return Suit::Hearts;
     }
 }

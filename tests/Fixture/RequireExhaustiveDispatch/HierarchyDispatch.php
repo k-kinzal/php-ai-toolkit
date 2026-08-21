@@ -21,6 +21,7 @@ final class HierarchyDispatch
             Visa::class => 'visa',
             MasterCard::class => 'mastercard',
             BankTransfer::class => 'transfer',
+            Wallet::class => 'wallet',
             default => 'unreachable',
         };
     }
@@ -60,6 +61,30 @@ final class HierarchyDispatch
         return match (true) {
             $payment instanceof Visa => 'visa',
             default => 'other',
+        };
+    }
+
+    public function computedSubjectMatch(?Payment $payment): string
+    {
+        return match ($payment === null ? Visa::class : $payment::class) {
+            Visa::class => 'visa',
+            default => 'other',
+        };
+    }
+
+    public function rootWithoutSubclassesMatch(Visa $payment): string
+    {
+        return match ($payment::class) {
+            Visa::class => 'visa',
+            default => 'other',
+        };
+    }
+
+    public function partialMatchWithoutDefault(Payment $payment): string
+    {
+        return match ($payment::class) {
+            Visa::class => 'visa',
+            MasterCard::class => 'mastercard',
         };
     }
 }

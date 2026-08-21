@@ -23,3 +23,8 @@ final class MasterCard extends CardPayment
 final class BankTransfer implements Payment
 {
 }
+
+enum Wallet: string implements Payment
+{
+    case ApplePay = 'apple';
+}

@@ -58,8 +58,7 @@ that list; where there is none, the dispatch is left alone.
 | A union of literals, e.g. `'fast'\|'safe'\|'dry'` or a `@param self::MODE_*` tag | those literals |
 | A nullable closed type, e.g. `?Suit` | `null` plus the cases |
 | A union of classes, e.g. `Circle\|Square\|Triangle` | those classes |
-| `$shape::class` where every class of the union is `final` | those class names, as literal strings |
-| `$shape::class` / `get_class($shape)` where `$shape` is an interface or abstract class | every class below it in the analysed code |
+| `$shape::class` or `get_class($shape)` | every instantiable class the subject can be, including those below an interface or an abstract class, read out of the analysed code |
 | `$suit->value` on a backed enum | the case values |
 | Anything narrowed to fewer values earlier in the method | only what is left |
 | `string`, `int`, `object`, an object subject that is not read through its class name | *(open — not reported)* |

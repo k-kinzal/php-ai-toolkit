@@ -61,4 +61,20 @@ final class EnumSwitchDispatch
                 return 'unknown';
         }
     }
+
+    public function insideLoop(Suit $suit): string
+    {
+        foreach ([1, 2] as $round) {
+            unset($round);
+
+            switch ($suit) {
+                case Suit::Hearts:
+                    return 'red';
+                default:
+                    return 'other';
+            }
+        }
+
+        return 'none';
+    }
 }

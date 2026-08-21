@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\SrcUnitTestPair\SrcUnitTestPairFileInspector;
+use PhpAiToolkit\PhpStan\Rule\TestClass\SrcUnitTestPairFileInspector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\FileNode;
 use PHPStan\Rules\IdentifierRuleError;

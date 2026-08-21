@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\ForbidNonDocComment\NonDocCommentTokenAnalyzer;
+use PhpAiToolkit\PhpStan\Rule\PhpDoc\NonDocCommentTokenAnalyzer;
 use PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\FileNode;

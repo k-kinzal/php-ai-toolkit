@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ForbidBroadCatch\BroadCatchPathMatcher;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\BroadCatchPathMatcher;
 use PhpAiToolkit\PhpStan\Rule\ForbidBroadCatchRule;
 use PhpAiToolkit\PhpStan\Rule\Shared\RulePathNormalizer;
 use PHPStan\Rules\Rule;

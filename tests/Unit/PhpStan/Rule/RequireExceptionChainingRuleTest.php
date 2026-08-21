@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\RequireExceptionChaining\CatchThrowCollector;
-use PhpAiToolkit\PhpStan\Rule\RequireExceptionChaining\CatchThrowVisitor;
-use PhpAiToolkit\PhpStan\Rule\RequireExceptionChaining\ThrowChainEvaluator;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowCollector;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowChainEvaluator;
 use PhpAiToolkit\PhpStan\Rule\RequireExceptionChainingRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;

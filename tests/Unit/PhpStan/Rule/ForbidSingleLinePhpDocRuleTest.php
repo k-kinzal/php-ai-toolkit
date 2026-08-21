@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDoc\SingleLinePhpDocDetector;
-use PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDoc\SingleLinePhpDocErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDoc\SingleLinePhpDocErrorCollector;
 use PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDocRule;
+use PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector;
+use PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorBuilder;
+use PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorCollector;
 use PhpAiToolkit\PhpStan\Rule\Shared\AnonymousClassDetector;
 use PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter;
 use PHPStan\Rules\Rule;

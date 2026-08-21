@@ -8,8 +8,8 @@ use function array_map;
 use function implode;
 use function is_string;
 
-use PhpAiToolkit\PhpStan\Rule\RequireExceptionChaining\CatchThrowCollector;
-use PhpAiToolkit\PhpStan\Rule\RequireExceptionChaining\ThrowChainEvaluator;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowCollector;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowChainEvaluator;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;

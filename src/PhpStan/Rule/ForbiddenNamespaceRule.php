@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\ForbiddenNamespace\ForbiddenNamespacePrefixes;
+use PhpAiToolkit\PhpStan\Rule\Naming\ForbiddenNamespacePrefixes;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;

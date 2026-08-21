@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ForbidNonDocComment\NonDocCommentErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\ForbidNonDocComment\NonDocCommentTokenAnalyzer;
 use PhpAiToolkit\PhpStan\Rule\ForbidNonDocCommentRule;
+use PhpAiToolkit\PhpStan\Rule\PhpDoc\NonDocCommentErrorBuilder;
+use PhpAiToolkit\PhpStan\Rule\PhpDoc\NonDocCommentTokenAnalyzer;
 use PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter;
 use PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser;
 use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern;

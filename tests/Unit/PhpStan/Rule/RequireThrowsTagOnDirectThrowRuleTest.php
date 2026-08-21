@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\RequireThrowsTagOnDirectThrow\MissingThrowsTagErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\RequireThrowsTagOnDirectThrow\ThrowsDeclarationInspector;
-use PhpAiToolkit\PhpStan\Rule\RequireThrowsTagOnDirectThrow\ThrowSite;
-use PhpAiToolkit\PhpStan\Rule\RequireThrowsTagOnDirectThrow\ThrowSiteCollector;
-use PhpAiToolkit\PhpStan\Rule\RequireThrowsTagOnDirectThrow\ThrowSiteVisitor;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\MissingThrowsTagErrorBuilder;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowsDeclarationInspector;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteCollector;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor;
 use PhpAiToolkit\PhpStan\Rule\RequireThrowsTagOnDirectThrowRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;

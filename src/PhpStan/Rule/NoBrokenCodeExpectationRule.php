@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\NoBrokenCodeExpectation\ExpectExceptionCallInspector;
+use PhpAiToolkit\PhpStan\Rule\TestAssertion\ExpectExceptionCallInspector;
 use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\OverrideMustHaveAttribute\OverridableMethodPolicy;
+use PhpAiToolkit\PhpStan\Rule\ClassDesign\OverridableMethodPolicy;
 use PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\RequireExhaustiveDispatch\ClosedTypeVariants;
-use PhpAiToolkit\PhpStan\Rule\RequireExhaustiveDispatch\DispatchInspector;
-use PhpAiToolkit\PhpStan\Rule\RequireExhaustiveDispatch\DispatchSubjectResolver;
-use PhpAiToolkit\PhpStan\Rule\RequireExhaustiveDispatch\RequireExhaustiveDispatchErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\RequireExhaustiveDispatch\UnhandledVariantFinder;
+use PhpAiToolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants;
+use PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchInspector;
+use PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver;
+use PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder;
+use PhpAiToolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder;
 use PhpAiToolkit\PhpStan\Rule\RequireExhaustiveDispatchRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;

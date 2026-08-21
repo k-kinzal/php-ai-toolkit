@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ForbiddenMagicMethodCall\MagicMethodCallErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\ForbiddenMagicMethodCall\MagicMethodCallInspector;
-use PhpAiToolkit\PhpStan\Rule\ForbiddenMagicMethodCall\MagicMethodRegistry;
+use PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodCallErrorBuilder;
+use PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodCallInspector;
+use PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry;
 use PhpAiToolkit\PhpStan\Rule\ForbiddenMagicMethodCallRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;

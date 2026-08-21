@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\RequireThrowsTagOnDirectThrow\MissingThrowsTagErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\RequireThrowsTagOnDirectThrow\ThrowsDeclarationInspector;
-use PhpAiToolkit\PhpStan\Rule\RequireThrowsTagOnDirectThrow\ThrowSiteCollector;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\MissingThrowsTagErrorBuilder;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowsDeclarationInspector;
+use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteCollector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;

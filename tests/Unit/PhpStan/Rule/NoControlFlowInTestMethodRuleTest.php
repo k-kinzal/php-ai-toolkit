@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\NoControlFlowInTestMethod\ControlFlowTypeResolver;
-use PhpAiToolkit\PhpStan\Rule\NoControlFlowInTestMethod\NestedScopeFilter;
-use PhpAiToolkit\PhpStan\Rule\NoControlFlowInTestMethod\TestMethodControlFlowErrorCollector;
 use PhpAiToolkit\PhpStan\Rule\NoControlFlowInTestMethodRule;
 use PhpAiToolkit\PhpStan\Rule\Shared\TestMethodDetector;
+use PhpAiToolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver;
+use PhpAiToolkit\PhpStan\Rule\TestClass\NestedScopeFilter;
+use PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector;
 use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\NoBrokenCodeExpectation\BrokenCodeExceptionClassifier;
-use PhpAiToolkit\PhpStan\Rule\NoBrokenCodeExpectation\ExpectExceptionCallInspector;
-use PhpAiToolkit\PhpStan\Rule\NoBrokenCodeExpectation\NoBrokenCodeExpectationErrorBuilder;
 use PhpAiToolkit\PhpStan\Rule\NoBrokenCodeExpectationRule;
 use PhpAiToolkit\PhpStan\Rule\Shared\CallArgumentResolver;
 use PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver;
 use PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver;
 use PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher;
+use PhpAiToolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier;
+use PhpAiToolkit\PhpStan\Rule\TestAssertion\ExpectExceptionCallInspector;
+use PhpAiToolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder;
 use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;

@@ -14,10 +14,12 @@ use PHPStan\Command\AnalysisResult;
 use PHPStan\File\SimpleRelativePathHelper;
 use PHPStan\Testing\ErrorFormatterTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 
 use function putenv;
 
 #[CoversClass(AiRulesErrorFormatter::class)]
+#[Medium]
 final class AiRulesErrorFormatterTest extends ErrorFormatterTestCase
 {
     #[Override]

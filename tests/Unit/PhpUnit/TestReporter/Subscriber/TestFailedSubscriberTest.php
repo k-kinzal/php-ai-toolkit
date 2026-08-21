@@ -18,6 +18,7 @@ use const PHP_BINARY;
 use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\TestFailedSubscriber;
 use PHPUnit\Event\Test\FailedSubscriber;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
 
 use function proc_close;
@@ -25,6 +26,7 @@ use function proc_open;
 use function stream_get_contents;
 
 #[CoversClass(TestFailedSubscriber::class)]
+#[Large]
 final class TestFailedSubscriberTest extends TestCase
 {
     #[Override]

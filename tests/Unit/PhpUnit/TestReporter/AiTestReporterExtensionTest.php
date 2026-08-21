@@ -16,6 +16,7 @@ use const PHP_BINARY;
 
 use PhpAiToolkit\PhpUnit\TestReporter\AiTestReporterExtension;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
 
 use function proc_close;
@@ -23,6 +24,7 @@ use function proc_open;
 use function stream_get_contents;
 
 #[CoversClass(AiTestReporterExtension::class)]
+#[Large]
 final class AiTestReporterExtensionTest extends TestCase
 {
     #[Override]

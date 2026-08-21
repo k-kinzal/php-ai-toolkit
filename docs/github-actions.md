@@ -7,9 +7,17 @@ skill.
 
 The CI workflow makes every php-ai-toolkit gate visible in GitHub Actions while
 preserving the project's command model: unit tests run in a `tests` job, and
-formatting, PHPStan, PHPCompatibility, LocGuard, Deptrac, and runtime/package
-checks run in a `lint` job. Each lint check should appear as a named step so
-failures are actionable without reading a long aggregate `composer lint` log.
+formatting, PHPStan, PHPCompatibility, LocGuard, TreeGuard, ScopeGuard, Deptrac,
+and runtime/package checks run in a `lint` job. Each lint check should appear as
+a named step so failures are actionable without reading a long aggregate
+`composer lint` log.
+
+Every gate is listed there because a configured gate that CI never runs is worse
+than one the project does not have: `composer lint` chains all seven locally, so
+the project reads as covered, while on the default branch only the steps that
+were written into the workflow actually hold. The `lint` job therefore carries
+one step per script in that chain, and adding a guard to `composer lint` means
+adding its step here in the same change.
 
 ## PHP Version Coverage
 
@@ -41,7 +49,27 @@ graph. `phpstan/phpstan-strict-rules` is therefore required as
 `^1.6 || ^2.0`, so both lines resolve.
 
 `composer compat` remains a named step inside the `lint` job alongside
-formatting, PHPStan, LocGuard, and Deptrac.
+formatting, PHPStan, LocGuard, TreeGuard, ScopeGuard, and Deptrac. See
+[PHPCompatibility Configuration](php-compatibility.md).
+
+## Parallel Test Job
+
+`composer test` runs the suite under ParaTest, and the `tests` matrix does not:
+it runs `composer test:unit` (or `test:unit:legacy` on PHP 8.0), which is
+PHPUnit in one process. Two runners are configured, so both are run.
+
+`tests-parallel` is a single job rather than a second matrix. The matrix already
+answers whether the suite passes on each supported PHP minor; what the parallel
+runner adds is whether the suite still passes when it is split across processes
+— no two test classes writing the same fixture path, no ordering assumed between
+classes, no state carried from one to the next. That property does not depend on
+the PHP version, so it is checked once on PHP 8.4, the same way the mutation
+score is.
+
+It runs on PHP 8.4 rather than 8.0 because `composer test` passes no
+`--configuration` and so reads `phpunit.xml.dist`, the PHPUnit 10+ configuration.
+PHP 8.0 resolves PHPUnit 9.6, which needs `phpunit9.xml.dist` — that leg is
+covered by `test:unit:legacy` in the matrix.
 
 ## Mutation Testing Job
 
@@ -62,6 +90,15 @@ the DocGen site on every push to `main` and publishes it to the `gh-pages`
 branch, which needs `contents: write` for that one job while CI stays
 read-only. It restores the DocGen cache between runs, so a documentation job
 costs the size of the change.
+
+It runs `composer test:coverage` before `composer doc-gen`, and sets up PHP with
+`coverage: pcov` to make that possible. `doc.yaml` points `coverage` at
+`build/coverage-xml`, which is what lets every method on the site name the test
+cases covering it. The step earns its minutes twice over: PHPUnit is configured
+with `requireCoverageMetadata` and `beStrictAboutCoverageMetadata`, so a test
+that executes a class it did not declare in `#[CoversClass]` or `#[UsesClass]`
+is reported as risky and fails the run. Without a coverage run somewhere on
+`main`, that metadata drifts unnoticed — the rest of CI never asks for it.
 
 The `/setup-toolkit-doc-gen` skill also ships a pull request preview workflow
 (`docs-preview.yml`) that publishes a diff-mode site under `pr/<number>/` of the

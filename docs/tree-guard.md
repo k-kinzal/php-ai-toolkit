@@ -155,3 +155,9 @@ vendor/bin/tree-guard --config=tree.yaml --format=text
 ```
 
 Configure violation ordering with `report.order_by`. Supported fields are `path`, `rule`, `actual`, and `limit` (default `path`, `rule`). Violations without counts sort before counted ones on `actual` and `limit`.
+
+## CI
+
+`composer tree-guard` runs as a named step of the `lint` job on every supported
+PHP minor, alongside formatting, PHPStan, PHPCompatibility, LocGuard,
+ScopeGuard, and Deptrac. See [GitHub Actions Configuration](github-actions.md).

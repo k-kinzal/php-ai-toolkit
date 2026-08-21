@@ -247,3 +247,9 @@ The tag has three ancestors, and borrows something from each:
 `@visibility` is a separate tag rather than a reuse of `@internal` because `@internal` accepts free
 text (`@internal do not use`), which cannot be told apart from a scope. A dedicated tag keeps every
 value meaningful, so a typo is a violation instead of a silently different scope.
+
+## CI
+
+`composer scope-guard` runs as a named step of the `lint` job on every supported
+PHP minor, alongside formatting, PHPStan, PHPCompatibility, LocGuard, TreeGuard,
+and Deptrac. See [GitHub Actions Configuration](github-actions.md).

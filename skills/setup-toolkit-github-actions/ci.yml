@@ -1,3 +1,11 @@
+# The workflow name is what the README status badge renders as its label, so it
+# is not optional: an unnamed workflow badges as its own file path.
+#
+# Drop the `cp` step from every job when the project keeps a single
+# composer.lock, and drop a lint step whose Composer script the project does not
+# have. Do not keep a step for a gate that was never set up.
+name: CI
+
 on:
   push:
     branches:
@@ -16,6 +24,7 @@ env:
 
 jobs:
   tests:
+    name: Tests on PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -35,24 +44,65 @@ jobs:
           - php: '8.5'
             test-script: test:unit
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Check out the repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
-      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring
+          # pcntl is what a parallel test runner forks with; drop it when the
+          # project has no such runner.
+          extensions: mbstring, pcntl
           coverage: none
 
-      - run: cp "composer.lock.php-${{ matrix.php }}" composer.lock
+      - name: Select the matching lock file
+        run: cp "composer.lock.php-${{ matrix.php }}" composer.lock
 
-      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+      - name: Install dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
         with:
           dependency-versions: locked
           composer-options: --prefer-dist
 
-      - run: composer ${{ matrix.test-script }}
+      - name: Run the unit tests
+        run: composer ${{ matrix.test-script }}
+
+  # Keep this job only when the project has a parallel runner script such as
+  # `composer test` on ParaTest. It runs the same suite the `tests` matrix runs,
+  # so it is not a matrix: what it verifies is that the suite survives being
+  # split across processes — no shared fixture files, no ordering between test
+  # classes, no global state carried between them. That does not depend on the
+  # PHP version, so it is checked once on the highest supported one.
+  tests-parallel:
+    name: Tests through the parallel runner
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, pcntl
+          coverage: none
+
+      - name: Select the matching lock file
+        run: cp composer.lock.php-8.5 composer.lock
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        with:
+          dependency-versions: locked
+          composer-options: --prefer-dist
+
+      - name: Run the suite under the parallel runner
+        run: composer test
 
   lint:
+    name: Lint on PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -66,29 +116,45 @@ jobs:
           - '8.4'
           - '8.5'
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Check out the repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
-      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring
           coverage: none
 
-      - run: cp "composer.lock.php-${{ matrix.php }}" composer.lock
+      - name: Select the matching lock file
+        run: cp "composer.lock.php-${{ matrix.php }}" composer.lock
 
-      - run: composer validate --strict --no-check-publish
+      - name: Validate the Composer manifest against the lock file
+        run: composer validate --strict --no-check-publish
 
-      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+      - name: Install dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
         with:
           dependency-versions: locked
           composer-options: --prefer-dist
 
-      - run: composer format:check
+      - name: Check the formatting
+        run: composer format:check
 
-      - run: composer phpstan
+      - name: Analyse with PHPStan
+        run: composer phpstan
 
-      - run: composer compat
+      - name: Check compatibility with the PHP floor
+        run: composer compat
 
-      - run: composer loc-guard
+      - name: Check the source metrics
+        run: composer loc-guard
 
-      - run: composer deptrac
+      - name: Check the directory structure
+        run: composer tree-guard
+
+      - name: Check the namespace visibility
+        run: composer scope-guard
+
+      - name: Check the architecture layers
+        run: composer deptrac

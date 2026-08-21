@@ -90,3 +90,9 @@ vendor/bin/loc-guard --config=loc.yaml --format=text
 ```
 
 Configure violation ordering with `report.order_by`. Supported fields are `path`, `line`, `rule`, `actual`, and `limit`.
+
+## CI
+
+`composer loc-guard` runs as a named step of the `lint` job on every supported
+PHP minor, alongside formatting, PHPStan, PHPCompatibility, TreeGuard,
+ScopeGuard, and Deptrac. See [GitHub Actions Configuration](github-actions.md).

@@ -121,14 +121,59 @@ Add to the target project's `composer.json`:
 }
 ```
 
+## Parallel Execution with ParaTest
+
+Offer [ParaTest](https://github.com/paratestphp/paratest) once the suite is long
+enough that developers start narrowing it with `--filter` — but explain what it
+buys beyond speed, because that is the reason to prefer it as the default `test`
+script rather than an optional extra.
+
+Each ParaTest worker is a separate PHP process, so the suite has to hold up
+without a shared runtime: no test reading a static property another test set, no
+two tests writing the same fixture path, no class assuming it runs after some
+other class. `executionOrder="depends,random"` already looks for that coupling
+inside one process; splitting the suite checks it across the process boundary,
+which no PHPUnit setting reaches. This matters most for AI-written tests, where
+shared temporary paths and static caches are a routine shortcut.
+
+```bash
+composer require --dev "brianium/paratest:^6.11 || ^7"
+```
+
+```json
+{
+    "scripts": {
+        "test": "paratest --processes=auto",
+        "test:unit": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist"
+    }
+}
+```
+
+Three things to check before wiring it in:
+
+- `ext-pcntl` must be available; it is what ParaTest forks workers with. Add it
+  to the CI `extensions:` list.
+- `paratest` takes no `--configuration` above, so it reads `phpunit.xml.dist`.
+  A project that keeps a separate PHPUnit 9 config for an older PHP floor must
+  keep a `phpunit` script naming that file, and must not point the parallel job
+  at the old floor.
+- Keep the single-process script. The two runners answer different questions and
+  both belong in CI: the version matrix on the single-process one, and one job
+  on the parallel one. See the `/setup-toolkit-github-actions` skill.
+
 ## Verification
 
 After applying:
 
 ```bash
 vendor/bin/phpunit --list-tests   # Verify tests are discovered
-composer test                      # Run the full suite
+composer test:unit                 # Run the full suite in one process
+composer test                      # Run it again through the parallel runner
 ```
+
+If the suite passes in one process and fails under the parallel runner, the
+failure is real: it is test-to-test coupling that the single-process run was
+hiding. Fix the coupling rather than reverting to one process.
 
 ## References
 

@@ -4,8 +4,9 @@ description: >-
   Set up GitHub Actions CI for php-ai-toolkit PHP projects. Use when asked to
   create or update .github/workflows/ci.yml, run toolkit checks in CI, pin
   GitHub Actions to full commit SHAs, align CI with supported PHP versions, or
-  harden workflow permissions and concurrency for Composer, PHPUnit, PHPStan,
-  PHP-CS-Fixer, PHPCompatibility, LocGuard, and Deptrac.
+  harden workflow permissions and concurrency for Composer, PHPUnit, ParaTest,
+  PHPStan, PHP-CS-Fixer, PHPCompatibility, LocGuard, TreeGuard, ScopeGuard, and
+  Deptrac.
 ---
 
 # Setup GitHub Actions CI
@@ -20,8 +21,8 @@ Read these files before editing CI:
 - `composer.json`: `require.php`, `config.platform.php`, and Composer scripts.
 - Existing `.github/workflows/*.yml` or `.yaml`.
 - Toolkit configs that imply CI gates: `.php-cs-fixer.dist.php`,
-  `phpstan.neon`, `phpcs.xml.dist`, `loc.yaml`, `deptrac.yaml`,
-  `phpunit.xml.dist`.
+  `phpstan.neon`, `phpcs.xml.dist`, `loc.yaml`, `tree.yaml`, `scope.yaml`,
+  `deptrac.yaml`, `phpunit.xml.dist`.
 - Project docs that declare supported PHP versions.
 - Composer lock policy: one normal `composer.lock`, no committed lock, or
   PHP-versioned locks such as `composer.lock.php-8.0`.
@@ -48,16 +49,43 @@ Required gates when the corresponding script/config exists:
 - `composer phpstan` for PHPStan and toolkit PHPStan rules.
 - `composer compat` for PHPCompatibility.
 - `composer loc-guard` for LocGuard.
+- `composer tree-guard` for TreeGuard.
+- `composer scope-guard` for ScopeGuard.
 - `composer deptrac` for Deptrac.
 - `composer test:unit`, `composer test:unit:legacy`, or `composer test` for PHPUnit.
 
-Keep `compat` inside the `lint` job alongside formatting, PHPStan, LocGuard, and
-Deptrac. It may be a separate step for visibility, but it should not be a
-separate CI job unless the project has an explicit reason.
+Every gate the project has configured belongs in CI. A tool that is installed,
+configured, and wired into `composer lint` but never runs on the default branch
+is a gate the project believes it has: it passes locally for whoever last ran it
+and drifts from then on. When a config file exists and its Composer script does
+not run anywhere in CI, that is the finding to report, not a detail to leave.
+
+Keep `compat` inside the `lint` job alongside formatting, PHPStan, LocGuard,
+TreeGuard, ScopeGuard, and Deptrac. It may be a separate step for visibility,
+but it should not be a separate CI job unless the project has an explicit
+reason.
 
 If a script is missing but the config exists, add the Composer script using the
 corresponding setup skill before wiring CI. If neither script nor config exists,
 do not invent the gate in CI; set up that tool first.
+
+### The Parallel Test Runner
+
+A project whose `composer test` runs ParaTest rather than PHPUnit directly has
+two runners configured, and the matrix only exercises one of them. Give the
+parallel one its own small job.
+
+It is not a second matrix. The suite's compatibility with each PHP version is
+what the `tests` matrix answers; what the parallel runner adds is whether the
+suite survives being split across processes — no test class sharing a fixture
+file with another, no ordering assumed between classes, no global state carried
+across. None of that depends on the PHP version, so run it once on the highest
+supported one, the way mutation testing is scored once.
+
+Note that `composer test` usually carries no `--configuration`, so it picks up
+`phpunit.xml.dist`. In a project that keeps a separate PHPUnit 9 config for an
+older PHP floor, that makes the parallel job implicitly a modern-PHP job; pin it
+to a version the default config supports.
 
 ## Out of Scope: Documentation Publishing
 
@@ -189,9 +217,20 @@ composer format:check
 composer phpstan
 composer compat
 composer loc-guard
+composer tree-guard
+composer scope-guard
 composer deptrac
 composer test:unit
 composer test:unit:legacy # when the project keeps a PHPUnit 9 config for old PHP support
+composer test             # when the project has a parallel runner script
+```
+
+Then check that nothing configured was left out of the workflow. Every Composer
+script the project treats as a gate should appear in `ci.yml`:
+
+```bash
+composer run-script --list
+grep -o 'composer [a-z:-]*' .github/workflows/ci.yml | sort -u
 ```
 
 If a local check cannot run because of the local PHP version or missing tools,

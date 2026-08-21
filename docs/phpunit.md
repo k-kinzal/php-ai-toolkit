@@ -139,3 +139,39 @@ Sets all `ignoreSuppression*` attributes to `true`, disabling PHP's `@` error su
 Strictly reports notices and warnings from source code under test.
 
 **Why:** PHP notices and warnings—such as accessing undefined variables or using deprecated functions—are signs of latent bugs. Strict reporting ensures problems in AI-generated code are not overlooked.
+
+## Parallel Execution
+
+The suite runs under [ParaTest](https://github.com/paratestphp/paratest) as
+`composer test`:
+
+```json
+{
+    "scripts": {
+        "test": "paratest --processes=auto",
+        "test:unit": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist",
+        "test:unit:legacy": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit9.xml.dist"
+    }
+}
+```
+
+**Why:** ParaTest splits the suite across processes, which is a stricter
+statement about the tests than speed. Each process gets its own PHP runtime, so
+a test that leaned on a static property another test had already set, on a
+fixture file another test had written, or on running after some particular test,
+stops passing. That is the same class of coupling `executionOrder="depends,random"`
+looks for within one process, checked across the process boundary as well —
+where PHPUnit's own isolation settings cannot reach.
+
+`paratest` carries no `--configuration`, so it reads `phpunit.xml.dist`, the
+PHPUnit 10+ configuration. Under PHP 8.0, where the dependency graph resolves
+PHPUnit 9.6 and ParaTest 6, use `composer test:unit:legacy` instead: it names
+`phpunit9.xml.dist` explicitly.
+
+Both runners are exercised on the default branch. The CI `tests` matrix runs the
+single-process runner on every supported PHP minor, and a separate
+`tests-parallel` job runs `composer test` once — the parallelism property does
+not depend on the PHP version. See
+[GitHub Actions Configuration](github-actions.md).
+
+Running ParaTest needs `ext-pcntl`, which is how it forks its workers.

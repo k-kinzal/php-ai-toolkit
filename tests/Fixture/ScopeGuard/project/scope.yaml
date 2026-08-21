@@ -1,0 +1,12 @@
+paths:
+  - src
+
+exclude: []
+
+exempt_namespaces: []
+
+report:
+  reporter: ai
+  order_by:
+    - path
+    - line

@@ -1,0 +1,13 @@
+paths:
+  - src
+
+exclude: []
+
+exempt_namespaces:
+  - 'Tests\Fixture\ScopeGuard\Outside'
+
+report:
+  reporter: ai
+  order_by:
+    - path
+    - line

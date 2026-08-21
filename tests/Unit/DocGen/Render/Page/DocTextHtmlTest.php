@@ -169,6 +169,29 @@ PHP);
         self::assertStringContainsString('<span class="doct doct-return">// =&gt; 4</span>', $html);
     }
 
+    public function testVisibilityBoxNamesTheDeclaredScopes(): void
+    {
+        $table = new SymbolTable();
+        $hierarchy = new HierarchyIndex();
+        $hierarchy->build([]);
+        $usages = new UsageIndex();
+        $usages->build([]);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [], [], $table, $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model);
+
+        $scoped = new DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '', ['namespace']);
+        $public = new DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '', ['public']);
+        $untagged = new DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '', []);
+
+        self::assertSame(
+            '<div class="notice notice-visibility"><strong>Restricted visibility</strong>: declared "@visibility namespace". Code outside that scope must not name this declaration.</div>' . "\n",
+            (new DocTextHtml())->visibilityBox($services, $scoped),
+        );
+        self::assertSame('', (new DocTextHtml())->visibilityBox($services, $public));
+        self::assertSame('', (new DocTextHtml())->visibilityBox($services, $untagged));
+    }
+
     public function testDeprecationBoxRendersNoticeWithAndWithoutNote(): void
     {
         $table = new SymbolTable();

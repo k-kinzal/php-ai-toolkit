@@ -21,6 +21,10 @@ deptrac:
       collectors:
         - type: directory
           value: src/TreeGuard/.*
+    - name: ScopeGuard
+      collectors:
+        - type: directory
+          value: src/ScopeGuard/.*
     - name: PhpStanRule
       collectors:
         - type: directory
@@ -50,6 +54,7 @@ deptrac:
     DocGen: ~
     LocGuard: ~
     TreeGuard: ~
+    ScopeGuard: ~
     PhpStanRule:
       - PhpStanSupport
     PhpStanSupport: ~

@@ -23,6 +23,7 @@ namespace PhpAiToolkit\DocGen\Analysis\Model;
  * @property-read list<DocTag> $usesTags
  * @property-read ?string $deprecated
  * @property-read bool $internal
+ * @property-read list<string> $visibility
  * @property-read string $raw
  */
 final class DocBlock
@@ -35,6 +36,7 @@ final class DocBlock
      * @param list<DocTag> $extendsTags
      * @param list<DocTag> $implementsTags
      * @param list<DocTag> $usesTags
+     * @param list<string> $visibility scope values declared with the visibility tag
      */
     public function __construct(
         /** @readonly */
@@ -65,6 +67,11 @@ final class DocBlock
         private bool $internal,
         /** @readonly */
         private string $raw,
+        /**
+         * @var list<string>
+         * @readonly
+         */
+        private array $visibility = [],
     ) {
     }
 
@@ -90,6 +97,7 @@ final class DocBlock
             'deprecated' => $this->deprecated,
             'internal' => $this->internal,
             'raw' => $this->raw,
+            'visibility' => $this->visibility,
             default => null,
         };
     }

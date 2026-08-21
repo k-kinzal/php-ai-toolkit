@@ -76,7 +76,29 @@ final class DocBlockReader
             $this->deprecated($node),
             $node->getTagsByName('@internal') !== [],
             $docComment,
+            $this->visibility($node),
         );
+    }
+
+    /**
+     * Reads the namespace visibility scopes declared on the element.
+     *
+     * The scopes are kept verbatim. Resolving what a scope covers belongs to
+     * scope-guard, which enforces them; documentation only states what was declared.
+     *
+     * @return list<string>
+     */
+    public function visibility(PhpDocNode $node): array
+    {
+        $scopes = [];
+        foreach ($node->getTagsByName('@visibility') as $tag) {
+            $value = trim((string) $tag->value);
+            if ($value !== '') {
+                $scopes[] = $value;
+            }
+        }
+
+        return $scopes;
     }
 
     /**

@@ -95,6 +95,8 @@ jobs:
 
       - run: composer tree-guard
 
+      - run: composer scope-guard
+
       - run: composer deptrac
 
   mutation:

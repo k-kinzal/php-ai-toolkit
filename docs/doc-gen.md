@@ -222,6 +222,11 @@ the result into the symbol's own dedicated test class and the other tests that r
 Relations are grouped by what each reference does — implemented by, extended by, instantiated in, static calls, type
 declarations, and so on — with every group rendered the same way.
 
+A declaration that carries a `@visibility` tag opens its page with a **Restricted visibility** notice naming the scopes
+exactly as written, so a reader sees what is public API and what is an implementation detail before reaching for it.
+The notice only reports the declaration; [ScopeGuard](scope-guard.md) is what enforces the scope, and documentation
+that resolved scopes itself would be a second implementation of the same rules.
+
 ## Output
 
 The site is fully static and self-contained: relative links only, bundled CSS/JS, client-side search, light and dark

@@ -28,6 +28,25 @@ final class DocBlockReaderTest extends TestCase
         self::assertNull((new DocBlockReader())->read('   '));
     }
 
+    public function testVisibilityReadsEveryDeclaredScope(): void
+    {
+        $comment = <<<'DOC'
+/**
+ * Summary line.
+ *
+ * @visibility namespace
+ * @visibility Demo\Console
+ */
+DOC;
+
+        self::assertSame(['namespace', 'Demo\\Console'], (new DocBlockReader())->read($comment)?->visibility);
+    }
+
+    public function testVisibilityReturnsNothingWithoutTheTag(): void
+    {
+        self::assertSame([], (new DocBlockReader())->read('/** Summary line. */')?->visibility);
+    }
+
     public function testReadSplitsSummaryAndDescriptionOnBlankLine(): void
     {
         $comment = <<<'DOC'

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Render\Page;
 
+use function implode;
+
 use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\RenderKit;
@@ -43,7 +45,7 @@ final class DocTextHtml
             return '';
         }
 
-        $html = $this->deprecationBox($services, $docBlock);
+        $html = $this->deprecationBox($services, $docBlock) . $this->visibilityBox($services, $docBlock);
         if ($docBlock->summary !== '') {
             $html .= '<p class="lede">' . $this->inline->render($docBlock->summary) . '</p>' . "\n";
         }
@@ -77,5 +79,30 @@ final class DocTextHtml
         $note = $docBlock->deprecated !== '' ? ': ' . $services->escaper->e($docBlock->deprecated) : '.';
 
         return sprintf('<div class="notice notice-deprecated"><strong>Deprecated</strong>%s</div>', $note) . "\n";
+    }
+
+    /**
+     * Renders the visibility notice of a declaration that is not public API.
+     *
+     * The declared scopes are shown as written; scope-guard is what enforces them,
+     * so the page states the boundary instead of restating its rules.
+     */
+    public function visibilityBox(RenderKit $services, DocBlock $docBlock): string
+    {
+        $scopes = [];
+        foreach ($docBlock->visibility as $scope) {
+            if ($scope !== 'public') {
+                $scopes[] = sprintf('"@visibility %s"', $services->escaper->e($scope));
+            }
+        }
+
+        if ($scopes === []) {
+            return '';
+        }
+
+        return sprintf(
+            '<div class="notice notice-visibility"><strong>Restricted visibility</strong>: declared %s. Code outside that scope must not name this declaration.</div>',
+            implode(' and ', $scopes)
+        ) . "\n";
     }
 }

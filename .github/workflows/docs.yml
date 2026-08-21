@@ -37,7 +37,10 @@ jobs:
         with:
           php-version: '8.4'
           extensions: mbstring, pcntl, gd
-          coverage: none
+          # The site links every method to the test cases covering it, which
+          # needs a coverage report. pcov is several times faster than Xdebug
+          # and produces the same --coverage-xml.
+          coverage: pcov
 
       - name: Select the matching lock file
         run: cp composer.lock.php-8.4 composer.lock
@@ -56,6 +59,9 @@ jobs:
           restore-keys: |
             doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock.php-8.4') }}-
             doc-gen-${{ runner.os }}-
+
+      - name: Generate the coverage report the site reads
+        run: composer test:coverage
 
       - name: Generate the documentation
         run: composer doc-gen

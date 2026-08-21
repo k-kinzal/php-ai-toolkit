@@ -47,7 +47,11 @@ jobs:
         with:
           php-version: '8.4'
           extensions: mbstring, pcntl, gd
-          coverage: none
+          # pcov, not none, when the site should link every method to the test
+          # cases covering it — that needs a --coverage-xml report, and pcov is
+          # several times faster than Xdebug at producing one. Leave this at
+          # `none` and drop the coverage step below when it should not.
+          coverage: pcov
 
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
@@ -64,8 +68,14 @@ jobs:
             doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-
             doc-gen-${{ runner.os }}-
 
-      # Add `--coverage=build/coverage-xml` after a coverage run when the site
-      # should link every method to the test cases that cover it.
+      # The report the `coverage` key in doc.yaml points at. A strict PHPUnit
+      # configuration reports a test that executes an undeclared class as
+      # risky, so this step is also what keeps the project's #[CoversClass] and
+      # #[UsesClass] metadata honest. Drop it, and the `coverage` key, when the
+      # site should not carry per-method test references.
+      - name: Generate the coverage report the site reads
+        run: vendor/bin/phpunit --coverage-xml build/coverage-xml
+
       - name: Generate the documentation
         run: vendor/bin/doc-gen --config=doc.yaml
 

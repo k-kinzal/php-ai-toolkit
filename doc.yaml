@@ -8,4 +8,6 @@ output: build/docs
 
 cache: build/doc-gen-cache
 
+coverage: build/coverage-xml
+
 base_url: https://k-kinzal.github.io/php-ai-toolkit

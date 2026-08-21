@@ -12,6 +12,8 @@ output: build/docs
 
 cache: build/doc-gen-cache
 
+coverage: null
+
 base_url: null
 
 repository: null

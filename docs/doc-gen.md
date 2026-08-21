@@ -311,6 +311,12 @@ which would run the pull request's code with a write token.
 This repository runs `docs.yml` (`.github/workflows/docs.yml`) and keeps `docs-preview.yml` as a template only,
 because it is developed on `main` without pull requests.
 
+Its `doc.yaml` sets `coverage: build/coverage-xml`, so the workflow runs `composer test:coverage` under pcov before
+`composer doc-gen` and every method on the published site names the test cases covering it. That step is also the
+only place on `main` where PHPUnit's `beStrictAboutCoverageMetadata` is exercised, so it is what keeps the suite's
+`#[CoversClass]` and `#[UsesClass]` declarations from drifting. See
+[GitHub Actions Configuration](github-actions.md).
+
 ## Local Preview
 
 ```bash

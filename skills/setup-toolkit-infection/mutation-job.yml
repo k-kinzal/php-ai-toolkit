@@ -6,9 +6,9 @@
 # highest PHP version the project supports, and drop the `cp` step when the
 # project keeps a single composer.lock.
 #
-# Pull requests are scored on their changed lines against the stricter
-# infection-pr.json5; the default branch is scored on the whole source tree
-# against infection.json5.
+# Pull requests are scored on their changed lines against the stricter thresholds
+# the infection:pr script passes; the default branch is scored on the whole source
+# tree against the thresholds in infection.json5.
   mutation:
     runs-on: ubuntu-latest
     timeout-minutes: 30

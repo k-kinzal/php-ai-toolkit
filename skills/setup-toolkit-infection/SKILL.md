@@ -53,9 +53,14 @@ the project root:
 
 | Template | Target | Scope |
 |----------|--------|-------|
-| `infection.json5` | `infection.json5` | Whole source tree, run on the default branch |
-| `infection-pr.json5` | `infection-pr.json5` | Changed lines only, run on pull requests |
-| `mutation-job.yml` | merge into `.github/workflows/ci.yml` | CI job for both |
+| `infection.json5` | `infection.json5` | The only configuration file |
+| `mutation-job.yml` | merge into `.github/workflows/ci.yml` | CI job for both gates |
+
+Write one configuration file, not one per gate. Infection reads a single file and
+takes per-run thresholds from `--min-msi` and `--min-covered-msi`, which is how its
+own documentation drives CI. A second file duplicates the scope, the mutators, and
+the exclusions, and the day one copy is edited the two gates start measuring
+different things.
 
 Pass the configuration file explicitly on every invocation
 (`--configuration=infection.json5`). Infection otherwise picks the first file it
@@ -63,9 +68,11 @@ finds from `infection.json5`, `infection.json`, `infection.json5.dist`,
 `infection.json.dist`, so an unrelated file dropped into the project root can
 silently take over the gate.
 
-Keep the two configurations identical apart from the thresholds and the reporting
-each one needs. A mutator disabled in one and not the other means the pull request
-gate and the branch gate measure different things.
+Put the whole-tree ratchet in the file and the changed-lines bar on the command
+line. Pass `--ignore-msi-with-no-mutations` with the changed-lines flags rather than
+setting `ignoreMsiWithNoMutations` in the file: a change that mutates nothing must
+not score 0%, but a whole-tree run that generates nothing is a misconfiguration and
+should fail rather than pass silently.
 
 ## Why Two Thresholds
 
@@ -81,10 +88,10 @@ build fails until the entire backlog is paid off. Changed lines carry no such
 backlog: code being written right now can be held to the bar the project wants, and
 that is the only moment where enforcing it is cheap.
 
-| Scope | Config | `minMsi` | `minCoveredMsi` | Why |
-|-------|--------|----------|-----------------|-----|
+| Scope | Where the numbers live | `minMsi` | `minCoveredMsi` | Why |
+|-------|------------------------|----------|-----------------|-----|
 | Whole source tree | `infection.json5` | measured score, rounded down | measured score, rounded down | Ratchet: no regression against what the branch already achieves |
-| Changed lines | `infection-pr.json5` | measured score, stepped up | measured score, stepped up further | New code is expected to be verified, not merely executed |
+| Changed lines | `--min-msi` / `--min-covered-msi` in the Composer script | the project's equivalent-mutant ceiling | the same | New code is expected to be verified, not merely executed |
 
 ## Setting the Thresholds
 
@@ -103,19 +110,28 @@ Measure before choosing numbers. Never copy the values from another project.
    exactly on the measured score turns red on a mutant that a different runtime
    classifies differently, and the ratchet still catches the real thing, because a
    suite that stops verifying loses mutants by the dozen, not by the one.
-3. Set the changed-lines thresholds above the whole-tree ones — roughly ten points
-   for `minMsi` and fifteen for `minCoveredMsi`, so that new code has to be both
-   covered and asserted on. Pick a bar the project can actually hold: a suite
-   scoring 82% on the whole tree will not hold 100% on a diff, and a gate that fails
-   every honest pull request gets weakened rather than met. Note that this toolkit's
-   `ForbiddenCommentRule` rejects `@infection-ignore-all`, so there is no annotation
-   escape hatch: an equivalent mutant is a conversation with a human operator, not a
-   comment.
-4. Keep `ignoreMsiWithNoMutations: true` in the changed-lines configuration. A pull
-   request that touches only documentation, tests, or configuration produces no
-   mutants, and a scoreless run must not be reported as 0%.
-5. Raise the whole-tree thresholds whenever the score rises. That is the whole point
-   of the ratchet, and it is the only edit to these files that should be routine.
+3. Set the changed-lines threshold from the project's equivalent-mutant ceiling,
+   not from a round number. Read `build/infection/per-mutator.md`, find the mutators
+   with the worst kill rates, and open `build/infection/escaped.log` on a few of
+   them. Some escapes are missing tests; some are mutants no test can kill, which in
+   PHP most often means a reordered `??` in optional constructor injection
+   (`$this->x = $x ?? new X()` becoming `new X() ?? $x`) where the collaborator is
+   stateless. Subtract the unkillable ones from the whole and set the bar just under
+   what remains. Note that this toolkit's `ForbiddenCommentRule` rejects
+   `@infection-ignore-all`, so there is no annotation escape hatch: a bar set above
+   what the code can reach fails honest work, and a gate that fails honest work gets
+   weakened rather than met.
+4. Check the number against real changes before settling on it. Score the last few
+   commits with `--git-diff-lines --git-diff-base=origin/<default branch>` and see
+   what they land at. A large diff averages out; a small one is noisy, because two
+   unkillable mutants in a twenty-mutant diff cost ten points on their own. Pick a
+   bar the small diffs survive, or the gate will be met by shrinking pull requests
+   rather than by testing them.
+5. Pass `--ignore-msi-with-no-mutations` on the changed-lines run. A pull request
+   that touches only documentation, tests, or configuration produces no mutants, and
+   a scoreless run must not be reported as 0%.
+6. Raise the whole-tree thresholds whenever the score rises. That is the whole point
+   of the ratchet, and it is the only edit to the file that should be routine.
 
 Lowering a threshold to make a red build green defeats the gate. So does disabling a
 mutator, widening `source.excludes`, or pointing the gate at fewer directories. Fix
@@ -127,10 +143,13 @@ Keep `"@default": true`. The default profile is what the published mutation scor
 of other projects mean, and a trimmed profile makes the number incomparable and
 usually flatters the suite.
 
-If a specific mutator produces only equivalent mutants for a project — a common case
-is `Concat` on log strings, or arithmetic mutators inside a code generator — record
-the reason next to the setting, disable exactly that mutator in both files, and
-raise the thresholds to cover the mutants that are no longer generated.
+Resist disabling a mutator that produces equivalent mutants when it also kills real
+ones. `Coalesce` is the usual temptation in a codebase built on optional constructor
+injection: it survives on every stateless collaborator, yet it still catches genuine
+missing tests on `??` over data. Set the changed-lines bar under the ceiling those
+survivors impose instead, and disable a mutator only when it produces nothing but
+equivalent mutants for the project — with the reason recorded next to the setting
+and the thresholds raised to cover what it no longer generates.
 
 ## Analysis Scope
 
@@ -194,7 +213,7 @@ report can never be scored.
         "infection:pr": [
             "Composer\\Config::disableProcessTimeout",
             "@infection:coverage",
-            "@php -d memory_limit=1G vendor/bin/infection --configuration=infection-pr.json5 --threads=max --coverage=build/infection-coverage --skip-initial-tests --git-diff-lines --git-diff-base=origin/main"
+            "@php -d memory_limit=1G vendor/bin/infection --configuration=infection.json5 --threads=max --coverage=build/infection-coverage --skip-initial-tests --git-diff-lines --git-diff-base=origin/main --min-msi=85 --min-covered-msi=85 --ignore-msi-with-no-mutations"
         ],
         "infection:coverage": [
             "Composer\\Config::disableProcessTimeout",
@@ -238,9 +257,10 @@ an environment variable rather than interpolating it into the shell:
           BASE_REF: ${{ github.event.pull_request.base.ref }}
         run: |
           composer infection:coverage
-          vendor/bin/infection --configuration=infection-pr.json5 --threads=max \
+          vendor/bin/infection --configuration=infection.json5 --threads=max \
             --coverage=build/infection-coverage --skip-initial-tests \
-            --git-diff-lines --git-diff-base="origin/$BASE_REF"
+            --git-diff-lines --git-diff-base="origin/$BASE_REF" \
+            --min-msi=85 --min-covered-msi=85 --ignore-msi-with-no-mutations
 ```
 
 Calling Infection directly means the coverage step has to be called with it, and
@@ -252,9 +272,11 @@ the flags in the workflow have to stay in step with the Composer script. Prefer
 Mutation thresholds are the first thing an agent lowers when a build goes red, so
 treat these files the way the project treats its other non-negotiable configuration:
 
-- Add `infection.json5` and `infection-pr.json5` to the `permissions.deny` list of
-  `.claude/settings.json`, alongside the PHPUnit and PHPStan configuration.
-- Add them to `.gitattributes` with `export-ignore` if the project excludes dev
+- Add `infection.json5` to the `permissions.deny` list of `.claude/settings.json`,
+  alongside the PHPUnit and PHPStan configuration. The changed-lines thresholds
+  cannot be protected that way — they are flags in `composer.json`, which has to
+  stay editable for dependency work — so say so rather than implying otherwise.
+- Add the file to `.gitattributes` with `export-ignore` if the project excludes dev
   configuration from its distributed archive.
 - Keep `ForbiddenCommentRule` enabled. It rejects `@infection-ignore-all`, which is
   the other way to make a mutant disappear without writing a test.

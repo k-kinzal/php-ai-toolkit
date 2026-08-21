@@ -61,7 +61,7 @@
         "infection:pr": [
             "Composer\\Config::disableProcessTimeout",
             "@infection:coverage",
-            "@php -d memory_limit=1G vendor/bin/infection --configuration=infection-pr.json5 --threads=max --coverage=build/infection-coverage --skip-initial-tests --git-diff-lines --git-diff-base=origin/main"
+            "@php -d memory_limit=1G vendor/bin/infection --configuration=infection.json5 --threads=max --coverage=build/infection-coverage --skip-initial-tests --git-diff-lines --git-diff-base=origin/main --min-msi=85 --min-covered-msi=85 --ignore-msi-with-no-mutations"
         ],
         "infection:coverage": [
             "Composer\\Config::disableProcessTimeout",

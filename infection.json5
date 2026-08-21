@@ -1,29 +1,31 @@
 {
-    // Mutation testing gate for the whole source tree. Run by `composer infection`
-    // and by the `mutation` job of .github/workflows/ci.yml on every push to main.
+    // Mutation testing gate. `composer infection` scores the whole source tree and
+    // `composer infection:pr` scores only the lines a change touches; the `mutation`
+    // job of .github/workflows/ci.yml picks between them by event. One configuration
+    // file, thresholds per run: the changed-lines bar is passed as --min-msi and
+    // --min-covered-msi by the Composer script, which is how Infection is meant to be
+    // driven in CI.
     //
-    // The thresholds below are a ratchet. main scores 82.02% (6845 of 8354 mutants
-    // killed, mutation code coverage 100%); they sit a point under that so a mutant
-    // classified differently by the PHP version CI scores on cannot turn the build
-    // red on its own, while a suite that stops verifying — which loses mutants by
-    // the dozen — still does. Raise them when the score rises.
+    // The thresholds below are the whole-tree ratchet. main scores 82.65% (7288 of
+    // 8831 mutants killed, mutation code coverage 100%); they sit a point under that
+    // so a mutant classified differently by the PHP version CI scores on cannot turn
+    // the build red on its own, while a suite that stops verifying — which loses
+    // mutants by the dozen — still does. Raise them when the score rises.
     //
     // Lowering a threshold, disabling a mutator, or widening `source.excludes` to
     // make a red build green removes the safety net this file exists to provide —
     // fix the tests instead, and ask a human operator when an exception is
     // genuinely justified.
-    //
-    // Changed lines are held to the higher bar in infection-pr.json5. Keep the two
-    // files identical apart from the thresholds and the reporting they need.
     "$schema": "vendor/infection/infection/resources/schema.json",
     "source": {
         "directories": [
             "src"
         ],
         // The PHPUnit 9.6 listener is exercised by tests/Unit/PhpUnit/TestReporter/Legacy,
-        // which only runs under phpunit9.xml.dist on PHP 8.0. Mutation testing runs on a
-        // single modern PHP version, where phpunit.xml.dist excludes those tests, so every
-        // mutant here would be reported as uncovered rather than as a missing test.
+        // which only runs under the PHPUnit 9 configuration on PHP 8.0. Mutation testing
+        // runs on a single modern PHP version, whose configuration excludes those tests,
+        // so every mutant here would be reported as uncovered rather than as a missing
+        // test.
         "excludes": [
             "PhpUnit/TestReporter/Legacy"
         ]

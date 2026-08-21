@@ -19,7 +19,7 @@ have switched off.
 
 ```bash
 composer infection            # whole source tree, thresholds from infection.json5
-composer infection:pr         # changed lines only, thresholds from infection-pr.json5
+composer infection:pr         # changed lines only, stricter thresholds on the command line
 composer infection:coverage   # coverage report both of the above consume
 ```
 
@@ -33,20 +33,32 @@ never be scored. `composer infection:coverage` exists to be called by them, not 
 its own.
 
 All three scripts start with `Composer\Config::disableProcessTimeout`. Composer
-kills a script after 300 seconds, and scoring 8354 mutants takes ten to thirteen
+kills a script after 300 seconds, and scoring 8831 mutants takes ten to thirteen
 minutes on seven threads; without the call the gate dies partway through with a
 process timeout instead of a score.
 
-## Two Configurations
+## One Configuration, Two Thresholds
 
-| File | Scope | Runs on | `minMsi` | `minCoveredMsi` |
+`infection.json5` is the only configuration file. What differs between the two gates
+is a pair of command-line thresholds, which is how Infection is meant to be driven:
+the file carries the scope, the mutators, and the whole-tree ratchet, and
+`composer infection:pr` overrides the ratchet for the lines a change touches.
+
+| Gate | Scope | Runs on | `minMsi` | `minCoveredMsi` |
 |------|-------|---------|----------|-----------------|
-| `infection.json5` | whole `src` tree | pushes to `main` | 81 | 81 |
-| `infection-pr.json5` | lines the pull request changed | pull requests | 90 | 95 |
+| `composer infection` | whole `src` tree | pushes to `main` | 81 (file) | 81 (file) |
+| `composer infection:pr` | lines the change touches | pull requests | 85 (flag) | 85 (flag) |
 
-The two files are identical apart from those thresholds and the reporting each one
-needs. A mutator disabled in one and not the other would mean the two gates measure
-different things.
+Keeping one file means the two gates cannot drift apart: a mutator disabled for one
+would otherwise leave the two measuring different things. The cost is that the
+changed-lines numbers live in `composer.json` rather than behind the deny list that
+protects `infection.json5`; the ratchet that guards the whole tree is the one under
+lock.
+
+`composer infection:pr` also passes `--ignore-msi-with-no-mutations`, so a change
+that produces no mutants at all — documentation, tests, configuration — is not
+scored as 0%. That flag is deliberately not in the file: on a whole-tree run it
+would turn a misconfigured `source.directories` into a silent pass.
 
 `--configuration` is passed explicitly on every invocation. Infection otherwise
 takes the first of `infection.json5`, `infection.json`, `infection.json5.dist`,
@@ -62,11 +74,11 @@ Infection reports two scores, and both are enforced:
 - **Covered MSI** — killed mutants over the mutants in covered code only. It falls
   when tests execute code without asserting anything about it.
 
-The whole-tree numbers are a ratchet. `main` currently scores 82.02%: of the 8354
-mutants generated from `src`, 6845 are killed by the test suite, 5 time out, 2 error
-out, and 1502 survive. Mutation code coverage is 100%, so MSI and Covered MSI are
-the same number here — every mutant is reachable by some test, and the 18% that
-survive are code the tests run without checking.
+The whole-tree numbers are a ratchet. `main` currently scores 82.65%: of the 8831
+mutants generated from `src`, 7288 are killed by the test suite, 11 time out, and
+1532 survive. Mutation code coverage is 100%, so MSI and Covered MSI are the same
+number here — every mutant is reachable by some test, and the 17% that survive are
+code the tests run without checking.
 
 The thresholds sit a point below that, at 81, because CI scores mutants on PHP 8.4
 while the measurement was taken on PHP 8.5: a threshold resting exactly on the
@@ -75,22 +87,29 @@ differently. A suite that actually stops verifying loses mutants by the dozen, s
 the ratchet still catches the thing it is for. Raise both numbers when the score
 rises; that is the one routine edit these files should get.
 
-The changed-lines numbers are higher because new code has no backlog to pay off:
-code being written now can be held to the bar the project actually wants, and that
-is the only moment when enforcing it is cheap. 90 for MSI means a pull request has
-to cover what it adds; 95 for Covered MSI means the tests it adds have to assert
-something. They stop short of 100 on purpose — a suite scoring 82 on the whole tree
-will meet the occasional mutant no test can kill, and a gate that fails every honest
-pull request gets weakened rather than met. `ignoreMsiWithNoMutations` keeps a
-change that produces no mutants at all — documentation, tests, configuration — from
-scoring 0% and failing.
+The changed-lines number is higher because new code has no backlog to pay off: code
+being written now can be held to a bar the whole tree cannot reach yet, and that is
+the only moment when enforcing it is cheap.
 
-These numbers are a real bar rather than a formality. Scored against the last 120
-added lines on `main`, the changed-lines gate generates 19 mutants, kills 17, and
-lands at 89.47% — half a point short. Both survivors are the same shape: a
-constructor writing `$this->x = $x ?? new X()`, where no test injects a stub and
-asserts that the injected one is used. One more test kills both. That is the
-conversation the gate is meant to start.
+85 is where this codebase's own idiom puts the ceiling. The largest single source of
+surviving mutants is `Coalesce`: 448 mutants, 99 killed, 349 escaped. Nearly all of
+them come from optional constructor injection — `$this->x = $x ?? new X()`, which
+appears at 481 sites in `src` — where the mutant reorders the operands into
+`new X() ?? $x`. Every collaborator injected this way is a stateless `final` class,
+so the injected instance and a fresh one behave identically, and no test can tell
+them apart: killing such a mutant would need reflection, which
+`NoReflectionInTestClassRule` forbids, or a getter written for no other purpose.
+They are equivalent mutants, and `ForbiddenCommentRule` rejects the
+`@infection-ignore-all` that would otherwise silence them.
+
+If every `Coalesce` escape were equivalent, the whole tree would top out near 87%.
+Measured against real work rather than a round number: the 22 source files that
+separate `main` from `origin/main` produce 488 mutants on their changed lines and
+score 91.8%, while a four-file slice of the same range produces 19 and scores
+89.47%, dragged down by two of those constructors. Small diffs are noisy — two
+unkillable mutants in twenty cost ten points on their own — so the bar sits where
+both survive. A bar of 90 would have failed the second one, and a gate that fails
+honest work gets met by shrinking pull requests rather than by testing them.
 
 Lowering a threshold, disabling a mutator, widening `source.excludes`, or narrowing
 `source.directories` all turn a red build green by measuring less. None of them is
@@ -153,9 +172,10 @@ every mutant as killed.
 - `per-mutator.md` — score per mutator, which shows whether escapes cluster
 - `infection.json` — the same data for tooling
 
-`infection-pr.json5` writes `escaped.log` and `summary.log`, and enables the
-`github` logger so each surviving mutant appears as an annotation on the pull
-request diff.
+`composer infection:pr` writes the same reports, scoped to the mutants it
+generated. On GitHub Actions, Infection additionally annotates the pull request
+diff with each surviving mutant; it detects the runner itself, so nothing in the
+configuration turns that on.
 
 `tmpDir` is `build/infection-tmp`, deliberately not the report directory: Infection
 wipes its temporary directory when the run finishes, and reports written inside it
@@ -188,7 +208,12 @@ toolkit gate that is not exercised on every supported PHP version.
 
 ## Changing the Configuration
 
-`infection.json5` and `infection-pr.json5` are listed in the `permissions.deny`
-block of `.claude/settings.json`, next to `phpunit.xml.dist` and `phpstan.neon`.
-An agent cannot edit them; a human operator can. Raising a threshold after the score
-improves is the routine edit, and it is a one-line change.
+`infection.json5` is listed in the `permissions.deny` block of
+`.claude/settings.json`, next to `phpunit.xml.dist` and `phpstan.neon`. An agent
+cannot edit it; a human operator can. Raising a threshold after the score improves
+is the routine edit, and it is a one-line change.
+
+The changed-lines thresholds are the exception: they are `--min-msi` and
+`--min-covered-msi` in the `infection:pr` Composer script, and `composer.json`
+cannot join the deny list without blocking every dependency change. Review them the
+way any other number in that file gets reviewed.

@@ -60,6 +60,7 @@ that list; where there is none, the dispatch is left alone.
 | A union of classes, e.g. `Circle\|Square\|Triangle` | those classes |
 | `$shape::class` where every class of the union is `final` | those class names, as literal strings |
 | `$shape::class` / `get_class($shape)` where `$shape` is an interface or abstract class | every class below it in the analysed code |
+| `$suit->value` on a backed enum | the case values |
 | Anything narrowed to fewer values earlier in the method | only what is left |
 | `string`, `int`, `object`, an object subject that is not read through its class name | *(open — not reported)* |
 
@@ -147,6 +148,13 @@ hierarchy, `$shape::class` says so; where it is a union type, the signature says
   string means the table is not answering for a set of classes, so nothing is required of it.
 - A class-name dispatch that names no class of the subject's hierarchy at all. Like the
   claims-nothing case above, that is a comparison rather than a table.
+- A subject that computes a class name rather than reading one, such as
+  `match ($p === null ? Visa::class : $p::class)`. Only `$x::class` and `get_class($x)` name the
+  object the table is answering for; anything else is a string whose values are unknown.
+- A `match (true)` whose branches narrow through a call, such as
+  `in_array($suit, [Suit::Hearts, Suit::Diamonds], true)`. Only `instanceof` and comparisons
+  against a constant are read as naming a subject, so such a table is left alone. Written with the
+  enum next to the keyword the same code is checked.
 - A subject with more than 32 values. Past that the list stops being something a reader can act on,
   and the type is almost certainly not a hand-written set of alternatives.
 

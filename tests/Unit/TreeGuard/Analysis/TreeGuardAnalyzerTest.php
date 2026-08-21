@@ -16,6 +16,7 @@ use PhpAiToolkit\TreeGuard\Analysis\FileNameInspector;
 use PhpAiToolkit\TreeGuard\Analysis\RequiredFileInspector;
 use PhpAiToolkit\TreeGuard\Analysis\TotalFileCountInspector;
 use PhpAiToolkit\TreeGuard\Analysis\TreeGuardAnalyzer;
+use PhpAiToolkit\TreeGuard\Analysis\Violation;
 use PhpAiToolkit\TreeGuard\Config\ReportConfig;
 use PhpAiToolkit\TreeGuard\Config\RuleConfig;
 use PhpAiToolkit\TreeGuard\Config\TreeGuardConfig;
@@ -48,6 +49,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(TotalFileCountInspector::class)]
 #[UsesClass(TreeGuardConfig::class)]
 #[UsesClass(TreeGuardPathResolver::class)]
+#[UsesClass(Violation::class)]
 final class TreeGuardAnalyzerTest extends TestCase
 {
     public function testAnalyzeReportsViolationsForMatchedDirectories(): void

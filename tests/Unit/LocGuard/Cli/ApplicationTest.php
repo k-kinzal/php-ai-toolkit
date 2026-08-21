@@ -7,6 +7,7 @@ namespace Tests\Unit\LocGuard\Cli;
 use PhpAiToolkit\LocGuard\Analysis\AnalysisResult;
 use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader;
 use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector;
+use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder;
 use PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityCalculator;
 use PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState;
 use PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticDecisionWeight;
@@ -17,10 +18,13 @@ use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowExpressionBoundary;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowFunctionMetricReader;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\BlockFunctionMetricReader;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionBodyLocator;
+use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionComplexityViolationBuilder;
+use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionLineViolationBuilder;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricCollector;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricComplexityAssigner;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricLineCollector;
+use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricViolationBuilder;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionNameReader;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionScanState;
 use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\NestedFunctionMetricRange;
@@ -52,6 +56,10 @@ use PhpAiToolkit\LocGuard\Filesystem\PhpFileInclusionPolicy;
 use PhpAiToolkit\LocGuard\Filesystem\PhpPathFileCollector;
 use PhpAiToolkit\LocGuard\LocGuardException;
 use PhpAiToolkit\LocGuard\Reporting\AiReporter;
+use PhpAiToolkit\LocGuard\Reporting\AiReportGuidance;
+use PhpAiToolkit\LocGuard\Reporting\AiReportSummary;
+use PhpAiToolkit\LocGuard\Reporting\AiViolationAction;
+use PhpAiToolkit\LocGuard\Reporting\AiViolationFormatter;
 use PhpAiToolkit\LocGuard\Reporting\JsonReporter;
 use PhpAiToolkit\LocGuard\Reporting\ReporterFactory;
 use PhpAiToolkit\LocGuard\Reporting\TextReporter;
@@ -61,36 +69,44 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Application::class)]
+#[UsesClass(AiReportGuidance::class)]
+#[UsesClass(AiReportSummary::class)]
 #[UsesClass(AiReporter::class)]
+#[UsesClass(AiViolationAction::class)]
+#[UsesClass(AiViolationFormatter::class)]
 #[UsesClass(AnalysisResult::class)]
 #[UsesClass(ArrowExpressionBoundary::class)]
 #[UsesClass(ArrowFunctionMetricReader::class)]
 #[UsesClass(BlockFunctionMetricReader::class)]
-#[UsesClass(ClassLikeMetricCollector::class)]
 #[UsesClass(ClassLikeDeclarationReader::class)]
+#[UsesClass(ClassLikeMetricCollector::class)]
+#[UsesClass(ClassLikeMetricViolationBuilder::class)]
 #[UsesClass(ClassLikeTokenMatcher::class)]
 #[UsesClass(CodeTokenLineResolver::class)]
-#[UsesClass(CyclomaticComplexityCalculator::class)]
-#[UsesClass(CyclomaticComplexityState::class)]
-#[UsesClass(CyclomaticDecisionWeight::class)]
 #[UsesClass(ConfigLoader::class)]
 #[UsesClass(ConfigScalarReader::class)]
 #[UsesClass(ConfigStringListReader::class)]
+#[UsesClass(CyclomaticComplexityCalculator::class)]
+#[UsesClass(CyclomaticComplexityState::class)]
+#[UsesClass(CyclomaticDecisionWeight::class)]
 #[UsesClass(FileAnalysis::class)]
 #[UsesClass(FileMetric::class)]
 #[UsesClass(FileMetricViolationBuilder::class)]
 #[UsesClass(FunctionBodyLocator::class)]
+#[UsesClass(FunctionComplexityViolationBuilder::class)]
+#[UsesClass(FunctionLineViolationBuilder::class)]
 #[UsesClass(FunctionMetric::class)]
 #[UsesClass(FunctionMetricCollector::class)]
 #[UsesClass(FunctionMetricComplexityAssigner::class)]
 #[UsesClass(FunctionMetricLineCollector::class)]
+#[UsesClass(FunctionMetricViolationBuilder::class)]
 #[UsesClass(FunctionNameReader::class)]
 #[UsesClass(FunctionScanState::class)]
 #[UsesClass(JsonReporter::class)]
 #[UsesClass(LimitConfig::class)]
 #[UsesClass(LimitConfigReader::class)]
-#[UsesClass(LocGuardAnalyzer::class)]
 #[UsesClass(LocGuardAnalysisRunner::class)]
+#[UsesClass(LocGuardAnalyzer::class)]
 #[UsesClass(LocGuardCliArgumentParser::class)]
 #[UsesClass(LocGuardConfig::class)]
 #[UsesClass(LocGuardConfigPathResolver::class)]
@@ -108,8 +124,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ReportConfig::class)]
 #[UsesClass(ReportConfigReader::class)]
 #[UsesClass(ReporterFactory::class)]
-#[UsesClass(TokenLineCounter::class)]
 #[UsesClass(TextReporter::class)]
+#[UsesClass(TokenLineCounter::class)]
 #[UsesClass(Violation::class)]
 #[UsesClass(ViolationSorter::class)]
 final class ApplicationTest extends TestCase

@@ -10,6 +10,7 @@ use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApiConstantPhpDocErrorCollector;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApiMethodPhpDocErrorCollector;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApiPhpDocErrorCollector;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApiPropertyPhpDocErrorCollector;
+use PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 use PhpParser\Node\Stmt\Class_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -18,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 #[CoversClass(PublicApiPhpDocErrorCollector::class)]
+#[UsesClass(LineOrderedErrors::class)]
 #[UsesClass(PhpParserBridge::class)]
 #[UsesClass(PublicApiClassPhpDocErrorCollector::class)]
 #[UsesClass(PublicApiConstantPhpDocErrorCollector::class)]

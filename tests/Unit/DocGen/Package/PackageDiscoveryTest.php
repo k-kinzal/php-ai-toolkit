@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\DocGen\Package;
 
 use PhpAiToolkit\DocGen\Config\DocGenConfig;
+use PhpAiToolkit\DocGen\Config\RepositoryUrl;
 use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Package\ComposerLockReader;
 use PhpAiToolkit\DocGen\Package\ComposerManifest;
@@ -25,6 +26,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DocGenConfig::class)]
 #[UsesClass(DocGenException::class)]
+#[UsesClass(RepositoryUrl::class)]
 #[UsesClass(VendorPackageLocator::class)]
 final class PackageDiscoveryTest extends TestCase
 {

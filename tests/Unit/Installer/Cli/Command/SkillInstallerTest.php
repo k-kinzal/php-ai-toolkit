@@ -13,6 +13,7 @@ use function mkdir;
 use PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator;
 use PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter;
 use PhpAiToolkit\Installer\Cli\Command\SkillInstaller;
+use PhpAiToolkit\Installer\PathNormalizer;
 use PhpAiToolkit\Installer\RelativePathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -22,6 +23,7 @@ use function sys_get_temp_dir;
 use function uniqid;
 
 #[CoversClass(SkillInstaller::class)]
+#[UsesClass(PathNormalizer::class)]
 #[UsesClass(RelativePathResolver::class)]
 #[UsesClass(SkillFilesystemOperator::class)]
 #[UsesClass(SkillInstallationWriter::class)]

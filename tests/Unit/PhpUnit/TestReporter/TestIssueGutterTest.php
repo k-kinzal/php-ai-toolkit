@@ -7,9 +7,11 @@ namespace Tests\Unit\PhpUnit\TestReporter;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueGutter;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TestIssueGutter::class)]
+#[UsesClass(TestIssue::class)]
 final class TestIssueGutterTest extends TestCase
 {
     public function testWidthReturnsAtLeastThreeCharacters(): void

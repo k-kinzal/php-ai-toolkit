@@ -25,6 +25,8 @@ use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 use PhpAiToolkit\DocGen\Render\RepositoryLink;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
+use PhpAiToolkit\DocGen\Render\SocialCard;
+use PhpAiToolkit\DocGen\Render\SocialMeta;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -48,6 +50,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(RenderKit::class)]
 #[UsesClass(RepositoryLink::class)]
 #[UsesClass(SiteUrl::class)]
+#[UsesClass(SocialCard::class)]
+#[UsesClass(SocialMeta::class)]
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(TypeHtml::class)]

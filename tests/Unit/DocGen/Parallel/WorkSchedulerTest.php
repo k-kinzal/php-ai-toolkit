@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Parallel;
 
+use PhpAiToolkit\DocGen\Parallel\CpuCoreCounter;
+use PhpAiToolkit\DocGen\Parallel\WorkerCount;
 use PhpAiToolkit\DocGen\Parallel\WorkScheduler;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(WorkScheduler::class)]
+#[UsesClass(CpuCoreCounter::class)]
+#[UsesClass(WorkerCount::class)]
 final class WorkSchedulerTest extends TestCase
 {
     public function testScheduleKeepsEveryItemInOriginalOrderAcrossConsecutiveJobs(): void

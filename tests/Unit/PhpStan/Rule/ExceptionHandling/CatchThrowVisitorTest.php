@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
 use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor;
+use PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\Throw_;
@@ -12,9 +13,11 @@ use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\TryCatch;
 use PhpParser\NodeTraverser;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(CatchThrowVisitor::class)]
+#[UsesClass(ThrownExpression::class)]
 final class CatchThrowVisitorTest extends TestCase
 {
     public function testEnterNodeCollectsThrowStatements(): void

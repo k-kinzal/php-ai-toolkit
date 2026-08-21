@@ -7,9 +7,11 @@ namespace Tests\Unit\PhpUnit\TestReporter;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSummary;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TestIssueSummary::class)]
+#[UsesClass(TestIssue::class)]
 final class TestIssueSummaryTest extends TestCase
 {
     public function testCountByTypeCountsIssuesByType(): void

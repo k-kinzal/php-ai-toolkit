@@ -26,6 +26,7 @@ use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
 use PhpAiToolkit\DocGen\Cache\CachedPageWriter;
+use PhpAiToolkit\DocGen\Cache\CacheStore;
 use PhpAiToolkit\DocGen\Cache\PageRecord;
 use PhpAiToolkit\DocGen\Cache\RenderCache;
 use PhpAiToolkit\DocGen\Cache\ToolkitFingerprint;
@@ -33,6 +34,10 @@ use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
 use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
+use PhpAiToolkit\DocGen\Parallel\CpuCoreCounter;
+use PhpAiToolkit\DocGen\Parallel\WorkerCount;
+use PhpAiToolkit\DocGen\Parallel\WorkerPool;
+use PhpAiToolkit\DocGen\Parallel\WorkScheduler;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
 use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
 use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
@@ -63,6 +68,7 @@ use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
 use PhpAiToolkit\DocGen\Render\Page\SignatureHtml;
 use PhpAiToolkit\DocGen\Render\Page\SourcePage;
+use PhpAiToolkit\DocGen\Render\Page\SymbolDescription;
 use PhpAiToolkit\DocGen\Render\Page\SymbolIndex;
 use PhpAiToolkit\DocGen\Render\Page\SymbolListHtml;
 use PhpAiToolkit\DocGen\Render\Page\SymbolRow;
@@ -71,6 +77,7 @@ use PhpAiToolkit\DocGen\Render\Page\UsageListHtml;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
+use PhpAiToolkit\DocGen\Render\RepositoryLink;
 use PhpAiToolkit\DocGen\Render\SearchIndexBuilder;
 use PhpAiToolkit\DocGen\Render\Signature\PageSignature;
 use PhpAiToolkit\DocGen\Render\Signature\SidebarDigest;
@@ -79,6 +86,8 @@ use PhpAiToolkit\DocGen\Render\Signature\SymbolReferenceScanner;
 use PhpAiToolkit\DocGen\Render\SitePages;
 use PhpAiToolkit\DocGen\Render\SiteRenderer;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
+use PhpAiToolkit\DocGen\Render\SocialCard;
+use PhpAiToolkit\DocGen\Render\SocialMeta;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PhpAiToolkit\DocGen\Render\TypeRenderContext;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -87,23 +96,17 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversClass(SiteRenderer::class)]
 #[UsesClass(AllItemsPage::class)]
-#[UsesClass(CachedPageWriter::class)]
-#[UsesClass(PageRecord::class)]
-#[UsesClass(RenderCache::class)]
-#[UsesClass(PageSignature::class)]
-#[UsesClass(SidebarDigest::class)]
-#[UsesClass(SitePages::class)]
-#[UsesClass(SourceDigestIndex::class)]
-#[UsesClass(SymbolReferenceScanner::class)]
-#[UsesClass(ToolkitFingerprint::class)]
 #[UsesClass(AssertionScanner::class)]
 #[UsesClass(AssetPublisher::class)]
 #[UsesClass(BreadcrumbHtml::class)]
+#[UsesClass(CacheStore::class)]
+#[UsesClass(CachedPageWriter::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(ClassLikeKind::class)]
 #[UsesClass(ClassLikePage::class)]
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(ConstantDoc::class)]
+#[UsesClass(CpuCoreCounter::class)]
 #[UsesClass(DiffBanner::class)]
 #[UsesClass(DiffHtml::class)]
 #[UsesClass(DiffIndex::class)]
@@ -113,8 +116,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(DiffStatus::class)]
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DocBlock::class)]
-#[UsesClass(DoctestExtractor::class)]
 #[UsesClass(DocTextHtml::class)]
+#[UsesClass(DoctestExtractor::class)]
 #[UsesClass(DocumentListHtml::class)]
 #[UsesClass(DocumentPage::class)]
 #[UsesClass(ExampleHtml::class)]
@@ -138,30 +141,45 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PackageGraph::class)]
 #[UsesClass(PackagePage::class)]
 #[UsesClass(PageChrome::class)]
+#[UsesClass(PageRecord::class)]
+#[UsesClass(PageSignature::class)]
 #[UsesClass(PhpHighlighter::class)]
 #[UsesClass(PrivateSurfaceHtml::class)]
 #[UsesClass(ProjectModel::class)]
 #[UsesClass(RelationsHtml::class)]
+#[UsesClass(RenderCache::class)]
 #[UsesClass(RenderKit::class)]
+#[UsesClass(RepositoryLink::class)]
 #[UsesClass(SearchIndexBuilder::class)]
+#[UsesClass(SidebarDigest::class)]
 #[UsesClass(SidebarHtml::class)]
 #[UsesClass(SidebarScope::class)]
 #[UsesClass(SignatureHtml::class)]
 #[UsesClass(SiteFileWriter::class)]
+#[UsesClass(SitePages::class)]
 #[UsesClass(SiteUrl::class)]
+#[UsesClass(SocialCard::class)]
+#[UsesClass(SocialMeta::class)]
 #[UsesClass(SourceDiffHtml::class)]
+#[UsesClass(SourceDigestIndex::class)]
 #[UsesClass(SourcePage::class)]
+#[UsesClass(SymbolDescription::class)]
 #[UsesClass(SymbolIndex::class)]
 #[UsesClass(SymbolListHtml::class)]
+#[UsesClass(SymbolReferenceScanner::class)]
 #[UsesClass(SymbolRow::class)]
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TestCaseHtml::class)]
 #[UsesClass(TestCaseIndex::class)]
+#[UsesClass(ToolkitFingerprint::class)]
 #[UsesClass(TypeHtml::class)]
 #[UsesClass(TypeRenderContext::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UsageIndex::class)]
 #[UsesClass(UsageListHtml::class)]
+#[UsesClass(WorkScheduler::class)]
+#[UsesClass(WorkerCount::class)]
+#[UsesClass(WorkerPool::class)]
 final class SiteRendererTest extends TestCase
 {
     public function testRenderWritesCompleteSite(): void

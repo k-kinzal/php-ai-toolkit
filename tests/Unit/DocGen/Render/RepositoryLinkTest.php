@@ -12,7 +12,9 @@ use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
+use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
 use PhpAiToolkit\DocGen\Render\HtmlText;
+use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
 use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
@@ -24,13 +26,17 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(RepositoryLink::class)]
+#[UsesClass(DiffHtml::class)]
 #[UsesClass(HierarchyIndex::class)]
 #[UsesClass(HtmlText::class)]
+#[UsesClass(MarkdownInline::class)]
+#[UsesClass(MarkdownRenderer::class)]
 #[UsesClass(PackageGraph::class)]
 #[UsesClass(ProjectModel::class)]
 #[UsesClass(RenderKit::class)]
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TestCaseIndex::class)]
+#[UsesClass(TypeHtml::class)]
 #[UsesClass(UsageIndex::class)]
 final class RepositoryLinkTest extends TestCase
 {

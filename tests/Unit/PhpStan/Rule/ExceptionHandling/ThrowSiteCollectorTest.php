@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
 use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteCollector;
+use PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -13,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(ThrowSiteCollector::class)]
 #[UsesClass(\PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite::class)]
 #[UsesClass(\PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor::class)]
+#[UsesClass(ThrownExpression::class)]
 final class ThrowSiteCollectorTest extends TestCase
 {
     public function testCollectReturnsUncaughtThrowsWithGuards(): void

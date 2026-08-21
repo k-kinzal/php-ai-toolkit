@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Package;
 
+use PhpAiToolkit\DocGen\Config\RepositoryUrl;
 use PhpAiToolkit\DocGen\Package\ComposerLockReader;
 use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\ComposerManifestReader;
@@ -19,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(ComposerManifestReader::class)]
 #[UsesClass(DiscoveredPackage::class)]
+#[UsesClass(RepositoryUrl::class)]
 #[UsesClass(VendorPackageLocator::class)]
 final class DevPackageResolverTest extends TestCase
 {

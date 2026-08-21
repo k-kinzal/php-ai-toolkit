@@ -7,6 +7,9 @@ namespace Tests\Unit\DocGen\Analysis\Parse;
 use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
 use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use PhpAiToolkit\DocGen\Analysis\Model\MethodDoc;
+use PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc;
+use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
 use PhpAiToolkit\DocGen\Analysis\Parse\AstParser;
 use PhpAiToolkit\DocGen\Analysis\Parse\ClassLikeBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\ConstantBuilder;
@@ -28,6 +31,8 @@ use PhpAiToolkit\DocGen\Analysis\Reference\LocalTypeMap;
 use PhpAiToolkit\DocGen\Analysis\Reference\PropertyTypeScanner;
 use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageCollector;
+use PhpAiToolkit\DocGen\Cache\SourceFileKey;
+use PhpAiToolkit\DocGen\Cache\ToolkitFingerprint;
 use PhpAiToolkit\DocGen\Config\DocGenConfig;
 use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
@@ -63,21 +68,26 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(FunctionBuilder::class)]
 #[UsesClass(LocalTypeMap::class)]
 #[UsesClass(MethodBuilder::class)]
+#[UsesClass(MethodDoc::class)]
 #[UsesClass(NativeTypePrinter::class)]
 #[UsesClass(ParameterBuilder::class)]
+#[UsesClass(ParameterDoc::class)]
 #[UsesClass(ParameterModifiers::class)]
 #[UsesClass(PhpDocParserBridge::class)]
 #[UsesClass(PhpParserBridge::class)]
 #[UsesClass(PropertyBuilder::class)]
 #[UsesClass(PropertyTypeScanner::class)]
 #[UsesClass(SourceFileFinder::class)]
+#[UsesClass(SourceFileKey::class)]
 #[UsesClass(SymbolContext::class)]
+#[UsesClass(ToolkitFingerprint::class)]
+#[UsesClass(TypeSignature::class)]
 #[UsesClass(Usage::class)]
 #[UsesClass(UsageCollector::class)]
 #[UsesClass(UseMapCollector::class)]
+#[UsesClass(WorkScheduler::class)]
 #[UsesClass(WorkerCount::class)]
 #[UsesClass(WorkerPool::class)]
-#[UsesClass(WorkScheduler::class)]
 final class ProjectSymbolCollectorTest extends TestCase
 {
     public function testCollectParsesPackageSourcesIntoSymbolLists(): void

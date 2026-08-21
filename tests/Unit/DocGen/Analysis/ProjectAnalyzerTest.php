@@ -32,6 +32,7 @@ use PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter;
 use PhpAiToolkit\DocGen\Analysis\Parse\ParameterBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use PhpAiToolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
 use PhpAiToolkit\DocGen\Analysis\Parse\PropertyBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext;
 use PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector;
@@ -46,7 +47,10 @@ use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageCollector;
 use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
+use PhpAiToolkit\DocGen\Cache\SourceFileKey;
+use PhpAiToolkit\DocGen\Cache\ToolkitFingerprint;
 use PhpAiToolkit\DocGen\Config\DocGenConfig;
+use PhpAiToolkit\DocGen\Config\RepositoryUrl;
 use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
 use PhpAiToolkit\DocGen\Filesystem\MarkdownFileFinder;
@@ -60,6 +64,10 @@ use PhpAiToolkit\DocGen\Package\PackageDiscovery;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PhpAiToolkit\DocGen\Package\PackageGraphBuilder;
 use PhpAiToolkit\DocGen\Package\VendorPackageLocator;
+use PhpAiToolkit\DocGen\Parallel\CpuCoreCounter;
+use PhpAiToolkit\DocGen\Parallel\WorkerCount;
+use PhpAiToolkit\DocGen\Parallel\WorkerPool;
+use PhpAiToolkit\DocGen\Parallel\WorkScheduler;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -74,6 +82,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ConstantBuilder::class)]
 #[UsesClass(CoverageIndex::class)]
 #[UsesClass(CoverageReader::class)]
+#[UsesClass(CpuCoreCounter::class)]
 #[UsesClass(DeptracConfigReader::class)]
 #[UsesClass(DevPackageResolver::class)]
 #[UsesClass(DiscoveredPackage::class)]
@@ -107,19 +116,26 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PhpDocParserBridge::class)]
 #[UsesClass(PhpParserBridge::class)]
 #[UsesClass(ProjectModel::class)]
+#[UsesClass(ProjectSymbolCollector::class)]
 #[UsesClass(PropertyBuilder::class)]
 #[UsesClass(PropertyTypeScanner::class)]
+#[UsesClass(ReferenceTestCase::class)]
+#[UsesClass(RepositoryUrl::class)]
 #[UsesClass(SourceFileFinder::class)]
+#[UsesClass(SourceFileKey::class)]
 #[UsesClass(SymbolContext::class)]
 #[UsesClass(SymbolTable::class)]
-#[UsesClass(ReferenceTestCase::class)]
 #[UsesClass(TestCaseIndex::class)]
+#[UsesClass(ToolkitFingerprint::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(Usage::class)]
 #[UsesClass(UsageCollector::class)]
 #[UsesClass(UsageIndex::class)]
 #[UsesClass(UseMapCollector::class)]
 #[UsesClass(VendorPackageLocator::class)]
+#[UsesClass(WorkScheduler::class)]
+#[UsesClass(WorkerCount::class)]
+#[UsesClass(WorkerPool::class)]
 final class ProjectAnalyzerTest extends TestCase
 {
     public function testAnalyzeBuildsModelFromTinyComposerProject(): void

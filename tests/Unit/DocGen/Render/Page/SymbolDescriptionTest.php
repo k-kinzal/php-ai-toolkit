@@ -7,7 +7,10 @@ namespace Tests\Unit\DocGen\Render\Page;
 use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
 use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
 use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
+use PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc;
+use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
 use PhpAiToolkit\DocGen\Analysis\Parse\AstParser;
 use PhpAiToolkit\DocGen\Analysis\Parse\ClassLikeBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\ConstantBuilder;
@@ -34,6 +37,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ClassLikeBuilder::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(ConstantBuilder::class)]
+#[UsesClass(DocBlock::class)]
 #[UsesClass(DocBlockReader::class)]
 #[UsesClass(EnumCaseBuilder::class)]
 #[UsesClass(ExprTextPrinter::class)]
@@ -44,11 +48,13 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(MethodBuilder::class)]
 #[UsesClass(NativeTypePrinter::class)]
 #[UsesClass(ParameterBuilder::class)]
+#[UsesClass(ParameterDoc::class)]
 #[UsesClass(ParameterModifiers::class)]
 #[UsesClass(PhpDocParserBridge::class)]
 #[UsesClass(PhpParserBridge::class)]
 #[UsesClass(PropertyBuilder::class)]
 #[UsesClass(SymbolContext::class)]
+#[UsesClass(TypeSignature::class)]
 #[UsesClass(UseMapCollector::class)]
 final class SymbolDescriptionTest extends TestCase
 {

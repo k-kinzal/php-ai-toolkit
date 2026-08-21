@@ -42,15 +42,16 @@ use PhpAiToolkit\TreeGuard\Reporting\AiViolationAction;
 use PhpAiToolkit\TreeGuard\Reporting\AiViolationFormatter;
 use PhpAiToolkit\TreeGuard\Reporting\JsonReporter;
 use PhpAiToolkit\TreeGuard\Reporting\ReporterFactory;
+use PhpAiToolkit\TreeGuard\Reporting\ViolationSorter;
 use PhpAiToolkit\TreeGuard\TreeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TreeGuardAnalysisRunner::class)]
-#[UsesClass(AiReporter::class)]
 #[UsesClass(AiReportGuidance::class)]
 #[UsesClass(AiReportSummary::class)]
+#[UsesClass(AiReporter::class)]
 #[UsesClass(AiViolationAction::class)]
 #[UsesClass(AiViolationFormatter::class)]
 #[UsesClass(AnalysisResult::class)]
@@ -86,6 +87,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(TreeGuardPathResolver::class)]
 #[UsesClass(TreeGuardReporterOverride::class)]
 #[UsesClass(Violation::class)]
+#[UsesClass(ViolationSorter::class)]
 final class TreeGuardAnalysisRunnerTest extends TestCase
 {
     public function testRunReturnsZeroAndWritesReportWithoutViolations(): void

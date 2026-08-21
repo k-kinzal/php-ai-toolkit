@@ -18,6 +18,7 @@ use PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator;
 use PhpAiToolkit\Installer\Cli\Command\SkillInstallationRunner;
 use PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter;
 use PhpAiToolkit\Installer\Cli\Command\SkillInstaller;
+use PhpAiToolkit\Installer\PathNormalizer;
 use PhpAiToolkit\Installer\RelativePathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -37,6 +38,7 @@ use function unlink;
 #[CoversClass(InstallCommand::class)]
 #[UsesClass(AgentSkillDirectoryDetector::class)]
 #[UsesClass(PackageSkillDirectoryScanner::class)]
+#[UsesClass(PathNormalizer::class)]
 #[UsesClass(RelativePathResolver::class)]
 #[UsesClass(SkillFilesystemOperator::class)]
 #[UsesClass(SkillInstallationRunner::class)]

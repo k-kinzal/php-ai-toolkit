@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter;
 
+use PhpAiToolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TestIssueSourceLocationResolver::class)]
+#[UsesClass(StackTraceFrameLocationParser::class)]
 final class TestIssueSourceLocationResolverTest extends TestCase
 {
     public function testResolveReturnsFirstApplicationFrame(): void

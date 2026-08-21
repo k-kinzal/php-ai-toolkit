@@ -4,14 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter;
 
+use PhpAiToolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser;
+use PhpAiToolkit\PhpUnit\TestReporter\TestFailureLineResolver;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueInput;
+use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TestIssueCollector::class)]
 #[CoversClass(TestIssueInput::class)]
+#[UsesClass(StackTraceFrameLocationParser::class)]
+#[UsesClass(TestFailureLineResolver::class)]
+#[UsesClass(TestIssue::class)]
+#[UsesClass(TestIssueSourceLocationResolver::class)]
 final class TestIssueCollectorTest extends TestCase
 {
     public function testHasIssuesReturnsFalseWhenEmpty(): void

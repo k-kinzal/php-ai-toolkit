@@ -45,6 +45,7 @@ use PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter;
 use PhpAiToolkit\DocGen\Analysis\Parse\ParameterBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use PhpAiToolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
 use PhpAiToolkit\DocGen\Analysis\Parse\PropertyBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext;
 use PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector;
@@ -71,10 +72,12 @@ use PhpAiToolkit\DocGen\Cli\DocGenGenerationRunner;
 use PhpAiToolkit\DocGen\Cli\DocGenMemoryLimit;
 use PhpAiToolkit\DocGen\Cli\DocGenOutputWriter;
 use PhpAiToolkit\DocGen\Cli\DocGenPreviewServer;
+use PhpAiToolkit\DocGen\Config\BaseUrl;
 use PhpAiToolkit\DocGen\Config\ConfigLoader;
 use PhpAiToolkit\DocGen\Config\ConfigScalarReader;
 use PhpAiToolkit\DocGen\Config\ConfigStringListReader;
 use PhpAiToolkit\DocGen\Config\DocGenConfig;
+use PhpAiToolkit\DocGen\Config\RepositoryUrl;
 use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
 use PhpAiToolkit\DocGen\Filesystem\MarkdownFileFinder;
@@ -94,6 +97,10 @@ use PhpAiToolkit\DocGen\Package\PackageDiscovery;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PhpAiToolkit\DocGen\Package\PackageGraphBuilder;
 use PhpAiToolkit\DocGen\Package\VendorPackageLocator;
+use PhpAiToolkit\DocGen\Parallel\CpuCoreCounter;
+use PhpAiToolkit\DocGen\Parallel\WorkerCount;
+use PhpAiToolkit\DocGen\Parallel\WorkerPool;
+use PhpAiToolkit\DocGen\Parallel\WorkScheduler;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
 use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
 use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
@@ -123,6 +130,7 @@ use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
 use PhpAiToolkit\DocGen\Render\Page\SignatureHtml;
 use PhpAiToolkit\DocGen\Render\Page\SourcePage;
+use PhpAiToolkit\DocGen\Render\Page\SymbolDescription;
 use PhpAiToolkit\DocGen\Render\Page\SymbolIndex;
 use PhpAiToolkit\DocGen\Render\Page\SymbolListHtml;
 use PhpAiToolkit\DocGen\Render\Page\SymbolRow;
@@ -131,6 +139,7 @@ use PhpAiToolkit\DocGen\Render\Page\UsageListHtml;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
+use PhpAiToolkit\DocGen\Render\RepositoryLink;
 use PhpAiToolkit\DocGen\Render\SearchIndexBuilder;
 use PhpAiToolkit\DocGen\Render\Signature\PageSignature;
 use PhpAiToolkit\DocGen\Render\Signature\SidebarDigest;
@@ -139,6 +148,8 @@ use PhpAiToolkit\DocGen\Render\Signature\SymbolReferenceScanner;
 use PhpAiToolkit\DocGen\Render\SitePages;
 use PhpAiToolkit\DocGen\Render\SiteRenderer;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
+use PhpAiToolkit\DocGen\Render\SocialCard;
+use PhpAiToolkit\DocGen\Render\SocialMeta;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PhpAiToolkit\DocGen\Render\TypeRenderContext;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -150,26 +161,16 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(AssertionScanner::class)]
 #[UsesClass(AssetPublisher::class)]
 #[UsesClass(AstParser::class)]
+#[UsesClass(BaseUrl::class)]
 #[UsesClass(BreadcrumbHtml::class)]
+#[UsesClass(CacheStore::class)]
+#[UsesClass(CachedPageWriter::class)]
 #[UsesClass(ClassLikeBuilder::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(ClassLikeKind::class)]
 #[UsesClass(ClassLikeMerger::class)]
 #[UsesClass(ClassLikePage::class)]
-#[UsesClass(CacheStore::class)]
-#[UsesClass(CachedPageWriter::class)]
 #[UsesClass(ComposerLockReader::class)]
-#[UsesClass(GenerationCache::class)]
-#[UsesClass(PageRecord::class)]
-#[UsesClass(PageSignature::class)]
-#[UsesClass(ParseCache::class)]
-#[UsesClass(RenderCache::class)]
-#[UsesClass(SidebarDigest::class)]
-#[UsesClass(SitePages::class)]
-#[UsesClass(SourceDigestIndex::class)]
-#[UsesClass(SourceFileKey::class)]
-#[UsesClass(SymbolReferenceScanner::class)]
-#[UsesClass(ToolkitFingerprint::class)]
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(ComposerManifestReader::class)]
 #[UsesClass(ConfigLoader::class)]
@@ -177,6 +178,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ConfigStringListReader::class)]
 #[UsesClass(ConstantBuilder::class)]
 #[UsesClass(CoverageReader::class)]
+#[UsesClass(CpuCoreCounter::class)]
 #[UsesClass(DeptracConfigReader::class)]
 #[UsesClass(DevPackageResolver::class)]
 #[UsesClass(DiffBanner::class)]
@@ -198,8 +200,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(DocGenOutputWriter::class)]
 #[UsesClass(DocGenPathResolver::class)]
 #[UsesClass(DocGenPreviewServer::class)]
-#[UsesClass(DoctestExtractor::class)]
 #[UsesClass(DocTextHtml::class)]
+#[UsesClass(DoctestExtractor::class)]
 #[UsesClass(DocumentCollector::class)]
 #[UsesClass(DocumentDiffer::class)]
 #[UsesClass(DocumentListHtml::class)]
@@ -212,6 +214,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(FunctionBuilder::class)]
 #[UsesClass(FunctionMerger::class)]
 #[UsesClass(FunctionPage::class)]
+#[UsesClass(GenerationCache::class)]
 #[UsesClass(GitCommandRunner::class)]
 #[UsesClass(GitRepository::class)]
 #[UsesClass(GitWorktree::class)]
@@ -239,10 +242,13 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PackageGraphBuilder::class)]
 #[UsesClass(PackagePage::class)]
 #[UsesClass(PageChrome::class)]
+#[UsesClass(PageRecord::class)]
+#[UsesClass(PageSignature::class)]
 #[UsesClass(ParameterBuilder::class)]
 #[UsesClass(ParameterDoc::class)]
 #[UsesClass(ParameterMerger::class)]
 #[UsesClass(ParameterModifiers::class)]
+#[UsesClass(ParseCache::class)]
 #[UsesClass(PhpDocParserBridge::class)]
 #[UsesClass(PhpHighlighter::class)]
 #[UsesClass(PhpParserBridge::class)]
@@ -250,30 +256,43 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ProjectAnalyzer::class)]
 #[UsesClass(ProjectDiffer::class)]
 #[UsesClass(ProjectModel::class)]
+#[UsesClass(ProjectSymbolCollector::class)]
 #[UsesClass(PropertyBuilder::class)]
 #[UsesClass(PropertyTypeScanner::class)]
 #[UsesClass(RelationsHtml::class)]
+#[UsesClass(RenderCache::class)]
 #[UsesClass(RenderKit::class)]
+#[UsesClass(RepositoryLink::class)]
+#[UsesClass(RepositoryUrl::class)]
 #[UsesClass(RevisionRange::class)]
 #[UsesClass(SearchIndexBuilder::class)]
+#[UsesClass(SidebarDigest::class)]
 #[UsesClass(SidebarHtml::class)]
 #[UsesClass(SidebarScope::class)]
 #[UsesClass(SignatureHtml::class)]
 #[UsesClass(SiteFileWriter::class)]
+#[UsesClass(SitePages::class)]
 #[UsesClass(SiteRenderer::class)]
 #[UsesClass(SiteUrl::class)]
+#[UsesClass(SocialCard::class)]
+#[UsesClass(SocialMeta::class)]
 #[UsesClass(SourceDiffHtml::class)]
+#[UsesClass(SourceDigestIndex::class)]
 #[UsesClass(SourceFileFinder::class)]
+#[UsesClass(SourceFileKey::class)]
 #[UsesClass(SourcePage::class)]
 #[UsesClass(SymbolContext::class)]
+#[UsesClass(SymbolDescription::class)]
 #[UsesClass(SymbolFingerprint::class)]
 #[UsesClass(SymbolIndex::class)]
 #[UsesClass(SymbolListHtml::class)]
+#[UsesClass(SymbolReferenceScanner::class)]
 #[UsesClass(SymbolRow::class)]
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TempDirectory::class)]
 #[UsesClass(TestCaseHtml::class)]
 #[UsesClass(TestCaseIndex::class)]
+#[UsesClass(ToolkitFingerprint::class)]
 #[UsesClass(TypeHtml::class)]
 #[UsesClass(TypeRenderContext::class)]
 #[UsesClass(TypeSignature::class)]
@@ -282,6 +301,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(UsageListHtml::class)]
 #[UsesClass(UseMapCollector::class)]
 #[UsesClass(VendorPackageLocator::class)]
+#[UsesClass(WorkScheduler::class)]
+#[UsesClass(WorkerCount::class)]
+#[UsesClass(WorkerPool::class)]
 final class DocGenGenerationRunnerTest extends TestCase
 {
     public function testRunGeneratesSiteWithZeroConfigDefaults(): void

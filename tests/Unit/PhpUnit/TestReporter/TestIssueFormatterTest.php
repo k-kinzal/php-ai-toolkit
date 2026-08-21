@@ -8,14 +8,33 @@ use function dirname;
 
 use Override;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
+use PhpAiToolkit\PhpUnit\TestReporter\TestIssueAiFormatter;
+use PhpAiToolkit\PhpUnit\TestReporter\TestIssueBlockIndenter;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueFormatter;
+use PhpAiToolkit\PhpUnit\TestReporter\TestIssueGutter;
+use PhpAiToolkit\PhpUnit\TestReporter\TestIssueHumanFormatter;
+use PhpAiToolkit\PhpUnit\TestReporter\TestIssuePathFormatter;
+use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader;
+use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSummary;
+use PhpAiToolkit\PhpUnit\TestReporter\TestIssueTypePresentation;
 use PhpAiToolkit\Shared\AgentDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 use function putenv;
 
 #[CoversClass(TestIssueFormatter::class)]
+#[UsesClass(AgentDetector::class)]
+#[UsesClass(TestIssue::class)]
+#[UsesClass(TestIssueAiFormatter::class)]
+#[UsesClass(TestIssueBlockIndenter::class)]
+#[UsesClass(TestIssueGutter::class)]
+#[UsesClass(TestIssueHumanFormatter::class)]
+#[UsesClass(TestIssuePathFormatter::class)]
+#[UsesClass(TestIssueSourceReader::class)]
+#[UsesClass(TestIssueSummary::class)]
+#[UsesClass(TestIssueTypePresentation::class)]
 final class TestIssueFormatterTest extends TestCase
 {
     #[Override]

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
 use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowChainEvaluator;
+use PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\Throw_;
@@ -12,9 +13,11 @@ use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name;
 use PhpParser\Node\Scalar\String_;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ThrowChainEvaluator::class)]
+#[UsesClass(ThrownExpression::class)]
 final class ThrowChainEvaluatorTest extends TestCase
 {
     public function testViolatesReportsNewExceptionWithoutCaughtVariable(): void

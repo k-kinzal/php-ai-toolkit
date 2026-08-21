@@ -42,6 +42,9 @@ use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PhpAiToolkit\DocGen\Package\PackageDependency;
 use PhpAiToolkit\DocGen\Package\PackageGraph;
+use PhpAiToolkit\DocGen\Parallel\WorkerCount;
+use PhpAiToolkit\DocGen\Parallel\WorkerPool;
+use PhpAiToolkit\DocGen\Parallel\WorkScheduler;
 use PhpAiToolkit\DocGen\Render\AssetPublisher;
 use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
 use PhpAiToolkit\DocGen\Render\Diff\DiffModeControl;
@@ -80,8 +83,12 @@ use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 use PhpAiToolkit\DocGen\Render\RepositoryLink;
 use PhpAiToolkit\DocGen\Render\SearchIndexBuilder;
+use PhpAiToolkit\DocGen\Render\Signature\PageSignature;
+use PhpAiToolkit\DocGen\Render\Signature\SidebarDigest;
 use PhpAiToolkit\DocGen\Render\SiteRenderer;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
+use PhpAiToolkit\DocGen\Render\SocialCard;
+use PhpAiToolkit\DocGen\Render\SocialMeta;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -106,8 +113,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DocBlock::class)]
 #[UsesClass(DocBlockReader::class)]
-#[UsesClass(DoctestExtractor::class)]
 #[UsesClass(DocTextHtml::class)]
+#[UsesClass(DoctestExtractor::class)]
 #[UsesClass(DocumentListHtml::class)]
 #[UsesClass(DocumentPage::class)]
 #[UsesClass(EnumCaseBuilder::class)]
@@ -136,6 +143,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PackageDependency::class)]
 #[UsesClass(PackageGraph::class)]
 #[UsesClass(PageChrome::class)]
+#[UsesClass(PageSignature::class)]
 #[UsesClass(ParameterBuilder::class)]
 #[UsesClass(ParameterModifiers::class)]
 #[UsesClass(PhpDocParserBridge::class)]
@@ -148,12 +156,15 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(RenderKit::class)]
 #[UsesClass(RepositoryLink::class)]
 #[UsesClass(SearchIndexBuilder::class)]
+#[UsesClass(SidebarDigest::class)]
 #[UsesClass(SidebarHtml::class)]
 #[UsesClass(SidebarScope::class)]
 #[UsesClass(SignatureHtml::class)]
 #[UsesClass(SiteFileWriter::class)]
 #[UsesClass(SiteRenderer::class)]
 #[UsesClass(SiteUrl::class)]
+#[UsesClass(SocialCard::class)]
+#[UsesClass(SocialMeta::class)]
 #[UsesClass(SourceDiffHtml::class)]
 #[UsesClass(SourcePage::class)]
 #[UsesClass(SymbolContext::class)]
@@ -166,6 +177,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(UsageIndex::class)]
 #[UsesClass(UsageListHtml::class)]
 #[UsesClass(UseMapCollector::class)]
+#[UsesClass(WorkScheduler::class)]
+#[UsesClass(WorkerCount::class)]
+#[UsesClass(WorkerPool::class)]
 final class PackagePageTest extends TestCase
 {
     public function testRenderProducesCompleteDocument(): void

@@ -12,9 +12,15 @@ use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSummary;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueTypePresentation;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TestIssueAiFormatter::class)]
+#[UsesClass(TestIssue::class)]
+#[UsesClass(TestIssuePathFormatter::class)]
+#[UsesClass(TestIssueSourceReader::class)]
+#[UsesClass(TestIssueSummary::class)]
+#[UsesClass(TestIssueTypePresentation::class)]
 final class TestIssueAiFormatterTest extends TestCase
 {
     public function testFormatUsesPathLineIssueBlocks(): void

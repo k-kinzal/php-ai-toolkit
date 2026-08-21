@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
 use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor;
+use PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\Throw_;
@@ -19,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ThrowSiteVisitor::class)]
 #[UsesClass(\PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite::class)]
+#[UsesClass(ThrownExpression::class)]
 final class ThrowSiteVisitorTest extends TestCase
 {
     public function testEnterNodeSkipsNestedFunctionScopes(): void

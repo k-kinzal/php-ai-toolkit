@@ -9,6 +9,7 @@ use PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorBuilder;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorCollector;
 use PhpAiToolkit\PhpStan\Rule\Shared\AnonymousClassDetector;
 use PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter;
+use PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -17,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(SingleLinePhpDocErrorCollector::class)]
 #[UsesClass(AnonymousClassDetector::class)]
 #[UsesClass(CommentTextFormatter::class)]
+#[UsesClass(LineOrderedErrors::class)]
 #[UsesClass(SingleLinePhpDocDetector::class)]
 #[UsesClass(SingleLinePhpDocErrorBuilder::class)]
 final class SingleLinePhpDocErrorCollectorTest extends TestCase

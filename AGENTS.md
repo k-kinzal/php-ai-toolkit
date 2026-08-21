@@ -43,6 +43,7 @@ the locks are refreshed.
 - **Language**: PHP 8.0+
 - **Static Analysis**: PHPStan (level max + strict-rules + checked-exception analysis for self-analysis)
 - **Testing**: PHPUnit with ParaTest for parallel execution
+- **Mutation Testing**: Infection, run only by the `mutation` job in CI — there are deliberately no `infection` Composer scripts, so `composer infection` reporting "Command infection is not defined" is the design, not a break
 - **Code Style**: PHP-CS-Fixer
 - **Package Type**: Composer phpstan-extension (auto-registered via `extra.phpstan.includes`)
 
@@ -56,6 +57,7 @@ the locks are refreshed.
 - [PHPStan Rules](docs/phpstan-rules.md): Custom rules and their error identifiers
 - [PHPStan Configuration](docs/phpstan.md): PHPStan settings and why each is needed
 - [PHPUnit Configuration](docs/phpunit.md): PHPUnit settings and why each is needed
+- [Infection Configuration](docs/infection.md): Mutation testing thresholds for the whole source tree and for pull requests
 - [PHP-CS-Fixer Configuration](docs/php-cs-fixer.md): PHP-CS-Fixer settings and why each is needed
 - [LocGuard Configuration](docs/loc-guard.md): LocGuard source metric limits and reporting
 - [TreeGuard Configuration](docs/tree-guard.md): TreeGuard directory and file structure constraints

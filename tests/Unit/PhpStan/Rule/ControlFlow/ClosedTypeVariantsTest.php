@@ -10,19 +10,12 @@ use PhpAiToolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants;
 use PHPStan\Testing\PHPStanTestCase;
 use PHPStan\Type\BooleanType;
 use PHPStan\Type\IntegerRangeType;
-use PHPStan\Type\NullType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
-use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\VerbosityLevel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
-
-use function range;
-
-use Tests\Fixture\RequireExhaustiveDispatch\Circle;
-use Tests\Fixture\RequireExhaustiveDispatch\Square;
 use Tests\Fixture\RequireExhaustiveDispatch\Suit;
 
 #[CoversClass(ClosedTypeVariants::class)]
@@ -73,64 +66,9 @@ final class ClosedTypeVariantsTest extends PHPStanTestCase
         self::assertCount(ClosedTypeVariants::MAX_VARIANTS, $variants ?? []);
     }
 
-    public function testObjectsListsTheClassesOfAUnionOfObjects(): void
-    {
-        self::createReflectionProvider();
 
-        $variants = (new ClosedTypeVariants())->objects(
-            TypeCombinator::union(new ObjectType(Circle::class), new ObjectType(Square::class)),
-        );
 
-        self::assertSame(
-            [Circle::class, Square::class],
-            array_map(static fn (Type $variant): string => $variant->describe(VerbosityLevel::value()), $variants ?? []),
-        );
-    }
 
-    public function testObjectsReturnsNullForASingleClass(): void
-    {
-        self::createReflectionProvider();
 
-        self::assertNull((new ClosedTypeVariants())->objects(new ObjectType(Circle::class)));
-    }
 
-    public function testObjectsReturnsNullForATypeWithoutClasses(): void
-    {
-        self::assertNull((new ClosedTypeVariants())->objects(new StringType()));
-    }
-
-    public function testObjectsReturnsNullWhenTheTypeHoldsMoreThanItsClasses(): void
-    {
-        self::createReflectionProvider();
-
-        self::assertNull((new ClosedTypeVariants())->objects(
-            TypeCombinator::union(new ObjectType(Circle::class), new ObjectType(Square::class), new NullType()),
-        ));
-    }
-
-    public function testObjectsStaysWithinTheVariantLimit(): void
-    {
-        self::createReflectionProvider();
-
-        $variants = (new ClosedTypeVariants())->objects(TypeCombinator::union(
-            ...array_map(
-                static fn (int $index): Type => new ObjectType('Tests\\Fixture\\RequireExhaustiveDispatch\\Absent' . $index),
-                range(1, ClosedTypeVariants::MAX_VARIANTS),
-            ),
-        ));
-
-        self::assertCount(ClosedTypeVariants::MAX_VARIANTS, $variants ?? []);
-    }
-
-    public function testObjectsReturnsNullBeyondTheVariantLimit(): void
-    {
-        self::createReflectionProvider();
-
-        self::assertNull((new ClosedTypeVariants())->objects(TypeCombinator::union(
-            ...array_map(
-                static fn (int $index): Type => new ObjectType('Tests\\Fixture\\RequireExhaustiveDispatch\\Absent' . $index),
-                range(1, ClosedTypeVariants::MAX_VARIANTS + 1),
-            ),
-        )));
-    }
 }

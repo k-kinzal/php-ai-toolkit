@@ -18,16 +18,11 @@ use PHPStan\Testing\PHPStanTestCase;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\NeverType;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
-use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
-use PHPStan\Type\VerbosityLevel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Tests\Fixture\RequireExhaustiveDispatch\Circle;
-use Tests\Fixture\RequireExhaustiveDispatch\Square;
 
 #[CoversClass(DispatchInspector::class)]
 #[UsesClass(ClosedTypeVariants::class)]
@@ -243,12 +238,11 @@ final class DispatchInspectorTest extends PHPStanTestCase
         self::assertSame([], (new DispatchInspector())->unhandled(
             new \PhpParser\Node\Expr\Variable('mode'),
             [],
-            [],
             $scope,
         ));
     }
 
-    public function testUnhandledReturnsNothingWhenNoBranchNarrowsASingleSubject(): void
+    public function testUnhandledReturnsNothingWhenTheConstructNamesNoSubject(): void
     {
         $scope = self::createStub(Scope::class);
         $scope->method('filterByFalseyValue')->willReturnSelf();
@@ -257,69 +251,9 @@ final class DispatchInspectorTest extends PHPStanTestCase
         self::assertSame([], (new DispatchInspector())->unhandled(
             new \PhpParser\Node\Expr\ConstFetch(new \PhpParser\Node\Name('true')),
             [],
-            [],
             $scope,
         ));
     }
 
-    public function testUnhandledReadsTheValuesOfATrueDispatch(): void
-    {
-        $values = TypeCombinator::union(new ConstantStringType('fast'), new ConstantStringType('dry'));
-        $remaining = self::createStub(Scope::class);
-        $remaining->method('filterByFalseyValue')->willReturnSelf();
-        $remaining->method('getType')->willReturn(new ConstantStringType('dry'));
-        $scope = self::createStub(Scope::class);
-        $scope->method('filterByFalseyValue')->willReturn($remaining);
-        $scope->method('getType')->willReturnCallback(
-            static fn (\PhpParser\Node\Expr $expression): Type => $expression instanceof \PhpParser\Node\Expr\Variable
-                ? $values
-                : new ConstantBooleanType(true),
-        );
-        $subject = new \PhpParser\Node\Expr\Variable('mode');
-        $branch = new \PhpParser\Node\Expr\BinaryOp\Identical($subject, new \PhpParser\Node\Scalar\String_('fast'));
 
-        self::assertSame(
-            ["'dry'"],
-            array_map(
-                static fn (Type $variant): string => $variant->describe(VerbosityLevel::value()),
-                (new DispatchInspector())->unhandled(
-                    new \PhpParser\Node\Expr\ConstFetch(new \PhpParser\Node\Name('true')),
-                    [$branch],
-                    [$branch],
-                    $scope,
-                ),
-            ),
-        );
-    }
-
-    public function testUnhandledReadsTheClassesOfATrueDispatch(): void
-    {
-        self::createReflectionProvider();
-        $union = TypeCombinator::union(new ObjectType(Circle::class), new ObjectType(Square::class));
-        $remaining = self::createStub(Scope::class);
-        $remaining->method('filterByFalseyValue')->willReturnSelf();
-        $remaining->method('getType')->willReturn(new ObjectType(Square::class));
-        $scope = self::createStub(Scope::class);
-        $scope->method('filterByFalseyValue')->willReturn($remaining);
-        $scope->method('getType')->willReturnCallback(
-            static fn (\PhpParser\Node\Expr $expression): Type => $expression instanceof \PhpParser\Node\Expr\Variable
-                ? $union
-                : new ConstantBooleanType(true),
-        );
-        $subject = new \PhpParser\Node\Expr\Variable('shape');
-        $branch = new \PhpParser\Node\Expr\Instanceof_($subject, new \PhpParser\Node\Name\FullyQualified(Circle::class));
-
-        self::assertSame(
-            [Square::class],
-            array_map(
-                static fn (Type $variant): string => $variant->describe(VerbosityLevel::value()),
-                (new DispatchInspector())->unhandled(
-                    new \PhpParser\Node\Expr\ConstFetch(new \PhpParser\Node\Name('true')),
-                    [$branch],
-                    [$branch],
-                    $scope,
-                ),
-            ),
-        );
-    }
 }

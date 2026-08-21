@@ -85,24 +85,12 @@ final class RequireExhaustiveDispatchRuleTest extends RuleTestCase
                 'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 95,
             ],
-            [
-                'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
-                103,
-            ],
         ]);
     }
 
     public function testProcessNodeReportsDispatchOverClassUnion(): void
     {
         $this->analyse([__DIR__ . '/../../../Fixture/RequireExhaustiveDispatch/ShapeDispatch.php'], [
-            [
-                'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\Triangle to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
-                13,
-            ],
-            [
-                'Switch statement does not handle Tests\\Fixture\\RequireExhaustiveDispatch\\Triangle. Write a "case" for each of those values: the subject holds a closed set of values and this switch has no "default", so those fall through it unhandled.',
-                32,
-            ],
             [
                 'Match expression sends \'Tests\\\\Fixture\\\\RequireExhaustiveDispatch\\\\Triangle\' to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 54,

@@ -54,7 +54,6 @@ final class DispatchInspector
      */
     public function matchErrors(\PhpParser\Node\Expr\Match_ $node, Scope $scope): array
     {
-        $armConditions = [];
         $narrowings = [];
         $hasDefaultArm = false;
         foreach ($node->arms as $arm) {
@@ -65,7 +64,6 @@ final class DispatchInspector
             }
 
             foreach ($arm->conds as $armCondition) {
-                $armConditions[] = $armCondition;
                 $narrowings[] = new Identical($node->cond, $armCondition);
             }
         }
@@ -74,7 +72,7 @@ final class DispatchInspector
             return [];
         }
 
-        $unhandled = $this->unhandled($node->cond, $armConditions, $narrowings, $scope);
+        $unhandled = $this->unhandled($node->cond, $narrowings, $scope);
         if ($unhandled === []) {
             return [];
         }
@@ -89,7 +87,6 @@ final class DispatchInspector
      */
     public function switchErrors(\PhpParser\Node\Stmt\Switch_ $node, Scope $scope): array
     {
-        $caseConditions = [];
         $narrowings = [];
         $hasDefaultCase = false;
         foreach ($node->cases as $case) {
@@ -99,11 +96,10 @@ final class DispatchInspector
                 continue;
             }
 
-            $caseConditions[] = $case->cond;
             $narrowings[] = new Equal($node->cond, $case->cond);
         }
 
-        $unhandled = $this->unhandled($node->cond, $caseConditions, $narrowings, $scope);
+        $unhandled = $this->unhandled($node->cond, $narrowings, $scope);
         if ($unhandled === []) {
             return [];
         }
@@ -118,28 +114,17 @@ final class DispatchInspector
     /**
      * Returns the values of the closed subject that no branch of the dispatch claims.
      *
-     * A union of classes only stands in for a sealed hierarchy where the branches carry
-     * their own conditions, as `match (true)` does: written next to the keyword, an object
-     * subject is compared for identity rather than dispatched on, and its class list says
-     * nothing about which branch runs.
-     *
-     * @param list<\PhpParser\Node\Expr> $branchConditions
      * @param list<\PhpParser\Node\Expr> $narrowings
      * @return list<Type>
      */
-    public function unhandled(\PhpParser\Node\Expr $condition, array $branchConditions, array $narrowings, Scope $scope): array
+    public function unhandled(\PhpParser\Node\Expr $condition, array $narrowings, Scope $scope): array
     {
-        $subject = $this->subjectResolver->resolve($condition, $branchConditions, $scope);
+        $subject = $this->subjectResolver->resolve($condition, $scope);
         if ($subject === null) {
             return [];
         }
 
-        $subjectType = $scope->getType($subject);
-        $variants = $this->closedTypeVariants->values($subjectType);
-        if ($variants === null && $subject !== $condition) {
-            $variants = $this->closedTypeVariants->objects($subjectType);
-        }
-
+        $variants = $this->closedTypeVariants->values($scope->getType($subject));
         if ($variants === null) {
             return [];
         }

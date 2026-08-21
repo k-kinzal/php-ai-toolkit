@@ -42,10 +42,16 @@ the locks are refreshed.
 
 - **Language**: PHP 8.0+
 - **Static Analysis**: PHPStan (level max + strict-rules + checked-exception analysis for self-analysis)
-- **Testing**: PHPUnit with ParaTest for parallel execution
+- **Testing**: PHPUnit with ParaTest for parallel execution — `composer test:unit` runs the suite in one process on every supported PHP minor, `composer test` splits it across processes once
 - **Mutation Testing**: Infection, run only by the `mutation` job in CI — there are deliberately no `infection` Composer scripts, so `composer infection` reporting "Command infection is not defined" is the design, not a break
 - **Code Style**: PHP-CS-Fixer
+- **PHP Version Floor**: PHPCompatibility on `phpcs`, gating every file against the declared 8.0 floor
+- **Source Guards**: LocGuard, TreeGuard, and ScopeGuard — first-party CLIs shipped by this package for source metrics, directory structure, and namespace visibility
+- **Architecture**: Deptrac, over layers discovered from the directory structure
+- **Documentation**: DocGen, publishing the API site to GitHub Pages on every push to `main`
 - **Package Type**: Composer phpstan-extension (auto-registered via `extra.phpstan.includes`)
+
+Every tool named here is wired into `composer lint` or a CI job and has a page under `docs/`. Adding a tool to this project means doing all three: a gate that is configured but never runs on `main` is one the project only believes it has.
 
 ## Rule Design Principles
 
@@ -59,8 +65,10 @@ the locks are refreshed.
 - [PHPUnit Configuration](docs/phpunit.md): PHPUnit settings and why each is needed
 - [Infection Configuration](docs/infection.md): Mutation testing thresholds for the whole source tree and for pull requests
 - [PHP-CS-Fixer Configuration](docs/php-cs-fixer.md): PHP-CS-Fixer settings and why each is needed
+- [PHPCompatibility Configuration](docs/php-compatibility.md): The PHP version floor gate and why it runs on `phpcs`
 - [LocGuard Configuration](docs/loc-guard.md): LocGuard source metric limits and reporting
 - [TreeGuard Configuration](docs/tree-guard.md): TreeGuard directory and file structure constraints
+- [ScopeGuard Configuration](docs/scope-guard.md): Namespace visibility scopes declared with `@visibility`
 - [DocGen Configuration](docs/doc-gen.md): DocGen documentation scope, caching, and generated site behavior
 - [Deptrac Configuration](docs/deptrac.md): Architectural layer discovery and dependency rules
 - [GitHub Actions Configuration](docs/github-actions.md): CI coverage, quality gates, and workflow hardening

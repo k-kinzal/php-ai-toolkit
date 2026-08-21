@@ -57,6 +57,7 @@ Run the following skills in your AI agent:
 - `/setup-toolkit-phpunit` — PHPUnit with strict configuration and AI test reporter
 - `/setup-toolkit-infection` — Infection mutation testing with a whole-tree threshold and a stricter one for pull requests
 - `/setup-toolkit-php-cs-fixer` — PHP-CS-Fixer configuration
+- `/setup-toolkit-php-compatibility` — PHPCompatibility gate that keeps the code runnable on the declared minimum PHP
 - `/setup-toolkit-loc-guard` — LocGuard metrics checks for production source complexity and length limits
 - `/setup-toolkit-tree-guard` — TreeGuard directory and file structure constraints
 - `/setup-toolkit-scope-guard` — ScopeGuard namespace visibility scopes, the PHP counterpart of Rust's `pub(crate)`
@@ -77,6 +78,7 @@ and published on every push to `main`.
 - [PHPUnit Configuration](docs/phpunit.md) — PHPUnit settings and why each is needed
 - [Infection Configuration](docs/infection.md) — Mutation testing thresholds, and why they differ between the whole tree and a pull request
 - [PHP-CS-Fixer Configuration](docs/php-cs-fixer.md) — PHP-CS-Fixer settings and why each is needed
+- [PHPCompatibility Configuration](docs/php-compatibility.md) — The PHP version floor gate and why it runs on `phpcs`
 - [LocGuard Configuration](docs/loc-guard.md) — Production source metrics checks and thresholds
 - [TreeGuard Configuration](docs/tree-guard.md) — Directory and file structure constraints
 - [ScopeGuard Configuration](docs/scope-guard.md) — Namespace visibility scopes declared with `@visibility`

@@ -159,5 +159,6 @@ string argument) so the code stays runnable on the floor without a bareword.
 
 ## References
 
+- [PHPCompatibility Configuration](vendor/k-kinzal/php-ai-toolkit/docs/php-compatibility.md) — Settings, the dependency line to pick, and CI behavior.
 - [PHPCompatibility](https://github.com/PHPCompatibility/PHPCompatibility)
 - [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer)

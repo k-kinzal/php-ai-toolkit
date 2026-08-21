@@ -268,3 +268,25 @@ services:
         class: PhpAiToolkit\PhpStan\Rule\ForbidGenericThrowsTagRule
         tags:
             - phpstan.rules.rule
+
+    aiRules.rule.requireExhaustiveDispatch:
+        class: PhpAiToolkit\PhpStan\Rule\RequireExhaustiveDispatchRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.requireExhaustiveClassDispatch:
+        class: PhpAiToolkit\PhpStan\Rule\RequireExhaustiveClassDispatchRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.collector.classAncestor:
+        class: PhpAiToolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector
+        arguments:
+            reflectionProvider: @reflectionProvider
+        tags:
+            - phpstan.collector
+
+    aiRules.collector.classNameDispatch:
+        class: PhpAiToolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector
+        tags:
+            - phpstan.collector

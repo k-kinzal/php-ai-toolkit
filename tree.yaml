@@ -16,7 +16,7 @@ rules:
     deny_dirs: ['scripts', 'Scripts']
   - path: 'src'
     allow: []
-    max_dirs: 8
+    max_dirs: 9
     max_depth: 3
   - path: 'tests/Unit'
     allow: []

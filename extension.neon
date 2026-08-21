@@ -216,6 +216,13 @@ services:
         tags:
             - phpstan.rules.rule
 
+    aiRules.rule.requireExampleOnPublicApi:
+        class: PhpAiToolkit\PhpStan\Rule\RequireExampleOnPublicApiRule
+        arguments:
+            restrictedTestNamespacePrefixes: %customRules.restrictedTestNamespacePrefixes%
+        tags:
+            - phpstan.rules.rule
+
     aiRules.rule.forbidSingleLinePhpDoc:
         class: PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDocRule
         tags:

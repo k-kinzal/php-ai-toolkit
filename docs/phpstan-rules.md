@@ -14,6 +14,7 @@ Rules applied to all code.
 | [OverrideMustHaveAttributeRule](rules/OverrideMustHaveAttributeRule.md) | Requires `#[Override]` attribute on overridden methods | `customRules.overrideMustHaveAttribute` |
 | [SrcUnitTestPairRule](rules/SrcUnitTestPairRule.md) | Enforces 1:1 pairing between `src/` classes and `tests/Unit/` test classes | `customRules.srcUnitTestPair` |
 | [RequirePhpDocOnPublicApiRule](rules/RequirePhpDocOnPublicApiRule.md) | Requires PHPDoc on all public API elements | `customRules.requirePhpDocOnPublicApi` |
+| [RequireExampleOnPublicApiRule](rules/RequireExampleOnPublicApiRule.md) | Requires a runnable `@example` on declarations marked `@visibility public` | `customRules.requireExampleOnClass`, `customRules.requireExampleOnMethod`, `customRules.requireExampleOnProperty`, `customRules.requireExampleOnConstant`, `customRules.requireExampleOnEnumCase` |
 | [ForbidNonDocCommentRule](rules/ForbidNonDocCommentRule.md) | Forbids `/* */` and `#` comments everywhere, and `//` comments outside `catch` blocks and array literals; `/** */` PHPDoc is allowed | `customRules.forbidNonDocComment` |
 | [ForbidSingleLinePhpDocRule](rules/ForbidSingleLinePhpDocRule.md) | Forbids single-line PHPDoc on public elements; requires multi-line format | `customRules.forbidSingleLinePhpDoc` |
 | [ForbidClassLikeNameSuffixRule](rules/ForbidClassLikeNameSuffixRule.md) | Forbids configured suffixes on class, interface, trait, and enum names | `customRules.forbiddenClassLikeNameSuffix` |

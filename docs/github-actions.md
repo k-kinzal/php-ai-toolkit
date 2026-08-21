@@ -71,6 +71,21 @@ It runs on PHP 8.4 rather than 8.0 because `composer test` passes no
 PHP 8.0 resolves PHPUnit 9.6, which needs `phpunit9.xml.dist` — that leg is
 covered by `test:unit:legacy` in the matrix.
 
+## Doctest Job
+
+`ci.yml` runs the examples written in PHPDoc blocks in a `doctest` job rather than
+as a step of `lint`, because it executes the documented code rather than reading
+it. It is a matrix over every supported PHP minor for the same reason the `tests`
+matrix is: an example that only holds on one version is a documented claim that is
+false everywhere else, and the point of running examples is to find exactly that.
+
+The job needs no coverage driver and no lock-file gymnastics beyond the matching
+lock, so it is the cheapest way to keep the documentation honest on all six PHP
+versions. A project that would rather report documentation failures through its
+existing PHPUnit job can extend `DoctestTestCase` instead and drop this job; this
+repository runs the command so a doctest failure is reported as a doctest failure.
+See [Doctest Configuration](doctest.md).
+
 ## Mutation Testing Job
 
 `ci.yml` runs mutation testing in a `mutation` job rather than as a step of `lint`,

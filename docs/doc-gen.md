@@ -183,10 +183,12 @@ Types merge the native declaration with PHPDoc, where PHPStan-prefixed tags win 
 over standard tags — generics, array shapes, conditional types, `@template` bounds, and `@phpstan-type` aliases are
 rendered in full with every documented class name linked. Relations are indexed project-wide: interface implementors,
 subclasses, trait users, and reference sites (`new`, static and resolvable instance calls, `instanceof`, attributes,
-type declarations), with call sites listed per method and test references labeled. Examples use the doctest-php
+type declarations), with call sites listed per method and test references labeled. Examples use the doctest
 notation: `@example` blocks and ` ```php ` fences are rendered as runnable doctest figures with their `// =>`,
 `// Output:`, and `// throws` assertions styled; single-line `@example expr // note` tags render as display-only
-examples.
+examples. A runnable figure carries a **doctest** badge titled with the example's identifier, a **copy** button for
+the example itself, and a **run** button that copies `vendor/bin/doctest --filter='<identifier>'` — the command that
+executes that one example on its own. See [Doctest Configuration](doctest.md).
 
 ## Navigation
 

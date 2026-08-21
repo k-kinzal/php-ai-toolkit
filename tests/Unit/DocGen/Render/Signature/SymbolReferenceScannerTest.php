@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\DocGen\Render\Signature;
 
 use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
-use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
@@ -55,6 +53,8 @@ use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PhpAiToolkit\DocGen\Render\SocialCard;
 use PhpAiToolkit\DocGen\Render\SocialMeta;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
+use PhpAiToolkit\Doctest\Analysis\AssertionScanner;
+use PhpAiToolkit\Doctest\Analysis\DoctestExtractor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;

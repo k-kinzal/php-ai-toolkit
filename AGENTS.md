@@ -42,6 +42,7 @@ the locks are refreshed.
 
 - **Language**: PHP 8.0+
 - **Static Analysis**: PHPStan (level max + strict-rules + checked-exception analysis for self-analysis)
+- **Documentation Tests**: Doctest, running the examples written in PHPDoc blocks — `composer doctest` on every supported PHP minor, and `DoctestTestCase` for projects that would rather run them through PHPUnit
 - **Testing**: PHPUnit with ParaTest for parallel execution — `composer test:unit` runs the suite in one process on every supported PHP minor, `composer test` splits it across processes once
 - **Mutation Testing**: Infection, run only by the `mutation` job in CI — there are deliberately no `infection` Composer scripts, so `composer infection` reporting "Command infection is not defined" is the design, not a break
 - **Code Style**: PHP-CS-Fixer
@@ -69,6 +70,7 @@ Every tool named here is wired into `composer lint` or a CI job and has a page u
 - [LocGuard Configuration](docs/loc-guard.md): LocGuard source metric limits and reporting
 - [TreeGuard Configuration](docs/tree-guard.md): TreeGuard directory and file structure constraints
 - [ScopeGuard Configuration](docs/scope-guard.md): Namespace visibility scopes declared with `@visibility`
+- [Doctest Configuration](docs/doctest.md): Running the examples written in PHPDoc blocks, example identifiers, and the assertion notation
 - [DocGen Configuration](docs/doc-gen.md): DocGen documentation scope, caching, and generated site behavior
 - [Deptrac Configuration](docs/deptrac.md): Architectural layer discovery and dependency rules
 - [GitHub Actions Configuration](docs/github-actions.md): CI coverage, quality gates, and workflow hardening
@@ -97,6 +99,7 @@ Every tool named here is wired into `composer lint` or a CI job and has a page u
 - [OverrideMustHaveAttributeRule](docs/rules/OverrideMustHaveAttributeRule.md): Requires the `#[Override]` attribute when overriding a non-abstract parent method
 - [PhpUnitMockApiRule](docs/rules/PhpUnitMockApiRule.md): Restricts PHPUnit mock API to interface-only mocking and detects prohibited mock APIs
 - [RequireExceptionChainingRule](docs/rules/RequireExceptionChainingRule.md): Requires new exceptions thrown inside catch blocks to chain the caught exception
+- [RequireExampleOnPublicApiRule](docs/rules/RequireExampleOnPublicApiRule.md): Requires a runnable `@example` on declarations marked `@visibility public`
 - [RequireExhaustiveDispatchRule](docs/rules/RequireExhaustiveDispatchRule.md): Requires a switch or match that names its subject — `match ($suit)`, or `match ($payment::class)` for a sealed hierarchy — to name a branch for every value that subject can hold
 - [RequirePhpDocOnPublicApiRule](docs/rules/RequirePhpDocOnPublicApiRule.md): Requires PHPDoc comments on public API classes, methods, properties, and constants
 - [RequireThrowsTagOnDirectThrowRule](docs/rules/RequireThrowsTagOnDirectThrowRule.md): Requires `@throws` for exceptions thrown directly in a method and not caught within it

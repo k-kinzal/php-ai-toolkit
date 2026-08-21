@@ -8,8 +8,6 @@ use function count;
 use function filesize;
 
 use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
-use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
 use PhpAiToolkit\DocGen\Analysis\ProjectModel;
 use PhpAiToolkit\DocGen\Cache\CachedPageWriter;
@@ -31,6 +29,8 @@ use PhpAiToolkit\DocGen\Render\Page\PackagePage;
 use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SourcePage;
 use PhpAiToolkit\DocGen\Render\Signature\PageSignature;
+use PhpAiToolkit\Doctest\Analysis\AssertionScanner;
+use PhpAiToolkit\Doctest\Analysis\DoctestExtractor;
 
 /**
  * Renders the complete static documentation site of a project model.

@@ -9,9 +9,6 @@ use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
 use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
 use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine;
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
-use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
 use PhpAiToolkit\DocGen\Analysis\ProjectModel;
 use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
@@ -64,6 +61,9 @@ use PhpAiToolkit\DocGen\Render\SocialCard;
 use PhpAiToolkit\DocGen\Render\SocialMeta;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PhpAiToolkit\DocGen\Render\TypeRenderContext;
+use PhpAiToolkit\Doctest\Analysis\AssertionLine;
+use PhpAiToolkit\Doctest\Analysis\AssertionScanner;
+use PhpAiToolkit\Doctest\Analysis\DoctestExtractor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -230,5 +230,69 @@ PHP);
             (new DocTextHtml())->deprecationBox($services, $bare),
         );
         self::assertSame('', (new DocTextHtml())->deprecationBox($services, $active));
+    }
+
+    public function testFenceRendererCaptionsAPhpFenceWithTheCommandThatRunsIt(): void
+    {
+        $table = new SymbolTable();
+        $hierarchy = new HierarchyIndex();
+        $hierarchy->build([]);
+        $usages = new UsageIndex();
+        $usages->build([]);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [], [], $table, $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model);
+
+        $renderer = (new DocTextHtml())->fenceRenderer($services, 'Demo\\Widget', 2);
+
+        $html = $renderer('render();', 'php');
+
+        self::assertNotNull($html);
+        self::assertStringContainsString('data-copy="vendor/bin/doctest --filter=&#039;Demo\Widget#3&#039;"', $html);
+        self::assertStringContainsString('chip-doctest', $html);
+    }
+
+    public function testFenceRendererLeavesUnrunnableFencesAsPlainDoctestBlocks(): void
+    {
+        $table = new SymbolTable();
+        $hierarchy = new HierarchyIndex();
+        $hierarchy->build([]);
+        $usages = new UsageIndex();
+        $usages->build([]);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [], [], $table, $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model);
+
+        $renderer = (new DocTextHtml())->fenceRenderer($services, 'Demo\\Widget', 0);
+
+        self::assertStringStartsWith('<pre class="code-block doctest">', (string) $renderer('render();', ''));
+        self::assertNull($renderer('SELECT 1', 'sql'));
+        self::assertStringStartsWith('<pre class="code-block doctest">', (string) (new DocTextHtml())->fenceRenderer($services, '', 0)('render();', 'php'));
+    }
+
+    public function testFenceIndexBaseCountsTheAtExampleBlocksTheFencesAreNumberedAfter(): void
+    {
+        $table = new SymbolTable();
+        $hierarchy = new HierarchyIndex();
+        $hierarchy->build([]);
+        $usages = new UsageIndex();
+        $usages->build([]);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [], [], $table, $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model);
+        $docBlock = (new DocBlockReader())->read(<<<'PHP'
+/**
+ * Widget summary line.
+ *
+ * @example First
+ * first();
+ *
+ * @example Second
+ * second();
+ */
+PHP);
+
+        self::assertNotNull($docBlock);
+        self::assertSame(2, (new DocTextHtml())->fenceIndexBase($services, $docBlock));
     }
 }

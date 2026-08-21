@@ -7,9 +7,6 @@ namespace Tests\Unit\DocGen\Render\Page;
 use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
 use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine;
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
-use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\ProjectModel;
 use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
@@ -60,6 +57,9 @@ use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PhpAiToolkit\DocGen\Render\SocialCard;
 use PhpAiToolkit\DocGen\Render\SocialMeta;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
+use PhpAiToolkit\Doctest\Analysis\AssertionLine;
+use PhpAiToolkit\Doctest\Analysis\AssertionScanner;
+use PhpAiToolkit\Doctest\Analysis\DoctestExtractor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -133,13 +133,69 @@ final class ExampleHtmlTest extends TestCase
         $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [], [], $table, $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
         $services = (new SiteRenderer())->services($model);
 
-        $html = (new ExampleHtml())->figure($services, 'Adding numbers', '$sum = 1; // => 1', true);
+        $html = (new ExampleHtml())->figure($services, 'Adding numbers', '$sum = 1; // => 1', true, 'Demo\\Sum::of()#1');
 
         self::assertStringStartsWith('<figure class="example">', $html);
         self::assertStringContainsString('<span class="example-title">Adding numbers</span>', $html);
-        self::assertStringContainsString('<span class="chip chip-sm chip-doctest" title="Executable with doctest-php">doctest</span>', $html);
+        self::assertStringContainsString('title="Executable with doctest as Demo\Sum::of()#1">doctest</span>', $html);
+        self::assertStringContainsString('data-copy="vendor/bin/doctest --filter=&#039;Demo\Sum::of()#1&#039;"', $html);
         self::assertStringContainsString('<button class="copy-btn" type="button" title="Copy example">copy</button>', $html);
         self::assertStringEndsWith('</figure>' . "\n", $html);
+    }
+
+    public function testFigureOmitsTheRunButtonWhenNoIdentifierIsKnown(): void
+    {
+        $table = new SymbolTable();
+        $hierarchy = new HierarchyIndex();
+        $hierarchy->build([]);
+        $usages = new UsageIndex();
+        $usages->build([]);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [], [], $table, $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model);
+
+        $html = (new ExampleHtml())->figure($services, 'Adding numbers', '$sum = 1; // => 1', true);
+
+        self::assertStringContainsString('title="Executable with doctest">doctest</span>', $html);
+        self::assertStringNotContainsString('data-copy', $html);
+    }
+
+    public function testDoctestChipNamesTheExampleIdentifierWhenThereIsOne(): void
+    {
+        $table = new SymbolTable();
+        $hierarchy = new HierarchyIndex();
+        $hierarchy->build([]);
+        $usages = new UsageIndex();
+        $usages->build([]);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [], [], $table, $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model);
+        $example = new ExampleHtml();
+
+        self::assertStringContainsString('title="Executable with doctest">', $example->doctestChip($services, ''));
+        self::assertStringContainsString('title="Executable with doctest as Demo\Sum#1">', $example->doctestChip($services, 'Demo\\Sum#1'));
+    }
+
+    public function testRunButtonCarriesTheCommandToCopy(): void
+    {
+        $table = new SymbolTable();
+        $hierarchy = new HierarchyIndex();
+        $hierarchy->build([]);
+        $usages = new UsageIndex();
+        $usages->build([]);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [], [], $table, $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model);
+
+        $html = (new ExampleHtml())->runButton($services, 'Demo\\Sum#1');
+
+        self::assertStringContainsString('data-copy="vendor/bin/doctest --filter=&#039;Demo\Sum#1&#039;"', $html);
+        self::assertStringContainsString('>run</button>', $html);
+    }
+
+    public function testRunCommandQuotesTheIdentifier(): void
+    {
+        self::assertSame("vendor/bin/doctest --filter='Demo\\Sum::of()#1'", (new ExampleHtml())->runCommand('Demo\\Sum::of()#1'));
     }
 
     public function testFigureOmitsBadgeForDisplayOnlyExample(): void

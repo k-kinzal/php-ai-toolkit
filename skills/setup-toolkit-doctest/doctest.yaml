@@ -1,0 +1,10 @@
+paths:
+  - src
+
+exclude: []
+
+report:
+  reporter: ai
+  order_by:
+    - path
+    - line

@@ -31,6 +31,12 @@ parameters:
             # can report, because a failure that only reaches the worker's
             # own stack would leave the run with a silently incomplete site.
             - 'src/DocGen/Parallel/WorkerPool.php'
+            # Example code is arbitrary program text, so running one is a
+            # boundary in the same sense: whatever it raises has to become a
+            # reported failure, because a throwable that escaped here would end
+            # the run at the first broken example instead of reporting it
+            # alongside the others.
+            - 'src/Doctest/Execution/StatementRunner.php'
     ignoreErrors:
         # PHPStan's ErrorFormatterTestCase and related internal classes
         # (ErrorsConsoleStyle, SymfonyOutput, SymfonyStyle) are not marked

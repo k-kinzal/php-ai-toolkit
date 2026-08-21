@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Render\Page;
 
+use Closure;
+
+use function count;
 use function implode;
 
 use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
@@ -17,7 +20,10 @@ use function sprintf;
  * Renders the prose of one PHPDoc block.
  *
  * PHP code fences inside the description are rendered as doctest blocks in
- * place, so examples stay where the author put them.
+ * place, so examples stay where the author put them. A bare "php" fence is one
+ * doctest executes, so it is captioned with the command that runs it on its
+ * own; a fence marked anything else, or none, is styled but not offered as
+ * runnable.
  */
 final class DocTextHtml
 {
@@ -38,8 +44,10 @@ final class DocTextHtml
 
     /**
      * Renders deprecation notice, summary, and description.
+     *
+     * @param string $symbol the doctest symbol the docblock documents, empty when unknown
      */
-    public function render(RenderKit $services, ?DocBlock $docBlock, TypeRenderContext $context): string
+    public function render(RenderKit $services, ?DocBlock $docBlock, TypeRenderContext $context, string $symbol = ''): string
     {
         if ($docBlock === null) {
             return '';
@@ -51,20 +59,51 @@ final class DocTextHtml
         }
 
         if ($docBlock->description !== '') {
-            $example = $this->example;
             $html .= '<div class="doc-body">' . $services->markdown->render(
                 $docBlock->description,
-                static function (string $code, string $language) use ($services, $example): ?string {
-                    if ($language === 'php' || $language === '') {
-                        return $example->codeBlock($services, $code) . "\n";
-                    }
-
-                    return null;
-                },
+                $this->fenceRenderer($services, $symbol, $this->fenceIndexBase($services, $docBlock)),
             ) . '</div>' . "\n";
         }
 
         return $html;
+    }
+
+    /**
+     * Returns the renderer for the code fences of a description.
+     *
+     * @param int $indexBase how many at-example blocks the docblock carries, which the fences are numbered after
+     *
+     * @return Closure(string, string): ?string
+     */
+    public function fenceRenderer(RenderKit $services, string $symbol, int $indexBase): Closure
+    {
+        $example = $this->example;
+        $fenceNumber = 0;
+
+        return static function (string $code, string $language) use ($services, $example, $symbol, $indexBase, &$fenceNumber): ?string {
+            if ($language !== 'php' && $language !== '') {
+                return null;
+            }
+
+            if ($language !== 'php' || $symbol === '') {
+                return $example->codeBlock($services, $code) . "\n";
+            }
+
+            $fenceNumber++;
+
+            return $example->figure($services, null, $code, true, sprintf('%s#%d', $symbol, $indexBase + $fenceNumber));
+        };
+    }
+
+    /**
+     * Returns the number doctest gives the first fence of the docblock, minus one.
+     *
+     * Doctest numbers the at-example blocks of a docblock before its fences, so
+     * a fence is identified by its position after all of them.
+     */
+    public function fenceIndexBase(RenderKit $services, DocBlock $docBlock): int
+    {
+        return count($services->doctest->tagExamples($services->doctest->cleanDocblock($docBlock->raw)));
     }
 
     /**

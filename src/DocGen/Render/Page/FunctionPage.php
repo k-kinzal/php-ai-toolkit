@@ -123,9 +123,9 @@ final class FunctionPage
         $html .= $this->banner->render($services, $services->diff->statusOf($key));
         $html .= '<pre class="signature"' . $services->diff->attribute($key) . '><code>'
             . $this->signature->functionSignature($services, $function, $context, $key) . '</code></pre>' . "\n";
-        $html .= $this->docText->render($services, $function->docBlock, $context);
+        $html .= $this->docText->render($services, $function->docBlock, $context, $function->fqn . '()');
         $html .= $this->member->signatureTable($services, $function->parameters, $function->returnType, $function->docBlock, $context, $key);
-        $html .= $this->member->tagExamples($services, $function->docBlock);
+        $html .= $this->member->tagExamples($services, $function->docBlock, $function->fqn . '()');
         $html .= $this->testCaseHtml->section($services, $pagePath, $services->model->testCases->forType($function->fqn));
 
         return $html . $this->usageList->section($services, $pagePath, 'Called from', $services->model->usages->forType($function->fqn, false), false);

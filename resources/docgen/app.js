@@ -117,12 +117,17 @@
     }
     var copy = event.target.closest ? event.target.closest('.copy-btn') : null;
     if (copy) {
-      var figure = copy.closest('figure');
-      var pre = figure ? figure.querySelector('pre') : null;
-      if (pre && navigator.clipboard) {
-        navigator.clipboard.writeText(pre.textContent).then(function () {
+      var text = copy.getAttribute('data-copy');
+      if (!text) {
+        var figure = copy.closest('figure');
+        var pre = figure ? figure.querySelector('pre') : null;
+        text = pre ? pre.textContent : null;
+      }
+      if (text && navigator.clipboard) {
+        var label = copy.textContent;
+        navigator.clipboard.writeText(text).then(function () {
           copy.textContent = 'copied';
-          setTimeout(function () { copy.textContent = 'copy'; }, 1200);
+          setTimeout(function () { copy.textContent = label; }, 1200);
         });
       }
     }

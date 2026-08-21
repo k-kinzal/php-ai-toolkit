@@ -83,9 +83,9 @@ final class MemberHtml
         $html .= $this->meta($services, $pagePath, $owner->file, $method->startLine, $method->endLine, $anchor);
         $html .= '</div>';
         $html .= '<div class="member-body">';
-        $html .= $this->docText->render($services, $method->docBlock, $context);
+        $html .= $this->docText->render($services, $method->docBlock, $context, sprintf('%s::%s()', $owner->fqcn, $method->name));
         $html .= $this->paramTable($services, $method, $context, $key);
-        $html .= $this->tagExamples($services, $method->docBlock);
+        $html .= $this->tagExamples($services, $method->docBlock, sprintf('%s::%s()', $owner->fqcn, $method->name));
         $html .= $this->testCases->section($services, $pagePath, $services->model->testCases->forMember($owner->fqcn, $method->name));
         $html .= $this->usageList->section($services, $pagePath, 'Called from', $this->callers($services, $owner, $method), false);
         $html .= $this->usageList->callSection($services, $pagePath, 'Calls', $services->model->usages->callsFrom($owner->fqcn, $method->name));
@@ -311,8 +311,10 @@ final class MemberHtml
 
     /**
      * Renders the at-example doctests of a member docblock.
+     *
+     * @param string $symbol the doctest symbol the examples belong to, empty when unknown
      */
-    public function tagExamples(RenderKit $services, ?DocBlock $docBlock): string
+    public function tagExamples(RenderKit $services, ?DocBlock $docBlock, string $symbol = ''): string
     {
         if ($docBlock === null) {
             return '';
@@ -321,7 +323,8 @@ final class MemberHtml
         $html = '';
         foreach ($services->doctest->extract($docBlock->raw) as $example) {
             if ($example->source !== 'fence') {
-                $html .= $this->example->figure($services, $example->description, $example->code, $example->source === 'tag');
+                $id = $symbol === '' ? '' : sprintf('%s#%d', $symbol, $example->index + 1);
+                $html .= $this->example->figure($services, $example->description, $example->code, $example->source === 'tag', $id);
             }
         }
 

@@ -6,8 +6,6 @@ namespace Tests\Unit\DocGen\Render\Page;
 
 use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
 use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
-use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\ProjectModel;
 use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
@@ -24,6 +22,8 @@ use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
+use PhpAiToolkit\Doctest\Analysis\AssertionScanner;
+use PhpAiToolkit\Doctest\Analysis\DoctestExtractor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;

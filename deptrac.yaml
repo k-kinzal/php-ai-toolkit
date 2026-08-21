@@ -13,6 +13,10 @@ deptrac:
       collectors:
         - type: directory
           value: src/DocGen/.*
+    - name: Doctest
+      collectors:
+        - type: directory
+          value: src/Doctest/.*
     - name: LocGuard
       collectors:
         - type: directory
@@ -45,22 +49,31 @@ deptrac:
       collectors:
         - type: directory
           value: src/PhpUnit/TestReporter/.*
+    - name: PhpUnitDoctest
+      collectors:
+        - type: directory
+          value: src/PhpUnit/Doctest/.*
     - name: Shared
       collectors:
         - type: directory
           value: src/Shared/.*
   ruleset:
     Installer: ~
-    DocGen: ~
+    DocGen:
+      - Doctest
+    Doctest: ~
     LocGuard: ~
     TreeGuard: ~
     ScopeGuard: ~
     PhpStanRule:
       - PhpStanSupport
+      - Doctest
     PhpStanSupport: ~
     PhpStanThrowType: ~
     PhpStanErrorFormatter:
       - Shared
     PhpUnitTestReporter:
       - Shared
+    PhpUnitDoctest:
+      - Doctest
     Shared: ~

@@ -43,6 +43,11 @@ Exit codes:
 - `0`: every threshold was met
 - non-zero: a threshold was missed, or Infection could not run
 
+`composer infection` is not a command and is not meant to become one. If it answers
+"Command infection is not defined", that is this design working as intended, not a
+script that went missing: run the two commands above, or push the branch and read
+the job.
+
 Regenerate the coverage report whenever the source has changed since the last one.
 `--skip-initial-tests` means Infection trusts what it is handed: a stale report
 scores mutants against tests that no longer match the code. CI regenerates it in the
@@ -85,11 +90,11 @@ Infection reports two scores, and both are enforced:
 - **Covered MSI** — killed mutants over the mutants in covered code only. It falls
   when tests execute code without asserting anything about it.
 
-The whole-tree numbers are a ratchet. `main` scores 82.49% as of this commit: of the
-9310 mutants generated from `src`, 7672 are killed by the test suite, 7 time out,
-1 errors out, and 1630 survive. Mutation code coverage is 100%, so MSI and Covered
-MSI are the same number here — every mutant is reachable by some test, and the 17%
-that survive are code the tests run without checking.
+The whole-tree numbers are a ratchet. `main` scores 82.26% as of this commit: of the
+9468 mutants generated from `src`, 7779 are killed by the test suite, 9 time out,
+and 1680 survive. Mutation code coverage is 100%, so MSI and Covered MSI are the
+same number here — every mutant is reachable by some test, and the 18% that survive
+are code the tests run without checking.
 
 The thresholds sit a point below that, at 81, because CI scores mutants on PHP 8.4
 while the measurement was taken on PHP 8.5: a threshold resting exactly on the
@@ -103,9 +108,9 @@ being written now can be held to a bar the whole tree cannot reach yet, and that
 the only moment when enforcing it is cheap.
 
 85 is where this codebase's own idiom puts the ceiling. The largest single source of
-surviving mutants is `Coalesce`: 482 mutants, 104 killed, 378 escaped. Nearly all of
+surviving mutants is `Coalesce`: 491 mutants, 106 killed, 385 escaped. Nearly all of
 them come from optional constructor injection — `$this->x = $x ?? new X()`, which
-appears at 509 sites in `src` — where the mutant reorders the operands into
+appears at 510 sites in `src` — where the mutant reorders the operands into
 `new X() ?? $x`. Every collaborator injected this way is a stateless `final` class,
 so the injected instance and a fresh one behave identically, and no test can tell
 them apart: killing such a mutant would need reflection, which
@@ -113,15 +118,14 @@ them apart: killing such a mutant would need reflection, which
 They are equivalent mutants, and `ForbiddenCommentRule` rejects the
 `@infection-ignore-all` that would otherwise silence them.
 
-If every `Coalesce` escape were equivalent, the whole tree would top out near 87%.
-Measured against real work rather than a round number: the source files that
-separate `main` from `origin/main` produce 984 mutants on their changed lines and
-score 86.89%, an earlier slice of the same range produced 488 and scored 91.8%, and
-a four-file slice produced 19 and scored 89.47% — dragged down by two of those
-constructors. Small diffs are noisy: two unkillable mutants in twenty cost ten
-points on their own. The bar sits where all three survive. A bar of 90 would have
-failed two of them, and a gate that fails honest work gets met by shrinking pull
-requests rather than by testing them.
+If every `Coalesce` escape were equivalent, the whole tree would top out near 86%.
+Measured against real work rather than a round number, four times as the branch
+grew: the changed lines between `main` and `origin/main` have scored 89.47% over 19
+mutants, 91.8% over 488, 86.89% over 984, and 86.42% over 1068. The low end is a
+four-file slice dragged down by two of those constructors — small diffs are noisy,
+where two unkillable mutants in twenty cost ten points on their own. The bar sits
+under all four. A bar of 90 would have failed three of them, and a gate that fails
+honest work gets met by shrinking pull requests rather than by testing them.
 
 Lowering a threshold, disabling a mutator, widening `source.excludes`, or narrowing
 `source.directories` all turn a red build green by measuring less. None of them is

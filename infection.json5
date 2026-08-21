@@ -5,8 +5,8 @@
     // bar is passed as --min-msi and --min-covered-msi by the workflow step, which is
     // how Infection is meant to be driven in CI.
     //
-    // The thresholds below are the whole-tree ratchet. main scores 82.49% (7672 of
-    // 9310 mutants killed, mutation code coverage 100%); they sit a point under that
+    // The thresholds below are the whole-tree ratchet. main scores 82.26% (7779 of
+    // 9468 mutants killed, mutation code coverage 100%); they sit a point under that
     // so a mutant classified differently by the PHP version CI scores on cannot turn
     // the build red on its own, while a suite that stops verifying — which loses
     // mutants by the dozen — still does. Raise them when the score rises.

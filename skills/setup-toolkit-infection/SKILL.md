@@ -212,6 +212,11 @@ Composer scripts earn their place when a command is run by hand on every save, l
 `composer lint`. Mutation testing is not that command, and it does not belong inside
 `composer lint` either: those gates are seconds, this one is minutes.
 
+Say so in the project's documentation, next to the local commands. Otherwise the
+absence reads as an oversight, and the next reader — human or agent — adds
+`composer infection` back the first time it answers "Command infection is not
+defined".
+
 Document the two local commands in the project's own docs instead:
 
 ```bash

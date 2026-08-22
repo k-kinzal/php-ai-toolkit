@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\DocGen\Analysis\Doctest\DocExample;
-use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
+use PhpAiToolkit\Doctest\Parser\Example;
+use PhpAiToolkit\Doctest\Parser\ExampleExtractor;
+use PhpAiToolkit\Doctest\Scanner\Target;
+use PhpAiToolkit\Doctest\Scanner\TargetKind;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\RunnableExampleDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(RunnableExampleDetector::class)]
-#[UsesClass(DoctestExtractor::class)]
-#[UsesClass(DocExample::class)]
+#[UsesClass(Example::class)]
+#[UsesClass(ExampleExtractor::class)]
+#[UsesClass(Target::class)]
+#[UsesClass(TargetKind::class)]
 final class RunnableExampleDetectorTest extends TestCase
 {
     public function testHasRunnableExampleAcceptsATagBlockWithCode(): void

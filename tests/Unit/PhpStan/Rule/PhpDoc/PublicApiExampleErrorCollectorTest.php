@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\DocGen\Analysis\Doctest\DocExample;
-use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
+use PhpAiToolkit\Doctest\Parser\Example;
+use PhpAiToolkit\Doctest\Parser\ExampleExtractor;
+use PhpAiToolkit\Doctest\Scanner\Target;
+use PhpAiToolkit\Doctest\Scanner\TargetKind;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\MissingExampleErrorBuilder;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApiExampleErrorCollector;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApiVisibilityDetector;
@@ -21,8 +23,10 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(RunnableExampleDetector::class)]
 #[UsesClass(MissingExampleErrorBuilder::class)]
 #[UsesClass(LineOrderedErrors::class)]
-#[UsesClass(DoctestExtractor::class)]
-#[UsesClass(DocExample::class)]
+#[UsesClass(Example::class)]
+#[UsesClass(ExampleExtractor::class)]
+#[UsesClass(Target::class)]
+#[UsesClass(TargetKind::class)]
 final class PublicApiExampleErrorCollectorTest extends TestCase
 {
     public function testErrorsCollectsClassAndMemberErrorsInLineOrder(): void

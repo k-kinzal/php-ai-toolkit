@@ -13,11 +13,11 @@ use PhpAiToolkit\PhpUnit\Doctest\DoctestTestCase;
 final class FailingFixtureDoctestTestCase extends DoctestTestCase
 {
     /**
-     * Returns the failing fixture project configuration.
+     * Returns the failing fixture project root.
      */
     #[Override]
-    public static function doctestConfigPath(): string
+    public static function doctestRoot(): string
     {
-        return __DIR__ . '/failing/doctest.yaml';
+        return __DIR__ . '/failing';
     }
 }

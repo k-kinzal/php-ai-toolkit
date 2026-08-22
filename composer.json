@@ -68,12 +68,12 @@
         "tree-guard": "@php bin/tree-guard --config=tree.yaml",
         "scope-guard": "@php bin/scope-guard --config=scope.yaml",
         "doc-gen": "@php bin/doc-gen",
-        "doctest": "@php bin/doctest --config=doctest.yaml",
+        "doctest": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite doctest",
         "deptrac": "@php deptrac.php analyse --config-file=deptrac.yaml",
         "format": "php-cs-fixer fix --allow-risky=yes",
         "format:check": "php-cs-fixer fix --dry-run --diff --allow-risky=yes"
     },
-    "bin": ["bin/php-ai-toolkit", "bin/loc-guard", "bin/tree-guard", "bin/scope-guard", "bin/doc-gen", "bin/doctest"],
+    "bin": ["bin/php-ai-toolkit", "bin/loc-guard", "bin/tree-guard", "bin/scope-guard", "bin/doc-gen"],
     "config": {
         "sort-packages": true,
         "allow-plugins": {

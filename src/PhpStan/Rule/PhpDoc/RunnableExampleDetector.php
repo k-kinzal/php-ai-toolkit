@@ -10,8 +10,8 @@ use PhpAiToolkit\Doctest\Analysis\DoctestExtractor;
  * Detects whether a PHPDoc block documents an example doctest can run.
  *
  * Extraction is delegated to the doctest grammar rather than repeated here, so
- * the rule requires exactly what "vendor/bin/doctest" would execute: a block
- * this rule accepts is a block the runner picks up.
+ * the rule requires exactly what the doctest test suite would execute: a block
+ * this rule accepts is a block that becomes a PHPUnit test case.
  */
 final class RunnableExampleDetector
 {

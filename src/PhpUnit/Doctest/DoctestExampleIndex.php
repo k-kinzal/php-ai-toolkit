@@ -5,75 +5,51 @@ declare(strict_types=1);
 namespace PhpAiToolkit\PhpUnit\Doctest;
 
 use PhpAiToolkit\Doctest\Analysis\Example;
-use PhpAiToolkit\Doctest\Config\ConfigLoader;
+use PhpAiToolkit\Doctest\Analysis\ProjectScanner;
 use PhpAiToolkit\Doctest\Config\DoctestConfig;
 use PhpAiToolkit\Doctest\DoctestException;
 use PhpAiToolkit\Doctest\Execution\ExampleRunner;
 use PhpAiToolkit\Doctest\Execution\RunResult;
-use PhpAiToolkit\Doctest\Execution\SuiteRunner;
 
 use function sprintf;
 
 /**
- * Holds the examples of one doctest configuration for a PHPUnit run.
+ * Holds the examples of one configuration for a PHPUnit run.
  *
  * A PHPUnit data provider and the test it feeds are separate calls, so the
  * examples are discovered once and addressed by identifier afterwards. That is
- * also what lets a single failing example be re-run on its own from the
- * command line: the identifier PHPUnit prints is the identifier doctest takes.
+ * also what lets a single example be re-run on its own: the identifier PHPUnit
+ * prints is the identifier a --filter pattern is built from.
  */
 final class DoctestExampleIndex
 {
     /** @var list<Example>|null */
     private ?array $examples = null;
 
-    private ?DoctestConfig $config = null;
-
     /** @readonly */
-    private ConfigLoader $configLoader;
-
-    /** @readonly */
-    private SuiteRunner $suiteRunner;
+    private ProjectScanner $scanner;
 
     /** @readonly */
     private ExampleRunner $exampleRunner;
 
     /**
-     * Creates an index for one doctest configuration file.
-     *
-     * @param string $configPath path to doctest.yaml, absolute or relative to the working directory
+     * Creates an index for one doctest configuration.
      */
     public function __construct(
         /** @readonly */
-        private string $configPath,
-        ?ConfigLoader $configLoader = null,
-        ?SuiteRunner $suiteRunner = null,
+        private DoctestConfig $config,
+        ?ProjectScanner $scanner = null,
         ?ExampleRunner $exampleRunner = null,
     ) {
-        $this->configLoader = $configLoader ?? new ConfigLoader();
-        $this->suiteRunner = $suiteRunner ?? new SuiteRunner();
+        $this->scanner = $scanner ?? new ProjectScanner();
         $this->exampleRunner = $exampleRunner ?? new ExampleRunner();
     }
 
     /**
-     * Returns the configuration path this index was built for.
-     */
-    public function configPath(): string
-    {
-        return $this->configPath;
-    }
-
-    /**
-     * Returns the resolved configuration, loading it on first use.
-     *
-     * @throws DoctestException when the configuration is missing or invalid
+     * Returns the configuration this index was built for.
      */
     public function config(): DoctestConfig
     {
-        if ($this->config === null) {
-            $this->config = $this->configLoader->load($this->configPath);
-        }
-
         return $this->config;
     }
 
@@ -82,12 +58,12 @@ final class DoctestExampleIndex
      *
      * @return list<Example>
      *
-     * @throws DoctestException when the configuration or a scanned source file cannot be read
+     * @throws DoctestException when a configured path is missing or a source file cannot be read
      */
     public function examples(): array
     {
         if ($this->examples === null) {
-            $this->examples = $this->suiteRunner->collect($this->config());
+            $this->examples = $this->scanner->examples($this->config);
         }
 
         return $this->examples;
@@ -116,6 +92,6 @@ final class DoctestExampleIndex
      */
     public function run(string $id): RunResult
     {
-        return $this->exampleRunner->run($this->example($id), $this->config()->bootstrapPath());
+        return $this->exampleRunner->run($this->example($id), $this->config->bootstrapPath());
     }
 }

@@ -13,11 +13,22 @@ use PhpAiToolkit\PhpUnit\Doctest\Legacy\LegacyDoctestTestCase;
 final class LegacyFixtureDoctestTestCase extends LegacyDoctestTestCase
 {
     /**
-     * Returns the fixture project configuration.
+     * Returns the fixture project root.
      */
     #[Override]
-    public static function doctestConfigPath(): string
+    public static function doctestRoot(): string
     {
-        return __DIR__ . '/project/doctest.yaml';
+        return __DIR__ . '/project';
+    }
+
+    /**
+     * Leaves the nested directory of the fixture project unscanned.
+     *
+     * @return list<string>
+     */
+    #[Override]
+    public static function doctestExcludes(): array
+    {
+        return ['src/Nested/*'];
     }
 }

@@ -248,7 +248,7 @@ PHP);
         $html = $renderer('render();', 'php');
 
         self::assertNotNull($html);
-        self::assertStringContainsString('data-copy="vendor/bin/doctest --filter=&#039;Demo\Widget#3&#039;"', $html);
+        self::assertStringContainsString('data-copy="vendor/bin/phpunit --filter &#039;/Demo\\\\Widget\#3/&#039;"', $html);
         self::assertStringContainsString('chip-doctest', $html);
     }
 

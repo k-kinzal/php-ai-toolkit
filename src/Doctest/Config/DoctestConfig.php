@@ -4,35 +4,37 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\Doctest\Config;
 
+use function str_starts_with;
+
 /**
- * Fully resolved doctest configuration.
+ * What a doctest run scans, and what it loads before it starts.
+ *
+ * Configuration is a value built by the test case that runs the examples, not a
+ * file of its own: doctest is a set of PHPUnit test cases, so it is configured
+ * where the rest of the suite is configured.
  *
  * @property-read string $root
  * @property-read list<string> $paths
  * @property-read list<string> $exclude
  * @property-read ?string $bootstrap
- * @property-read ReportConfig $report
  */
 final class DoctestConfig
 {
     /**
-     * @param string $root the directory the configured paths are relative to
+     * @param string $root the directory the paths and the bootstrap are relative to
      * @param list<string> $paths the files and directories to scan for examples
      * @param list<string> $exclude fnmatch globs of project-relative paths to skip
      * @param string|null $bootstrap a file to include once before the first example
-     * @param ReportConfig $report how results are formatted and ordered
      */
     public function __construct(
         /** @readonly */
         private string $root,
         /** @readonly */
-        private array $paths,
+        private array $paths = ['src'],
         /** @readonly */
-        private array $exclude,
+        private array $exclude = [],
         /** @readonly */
-        private ?string $bootstrap,
-        /** @readonly */
-        private ReportConfig $report,
+        private ?string $bootstrap = null,
     ) {
     }
 
@@ -48,7 +50,6 @@ final class DoctestConfig
             'paths' => $this->paths,
             'exclude' => $this->exclude,
             'bootstrap' => $this->bootstrap,
-            'report' => $this->report,
             default => null,
         };
     }

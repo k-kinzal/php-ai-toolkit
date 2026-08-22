@@ -1,8 +1,0 @@
-paths:
-  - src
-
-report:
-  reporter: ai
-  order_by:
-    - path
-    - line

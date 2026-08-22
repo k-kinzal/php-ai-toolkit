@@ -15,15 +15,37 @@ use Tests\Fixture\Doctest\LegacyFixtureDoctestTestCase;
 #[Medium]
 final class LegacyDoctestTestCaseTest extends TestCase
 {
-    public function testDoctestConfigPathDefaultsToTheProjectConfiguration(): void
+    public function testDoctestRootDefaultsToTheDirectoryPhpUnitRunsFrom(): void
     {
-        self::assertSame('doctest.yaml', LegacyDoctestTestCase::doctestConfigPath());
-        self::assertStringEndsWith('Fixture/Doctest/project/doctest.yaml', LegacyFixtureDoctestTestCase::doctestConfigPath());
+        self::assertSame(getcwd(), LegacyDoctestTestCase::doctestRoot());
     }
 
-    public function testDoctestIndexIsBuiltForTheConfiguredPath(): void
+    public function testDoctestPathsDefaultToTheSourceDirectory(): void
     {
-        self::assertSame(LegacyFixtureDoctestTestCase::doctestConfigPath(), LegacyFixtureDoctestTestCase::doctestIndex()->configPath());
+        self::assertSame(['src'], LegacyDoctestTestCase::doctestPaths());
+    }
+
+    public function testDoctestExcludesAreEmptyUntilASuiteNarrowsThem(): void
+    {
+        self::assertSame([], LegacyDoctestTestCase::doctestExcludes());
+        self::assertSame(['src/Nested/*'], LegacyFixtureDoctestTestCase::doctestExcludes());
+    }
+
+    public function testDoctestBootstrapIsAbsentForAnAutoloadedProject(): void
+    {
+        self::assertNull(LegacyDoctestTestCase::doctestBootstrap());
+    }
+
+    public function testDoctestConfigAssemblesTheOverriddenSettings(): void
+    {
+        $config = LegacyFixtureDoctestTestCase::doctestConfig();
+
+        self::assertStringEndsWith('Fixture/Doctest/project', $config->root);
+        self::assertSame(['src/Nested/*'], $config->exclude);
+    }
+
+    public function testDoctestIndexIsBuiltOncePerSuite(): void
+    {
         self::assertSame(LegacyFixtureDoctestTestCase::doctestIndex(), LegacyFixtureDoctestTestCase::doctestIndex());
     }
 

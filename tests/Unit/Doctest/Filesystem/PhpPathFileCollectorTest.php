@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Doctest\Filesystem;
 
 use PhpAiToolkit\Doctest\Config\DoctestConfig;
-use PhpAiToolkit\Doctest\Config\ReportConfig;
 use PhpAiToolkit\Doctest\DoctestException;
 use PhpAiToolkit\Doctest\Filesystem\DoctestPathResolver;
 use PhpAiToolkit\Doctest\Filesystem\PhpFileInclusionPolicy;
@@ -16,7 +15,6 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversClass(PhpPathFileCollector::class)]
 #[UsesClass(DoctestConfig::class)]
-#[UsesClass(ReportConfig::class)]
 #[UsesClass(DoctestPathResolver::class)]
 #[UsesClass(PhpFileInclusionPolicy::class)]
 final class PhpPathFileCollectorTest extends TestCase
@@ -24,7 +22,7 @@ final class PhpPathFileCollectorTest extends TestCase
     public function testFilesCollectsAWholeDirectoryAndHonoursExclusions(): void
     {
         $root = realpath(__DIR__ . '/../../../Fixture/Doctest/project');
-        $config = new DoctestConfig((string) $root, ['src'], ['src/Nested/*'], null, new ReportConfig('ai', ['path']));
+        $config = new DoctestConfig((string) $root, ['src'], ['src/Nested/*']);
 
         $files = (new PhpPathFileCollector())->files($config, $root . '/src');
 
@@ -34,7 +32,7 @@ final class PhpPathFileCollectorTest extends TestCase
     public function testFilesCollectsASingleFileAndSkipsAnExcludedOne(): void
     {
         $root = realpath(__DIR__ . '/../../../Fixture/Doctest/project');
-        $config = new DoctestConfig((string) $root, ['src'], ['src/Nested/*'], null, new ReportConfig('ai', ['path']));
+        $config = new DoctestConfig((string) $root, ['src'], ['src/Nested/*']);
         $collector = new PhpPathFileCollector();
 
         self::assertSame(['src/Calculator.php'], array_values($collector->files($config, $root . '/src/Calculator.php')));
@@ -43,7 +41,7 @@ final class PhpPathFileCollectorTest extends TestCase
 
     public function testFilesRejectsAPathThatDoesNotExist(): void
     {
-        $config = new DoctestConfig('/app', ['src'], [], null, new ReportConfig('ai', ['path']));
+        $config = new DoctestConfig('/app', ['src'], []);
 
         $this->expectException(DoctestException::class);
         $this->expectExceptionMessage('Configured path does not exist: /app/missing');

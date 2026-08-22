@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\Doctest;
 
+use PhpAiToolkit\Doctest\Config\DoctestConfig;
 use PhpAiToolkit\Doctest\DoctestException;
 use PhpAiToolkit\PhpUnit\Doctest\DoctestExampleIndex;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -14,25 +15,16 @@ use PHPUnit\Framework\TestCase;
 #[Medium]
 final class DoctestExampleIndexTest extends TestCase
 {
-    public function testConfigPathReturnsThePathItWasBuiltFor(): void
+    public function testConfigReturnsTheConfigurationItWasBuiltFor(): void
     {
-        $path = __DIR__ . '/../../../Fixture/Doctest/project/doctest.yaml';
+        $config = new DoctestConfig(__DIR__ . '/../../../Fixture/Doctest/project', ['src'], ['src/Nested/*']);
 
-        self::assertSame($path, (new DoctestExampleIndex($path))->configPath());
-    }
-
-    public function testConfigLoadsTheFileOnceAndReturnsTheSameInstance(): void
-    {
-        $index = new DoctestExampleIndex(__DIR__ . '/../../../Fixture/Doctest/project/doctest.yaml');
-        $config = $index->config();
-
-        self::assertSame(['src'], $config->paths);
-        self::assertSame($config, $index->config());
+        self::assertSame($config, (new DoctestExampleIndex($config))->config());
     }
 
     public function testExamplesDiscoversTheProjectExamplesOnce(): void
     {
-        $index = new DoctestExampleIndex(__DIR__ . '/../../../Fixture/Doctest/project/doctest.yaml');
+        $index = new DoctestExampleIndex(new DoctestConfig(__DIR__ . '/../../../Fixture/Doctest/project', ['src'], ['src/Nested/*']));
         $examples = $index->examples();
 
         self::assertCount(6, $examples);
@@ -41,7 +33,7 @@ final class DoctestExampleIndexTest extends TestCase
 
     public function testExampleFindsAnExampleByItsIdentifier(): void
     {
-        $index = new DoctestExampleIndex(__DIR__ . '/../../../Fixture/Doctest/project/doctest.yaml');
+        $index = new DoctestExampleIndex(new DoctestConfig(__DIR__ . '/../../../Fixture/Doctest/project', ['src'], ['src/Nested/*']));
 
         self::assertSame(
             'Tests\Fixture\Doctest\Project\Calculator::add()#2',
@@ -51,7 +43,7 @@ final class DoctestExampleIndexTest extends TestCase
 
     public function testExampleRejectsAnUnknownIdentifier(): void
     {
-        $index = new DoctestExampleIndex(__DIR__ . '/../../../Fixture/Doctest/project/doctest.yaml');
+        $index = new DoctestExampleIndex(new DoctestConfig(__DIR__ . '/../../../Fixture/Doctest/project', ['src'], ['src/Nested/*']));
 
         $this->expectException(DoctestException::class);
         $this->expectExceptionMessage('No documented example is identified by "Missing#1".');
@@ -61,7 +53,7 @@ final class DoctestExampleIndexTest extends TestCase
 
     public function testRunExecutesTheNamedExample(): void
     {
-        $index = new DoctestExampleIndex(__DIR__ . '/../../../Fixture/Doctest/project/doctest.yaml');
+        $index = new DoctestExampleIndex(new DoctestConfig(__DIR__ . '/../../../Fixture/Doctest/project', ['src'], ['src/Nested/*']));
 
         $result = $index->run('Tests\Fixture\Doctest\Project\Calculator::add()#1');
 

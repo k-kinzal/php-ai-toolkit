@@ -61,7 +61,7 @@ Run the following skills in your AI agent:
 - `/setup-toolkit-loc-guard` — LocGuard metrics checks for production source complexity and length limits
 - `/setup-toolkit-tree-guard` — TreeGuard directory and file structure constraints
 - `/setup-toolkit-scope-guard` — ScopeGuard namespace visibility scopes, the PHP counterpart of Rust's `pub(crate)`
-- `/setup-toolkit-doctest` — Doctest execution of the examples written in PHPDoc blocks, standalone and under PHPUnit
+- `/setup-toolkit-doctest` — Doctest execution of the examples written in PHPDoc blocks as PHPUnit test cases
 - `/setup-toolkit-doc-gen` — DocGen static documentation site with full types, relations, layers, doctest examples, and a two-revision diff mode
 - `/setup-toolkit-deptrac` — Deptrac architecture dependency rules for web apps, CLI apps, libraries, and modular projects
 - `/setup-toolkit-github-actions` — GitHub Actions CI for tests, lint gates, PHP compatibility, and pinned actions
@@ -83,7 +83,7 @@ and published on every push to `main`.
 - [LocGuard Configuration](docs/loc-guard.md) — Production source metrics checks and thresholds
 - [TreeGuard Configuration](docs/tree-guard.md) — Directory and file structure constraints
 - [ScopeGuard Configuration](docs/scope-guard.md) — Namespace visibility scopes declared with `@visibility`
-- [Doctest Configuration](docs/doctest.md) — Running the examples written in PHPDoc blocks, standalone and under PHPUnit
+- [Doctest Configuration](docs/doctest.md) — Running the examples written in PHPDoc blocks as PHPUnit test cases
 - [DocGen Configuration](docs/doc-gen.md) — Static documentation site generation and scope control
 - [Deptrac Configuration](docs/deptrac.md) — Architecture dependency rules and adaptation guidance
 - [GitHub Actions Configuration](docs/github-actions.md) — CI jobs, PHP version coverage, and workflow hardening

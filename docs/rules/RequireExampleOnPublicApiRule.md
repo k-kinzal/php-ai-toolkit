@@ -64,8 +64,8 @@ final class Ledger  // ERROR: still reported; nothing here can be executed.
 ## Why This Is an Error
 
 1. **Prose goes stale silently; an example cannot.** A description of what a method does is checked
-   by nobody. An example is executed by `vendor/bin/doctest`, so the moment the code stops behaving
-   as documented, the build says so.
+   by nobody. An example runs as a PHPUnit test case, so the moment the code stops behaving as
+   documented, the build says so.
 
 2. **Public API is a promise, and a promise should be demonstrable.** The declaration that a symbol
    is public is the moment to show what calling it looks like — the parameters that go together, the
@@ -152,6 +152,7 @@ weaker one. See [Doctest Configuration](../doctest.md) for the full notation.
 
 ## Relationship to doctest
 
-The rule requires exactly what `vendor/bin/doctest` executes: extraction is delegated to the same
-grammar, so a block this rule accepts is a block the runner picks up, and an example the runner would
-skip does not satisfy the rule. Once the rule is green, `composer doctest` is what keeps it honest.
+The rule requires exactly what the doctest test suite executes: extraction is delegated to the same
+grammar, so a block this rule accepts is a block that becomes a PHPUnit test case, and an example the
+runner would skip does not satisfy the rule. Once the rule is green, running the suite is what keeps
+it honest.

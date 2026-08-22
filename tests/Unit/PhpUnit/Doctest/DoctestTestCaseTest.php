@@ -17,16 +17,41 @@ use Tests\Fixture\Doctest\FixtureDoctestTestCase;
 #[Medium]
 final class DoctestTestCaseTest extends TestCase
 {
-    public function testDoctestConfigPathDefaultsToTheProjectConfiguration(): void
+    public function testDoctestRootDefaultsToTheDirectoryPhpUnitRunsFrom(): void
     {
-        self::assertSame('doctest.yaml', DoctestTestCase::doctestConfigPath());
-        self::assertStringEndsWith('Fixture/Doctest/project/doctest.yaml', FixtureDoctestTestCase::doctestConfigPath());
+        self::assertSame(getcwd(), DoctestTestCase::doctestRoot());
     }
 
-    public function testDoctestIndexIsBuiltForTheConfiguredPath(): void
+    public function testDoctestPathsDefaultToTheSourceDirectory(): void
     {
-        self::assertSame(FixtureDoctestTestCase::doctestConfigPath(), FixtureDoctestTestCase::doctestIndex()->configPath());
+        self::assertSame(['src'], DoctestTestCase::doctestPaths());
+    }
+
+    public function testDoctestExcludesAreEmptyUntilASuiteNarrowsThem(): void
+    {
+        self::assertSame([], DoctestTestCase::doctestExcludes());
+        self::assertSame(['src/Nested/*'], FixtureDoctestTestCase::doctestExcludes());
+    }
+
+    public function testDoctestBootstrapIsAbsentForAnAutoloadedProject(): void
+    {
+        self::assertNull(DoctestTestCase::doctestBootstrap());
+    }
+
+    public function testDoctestConfigAssemblesTheOverriddenSettings(): void
+    {
+        $config = FixtureDoctestTestCase::doctestConfig();
+
+        self::assertStringEndsWith('Fixture/Doctest/project', $config->root);
+        self::assertSame(['src'], $config->paths);
+        self::assertSame(['src/Nested/*'], $config->exclude);
+        self::assertNull($config->bootstrap);
+    }
+
+    public function testDoctestIndexIsBuiltOncePerSuite(): void
+    {
         self::assertSame(FixtureDoctestTestCase::doctestIndex(), FixtureDoctestTestCase::doctestIndex());
+        self::assertNotSame(FixtureDoctestTestCase::doctestIndex(), FailingFixtureDoctestTestCase::doctestIndex());
     }
 
     public function testDoctestExampleProviderNamesEveryExampleByItsIdentifier(): void
@@ -34,11 +59,10 @@ final class DoctestTestCaseTest extends TestCase
         $provided = iterator_to_array(FixtureDoctestTestCase::doctestExampleProvider());
 
         self::assertCount(6, $provided);
-        self::assertArrayHasKey(
-            'Calculator::add() example #1: Adding two numbers [Tests\Fixture\Doctest\Project\Calculator::add()#1]',
-            $provided,
+        self::assertSame(
+            ['Tests\Fixture\Doctest\Project\Calculator::add()#1'],
+            $provided['Calculator::add() example #1: Adding two numbers [Tests\Fixture\Doctest\Project\Calculator::add()#1]'],
         );
-        self::assertSame(['Tests\Fixture\Doctest\Project\Calculator::add()#1'], $provided['Calculator::add() example #1: Adding two numbers [Tests\Fixture\Doctest\Project\Calculator::add()#1]']);
     }
 
     public function testTestDocblockExamplePassesForADocumentedExampleThatHolds(): void
@@ -50,12 +74,12 @@ final class DoctestTestCaseTest extends TestCase
         self::assertSame($before + 1, Assert::getCount());
     }
 
-    public function testTestDocblockExampleFailsWithTheDoctestReportForABrokenExample(): void
+    public function testTestDocblockExampleFailsWithTheReportAndTheCommandThatRerunsIt(): void
     {
         $case = new FailingFixtureDoctestTestCase('testDocblockExample');
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('Documented example Tests\Fixture\Doctest\Failing\Broken#1 does not hold.');
+        $this->expectExceptionMessage("vendor/bin/phpunit --filter '/Tests\\\\Fixture\\\\Doctest\\\\Failing\\\\Broken\\#1/'");
 
         $case->testDocblockExample('Tests\Fixture\Doctest\Failing\Broken#1');
     }

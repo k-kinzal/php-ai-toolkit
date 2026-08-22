@@ -22,6 +22,10 @@
             <directory>tests/Unit</directory>
             <exclude>tests/Unit/PhpUnit/TestReporter/Legacy</exclude>
         </testsuite>
+        <testsuite name="doctest">
+            <directory>tests/Doctest</directory>
+            <exclude>tests/Doctest/Legacy</exclude>
+        </testsuite>
     </testsuites>
     <extensions>
         <bootstrap class="PhpAiToolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>

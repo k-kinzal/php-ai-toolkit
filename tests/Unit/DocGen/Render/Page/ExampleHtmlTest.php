@@ -137,8 +137,8 @@ final class ExampleHtmlTest extends TestCase
 
         self::assertStringStartsWith('<figure class="example">', $html);
         self::assertStringContainsString('<span class="example-title">Adding numbers</span>', $html);
-        self::assertStringContainsString('title="Executable with doctest as Demo\Sum::of()#1">doctest</span>', $html);
-        self::assertStringContainsString('data-copy="vendor/bin/doctest --filter=&#039;Demo\Sum::of()#1&#039;"', $html);
+        self::assertStringContainsString('title="Runs as the doctest Demo\Sum::of()#1">doctest</span>', $html);
+        self::assertStringContainsString('data-copy="vendor/bin/phpunit --filter &#039;/Demo\\\\Sum\:\:of\(\)\#1/&#039;"', $html);
         self::assertStringContainsString('<button class="copy-btn" type="button" title="Copy example">copy</button>', $html);
         self::assertStringEndsWith('</figure>' . "\n", $html);
     }
@@ -156,7 +156,7 @@ final class ExampleHtmlTest extends TestCase
 
         $html = (new ExampleHtml())->figure($services, 'Adding numbers', '$sum = 1; // => 1', true);
 
-        self::assertStringContainsString('title="Executable with doctest">doctest</span>', $html);
+        self::assertStringContainsString('title="Executable as a doctest">doctest</span>', $html);
         self::assertStringNotContainsString('data-copy', $html);
     }
 
@@ -172,8 +172,8 @@ final class ExampleHtmlTest extends TestCase
         $services = (new SiteRenderer())->services($model);
         $example = new ExampleHtml();
 
-        self::assertStringContainsString('title="Executable with doctest">', $example->doctestChip($services, ''));
-        self::assertStringContainsString('title="Executable with doctest as Demo\Sum#1">', $example->doctestChip($services, 'Demo\\Sum#1'));
+        self::assertStringContainsString('title="Executable as a doctest">', $example->doctestChip($services, ''));
+        self::assertStringContainsString('title="Runs as the doctest Demo\Sum#1">', $example->doctestChip($services, 'Demo\\Sum#1'));
     }
 
     public function testRunButtonCarriesTheCommandToCopy(): void
@@ -189,13 +189,13 @@ final class ExampleHtmlTest extends TestCase
 
         $html = (new ExampleHtml())->runButton($services, 'Demo\\Sum#1');
 
-        self::assertStringContainsString('data-copy="vendor/bin/doctest --filter=&#039;Demo\Sum#1&#039;"', $html);
+        self::assertStringContainsString('data-copy="vendor/bin/phpunit --filter &#039;/Demo\\\\Sum\#1/&#039;"', $html);
         self::assertStringContainsString('>run</button>', $html);
     }
 
     public function testRunCommandQuotesTheIdentifier(): void
     {
-        self::assertSame("vendor/bin/doctest --filter='Demo\\Sum::of()#1'", (new ExampleHtml())->runCommand('Demo\\Sum::of()#1'));
+        self::assertSame("vendor/bin/phpunit --filter '/Demo\\\\Sum\:\:of\(\)\#1/'", (new ExampleHtml())->runCommand('Demo\\Sum::of()#1'));
     }
 
     public function testFigureOmitsBadgeForDisplayOnlyExample(): void

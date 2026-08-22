@@ -2,27 +2,29 @@
 name: setup-toolkit-doctest
 description: >-
   Set up doctest execution of PHPDoc examples for a PHP project. Use when asked
-  to configure doctest, doctest.yaml, runnable examples in docblocks, @example
-  blocks, executable documentation, testing code samples in comments, Python
-  doctest or Rust doc tests for PHP, running one documented example on its own,
-  running docblock examples under PHPUnit, requiring examples on public API,
-  the RequireExampleOnPublicApiRule PHPStan rule, Composer scripts for doctest,
-  or CI jobs that check documentation examples still hold.
+  to configure doctest, runnable examples in docblocks, @example blocks,
+  executable documentation, testing code samples in comments, Python doctest or
+  Rust doc tests for PHP, running docblock examples under PHPUnit, running one
+  documented example on its own, requiring examples on public API, the
+  RequireExampleOnPublicApiRule PHPStan rule, a doctest PHPUnit test suite, or
+  CI that checks documentation examples still hold.
 ---
 
 # Setup Doctest (Executable PHPDoc Examples)
 
-This skill configures `doctest`, the php-ai-toolkit CLI that runs the examples written in PHPDoc blocks. Prose in a docblock says what a symbol is for; an example says what calling it does, and because the example is executed, it cannot quietly stop being true.
+This skill configures doctest, the php-ai-toolkit PHPUnit test case that runs the examples written in PHPDoc blocks. Prose in a docblock says what a symbol is for; an example says what calling it does, and because the example is executed, it cannot quietly stop being true.
+
+Doctest is a PHPUnit test case, not a command of its own. The project already has a runner, a reporter, and a CI job that reports through it; a documented example that disagrees with the code is a failing test, so it is reported as one.
 
 ## Prerequisites
 
-Inspect `composer.json` before configuring:
+Inspect the project before configuring:
 
-- Confirm the target project requires `k-kinzal/php-ai-toolkit`.
-- Read Composer production autoload roots. Usually this is `src/`, not `tests/`.
-- Check whether the project autoloads everything it ships. A project with non-autoloadable function files needs a `bootstrap`.
+- Confirm it requires `k-kinzal/php-ai-toolkit`.
 - Read the installed PHPUnit major: 10 or later takes `DoctestTestCase`, 9 takes `LegacyDoctestTestCase`.
-- Check existing Composer scripts and CI jobs.
+- Read `phpunit.xml` (or `phpunit.xml.dist`) and the existing `<testsuites>`.
+- Read Composer production autoload roots. Usually this is `src/`, not `tests/`.
+- Check whether the project autoloads everything it ships. A project with non-autoloadable function files needs a bootstrap.
 
 Install the toolkit if missing:
 
@@ -30,23 +32,60 @@ Install the toolkit if missing:
 composer require --dev k-kinzal/php-ai-toolkit
 ```
 
-## Template
+## Apply
 
-Read the template from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-doctest/doctest.yaml` and apply it to the project root as `doctest.yaml`.
+Add one test class. Put it in its own directory rather than beside the unit tests, so it can be selected as a suite and so a project that pairs `src/` classes with `tests/Unit/` classes is not asked to pair this one:
 
-| Setting | Default | Meaning |
-|---------|---------|---------|
-| `paths` | `['src']` | Files and directories scanned for documented examples. |
-| `exclude` | `[]` | fnmatch globs of project-relative paths to skip, for generated sources. |
-| `bootstrap` | none | A file to include once before the first example runs. |
-| `report.reporter` | `ai` | `ai`, `text`, or `json`. |
-| `report.order_by` | `['path', 'line']` | Failure ordering: `path`, `line`, `symbol`. |
+```php
+<?php
 
-Set `paths` from the discovered autoload roots. Leave `bootstrap` unset unless the project has code an autoloader cannot resolve: the command loads the Composer autoloader already.
+declare(strict_types=1);
+
+namespace Tests\Doctest;
+
+use PhpAiToolkit\PhpUnit\Doctest\DoctestTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Medium;
+
+/**
+ * Runs the examples this package documents its public API with.
+ */
+#[CoversNothing]
+#[Medium]
+final class DocumentedExampleTest extends DoctestTestCase
+{
+}
+```
+
+Then register the suite:
+
+```xml
+<testsuites>
+    <testsuite name="unit">
+        <directory>tests/Unit</directory>
+    </testsuite>
+    <testsuite name="doctest">
+        <directory>tests/Doctest</directory>
+    </testsuite>
+</testsuites>
+```
+
+The defaults scan `src` under the directory PHPUnit runs from, so an empty subclass is usually the whole setup. Override only what the project needs:
+
+| Method | Default | Meaning |
+|--------|---------|---------|
+| `doctestRoot()` | `getcwd()` | The directory the scanned paths and the bootstrap are relative to. |
+| `doctestPaths()` | `['src']` | Files and directories scanned for documented examples. |
+| `doctestExcludes()` | `[]` | fnmatch globs of root-relative paths to skip. |
+| `doctestBootstrap()` | `null` | A file to include once before the first example runs. |
+
+Set `doctestPaths()` from the discovered autoload roots when they are not `src`. Leave `doctestBootstrap()` alone unless the project has code an autoloader cannot resolve.
+
+On PHPUnit 9, extend `PhpAiToolkit\PhpUnit\Doctest\Legacy\LegacyDoctestTestCase` instead. A project that supports both majors carries one subclass of each and excludes the PHPUnit 9 one from the modern configuration.
 
 ## Adapting to the Project
 
-The command reports nothing until docblocks carry examples, so adoption is the work, not the configuration. Do not add examples in bulk. Take the entry points first:
+The suite reports nothing until docblocks carry examples, so adoption is the work, not the configuration. Do not add examples in bulk. Take the entry points first:
 
 - The types a consumer names to start using the package. An example there is the one readers look for.
 - Methods whose contract is easy to get wrong — an argument order, a unit, a nullable return.
@@ -88,38 +127,14 @@ A single-line `@example expr` tag, and a fence whose info string is not exactly 
 
 ## Running One Example
 
-Every example has an identifier — the symbol it documents, then `#` and its position in that docblock:
+Every example has an identifier — the symbol it documents, then `#` and its position in that docblock. PHPUnit filters are regular expressions and an identifier is not one, so it is quoted:
 
 ```bash
-vendor/bin/doctest --list
-vendor/bin/doctest --filter='App\Calculator::add()#2'
+vendor/bin/phpunit --testsuite doctest
+vendor/bin/phpunit --filter '/App\\Calculator\:\:add\(\)\#2/'
 ```
 
-The identifier is printed next to every failure, so the report hands back the command that reproduces it.
-
-## Running Under PHPUnit
-
-Add one test class to the project's test suite so every example runs as its own PHPUnit test:
-
-```php
-namespace Tests\Unit;
-
-use Override;
-use PhpAiToolkit\PhpUnit\Doctest\DoctestTestCase;
-
-final class DocumentedExampleTest extends DoctestTestCase
-{
-    #[Override]
-    public static function doctestConfigPath(): string
-    {
-        return __DIR__ . '/../../doctest.yaml';
-    }
-}
-```
-
-On PHPUnit 9, extend `PhpAiToolkit\PhpUnit\Doctest\Legacy\LegacyDoctestTestCase` instead: it binds the same provider through a doc-comment annotation, which is how PHPUnit 9 reads metadata.
-
-Choose one place to run them. A project whose CI already reports through PHPUnit gains little from a second job; a project that wants documentation checked separately from its unit tests should use the command.
+Every failure prints that command, and so does the generated documentation site, so it never has to be built by hand.
 
 ## Requiring Examples on Public API
 
@@ -127,52 +142,29 @@ Choose one place to run them. A project whose CI already reports through PHPUnit
 
 Tag a declaration `@visibility public` when the project means "this is the surface other code is invited to use", then give it an example. Do not tag in bulk to make the rule look adopted, and do not remove a tag to silence it.
 
-## Reporter
-
-Keep `report.reporter: ai` by default for this toolkit. The AI reporter prints `DOCTEST_PASSED` or `DOCTEST_FAILED` on the first line, a summary, remediation guidance, and the rerun command for every failure.
-
 ## Recommended Composer Scripts
 
-Add a script that matches the project:
+The examples already run with the rest of the suite. Add a script only for running them alone:
 
 ```json
 {
     "scripts": {
-        "doctest": "doctest --config=doctest.yaml"
+        "doctest": "phpunit --testsuite doctest"
     }
 }
 ```
 
-Keep it out of `lint`. Doctest executes code, so it belongs with the tests, not with the static gates. Add it to the test step of CI, or to `test` if the project has an aggregate script:
-
-```json
-{
-    "scripts": {
-        "test": [
-            "@test:unit",
-            "@doctest"
-        ]
-    }
-}
-```
-
-Do not add it twice: a project running examples through `DoctestTestCase` already runs them in its PHPUnit job.
+Do not add a separate CI job and do not add `@doctest` to `test`: the suite runs the examples wherever it runs, on every PHP version the matrix covers, and running them twice only doubles the time.
 
 ## Verification
 
 After applying:
 
 ```bash
-vendor/bin/doctest --config=doctest.yaml
+vendor/bin/phpunit --testsuite doctest
 ```
 
-Exit codes:
-
-- `0`: every example held
-- `1`: at least one example failed
-- `2`: configuration or runtime error
-
-Confirm the summary line reports the expected file count, then write one example, confirm it passes, break it on purpose, and confirm the failure names it.
+Confirm the run reports the expected number of test cases, then write one example, confirm it passes, break it on purpose, and confirm the failure names the example and prints the command that re-runs it.
 
 ## Fixing Failures
 
@@ -182,6 +174,6 @@ Deleting an example, or dropping its marker so the line becomes a bare smoke tes
 
 ## References
 
-- [Doctest Configuration](vendor/k-kinzal/php-ai-toolkit/docs/doctest.md) — Notation, identifiers, execution model, and CLI behavior.
+- [Doctest Configuration](vendor/k-kinzal/php-ai-toolkit/docs/doctest.md) — Notation, identifiers, execution model, and configuration.
 - [RequireExampleOnPublicApiRule](vendor/k-kinzal/php-ai-toolkit/docs/rules/RequireExampleOnPublicApiRule.md) — The rule that requires examples on declared public API.
 - [ScopeGuard Configuration](vendor/k-kinzal/php-ai-toolkit/docs/scope-guard.md) — The `@visibility` tag the rule keys off.

@@ -7,6 +7,7 @@ namespace PhpAiToolkit\DocGen\Render\Page;
 use function implode;
 
 use PhpAiToolkit\DocGen\Render\RenderKit;
+use PhpAiToolkit\Doctest\Analysis\PhpUnitFilter;
 
 use function preg_match;
 use function sprintf;
@@ -19,6 +20,17 @@ use function sprintf;
  */
 final class ExampleHtml
 {
+    /** @readonly */
+    private PhpUnitFilter $filter;
+
+    /**
+     * Creates the example renderer from the PHPUnit filter builder.
+     */
+    public function __construct(?PhpUnitFilter $filter = null)
+    {
+        $this->filter = $filter ?? new PhpUnitFilter();
+    }
+
     /**
      * Renders one captioned example figure.
      *
@@ -49,7 +61,7 @@ final class ExampleHtml
      */
     public function doctestChip(RenderKit $services, string $id): string
     {
-        $title = $id === '' ? 'Executable with doctest' : sprintf('Executable with doctest as %s', $id);
+        $title = $id === '' ? 'Executable as a doctest' : sprintf('Runs as the doctest %s', $id);
 
         return sprintf('<span class="chip chip-sm chip-doctest" title="%s">doctest</span>', $services->escaper->e($title));
     }
@@ -70,7 +82,7 @@ final class ExampleHtml
      */
     public function runCommand(string $id): string
     {
-        return sprintf("vendor/bin/doctest --filter='%s'", $id);
+        return $this->filter->command($id);
     }
 
     /**

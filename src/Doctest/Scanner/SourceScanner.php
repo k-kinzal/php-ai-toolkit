@@ -6,6 +6,9 @@ namespace PhpAiToolkit\Doctest\Scanner;
 
 use function basename;
 use function file_get_contents;
+
+use Generator;
+
 use function get_object_vars;
 use function is_array;
 use function is_file;
@@ -51,9 +54,9 @@ final class SourceScanner
      * parsed yields nothing.
      *
      * @param string $filePath absolute path to the PHP file
-     * @return iterable<Target> targets found in the file
+     * @return Generator<int, Target> targets found in the file
      */
-    public function scanFile(string $filePath): iterable
+    public function scanFile(string $filePath): Generator
     {
         $code = is_file($filePath) ? file_get_contents($filePath) : false;
         if ($code === false) {
@@ -97,9 +100,9 @@ final class SourceScanner
      * Yields every documented class, method, and function of the given nodes.
      *
      * @param array<mixed> $nodes
-     * @return iterable<Target>
+     * @return Generator<int, Target>
      */
-    public function traverseAst(array $nodes, string $filePath, ?string $namespace, ?string $className): iterable
+    public function traverseAst(array $nodes, string $filePath, ?string $namespace, ?string $className): Generator
     {
         foreach ($nodes as $node) {
             if (!$node instanceof \PhpParser\Node) {
@@ -113,9 +116,9 @@ final class SourceScanner
     /**
      * Yields the targets one node contributes, then descends into it.
      *
-     * @return iterable<Target>
+     * @return Generator<int, Target>
      */
-    public function targetsOf(\PhpParser\Node $node, string $filePath, ?string $namespace, ?string $className): iterable
+    public function targetsOf(\PhpParser\Node $node, string $filePath, ?string $namespace, ?string $className): Generator
     {
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
             yield from $this->traverseAst($node->stmts, $filePath, $node->name === null ? null : $node->name->toString(), null);
@@ -147,9 +150,9 @@ final class SourceScanner
     /**
      * Yields the target of a documented class and then of its members.
      *
-     * @return iterable<Target>
+     * @return Generator<int, Target>
      */
-    public function classTargets(\PhpParser\Node\Stmt\Class_ $node, string $filePath, ?string $namespace): iterable
+    public function classTargets(\PhpParser\Node\Stmt\Class_ $node, string $filePath, ?string $namespace): Generator
     {
         $className = $node->name === null ? null : $node->name->toString();
         $docComment = $node->getDocComment();
@@ -163,9 +166,9 @@ final class SourceScanner
     /**
      * Yields the target of a documented method declared inside a class.
      *
-     * @return iterable<Target>
+     * @return Generator<int, Target>
      */
-    public function methodTarget(\PhpParser\Node\Stmt\ClassMethod $node, string $filePath, ?string $namespace, ?string $className): iterable
+    public function methodTarget(\PhpParser\Node\Stmt\ClassMethod $node, string $filePath, ?string $namespace, ?string $className): Generator
     {
         $docComment = $node->getDocComment();
         if ($docComment === null || $className === null) {
@@ -187,9 +190,9 @@ final class SourceScanner
     /**
      * Yields the target of a documented function.
      *
-     * @return iterable<Target>
+     * @return Generator<int, Target>
      */
-    public function functionTarget(\PhpParser\Node\Stmt\Function_ $node, string $filePath, ?string $namespace): iterable
+    public function functionTarget(\PhpParser\Node\Stmt\Function_ $node, string $filePath, ?string $namespace): Generator
     {
         $docComment = $node->getDocComment();
         if ($docComment === null) {

@@ -25,7 +25,7 @@ Inspect the project before configuring:
 - Read `phpunit.xml` (or `phpunit.xml.dist`) and its existing `<testsuites>` and `<extensions>`.
 - Read Composer production autoload roots. Usually this is `src/`, not `tests/`.
 - Check whether the project autoloads everything it ships. A project with non-autoloadable function files needs a bootstrap.
-- Check for a mutation testing config or CI step passing `--no-extensions`.
+- Check for a mutation testing config or CI step passing `--no-extensions`, and whether it should still run the examples.
 
 Install the toolkit if missing:
 
@@ -68,7 +68,9 @@ On PHPUnit 9, extend `PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner` 
 
 ### Runs that disable extensions
 
-The extension is where the suite gets what to scan, so `--no-extensions` leaves it with nothing and PHPUnit reports an empty suite. Find every such run — mutation testing is the usual one — and restrict it to the other suites:
+`--no-extensions` bootstraps nothing, and PHPUnit 10.5 builds the test suite before it bootstraps anything. The suite covers both by reading the parameters the `<bootstrap>` element declares when the extension has not handed it a configuration, so the examples run either way — nothing to configure.
+
+Leaving them out of such a run is `enabled="false"`, or selecting the other suites:
 
 ```json5
 "testFrameworkExtraArgs": "--no-extensions --testsuite unit",
@@ -158,7 +160,7 @@ vendor/bin/phpunit --testsuite doctest
 
 Confirm the run reports the expected number of test cases, then write one example, confirm it passes, break it on purpose, and confirm the failure names the example.
 
-If the suite reports no tests, the extension did not bootstrap: check the `<bootstrap>` class name, and check that the run does not pass `--no-extensions`.
+If the suite reports no tests, the configuration reached it empty: check the `<bootstrap>` class name, the `directories` parameter, and that `enabled` is not `false`.
 
 ## Fixing Failures
 

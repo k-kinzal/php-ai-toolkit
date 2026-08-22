@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace PhpAiToolkit\Doctest\Scanner;
 
 use function fnmatch;
+
+use Generator;
+
 use function is_dir;
 use function is_file;
 
@@ -38,9 +41,9 @@ final class FileScanner
      * Iterates through configured directories recursively, as well as
      * individual files, filtering based on exclude patterns.
      *
-     * @return iterable<string> absolute paths to PHP files
+     * @return Generator<int, string> absolute paths to PHP files
      */
-    public function scan(): iterable
+    public function scan(): Generator
     {
         foreach ($this->config->getDirectories() as $directory) {
             if (!is_dir($directory)) {
@@ -60,9 +63,9 @@ final class FileScanner
     /**
      * Yields the PHP files below one directory.
      *
-     * @return iterable<string>
+     * @return Generator<int, string>
      */
-    public function scanDirectory(string $directory): iterable
+    public function scanDirectory(string $directory): Generator
     {
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),

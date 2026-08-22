@@ -62,12 +62,15 @@ That is the whole setup: no test file to write. Each example becomes one test ca
 
 Relative paths resolve against the directory holding `phpunit.xml`.
 
-### Without the extension
+### When the extension has not bootstrapped
 
-The extension is where the suite gets what to scan, so a run started with `--no-extensions` finds no
-examples and PHPUnit reports the suite as empty. Restrict such runs to the other suites —
-`--no-extensions --testsuite unit`. Mutation testing is the usual case; this repository's
-`infection.json5` does exactly that.
+The suite asks the extension for its configuration and, when the extension has not run, reads the
+parameters the `<bootstrap>` element declares — the same ones PHPUnit would have handed it. Two runs
+need that. `--no-extensions` bootstraps nothing, and mutation testing usually passes it; PHPUnit 10.5
+builds the test suite before it bootstraps extensions, so on that version the suite is always asked
+first. Either way the examples run.
+
+Switching them off is `enabled="false"`, or selecting the other suites — `--testsuite unit`.
 
 ### On PHPUnit 9
 
@@ -201,7 +204,9 @@ package supports:
 - **PHP 8.0 floor.** The `AssertionType` and `TargetType` enums become the `AssertionKind` and
   `TargetKind` classes, carrying the same string values. Enums are PHP 8.1, and the toolkit forbids a
   `Type` suffix on class-likes. Promoted `readonly` properties become private properties read through
-  `__get`, which keeps `$example->code` working.
+  `__get`, which keeps `$example->code` working. The scanners, the extractor, and the provider return
+  `Generator` where upstream returns `iterable`, because `iterator_to_array()` takes a plain
+  `iterable` only from PHP 8.2 and a caller on the floor would have to be handed a `Traversable`.
 - **nikic/php-parser 4 and 5.** The parser is created through a reflection bridge, because
   `createForNewestSupportedVersion()` only exists in major 5, and the AST walk is written out instead
   of using a `NodeVisitor`, whose signature differs between the two majors.

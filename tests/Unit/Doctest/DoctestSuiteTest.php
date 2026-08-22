@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Doctest;
 
 use PhpAiToolkit\Doctest\Configuration\Configuration;
+use PhpAiToolkit\Doctest\Configuration\ConfigurationLoader;
 use PhpAiToolkit\Doctest\DoctestExtension;
 use PhpAiToolkit\Doctest\DoctestSuite;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -13,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversClass(DoctestSuite::class)]
 #[UsesClass(Configuration::class)]
+#[UsesClass(ConfigurationLoader::class)]
 #[UsesClass(DoctestExtension::class)]
 final class DoctestSuiteTest extends TestCase
 {

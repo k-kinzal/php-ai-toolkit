@@ -8,6 +8,9 @@ use function array_pop;
 use function array_shift;
 use function end;
 use function explode;
+
+use Generator;
+
 use function implode;
 
 use PhpAiToolkit\Doctest\Scanner\Target;
@@ -46,9 +49,9 @@ final class ExampleExtractor
      * across both, which is the order k-kinzal/doctest-php established.
      *
      * @param Target $target the target containing the docblock
-     * @return iterable<Example> examples found in the docblock
+     * @return Generator<int, Example> examples found in the docblock
      */
-    public function extract(Target $target): iterable
+    public function extract(Target $target): Generator
     {
         $docblock = $this->cleanDocblock($target->docblock);
         $index = 0;
@@ -75,9 +78,9 @@ final class ExampleExtractor
      * Yields the examples introduced by at-example tags.
      *
      * @param int $index running example index, advanced for each example yielded
-     * @return iterable<Example>
+     * @return Generator<int, Example>
      */
-    public function extractExampleTags(string $docblock, Target $target, int &$index): iterable
+    public function extractExampleTags(string $docblock, Target $target, int &$index): Generator
     {
         $parts = preg_split('/(?=@example\b)/', $docblock, -1, PREG_SPLIT_NO_EMPTY);
         if ($parts === false) {
@@ -156,9 +159,9 @@ final class ExampleExtractor
      * Yields the examples written as triple-backtick php code fences.
      *
      * @param int $index running example index, advanced for each example yielded
-     * @return iterable<Example>
+     * @return Generator<int, Example>
      */
-    public function extractCodeFences(string $docblock, Target $target, int &$index): iterable
+    public function extractCodeFences(string $docblock, Target $target, int &$index): Generator
     {
         $matches = [];
         if (preg_match_all('/```php\s*\n(.*?)```/s', $docblock, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE) === false) {

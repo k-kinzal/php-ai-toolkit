@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\Doctest\TestCase;
 
+use Generator;
 use PhpAiToolkit\Doctest\Configuration\Configuration;
 use PhpAiToolkit\Doctest\Executor\ExampleExecutor;
 use PhpAiToolkit\Doctest\Parser\Example;
 use PhpAiToolkit\Doctest\Parser\ExampleExtractor;
 use PhpAiToolkit\Doctest\Scanner\FileScanner;
 use PhpAiToolkit\Doctest\Scanner\SourceScanner;
-use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -25,6 +25,12 @@ use PHPUnit\Framework\TestCase;
  * needs PHPUnit 10 or later. On PHPUnit 9 extend
  * PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner, which binds the
  * same provider with a doc-comment annotation.
+ *
+ * An example exercises whatever code it documents, so a suite declares no
+ * coverage target of its own: mark the subclass #[CoversNothing], the way
+ * DoctestSuite is. The attribute has to sit on the concrete class, because
+ * PHPUnit reads class metadata from the class it runs rather than from what
+ * that class extends, and PHPUnit 12 deprecated carrying it on the test method.
  *
  * This is the only entry point the port carries. k-kinzal/doctest-php also
  * ships a DoctestCase wrapping one example, which nothing there uses and which
@@ -45,9 +51,9 @@ abstract class DoctestRunner extends TestCase
     /**
      * Provides examples as test data.
      *
-     * @return iterable<string, array{Example}>
+     * @return Generator<string, array{Example}>
      */
-    public static function doctestProvider(): iterable
+    public static function doctestProvider(): Generator
     {
         $config = static::configure();
         $fileScanner = new FileScanner($config);
@@ -66,15 +72,10 @@ abstract class DoctestRunner extends TestCase
     /**
      * Tests a docblock example.
      *
-     * An example exercises whatever code it documents, so it declares no
-     * coverage target of its own: it is a check on the documentation, not a
-     * unit test of one class.
-     *
      * @param Example $example the example to test
      */
     #[Test]
     #[DataProvider('doctestProvider')]
-    #[CoversNothing]
     public function testDocblockExample(Example $example): void
     {
         if (self::$executor === null) {

@@ -10,28 +10,20 @@ use PhpAiToolkit\Doctest\DoctestExtension;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\Extension\ExtensionFacade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Registry;
+use Tests\Fixture\Doctest\PhpUnitExtensionFacade;
 
 #[CoversClass(DoctestExtension::class)]
 #[UsesClass(Configuration::class)]
 #[UsesClass(ConfigurationLoader::class)]
 final class DoctestExtensionTest extends TestCase
 {
-    public function testGetConfigurationReturnsWhatTheRunningExtensionRead(): void
-    {
-        $config = DoctestExtension::getConfiguration();
-
-        self::assertNotNull($config);
-        self::assertStringEndsWith('/src', $config->getDirectories()[0]);
-    }
-
     public function testBootstrapStoresTheConfigurationReadFromTheParameters(): void
     {
         $parameters = ParameterCollection::fromArray(['directories' => 'src']);
 
-        (new DoctestExtension())->bootstrap(Registry::get(), new ExtensionFacade(), $parameters);
+        (new DoctestExtension())->bootstrap(Registry::get(), PhpUnitExtensionFacade::create(), $parameters);
 
         $config = DoctestExtension::getConfiguration();
 
@@ -43,7 +35,7 @@ final class DoctestExtensionTest extends TestCase
     {
         $parameters = ParameterCollection::fromArray(['directories' => 'ignored', 'enabled' => 'false']);
 
-        (new DoctestExtension())->bootstrap(Registry::get(), new ExtensionFacade(), $parameters);
+        (new DoctestExtension())->bootstrap(Registry::get(), PhpUnitExtensionFacade::create(), $parameters);
 
         $config = DoctestExtension::getConfiguration();
 
@@ -51,9 +43,25 @@ final class DoctestExtensionTest extends TestCase
         self::assertSame([dirname(__DIR__, 3) . '/src'], $config->getDirectories());
     }
 
+    public function testGetConfigurationHandsBackWhatTheRunIsWorkingFrom(): void
+    {
+        $config = DoctestExtension::getConfiguration();
+
+        self::assertNotNull($config);
+        self::assertSame([dirname(__DIR__, 3) . '/src'], $config->getDirectories());
+    }
+
+    public function testDeclaredConfigurationReadsTheParametersPhpUnitXmlCarries(): void
+    {
+        $config = DoctestExtension::declaredConfiguration(Registry::get());
+
+        self::assertNotNull($config);
+        self::assertSame([dirname(__DIR__, 3) . '/src'], $config->getDirectories());
+    }
+
     public function testBasePathIsTheDirectoryHoldingThePhpUnitConfiguration(): void
     {
-        $basePath = (new DoctestExtension())->basePath(Registry::get());
+        $basePath = DoctestExtension::basePath(Registry::get());
 
         self::assertSame(dirname(__DIR__, 3), $basePath);
     }

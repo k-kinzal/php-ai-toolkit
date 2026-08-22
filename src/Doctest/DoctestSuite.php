@@ -7,6 +7,7 @@ namespace PhpAiToolkit\Doctest;
 use Override;
 use PhpAiToolkit\Doctest\Configuration\Configuration;
 use PhpAiToolkit\Doctest\TestCase\DoctestRunner;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Medium;
 
 /**
@@ -27,6 +28,7 @@ use PHPUnit\Framework\Attributes\Medium;
  *         </bootstrap>
  *     </extensions>
  */
+#[CoversNothing]
 #[Medium]
 final class DoctestSuite extends DoctestRunner
 {

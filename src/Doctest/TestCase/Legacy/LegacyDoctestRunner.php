@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\Doctest\TestCase\Legacy;
 
+use Generator;
 use PhpAiToolkit\Doctest\Configuration\Configuration;
 use PhpAiToolkit\Doctest\Executor\ExampleExecutor;
 use PhpAiToolkit\Doctest\Parser\Example;
@@ -37,9 +38,9 @@ abstract class LegacyDoctestRunner extends TestCase
     /**
      * Provides examples as test data.
      *
-     * @return iterable<string, array{Example}>
+     * @return Generator<string, array{Example}>
      */
-    public static function doctestProvider(): iterable
+    public static function doctestProvider(): Generator
     {
         $config = static::configure();
         $fileScanner = new FileScanner($config);

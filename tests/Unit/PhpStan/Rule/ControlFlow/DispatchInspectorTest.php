@@ -254,6 +254,4 @@ final class DispatchInspectorTest extends PHPStanTestCase
             $scope,
         ));
     }
-
-
 }

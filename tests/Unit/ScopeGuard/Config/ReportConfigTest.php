@@ -20,5 +20,4 @@ final class ReportConfigTest extends TestCase
     {
         self::assertSame(['path'], (new ReportConfig('json', ['path']))->orderBy);
     }
-
 }

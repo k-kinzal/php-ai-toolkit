@@ -104,17 +104,4 @@ final class DispatchSubjectResolverTest extends TestCase
     {
         self::assertNull((new DispatchSubjectResolver())->namedObject(new \PhpParser\Node\Expr\Variable('shape')));
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

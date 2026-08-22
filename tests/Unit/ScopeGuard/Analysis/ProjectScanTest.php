@@ -30,5 +30,4 @@ final class ProjectScanTest extends TestCase
     {
         self::assertSame(3, (new ProjectScan(new DeclarationIndex(), [], 3))->fileCount);
     }
-
 }

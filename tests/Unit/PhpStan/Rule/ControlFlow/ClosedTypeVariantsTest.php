@@ -16,7 +16,6 @@ use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
-use Tests\Fixture\RequireExhaustiveDispatch\Suit;
 
 #[CoversClass(ClosedTypeVariants::class)]
 #[Medium]
@@ -25,15 +24,16 @@ final class ClosedTypeVariantsTest extends PHPStanTestCase
     public function testValuesListsTheCasesOfAnEnum(): void
     {
         self::createReflectionProvider();
+        $suit = 'Tests\Fixture\RequireExhaustiveDispatch\Suit';
 
-        $variants = (new ClosedTypeVariants())->values(new ObjectType(Suit::class));
+        $variants = (new ClosedTypeVariants())->values(new ObjectType($suit));
 
         self::assertSame(
             [
-                Suit::class . '::Hearts',
-                Suit::class . '::Diamonds',
-                Suit::class . '::Spades',
-                Suit::class . '::Clubs',
+                $suit . '::Hearts',
+                $suit . '::Diamonds',
+                $suit . '::Spades',
+                $suit . '::Clubs',
             ],
             array_map(static fn (Type $variant): string => $variant->describe(VerbosityLevel::value()), $variants ?? []),
         );
@@ -65,10 +65,4 @@ final class ClosedTypeVariantsTest extends PHPStanTestCase
 
         self::assertCount(ClosedTypeVariants::MAX_VARIANTS, $variants ?? []);
     }
-
-
-
-
-
-
 }

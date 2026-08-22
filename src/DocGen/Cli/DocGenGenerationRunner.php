@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PhpAiToolkit\DocGen\Cli;
 
 use function count;
-use function is_file;
 
 use PhpAiToolkit\DocGen\Analysis\Diff\DiffWorkspace;
 use PhpAiToolkit\DocGen\Analysis\ProjectAnalyzer;
@@ -14,7 +13,6 @@ use PhpAiToolkit\DocGen\Cache\CacheStore;
 use PhpAiToolkit\DocGen\Cache\GenerationCache;
 use PhpAiToolkit\DocGen\Cache\ParseCache;
 use PhpAiToolkit\DocGen\Cache\RenderCache;
-use PhpAiToolkit\DocGen\Config\ConfigLoader;
 use PhpAiToolkit\DocGen\Config\DocGenConfig;
 use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
@@ -22,7 +20,6 @@ use PhpAiToolkit\DocGen\Git\RevisionRange;
 use PhpAiToolkit\DocGen\Render\SiteRenderer;
 use PhpAiToolkit\DocGen\Render\SocialCard;
 
-use function realpath;
 use function sprintf;
 
 /**
@@ -34,9 +31,6 @@ final class DocGenGenerationRunner
     private string $workingDirectory;
 
     /** @readonly */
-    private ConfigLoader $configLoader;
-
-    /** @readonly */
     private ProjectAnalyzer $analyzer;
 
     /** @readonly */
@@ -46,10 +40,7 @@ final class DocGenGenerationRunner
     private DocGenOutputWriter $writer;
 
     /** @readonly */
-    private DocGenConfigPathResolver $configPathResolver;
-
-    /** @readonly */
-    private DocGenConfigOverrides $overrides;
+    private DocGenConfigFactory $configFactory;
 
     /** @readonly */
     private DocGenPathResolver $pathResolver;
@@ -74,12 +65,10 @@ final class DocGenGenerationRunner
      */
     public function __construct(
         string $workingDirectory,
-        ?ConfigLoader $configLoader = null,
         ?ProjectAnalyzer $analyzer = null,
         ?SiteRenderer $siteRenderer = null,
         ?DocGenOutputWriter $writer = null,
-        ?DocGenConfigPathResolver $configPathResolver = null,
-        ?DocGenConfigOverrides $overrides = null,
+        ?DocGenConfigFactory $configFactory = null,
         ?DocGenPathResolver $pathResolver = null,
         ?DocGenPreviewServer $previewServer = null,
         ?DocGenMemoryLimit $memoryLimit = null,
@@ -88,12 +77,10 @@ final class DocGenGenerationRunner
         ?SocialCard $card = null,
     ) {
         $this->workingDirectory = $workingDirectory;
-        $this->configLoader = $configLoader ?? new ConfigLoader();
         $this->analyzer = $analyzer ?? new ProjectAnalyzer();
         $this->siteRenderer = $siteRenderer ?? new SiteRenderer();
         $this->writer = $writer ?? new DocGenOutputWriter();
-        $this->configPathResolver = $configPathResolver ?? new DocGenConfigPathResolver();
-        $this->overrides = $overrides ?? new DocGenConfigOverrides();
+        $this->configFactory = $configFactory ?? new DocGenConfigFactory();
         $this->pathResolver = $pathResolver ?? new DocGenPathResolver();
         $this->previewServer = $previewServer ?? new DocGenPreviewServer();
         $this->memoryLimit = $memoryLimit ?? new DocGenMemoryLimit();
@@ -105,18 +92,17 @@ final class DocGenGenerationRunner
     /**
      * Generates the site and optionally serves it.
      *
-     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
+     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
      */
     public function run(array $arguments): int
     {
         $this->memoryLimit->apply($arguments['memoryLimit']);
 
         try {
-            $loaded = $this->loadConfig($arguments['config']);
-            $config = $this->overrides->apply($loaded, $arguments);
+            $config = $this->configFactory->create($this->workingDirectory, $arguments);
             $outputRoot = $this->pathResolver->resolve($config->root, $config->output);
             if ($arguments['clearCache']) {
-                $this->clear($config->root, $arguments['cacheDir'] ?? $loaded->cache);
+                $this->clear($config->root, $this->configFactory->cacheDirectory($arguments));
             }
 
             $cache = $this->caches($config, $outputRoot);
@@ -183,11 +169,9 @@ final class DocGenGenerationRunner
     /**
      * Removes one cache directory before the run that was told to.
      */
-    public function clear(string $root, ?string $directory): void
+    public function clear(string $root, string $directory): void
     {
-        if ($directory !== null) {
-            $this->store->clear($this->pathResolver->resolve($root, $directory));
-        }
+        $this->store->clear($this->pathResolver->resolve($root, $directory));
     }
 
     /**
@@ -258,26 +242,5 @@ final class DocGenGenerationRunner
         }
 
         $cache->save();
-    }
-
-    /**
-     * Loads the configuration file, or builds the zero-config defaults.
-     *
-     * @throws DocGenException when an explicitly given config file is invalid
-     */
-    public function loadConfig(?string $configOption): DocGenConfig
-    {
-        if ($configOption !== null) {
-            return $this->configLoader->load($this->configPathResolver->resolve($this->workingDirectory, $configOption));
-        }
-
-        $default = $this->configPathResolver->resolve($this->workingDirectory, 'doc.yaml');
-        if (is_file($default)) {
-            return $this->configLoader->load($default);
-        }
-
-        $root = realpath($this->workingDirectory);
-
-        return new DocGenConfig($root === false ? $this->workingDirectory : $root, ['.', 'packages/*'], [], [], 'build/docs', null, null, null);
     }
 }

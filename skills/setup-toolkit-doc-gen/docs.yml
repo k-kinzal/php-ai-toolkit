@@ -68,16 +68,26 @@ jobs:
             doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-
             doc-gen-${{ runner.os }}-
 
-      # The report the `coverage` key in doc.yaml points at. A strict PHPUnit
-      # configuration reports a test that executes an undeclared class as
-      # risky, so this step is also what keeps the project's #[CoversClass] and
-      # #[UsesClass] metadata honest. Drop it, and the `coverage` key, when the
-      # site should not carry per-method test references.
+      # The report --coverage points at below. A strict PHPUnit configuration
+      # reports a test that executes an undeclared class as risky, so this step
+      # is also what keeps the project's #[CoversClass] and #[UsesClass]
+      # metadata honest. Drop it, and the --coverage option, when the site
+      # should not carry per-method test references.
       - name: Generate the coverage report the site reads
         run: vendor/bin/phpunit --coverage-xml build/coverage-xml
 
+      # doc-gen is configured by its options alone, so this command is the
+      # whole documentation configuration. The address the site is published
+      # at is what the workflow knows and the command cannot work out, so the
+      # job passes it: every page then carries its canonical link and the tags
+      # a shared link is rendered from.
       - name: Generate the documentation
-        run: vendor/bin/doc-gen --config=doc.yaml
+        run: |
+          set -euo pipefail
+
+          repository="$(printf '%s' "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')"
+          vendor/bin/doc-gen --coverage=build/coverage-xml \
+            --base-url="https://${repository%%/*}.github.io/${repository#*/}"
 
       - name: Check out the documentation branch
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0

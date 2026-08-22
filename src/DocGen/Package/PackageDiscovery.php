@@ -88,7 +88,7 @@ final class PackageDiscovery
 
         if ($packages === []) {
             throw new DocGenException(
-                'No composer packages found. Adjust the "packages" globs in doc.yaml so at least one directory contains a composer.json.',
+                'No composer packages found. Pass --packages=GLOBS with directory globs where at least one directory contains a composer.json.',
             );
         }
 

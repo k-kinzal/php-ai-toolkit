@@ -61,7 +61,7 @@ final class RepositoryUrlTest extends TestCase
     public function testNormalizeRejectsAnAddressNoPageCanLinkTo(): void
     {
         $this->expectException(DocGenException::class);
-        $this->expectExceptionMessage('Invalid repository: git@github.com:example/project.git. Use the absolute address of the repository the project lives in, such as https://github.com/example/project.');
+        $this->expectExceptionMessage('Invalid --repository value: git@github.com:example/project.git. Use the absolute address of the repository the project lives in, such as https://github.com/example/project.');
 
         (new RepositoryUrl())->normalize('git@github.com:example/project.git');
     }

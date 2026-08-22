@@ -67,7 +67,7 @@
         "loc-guard": "@php bin/loc-guard --config=loc.yaml",
         "tree-guard": "@php bin/tree-guard --config=tree.yaml",
         "scope-guard": "@php bin/scope-guard --config=scope.yaml",
-        "doc-gen": "@php bin/doc-gen",
+        "doc-gen": "@php bin/doc-gen --packages=. --exclude='tests/Fixture/*' --coverage=build/coverage-xml",
         "doctest": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite doctest",
         "deptrac": "@php deptrac.php analyse --config-file=deptrac.yaml",
         "format": "php-cs-fixer fix --allow-risky=yes",

@@ -13,9 +13,9 @@ final class DocGenExceptionTest extends TestCase
 {
     public function testCarriesMessage(): void
     {
-        $exception = new DocGenException('DocGen config not found: doc.yaml');
+        $exception = new DocGenException('Unknown option: --bogus');
 
-        self::assertSame('DocGen config not found: doc.yaml', $exception->getMessage());
+        self::assertSame('Unknown option: --bogus', $exception->getMessage());
         self::assertSame(0, $exception->getCode());
     }
 }

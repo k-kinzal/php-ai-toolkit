@@ -42,7 +42,7 @@ final class BaseUrl
 
         if (preg_match('#^https?://[^\s/?\#]+(/[^\s?\#]*)?$#', $trimmed) !== 1) {
             throw new DocGenException(sprintf(
-                'Invalid base_url: %s. Use the absolute address the site is published at, such as https://example.github.io/project.',
+                'Invalid --base-url value: %s. Use the absolute address the site is published at, such as https://example.github.io/project.',
                 $trimmed,
             ));
         }

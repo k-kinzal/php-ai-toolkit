@@ -49,7 +49,6 @@ final class Application
             $this->workingDirectory,
             null,
             null,
-            null,
             $this->writer,
         );
     }

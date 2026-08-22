@@ -61,16 +61,12 @@ use PhpAiToolkit\DocGen\Cache\SourceFileKey;
 use PhpAiToolkit\DocGen\Cache\ToolkitFingerprint;
 use PhpAiToolkit\DocGen\Cli\Application;
 use PhpAiToolkit\DocGen\Cli\DocGenCliArgumentParser;
-use PhpAiToolkit\DocGen\Cli\DocGenConfigOverrides;
-use PhpAiToolkit\DocGen\Cli\DocGenConfigPathResolver;
+use PhpAiToolkit\DocGen\Cli\DocGenConfigFactory;
 use PhpAiToolkit\DocGen\Cli\DocGenGenerationRunner;
 use PhpAiToolkit\DocGen\Cli\DocGenHelpText;
 use PhpAiToolkit\DocGen\Cli\DocGenMemoryLimit;
 use PhpAiToolkit\DocGen\Cli\DocGenOutputWriter;
 use PhpAiToolkit\DocGen\Cli\DocGenPreviewServer;
-use PhpAiToolkit\DocGen\Config\ConfigLoader;
-use PhpAiToolkit\DocGen\Config\ConfigScalarReader;
-use PhpAiToolkit\DocGen\Config\ConfigStringListReader;
 use PhpAiToolkit\DocGen\Config\DocGenConfig;
 use PhpAiToolkit\DocGen\Config\RepositoryUrl;
 use PhpAiToolkit\DocGen\DocGenException;
@@ -163,9 +159,6 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ClassLikePage::class)]
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(ComposerManifestReader::class)]
-#[UsesClass(ConfigLoader::class)]
-#[UsesClass(ConfigScalarReader::class)]
-#[UsesClass(ConfigStringListReader::class)]
 #[UsesClass(ConstantBuilder::class)]
 #[UsesClass(CoverageReader::class)]
 #[UsesClass(CpuCoreCounter::class)]
@@ -181,8 +174,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(DocBlockReader::class)]
 #[UsesClass(DocGenCliArgumentParser::class)]
 #[UsesClass(DocGenConfig::class)]
-#[UsesClass(DocGenConfigOverrides::class)]
-#[UsesClass(DocGenConfigPathResolver::class)]
+#[UsesClass(DocGenConfigFactory::class)]
 #[UsesClass(DocGenException::class)]
 #[UsesClass(DocGenGenerationRunner::class)]
 #[UsesClass(DocGenHelpText::class)]

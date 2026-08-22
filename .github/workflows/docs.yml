@@ -63,8 +63,15 @@ jobs:
       - name: Generate the coverage report the site reads
         run: composer test:coverage
 
+      # The address the site is published at is what the workflow knows and
+      # the command cannot work out, so the job passes it: every page then
+      # carries its canonical link and the tags a shared link is rendered from.
       - name: Generate the documentation
-        run: composer doc-gen
+        run: |
+          set -euo pipefail
+
+          repository="$(printf '%s' "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')"
+          composer doc-gen -- --base-url="https://${repository%%/*}.github.io/${repository#*/}"
 
       - name: Check out the documentation branch
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0

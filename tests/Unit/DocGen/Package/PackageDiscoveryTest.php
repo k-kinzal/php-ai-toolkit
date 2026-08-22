@@ -87,7 +87,7 @@ final class PackageDiscoveryTest extends TestCase
         $config = new DocGenConfig($dir, ['packages/*'], [], [], $dir . '/docs', null, null, null);
 
         $this->expectException(DocGenException::class);
-        $this->expectExceptionMessage('No composer packages found. Adjust the "packages" globs in doc.yaml so at least one directory contains a composer.json.');
+        $this->expectExceptionMessage('No composer packages found. Pass --packages=GLOBS with directory globs where at least one directory contains a composer.json.');
 
         (new PackageDiscovery())->discover($config);
     }

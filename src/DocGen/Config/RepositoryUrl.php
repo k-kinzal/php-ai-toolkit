@@ -62,7 +62,7 @@ final class RepositoryUrl
         $url = $this->read($value);
         if ($url === null) {
             throw new DocGenException(sprintf(
-                'Invalid repository: %s. Use the absolute address of the repository the project lives in, such as https://github.com/example/project.',
+                'Invalid --repository value: %s. Use the absolute address of the repository the project lives in, such as https://github.com/example/project.',
                 trim($value),
             ));
         }

@@ -14,7 +14,7 @@ final class DocGenHelpText
      */
     public function text(): string
     {
-        return $this->purpose() . $this->options() . $this->cacheOptions() . $this->runOptions();
+        return $this->purpose() . $this->scopeOptions() . $this->siteOptions() . $this->diffOptions() . $this->cacheOptions() . $this->runOptions();
     }
 
     /**
@@ -26,8 +26,11 @@ final class DocGenHelpText
 Usage: doc-gen [options]
 
 Generates a static HTML documentation site for the composer packages of the
-current project. Without a config file, the project root and packages/* are
-documented into build/docs.
+current project. Everything is named on the command line: without options,
+the project root and packages/* are documented into build/docs.
+
+Options that take GLOBS accept a comma-separated list and may be repeated,
+which adds to what the earlier occurrences named.
 
 Options:
 
@@ -37,11 +40,14 @@ TEXT;
     /**
      * Returns the options that decide what is documented.
      */
-    public function options(): string
+    public function scopeOptions(): string
     {
         return <<<'TEXT'
-  --config=FILE      Configuration file (default: doc.yaml when present)
-  --output=DIR       Output directory (default: build/docs)
+  --packages=GLOBS   Directory globs probed for a composer.json; every
+                     directory that has one becomes a documented package
+                     (default: . and packages/*)
+  --exclude=GLOBS    Path globs, relative to the project root, pruned from
+                     source scanning, such as --exclude=tests/Fixture/*
   --vendor[=GLOBS]   Also document installed runtime (non-dev) vendor packages
                      whose composer package name matches one of the
                      comma-separated globs, such as --vendor=acme/*
@@ -50,12 +56,41 @@ TEXT;
                      Same for installed dev dependencies, such as
                      --vendor-dev=phpunit/* (bare --vendor-dev means all dev
                      dependencies); combine it with --vendor to document both
+  --output=DIR       Output directory (default: build/docs)
+  --title=TEXT       Site title (default: the name of the root package, else
+                     the name of the project directory)
+
+TEXT;
+    }
+
+    /**
+     * Returns the options that decide what the pages say about the project.
+     */
+    public function siteOptions(): string
+    {
+        return <<<'TEXT'
+  --deptrac=FILE     Deptrac configuration the architecture graph and the
+                     per-class layer badges are read from (default:
+                     deptrac.yaml at the project root when it exists)
   --coverage=DIR     PHPUnit --coverage-xml report directory; links methods
                      to the test cases that cover them
   --base-url=URL     Address the site is published at, such as
                      https://example.github.io/project; every page then
                      carries its canonical link and the social preview
                      tags a link shared elsewhere is rendered from
+  --repository=URL   Address of the repository the documented code lives in,
+                     which every page links back to (default: what the root
+                     package declares in support.source, then homepage)
+
+TEXT;
+    }
+
+    /**
+     * Returns the options that compare two revisions of the project.
+     */
+    public function diffOptions(): string
+    {
+        return <<<'TEXT'
   --diff=RANGE       Compare two git revisions: BASE compares the working
                      tree against BASE, BASE..HEAD compares two revisions.
                      Every page then marks what was added and removed, and

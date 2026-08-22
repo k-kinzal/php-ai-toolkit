@@ -81,7 +81,7 @@ jobs:
           set -euo pipefail
 
           repository="$(printf '%s' "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')"
-          vendor/bin/doc-gen --config=doc.yaml --diff="${BASE_SHA}" \
+          vendor/bin/doc-gen --diff="${BASE_SHA}" \
             --base-url="https://${repository%%/*}.github.io/${repository#*/}/pr/${PR_NUMBER}"
 
       - name: Check out the documentation branch

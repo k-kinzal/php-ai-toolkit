@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Cli;
 
+use function array_merge;
 use function count;
 use function explode;
 
 use PhpAiToolkit\DocGen\Config\BaseUrl;
+use PhpAiToolkit\DocGen\Config\RepositoryUrl;
 use PhpAiToolkit\DocGen\DocGenException;
 
 use function preg_match;
@@ -29,17 +31,21 @@ final class DocGenCliArgumentParser
      *
      * @var list<string>
      */
-    public const VALUE_OPTIONS = ['config', 'output', 'coverage', 'base-url', 'memory-limit', 'jobs', 'diff', 'base', 'head', 'cache-dir'];
+    public const VALUE_OPTIONS = ['packages', 'exclude', 'output', 'title', 'deptrac', 'coverage', 'base-url', 'repository', 'memory-limit', 'jobs', 'diff', 'base', 'head', 'cache-dir'];
 
     /** @readonly */
     private BaseUrl $baseUrl;
 
+    /** @readonly */
+    private RepositoryUrl $repository;
+
     /**
      * Creates an argument parser from its value normalizers.
      */
-    public function __construct(?BaseUrl $baseUrl = null)
+    public function __construct(?BaseUrl $baseUrl = null, ?RepositoryUrl $repository = null)
     {
         $this->baseUrl = $baseUrl ?? new BaseUrl();
+        $this->repository = $repository ?? new RepositoryUrl();
     }
 
     /**
@@ -47,13 +53,13 @@ final class DocGenCliArgumentParser
      *
      * @param list<string> $argv
      *
-     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
      *
      * @throws DocGenException when an option is unknown or lacks a value
      */
     public function parse(array $argv): array
     {
-        $options = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
+        $options = ['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
         $count = count($argv);
         for ($index = 0; $index < $count; $index++) {
             $argument = $argv[$index];
@@ -70,9 +76,9 @@ final class DocGenCliArgumentParser
             } elseif (str_starts_with($argument, '--serve=')) {
                 $options['serve'] = $this->address(substr($argument, 8));
             } elseif ($argument === '--vendor' || str_starts_with($argument, '--vendor=')) {
-                $options['vendor'] = $this->vendorGlobs($argument, '--vendor');
+                $options['vendor'] = $this->appendGlobs($options['vendor'], $this->vendorGlobs($argument, '--vendor'));
             } elseif ($argument === '--vendor-dev' || str_starts_with($argument, '--vendor-dev=')) {
-                $options['vendorDev'] = $this->vendorGlobs($argument, '--vendor-dev');
+                $options['vendorDev'] = $this->appendGlobs($options['vendorDev'], $this->vendorGlobs($argument, '--vendor-dev'));
             } elseif ($this->isValueOption($argument)) {
                 $name = $this->optionName($argument);
                 $options = $this->applyValueOption($options, $name, $this->take($argv, $index, $name));
@@ -113,23 +119,49 @@ final class DocGenCliArgumentParser
     /**
      * Applies one value option to the option map.
      *
-     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
+     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
      *
-     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
      *
      * @throws DocGenException when the value of the option is malformed
      */
     public function applyValueOption(array $options, string $name, string $value): array
     {
-        if ($name === 'config') {
-            $options['config'] = $value;
+        if ($name === 'packages') {
+            $options['packages'] = $this->appendGlobs($options['packages'], $this->globList($value, '--packages', 'directory glob'));
+        } elseif ($name === 'exclude') {
+            $options['exclude'] = $this->appendGlobs($options['exclude'], $this->globList($value, '--exclude', 'path glob'));
         } elseif ($name === 'output') {
             $options['output'] = $value;
+        } elseif ($name === 'title') {
+            $options['title'] = $value;
+        } elseif ($name === 'deptrac') {
+            $options['deptrac'] = $value;
         } elseif ($name === 'coverage') {
             $options['coverage'] = $value;
         } elseif ($name === 'base-url') {
             $options['baseUrl'] = $this->baseUrl->normalize($value);
-        } elseif ($name === 'memory-limit') {
+        } elseif ($name === 'repository') {
+            $options['repository'] = $this->repository->normalize($value);
+        } else {
+            $options = $this->applyRunOption($options, $name, $value);
+        }
+
+        return $options;
+    }
+
+    /**
+     * Applies one option that decides how a run is carried out.
+     *
+     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
+     *
+     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     *
+     * @throws DocGenException when the value of the option is malformed
+     */
+    public function applyRunOption(array $options, string $name, string $value): array
+    {
+        if ($name === 'memory-limit') {
             $options['memoryLimit'] = $this->memoryLimit($value);
         } elseif ($name === 'jobs') {
             $options['jobs'] = $this->jobs($value);
@@ -152,9 +184,9 @@ final class DocGenCliArgumentParser
      * A range without a head compares against the working tree, which is
      * what a reader looking at their own uncommitted change wants.
      *
-     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
+     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
      *
-     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
      *
      * @throws DocGenException when the range names no base revision
      */
@@ -179,9 +211,9 @@ final class DocGenCliArgumentParser
     /**
      * Rejects the option combinations that cannot be acted on.
      *
-     * @param array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
+     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
      *
-     * @return array{config: ?string, output: ?string, vendor: ?list<string>, vendorDev: ?list<string>, coverage: ?string, baseUrl: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, cacheDir: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
      *
      * @throws DocGenException when a head revision has nothing to compare against
      */
@@ -258,19 +290,37 @@ final class DocGenCliArgumentParser
             return ['*'];
         }
 
-        return $this->globList(substr($argument, strlen($option) + 1), $option);
+        return $this->globList(substr($argument, strlen($option) + 1), $option, 'package name glob');
+    }
+
+    /**
+     * Adds the globs of one option occurrence to what earlier ones gave.
+     *
+     * A repeated list option adds to its list instead of replacing it, so a
+     * command assembled from several places — a composer script and the CI
+     * job that calls it — documents everything both of them named.
+     *
+     * @param ?list<string> $globs the globs given so far, or null for none
+     * @param list<string> $more the globs of this occurrence
+     *
+     * @return list<string>
+     */
+    public function appendGlobs(?array $globs, array $more): array
+    {
+        return array_merge($globs ?? [], $more);
     }
 
     /**
      * Splits a comma-separated glob list.
      *
      * @param string $option the option name quoted in the error message
+     * @param string $subject what one entry of the list is, such as "path glob"
      *
      * @return list<string>
      *
      * @throws DocGenException when the list is empty
      */
-    public function globList(string $value, string $option): array
+    public function globList(string $value, string $option, string $subject): array
     {
         $globs = [];
         foreach (explode(',', $value) as $glob) {
@@ -281,7 +331,7 @@ final class DocGenCliArgumentParser
         }
 
         if ($globs === []) {
-            throw new DocGenException(sprintf('Option %s requires at least one package name glob.', $option));
+            throw new DocGenException(sprintf('Option %s requires at least one %s.', $option, $subject));
         }
 
         return $globs;

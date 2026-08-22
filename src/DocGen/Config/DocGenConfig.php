@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace PhpAiToolkit\DocGen\Config;
 
 /**
- * Immutable DocGen configuration loaded from doc.yaml.
+ * Immutable DocGen configuration, as one command line described it.
  *
  * The configuration deliberately covers only the documented code scope and
  * the output location; page content and design are fixed by the generator.
+ * Everything here is named by an option of the run, so what a site was
+ * generated from is the command that generated it, and a continuous
+ * integration job can pass the values only it knows, such as the address the
+ * site is published at.
  *
  * @property-read string $root
  * @property-read list<string> $packages
@@ -26,9 +30,21 @@ namespace PhpAiToolkit\DocGen\Config;
 final class DocGenConfig
 {
     /**
-     * Where the generation caches are kept unless a project says otherwise.
+     * Where the generation caches are kept unless a run says otherwise.
      */
     public const DEFAULT_CACHE = 'build/doc-gen-cache';
+
+    /**
+     * The directory globs probed for a composer.json unless a run names its own.
+     *
+     * @var list<string>
+     */
+    public const DEFAULT_PACKAGES = ['.', 'packages/*'];
+
+    /**
+     * Where the generated site is written unless a run names its own directory.
+     */
+    public const DEFAULT_OUTPUT = 'build/docs';
 
     /**
      * @param list<string> $packages

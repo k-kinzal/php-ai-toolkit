@@ -66,16 +66,12 @@ use PhpAiToolkit\DocGen\Cache\ParseCache;
 use PhpAiToolkit\DocGen\Cache\RenderCache;
 use PhpAiToolkit\DocGen\Cache\SourceFileKey;
 use PhpAiToolkit\DocGen\Cache\ToolkitFingerprint;
-use PhpAiToolkit\DocGen\Cli\DocGenConfigOverrides;
-use PhpAiToolkit\DocGen\Cli\DocGenConfigPathResolver;
+use PhpAiToolkit\DocGen\Cli\DocGenConfigFactory;
 use PhpAiToolkit\DocGen\Cli\DocGenGenerationRunner;
 use PhpAiToolkit\DocGen\Cli\DocGenMemoryLimit;
 use PhpAiToolkit\DocGen\Cli\DocGenOutputWriter;
 use PhpAiToolkit\DocGen\Cli\DocGenPreviewServer;
 use PhpAiToolkit\DocGen\Config\BaseUrl;
-use PhpAiToolkit\DocGen\Config\ConfigLoader;
-use PhpAiToolkit\DocGen\Config\ConfigScalarReader;
-use PhpAiToolkit\DocGen\Config\ConfigStringListReader;
 use PhpAiToolkit\DocGen\Config\DocGenConfig;
 use PhpAiToolkit\DocGen\Config\RepositoryUrl;
 use PhpAiToolkit\DocGen\DocGenException;
@@ -173,9 +169,6 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ComposerLockReader::class)]
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(ComposerManifestReader::class)]
-#[UsesClass(ConfigLoader::class)]
-#[UsesClass(ConfigScalarReader::class)]
-#[UsesClass(ConfigStringListReader::class)]
 #[UsesClass(ConstantBuilder::class)]
 #[UsesClass(CoverageReader::class)]
 #[UsesClass(CpuCoreCounter::class)]
@@ -193,8 +186,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DocBlockReader::class)]
 #[UsesClass(DocGenConfig::class)]
-#[UsesClass(DocGenConfigOverrides::class)]
-#[UsesClass(DocGenConfigPathResolver::class)]
+#[UsesClass(DocGenConfigFactory::class)]
 #[UsesClass(DocGenException::class)]
 #[UsesClass(DocGenMemoryLimit::class)]
 #[UsesClass(DocGenOutputWriter::class)]
@@ -332,7 +324,7 @@ PHP);
 
         $output = '';
         $errors = '';
-        $runner = new DocGenGenerationRunner($dir, null, null, null, new DocGenOutputWriter(
+        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;
             },
@@ -341,7 +333,7 @@ PHP);
             },
         ));
 
-        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+        self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('Generated', $output);
         self::assertStringContainsString('build/docs', $output);
         self::assertSame('', $errors);
@@ -374,7 +366,7 @@ PHP);
 
         $output = '';
         $errors = '';
-        $runner = new DocGenGenerationRunner($dir, null, null, null, new DocGenOutputWriter(
+        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;
             },
@@ -384,7 +376,7 @@ PHP);
         ));
 
         $previous = ini_get('memory_limit');
-        $exitCode = $runner->run(['config' => null, 'output' => null, 'vendor' => ['vendor'], 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => DocGenMemoryLimit::FLOOR, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]);
+        $exitCode = $runner->run(['packages' => null, 'vendor' => ['vendor'], 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => DocGenMemoryLimit::FLOOR, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]);
         $applied = ini_get('memory_limit');
         ini_set('memory_limit', $previous);
 
@@ -394,25 +386,7 @@ PHP);
         self::assertStringContainsString('Warning: Vendor glob "vendor" documented no installed runtime vendor package.', $errors);
     }
 
-    public function testRunReportsMissingExplicitConfig(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
-        mkdir($dir, 0777, true);
-
-        $errors = '';
-        $runner = new DocGenGenerationRunner($dir, null, null, null, new DocGenOutputWriter(
-            null,
-            static function (string $message) use (&$errors): void {
-                $errors .= $message;
-            },
-        ));
-
-        self::assertSame(2, $runner->run(['config' => 'missing.yaml', 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
-        self::assertStringContainsString('DocGen error: DocGen config not found:', $errors);
-        self::assertStringContainsString($dir . '/missing.yaml', $errors);
-    }
-
-    public function testRunHonorsConfiguredOutputDirectory(): void
+    public function testRunHonorsTheOutputDirectoryTheRunNames(): void
     {
         $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
         mkdir($dir . '/src', 0777, true);
@@ -435,20 +409,33 @@ final class Greeter
     }
 }
 PHP);
-        file_put_contents($dir . '/doc.yaml', <<<'YAML'
-output: public/site
-YAML);
 
         $output = '';
-        $runner = new DocGenGenerationRunner($dir, null, null, null, new DocGenOutputWriter(
+        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;
             },
         ));
 
-        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+        self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => 'public/site', 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('public/site', $output);
         self::assertFileExists($dir . '/public/site/index.html');
+    }
+
+    public function testRunClearsTheCacheDirectoryBeforeGeneratingWhenAsked(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
+        mkdir($dir . '/src', 0777, true);
+        mkdir($dir . '/build/doc-gen-cache', 0777, true);
+        file_put_contents($dir . '/build/doc-gen-cache/stale.cache', 'stale');
+        file_put_contents($dir . '/composer.json', '{"name": "acme/demo", "autoload": {"psr-4": {"Acme\\\\Demo\\\\": "src/"}}}');
+        file_put_contents($dir . '/src/Greeter.php', '<?php namespace Acme\Demo; final class Greeter { public function greet(): string { return "hi"; } }');
+
+        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(static function (): void {
+        }));
+
+        self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => 1, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => true, 'help' => false, 'version' => false]));
+        self::assertFileDoesNotExist($dir . '/build/doc-gen-cache/stale.cache');
     }
 
     public function testRunLaunchesPreviewServerForServeOption(): void
@@ -481,7 +468,6 @@ PHP);
             $dir,
             null,
             null,
-            null,
             new DocGenOutputWriter(static function (string $message) use (&$output): void {
                 $output .= $message;
             }),
@@ -492,7 +478,7 @@ PHP);
             }),
         );
 
-        self::assertSame(0, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => '127.0.0.1:8123', 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+        self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => '127.0.0.1:8123', 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('Serving documentation at http://127.0.0.1:8123', $output);
         self::assertStringContainsString(' -S ', $command);
         self::assertStringContainsString('127.0.0.1:8123', $command);
@@ -505,74 +491,15 @@ PHP);
         mkdir($dir, 0777, true);
 
         $errors = '';
-        $runner = new DocGenGenerationRunner($dir, null, null, null, new DocGenOutputWriter(
+        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
             null,
             static function (string $message) use (&$errors): void {
                 $errors .= $message;
             },
         ));
 
-        self::assertSame(2, $runner->run(['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+        self::assertSame(2, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
         self::assertStringContainsString('DocGen error: No composer packages found.', $errors);
-    }
-
-    public function testLoadConfigBuildsDefaultsWithoutConfigFile(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
-        mkdir($dir, 0777, true);
-
-        $config = (new DocGenGenerationRunner($dir))->loadConfig(null);
-
-        self::assertSame(realpath($dir), $config->root);
-        self::assertSame(['.', 'packages/*'], $config->packages);
-        self::assertSame([], $config->vendor);
-        self::assertSame([], $config->vendorDev);
-        self::assertSame([], $config->exclude);
-        self::assertSame('build/docs', $config->output);
-        self::assertNull($config->title);
-        self::assertNull($config->deptrac);
-        self::assertNull($config->coverage);
-    }
-
-    public function testLoadConfigReadsProjectDocYamlWhenPresent(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
-        mkdir($dir, 0777, true);
-        file_put_contents($dir . '/doc.yaml', <<<'YAML'
-output: public/site
-title: Demo Docs
-YAML);
-
-        $config = (new DocGenGenerationRunner($dir))->loadConfig(null);
-
-        self::assertSame(realpath($dir), $config->root);
-        self::assertSame('public/site', $config->output);
-        self::assertSame('Demo Docs', $config->title);
-    }
-
-    public function testLoadConfigResolvesExplicitRelativePath(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
-        mkdir($dir . '/conf', 0777, true);
-        file_put_contents($dir . '/conf/doc.yaml', <<<'YAML'
-title: Custom
-YAML);
-
-        $config = (new DocGenGenerationRunner($dir))->loadConfig('conf/doc.yaml');
-
-        self::assertSame(realpath($dir . '/conf'), $config->root);
-        self::assertSame('Custom', $config->title);
-    }
-
-    public function testLoadConfigRejectsMissingExplicitConfig(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
-        mkdir($dir, 0777, true);
-
-        $this->expectException(DocGenException::class);
-        $this->expectExceptionMessage('DocGen config not found: ' . $dir . '/missing.yaml');
-
-        (new DocGenGenerationRunner($dir))->loadConfig('missing.yaml');
     }
 
     public function testGenerateAnalyzesAndRendersTheProjectAsItIs(): void
@@ -621,7 +548,7 @@ YAML);
             $output .= $message;
         });
 
-        $result = (new DocGenGenerationRunner($dir, null, null, null, $writer, null, null, null, null, null, $workspace))->generateDiff(
+        $result = (new DocGenGenerationRunner($dir, null, null, $writer, null, null, null, null, $workspace))->generateDiff(
             new DocGenConfig($root, ['.'], [], [], 'build/docs', null, null, null),
             $root . '/build/docs',
             new RevisionRange('main'),
@@ -650,7 +577,7 @@ YAML);
         );
         $model = new ProjectModel('Demo Docs', '/tmp/project', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, ['first warning', 'second warning']);
 
-        (new DocGenGenerationRunner('/tmp/project', null, null, null, $writer))->report($model, 7, '/tmp/project/build/docs');
+        (new DocGenGenerationRunner('/tmp/project', null, null, $writer))->report($model, 7, '/tmp/project/build/docs');
 
         self::assertSame("Generated 7 pages for 0 packages into /tmp/project/build/docs\n", $output);
         self::assertSame("Warning: first warning\nWarning: second warning\n", $errors);
@@ -689,10 +616,6 @@ YAML);
         file_put_contents($dir . '/build/doc-gen-cache/entry.cache', '');
         $runner = new DocGenGenerationRunner($dir);
 
-        $runner->clear($dir, null);
-
-        self::assertDirectoryExists($dir . '/build/doc-gen-cache');
-
         $runner->clear($dir, 'build/doc-gen-cache');
 
         self::assertDirectoryDoesNotExist($dir . '/build/doc-gen-cache');
@@ -703,7 +626,7 @@ YAML);
         $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
         mkdir($dir, 0777, true);
         $output = '';
-        $runner = new DocGenGenerationRunner($dir, null, null, null, new DocGenOutputWriter(
+        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;
             },
@@ -721,7 +644,7 @@ YAML);
         $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
         mkdir($dir, 0777, true);
         $output = '';
-        $runner = new DocGenGenerationRunner($dir, null, null, null, new DocGenOutputWriter(
+        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;
             },
@@ -739,8 +662,8 @@ YAML);
         file_put_contents($dir . '/composer.json', '{"name": "acme/demo", "autoload": {"psr-4": {"Acme\\\\Demo\\\\": "src/"}}}');
         file_put_contents($dir . '/src/Greeter.php', "<?php\n\nnamespace Acme\\Demo;\n\nfinal class Greeter\n{\n}\n");
         $output = '';
-        $arguments = ['config' => null, 'output' => null, 'vendor' => null, 'vendorDev' => null, 'coverage' => null, 'baseUrl' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => 1, 'base' => null, 'head' => null, 'cacheDir' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
-        $runner = new DocGenGenerationRunner($dir, null, null, null, new DocGenOutputWriter(
+        $arguments = ['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => 1, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
+        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;
             },

@@ -20,14 +20,25 @@ final class DocGenHelpTextTest extends TestCase
     {
         $text = (new DocGenHelpText())->text();
 
-        self::assertStringContainsString('--config', $text);
+        self::assertStringContainsString('--packages=GLOBS', $text);
+        self::assertStringContainsString('--exclude=GLOBS', $text);
         self::assertStringContainsString('--output', $text);
+        self::assertStringContainsString('--title=TEXT', $text);
         self::assertStringContainsString('--vendor[=GLOBS]', $text);
         self::assertStringContainsString('--vendor-dev[=GLOBS]', $text);
+        self::assertStringContainsString('--deptrac=FILE', $text);
         self::assertStringContainsString('--coverage', $text);
+        self::assertStringContainsString('--base-url=URL', $text);
+        self::assertStringContainsString('--repository=URL', $text);
+        self::assertStringContainsString('--diff=RANGE', $text);
         self::assertStringContainsString('--serve', $text);
         self::assertStringContainsString('-h, --help', $text);
         self::assertStringContainsString('-V, --version', $text);
+    }
+
+    public function testTextNamesNoConfigurationFile(): void
+    {
+        self::assertStringNotContainsString('--config', (new DocGenHelpText())->text());
     }
 
     public function testPurposeStatesWhatDocGenDoes(): void
@@ -35,9 +46,33 @@ final class DocGenHelpTextTest extends TestCase
         self::assertStringContainsString('Usage: doc-gen [options]', (new DocGenHelpText())->purpose());
     }
 
-    public function testOptionsListWhatIsDocumented(): void
+    public function testScopeOptionsListWhatIsDocumented(): void
     {
-        self::assertStringContainsString('--config=FILE', (new DocGenHelpText())->options());
+        $text = (new DocGenHelpText())->scopeOptions();
+
+        self::assertStringContainsString('--packages=GLOBS', $text);
+        self::assertStringContainsString('--exclude=GLOBS', $text);
+        self::assertStringContainsString('--output=DIR', $text);
+        self::assertStringContainsString('--title=TEXT', $text);
+    }
+
+    public function testSiteOptionsListWhatThePagesSayAboutTheProject(): void
+    {
+        $text = (new DocGenHelpText())->siteOptions();
+
+        self::assertStringContainsString('--deptrac=FILE', $text);
+        self::assertStringContainsString('--coverage=DIR', $text);
+        self::assertStringContainsString('--base-url=URL', $text);
+        self::assertStringContainsString('--repository=URL', $text);
+    }
+
+    public function testDiffOptionsListTheComparedRevisions(): void
+    {
+        $text = (new DocGenHelpText())->diffOptions();
+
+        self::assertStringContainsString('--diff=RANGE', $text);
+        self::assertStringContainsString('--base=REVISION', $text);
+        self::assertStringContainsString('--head=REVISION', $text);
     }
 
     public function testCacheOptionsListWhatIsRememberedBetweenRuns(): void

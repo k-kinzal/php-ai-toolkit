@@ -40,7 +40,7 @@ final class BaseUrlTest extends TestCase
     public function testNormalizeRejectsAnAddressNothingCanBeFetchedFrom(string $value): void
     {
         $this->expectException(DocGenException::class);
-        $this->expectExceptionMessage('Invalid base_url: ' . $value);
+        $this->expectExceptionMessage('Invalid --base-url value: ' . $value);
 
         (new BaseUrl())->normalize($value);
     }

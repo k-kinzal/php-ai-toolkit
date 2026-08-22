@@ -101,9 +101,12 @@ read-only. It restores the DocGen cache between runs, so a documentation job
 costs the size of the change.
 
 It runs `composer test:coverage` before `composer doc-gen`, and sets up PHP with
-`coverage: pcov` to make that possible. `doc.yaml` points `coverage` at
-`build/coverage-xml`, which is what lets every method on the site name the test
-cases covering it. The step earns its minutes twice over: PHPUnit is configured
+`coverage: pcov` to make that possible. The `doc-gen` script passes
+`--coverage=build/coverage-xml`, which is what lets every method on the site
+name the test cases covering it. DocGen reads no configuration file, so the
+workflow passes what only it knows: `--base-url`, derived from
+`GITHUB_REPOSITORY`, is what makes every page carry its canonical link and the
+tags a shared link is rendered from. The step earns its minutes twice over: PHPUnit is configured
 with `requireCoverageMetadata` and `beStrictAboutCoverageMetadata`, so a test
 that executes a class it did not declare in `#[CoversClass]` or `#[UsesClass]`
 is reported as risky and fails the run. Without a coverage run somewhere on

@@ -97,7 +97,7 @@
 <span class="src-line" id="L61"><a class="ln" href="#L61">61</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testNormalizeRejectsAnAddressNoPageCanLinkTo</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L62"><a class="ln" href="#L62">62</a>    {</span>
 <span class="src-line" id="L63"><a class="ln" href="#L63">63</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectException</span>(<span class="tok-id">DocGenException</span>::<span class="tok-kw">class</span>);</span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectExceptionMessage</span>(<span class="tok-str">&#039;Invalid repository: git@github.com:example/project.git. Use the absolute address of the repository the project lives in, such as https://github.com/example/project.&#039;</span>);</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectExceptionMessage</span>(<span class="tok-str">&#039;Invalid --repository value: git@github.com:example/project.git. Use the absolute address of the repository the project lives in, such as https://github.com/example/project.&#039;</span>);</span>
 <span class="src-line" id="L65"><a class="ln" href="#L65">65</a></span>
 <span class="src-line" id="L66"><a class="ln" href="#L66">66</a>        (<span class="tok-kw">new</span> <span class="tok-id">RepositoryUrl</span>())-&gt;<span class="tok-id">normalize</span>(<span class="tok-str">&#039;git@github.com:example/project.git&#039;</span>);</span>
 <span class="src-line" id="L67"><a class="ln" href="#L67">67</a>    }</span>

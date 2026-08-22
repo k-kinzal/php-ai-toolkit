@@ -76,7 +76,7 @@
 <span class="src-line" id="L40"><a class="ln" href="#L40">40</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testNormalizeRejectsAnAddressNothingCanBeFetchedFrom</span>(<span class="tok-id">string</span> <span class="tok-var">$value</span>): <span class="tok-id">void</span></span>
 <span class="src-line" id="L41"><a class="ln" href="#L41">41</a>    {</span>
 <span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectException</span>(<span class="tok-id">DocGenException</span>::<span class="tok-kw">class</span>);</span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectExceptionMessage</span>(<span class="tok-str">&#039;Invalid base_url: &#039;</span> . <span class="tok-var">$value</span>);</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectExceptionMessage</span>(<span class="tok-str">&#039;Invalid --base-url value: &#039;</span> . <span class="tok-var">$value</span>);</span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a></span>
 <span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        (<span class="tok-kw">new</span> <span class="tok-id">BaseUrl</span>())-&gt;<span class="tok-id">normalize</span>(<span class="tok-var">$value</span>);</span>
 <span class="src-line" id="L46"><a class="ln" href="#L46">46</a>    }</span>

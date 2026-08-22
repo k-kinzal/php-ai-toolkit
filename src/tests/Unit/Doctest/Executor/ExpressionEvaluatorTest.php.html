@@ -108,30 +108,31 @@
 <span class="src-line" id="L72"><a class="ln" href="#L72">72</a>        <span class="tok-var">$evaluator</span> = <span class="tok-kw">new</span> <span class="tok-id">ExpressionEvaluator</span>();</span>
 <span class="src-line" id="L73"><a class="ln" href="#L73">73</a></span>
 <span class="src-line" id="L74"><a class="ln" href="#L74">74</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$evaluator</span>-&gt;<span class="tok-id">codeNeedsReturn</span>(<span class="tok-str">&#039;$sum = 1;&#039;</span>));</span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$evaluator</span>-&gt;<span class="tok-id">codeNeedsReturn</span>(<span class="tok-str">&#039;echo $sum;&#039;</span>));</span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$evaluator</span>-&gt;<span class="tok-id">codeNeedsReturn</span>(<span class="tok-str">&#039;foreach ($xs as $x) {}&#039;</span>));</span>
-<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$evaluator</span>-&gt;<span class="tok-id">codeNeedsReturn</span>(<span class="tok-str">&#039;$widget-&gt;render();&#039;</span>));</span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>    }</span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a></span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCodeNeedsReturnIsTrueForABareExpression</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>    {</span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>        <span class="tok-var">$evaluator</span> = <span class="tok-kw">new</span> <span class="tok-id">ExpressionEvaluator</span>();</span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a></span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>(<span class="tok-var">$evaluator</span>-&gt;<span class="tok-id">codeNeedsReturn</span>(<span class="tok-str">&#039;add(1, 2)&#039;</span>));</span>
-<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>(<span class="tok-var">$evaluator</span>-&gt;<span class="tok-id">codeNeedsReturn</span>(<span class="tok-str">&#039;$widget-&gt;render()&#039;</span>));</span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>    }</span>
-<span class="src-line" id="L87"><a class="ln" href="#L87">87</a></span>
-<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testEvaluateKeepsNoneOfItsOwnLocalsInTheExampleScope</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>    {</span>
-<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>        <span class="tok-var">$context</span> = <span class="tok-kw">new</span> <span class="tok-id">ExecutionContext</span>();</span>
-<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>        <span class="tok-var">$context</span>-&gt;<span class="tok-id">setVariable</span>(<span class="tok-str">&#039;given&#039;</span>, <span class="tok-num">1</span>);</span>
-<span class="src-line" id="L92"><a class="ln" href="#L92">92</a></span>
-<span class="src-line" id="L93"><a class="ln" href="#L93">93</a>        (<span class="tok-kw">new</span> <span class="tok-id">ExpressionEvaluator</span>())-&gt;<span class="tok-id">evaluate</span>(<span class="tok-str">&#039;$kept = 2;&#039;</span>, <span class="tok-var">$context</span>);</span>
-<span class="src-line" id="L94"><a class="ln" href="#L94">94</a></span>
-<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;given&#039;</span> =&gt; <span class="tok-num">1</span>, <span class="tok-str">&#039;kept&#039;</span> =&gt; <span class="tok-num">2</span>], <span class="tok-var">$context</span>-&gt;<span class="tok-id">getVariables</span>());</span>
-<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>    }</span>
-<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>}</span>
-<span class="src-line" id="L98"><a class="ln" href="#L98">98</a></span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$evaluator</span>-&gt;<span class="tok-id">codeNeedsReturn</span>(<span class="tok-str">&#039;   echo $sum;&#039;</span>));</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$evaluator</span>-&gt;<span class="tok-id">codeNeedsReturn</span>(<span class="tok-str">&#039;echo $sum;&#039;</span>));</span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$evaluator</span>-&gt;<span class="tok-id">codeNeedsReturn</span>(<span class="tok-str">&#039;foreach ($xs as $x) {}&#039;</span>));</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$evaluator</span>-&gt;<span class="tok-id">codeNeedsReturn</span>(<span class="tok-str">&#039;$widget-&gt;render();&#039;</span>));</span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>    }</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a></span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCodeNeedsReturnIsTrueForABareExpression</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>    {</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>        <span class="tok-var">$evaluator</span> = <span class="tok-kw">new</span> <span class="tok-id">ExpressionEvaluator</span>();</span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a></span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>(<span class="tok-var">$evaluator</span>-&gt;<span class="tok-id">codeNeedsReturn</span>(<span class="tok-str">&#039;add(1, 2)&#039;</span>));</span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>(<span class="tok-var">$evaluator</span>-&gt;<span class="tok-id">codeNeedsReturn</span>(<span class="tok-str">&#039;$widget-&gt;render()&#039;</span>));</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>    }</span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a></span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testEvaluateKeepsNoneOfItsOwnLocalsInTheExampleScope</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>    {</span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>        <span class="tok-var">$context</span> = <span class="tok-kw">new</span> <span class="tok-id">ExecutionContext</span>();</span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a>        <span class="tok-var">$context</span>-&gt;<span class="tok-id">setVariable</span>(<span class="tok-str">&#039;given&#039;</span>, <span class="tok-num">1</span>);</span>
+<span class="src-line" id="L93"><a class="ln" href="#L93">93</a></span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>        (<span class="tok-kw">new</span> <span class="tok-id">ExpressionEvaluator</span>())-&gt;<span class="tok-id">evaluate</span>(<span class="tok-str">&#039;$kept = 2;&#039;</span>, <span class="tok-var">$context</span>);</span>
+<span class="src-line" id="L95"><a class="ln" href="#L95">95</a></span>
+<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;given&#039;</span> =&gt; <span class="tok-num">1</span>, <span class="tok-str">&#039;kept&#039;</span> =&gt; <span class="tok-num">2</span>], <span class="tok-var">$context</span>-&gt;<span class="tok-id">getVariables</span>());</span>
+<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>    }</span>
+<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>}</span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

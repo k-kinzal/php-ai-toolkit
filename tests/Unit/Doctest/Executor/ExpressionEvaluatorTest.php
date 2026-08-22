@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Executor;
 
-use ParseError;
+use PhpAiToolkit\Doctest\Executor\Evaluation;
 use PhpAiToolkit\Doctest\Executor\ExecutionContext;
 use PhpAiToolkit\Doctest\Executor\ExpressionEvaluator;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -13,11 +13,12 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ExpressionEvaluator::class)]
 #[UsesClass(ExecutionContext::class)]
+#[UsesClass(Evaluation::class)]
 final class ExpressionEvaluatorTest extends TestCase
 {
     public function testEvaluateReturnsTheValueOfAnExpression(): void
     {
-        self::assertSame(3, (new ExpressionEvaluator())->evaluate('1 + 2', new ExecutionContext()));
+        self::assertSame(3, (new ExpressionEvaluator())->evaluate('1 + 2', new ExecutionContext())->value);
     }
 
     public function testEvaluateCarriesVariablesAndOutputIntoTheContext(): void
@@ -36,14 +37,34 @@ final class ExpressionEvaluatorTest extends TestCase
 
     public function testEvaluateExpectedReadsTheDocumentedValue(): void
     {
-        self::assertSame([1, 2], (new ExpressionEvaluator())->evaluateExpected('[1, 2]'));
+        self::assertSame([1, 2], (new ExpressionEvaluator())->evaluateExpected('[1, 2]')->value);
     }
 
-    public function testParseErrorNamesTheSourceItCameFrom(): void
+    public function testEvaluateHandsBackWhateverTheExampleRaised(): void
     {
-        $error = (new ExpressionEvaluator())->parseError(new ParseError('syntax error'), 'return not php +;');
+        $evaluation = (new ExpressionEvaluator())->evaluate('throw new \RuntimeException("bad");', new ExecutionContext());
 
-        self::assertSame('syntax error in: return not php +;', $error->getMessage());
+        self::assertFalse($evaluation->completed());
+        self::assertNotNull($evaluation->error);
+        self::assertSame('bad', $evaluation->error->getMessage());
+    }
+
+    public function testEvaluateLeavesTheContextUntouchedWhenTheCodeRaises(): void
+    {
+        $context = new ExecutionContext();
+        $context->setVariable('kept', 1);
+
+        (new ExpressionEvaluator())->evaluate('throw new \RuntimeException("bad");', $context);
+
+        self::assertSame(['kept' => 1], $context->getVariables());
+    }
+
+    public function testEvaluateExpectedHandsBackASyntaxError(): void
+    {
+        $evaluation = (new ExpressionEvaluator())->evaluateExpected('not php +');
+
+        self::assertFalse($evaluation->completed());
+        self::assertNotNull($evaluation->error);
     }
 
     public function testCodeNeedsReturnIsFalseForCodeWithASideEffect(): void

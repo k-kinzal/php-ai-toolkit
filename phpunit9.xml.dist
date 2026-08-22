@@ -14,6 +14,7 @@
         <testsuite name="unit">
             <directory>tests/Unit</directory>
             <exclude>tests/Unit/Doctest/DoctestExtensionTest.php</exclude>
+            <exclude>tests/Unit/Doctest/DoctestSuiteTest.php</exclude>
             <exclude>tests/Unit/Doctest/Configuration/ConfigurationLoaderTest.php</exclude>
         </testsuite>
         <testsuite name="doctest">

@@ -23,7 +23,7 @@
             <exclude>tests/Unit/PhpUnit/TestReporter/Legacy</exclude>
         </testsuite>
         <testsuite name="doctest">
-            <file>DoctestSuite.php</file>
+            <file>src/Doctest/DoctestSuite.php</file>
         </testsuite>
     </testsuites>
     <extensions>

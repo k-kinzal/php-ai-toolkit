@@ -7,12 +7,11 @@ namespace PhpAiToolkit\Doctest\Executor;
 use function ob_end_clean;
 use function ob_get_contents;
 use function ob_start;
-
-use ParseError;
-
 use function preg_match;
-use function sprintf;
 use function str_ends_with;
+
+use Throwable;
+
 use function trim;
 
 /**
@@ -21,7 +20,12 @@ use function trim;
  * Extracted from ExampleExecutor of k-kinzal/doctest-php, where the same work
  * lives in private evaluateCode() and codeNeedsReturn() methods; this package
  * forbids private methods and caps method length, so the evaluation is a
- * collaborator of its own. The behaviour is unchanged.
+ * collaborator of its own.
+ *
+ * This is the file that runs untrusted text, and therefore the only file in the
+ * port that catches Throwable. Upstream catches around each call site instead;
+ * catching here keeps the boundary in one place and hands the caller the same
+ * information as an Evaluation.
  *
  * @visibility parent
  */
@@ -53,13 +57,9 @@ final class ExpressionEvaluator
      * k-kinzal/doctest-php does it and what makes carrying state work at all:
      * variables an example defines land in this method's scope, so they are
      * read back from here and this method's own locals are unset before the
-     * scope is handed on.
-     *
-     * @return mixed the value of the evaluated expression, or null for code that has none
-     *
-     * @throws ParseError when the example code is not valid PHP
+     * scope is handed on. A statement that raises leaves the context untouched.
      */
-    public function evaluate(string $code, ExecutionContext $context)
+    public function evaluate(string $code, ExecutionContext $context): Evaluation
     {
         $__doctest_vars__ = $context->getVariables();
         $__doctest_code__ = $this->codeNeedsReturn($code) ? 'return ' . $code . ';' : $code;
@@ -68,13 +68,7 @@ final class ExpressionEvaluator
 
         try {
             extract($__doctest_vars__, EXTR_SKIP);
-
-            try {
-                $__doctest_result__ = eval($__doctest_code__);
-            } catch (ParseError $error) {
-                throw $this->parseError($error, $__doctest_code__);
-            }
-
+            $__doctest_result__ = eval($__doctest_code__);
             $__doctest_all_vars__ = get_defined_vars();
             unset(
                 $__doctest_all_vars__['__doctest_vars__'],
@@ -88,7 +82,9 @@ final class ExpressionEvaluator
             $output = ob_get_contents();
             $context->lastOutput = $output === false ? '' : $output;
 
-            return $__doctest_result__;
+            return new Evaluation($__doctest_result__);
+        } catch (Throwable $error) {
+            return new Evaluation(null, $error);
         } finally {
             ob_end_clean();
         }
@@ -96,31 +92,14 @@ final class ExpressionEvaluator
 
     /**
      * Evaluates the expression an assertion documents as its expected value.
-     *
-     * @return mixed the value the expression produced
-     *
-     * @throws ParseError when the documented value is not valid PHP
      */
-    public function evaluateExpected(string $expectedRaw)
+    public function evaluateExpected(string $expectedRaw): Evaluation
     {
-        $source = 'return ' . $expectedRaw . ';';
-
         try {
-            return eval($source);
-        } catch (ParseError $error) {
-            throw $this->parseError($error, $source);
+            return new Evaluation(eval('return ' . $expectedRaw . ';'));
+        } catch (Throwable $error) {
+            return new Evaluation(null, $error);
         }
-    }
-
-    /**
-     * Returns a syntax error that names the source it came from.
-     *
-     * A bare ParseError from eval() says what is wrong but not which text it
-     * was reading, which is the part a reader of the failure needs.
-     */
-    public function parseError(ParseError $error, string $source): ParseError
-    {
-        return new ParseError(sprintf('%s in: %s', $error->getMessage(), $source), $error->getCode(), $error);
     }
 
     /**

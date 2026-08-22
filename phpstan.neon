@@ -31,12 +31,12 @@ parameters:
             # can report, because a failure that only reaches the worker's
             # own stack would leave the run with a silently incomplete site.
             - 'src/DocGen/Parallel/WorkerPool.php'
-            # Example code is arbitrary program text, so running one is a
-            # boundary in the same sense: whatever it raises has to become a
+            # Doctest evaluates the example text a docblock carries, which is
+            # arbitrary program code: whatever it raises has to become a
             # reported failure, because a throwable that escaped here would end
             # the run at the first broken example instead of reporting it
-            # alongside the others.
-            - 'src/Doctest/Executor/ExampleExecutor.php'
+            # alongside the others. This is the only file that runs that text,
+            # so it is the only place the catch is needed.
             - 'src/Doctest/Executor/ExpressionEvaluator.php'
     ignoreErrors:
         # PHPStan's ErrorFormatterTestCase and related internal classes

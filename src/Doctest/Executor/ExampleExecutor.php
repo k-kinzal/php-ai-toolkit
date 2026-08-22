@@ -27,10 +27,11 @@ use Throwable;
  * - Output assertions (// Output:)
  * - Exception assertions (// throws)
  *
- * Example code is arbitrary program text, so running it is a boundary in the
- * same sense a forked worker is: whatever it raises has to become a reported
- * failure, because a throwable escaping here would end the run at the first
- * broken example instead of reporting it alongside the others.
+ * Whatever an example raises has to become a reported failure, because a
+ * throwable escaping here would end the run at the first broken example instead
+ * of reporting it alongside the others. Upstream catches Throwable at each call
+ * site; here ExpressionEvaluator catches it where the code actually runs and
+ * hands back an Evaluation, so the port has one boundary rather than three.
  *
  * @example Creating and checking executor
  *     $executor = new \PhpAiToolkit\Doctest\Executor\ExampleExecutor();
@@ -126,21 +127,16 @@ final class ExampleExecutor
             return $this->executeWithExpectedException($statement, $context);
         }
 
-        try {
-            $result = $this->evaluator->evaluate($statement->code, $context);
-        } catch (Throwable $exception) {
-            return new AssertionResult(
-                false,
-                sprintf('Unexpected exception %s: %s', get_class($exception), $exception->getMessage()),
-                $statement,
-            );
+        $evaluation = $this->evaluator->evaluate($statement->code, $context);
+        if (!$evaluation->completed()) {
+            return $this->unexpectedException($statement, $evaluation->error);
         }
 
         if (!$statement->hasAssertion()) {
             return new AssertionResult(true, '', $statement);
         }
 
-        return $this->checkAssertion($statement, $result, $context);
+        return $this->checkAssertion($statement, $evaluation->value, $context);
     }
 
     /**
@@ -153,15 +149,31 @@ final class ExampleExecutor
             return new AssertionResult(true, '', $statement);
         }
 
-        try {
-            $this->evaluator->evaluate($statement->code, $context);
-        } catch (Throwable $exception) {
-            return $this->checkThrownException($statement, $exception, $assertion->expectedRaw, $assertion->exceptionMessage);
+        $evaluation = $this->evaluator->evaluate($statement->code, $context);
+        $raised = $evaluation->error;
+        if ($raised !== null) {
+            return $this->checkThrownException($statement, $raised, $assertion->expectedRaw, $assertion->exceptionMessage);
         }
 
         return new AssertionResult(
             false,
             sprintf('Expected exception %s but none was thrown', $assertion->expectedRaw),
+            $statement,
+        );
+    }
+
+    /**
+     * Reports a statement that raised where the example documented no exception.
+     */
+    public function unexpectedException(Statement $statement, ?Throwable $exception): AssertionResult
+    {
+        if ($exception === null) {
+            return new AssertionResult(true, '', $statement);
+        }
+
+        return new AssertionResult(
+            false,
+            sprintf('Unexpected exception %s: %s', get_class($exception), $exception->getMessage()),
             $statement,
         );
     }
@@ -221,16 +233,17 @@ final class ExampleExecutor
             return new AssertionResult(true, '', $statement);
         }
 
-        try {
-            $expected = $this->evaluator->evaluateExpected($assertion->expectedRaw);
-        } catch (Throwable $exception) {
+        $evaluation = $this->evaluator->evaluateExpected($assertion->expectedRaw);
+        $raised = $evaluation->error;
+        if ($raised !== null) {
             return new AssertionResult(
                 false,
-                sprintf('Failed to parse expected value: %s', $exception->getMessage()),
+                sprintf('Failed to parse expected value: %s', $raised->getMessage()),
                 $statement,
             );
         }
 
+        $expected = $evaluation->value;
         if ($expected === $actual) {
             return new AssertionResult(true, '', $statement);
         }

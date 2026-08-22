@@ -43,7 +43,7 @@ Register the extension and add the suite. No test file is written:
         <directory>tests/Unit</directory>
     </testsuite>
     <testsuite name="doctest">
-        <file>vendor/k-kinzal/php-ai-toolkit/DoctestSuite.php</file>
+        <file>vendor/k-kinzal/php-ai-toolkit/src/Doctest/DoctestSuite.php</file>
     </testsuite>
 </testsuites>
 

@@ -10,15 +10,16 @@ use PhpAiToolkit\Doctest\TestCase\DoctestRunner;
 use PHPUnit\Framework\Attributes\Medium;
 
 /**
- * PHPUnit test suite file for doctest.
+ * The test suite PHPUnit loads to run a project's documented examples.
  *
- * Add this file to your phpunit.xml testsuite configuration:
+ * It is the one concrete DoctestRunner the package ships, so a project runs its
+ * examples without writing a test class of its own. PHPUnit's testsuite element
+ * takes a file rather than a class name, which is why this one is named by path
+ * even though it is autoloadable like the rest of the source:
  *
  *     <testsuite name="doctest">
- *         <file>vendor/k-kinzal/php-ai-toolkit/DoctestSuite.php</file>
+ *         <file>vendor/k-kinzal/php-ai-toolkit/src/Doctest/DoctestSuite.php</file>
  *     </testsuite>
- *
- * And configure the extension:
  *
  *     <extensions>
  *         <bootstrap class="PhpAiToolkit\Doctest\DoctestExtension">

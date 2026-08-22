@@ -37,7 +37,7 @@ Register the extension and point a test suite at the shipped suite file:
             <directory>tests/Unit</directory>
         </testsuite>
         <testsuite name="doctest">
-            <file>vendor/k-kinzal/php-ai-toolkit/DoctestSuite.php</file>
+            <file>vendor/k-kinzal/php-ai-toolkit/src/Doctest/DoctestSuite.php</file>
         </testsuite>
     </testsuites>
 

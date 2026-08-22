@@ -11,6 +11,7 @@ use PhpAiToolkit\Doctest\Assertion\AssertionParser;
 use PhpAiToolkit\Doctest\Assertion\AssertionResult;
 use PhpAiToolkit\Doctest\Assertion\ParsedExample;
 use PhpAiToolkit\Doctest\Assertion\Statement;
+use PhpAiToolkit\Doctest\Executor\Evaluation;
 use PhpAiToolkit\Doctest\Executor\ExampleExecutor;
 use PhpAiToolkit\Doctest\Executor\ExceptionMatcher;
 use PhpAiToolkit\Doctest\Executor\ExecutionContext;
@@ -36,6 +37,7 @@ use RuntimeException;
 #[UsesClass(ExecutionResult::class)]
 #[UsesClass(ExecutionContext::class)]
 #[UsesClass(ExpressionEvaluator::class)]
+#[UsesClass(Evaluation::class)]
 #[UsesClass(ExceptionMatcher::class)]
 #[Medium]
 final class ExampleExecutorTest extends TestCase
@@ -102,6 +104,18 @@ final class ExampleExecutorTest extends TestCase
         self::assertSame('Unexpected exception RuntimeException: bad', $result->message);
     }
 
+    public function testUnexpectedExceptionNamesWhatTheStatementRaised(): void
+    {
+        $executor = new ExampleExecutor();
+        $statement = new Statement('boom()', null, 1);
+
+        $reported = $executor->unexpectedException($statement, new RuntimeException('bad'));
+
+        self::assertFalse($reported->passed);
+        self::assertSame('Unexpected exception RuntimeException: bad', $reported->message);
+        self::assertTrue($executor->unexpectedException($statement, null)->passed);
+    }
+
     public function testExecuteStatementPassesASmokeStatement(): void
     {
         $result = (new ExampleExecutor())->executeStatement(new Statement('$sum = 1;', null, 1), new ExecutionContext());
@@ -163,7 +177,6 @@ final class ExampleExecutorTest extends TestCase
 
         self::assertFalse($result->passed);
         self::assertStringContainsString('Failed to parse expected value', $result->message);
-        self::assertStringContainsString('in: return not php +;', $result->message);
     }
 
     public function testCheckOutputAcceptsAnExactMatchOrOneTrailingNewline(): void

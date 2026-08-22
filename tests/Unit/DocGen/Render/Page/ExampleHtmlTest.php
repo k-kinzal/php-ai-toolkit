@@ -7,6 +7,9 @@ namespace Tests\Unit\DocGen\Render\Page;
 use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
 use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
+use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine;
+use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
+use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\ProjectModel;
 use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
@@ -57,9 +60,6 @@ use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PhpAiToolkit\DocGen\Render\SocialCard;
 use PhpAiToolkit\DocGen\Render\SocialMeta;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
-use PhpAiToolkit\Doctest\Analysis\AssertionLine;
-use PhpAiToolkit\Doctest\Analysis\AssertionScanner;
-use PhpAiToolkit\Doctest\Analysis\DoctestExtractor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -133,12 +133,12 @@ final class ExampleHtmlTest extends TestCase
         $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [], [], $table, $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
         $services = (new SiteRenderer())->services($model);
 
-        $html = (new ExampleHtml())->figure($services, 'Adding numbers', '$sum = 1; // => 1', true, 'Demo\\Sum::of()#1');
+        $html = (new ExampleHtml())->figure($services, 'Adding numbers', '$sum = 1; // => 1', true, 'Sum::of() example #1: Adding numbers');
 
         self::assertStringStartsWith('<figure class="example">', $html);
         self::assertStringContainsString('<span class="example-title">Adding numbers</span>', $html);
-        self::assertStringContainsString('title="Runs as the doctest Demo\Sum::of()#1">doctest</span>', $html);
-        self::assertStringContainsString('data-copy="vendor/bin/phpunit --filter &#039;/Demo\\\\Sum\:\:of\(\)\#1/&#039;"', $html);
+        self::assertStringContainsString('title="Runs as the doctest Sum::of() example #1: Adding numbers">doctest</span>', $html);
+        self::assertStringContainsString('data-copy="vendor/bin/phpunit --filter &#039;/Sum\:\:of\(\) example \#1\: Adding numbers/&#039;"', $html);
         self::assertStringContainsString('<button class="copy-btn" type="button" title="Copy example">copy</button>', $html);
         self::assertStringEndsWith('</figure>' . "\n", $html);
     }
@@ -173,7 +173,7 @@ final class ExampleHtmlTest extends TestCase
         $example = new ExampleHtml();
 
         self::assertStringContainsString('title="Executable as a doctest">', $example->doctestChip($services, ''));
-        self::assertStringContainsString('title="Runs as the doctest Demo\Sum#1">', $example->doctestChip($services, 'Demo\\Sum#1'));
+        self::assertStringContainsString('title="Runs as the doctest Sum example #1">', $example->doctestChip($services, 'Sum example #1'));
     }
 
     public function testRunButtonCarriesTheCommandToCopy(): void
@@ -187,15 +187,26 @@ final class ExampleHtmlTest extends TestCase
         $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [], [], $table, $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
         $services = (new SiteRenderer())->services($model);
 
-        $html = (new ExampleHtml())->runButton($services, 'Demo\\Sum#1');
+        $html = (new ExampleHtml())->runButton($services, 'Sum example #1');
 
-        self::assertStringContainsString('data-copy="vendor/bin/phpunit --filter &#039;/Demo\\\\Sum\#1/&#039;"', $html);
+        self::assertStringContainsString('data-copy="vendor/bin/phpunit --filter &#039;/Sum example \#1/&#039;"', $html);
         self::assertStringContainsString('>run</button>', $html);
     }
 
-    public function testRunCommandQuotesTheIdentifier(): void
+    public function testRunCommandQuotesTheExampleName(): void
     {
-        self::assertSame("vendor/bin/phpunit --filter '/Demo\\\\Sum\:\:of\(\)\#1/'", (new ExampleHtml())->runCommand('Demo\\Sum::of()#1'));
+        self::assertSame(
+            "vendor/bin/phpunit --filter '/Sum\:\:of\(\) example \#1/'",
+            (new ExampleHtml())->runCommand('Sum::of() example #1'),
+        );
+    }
+
+    public function testExampleNameMatchesTheNameDoctestGivesTheDataSet(): void
+    {
+        $example = new ExampleHtml();
+
+        self::assertSame('Sum::of() example #1: Adding numbers', $example->exampleName('Sum::of()', 'Adding numbers', 0));
+        self::assertSame('Sum example #3', $example->exampleName('Sum', null, 2));
     }
 
     public function testFigureOmitsBadgeForDisplayOnlyExample(): void

@@ -2,29 +2,30 @@
 name: setup-toolkit-doctest
 description: >-
   Set up doctest execution of PHPDoc examples for a PHP project. Use when asked
-  to configure doctest, runnable examples in docblocks, @example blocks,
-  executable documentation, testing code samples in comments, Python doctest or
-  Rust doc tests for PHP, running docblock examples under PHPUnit, running one
-  documented example on its own, requiring examples on public API, the
-  RequireExampleOnPublicApiRule PHPStan rule, a doctest PHPUnit test suite, or
-  CI that checks documentation examples still hold.
+  to configure doctest, doctest-php, runnable examples in docblocks, @example
+  blocks, executable documentation, testing code samples in comments, Python
+  doctest or Rust doc tests for PHP, running docblock examples under PHPUnit,
+  running one documented example on its own, requiring examples on public API,
+  the RequireExampleOnPublicApiRule PHPStan rule, a doctest PHPUnit test suite,
+  or CI that checks documentation examples still hold.
 ---
 
 # Setup Doctest (Executable PHPDoc Examples)
 
-This skill configures doctest, the php-ai-toolkit PHPUnit test case that runs the examples written in PHPDoc blocks. Prose in a docblock says what a symbol is for; an example says what calling it does, and because the example is executed, it cannot quietly stop being true.
+This skill configures doctest, the toolkit's port of [k-kinzal/doctest-php](https://github.com/k-kinzal/doctest-php). It runs the examples written in PHPDoc blocks as PHPUnit test cases. Prose in a docblock says what a symbol is for; an example says what calling it does, and because the example is executed, it cannot quietly stop being true.
 
-Doctest is a PHPUnit test case, not a command of its own. The project already has a runner, a reporter, and a CI job that reports through it; a documented example that disagrees with the code is a failing test, so it is reported as one.
+It is a PHPUnit extension plus a test suite. The project already has a runner, a reporter, and a CI job that reports through it, so a documented example that disagrees with the code is reported as a failing test.
 
 ## Prerequisites
 
 Inspect the project before configuring:
 
 - Confirm it requires `k-kinzal/php-ai-toolkit`.
-- Read the installed PHPUnit major: 10 or later takes `DoctestTestCase`, 9 takes `LegacyDoctestTestCase`.
-- Read `phpunit.xml` (or `phpunit.xml.dist`) and the existing `<testsuites>`.
+- Read the installed PHPUnit major. 10 or later takes the extension; 9 has no extension API and needs the legacy runner.
+- Read `phpunit.xml` (or `phpunit.xml.dist`) and its existing `<testsuites>` and `<extensions>`.
 - Read Composer production autoload roots. Usually this is `src/`, not `tests/`.
 - Check whether the project autoloads everything it ships. A project with non-autoloadable function files needs a bootstrap.
+- Check for a mutation testing config or CI step passing `--no-extensions`.
 
 Install the toolkit if missing:
 
@@ -34,30 +35,7 @@ composer require --dev k-kinzal/php-ai-toolkit
 
 ## Apply
 
-Add one test class. Put it in its own directory rather than beside the unit tests, so it can be selected as a suite and so a project that pairs `src/` classes with `tests/Unit/` classes is not asked to pair this one:
-
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace Tests\Doctest;
-
-use PhpAiToolkit\PhpUnit\Doctest\DoctestTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
-use PHPUnit\Framework\Attributes\Medium;
-
-/**
- * Runs the examples this package documents its public API with.
- */
-#[CoversNothing]
-#[Medium]
-final class DocumentedExampleTest extends DoctestTestCase
-{
-}
-```
-
-Then register the suite:
+Register the extension and add the suite. No test file is written:
 
 ```xml
 <testsuites>
@@ -65,23 +43,36 @@ Then register the suite:
         <directory>tests/Unit</directory>
     </testsuite>
     <testsuite name="doctest">
-        <directory>tests/Doctest</directory>
+        <file>vendor/k-kinzal/php-ai-toolkit/DoctestSuite.php</file>
     </testsuite>
 </testsuites>
+
+<extensions>
+    <bootstrap class="PhpAiToolkit\Doctest\DoctestExtension">
+        <parameter name="directories" value="src"/>
+    </bootstrap>
+</extensions>
 ```
 
-The defaults scan `src` under the directory PHPUnit runs from, so an empty subclass is usually the whole setup. Override only what the project needs:
+| Parameter | Meaning |
+|-----------|---------|
+| `directories` | Comma-separated directories to scan |
+| `files` | Comma-separated individual files to scan |
+| `exclude` | Comma-separated fnmatch patterns to leave unscanned |
+| `bootstrap` | A file to include once before the first example runs |
+| `enabled` | `false` switches doctest off without removing the configuration |
 
-| Method | Default | Meaning |
-|--------|---------|---------|
-| `doctestRoot()` | `getcwd()` | The directory the scanned paths and the bootstrap are relative to. |
-| `doctestPaths()` | `['src']` | Files and directories scanned for documented examples. |
-| `doctestExcludes()` | `[]` | fnmatch globs of root-relative paths to skip. |
-| `doctestBootstrap()` | `null` | A file to include once before the first example runs. |
+Set `directories` from the discovered autoload roots. Leave `bootstrap` unset unless the project has code an autoloader cannot resolve.
 
-Set `doctestPaths()` from the discovered autoload roots when they are not `src`. Leave `doctestBootstrap()` alone unless the project has code an autoloader cannot resolve.
+On PHPUnit 9, extend `PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner` and return a `Configuration` from `configure()` instead; there is no extension to read parameters from.
 
-On PHPUnit 9, extend `PhpAiToolkit\PhpUnit\Doctest\Legacy\LegacyDoctestTestCase` instead. A project that supports both majors carries one subclass of each and excludes the PHPUnit 9 one from the modern configuration.
+### Runs that disable extensions
+
+The extension is where the suite gets what to scan, so `--no-extensions` leaves it with nothing and PHPUnit reports an empty suite. Find every such run — mutation testing is the usual one — and restrict it to the other suites:
+
+```json5
+"testFrameworkExtraArgs": "--no-extensions --testsuite unit",
+```
 
 ## Adapting to the Project
 
@@ -96,19 +87,17 @@ Report the surface found and confirm the first few examples run before writing m
 
 ## Notation
 
-Two notations are recognized:
-
 ```php
 /**
  * @example Adding two numbers
- *     (new Calculator())->add(1, 2) // => 3
+ *     (new \App\Calculator())->add(1, 2) // => 3
  */
 ```
 
 ````php
 /**
  * ```php
- * (new Calculator())->add(1, 2) // => 3
+ * (new \App\Calculator())->add(1, 2) // => 3
  * ```
  */
 ````
@@ -116,25 +105,28 @@ Two notations are recognized:
 | Marker | Checks |
 |--------|--------|
 | `// => value` | The value of the expression is identical (`===`) to the value of `value` |
-| `// Output: text` | What the statement printed equals `text`, ignoring one trailing newline |
+| `// Output: text` | What the statement printed equals `text` |
 | `// throws Class` | The statement throws `Class`, or a subclass of it |
 | `// throws Class: fragment` | It also throws with a message containing `fragment` |
 | none | The line runs without raising anything |
 
-Variables carry from one line of an example to the next. The namespace and imports of the documenting file are replayed in front of the example, so an example spells a class the way the file around it spells it.
+Two rules decide whether an example a reader would write actually runs. State both when writing examples for a project:
 
-A single-line `@example expr` tag, and a fence whose info string is not exactly `php`, are rendered but never run. Use one of those for a snippet that must not execute, such as a class declaration shown for illustration.
+1. **Names must be fully qualified.** Evaluated code inherits no import table, so `new \App\Calculator()`, never `new Calculator()`.
+2. **A continued line must end with an operator or an opening bracket.** A multi-line call closes on the asserted line — `5) // => 15`, not a `)` on a line of its own.
+
+A tag with no code under it, and a fence whose info string is not exactly `php`, are never run. Use one of those for a snippet that must not execute.
 
 ## Running One Example
 
-Every example has an identifier — the symbol it documents, then `#` and its position in that docblock. PHPUnit filters are regular expressions and an identifier is not one, so it is quoted:
+The test case is named after the example, so PHPUnit's filter selects it. Quote the name, because a filter is a regular expression:
 
 ```bash
 vendor/bin/phpunit --testsuite doctest
-vendor/bin/phpunit --filter '/App\\Calculator\:\:add\(\)\#2/'
+vendor/bin/phpunit --filter '/Calculator\:\:add\(\) example \#1\: Adding two numbers/'
 ```
 
-Every failure prints that command, and so does the generated documentation site, so it never has to be built by hand.
+The generated documentation site prints that command for every example.
 
 ## Requiring Examples on Public API
 
@@ -154,7 +146,7 @@ The examples already run with the rest of the suite. Add a script only for runni
 }
 ```
 
-Do not add a separate CI job and do not add `@doctest` to `test`: the suite runs the examples wherever it runs, on every PHP version the matrix covers, and running them twice only doubles the time.
+Do not add a separate CI job and do not chain `@doctest` into `test`: the suite runs the examples wherever it runs, on every PHP version the matrix covers.
 
 ## Verification
 
@@ -164,7 +156,9 @@ After applying:
 vendor/bin/phpunit --testsuite doctest
 ```
 
-Confirm the run reports the expected number of test cases, then write one example, confirm it passes, break it on purpose, and confirm the failure names the example and prints the command that re-runs it.
+Confirm the run reports the expected number of test cases, then write one example, confirm it passes, break it on purpose, and confirm the failure names the example.
+
+If the suite reports no tests, the extension did not bootstrap: check the `<bootstrap>` class name, and check that the run does not pass `--no-extensions`.
 
 ## Fixing Failures
 
@@ -174,6 +168,6 @@ Deleting an example, or dropping its marker so the line becomes a bare smoke tes
 
 ## References
 
-- [Doctest Configuration](vendor/k-kinzal/php-ai-toolkit/docs/doctest.md) — Notation, identifiers, execution model, and configuration.
+- [Doctest Configuration](vendor/k-kinzal/php-ai-toolkit/docs/doctest.md) — Notation, configuration, execution model, and how the port differs from upstream.
 - [RequireExampleOnPublicApiRule](vendor/k-kinzal/php-ai-toolkit/docs/rules/RequireExampleOnPublicApiRule.md) — The rule that requires examples on declared public API.
 - [ScopeGuard Configuration](vendor/k-kinzal/php-ai-toolkit/docs/scope-guard.md) — The `@visibility` tag the rule keys off.

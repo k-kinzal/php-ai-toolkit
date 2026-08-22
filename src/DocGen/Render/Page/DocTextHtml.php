@@ -45,7 +45,7 @@ final class DocTextHtml
     /**
      * Renders deprecation notice, summary, and description.
      *
-     * @param string $symbol the doctest symbol the docblock documents, empty when unknown
+     * @param string $symbol the unqualified target name doctest names the examples after, empty when unknown
      */
     public function render(RenderKit $services, ?DocBlock $docBlock, TypeRenderContext $context, string $symbol = ''): string
     {
@@ -91,7 +91,7 @@ final class DocTextHtml
 
             $fenceNumber++;
 
-            return $example->figure($services, null, $code, true, sprintf('%s#%d', $symbol, $indexBase + $fenceNumber));
+            return $example->figure($services, null, $code, true, $example->exampleName($symbol, null, $indexBase + $fenceNumber - 1));
         };
     }
 

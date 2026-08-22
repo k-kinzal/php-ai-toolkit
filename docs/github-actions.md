@@ -54,10 +54,12 @@ formatting, PHPStan, LocGuard, TreeGuard, ScopeGuard, and Deptrac. See
 
 ## Parallel Test Job
 
-The `tests` matrix also covers the documented examples. Doctest is a set of
-PHPUnit test cases rather than a separate command, so `phpunit.xml.dist` carries
-a `doctest` test suite next to `unit` and both run wherever the suite runs — on
-every supported PHP minor, with no job of its own. See
+The `tests` matrix also covers the documented examples. Doctest is a PHPUnit
+extension plus a test suite rather than a separate command, so `phpunit.xml.dist`
+carries a `doctest` suite next to `unit` and both run wherever the suite runs —
+on every supported PHP minor, with no job of its own. The mutation job passes
+`--testsuite unit` alongside `--no-extensions`, because switching extensions off
+is what leaves the doctest suite with nothing to scan. See
 [Doctest Configuration](doctest.md).
 
 `composer test` runs the suite under ParaTest, and the `tests` matrix does not:

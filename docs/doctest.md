@@ -13,7 +13,7 @@ because the example is executed, it cannot quietly stop being true.
  * Adds two numbers.
  *
  * @example Adding two numbers
- *     (new Calculator())->add(1, 2) // => 3
+ *     (new \App\Calculator())->add(1, 2) // => 3
  */
 public function add(int $left, int $right): int
 {
@@ -21,125 +21,77 @@ public function add(int $left, int $right): int
 }
 ```
 
-It is a PHPUnit test case, not a command of its own. A project already has a test runner, a reporter,
-and a CI job that reports through it; a documented example that disagrees with the code is a failing
-test, so it is reported as one:
-
-```
-1) Tests\Doctest\DocumentedExampleTest::testDocblockExample
-   "Calculator::add() example #1: Adding two numbers [App\Calculator::add()#1]"
-
-Documented example App\Calculator::add()#1 does not hold.
-line 1: The statement did not produce the documented value.
-  code: (new Calculator())->add(1, 2)
-  expected: 3
-  actual: 4
-
-Re-run this example on its own with:
-vendor/bin/phpunit --filter '/App\\Calculator\:\:add\(\)\#1/'
-```
-
-The notation is the one [k-kinzal/doctest-php](https://github.com/k-kinzal/doctest-php) established,
-so examples written for that extension run here unchanged.
+This is a port of [k-kinzal/doctest-php](https://github.com/k-kinzal/doctest-php) into the toolkit:
+same notation, same extension-and-suite mechanism, same class structure under
+`PhpAiToolkit\Doctest`. It is a PHPUnit extension plus a test suite, so a documented example that
+disagrees with the code is reported as a failing test by whatever reporter the project already runs.
 
 ## Setup
 
-Declare one test class. The defaults scan `src` under the directory PHPUnit runs from, so most
-projects configure nothing:
-
-```php
-namespace Tests\Doctest;
-
-use PhpAiToolkit\PhpUnit\Doctest\DoctestTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
-use PHPUnit\Framework\Attributes\Medium;
-
-/**
- * Runs the examples this package documents its public API with.
- */
-#[CoversNothing]
-#[Medium]
-final class DocumentedExampleTest extends DoctestTestCase
-{
-}
-```
-
-Give it a test suite in `phpunit.xml` so it can be run on its own as well as with everything else:
+Register the extension and point a test suite at the shipped suite file:
 
 ```xml
-<testsuites>
-    <testsuite name="unit">
-        <directory>tests/Unit</directory>
-    </testsuite>
-    <testsuite name="doctest">
-        <directory>tests/Doctest</directory>
-    </testsuite>
-</testsuites>
+<phpunit>
+    <testsuites>
+        <testsuite name="unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="doctest">
+            <file>vendor/k-kinzal/php-ai-toolkit/DoctestSuite.php</file>
+        </testsuite>
+    </testsuites>
+
+    <extensions>
+        <bootstrap class="PhpAiToolkit\Doctest\DoctestExtension">
+            <parameter name="directories" value="src"/>
+        </bootstrap>
+    </extensions>
+</phpunit>
 ```
 
-Each example becomes one test case named `<symbol> example #<n>: <description> [<identifier>]`.
+That is the whole setup: no test file to write. Each example becomes one test case named
+`<target> example #<n>: <description>`.
 
-On PHPUnit 9, extend `PhpAiToolkit\PhpUnit\Doctest\Legacy\LegacyDoctestTestCase` instead: it binds
-the same data provider through a doc-comment annotation, which is how PHPUnit 9 reads metadata and
-how PHPUnit 12 no longer does.
+| Parameter | Meaning |
+|-----------|---------|
+| `directories` | Comma-separated list of directories to scan |
+| `files` | Comma-separated list of individual files to scan |
+| `exclude` | Comma-separated fnmatch patterns to leave unscanned |
+| `bootstrap` | A file to include once before the first example runs |
+| `enabled` | `false` switches doctest off without removing the configuration |
 
-## Configuration
+Relative paths resolve against the directory holding `phpunit.xml`.
 
-Doctest is configured where the rest of the suite is configured — in the test class:
+### Without the extension
 
-| Method | Default | Meaning |
-|--------|---------|---------|
-| `doctestRoot()` | `getcwd()` | The directory the scanned paths and the bootstrap are relative to. |
-| `doctestPaths()` | `['src']` | Files and directories scanned for documented examples. |
-| `doctestExcludes()` | `[]` | fnmatch globs of root-relative paths to skip, for generated sources. |
-| `doctestBootstrap()` | `null` | A file to include once before the first example runs. |
+The extension is where the suite gets what to scan, so a run started with `--no-extensions` finds no
+examples and PHPUnit reports the suite as empty. Restrict such runs to the other suites —
+`--no-extensions --testsuite unit`. Mutation testing is the usual case; this repository's
+`infection.json5` does exactly that.
+
+### On PHPUnit 9
+
+PHPUnit 9 has no extension API and reads test metadata from doc-comments. Extend
+`PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner` there and state the configuration in the
+class instead:
 
 ```php
-final class DocumentedExampleTest extends DoctestTestCase
+final class DoctestSuiteTest extends LegacyDoctestRunner
 {
-    #[Override]
-    public static function doctestPaths(): array
+    public static function configure(): Configuration
     {
-        return ['src', 'lib'];
-    }
-
-    #[Override]
-    public static function doctestExcludes(): array
-    {
-        return ['src/Generated/*'];
+        return new Configuration(directories: [__DIR__ . '/../src']);
     }
 }
 ```
 
-Leave `doctestBootstrap()` alone unless the project has code an autoloader cannot resolve: PHPUnit
-has already loaded the Composer autoloader by the time the examples run.
-
-## Example Identifiers
-
-Every example has an identifier: the symbol it documents, then `#` and its one-based position within
-that symbol's docblock.
-
-```
-App\Calculator#1                 the first example on the class
-App\Calculator::add()#2          the second example on the method
-App\helpers()#1                  the first example on a function
-```
-
-The identifier is what makes a single example runnable on its own. PHPUnit filters are regular
-expressions and an identifier is not one, so it is quoted before it is handed over:
-
-```bash
-vendor/bin/phpunit --filter '/App\\Calculator\:\:add\(\)\#2/'
-```
-
-Every failure prints that command, and so does the generated documentation site, so the string never
-has to be built by hand. A filter without metacharacters needs no quoting: `--filter 'Calculator'`
-runs every example of that class.
+`PhpAiToolkit\Doctest\TestCase\DoctestRunner` is the same class for PHPUnit 10 and later; extend it
+directly when a project wants to state its configuration in PHP rather than in `phpunit.xml`.
 
 ## Where Examples Are Written
 
-An example is read from a docblock on a file, a class-like, a method, or a function. Two notations
-are recognized, in this order:
+An example is read from a docblock on a file, a class, a method, or a function. Two notations are
+recognized, and at-example blocks are numbered before fences:
 
 ### `@example` blocks
 
@@ -148,102 +100,118 @@ The tag takes an optional description, and the indented lines under it are the e
 ```php
 /**
  * @example Adding across several lines
- *     $calculator = new Calculator();
+ *     $calculator = new \App\Calculator();
  *     $calculator->add(
  *         10,
- *         5
- *     ) // => 15
+ *         5) // => 15
  */
 ```
 
-The block ends at the next `@tag` line. A tag whose only content is on the tag line itself —
-`@example $calculator->add($left, $right)` — documents a shape rather than a program: it is rendered
-on the documentation site and never executed.
+The block ends at the next `@tag` line. A tag with nothing under it — `@example $calc->add($a, $b)` —
+carries a description and no code, so nothing is extracted and nothing runs.
 
 ### Fenced `php` blocks
 
 ````php
 /**
  * ```php
- * (new Calculator())->add(5, 3) // => 8
+ * (new \App\Calculator())->add(5, 3) // => 8
  * ```
  */
 ````
 
 Only a fence whose info string is exactly `php` is executed. A fence marked anything else — say
-` ```php-ignore ` — is rendered as ordinary code and never run, which is how an illustrative snippet
-that must not execute is written.
+` ```php-ignore ` — is never run, which is how an illustrative snippet is written.
 
 ## Assertions
 
 | Notation | Checks |
 |----------|--------|
 | `expr // => value` | The value of `expr` is identical (`===`) to the value of `value` |
-| `stmt // Output: text` | What `stmt` printed equals `text`, ignoring one trailing newline |
+| `stmt // Output: text` | What `stmt` printed equals `text`, ignoring trailing whitespace |
 | `expr // throws Class` | `expr` throws `Class`, or a subclass of it |
 | `expr // throws Class: fragment` | It also throws with a message containing `fragment` |
 | no marker | The line runs without raising anything |
 
-A marker is only read from a real trailing comment. A `//` inside a string literal stays part of the
-code:
-
-```php
-/**
- * @example Leaving a slash pair alone
- *     $url = "https://example.com";
- *     echo $url; // Output: https://example.com
- */
-```
-
-The expected value of `// =>` is PHP source, evaluated in the same namespace as the example, so
-`// => Suit::Hearts` and `// => ['a' => 1]` both work.
-
 Every statement of an example runs even after one fails, so a single test reports every broken
-assertion in the example rather than only the first.
+assertion in that example.
 
 ## What an Example Can See
 
-Each example runs on its own, with variables carried from one line to the next inside that example
-and nothing carried between examples.
+Variables carry from one line of an example to the next, and nothing carries between examples.
 
-The namespace and the `use` statements of the documenting file are replayed in front of the example,
-so an example spells a class the way the file around it spells it:
+Example code is evaluated on its own, and evaluated code inherits no import table, so **names must be
+written fully qualified** — `new \App\Calculator()`, not `new Calculator()`. This is the behaviour of
+the upstream project and the reason its own examples are written that way.
+
+The file an example documents is included before the example runs, together with the configured
+bootstrap file.
+
+### Line continuation
+
+A line is joined to the next when it ends with an operator or an opening bracket — `,` `.` `(` `[`
+`{` `=>` `->` `::` `&&` `||` `?`. A multi-line call therefore has to close on the asserted line:
 
 ```php
-namespace App\Billing;
-
-use App\Money;
-
 /**
- * @example Naming types the way the file names them
- *     $ledger = new Ledger();
- *     $ledger->balance() // => new Money(0)
+ * @example Adding across several lines
+ *     $calculator->add(
+ *         10,
+ *         5) // => 15
  */
 ```
 
-The code an example documents is made available before the example runs. A class an autoloader can
-already resolve is never included by hand, so autoloaded projects are never at risk of a redeclared
-class; only files that define nothing loadable — a plain function file, for instance — are read.
+Writing the closing parenthesis on a line of its own splits the statement, because the line before it
+ends with a value rather than with an operator.
 
-A warning, notice, or deprecation raised while an example runs fails that example. An example that
-only works by emitting a diagnostic is documenting something the caller will hit too. Diagnostics
-silenced with `@` are left alone.
+## Running One Example
+
+The test case is named after the example, so PHPUnit's own filter selects one. A filter is a regular
+expression and an example name is not, so quote it:
+
+```bash
+vendor/bin/phpunit --testsuite doctest
+vendor/bin/phpunit --filter '/Calculator\:\:add\(\) example \#1\: Adding two numbers/'
+```
+
+The generated documentation site prints that command for every example, so it never has to be built
+by hand.
 
 ## Requiring Examples on Public API
 
 [RequireExampleOnPublicApiRule](rules/RequireExampleOnPublicApiRule.md) reports a declaration that
-carries `@visibility public` without a runnable example. The tag is how a project states that a
-symbol is part of the surface other code is invited to use; the rule makes that statement carry an
-executable demonstration. Untagged declarations are not reported, so the requirement is adopted one
-boundary at a time.
+carries `@visibility public` without an example the extractor picks up. The tag is how a project
+states that a symbol is part of the surface other code is invited to use; the rule makes that
+statement carry an executable demonstration. Untagged declarations are not reported, so the
+requirement is adopted one boundary at a time.
 
 ## Relationship to DocGen
 
-`doc-gen` renders the same examples PHPUnit runs. Each `@example` block and each ` ```php ` fence
+`doc-gen` renders the same examples the suite runs. Each `@example` block and each ` ```php ` fence
 becomes a figure carrying a **doctest** badge, its assertions styled by kind, a **copy** button for
-the example itself, and a **run** button that copies the `vendor/bin/phpunit --filter` command for
-that one example. Display-only examples are rendered without the badge. See
-[DocGen Configuration](doc-gen.md).
+the example itself, and a **run** button carrying the `vendor/bin/phpunit --filter` command for that
+one example. See [DocGen Configuration](doc-gen.md).
+
+## Differences From the Upstream Project
+
+The port carries the upstream structure — `Assertion`, `Configuration`, `Executor`, `Parser`,
+`Scanner`, `TestCase`, and `DoctestExtension` — with these adaptations, each forced by what this
+package supports:
+
+- **PHP 8.0 floor.** The `AssertionType` and `TargetType` enums become the `AssertionKind` and
+  `TargetKind` classes, carrying the same string values. Enums are PHP 8.1, and the toolkit forbids a
+  `Type` suffix on class-likes. Promoted `readonly` properties become private properties read through
+  `__get`, which keeps `$example->code` working.
+- **nikic/php-parser 4 and 5.** The parser is created through a reflection bridge, because
+  `createForNewestSupportedVersion()` only exists in major 5, and the AST walk is written out instead
+  of using a `NodeVisitor`, whose signature differs between the two majors.
+- **PHPUnit 9 through 13.** `DoctestRunner` binds its provider with an attribute and
+  `LegacyDoctestRunner` with an annotation.
+- **`DoctestCase` is not carried over.** Upstream ships it, uses it nowhere, and it cannot work here:
+  it names itself through the PHPUnit constructor, which PHPUnit 10 made `final`.
+- **File-level docblocks after `declare`.** The upstream pattern only matches a docblock directly
+  after the opening tag; PHP-CS-Fixer puts `declare(strict_types=1)` there, so the pattern also skips
+  a declare statement.
 
 ## How to Fix a Failure
 
@@ -258,5 +226,5 @@ removes the check instead of satisfying it.
 
 ## CI
 
-The examples run wherever the test suite runs, on every supported PHP minor, because they are part
-of it. No job of their own is needed. See [GitHub Actions Configuration](github-actions.md).
+The examples run wherever the test suite runs, on every supported PHP minor, because they are one of
+its suites. No job of their own is needed. See [GitHub Actions Configuration](github-actions.md).

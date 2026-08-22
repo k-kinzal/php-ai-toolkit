@@ -9,6 +9,9 @@ use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
 use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
 use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
+use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine;
+use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
+use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
 use PhpAiToolkit\DocGen\Analysis\ProjectModel;
 use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
@@ -61,9 +64,6 @@ use PhpAiToolkit\DocGen\Render\SocialCard;
 use PhpAiToolkit\DocGen\Render\SocialMeta;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PhpAiToolkit\DocGen\Render\TypeRenderContext;
-use PhpAiToolkit\Doctest\Analysis\AssertionLine;
-use PhpAiToolkit\Doctest\Analysis\AssertionScanner;
-use PhpAiToolkit\Doctest\Analysis\DoctestExtractor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -243,12 +243,12 @@ PHP);
         $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [], [], $table, $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
         $services = (new SiteRenderer())->services($model);
 
-        $renderer = (new DocTextHtml())->fenceRenderer($services, 'Demo\\Widget', 2);
+        $renderer = (new DocTextHtml())->fenceRenderer($services, 'Widget', 2);
 
         $html = $renderer('render();', 'php');
 
         self::assertNotNull($html);
-        self::assertStringContainsString('data-copy="vendor/bin/phpunit --filter &#039;/Demo\\\\Widget\#3/&#039;"', $html);
+        self::assertStringContainsString('data-copy="vendor/bin/phpunit --filter &#039;/Widget example \#3/&#039;"', $html);
         self::assertStringContainsString('chip-doctest', $html);
     }
 
@@ -263,7 +263,7 @@ PHP);
         $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [], [], $table, $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
         $services = (new SiteRenderer())->services($model);
 
-        $renderer = (new DocTextHtml())->fenceRenderer($services, 'Demo\\Widget', 0);
+        $renderer = (new DocTextHtml())->fenceRenderer($services, 'Widget', 0);
 
         self::assertStringStartsWith('<pre class="code-block doctest">', (string) $renderer('render();', ''));
         self::assertNull($renderer('SELECT 1', 'sql'));

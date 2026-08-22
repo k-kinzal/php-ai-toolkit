@@ -13,9 +13,11 @@
     <testsuites>
         <testsuite name="unit">
             <directory>tests/Unit</directory>
+            <exclude>tests/Unit/Doctest/DoctestExtensionTest.php</exclude>
+            <exclude>tests/Unit/Doctest/Configuration/ConfigurationLoaderTest.php</exclude>
         </testsuite>
         <testsuite name="doctest">
-            <directory>tests/Doctest/Legacy</directory>
+            <directory>tests/Doctest</directory>
         </testsuite>
     </testsuites>
     <listeners>

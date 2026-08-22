@@ -42,7 +42,7 @@ the locks are refreshed.
 
 - **Language**: PHP 8.0+
 - **Static Analysis**: PHPStan (level max + strict-rules + checked-exception analysis for self-analysis)
-- **Documentation Tests**: Doctest, running the examples written in PHPDoc blocks as PHPUnit test cases — a `doctest` test suite next to `unit`, so they run wherever the suite runs; `composer doctest` runs only them
+- **Documentation Tests**: Doctest, a port of k-kinzal/doctest-php that runs the examples written in PHPDoc blocks as PHPUnit test cases — a PHPUnit extension plus a `doctest` test suite next to `unit`, so they run wherever the suite runs; `composer doctest` runs only them
 - **Testing**: PHPUnit with ParaTest for parallel execution — `composer test:unit` runs the suite in one process on every supported PHP minor, `composer test` splits it across processes once
 - **Mutation Testing**: Infection, run only by the `mutation` job in CI — there are deliberately no `infection` Composer scripts, so `composer infection` reporting "Command infection is not defined" is the design, not a break
 - **Code Style**: PHP-CS-Fixer
@@ -70,7 +70,7 @@ Every tool named here is wired into `composer lint` or a CI job and has a page u
 - [LocGuard Configuration](docs/loc-guard.md): LocGuard source metric limits and reporting
 - [TreeGuard Configuration](docs/tree-guard.md): TreeGuard directory and file structure constraints
 - [ScopeGuard Configuration](docs/scope-guard.md): Namespace visibility scopes declared with `@visibility`
-- [Doctest Configuration](docs/doctest.md): Running the examples written in PHPDoc blocks as PHPUnit tests, example identifiers, and the assertion notation
+- [Doctest Configuration](docs/doctest.md): Running the examples written in PHPDoc blocks as PHPUnit tests, the assertion notation, and how the port differs from upstream
 - [DocGen Configuration](docs/doc-gen.md): DocGen documentation scope, caching, and generated site behavior
 - [Deptrac Configuration](docs/deptrac.md): Architectural layer discovery and dependency rules
 - [GitHub Actions Configuration](docs/github-actions.md): CI coverage, quality gates, and workflow hardening

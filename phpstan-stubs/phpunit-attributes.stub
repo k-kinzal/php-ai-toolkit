@@ -20,6 +20,14 @@ final class CoversNothing
     }
 }
 
+#[\Attribute(\Attribute::TARGET_METHOD)]
+final class Test
+{
+    public function __construct()
+    {
+    }
+}
+
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 final class DataProvider
 {
@@ -28,7 +36,7 @@ final class DataProvider
     }
 }
 
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 final class Large
 {
     public function __construct()
@@ -36,7 +44,7 @@ final class Large
     }
 }
 
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 final class Medium
 {
     public function __construct()
@@ -68,7 +76,7 @@ final class RunInSeparateProcess
     }
 }
 
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 final class Small
 {
     public function __construct()

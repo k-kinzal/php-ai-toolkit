@@ -47,10 +47,10 @@ final class Ledger  // ERROR: Add an @example block to class Ledger: it is decla
 - Classes in restricted test namespaces (`Tests\Unit`, `Tests\Integration` by default).
 - Anonymous classes.
 
-### Display-only examples do not satisfy the rule
+### A tag with no code does not satisfy the rule
 
-A single-line `@example` tag documents a shape rather than a program. Doctest renders it and never
-runs it, so it does not count:
+A single-line `@example` tag carries a description and no code, so the doctest extractor yields
+nothing for it:
 
 ```php
 /**
@@ -112,7 +112,7 @@ final class Ledger
      * @visibility public
      *
      * @example Rejecting an entry with no amount
-     *     (new Ledger())->append(new Entry('rent', 0)) // throws InvalidArgumentException: amount
+     *     (new \App\Billing\Ledger())->append(new \App\Billing\Entry('rent', 0)) // throws InvalidArgumentException: amount
      */
     public function append(Entry $entry): void
     {
@@ -130,7 +130,7 @@ Or a fenced `php` block:
  * @visibility public
  *
  * ```php
- * Ledger::VERSION // => '1.0'
+ * \App\Billing\Ledger::VERSION // => '1.0'
  * ```
  */
 public const VERSION = '1.0';
@@ -138,7 +138,8 @@ public const VERSION = '1.0';
 
 Assert on the example with `// => value`, `// Output: text`, or `// throws ExceptionClass`. A line
 without a marker still runs, and still fails the example if it raises — which is a real check, just a
-weaker one. See [Doctest Configuration](../doctest.md) for the full notation.
+weaker one. Write class names fully qualified: evaluated example code inherits no import table. See
+[Doctest Configuration](../doctest.md) for the full notation.
 
 ### Not fixes
 
@@ -152,7 +153,7 @@ weaker one. See [Doctest Configuration](../doctest.md) for the full notation.
 
 ## Relationship to doctest
 
-The rule requires exactly what the doctest test suite executes: extraction is delegated to the same
-grammar, so a block this rule accepts is a block that becomes a PHPUnit test case, and an example the
-runner would skip does not satisfy the rule. Once the rule is green, running the suite is what keeps
-it honest.
+The rule requires exactly what the doctest suite executes: extraction is delegated to the ported
+ExampleExtractor, so a block this rule accepts is a block that becomes a PHPUnit test case, and a tag
+the extractor skips does not satisfy the rule. Once the rule is green, running the suite keeps it
+honest.

@@ -10,8 +10,8 @@ use InvalidArgumentException;
  * Adds and divides numbers.
  *
  * @example Building a calculator
- *     $calculator = new Calculator();
- *     $calculator instanceof Calculator // => true
+ *     $calculator = new \Tests\Fixture\Doctest\Project\Calculator();
+ *     $calculator instanceof \Tests\Fixture\Doctest\Project\Calculator // => true
  */
 final class Calculator
 {
@@ -19,14 +19,13 @@ final class Calculator
      * Adds two numbers.
      *
      * @example Adding two numbers
-     *     (new Calculator())->add(1, 2) // => 3
+     *     (new \Tests\Fixture\Doctest\Project\Calculator())->add(1, 2) // => 3
      *
      * @example Adding across several lines
-     *     $calculator = new Calculator();
+     *     $calculator = new \Tests\Fixture\Doctest\Project\Calculator();
      *     $calculator->add(
      *         10,
-     *         5
-     *     ) // => 15
+     *         5) // => 15
      */
     public function add(int $left, int $right): int
     {
@@ -37,7 +36,7 @@ final class Calculator
      * Divides two numbers.
      *
      * @example Refusing to divide by zero
-     *     (new Calculator())->divide(1, 0) // throws InvalidArgumentException: divide by zero
+     *     (new \Tests\Fixture\Doctest\Project\Calculator())->divide(1, 0) // throws InvalidArgumentException: divide by zero
      */
     public function divide(int $left, int $right): int
     {
@@ -52,7 +51,7 @@ final class Calculator
      * Prints the sum.
      *
      * @example Printing a sum
-     *     (new Calculator())->printSum(2, 3); // Output: 5
+     *     (new \Tests\Fixture\Doctest\Project\Calculator())->printSum(2, 3); // Output: 5
      */
     public function printSum(int $left, int $right): void
     {

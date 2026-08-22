@@ -36,7 +36,8 @@ parameters:
             # reported failure, because a throwable that escaped here would end
             # the run at the first broken example instead of reporting it
             # alongside the others.
-            - 'src/Doctest/Execution/StatementRunner.php'
+            - 'src/Doctest/Executor/ExampleExecutor.php'
+            - 'src/Doctest/Executor/ExpressionEvaluator.php'
     ignoreErrors:
         # PHPStan's ErrorFormatterTestCase and related internal classes
         # (ErrorsConsoleStyle, SymfonyOutput, SymfonyStyle) are not marked

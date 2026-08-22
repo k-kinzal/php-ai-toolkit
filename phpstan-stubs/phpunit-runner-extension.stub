@@ -57,4 +57,12 @@ final class ParameterCollection
     public static function fromArray(array $parameters): self
     {
     }
+
+    public function has(string $name): bool
+    {
+    }
+
+    public function get(string $name): string
+    {
+    }
 }

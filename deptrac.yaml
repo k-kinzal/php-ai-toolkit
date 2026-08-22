@@ -49,18 +49,13 @@ deptrac:
       collectors:
         - type: directory
           value: src/PhpUnit/TestReporter/.*
-    - name: PhpUnitDoctest
-      collectors:
-        - type: directory
-          value: src/PhpUnit/Doctest/.*
     - name: Shared
       collectors:
         - type: directory
           value: src/Shared/.*
   ruleset:
     Installer: ~
-    DocGen:
-      - Doctest
+    DocGen: ~
     Doctest: ~
     LocGuard: ~
     TreeGuard: ~
@@ -74,6 +69,4 @@ deptrac:
       - Shared
     PhpUnitTestReporter:
       - Shared
-    PhpUnitDoctest:
-      - Doctest
     Shared: ~

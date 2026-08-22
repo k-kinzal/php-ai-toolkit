@@ -7,9 +7,9 @@ namespace PhpAiToolkit\DocGen\Render\Page;
 use function implode;
 
 use PhpAiToolkit\DocGen\Render\RenderKit;
-use PhpAiToolkit\Doctest\Analysis\PhpUnitFilter;
 
 use function preg_match;
+use function preg_quote;
 use function sprintf;
 
 /**
@@ -20,17 +20,6 @@ use function sprintf;
  */
 final class ExampleHtml
 {
-    /** @readonly */
-    private PhpUnitFilter $filter;
-
-    /**
-     * Creates the example renderer from the PHPUnit filter builder.
-     */
-    public function __construct(?PhpUnitFilter $filter = null)
-    {
-        $this->filter = $filter ?? new PhpUnitFilter();
-    }
-
     /**
      * Renders one captioned example figure.
      *
@@ -78,11 +67,30 @@ final class ExampleHtml
     }
 
     /**
-     * Returns the command that runs one example on its own.
+     * Returns the name doctest gives one example.
+     *
+     * The spelling has to match Doctest\Parser\Example::getName(), because
+     * that is the name PHPUnit gives the data set, and the run command below
+     * filters on it.
+     *
+     * @param string $shortName the unqualified target name, such as Ledger::append()
+     * @param string|null $description the description written on the at-example tag
+     * @param int $index zero-based index of the example within its docblock
      */
-    public function runCommand(string $id): string
+    public function exampleName(string $shortName, ?string $description, int $index): string
     {
-        return $this->filter->command($id);
+        return sprintf('%s example #%d%s', $shortName, $index + 1, $description !== null ? ': ' . $description : '');
+    }
+
+    /**
+     * Returns the command that runs one example on its own.
+     *
+     * A PHPUnit filter is a regular expression and an example name is not one,
+     * so the name is quoted before it is handed over.
+     */
+    public function runCommand(string $exampleName): string
+    {
+        return sprintf("vendor/bin/phpunit --filter '/%s/'", preg_quote($exampleName, '/'));
     }
 
     /**

@@ -216,9 +216,9 @@ final class ClassLikePage
         $html .= '</div></div>' . "\n";
         $html .= $this->banner->render($services, $services->diff->classLikeStatus($classLike->fqcn));
         $html .= $this->signature->classSignature($services, $classLike, $context);
-        $html .= $this->docText->render($services, $classLike->docBlock, $context, $classLike->fqcn);
+        $html .= $this->docText->render($services, $classLike->docBlock, $context, $classLike->shortName);
         $html .= $this->aliasSection($services, $pagePath, $classLike, $context);
-        $html .= $this->member->tagExamples($services, $classLike->docBlock, $classLike->fqcn);
+        $html .= $this->member->tagExamples($services, $classLike->docBlock, $classLike->shortName);
         $html .= $this->memberSections($services, $pagePath, $classLike, $context);
         $html .= $this->privateSurface->section($services, $classLike, $context);
         $html .= $this->testCaseSection($services, $pagePath, $classLike);

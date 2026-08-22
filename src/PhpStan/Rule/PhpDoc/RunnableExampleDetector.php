@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\Doctest\Analysis\DoctestExtractor;
+use PhpAiToolkit\Doctest\Parser\ExampleExtractor;
+use PhpAiToolkit\Doctest\Scanner\Target;
+use PhpAiToolkit\Doctest\Scanner\TargetKind;
 
 /**
  * Detects whether a PHPDoc block documents an example doctest can run.
@@ -16,21 +18,21 @@ use PhpAiToolkit\Doctest\Analysis\DoctestExtractor;
 final class RunnableExampleDetector
 {
     /** @readonly */
-    private DoctestExtractor $extractor;
+    private ExampleExtractor $extractor;
 
     /**
      * Creates a detector from the doctest example grammar.
      */
-    public function __construct(?DoctestExtractor $extractor = null)
+    public function __construct(?ExampleExtractor $extractor = null)
     {
-        $this->extractor = $extractor ?? new DoctestExtractor();
+        $this->extractor = $extractor ?? new ExampleExtractor();
     }
 
     /**
      * Reports whether the PHPDoc block carries at least one runnable example.
      *
-     * A single-line at-example tag documents a shape rather than a program, so
-     * it is rendered and never run, and it does not satisfy the requirement.
+     * A single-line at-example tag carries a description and no code, so the
+     * extractor yields nothing for it and it does not satisfy the requirement.
      */
     public function hasRunnableExample(?string $docComment): bool
     {
@@ -38,10 +40,9 @@ final class RunnableExampleDetector
             return false;
         }
 
-        foreach ($this->extractor->extract($docComment) as $example) {
-            if ($example->source !== 'tag-inline') {
-                return true;
-            }
+        $target = new Target(TargetKind::CLASS_LIKE, '', $docComment, '', 0);
+        foreach ($this->extractor->extract($target) as $example) {
+            return true;
         }
 
         return false;

@@ -187,8 +187,8 @@ type declarations), with call sites listed per method and test references labele
 notation: `@example` blocks and ` ```php ` fences are rendered as runnable doctest figures with their `// =>`,
 `// Output:`, and `// throws` assertions styled; single-line `@example expr // note` tags render as display-only
 examples. A runnable figure carries a **doctest** badge titled with the example's identifier, a **copy** button for
-the example itself, and a **run** button that copies the `vendor/bin/phpunit --filter` command executing that one example on
-its own. See [Doctest Configuration](doctest.md).
+the example itself, and a **run** button carrying the `vendor/bin/phpunit --filter` command for that one example. See
+[Doctest Configuration](doctest.md).
 
 ## Navigation
 

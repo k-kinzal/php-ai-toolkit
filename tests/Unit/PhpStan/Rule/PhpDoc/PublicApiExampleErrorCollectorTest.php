@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\Doctest\Analysis\DocExample;
-use PhpAiToolkit\Doctest\Analysis\DoctestExtractor;
+use PhpAiToolkit\DocGen\Analysis\Doctest\DocExample;
+use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\MissingExampleErrorBuilder;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApiExampleErrorCollector;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApiVisibilityDetector;

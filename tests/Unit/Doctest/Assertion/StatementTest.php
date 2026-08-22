@@ -32,4 +32,9 @@ final class StatementTest extends TestCase
         self::assertFalse($statement->hasAssertion());
         self::assertNull($statement->assertion);
     }
+
+    public function testReadingAPropertyItDoesNotDeclareYieldsNull(): void
+    {
+        self::assertNull((new Statement('1 + 2', null, 5))->statements);
+    }
 }

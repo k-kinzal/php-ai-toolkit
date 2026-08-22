@@ -54,4 +54,9 @@ final class AssertionResultTest extends TestCase
         self::assertSame(stdClass::class, $result->formatValue(new stdClass()));
         self::assertStringContainsString('0 => 1', $result->formatValue([1]));
     }
+
+    public function testReadingAPropertyItDoesNotDeclareYieldsNull(): void
+    {
+        self::assertNull((new AssertionResult(true, '', new Statement('x', null, 1)))->detailedMessage);
+    }
 }

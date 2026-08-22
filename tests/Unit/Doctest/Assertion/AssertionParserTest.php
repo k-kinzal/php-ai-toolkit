@@ -90,9 +90,61 @@ final class AssertionParserTest extends TestCase
         self::assertNull($parsed->statements[0]->assertion);
     }
 
+    public function testParseTrimsEachLineBeforeReadingIt(): void
+    {
+        $target = new Target(TargetKind::CLASS_LIKE, '/a.php', '/** */', 'Calculator', 1);
+
+        $parsed = (new AssertionParser())->parse(new Example("   \n    \$sum = 1;", $target, 1, 0));
+
+        self::assertCount(1, $parsed->statements);
+        self::assertSame('$sum = 1;', $parsed->statements[0]->code);
+    }
+
+    public function testParseKeepsBufferingWhileTheLinesStayIncomplete(): void
+    {
+        $target = new Target(TargetKind::CLASS_LIKE, '/a.php', '/** */', 'Calculator', 1);
+
+        $parsed = (new AssertionParser())->parse(new Example("add(\n1,\n2)", $target, 1, 0));
+
+        self::assertCount(1, $parsed->statements);
+        self::assertSame('add( 1, 2)', $parsed->statements[0]->code);
+    }
+
     public function testParseLineReturnsNullWhenTheLineCarriesNoAssertion(): void
     {
         self::assertNull((new AssertionParser())->parseLine('$sum = 1;', '', 1));
+    }
+
+    public function testParseLineTrimsTheCodeAndTheValueOfAReturnAssertion(): void
+    {
+        self::assertEquals(
+            new Statement('pre add(1, 2)', new Assertion(AssertionKind::RETURN_VALUE, '3'), 7),
+            (new AssertionParser())->parseLine('  add(1, 2)   // =>   3  ', 'pre ', 7),
+        );
+    }
+
+    public function testParseLineTakesTheOutputOfAnOutputAssertionAsWritten(): void
+    {
+        self::assertEquals(
+            new Statement('pre echo $x;', new Assertion(AssertionKind::OUTPUT, 'hi'), 4),
+            (new AssertionParser())->parseLine('  echo $x; // Output: hi', 'pre ', 4),
+        );
+    }
+
+    public function testParseLineTrimsTheMessageOfAnExceptionAssertion(): void
+    {
+        self::assertEquals(
+            new Statement('pre boom();', new Assertion(AssertionKind::EXCEPTION, 'RuntimeException', 'bad'), 2),
+            (new AssertionParser())->parseLine('  boom(); // throws RuntimeException:   bad  ', 'pre ', 2),
+        );
+    }
+
+    public function testParseLineLeavesTheMessageOutOfAnExceptionAssertionThatNamesNone(): void
+    {
+        self::assertEquals(
+            new Statement('boom();', new Assertion(AssertionKind::EXCEPTION, 'RuntimeException'), 1),
+            (new AssertionParser())->parseLine('boom(); // throws RuntimeException', '', 1),
+        );
     }
 
     public function testIsIncompleteLineDetectsADanglingOperator(): void

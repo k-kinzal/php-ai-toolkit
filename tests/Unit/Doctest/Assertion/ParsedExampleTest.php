@@ -30,4 +30,11 @@ final class ParsedExampleTest extends TestCase
         self::assertSame($example, $parsed->example);
         self::assertSame([$statement], $parsed->statements);
     }
+
+    public function testReadingAPropertyItDoesNotDeclareYieldsNull(): void
+    {
+        $target = new Target(TargetKind::CLASS_LIKE, '/a.php', '/** */', 'Calculator', 4);
+
+        self::assertNull((new ParsedExample(new Example('1 + 1', $target, 6, 0), []))->code);
+    }
 }

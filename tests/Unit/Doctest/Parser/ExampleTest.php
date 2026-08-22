@@ -50,4 +50,11 @@ final class ExampleTest extends TestCase
         self::assertSame(0, $example->index);
         self::assertSame('Building one', $example->description);
     }
+
+    public function testReadingAPropertyItDoesNotDeclareYieldsNull(): void
+    {
+        $target = new Target(TargetKind::CLASS_LIKE, '/a.php', '/** */', 'Calculator', 5);
+
+        self::assertNull((new Example('new Calculator()', $target, 8, 0))->name);
+    }
 }

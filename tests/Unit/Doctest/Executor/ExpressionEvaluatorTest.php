@@ -72,6 +72,7 @@ final class ExpressionEvaluatorTest extends TestCase
         $evaluator = new ExpressionEvaluator();
 
         self::assertFalse($evaluator->codeNeedsReturn('$sum = 1;'));
+        self::assertFalse($evaluator->codeNeedsReturn('   echo $sum;'));
         self::assertFalse($evaluator->codeNeedsReturn('echo $sum;'));
         self::assertFalse($evaluator->codeNeedsReturn('foreach ($xs as $x) {}'));
         self::assertFalse($evaluator->codeNeedsReturn('$widget->render();'));

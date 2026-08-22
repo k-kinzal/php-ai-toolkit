@@ -28,4 +28,9 @@ final class AssertionTest extends TestCase
         self::assertSame(AssertionKind::EXCEPTION, $assertion->type);
         self::assertSame('Value must be positive', $assertion->exceptionMessage);
     }
+
+    public function testReadingAPropertyItDoesNotDeclareYieldsNull(): void
+    {
+        self::assertNull((new Assertion(AssertionKind::RETURN_VALUE, '42'))->expected);
+    }
 }

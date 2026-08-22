@@ -42,4 +42,14 @@ final class TargetTest extends TestCase
         self::assertSame('Calculator', $target->className);
         self::assertTrue($target->isStatic);
     }
+
+    public function testReadingAPropertyItDoesNotDeclareYieldsNull(): void
+    {
+        self::assertNull((new Target(TargetKind::FILE, '/a.php', '/** */', 'a.php', 1))->shortName);
+    }
+
+    public function testADeclarationIsNotStaticUnlessItIsSaidToBe(): void
+    {
+        self::assertFalse((new Target(TargetKind::METHOD, '/a.php', '/** */', 'add', 10, 'App', 'Calculator'))->isStatic);
+    }
 }

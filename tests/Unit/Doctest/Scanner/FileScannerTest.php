@@ -19,7 +19,7 @@ final class FileScannerTest extends TestCase
     public function testScanWalksConfiguredDirectoriesAndSkipsMissingOnes(): void
     {
         $root = (string) realpath(__DIR__ . '/../../../Fixture/Doctest/project/src');
-        $config = new Configuration(directories: [$root, '/does/not/exist']);
+        $config = new Configuration(directories: ['/does/not/exist', $root]);
 
         $files = iterator_to_array((new FileScanner($config))->scan(), false);
 
@@ -39,7 +39,7 @@ final class FileScannerTest extends TestCase
     public function testScanYieldsConfiguredFilesAndSkipsMissingOnes(): void
     {
         $file = (string) realpath(__DIR__ . '/../../../Fixture/Doctest/project/src/Calculator.php');
-        $config = new Configuration(files: [$file, '/does/not/exist.php']);
+        $config = new Configuration(files: ['/does/not/exist.php', $file]);
 
         self::assertSame([$file], iterator_to_array((new FileScanner($config))->scan(), false));
     }

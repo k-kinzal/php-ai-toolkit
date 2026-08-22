@@ -85,13 +85,14 @@ final class ExampleExecutorTest extends TestCase
         $bootstrap = sys_get_temp_dir() . '/doctest-executor-bootstrap.php';
         file_put_contents($bootstrap, "<?php\n\$GLOBALS['doctestExecutorBootstrapCount'] = (\$GLOBALS['doctestExecutorBootstrapCount'] ?? 0) + 1;\n");
         $target = sys_get_temp_dir() . '/doctest-executor-target.php';
-        file_put_contents($target, "<?php\n");
+        file_put_contents($target, "<?php\n\$GLOBALS['doctestExecutorTargetCount'] = (\$GLOBALS['doctestExecutorTargetCount'] ?? 0) + 1;\n");
         $executor = new ExampleExecutor($bootstrap);
 
         $executor->loadSources($target);
         $executor->loadSources($target);
 
         self::assertSame(1, $GLOBALS['doctestExecutorBootstrapCount']);
+        self::assertSame(1, $GLOBALS['doctestExecutorTargetCount']);
     }
 
     public function testExecuteStatementReportsAnUnexpectedException(): void
@@ -154,6 +155,15 @@ final class ExampleExecutorTest extends TestCase
         self::assertStringContainsString('but got RuntimeException', $wrongClass->message);
         self::assertFalse($wrongMessage->passed);
         self::assertStringContainsString('does not contain "overflow"', $wrongMessage->message);
+    }
+
+    public function testCheckThrownExceptionAcceptsAnExceptionTheExampleDocumentsNoMessageFor(): void
+    {
+        $executor = new ExampleExecutor();
+        $statement = new Statement('boom()', null, 1);
+
+        self::assertTrue($executor->checkThrownException($statement, new RuntimeException('bad'), 'RuntimeException', null)->passed);
+        self::assertTrue($executor->checkThrownException($statement, new RuntimeException('bad'), 'RuntimeException', 'bad')->passed);
     }
 
     public function testCheckAssertionRoutesOutputAndReturnValueAssertions(): void

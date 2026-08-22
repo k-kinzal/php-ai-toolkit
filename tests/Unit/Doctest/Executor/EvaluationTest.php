@@ -35,4 +35,9 @@ final class EvaluationTest extends TestCase
     {
         self::assertTrue((new Evaluation())->completed());
     }
+
+    public function testReadingAPropertyItDoesNotDeclareYieldsNull(): void
+    {
+        self::assertNull((new Evaluation(42))->completed);
+    }
 }

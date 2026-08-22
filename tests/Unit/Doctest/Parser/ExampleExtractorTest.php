@@ -61,11 +61,38 @@ final class ExampleExtractorTest extends TestCase
         self::assertSame(1, $index);
     }
 
+    public function testExtractExampleTagsNumbersTheLineTheCodeStartsOn(): void
+    {
+        $cleaned = "Summary.\n\n@example Adding\nadd(1, 2)";
+        $target = new Target(TargetKind::CLASS_LIKE, '/a.php', '/** */', 'Widget', 4);
+        $index = 0;
+
+        $examples = iterator_to_array((new ExampleExtractor())->extractExampleTags($cleaned, $target, $index), false);
+
+        self::assertCount(1, $examples);
+        self::assertSame(7, $examples[0]->lineNumber);
+        self::assertSame(0, $examples[0]->index);
+    }
+
+    public function testExtractExampleTagsSkipsAnEmptyTagAndKeepsReadingTheNext(): void
+    {
+        $cleaned = "@example Nothing here\n@example Adding\nadd(1, 2)";
+        $target = new Target(TargetKind::CLASS_LIKE, '/a.php', '/** */', 'Widget', 4);
+        $index = 0;
+
+        $examples = iterator_to_array((new ExampleExtractor())->extractExampleTags($cleaned, $target, $index), false);
+
+        self::assertCount(1, $examples);
+        self::assertSame('add(1, 2)', $examples[0]->code);
+        self::assertSame('Adding', $examples[0]->description);
+    }
+
     public function testTagDescriptionReadsTheTextOnTheTagLine(): void
     {
         $extractor = new ExampleExtractor();
 
         self::assertSame('Adding numbers', $extractor->tagDescription("@example Adding numbers\nadd(1, 2)"));
+        self::assertSame('Adding numbers', $extractor->tagDescription("@example    Adding numbers   \nadd(1, 2)"));
         self::assertNull($extractor->tagDescription("@example\nadd(1, 2)"));
     }
 
@@ -75,6 +102,26 @@ final class ExampleExtractorTest extends TestCase
 
         self::assertSame('add(1, 2)', $extractor->tagCode("@example Adding\n\nadd(1, 2)\n\n"));
         self::assertSame('', $extractor->tagCode('@example Adding'));
+    }
+
+    public function testTagCodeStopsAtATagWhateverItIsIndentedBy(): void
+    {
+        self::assertSame('add(1, 2)', (new ExampleExtractor())->tagCode("@example Adding\nadd(1, 2)\n   @param int \$left\nnotCode()"));
+    }
+
+    public function testTagCodeKeepsALineThatOnlyMentionsATag(): void
+    {
+        self::assertSame("echo '@param';\ndone()", (new ExampleExtractor())->tagCode("@example Adding\necho '@param';\ndone()"));
+    }
+
+    public function testTagCodeDropsLeadingBlankLinesAndKeepsTheOnesBetweenStatements(): void
+    {
+        self::assertSame("first()\n\nsecond()", (new ExampleExtractor())->tagCode("@example Adding\n\nfirst()\n\nsecond()"));
+    }
+
+    public function testTagCodeStripsTheIndentationOfTheFirstLineOnly(): void
+    {
+        self::assertSame("first()\n    second()", (new ExampleExtractor())->tagCode("@example Adding\n    first()\n    second()"));
     }
 
     public function testExtractCodeFencesMatchesOnlyBarePhpFences(): void
@@ -87,10 +134,17 @@ final class ExampleExtractorTest extends TestCase
 
         self::assertCount(1, $examples);
         self::assertSame('echo 1;', $examples[0]->code);
+        self::assertSame(5, $examples[0]->lineNumber);
+        self::assertSame(0, $examples[0]->index);
+        self::assertSame(1, $index);
     }
 
     public function testCalculateLineNumberCountsTheNewlinesBeforeTheOffset(): void
     {
-        self::assertSame(13, (new ExampleExtractor())->calculateLineNumber("a\nb\nc", 4, 10));
+        $extractor = new ExampleExtractor();
+
+        self::assertSame(13, $extractor->calculateLineNumber("a\nb\nc", 4, 10));
+        self::assertSame(12, $extractor->calculateLineNumber("a\nb\nc", 2, 10));
+        self::assertSame(13, $extractor->calculateLineNumber("\na\nb", 3, 10));
     }
 }

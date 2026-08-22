@@ -57,6 +57,7 @@ final class SourceScannerTest extends TestCase
         self::assertCount(2, $targets);
         self::assertSame(TargetKind::FILE, $targets[0]->type);
         self::assertSame("/**\n * File docs.\n */", $targets[0]->docblock);
+        self::assertSame(1, $targets[0]->line);
         self::assertSame(TargetKind::FUNCTION, $targets[1]->type);
         self::assertSame('doctestScannerHelper', $targets[1]->name);
     }
@@ -99,12 +100,80 @@ final class SourceScannerTest extends TestCase
         self::assertTrue($targets[1]->isStatic);
     }
 
+    public function testTraverseAstPassesOverAnythingThatIsNotANode(): void
+    {
+        $scanner = new SourceScanner();
+        $documented = new \PhpParser\Node\Stmt\Function_('helper', [], ['comments' => [new \PhpParser\Comment\Doc('/** Docs. */')]]);
+
+        $targets = iterator_to_array($scanner->traverseAst(['not a node', null, $documented], '/a.php', 'Probe', null), false);
+
+        self::assertCount(1, $targets);
+        self::assertSame('Probe\helper()', $targets[0]->getFullyQualifiedName());
+    }
+
+    public function testTargetsOfReportsAClassOnceAndDoesNotWalkItTwice(): void
+    {
+        $scanner = new SourceScanner();
+        $method = new \PhpParser\Node\Stmt\ClassMethod('run', [], ['comments' => [new \PhpParser\Comment\Doc('/** Method docs. */')]]);
+        $class = new \PhpParser\Node\Stmt\Class_('Widget', ['stmts' => [$method]], ['comments' => [new \PhpParser\Comment\Doc('/** Class docs. */')]]);
+
+        $targets = iterator_to_array($scanner->targetsOf($class, '/a.php', 'Probe', 'Outer'), false);
+
+        self::assertSame(
+            ['Probe\Widget', 'Probe\Widget::run()'],
+            array_map(static fn (Target $target): string => $target->getFullyQualifiedName(), $targets),
+        );
+    }
+
+    public function testTargetsOfDoesNotDescendIntoTheBodyOfAMethod(): void
+    {
+        $scanner = new SourceScanner();
+        $nested = new \PhpParser\Node\Stmt\Function_('nested', [], ['comments' => [new \PhpParser\Comment\Doc('/** Nested docs. */')]]);
+        $method = new \PhpParser\Node\Stmt\ClassMethod('run', ['stmts' => [$nested]], ['comments' => [new \PhpParser\Comment\Doc('/** Method docs. */')]]);
+
+        $targets = iterator_to_array($scanner->targetsOf($method, '/a.php', 'Probe', 'Widget'), false);
+
+        self::assertSame(
+            ['Probe\Widget::run()'],
+            array_map(static fn (Target $target): string => $target->getFullyQualifiedName(), $targets),
+        );
+    }
+
+    public function testTargetsOfDoesNotDescendIntoTheBodyOfAFunction(): void
+    {
+        $scanner = new SourceScanner();
+        $nested = new \PhpParser\Node\Stmt\Function_('nested', [], ['comments' => [new \PhpParser\Comment\Doc('/** Nested docs. */')]]);
+        $function = new \PhpParser\Node\Stmt\Function_('outer', ['stmts' => [$nested]], ['comments' => [new \PhpParser\Comment\Doc('/** Outer docs. */')]]);
+
+        $targets = iterator_to_array($scanner->targetsOf($function, '/a.php', 'Probe', null), false);
+
+        self::assertSame(
+            ['Probe\outer()'],
+            array_map(static fn (Target $target): string => $target->getFullyQualifiedName(), $targets),
+        );
+    }
+
+    public function testClassTargetsReportsOnlyTheMembersOfAnUndocumentedClass(): void
+    {
+        $scanner = new SourceScanner();
+        $method = new \PhpParser\Node\Stmt\ClassMethod('run', [], ['comments' => [new \PhpParser\Comment\Doc('/** Method docs. */')]]);
+        $class = new \PhpParser\Node\Stmt\Class_('Widget', ['stmts' => [$method]]);
+
+        $targets = iterator_to_array($scanner->classTargets($class, '/a.php', 'Probe'), false);
+
+        self::assertSame(
+            ['Probe\Widget::run()'],
+            array_map(static fn (Target $target): string => $target->getFullyQualifiedName(), $targets),
+        );
+    }
+
     public function testMethodTargetIsSkippedOutsideAClass(): void
     {
         $scanner = new SourceScanner();
-        $method = new \PhpParser\Node\Stmt\ClassMethod('run');
+        $method = new \PhpParser\Node\Stmt\ClassMethod('run', [], ['comments' => [new \PhpParser\Comment\Doc('/** Docs. */')]]);
 
         self::assertSame([], iterator_to_array($scanner->methodTarget($method, '/a.php', null, null), false));
+        self::assertSame([], iterator_to_array($scanner->methodTarget(new \PhpParser\Node\Stmt\ClassMethod('run'), '/a.php', null, 'Widget'), false));
     }
 
     public function testFunctionTargetIsSkippedWithoutADocblock(): void
@@ -115,11 +184,14 @@ final class SourceScannerTest extends TestCase
         self::assertSame([], iterator_to_array($scanner->functionTarget($function, '/a.php', null), false));
     }
 
-    public function testChildrenReturnsTheSubNodesOfANode(): void
+    public function testChildrenReturnsTheSubNodesOfANodeAndNothingElse(): void
     {
         $scanner = new SourceScanner();
         $class = new \PhpParser\Node\Stmt\Class_('Widget', ['stmts' => [new \PhpParser\Node\Stmt\ClassMethod('run')]]);
 
-        self::assertNotSame([], $scanner->children($class));
+        $children = $scanner->children($class);
+
+        self::assertNotSame([], $children);
+        self::assertContainsOnlyInstancesOf(\PhpParser\Node::class, $children);
     }
 }

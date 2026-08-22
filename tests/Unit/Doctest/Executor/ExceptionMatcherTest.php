@@ -10,6 +10,7 @@ use PhpAiToolkit\Doctest\Executor\ExceptionMatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Tests\Fixture\Doctest\RuntimeException as CollidingRuntimeException;
 
 #[CoversClass(ExceptionMatcher::class)]
 final class ExceptionMatcherTest extends TestCase
@@ -34,5 +35,10 @@ final class ExceptionMatcherTest extends TestCase
     public function testMatchesRejectsAnUnrelatedResolvableClass(): void
     {
         self::assertFalse((new ExceptionMatcher())->matches(new InvalidArgumentException('bad'), RuntimeException::class));
+    }
+
+    public function testMatchesRejectsAShortNameThatResolvesToAnotherClass(): void
+    {
+        self::assertFalse((new ExceptionMatcher())->matches(new CollidingRuntimeException('bad'), 'RuntimeException'));
     }
 }

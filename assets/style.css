@@ -697,6 +697,7 @@ svg.graph .edge-tip.edge-suggest { fill: var(--kind-enum); }
 }
 
 .notice-deprecated { border-left-color: var(--state-danger); background: var(--state-danger-tint); }
+.notice-visibility { border-left-color: var(--state-warn); background: var(--state-warn-tint); }
 
 .notice-warn { border-left-color: var(--state-warn); }
 

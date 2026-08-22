@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>src/PhpStan/Rule/ControlFlow/RequireExhaustiveDispatchErrorBuilder.php — k-kinzal/php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/src/src/PhpStan/Rule/ControlFlow/RequireExhaustiveDispatchErrorBuilder.php.html">
+<meta name="description" content="The source of src/PhpStan/Rule/ControlFlow/RequireExhaustiveDispatchErrorBuilder.php.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="k-kinzal/php-ai-toolkit">
+<meta property="og:title" content="src/PhpStan/Rule/ControlFlow/RequireExhaustiveDispatchErrorBuilder.php — k-kinzal/php-ai-toolkit">
+<meta property="og:description" content="The source of src/PhpStan/Rule/ControlFlow/RequireExhaustiveDispatchErrorBuilder.php.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/src/src/PhpStan/Rule/ControlFlow/RequireExhaustiveDispatchErrorBuilder.php.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="k-kinzal/php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.theme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<nav class="sidebar" id="sidebar"><div class="sb-head"><a class="sb-site" href="../../../../../index.html">k-kinzal/php-ai-toolkit</a></div><nav class="sb-block"><div class="sb-title">Packages</div><ul class="sb-list"><li><a href="../../../../../k-kinzal/php-ai-toolkit/index.html">k-kinzal/php-ai-toolkit</a></li></ul></nav></nav>
+<div class="page">
+<header class="topbar">
+<button class="nav-toggle" id="nav-toggle" title="Toggle navigation">☰</button>
+<nav class="crumbs"><a href="../../../../../index.html">src</a><span class="crumb-sep">::</span><span class="crumb-current">src/PhpStan/Rule/ControlFlow/RequireExhaustiveDispatchErrorBuilder.php</span></nav>
+<div class="topbar-tools">
+<input type="search" id="search" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<a class="repo-link" href="https://github.com/k-kinzal/php-ai-toolkit" title="Repository: https://github.com/k-kinzal/php-ai-toolkit" rel="noreferrer">github.com</a>
+<button id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content">
+<div class="symbol-head"><h1 class="source-title">src/PhpStan/Rule/ControlFlow/RequireExhaustiveDispatchErrorBuilder.php</h1></div>
+<pre class="source"><code><span class="src-line" id="L1"><a class="ln" href="#L1">1</a>&lt;?php</span>
+<span class="src-line" id="L2"><a class="ln" href="#L2">2</a></span>
+<span class="src-line" id="L3"><a class="ln" href="#L3">3</a><span class="tok-kw">declare</span>(<span class="tok-id">strict_types</span>=<span class="tok-num">1</span>);</span>
+<span class="src-line" id="L4"><a class="ln" href="#L4">4</a></span>
+<span class="src-line" id="L5"><a class="ln" href="#L5">5</a><span class="tok-kw">namespace</span> <span class="tok-id">PhpAiToolkit\PhpStan\Rule\ControlFlow</span>;</span>
+<span class="src-line" id="L6"><a class="ln" href="#L6">6</a></span>
+<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">implode</span>;</span>
+<span class="src-line" id="L8"><a class="ln" href="#L8">8</a></span>
+<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">PHPStan\Rules\IdentifierRuleError</span>;</span>
+<span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">PHPStan\Rules\RuleErrorBuilder</span>;</span>
+<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">PHPStan\Type\Type</span>;</span>
+<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">PHPStan\Type\VerbosityLevel</span>;</span>
+<span class="src-line" id="L13"><a class="ln" href="#L13">13</a></span>
+<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">sprintf</span>;</span>
+<span class="src-line" id="L15"><a class="ln" href="#L15">15</a></span>
+<span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-com">/**</span></span>
+<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-com"> * Builds the PHPStan errors for a dispatch that leaves values of a closed type out.</span></span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-com"> *</span></span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-com"> * The wording lives here rather than in the rules that report it. A subject whose type</span></span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-com"> * carries its own values and a subject reached through a class name are the same mistake</span></span>
+<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-com"> * seen from two sides, and they have to read the same way. The file is named only by the</span></span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-com"> * rule that reports after the analysis, where the error no longer sits in a file PHPStan</span></span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-com"> * is reading.</span></span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-com"> */</span></span>
+<span class="src-line" id="L25"><a class="ln" href="#L25">25</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">RequireExhaustiveDispatchErrorBuilder</span></span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>{</span>
+<span class="src-line" id="L27"><a class="ln" href="#L27">27</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L28"><a class="ln" href="#L28">28</a><span class="tok-com">     * The identifier of a dispatch that names no branch for a value and has no catch-all either.</span></span>
+<span class="src-line" id="L29"><a class="ln" href="#L29">29</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>    <span class="tok-kw">public</span> <span class="tok-kw">const</span> <span class="tok-id">UNHANDLED_IDENTIFIER</span> = <span class="tok-str">&#039;customRules.exhaustiveDispatch&#039;</span>;</span>
+<span class="src-line" id="L31"><a class="ln" href="#L31">31</a></span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a><span class="tok-com">     * The identifier of a dispatch whose catch-all branch absorbs values of a closed type.</span></span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>    <span class="tok-kw">public</span> <span class="tok-kw">const</span> <span class="tok-id">CATCH_ALL_IDENTIFIER</span> = <span class="tok-str">&#039;customRules.exhaustiveDispatchDefault&#039;</span>;</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a></span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a><span class="tok-com">     * Builds the error for a match expression whose &quot;default&quot; arm absorbs closed values.</span></span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a><span class="tok-com">     * @param list&lt;string&gt; $labels</span></span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">buildMatchCatchAll</span>(<span class="tok-kw">array</span> <span class="tok-var">$labels</span>, ?<span class="tok-id">string</span> <span class="tok-var">$file</span>, <span class="tok-id">int</span> <span class="tok-var">$line</span>): <span class="tok-id">IdentifierRuleError</span></span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>    {</span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">build</span>(</span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>            <span class="tok-id">sprintf</span>(</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>                <span class="tok-str">&#039;Match expression sends %s to its &quot;default&quot; arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking &quot;default&quot;.&#039;</span>,</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>                <span class="tok-var">$this</span>-&gt;<span class="tok-id">describe</span>(<span class="tok-var">$labels</span>),</span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>            ),</span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>            <span class="tok-id">self</span>::<span class="tok-id">CATCH_ALL_IDENTIFIER</span>,</span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>            <span class="tok-var">$file</span>,</span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>            <span class="tok-var">$line</span>,</span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>        );</span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>    }</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a></span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a><span class="tok-com">     * Builds the error for a switch statement whose &quot;default&quot; case absorbs closed values.</span></span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a><span class="tok-com">     * @param list&lt;string&gt; $labels</span></span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">buildSwitchCatchAll</span>(<span class="tok-kw">array</span> <span class="tok-var">$labels</span>, ?<span class="tok-id">string</span> <span class="tok-var">$file</span>, <span class="tok-id">int</span> <span class="tok-var">$line</span>): <span class="tok-id">IdentifierRuleError</span></span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>    {</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">build</span>(</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>            <span class="tok-id">sprintf</span>(</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>                <span class="tok-str">&#039;Switch statement sends %s to its &quot;default&quot; case. Write a &quot;case&quot; for each of those values so that a value added to the closed type is reported here instead of silently taking &quot;default&quot;.&#039;</span>,</span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>                <span class="tok-var">$this</span>-&gt;<span class="tok-id">describe</span>(<span class="tok-var">$labels</span>),</span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>            ),</span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>            <span class="tok-id">self</span>::<span class="tok-id">CATCH_ALL_IDENTIFIER</span>,</span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>            <span class="tok-var">$file</span>,</span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>            <span class="tok-var">$line</span>,</span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>        );</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>    }</span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a></span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a><span class="tok-com">     * Builds the error for a switch statement that handles neither the values nor a &quot;default&quot;.</span></span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a><span class="tok-com">     * @param list&lt;string&gt; $labels</span></span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">buildSwitchUnhandled</span>(<span class="tok-kw">array</span> <span class="tok-var">$labels</span>, ?<span class="tok-id">string</span> <span class="tok-var">$file</span>, <span class="tok-id">int</span> <span class="tok-var">$line</span>): <span class="tok-id">IdentifierRuleError</span></span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>    {</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">build</span>(</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>            <span class="tok-id">sprintf</span>(</span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>                <span class="tok-str">&#039;Switch statement does not handle %s. Write a &quot;case&quot; for each of those values: the subject holds a closed set of values and this switch has no &quot;default&quot;, so those fall through it unhandled.&#039;</span>,</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>                <span class="tok-var">$this</span>-&gt;<span class="tok-id">describe</span>(<span class="tok-var">$labels</span>),</span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>            ),</span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>            <span class="tok-id">self</span>::<span class="tok-id">UNHANDLED_IDENTIFIER</span>,</span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>            <span class="tok-var">$file</span>,</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>            <span class="tok-var">$line</span>,</span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>        );</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>    }</span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a></span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a><span class="tok-com">     * Builds one error, naming the file when the reporting rule is not reading one.</span></span>
+<span class="src-line" id="L93"><a class="ln" href="#L93">93</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">build</span>(<span class="tok-id">string</span> <span class="tok-var">$message</span>, <span class="tok-id">string</span> <span class="tok-var">$identifier</span>, ?<span class="tok-id">string</span> <span class="tok-var">$file</span>, <span class="tok-id">int</span> <span class="tok-var">$line</span>): <span class="tok-id">IdentifierRuleError</span></span>
+<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>    {</span>
+<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>        <span class="tok-var">$builder</span> = <span class="tok-id">RuleErrorBuilder</span>::<span class="tok-id">message</span>(<span class="tok-var">$message</span>)</span>
+<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>            -&gt;<span class="tok-id">identifier</span>(<span class="tok-var">$identifier</span>)</span>
+<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>            -&gt;<span class="tok-id">line</span>(<span class="tok-var">$line</span>);</span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a></span>
+<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>        <span class="tok-kw">if</span> (<span class="tok-var">$file</span> !== <span class="tok-id">null</span>) {</span>
+<span class="src-line" id="L101"><a class="ln" href="#L101">101</a>            <span class="tok-var">$builder</span> = <span class="tok-var">$builder</span>-&gt;<span class="tok-id">file</span>(<span class="tok-var">$file</span>);</span>
+<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>        }</span>
+<span class="src-line" id="L103"><a class="ln" href="#L103">103</a></span>
+<span class="src-line" id="L104"><a class="ln" href="#L104">104</a>        <span class="tok-kw">return</span> <span class="tok-var">$builder</span>-&gt;<span class="tok-id">build</span>();</span>
+<span class="src-line" id="L105"><a class="ln" href="#L105">105</a>    }</span>
+<span class="src-line" id="L106"><a class="ln" href="#L106">106</a></span>
+<span class="src-line" id="L107"><a class="ln" href="#L107">107</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L108"><a class="ln" href="#L108">108</a><span class="tok-com">     * Returns how each value a dispatch left out is written in a message.</span></span>
+<span class="src-line" id="L109"><a class="ln" href="#L109">109</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L110"><a class="ln" href="#L110">110</a><span class="tok-com">     * @param list&lt;Type&gt; $types</span></span>
+<span class="src-line" id="L111"><a class="ln" href="#L111">111</a><span class="tok-com">     * @return list&lt;string&gt;</span></span>
+<span class="src-line" id="L112"><a class="ln" href="#L112">112</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L113"><a class="ln" href="#L113">113</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">labels</span>(<span class="tok-kw">array</span> <span class="tok-var">$types</span>): <span class="tok-kw">array</span></span>
+<span class="src-line" id="L114"><a class="ln" href="#L114">114</a>    {</span>
+<span class="src-line" id="L115"><a class="ln" href="#L115">115</a>        <span class="tok-var">$labels</span> = [];</span>
+<span class="src-line" id="L116"><a class="ln" href="#L116">116</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$types</span> <span class="tok-kw">as</span> <span class="tok-var">$type</span>) {</span>
+<span class="src-line" id="L117"><a class="ln" href="#L117">117</a>            <span class="tok-var">$labels</span>[] = <span class="tok-var">$type</span>-&gt;<span class="tok-id">describe</span>(<span class="tok-id">VerbosityLevel</span>::<span class="tok-id">value</span>());</span>
+<span class="src-line" id="L118"><a class="ln" href="#L118">118</a>        }</span>
+<span class="src-line" id="L119"><a class="ln" href="#L119">119</a></span>
+<span class="src-line" id="L120"><a class="ln" href="#L120">120</a>        <span class="tok-kw">return</span> <span class="tok-var">$labels</span>;</span>
+<span class="src-line" id="L121"><a class="ln" href="#L121">121</a>    }</span>
+<span class="src-line" id="L122"><a class="ln" href="#L122">122</a></span>
+<span class="src-line" id="L123"><a class="ln" href="#L123">123</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L124"><a class="ln" href="#L124">124</a><span class="tok-com">     * Returns the reported values as a comma separated list.</span></span>
+<span class="src-line" id="L125"><a class="ln" href="#L125">125</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L126"><a class="ln" href="#L126">126</a><span class="tok-com">     * @param list&lt;string&gt; $labels</span></span>
+<span class="src-line" id="L127"><a class="ln" href="#L127">127</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L128"><a class="ln" href="#L128">128</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">describe</span>(<span class="tok-kw">array</span> <span class="tok-var">$labels</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L129"><a class="ln" href="#L129">129</a>    {</span>
+<span class="src-line" id="L130"><a class="ln" href="#L130">130</a>        <span class="tok-kw">return</span> <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, <span class="tok-var">$labels</span>);</span>
+<span class="src-line" id="L131"><a class="ln" href="#L131">131</a>    }</span>
+<span class="src-line" id="L132"><a class="ln" href="#L132">132</a>}</span>
+<span class="src-line" id="L133"><a class="ln" href="#L133">133</a></span>
+</code></pre>
+</main>
+<footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>
+</div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

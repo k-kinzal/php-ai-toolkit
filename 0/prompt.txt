@@ -1,0 +1,1 @@
+https://github.com/k-kinzal/doctest-php の機能をphp-ai-toolkitに取り込んでください。またPHPStanのカスタムルールとして公開インターフェース、つまり@visiblityでpublicになっているものはExampleを記載することを強制してください。またPHPUnitでの実行、DocGenでのExampleの表示＆単独実行、skillsで別PJへの反映を可能にしてください。この作業はmainブランチで行い、終わったらコミットしてください。もしあなたが権限的に編集できないファイルがあればCodex CLIに依頼してください。

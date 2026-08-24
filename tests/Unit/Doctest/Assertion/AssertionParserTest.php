@@ -13,6 +13,7 @@ use PhpAiToolkit\Doctest\Parser\Example;
 use PhpAiToolkit\Doctest\Scanner\Target;
 use PhpAiToolkit\Doctest\Scanner\TargetKind;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
@@ -154,5 +155,34 @@ final class AssertionParserTest extends TestCase
         self::assertTrue($parser->isIncompleteLine('add('));
         self::assertTrue($parser->isIncompleteLine('$value ->'));
         self::assertFalse($parser->isIncompleteLine('$sum = 1;'));
+    }
+
+    /**
+     * @dataProvider providerContinuedLine
+     */
+    #[DataProvider('providerContinuedLine')]
+    public function testIsIncompleteLineDetectsEveryContinuationItKnows(string $line): void
+    {
+        self::assertTrue((new AssertionParser())->isIncompleteLine($line));
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function providerContinuedLine(): array
+    {
+        return [
+            'concatenation' => ['$greeting = "Hello" .'],
+            'argument list' => ['add(1,'],
+            'call' => ['add('],
+            'array literal' => ['$values = ['],
+            'block' => ['if (true) {'],
+            'array key' => ['$values = [1 =>'],
+            'object access' => ['$widget ->'],
+            'static access' => ['Widget::'],
+            'conjunction' => ['$left &&'],
+            'disjunction' => ['$left ||'],
+            'ternary' => ['$left ?'],
+        ];
     }
 }

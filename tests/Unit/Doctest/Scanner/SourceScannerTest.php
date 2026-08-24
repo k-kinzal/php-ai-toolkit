@@ -47,6 +47,14 @@ final class SourceScannerTest extends TestCase
         self::assertSame([], iterator_to_array((new SourceScanner())->scanFile($broken), false));
     }
 
+    public function testScanFileYieldsNothingForAFileThatOnlyPartlyParses(): void
+    {
+        $path = sys_get_temp_dir() . '/doctest-source-scanner-partly-broken.php';
+        file_put_contents($path, "<?php\nnamespace Probe;\n/** Class docs. */\nclass Widget {}\n\$first = 1\n\$second = 2;\n");
+
+        self::assertSame([], iterator_to_array((new SourceScanner())->scanFile($path), false));
+    }
+
     public function testScanFileReportsAFileLevelDocblockFirst(): void
     {
         $path = sys_get_temp_dir() . '/doctest-source-scanner-file-doc.php';
@@ -165,6 +173,14 @@ final class SourceScannerTest extends TestCase
             ['Probe\Widget::run()'],
             array_map(static fn (Target $target): string => $target->getFullyQualifiedName(), $targets),
         );
+    }
+
+    public function testClassTargetsSkipsADocumentedAnonymousClass(): void
+    {
+        $scanner = new SourceScanner();
+        $class = new \PhpParser\Node\Stmt\Class_(null, [], ['comments' => [new \PhpParser\Comment\Doc('/** Class docs. */')]]);
+
+        self::assertSame([], iterator_to_array($scanner->classTargets($class, '/a.php', 'Probe'), false));
     }
 
     public function testMethodTargetIsSkippedOutsideAClass(): void

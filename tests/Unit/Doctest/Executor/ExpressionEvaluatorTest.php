@@ -8,6 +8,7 @@ use PhpAiToolkit\Doctest\Executor\Evaluation;
 use PhpAiToolkit\Doctest\Executor\ExecutionContext;
 use PhpAiToolkit\Doctest\Executor\ExpressionEvaluator;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
@@ -94,5 +95,39 @@ final class ExpressionEvaluatorTest extends TestCase
         (new ExpressionEvaluator())->evaluate('$kept = 2;', $context);
 
         self::assertSame(['given' => 1, 'kept' => 2], $context->getVariables());
+    }
+
+    /**
+     * @dataProvider providerSideEffectCode
+     */
+    #[DataProvider('providerSideEffectCode')]
+    public function testCodeNeedsReturnIsFalseForEverySideEffectItKnows(string $code): void
+    {
+        self::assertFalse((new ExpressionEvaluator())->codeNeedsReturn($code));
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function providerSideEffectCode(): array
+    {
+        return [
+            'assignment' => ['$sum = 1 + 2'],
+            'indented assignment' => ['    $sum = 1 + 2'],
+            'echo' => ['echo $sum'],
+            'print' => ['print $sum'],
+            'return' => ['return $sum'],
+            'if' => ['if ($sum > 0) { report($sum); }'],
+            'for' => ['for ($index = 0; $index < 3; $index++) { report($index); }'],
+            'foreach' => ['foreach ($values as $value) { report($value); }'],
+            'while' => ['while ($sum > 0) { report($sum); }'],
+            'do' => ['do { report($sum); } while ($sum > 0)'],
+            'switch' => ['switch ($sum) { default: report($sum); }'],
+            'try' => ['try { report($sum); } catch (\RuntimeException $error) {}'],
+            'throw' => ['throw new \RuntimeException("bad")'],
+            'class declaration' => ['class Widget {}'],
+            'function declaration' => ['function widget() {}'],
+            'bare construction' => ['new Widget;'],
+        ];
     }
 }

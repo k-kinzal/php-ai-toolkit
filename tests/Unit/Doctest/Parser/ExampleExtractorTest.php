@@ -126,7 +126,7 @@ final class ExampleExtractorTest extends TestCase
 
     public function testExtractCodeFencesMatchesOnlyBarePhpFences(): void
     {
-        $cleaned = "```php\necho 1;\n```\n\n```php ignore\necho 2;\n```\n\n```\necho 3;\n```";
+        $cleaned = "```php\necho 1;\n```\n\n```php ignore\necho 2;\n```\n\n```\necho 3;\n```\n\n```php\n```";
         $target = new Target(TargetKind::CLASS_LIKE, '/a.php', '/** */', 'Widget', 4);
         $index = 0;
 

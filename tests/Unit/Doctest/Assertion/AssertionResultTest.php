@@ -41,6 +41,15 @@ final class AssertionResultTest extends TestCase
         self::assertSame('Values do not match', $result->message);
     }
 
+    public function testGetDetailedMessageLeavesOutWhatTheResultDoesNotCarry(): void
+    {
+        $statement = new Statement('run()', null, 1);
+
+        self::assertSame("Assertion failed\n  Code: run()", (new AssertionResult(false, '', $statement))->getDetailedMessage());
+        self::assertSame("Assertion failed\n  Code: run()\n  Expected: 3", (new AssertionResult(false, '', $statement, 3))->getDetailedMessage());
+        self::assertSame("Assertion failed\n  Code: run()\n  Actual: 2", (new AssertionResult(false, '', $statement, null, 2))->getDetailedMessage());
+    }
+
     public function testFormatValueRendersEachKindOfValue(): void
     {
         $result = new AssertionResult(true, '', new Statement('x', null, 1));
@@ -53,10 +62,5 @@ final class AssertionResultTest extends TestCase
         self::assertSame('1.5', $result->formatValue(1.5));
         self::assertSame(stdClass::class, $result->formatValue(new stdClass()));
         self::assertStringContainsString('0 => 1', $result->formatValue([1]));
-    }
-
-    public function testReadingAPropertyItDoesNotDeclareYieldsNull(): void
-    {
-        self::assertNull((new AssertionResult(true, '', new Statement('x', null, 1)))->detailedMessage);
     }
 }

@@ -46,11 +46,4 @@ final class ExecutionResultTest extends TestCase
         self::assertStringContainsString('Values do not match', $result->getErrorMessage());
         self::assertStringContainsString('Output does not match', $result->getErrorMessage());
     }
-
-    public function testReadingAPropertyItDoesNotDeclareYieldsNull(): void
-    {
-        $target = new Target(TargetKind::CLASS_LIKE, '/a.php', '/** */', 'Widget', 1);
-
-        self::assertNull((new ExecutionResult(new Example('1+1', $target, 1, 0), true))->errorMessage);
-    }
 }

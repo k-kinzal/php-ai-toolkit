@@ -198,4 +198,16 @@ final class ExampleExecutorTest extends TestCase
         self::assertTrue($executor->checkOutput($statement, "hi\n")->passed);
         self::assertFalse($executor->checkOutput($statement, 'bye')->passed);
     }
+
+    public function testEveryCheckPassesAStatementThatAssertsNothing(): void
+    {
+        $executor = new ExampleExecutor();
+        $statement = new Statement('1 + 1', null, 1);
+        $context = new ExecutionContext();
+
+        self::assertTrue($executor->executeWithExpectedException($statement, $context)->passed);
+        self::assertTrue($executor->checkAssertion($statement, 2, $context)->passed);
+        self::assertTrue($executor->checkReturnValue($statement, 2)->passed);
+        self::assertTrue($executor->checkOutput($statement, 'anything')->passed);
+    }
 }

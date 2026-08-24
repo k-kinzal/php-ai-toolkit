@@ -28,7 +28,7 @@ final class CoverageReaderTest extends TestCase
         $root = sys_get_temp_dir() . '/docgen-coverage-' . uniqid('', true);
         $dir = $root . '/coverage-xml';
         mkdir($dir . '/Sub', 0777, true);
-        file_put_contents($dir . '/index.xml', '<?xml version="1.0"?><phpunit><project source="' . $root . '/src"><tests/></project></phpunit>');
+        file_put_contents($dir . '/index.xml', '<?xml version="1.0"?><phpunit><project source="' . $root . '/src"><tests/><file name="Listed.php"><coverage><line nr="3"><covered by="Tests\IndexTest::testListed"/></line></coverage></file></project></phpunit>');
         file_put_contents($dir . '/Sub/Foo.php.xml', <<<'XML'
 <?xml version="1.0"?><phpunit><file name="Foo.php" path="/Sub"><class name="Foo"><method name="bar" start="10" end="20" crap="1" executable="5" executed="5" coverage="100"/></class><coverage><line nr="12"><covered by="Tests\FooTest::testBar"/><covered by="Tests\FooTest::testBar with data set #0"/></line></coverage></file></phpunit>
 XML);
@@ -39,6 +39,7 @@ XML);
         self::assertSame(100.0, $index->methodAt('src/Sub/Foo.php', 10, 20)?->percent);
         self::assertSame(5, $index->methodAt('src/Sub/Foo.php', 10, 20)->executable);
         self::assertSame(5, $index->methodAt('src/Sub/Foo.php', 10, 20)->executed);
+        self::assertSame([], $index->testsForRange('src/Listed.php', 1, 100));
     }
 
     public function testReadFallsBackToFullFileNamesWithoutAnIndex(): void
@@ -70,7 +71,7 @@ XML);
         $root = sys_get_temp_dir() . '/docgen-coverage-' . uniqid('', true);
         $dir = $root . '/coverage-xml';
         mkdir($dir, 0777, true);
-        file_put_contents($dir . '/index.xml', '<?xml version="1.0"?><phpunit><project source="' . $root . '/packages/app/src"><tests/></project></phpunit>');
+        file_put_contents($dir . '/index.xml', '<?xml version="1.0"?><phpunit><project source="' . $root . '/packages/app/src/"><tests/></project></phpunit>');
 
         self::assertSame('packages/app/src', (new CoverageReader())->sourcePrefix($dir, $root));
     }
@@ -98,7 +99,7 @@ XML);
         $dir = sys_get_temp_dir() . '/docgen-coverage-' . uniqid('', true);
         mkdir($dir, 0777, true);
         file_put_contents($dir . '/report.xml', <<<'XML'
-<?xml version="1.0"?><phpunit><file name="/src/Old.php"><coverage><line nr="3"><covered by="Tests\OldTest::testA"/></line></coverage></file><file name="New.php" path="/Sub"><coverage><line nr="4"><covered by="Tests\NewTest::testB"/></line></coverage></file></phpunit>
+<?xml version="1.0"?><phpunit><file><coverage><line nr="2"><covered by="Tests\UnnamedTest::testSkipped"/></line></coverage></file><file name="/src/Old.php"><coverage><line nr="3"><covered by="Tests\OldTest::testA"/></line></coverage></file><file name="New.php" path="/Sub"><coverage><line nr="4"><covered by="Tests\NewTest::testB"/></line></coverage></file></phpunit>
 XML);
 
         $index = new CoverageIndex();
@@ -138,7 +139,7 @@ XML);
         $index = new CoverageIndex();
         (new CoverageReader())->readLines($file, 'src/A.php', $index);
 
-        self::assertSame(['Tests\ATest::testX'], $index->testsForRange('src/A.php', 1, 100));
+        self::assertSame(['Tests\ATest::testX'], $index->testsForRange('src/A.php', 0, 100));
     }
 
     public function testReadMethodsSkipsMethodsWithoutAStartLine(): void
@@ -151,7 +152,7 @@ XML);
         $index = new CoverageIndex();
         (new CoverageReader())->readMethods($file, 'src/B.php', $index);
 
-        self::assertNull($index->methodAt('src/B.php', 1, 6));
+        self::assertNull($index->methodAt('src/B.php', 0, 6));
         self::assertSame(50.0, $index->methodAt('src/B.php', 7, 9)?->percent);
         self::assertSame(4, $index->methodAt('src/B.php', 7, 9)->executable);
         self::assertSame(2, $index->methodAt('src/B.php', 7, 9)->executed);

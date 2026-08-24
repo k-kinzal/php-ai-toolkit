@@ -61,4 +61,12 @@ final class FileScannerTest extends TestCase
         self::assertFalse($scanner->shouldInclude('/app/src/WidgetTest.php'));
         self::assertTrue($scanner->shouldInclude('/app/src/Widget.php'));
     }
+
+    public function testShouldIncludeHonoursAPatternThatOnlyMatchesUnanchored(): void
+    {
+        $scanner = new FileScanner(new Configuration(excludePatterns: ['/Nested/*']));
+
+        self::assertFalse($scanner->shouldInclude('/app/src/Nested/Excluded.php'));
+        self::assertTrue($scanner->shouldInclude('/app/src/Widget.php'));
+    }
 }

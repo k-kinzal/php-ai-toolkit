@@ -30,13 +30,21 @@ php -d memory_limit=1G -d xdebug.mode=coverage vendor/bin/phpunit \
   --coverage-xml build/infection-coverage/coverage-xml \
   --log-junit build/infection-coverage/junit.xml
 
-php -d memory_limit=1G vendor/bin/infection --configuration=infection.json5 \
+php -d memory_limit=4G vendor/bin/infection --configuration=infection.json5 \
   --threads=max --coverage=build/infection-coverage --skip-initial-tests
 ```
 
 That second command is the whole-tree gate. For the changed-lines gate, add
 `--git-diff-lines --git-diff-base=origin/main --ignore-msi-with-no-mutations
 --min-msi=85 --min-covered-msi=85`.
+
+Infection holds every mutant result in memory and encodes all of them into
+`build/infection/infection.json` after the score is printed, so the report writer
+needs several times the memory the run itself does. At `1G` the whole-tree gate
+died in that writer with an exhausted memory limit — after reporting the score, so
+the job failed on a report rather than on the gate. `4G` is what the whole tree
+needs today; raise it with the tree, and keep the workflow and this page on the
+same number.
 
 Exit codes:
 

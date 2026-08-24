@@ -177,6 +177,35 @@ final class ClassLikeMergerTest extends TestCase
         );
     }
 
+    public function testSingleMarksTheCasesOfAnEnumOnlyOneRevisionHas(): void
+    {
+        $classLike = (new FileSymbolCollector())->collect(
+            (new AstParser())->parse("<?php namespace Demo; enum Status: string { case Active = 'active'; }", 'src/Status.php'),
+            'demo/pkg',
+            'src/Status.php',
+            false,
+        )->classLikes[0];
+        $index = new DiffIndex('main', 'HEAD');
+
+        (new ClassLikeMerger())->single($classLike, DiffStatus::ADDED, $index);
+
+        self::assertSame(DiffStatus::ADDED, $index->status($index->keys()->member('Demo\Status', DiffKey::ENUM_CASE, 'Active')));
+    }
+
+    public function testStatusOfFoldsInTheStateOfEveryConstant(): void
+    {
+        $classLike = (new FileSymbolCollector())->collect(
+            (new AstParser())->parse('<?php namespace Demo; class Engine { public const LIMIT = 3; }', 'src/Engine.php'),
+            'demo/pkg',
+            'src/Engine.php',
+            false,
+        )->classLikes[0];
+        $index = new DiffIndex('main', 'HEAD');
+        $index->mark($index->keys()->member('Demo\Engine', DiffKey::CONSTANT, 'LIMIT'), DiffStatus::MODIFIED);
+
+        self::assertSame(DiffStatus::MODIFIED, (new ClassLikeMerger())->statusOf($classLike, DiffStatus::SAME, $index));
+    }
+
     public function testStatusOfCombinesTheHeadStateWithTheMemberStates(): void
     {
         $classLike = (new FileSymbolCollector())->collect(

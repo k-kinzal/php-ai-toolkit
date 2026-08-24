@@ -6,6 +6,7 @@ namespace Tests\Unit\Doctest\Executor;
 
 use PhpAiToolkit\Doctest\Executor\ExecutionContext;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ExecutionContext::class)]
@@ -51,5 +52,34 @@ final class ExecutionContextTest extends TestCase
 
         self::assertTrue($context->hasVariable('x'));
         self::assertFalse($context->hasVariable('missing'));
+    }
+
+    /**
+     * @dataProvider providerInternalVariableName
+     */
+    #[DataProvider('providerInternalVariableName')]
+    public function testSetVariablesDropsEveryInternalNameItKnows(string $name): void
+    {
+        $context = new ExecutionContext();
+        $context->setVariables(['sum' => 3, $name => 'leaked']);
+
+        self::assertSame(['sum' => 3], $context->getVariables());
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function providerInternalVariableName(): array
+    {
+        return [
+            'result' => ['__doctest_result__'],
+            'code' => ['__doctest_code__'],
+            'context' => ['__doctest_context__'],
+            'variables' => ['__doctest_vars__'],
+            'output' => ['__doctest_output__'],
+            'variable bag' => ['variables'],
+            'return flag' => ['needsReturn'],
+            'evaluated code' => ['evalCode'],
+        ];
     }
 }

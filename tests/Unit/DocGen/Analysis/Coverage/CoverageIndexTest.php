@@ -52,6 +52,7 @@ final class CoverageIndexTest extends TestCase
         $index->addMethod('src/Foo.php', 12, new MethodCoverage(4, 4, 100.0));
 
         self::assertSame(100.0, $index->methodAt('src/Foo.php', 10, 25)?->percent);
+        self::assertSame(100.0, $index->methodAt('src/Foo.php', 12, 12)?->percent);
         self::assertSame(50.0, $index->methodAt('src/Foo.php', 15, 25)?->percent);
         self::assertNull($index->methodAt('src/Foo.php', 1, 11));
         self::assertNull($index->methodAt('src/Missing.php', 1, 100));

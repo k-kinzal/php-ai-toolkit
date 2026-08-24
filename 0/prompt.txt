@@ -1,0 +1,1 @@
+2が面白そうと思いました。これってPHPStan拡張で作れますか？というのと、PHPでcatchすべき、または@throwsに記載すべきExceptionってなんですか？極端な話RuntimeExceptionは任意であり記載不要、LogicExceptionはcatchすべきものではないので記載不要だと思っています。Exception系列だけ書くことを強制しますか？

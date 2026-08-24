@@ -1,0 +1,245 @@
+Implement the following plan:
+
+# tree-guard: ディレクトリ/ファイル構造制約ツール + 理想設定によるドッグフーディング
+
+## Context
+
+php-ai-toolkit に、ディレクトリ/ファイル構造の制約を検査する新 CLI ツール **tree-guard** を追加する。目的は、AI エージェントが生成しがちな構造の乱れ(ディレクトリ肥大化、命名逸脱、必須ファイルの欠落、深すぎるネスト、空ディレクトリ等)を CI で機械的に検出すること。
+
+ユーザー決定事項:
+- **実装形態**: php-ai-toolkit 内の第2 CLI(LocGuard パターンを踏襲)
+- **名前**: tree-guard(`bin/tree-guard` + `tree.yaml` + `src/TreeGuard/` + namespace `PhpAiToolkit\TreeGuard`)
+- **v1 制約**: ファイル数上限・ディレクトリ数上限・命名 allow/deny・必須ファイル + 階層深さ上限・空ディレクトリ検出・合計ファイル数上限 + 追加で有用なもの(→ ディレクトリ名の allow/deny、ファイル/ディレクトリ名のケース規約を追加)
+- **ドッグフーディング**: 「現状が通る設定」ではなく、**ベストプラクティスから理想の設定を設計し、それを本プロジェクトに適用して検知の妥当性を推論し、真陽性はプロジェクト側をリファクタリングして pass 状態にする**ところまでが本タスクの範囲
+
+PHPStan ルール方式は不採用(PHPStan は解析対象 PHP ファイルしか見えず、ディレクトリ単位の集計・非 PHP ファイル・空ディレクトリを検査できない)。
+
+## テンプレート
+
+`src/LocGuard/` を忠実に移植する。参照必須ファイル:
+- `src/LocGuard/Cli/Application.php` — CLI 層全体と DI/テスト用 closure 注入の雛形
+- `src/LocGuard/Config/ConfigLoader.php` — YAML ロード/検証スタイル(`Invalid tree.yaml: ...` メッセージ、`TreeGuardException`、exit 2)
+- `src/LocGuard/Analysis/Violation.php` — PHP 8.0 の `__get()` + `@property-read` + `/** @readonly */` promoted private プロパティの値オブジェクト定型
+- `tests/Unit/LocGuard/Cli/ApplicationTest.php` — 一時ディレクトリツリー構築 + stdout capture closure のテストパターン
+- `bin/loc-guard` — バイナリの雛形(PHP_VERSION_ID ガード → 3 段 autoload 探索 → `new Application(getcwd())` → `exit($app->run($argv))`)
+
+Exit code: 0 = pass / 1 = violations / 2 = 設定・実行時エラー。レポーターは `ai`(デフォルト)/`text`/`json`。Shared/AgentDetector は使わない(LocGuard 同様、deptrac で依存なしレイヤーにする)。
+
+## tree.yaml スキーマ
+
+```yaml
+paths:                      # list<string>, default ['src']; config ディレクトリ相対
+  - src
+exclude: []                 # LocGuard 同様の fnmatch glob(相対パス全体に対して)。マッチしたファイルは無視、ディレクトリはサブツリーごと除外
+rules:                      # ルールブロックの配列, default []
+  - path: 'src/*'           # 必須。ディレクトリマッチパターン(下記セマンティクス)
+    max_files: 25           # int>=1: 直下のファイル数上限
+    max_dirs: 10            # int>=1: 直下のサブディレクトリ数上限
+    max_total_files: 200    # int>=1: 再帰的な合計ファイル数上限
+    max_depth: 3            # int>=1: マッチしたディレクトリ基準のネスト深さ上限
+    allow: ['*.php']        # 直下ファイル名(basename)の許可 glob。全ファイルがいずれかにマッチ必須
+    deny: ['*Helper.php']   # 直下ファイル名の禁止 glob
+    allow_dirs: ['[A-Z]*']  # 直下ディレクトリ名の許可 glob
+    deny_dirs: ['Helpers']  # 直下ディレクトリ名の禁止 glob
+    require: ['README.md']  # 直下に存在必須のファイル名(完全一致)
+    forbid_empty: true      # bool, default false: 空ディレクトリ禁止
+    file_case: pascal       # pascal|camel|snake|kebab
+    dir_case: pascal
+report:
+  reporter: ai              # ai|text|json
+  order_by: [path, rule]    # path|rule|actual|limit
+```
+
+### 決定済みセマンティクス(docs に明記する)
+
+- **`rules[].path` はセグメント単位マッチ**: パターンと config-root 相対ディレクトリパスを `/` で分割。`**` セグメントは **0 個以上**のセグメントにマッチ(つまり `src/**` は `src` 自身も含む — gitignore との相違として文書化)。それ以外のセグメントは `fnmatch` で 1 セグメントにマッチ(`*` は `/` を越えない)。両端アンカー。例: `src` は src のみ / `src/*` は直下のみ / `**/Rule` は任意の深さの Rule。
+- **`exclude` は LocGuard 互換のプレーン fnmatch**(`rules[].path` との違いを文書化)。
+- **複数ルールがマッチしたら全部独立に適用**(override/merge なし)。違反には発火元パターンを含めるので個別に識別可能。
+- **制約キー欠如 = 未検査**。`allow: []`(空リスト)は「ファイル一切禁止」— absent(null)と空リストを区別して読む。
+- **「このファイル名でなければならない」は `require` + `allow` の合成で表現**(`only:` キーは作らない)。
+- **境界値は上限ちょうどで pass**(LocGuard 慣例)。`max_files: 0` は無効(≥1)。「0 個」は `allow: []` で表現。
+- **depth**: マッチしたディレクトリ基準。サブディレクトリなし = depth 0。超過した**子孫ディレクトリごとに 1 違反**(actual = そのディレクトリ自身の深さ)。
+- **forbid_empty**: 除外適用後の直下エントリ(ファイル+ディレクトリ)が 0 件で発火。
+- **case 規約**: ファイルは最初の `.` より前の stem で判定(`AiReporter.php` → `AiReporter`)。dotfile はスキップ。regex: pascal `^[A-Z][A-Za-z0-9]*$` / camel `^[a-z][A-Za-z0-9]*$` / snake `^[a-z0-9]+(_[a-z0-9]+)*$` / kebab `^[a-z0-9]+(-[a-z0-9]+)*$`。
+- **バリデーション**: rule ブロック内の**未知キーは拒否**(`Invalid tree.yaml: "rules[0]" contains unsupported key "max_file".`)— typo で検査が無効化される事故を防ぐ(LocGuard の未知 limit 無視とは意図的に異なる)。`paths` エントリが存在しない/ファイルの場合はエラー。
+
+## Violation モデルとルール ID
+
+`Violation` フィールド: `path`(違反ディレクトリ or ファイルの相対パス)/ `rule` / `pattern`(発火元ルールの path パターン)/ `actual`(?int)/ `limit`(?int)/ `message`。**`line` フィールドは無し**(LocGuard との相違)。
+
+| rule id | path | メッセージ例(命令形・自己完結) |
+|---|---|---|
+| `max_files` | dir | `Directory "src/PhpStan/Rule" contains 82 files but the limit is 25. Move or merge files until at most 25 remain.` |
+| `max_dirs` | dir | `Directory "src" contains 9 subdirectories but the limit is 8. Merge or flatten subdirectories.` |
+| `max_total_files` | dir | `Directory "src/PhpStan" contains 97 files in total but the limit is 80. Restructure or split the subtree.` |
+| `max_depth` | 超過子孫 dir | `Directory "src/A/B/C/D" is nested 4 levels below "src" but the limit is 3. Flatten the directory structure.` |
+| `disallowed_file` | file | `File "src/notes.txt" does not match any allowed pattern (*.php). Rename, move, or delete it.` |
+| `denied_file` | file | `File "src/Foo/BarHelper.php" matches denied pattern "*Helper.php". Rename or remove it.` |
+| `disallowed_dir` / `denied_dir` | dir | 上記のディレクトリ版 |
+| `missing_required_file` | `<dir>/<name>` | `Directory "skills/setup-toolkit-tree-guard" is missing required file "SKILL.md". Create it.` |
+| `empty_directory` | dir | `Directory "src/Empty" is empty. Delete it or add its intended contents.` |
+| `file_case` / `dir_case` | file/dir | `File name "my_reporter.php" in "src/Reporting" does not follow the pascal convention. Rename it.` |
+
+## クラス分解(全 46 クラス、全 final・private メソッド禁止・コメント禁止・複数行 PHPDoc 必須)
+
+**`src/TreeGuard/`**: `TreeGuardException`(extends RuntimeException)
+
+**`Cli/`**(LocGuard の同名クラスをほぼそのまま移植。デフォルト config `'tree.yaml'`、エラー接頭辞 `TreeGuard error:`、`tree-guard 1.0.0`):
+`Application` / `TreeGuardCliArgumentParser`(`--config X`・`--config=X`・`--reporter`/`--format`・`-h`・`-V`)/ `TreeGuardConfigPathResolver` / `TreeGuardHelpText` / `TreeGuardOutputWriter`(?Closure stdout/stderr 注入)/ `TreeGuardReporterOverride` / `TreeGuardAnalysisRunner`
+
+**`Config/`**:
+`ConfigLoader`(Yaml::parseFile, `dirname($path)` = root)/ `ConfigScalarReader`(string/bool/optionalPositiveInt/optionalCase、context 付きエラー)/ `ConfigStringListReader`(+ absent→null の readOptional)/ `RuleConfig`(値オブジェクト)/ `RuleConfigReader`(未知キー拒否、index 付きメッセージ)/ `RuleListConfigReader` / `ReportConfig` / `ReportConfigReader`(ORDER_FIELDS = path|rule|actual|limit)/ `TreeGuardConfig`
+
+**`Filesystem/`**(LocGuard と異なり全ファイル種別 + ディレクトリを走査):
+`TreeGuardPathResolver`(absolute/relative)/ `PathInclusionPolicy`(exclude fnmatch、.php フィルタ無し)/ `DirectoryListing`(relativePath + fileNames + dirNames、ソート済)/ `DirectoryListingReader`(scandir 1 階層)/ `DirectoryTreeScanner`(paths 検証 → 再帰走査、excluded dir は枝刈り → `array<string, DirectoryListing>` を ksort して返す。paths エントリ自身も含む)
+
+**`Analysis/`**:
+`Violation` / `AnalysisResult`(listings + violations; hasViolations/violationCount/directoryCount/fileCount)/ `DirectoryPatternMatcher`(セグメント分割 + `**` バックトラック、複雑度 <20 に収める)/ `CaseConventionMatcher`(matches + stem)/ 制約 inspector 7 個: `ChildCountInspector`(max_files+max_dirs)・`TotalFileCountInspector`(prefix は `dir . '/'` で判定し `src/Ab` と `src/Abc` を混同しない)・`DepthInspector`・`FileNameInspector`(allow/deny/file_case)・`DirNameInspector`・`RequiredFileInspector`・`EmptyDirectoryInspector` / `DirectoryRuleInspector`(1 ルール×1 ディレクトリを 7 inspector にファンアウト)/ `TreeGuardAnalyzer`
+
+**`Reporting/`**(LocGuard 移植):
+`Reporter`(interface)/ `ReporterFactory` / `ViolationSorter` / `ViolationFieldComparator`(null は int より前)/ `AiReporter`(`TREE_GUARD_PASSED`/`TREE_GUARD_FAILED` ヘッダ + summary + guidance + 違反ブロック)/ `AiReportSummary` / `AiReportGuidance` / `AiViolationFormatter`(actual/limit が null の行は省略)/ `AiViolationAction`(rule id → 是正アクション文)/ `TextReporter` / `JsonReporter`(`{status, summary, violations[]}`、null はそのまま出力)
+
+## 解析アルゴリズム
+
+1. `ConfigLoader::load` → `TreeGuardConfig`
+2. `DirectoryTreeScanner::scan` → 1 回の走査で `array<相対dirパス, DirectoryListing>`
+3. `TreeGuardAnalyzer`: 各 rule × 各 listing で `DirectoryPatternMatcher::matches` → マッチしたら `DirectoryRuleInspector::inspect(rule, listing, listings)`(max_total_files/max_depth は listing マップのキー prefix から算出 — 2 度目の FS アクセス無し)
+4. Reporter 出力 → `hasViolations() ? 1 : 0`、`TreeGuardException` は stderr + 2
+
+## 理想設定の設計(ベストプラクティスと根拠)
+
+「現状が通る値」ではなく原則から導いた閾値を設定し、違反はプロジェクト側を直す。
+
+| 制約 | 理想値 | 根拠 |
+|---|---|---|
+| `max_files` | **25** | ディレクトリ一覧が 1 画面 / 1 回の `ls` で認知できる上限。AI エージェントがディレクトリを列挙したとき、82 件では凝集の手がかりがなく prefix 推測に頼ることになる。本リポジトリの健全なディレクトリは 2〜19 件に収まっており、25 は「健全域 + 余裕」かつ既知の問題箇所(82/33 件)を確実に検知する値 |
+| `max_dirs` | **20** | サブディレクトリ一覧は「概念の索引」でありファイルよりスケールするが、20 を超えたら索引自体の再編が必要 |
+| `max_depth` | **3**(paths ルート基準) | 現在の最深(`src/PhpUnit/TestReporter/Subscriber` 等)= 3。FQCN の長さと探索コストを抑える実用上限 |
+| `max_total_files` | **250**(`src/*` 単位) | 1 ツール(サブシステム)が 250 ファイルを超えたら独立パッケージ化を検討すべき規模 |
+| `allow` / `file_case` | src は `*.php` + pascal、tests は `*Test.php` + pascal | PSR-4 / 既存規約の機械的強制 |
+| `deny` | `*Helper.php` 等の禁止サフィックス | ForbidClassLikeNameSuffixRule と重複するが、tree-guard 単体導入のプロジェクトでも効く防衛線(本リポジトリでは 0 件) |
+| `forbid_empty` | true | 空ディレクトリは意図の残骸 |
+| `require` | skills/* に `SKILL.md` | skill はディレクトリ scan で自動発見されるため、SKILL.md 欠落は静かな機能欠損になる |
+
+### 本リポジトリ用 tree.yaml(理想設定)
+
+```yaml
+paths: [src, tests/Unit, skills]
+exclude: []
+rules:
+  - path: 'src'
+    allow: []
+    max_dirs: 8
+    max_depth: 3
+  - path: 'tests/Unit'
+    allow: []
+    max_depth: 3
+  - path: 'src/**'
+    forbid_empty: true
+    allow: ['*.php']
+    deny: ['*Helper.php', '*Helpers.php', '*Manager.php', '*Util.php', '*Utils.php', '*Service.php']
+    file_case: pascal
+    dir_case: pascal
+    max_files: 25
+    max_dirs: 20
+  - path: 'src/*'
+    max_total_files: 250
+  - path: 'tests/Unit/**'
+    forbid_empty: true
+    allow: ['*Test.php']
+    file_case: pascal
+    dir_case: pascal
+    max_files: 25
+    max_dirs: 20
+  - path: 'skills/*'
+    require: ['SKILL.md']
+    forbid_empty: true
+report:
+  reporter: ai
+  order_by: [path, rule]
+```
+
+## 現状ツリーへの適用結果と検知の妥当性推論(計測済み)
+
+理想設定を現在のツリーに当てると違反は**ちょうど 4 件**(他は全 pass。命名は全て PascalCase、空ディレクトリ無し、深さ最大 3、src/PhpUnit/TestReporter は 19 ≤ 25):
+
+| 検知 | actual/limit | 妥当性判定 | 対応 |
+|---|---|---|---|
+| `src/PhpStan/Rule` max_files | 82 / 25 | **真陽性**。21 個のルールクラス + 61 個のコラボレータがフラットに混在。公開エントリポイントと内部実装の区別がなく、1 ルールのコラボレータを探すには名前の prefix 推測が必要。ルール追加のたびに悪化する | リファクタリング(下記) |
+| `tests/Unit/PhpStan/Rule` max_files | 82 / 25 | 真陽性(上記のミラー) | ミラー移動 |
+| `src/LocGuard/Analysis` max_files | 33 / 25 | **真陽性**。トークン走査・複雑度計算・関数/クラスメトリクス収集・違反ビルダー・値オブジェクトが混在 | リファクタリング(下記) |
+| `tests/Unit/LocGuard/Analysis` max_files | 33 / 25 | 真陽性(上記のミラー) | ミラー移動 |
+
+**偽陽性リスクの検討(閾値側を直すべきでないことの確認)**:
+- `docs/rules`(21 ファイル)と リポジトリルート(27 ファイル、うち 6 つは意図的な `composer.lock.php-8.x`)は v1 の `paths` に含めない。ルートのロックファイル群は「ファイル数が多い = 悪」ではない例であり、閾値を歪めてまで対象に含めない判断根拠として docs/tree-guard.md に記載しない(設定の paths 選定理由として PR 説明に書く)。
+- `src/PhpStan/Rule` トップに 21 ルールクラスを**残す**構成(下記)は 25 以下で pass する。将来 25 ルールを超えたら、そのときこそドメイン分割(TestClass 系 / Comment 系…)が必要という正しいシグナルになる。
+
+## 適合リファクタリング(本プロジェクトを理想に合わせる)
+
+### src/PhpStan/Rule(82 → トップ 21 ファイル + サブディレクトリ)
+
+方針: **21 個の `*Rule.php` はトップに残す**(FQCN 安定 — extension.neon の services 参照と docs/rules/*.md を変えない。トップ = ルールの索引になり docs/phpstan-rules.md と一致)。61 個のコラボレータを移動:
+1. 各コラボレータの使用箇所を grep で調査(usage graph)
+2. 1 つのルール(の連鎖)からのみ使われる → `src/PhpStan/Rule/<ルール名から Rule を除いた名前>/`(例: `SrcUnitTestPair/SrcUnitTestPairFileInspector.php`、depth 3 で max_depth OK)
+3. 2 ルール以上から使われる(例: `SourceUnitTestFileResolver`、`FilenameExclusionMatcher`)→ `src/PhpStan/Rule/Shared/`(クラス名サフィックス禁止は *クラス名* のみでディレクトリ名は自由。deptrac の PhpStanRule レイヤーは `src/PhpStan/Rule/.*` なので不変)
+
+### src/LocGuard/Analysis(33 → トップ ≤10 + サブディレクトリ)
+
+トップに残す公開面: `LocGuardAnalyzer` / `PhpFileAnalyzer` / `FileAnalysis` / `AnalysisResult` / `Violation`。残りを凝集グループへ(最終区分は usage graph で確定。`Function/` という名前は予約語で紛らわしいので使わない):
+- `Token/`: PhpTokenNavigator, TokenLineCounter, CodeTokenLineResolver, ClassLikeTokenMatcher
+- `Complexity/`: CyclomaticComplexityCalculator, CyclomaticComplexityState, CyclomaticDecisionWeight
+- `FunctionMetric/`: FunctionMetric* 6 種, ArrowFunctionMetricReader, BlockFunctionMetricReader, ArrowExpressionBoundary, FunctionBodyLocator, FunctionNameReader, FunctionScanState, NestedFunctionMetricRange
+- `ClassLikeMetric/`: ClassLikeMetric* 4 種, ClassLikeDeclarationReader, ClassLikeKindLabel(※実際の所在確認の上)
+- `FileMetric/`: FileMetric, FileMetricViolationBuilder
+
+### 機械的更新(両リファクタリング共通)
+
+- `git mv` で移動、namespace 宣言 + 全 use 文 + テストの `#[UsesClass]`/`#[CoversClass]` FQCN を更新(src と tests/Unit をミラーで同時移動 — SrcUnitTestPairRule が 1:1 を強制)
+- extension.neon: コラボレータが services 登録されている場合のみ更新(ルール FQCN は不変。要 grep 確認)
+- phpstan.neon: 更新不要(ignoreErrors は tests/Unit/PhpStan/ErrorFormatter/* のみ参照 — 確認済み)
+- deptrac.yaml: 更新不要(directory collector はサブディレクトリを包含)
+- docs/: 移動したコラボレータ名を参照している箇所を grep して更新
+
+## テスト計画
+
+- **LocGuard のテストスイートに合わせる**(`tests/Unit/LocGuard/` 検証済): テストメソッド内で `sys_get_temp_dir() . '/treeguard-…' . bin2hex(random_bytes(4))` に実ツリーを構築、stdout/stderr capture closure を注入。**cleanup の try/finally と `#[Medium]` は LocGuard テストでは使われていない**ので付けない。`tests/Fixture/` は使わない。
+- 46 クラス全てに `tests/Unit/TreeGuard/<Sub>/<Class>Test.php` を 1:1 で対にする(SrcUnitTestPairRule が自己適用で強制。interface `Reporter` にも `ReporterTest` が要る)。final、`#[CoversClass]` + 網羅的 `#[UsesClass]`、プロパティ/定数/ヘルパー/trait/Reflection/制御構文禁止、メソッド名 `test` + PascalCase、src の各 public メソッド `foo()` に `testFoo*` を最低 1 つ。
+- 重点シナリオ: `DirectoryPatternMatcher`(`*` が `/` を越えない・`src/**` が src 自身にマッチ・アンカー)/ 各 inspector の境界値(上限ちょうど pass・+1 fail・absent 未検査・`allow: []` 全禁止)/ `TotalFileCountInspector` の prefix 混同回避 / `DirectoryTreeScanner` の枝刈り・エラー / Config の未知キー拒否・型エラー / `Application` の exit 0/1/2・`--help`・`--reporter=json`。
+
+## 変更ファイル一覧(src/tests の新規・移動以外)
+
+1. `bin/tree-guard` — `bin/loc-guard` の移植(メッセージだけ変更)。chmod +x
+2. `composer.json` — `bin` に追加、script `"tree-guard": "@php bin/tree-guard --config=tree.yaml"`、`lint` の `@loc-guard` と `@deptrac` の間に `@tree-guard` を挿入。※ `composer.lock.php-8.x` の再生成は不要(content-hash は bin/scripts を含まない)
+3. `tree.yaml` — 上記「理想設定」
+4. `deptrac.yaml` — LocGuard の後に layer `TreeGuard`(`type: directory` / `value: src/TreeGuard/.*`)、ruleset に `TreeGuard: ~`
+5. `.github/workflows/ci.yml` — lint ジョブの `- run: composer loc-guard`(92 行目付近)と `- run: composer deptrac` の間に `- run: composer tree-guard` を挿入(無名 run ステップのスタイル維持)
+6. `docs/tree-guard.md` — `docs/loc-guard.md` の構成を踏襲: Purpose / Command + exit codes / Configuration / Pattern Semantics(上記セマンティクス、`**` の gitignore との相違と exclude との違いを明記)/ ルール参照表 / Reporting / 境界値は pass の注記
+7. `README.md` — LocGuard Configuration の行(66 行目付近)の後に `- [TreeGuard Configuration](docs/tree-guard.md)` を追加
+8. `skills/setup-toolkit-tree-guard/SKILL.md` + `tree.yaml` — 既存 skills の構成(frontmatter name/description + Prerequisites / Template / Merging / Recommended Composer Scripts / Verification / References)。テンプレート tree.yaml は汎用スターター(`paths: [src]` + `src/**` に forbid_empty・`allow: ['*.php']`・`file_case: pascal` + max_files の例)。skills はディレクトリ scan で自動発見されるため登録コード不要
+
+## 実装順序(検知の妥当性検証を組み込んだループ)
+
+1. `TreeGuardException` + test
+2. Config 層(bottom-up、ConfigLoader 最後)+ tests
+3. Filesystem 層 + tests
+4. Analysis 層 + tests
+5. Reporting 層 + tests
+6. Cli 層 + tests
+7. `bin/tree-guard`
+8. composer.json / tree.yaml(理想設定)/ deptrac.yaml / ci.yml
+9. **妥当性検証(ドッグフーディング第1段)**: `bin/tree-guard` を理想設定で実行し、出力が §「現状への適用結果」で手計測した **4 件の max_files 違反と正確に一致する**ことを確認(過検知・見逃しがあればツール側のバグとして修正)。これがツールの E2E 受け入れ確認を兼ねる
+10. **適合リファクタリング(ドッグフーディング第2段)**: src/PhpStan/Rule と src/LocGuard/Analysis を上記方針で再構成(tests/Unit をミラー移動、namespace/use/UsesClass 更新)→ `bin/tree-guard` 再実行で `TREE_GUARD_PASSED` になるまで
+11. docs / README / skill
+12. 最終検証: `composer format` → `composer lint`(format:check・phpstan level max+strict+自作ルール自己適用・phpcs 8.0 互換・loc-guard・**tree-guard(理想設定・green)**・deptrac)→ `composer test`。加えて `bin/tree-guard --help` / `--version` / `--reporter=json` を手動確認
+
+## 遵守事項・注意
+
+- PHP 8.0 フロア: enum・readonly・never・first-class callable・new-in-initializer 禁止。`/** @readonly */` + `__get()` イディオム
+- クラス名禁止サフィックス(*Helper/*Manager/*Util/*Service 等)— 上記命名は全て既存語彙(Reader/Resolver/Inspector/Matcher/…)で回避済み
+- loc.yaml 制限(メソッド ≤50 行・複雑度 ≤20)— `DirectoryPatternMatcher` と `RuleConfigReader` が最大のクラスになるので分割を意識
+- **AGENTS.md はエージェント編集禁止**(「17 ルール」表記や旧ディレクトリ構成など現状と乖離あり)— tree-guard 追記と構成更新を人間に依頼する旨を完了報告に含める
+
+
+If you need specific details from before exiting plan mode (like exact code snippets, error messages, or content you generated), read the full transcript at: /Users/ab/.claude/projects/-Users-ab-Projects-php-ai-toolkit/71ff1415-1a04-4fb0-acce-60cb84154691.jsonl
+
+If this plan can be broken down into multiple independent tasks, consider spawning named teammates with the Agent tool (pass a `name`) to parallelize the work.

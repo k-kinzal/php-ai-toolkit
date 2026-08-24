@@ -1,0 +1,1 @@
+<bash-input> git merge --ff-only forbidden-words && git branch -d forbidden-words</bash-input>

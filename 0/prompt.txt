@@ -1,0 +1,1 @@
+broadCatchAllowedPathsでDocTest関係が追加されているのはなぜです？またDoctestSuite.phpは必要なんでしたっけ？なんかPJルートにあるべきではないと思っており置き場所の調整をしたいです。これ何やってるんでしたっけ？

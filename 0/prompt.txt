@@ -1,0 +1,1 @@
+「/** @param self::MODE_* $mode */」の書き方を初めて知ったのですが、PHPStan/Psalmでサポートされた書き方でしょうか？「4. match (true) — subject が union 型 のとき」は不正ではないでしょうか。match ($shape)のようにmatchで指定されたものに対して検知されるべきであり、このケースでは$shapeと関係ないアームを書けるのでこの検知は間違っています。

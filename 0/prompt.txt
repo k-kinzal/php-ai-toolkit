@@ -1,0 +1,28 @@
+<bash-stdout>Updating 604249a..dc9e843
+Fast-forward
+ AGENTS.md                                          |  9 ++++-
+ docs/rules/ForbidClassLikeNameSuffixRule.md        |  2 ++
+ docs/tree-guard.md                                 | 25 ++++++++++++--
+ extension.neon                                     |  6 ++++
+ skills/setup-toolkit-tree-guard/SKILL.md           | 12 +++++--
+ skills/setup-toolkit-tree-guard/tree.yaml          | 12 +++++--
+ src/TreeGuard/Analysis/DepthInspector.php          | 16 +++++++--
+ src/TreeGuard/Analysis/DirNameInspector.php        | 11 +++++--
+ src/TreeGuard/Analysis/DirectoryPatternMatcher.php |  9 +++--
+ src/TreeGuard/Analysis/FileNameInspector.php       | 11 +++++--
+ src/TreeGuard/Analysis/RequiredFileInspector.php   | 14 +++++++-
+ src/TreeGuard/Analysis/TotalFileCountInspector.php | 16 +++++++--
+ src/TreeGuard/Filesystem/DirectoryTreeScanner.php  |  7 ++--
+ src/TreeGuard/Filesystem/TreeGuardPathResolver.php | 38 +++++++++++++++++++---
+ .../Unit/TreeGuard/Analysis/DepthInspectorTest.php | 19 +++++++++++
+ .../TreeGuard/Analysis/DirNameInspectorTest.php    | 14 ++++++++
+ .../Analysis/DirectoryPatternMatcherTest.php       | 16 +++++++++
+ .../Analysis/DirectoryRuleInspectorTest.php        |  2 ++
+ .../TreeGuard/Analysis/FileNameInspectorTest.php   |  2 ++
+ .../Analysis/RequiredFileInspectorTest.php         |  2 ++
+ .../Analysis/TotalFileCountInspectorTest.php       | 18 ++++++++++
+ .../Filesystem/DirectoryTreeScannerTest.php        | 20 ++++++++++++
+ .../Filesystem/TreeGuardPathResolverTest.php       | 23 +++++++++++++
+ tree.yaml                                          | 30 ++++++++++++++---
+ 24 files changed, 302 insertions(+), 32 deletions(-)
+Deleted branch forbidden-words (was dc9e843).</bash-stdout><bash-stderr></bash-stderr>

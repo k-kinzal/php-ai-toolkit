@@ -72,19 +72,18 @@ advertising support it does not verify.
 Gates the production sources and the test suite, not just `src/`.
 
 **Why:** a test that uses 8.1 syntax fails to parse on PHP 8.0 just as loudly as
-production code does, and this package runs its own suite on PHP 8.0 in CI. The
-gate is cheaper than the CI leg that would otherwise find it.
+production code does, and the CI `tests` matrix runs the suite on the floor. The
+gate is cheaper than the leg that would otherwise find it.
 
 ### `<exclude-pattern>tests/Fixture/*</exclude-pattern>`
 
-Excludes the rule fixtures.
+Excludes fixtures that a test reads rather than runs.
 
-**Why:** the fixtures are deliberate syntax samples fed to the PHPStan rule
-tests — several of them contain enums and other post-8.0 constructs precisely so
-a rule can be shown analysing them. They are read as text by the rule tests
-rather than executed on the runtime under test, so they are not code that has to
-run on the floor. Excluding them is the difference between the gate reporting
-real drift and reporting the test data.
+**Why:** a fixture fed to an analyser as text is test data, not code that has to
+run on the floor, and it often carries post-8.0 syntax on purpose — an enum a
+rule is shown analysing, say. Excluding those files is the difference between the
+gate reporting real drift and reporting the test data. Exclude nothing the
+runtime actually executes.
 
 ### `<rule ref="PHPCompatibility"/>` alone
 
@@ -147,7 +146,7 @@ PHPStan's `phpVersion` can also flag version drift and needs no second
 toolchain, which makes it a reasonable alternative for a project that wants one
 analyser. It reports newer syntax as a parse error that stops analysis of the
 file, though, and its messages name the syntax rather than the feature and the
-version that introduced it. This package prefers PHPCompatibility for the
+version that introduced it. The toolkit picks PHPCompatibility for the
 per-feature messages and the stable sniff identifiers. Only one of the two
 should be the compatibility gate; running both means two reports of the same
 drift.

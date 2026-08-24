@@ -38,11 +38,6 @@ That second command is the whole-tree gate. For the changed-lines gate, add
 `--git-diff-lines --git-diff-base=origin/main --ignore-msi-with-no-mutations
 --min-msi=85 --min-covered-msi=85`.
 
-The memory limit is sized for the reports rather than for the run. Infection keeps
-every mutant result in memory and encodes all of them into
-`build/infection/infection.json` once the score is printed, which costs several
-times what scoring the mutants does.
-
 Exit codes:
 
 - `0`: every threshold was met
@@ -67,14 +62,14 @@ changed-lines step overrides the ratchet for the lines a diff touches.
 
 | Gate | Scope | Runs on | `minMsi` | `minCoveredMsi` |
 |------|-------|---------|----------|-----------------|
-| whole source tree | all of `src` | pushes to `main` | 81 (file) | 81 (file) |
+| whole source tree | all of `src` | pushes to the default branch | the project's ratchet (file) | the project's ratchet (file) |
 | changed lines | what the diff touches | pull requests | 85 (flag) | 85 (flag) |
 
 Keeping one file means the two gates cannot drift apart: a mutator disabled for one
 would otherwise leave the two measuring different things. The cost is that the
-changed-lines numbers live in the workflow rather than behind the deny list that
-protects `infection.json5`; the ratchet that guards the whole tree is the one under
-lock.
+changed-lines numbers live in the workflow, where anything that may edit CI may
+edit them, while the ratchet that guards the whole tree sits in a file that can be
+put out of reach.
 
 The changed-lines step also passes `--ignore-msi-with-no-mutations`, so a change
 that produces no mutants at all — documentation, tests, configuration — is not
@@ -95,41 +90,34 @@ Infection reports two scores, and both are enforced:
 - **Covered MSI** — killed mutants over the mutants in covered code only. It falls
   when tests execute code without asserting anything about it.
 
-The whole-tree numbers are a ratchet. `main` scores 81.55% as of this commit: of the
-12493 mutants generated from `src`, 10175 are killed by the test suite, 11 time out,
-2 error, and 2305 survive. Mutation code coverage is 100%, so MSI and Covered MSI
-are the same number here — every mutant is reachable by some test, and the 18% that
-survive are code the tests run without checking.
+The whole-tree numbers are a ratchet rather than an aspiration. Measure the project
+first, set both to the score the default branch already reaches, rounded down, and
+raise them when the score rises. A threshold resting exactly on the measured score
+turns red on a single mutant that a different runtime classifies differently, so
+leave a further point of headroom when CI scores on a different PHP version than
+the measurement used. A suite that actually stops verifying loses mutants by the
+dozen, so the ratchet still catches the thing it is for.
 
-The thresholds sit below that, at 81: a threshold resting exactly on the measured
-score turns red on a single mutant that a different runtime classifies differently.
-A suite that actually stops verifying loses mutants by the dozen, so the ratchet
-still catches the thing it is for. Raise both numbers when the score rises; that is
-the one routine edit these files should get.
+Mutation code coverage is reported next to the score. At 100% MSI and Covered MSI
+are the same number, because every mutant is reachable by some test; below it, the
+distance between the two is code no test touches at all.
 
 The changed-lines number is higher because new code has no backlog to pay off: code
 being written now can be held to a bar the whole tree cannot reach yet, and that is
 the only moment when enforcing it is cheap.
 
-85 is where this codebase's own idiom puts the ceiling. The largest single source of
-surviving mutants is `Coalesce`: 542 of the 2305 that survive. Nearly all of them
-come from optional constructor injection — `$this->x = $x ?? new X()`, which
-appears at 519 sites in `src` — where the mutant reorders the operands into
-`new X() ?? $x`. Every collaborator injected this way is a stateless `final` class,
-so the injected instance and a fresh one behave identically, and no test can tell
-them apart: killing such a mutant would need reflection, which
+85 rather than 90, because a codebase written to these rules has a ceiling under
+100. The largest single source of surviving mutants is `Coalesce` over optional
+constructor injection — `$this->x = $x ?? new X()`, where the mutant reorders the
+operands into `new X() ?? $x`. When every collaborator injected that way is a
+stateless `final` class, the injected instance and a fresh one behave identically,
+and no test can tell them apart: killing such a mutant would need reflection, which
 `NoReflectionInTestClassRule` forbids, or a getter written for no other purpose.
 They are equivalent mutants, and `ForbiddenCommentRule` rejects the
-`@infection-ignore-all` that would otherwise silence them.
-
-If every `Coalesce` escape were equivalent, the whole tree would top out near 86%.
-Measured against real work rather than a round number, four times as the branch
-grew: the changed lines between `main` and `origin/main` have scored 89.47% over 19
-mutants, 91.8% over 488, 86.89% over 984, and 86.42% over 1068. The low end is a
-four-file slice dragged down by two of those constructors — small diffs are noisy,
-where two unkillable mutants in twenty cost ten points on their own. The bar sits
-under all four. A bar of 90 would have failed three of them, and a gate that fails
-honest work gets met by shrinking pull requests rather than by testing them.
+`@infection-ignore-all` that would otherwise silence them. A small diff feels that
+hardest, where two unkillable mutants in twenty cost ten points on their own, and a
+bar that fails honest work gets met by shrinking pull requests rather than by
+testing them.
 
 Lowering a threshold, disabling a mutator, widening `source.excludes`, or narrowing
 `source.directories` all turn a red build green by measuring less. None of them is
@@ -138,35 +126,35 @@ human operator when a mutant is genuinely equivalent and no test can.
 
 ## Mutators
 
-Both files use `"@default": true`. The default profile is what a published mutation
-score means; a trimmed profile makes the number incomparable and generally flatters
-the suite.
+`"@default": true`, and nothing narrower. The default profile is what a published
+mutation score means; a trimmed profile makes the number incomparable and generally
+flatters the suite.
 
 ## Analysis Scope
 
 `src` is mutated. `tests` is not: mutating test code measures nothing.
 
-`src/PhpUnit/TestReporter/Legacy` is excluded. Its tests live in
-`tests/Unit/PhpUnit/TestReporter/Legacy` and only run under `phpunit9.xml.dist` on
-PHP 8.0, while mutation testing runs on one modern PHP version where
-`phpunit.xml.dist` excludes them. Without the exclusion every mutant in that
-directory would be reported as uncovered — a fact about the runtime, not about the
-tests. `source.excludes` entries are relative to each source directory, so the entry
-reads `PhpUnit/TestReporter/Legacy`.
+Add a `source.excludes` entry only for code whose tests cannot run in the same job
+as the gate — a directory covered by a suite that only runs under a different
+PHPUnit configuration, say. Without the exclusion every mutant there is reported as
+uncovered, which is a fact about the runtime rather than about the tests. Write the
+reason next to the entry, because an exclusion nobody can justify later is how a
+gate quietly stops measuring. Entries are relative to each source directory rather
+than to the project root, so excluding `src/Generated` reads `Generated`.
 
 ## Why Coverage Is Generated Separately
 
 Both gates run Infection with `--coverage` and `--skip-initial-tests` against a
 report produced by the PHPUnit step before them. Infection's own initial test run
-cannot survive this project's PHPUnit configuration:
+cannot survive the PHPUnit configuration the toolkit generates:
 
 - Infection stops the initial test process at the first byte on STDERR. The AI test
   reporter registered in `phpunit.xml.dist` writes issues to STDERR, so one risky or
   failing test terminates the run with SIGTERM.
 - Infection adds `stopOnDefect="true"` to the PHPUnit configuration it generates.
   Under `beStrictAboutCoverageMetadata="true"` every test that touches code it does
-  not declare as covered is risky, and this suite has hundreds of those when
-  coverage is on, so the run stops at the first one. Relaxing only the exit code
+  not declare as covered is risky, and a suite of any size has those when coverage
+  is on, so the run stops at the first one. Relaxing only the exit code
   with `--do-not-fail-on-risky` is worse than failing: Infection then accepts a
   coverage report containing a single test and scores a handful of mutants as if it
   had scored them all.
@@ -177,7 +165,7 @@ coverage-metadata warnings do not fail a run whose only job is to produce a repo
 Test failures still stop it, and `composer test:unit` still enforces the strict
 settings on every PHP version in CI.
 
-Both configurations also pass `"testFrameworkExtraArgs": "--no-extensions"`, which
+`infection.json5` also carries `"testFrameworkExtraArgs": "--no-extensions"`, which
 keeps the AI test reporter out of the mutant runs. In AI mode the reporter replaces
 PHPUnit's result output, and Infection reads that output to tell a killed mutant
 from an escaped one: without the flag, an agent running the gate locally would score
@@ -217,24 +205,23 @@ the test matrix.
 
 ## PHP Version Support
 
-Every Infection line supports a narrower PHP range than this package does, so the
-Composer constraint spans them all and each PHP-versioned lock resolves what fits:
-0.26.19 on PHP 8.0, 0.29 on 8.1, 0.32 on 8.2, and 0.35 on 8.3 and later. That keeps
-`composer install` working on every supported version.
+No single Infection line covers PHP 8.0 through 8.5, so a project that spans that
+range needs a Composer constraint spanning several: 0.26.19 installs on PHP 8.0,
+0.29 on 8.1, 0.32 on 8.2, and 0.35 on 8.3 and later. That keeps `composer install`
+working on every supported version, while the gate itself only ever runs on one.
 
-The configuration files target the line CI scores with. `testFrameworkExtraArgs`
-arrived in Infection 0.34, so the gate runs on PHP 8.3 or later, where the locks
-resolve 0.35; on PHP 8.0 through 8.2 the resolved Infection rejects the key, and the
-equivalent there is the older `testFrameworkOptions` spelling. This is the one
-toolkit gate that is not exercised on every supported PHP version.
+Write `infection.json5` for the line that gate runs. `testFrameworkExtraArgs`
+arrived in Infection 0.34, so a configuration using it needs PHP 8.3 or later;
+below that the resolved Infection rejects the key, and the equivalent is the older
+`testFrameworkOptions` spelling.
 
-## Changing the Configuration
+## Changing the Thresholds
 
-`infection.json5` is listed in the `permissions.deny` block of
-`.claude/settings.json`, next to `phpunit.xml.dist` and `phpstan.neon`. An agent
-cannot edit it; a human operator can. Raising a threshold after the score improves
-is the routine edit, and it is a one-line change.
+Raising the ratchet after the score improves is the routine edit, and it is one
+line in `infection.json5`. Putting that file out of an agent's reach — Claude
+Code's `permissions.deny`, or whatever the equivalent is — is what makes the raise
+a decision someone takes rather than a way out of a red build.
 
 The changed-lines thresholds are the exception: they are `--min-msi` and
 `--min-covered-msi` in the workflow, which has to stay editable for CI work. Review
-them the way any other number in `.github/workflows/ci.yml` gets reviewed.
+them the way any other number in a workflow gets reviewed.

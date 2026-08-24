@@ -24,29 +24,28 @@ adding its step here in the same change.
 `composer.json` declares PHP `^8.0`, so CI covers every supported minor from
 PHP 8.0 through 8.5 in both `tests` and `lint`.
 
-Dependency constraints must make that possible. This project allows the older
-PHPUnit 9.6 / ParaTest 6 and Deptrac 0.24 lines for PHP 8.0, plus newer tool
-lines for newer PHP versions.
+Dependency constraints have to make that possible. A range that wide usually
+means allowing an older tool line for the oldest PHP — PHPUnit 9.6 and ParaTest
+6, an early Deptrac — next to the current line for newer ones.
 
-Most projects can use a normal single `composer.lock`. This project uses one
-committed lock file per PHP minor because it is a developer tool supporting old
-PHP versions and the dependency graph differs by runtime. CI copies
-`composer.lock.php-8.0` through `composer.lock.php-8.5` to `composer.lock` in
-each matching matrix job before Composer validation and install. CI does not
-generate alternate Composer manifests or use `--ignore-platform-reqs`.
+Most projects can use a normal single `composer.lock`. A project whose
+dependency graph genuinely differs by runtime, which is the case for a library
+that supports old PHP versions, can commit one lock per PHP minor instead and
+have CI copy `composer.lock.php-<minor>` to `composer.lock` before Composer
+validation and install. Do not generate alternate Composer manifests or reach
+for `--ignore-platform-reqs`: both make CI install something other than what the
+project ships.
 
 Refresh PHP-versioned locks without writing `config.platform.php` to the root
 `composer.json`: generate each lock in a temporary directory with a temporary
 Composer home, then copy it back as `composer.lock.php-<minor>`.
 
-The PHP 8.0 lock pins PHPStan 1.12 instead of 2.x, and is refreshed with
-`composer update --with phpstan/phpstan:^1.12`. The only deptrac line that
-installs on PHP 8.0 requires nikic/php-parser 4, while the PHPStan 2 phar
-bundles php-parser 5 under the same class names: whichever of the two is
-autoloaded first wins, so a test that loads both dies with a fatal error.
-The PHPStan 1.12 phar bundles php-parser 4 and agrees with the rest of that
-graph. `phpstan/phpstan-strict-rules` is therefore required as
-`^1.6 || ^2.0`, so both lines resolve.
+Watch for two copies of nikic/php-parser on the oldest leg. The PHPStan 2 phar
+bundles php-parser 5 under the same class names an older dependency may install
+as php-parser 4, and whichever is autoloaded first wins, so a test that loads
+both dies with a fatal error. Pinning PHPStan 1.12 on that leg — whose phar
+bundles php-parser 4 — resolves it, which in turn means requiring
+`phpstan/phpstan-strict-rules` as `^1.6 || ^2.0` so both lines install.
 
 `composer compat` remains a named step inside the `lint` job alongside
 formatting, PHPStan, LocGuard, TreeGuard, ScopeGuard, and Deptrac. See
@@ -87,16 +86,16 @@ because it needs a coverage driver, a full-depth checkout, and minutes rather th
 seconds. It is not a matrix: the mutation score does not depend on the PHP version,
 so it is scored once on PHP 8.4 while the `tests` matrix covers the rest. The job
 picks its gate from the event — one step scores the lines a pull request changed
-against stricter thresholds, the other scores the whole source tree on `main`. Its
-commands are written into the workflow rather than wrapped in Composer scripts: the
+against stricter thresholds, the other scores the whole source tree on the default
+branch. Its commands are written into the workflow rather than Composer scripts: the
 gate only ever runs here, so a wrapper would add a layer to look through and a
 second place for the flags to drift. See [Infection Configuration](infection.md).
 
 ## Documentation Workflows
 
 `.github/workflows/docs.yml` is separate from `ci.yml` on purpose: it generates
-the DocGen site on every push to `main` and publishes it to the `gh-pages`
-branch, which needs `contents: write` for that one job while CI stays
+the DocGen site on every push to the default branch and publishes it to the
+`gh-pages` branch, which needs `contents: write` for that one job while CI stays
 read-only. It restores the DocGen cache between runs, so a documentation job
 costs the size of the change.
 
@@ -106,18 +105,19 @@ It runs `composer test:coverage` before `composer doc-gen`, and sets up PHP with
 name the test cases covering it. DocGen reads no configuration file, so the
 workflow passes what only it knows: `--base-url`, derived from
 `GITHUB_REPOSITORY`, is what makes every page carry its canonical link and the
-tags a shared link is rendered from. The step earns its minutes twice over: PHPUnit is configured
-with `requireCoverageMetadata` and `beStrictAboutCoverageMetadata`, so a test
-that executes a class it did not declare in `#[CoversClass]` or `#[UsesClass]`
-is reported as risky and fails the run. Without a coverage run somewhere on
-`main`, that metadata drifts unnoticed — the rest of CI never asks for it.
+tags a shared link is rendered from. The step earns its minutes twice over:
+PHPUnit is configured with `requireCoverageMetadata` and
+`beStrictAboutCoverageMetadata`, so a test that executes a class it did not
+declare in `#[CoversClass]` or `#[UsesClass]` is reported as risky and fails the
+run. Without a coverage run somewhere on the default branch, that metadata drifts
+unnoticed — the rest of CI never asks for it.
 
 The `/setup-toolkit-doc-gen` skill also ships a pull request preview workflow
 (`docs-preview.yml`) that publishes a diff-mode site under `pr/<number>/` of the
-same branch and comments the link. This repository does not run it — it is
-developed on `main` without pull requests — so it stays a template. See
-[DocGen Configuration](doc-gen.md) for the publishing model and the one-time
-Pages setup.
+same branch and comments the link. Install it only if the project reviews through
+pull requests; it owns `pr/<number>/` and nothing else, so it is never a
+replacement for `docs.yml`. See [DocGen Configuration](doc-gen.md) for the
+publishing model and the one-time Pages setup.
 
 ## Status Badges
 

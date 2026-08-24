@@ -310,15 +310,15 @@ the branch nor comment. Publishing those safely needs the `workflow_run` pattern
 upload an artifact, publish it from a workflow that runs on the default branch — and never `pull_request_target`,
 which would run the pull request's code with a write token.
 
-This repository runs `docs.yml` (`.github/workflows/docs.yml`) and keeps `docs-preview.yml` as a template only,
-because it is developed on `main` without pull requests.
+A project that does not review through pull requests installs `docs.yml` alone; `docs-preview.yml` has nothing to
+publish without them.
 
-Its `composer doc-gen` script passes `--coverage=build/coverage-xml`, so the workflow runs `composer test:coverage`
-under pcov before it and every method on the published site names the test cases covering it. That step is also the
-only place on `main` where PHPUnit's `beStrictAboutCoverageMetadata` is exercised, so it is what keeps the suite's
-`#[CoversClass]` and `#[UsesClass]` declarations from drifting. The workflow itself passes only `--base-url`, derived
-from `GITHUB_REPOSITORY`, because that is the one value the repository cannot state for itself. See
-[GitHub Actions Configuration](github-actions.md).
+Point the `composer doc-gen` script at a coverage report with `--coverage=build/coverage-xml` and run
+`composer test:coverage` under pcov before it, and every method on the published site names the test cases covering
+it. That step earns its minutes twice over: it is usually the only place on the default branch where PHPUnit's
+`beStrictAboutCoverageMetadata` is exercised, so it is what keeps `#[CoversClass]` and `#[UsesClass]` declarations
+from drifting. The workflow itself passes only `--base-url`, derived from `GITHUB_REPOSITORY`, because that is the
+one value the repository cannot state for itself. See [GitHub Actions Configuration](github-actions.md).
 
 ## Local Preview
 

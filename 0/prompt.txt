@@ -1,0 +1,1 @@
+https://github.com/k-kinzal/ztd-query-php/blob/main/.github/workflows/sql-faker.yml 参考です。PR上で実行するものなのでcomposerに入れる利点がないです。

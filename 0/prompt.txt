@@ -1,0 +1,4 @@
+ちょっと理解できません。私の理解では「match (true) {
+    $c instanceof ImportCommand => $this->import($c),
+    default => $this->generic($c),      // 残り49個を「未処理」と報告すべきか?
+}」はSealedしてはいけないケースです。なぜならこのmatchは何に対する全域なのか明示されないため、全く関係ないinstanceofをarmに書くことが可能だし、そういうことは起こり得ます。なので記法の話をしています。

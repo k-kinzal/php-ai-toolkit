@@ -1,0 +1,4 @@
+説明を求めたはずです。限定条件で作成しろとは一度も言っていません。interface Shape / abstract class Shapeはメインでありこれの実装可能性が最も重要になります。他言語でもこれはあると思っておりできない理由はなんでしょうか。「match (true) {
+    $e instanceof NotFoundException => 404,
+    default => 500,          // ← Throwable の実装 47 個が「未処理」と報告される
+}」はそもそも全域を取れない、そもそも別条件が入る可能性があるというので妥当な認識ですが、それとinterface Shape / abstract class Shapeをサポートしない理由は別な認識です。interface/classに対するmatch/switchの記法がないとかそういう話でしょうか？

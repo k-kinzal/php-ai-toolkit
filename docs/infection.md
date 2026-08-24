@@ -38,13 +38,10 @@ That second command is the whole-tree gate. For the changed-lines gate, add
 `--git-diff-lines --git-diff-base=origin/main --ignore-msi-with-no-mutations
 --min-msi=85 --min-covered-msi=85`.
 
-Infection holds every mutant result in memory and encodes all of them into
-`build/infection/infection.json` after the score is printed, so the report writer
-needs several times the memory the run itself does. At `1G` the whole-tree gate
-died in that writer with an exhausted memory limit — after reporting the score, so
-the job failed on a report rather than on the gate. `4G` is what the whole tree
-needs today; raise it with the tree, and keep the workflow and this page on the
-same number.
+The memory limit is sized for the reports rather than for the run. Infection keeps
+every mutant result in memory and encodes all of them into
+`build/infection/infection.json` once the score is printed, which costs several
+times what scoring the mutants does.
 
 Exit codes:
 
@@ -104,14 +101,11 @@ The whole-tree numbers are a ratchet. `main` scores 81.55% as of this commit: of
 are the same number here — every mutant is reachable by some test, and the 18% that
 survive are code the tests run without checking.
 
-The thresholds sit below that, at 81. The figures above are the ones CI measured on
-PHP 8.4, the version the gate runs on, so what separates them is half a point —
-about seventy mutants. A threshold resting exactly on the measured score turns red
-on a single mutant that a different runtime classifies differently, and this margin
-is thinner than it should be: a slice of new code as weakly checked as the render
-pages once were would spend it. A suite that actually stops verifying still loses
-mutants by the dozen, so the ratchet catches the thing it is for. Raise both numbers
-when the score rises; that is the one routine edit these files should get.
+The thresholds sit below that, at 81: a threshold resting exactly on the measured
+score turns red on a single mutant that a different runtime classifies differently.
+A suite that actually stops verifying loses mutants by the dozen, so the ratchet
+still catches the thing it is for. Raise both numbers when the score rises; that is
+the one routine edit these files should get.
 
 The changed-lines number is higher because new code has no backlog to pay off: code
 being written now can be held to a bar the whole tree cannot reach yet, and that is

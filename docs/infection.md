@@ -98,27 +98,29 @@ Infection reports two scores, and both are enforced:
 - **Covered MSI** — killed mutants over the mutants in covered code only. It falls
   when tests execute code without asserting anything about it.
 
-The whole-tree numbers are a ratchet. `main` scores 82.26% as of this commit: of the
-9468 mutants generated from `src`, 7779 are killed by the test suite, 9 time out,
-and 1680 survive. Mutation code coverage is 100%, so MSI and Covered MSI are the
-same number here — every mutant is reachable by some test, and the 18% that survive
-are code the tests run without checking.
+The whole-tree numbers are a ratchet. `main` scores 81.55% as of this commit: of the
+12493 mutants generated from `src`, 10175 are killed by the test suite, 11 time out,
+2 error, and 2305 survive. Mutation code coverage is 100%, so MSI and Covered MSI
+are the same number here — every mutant is reachable by some test, and the 18% that
+survive are code the tests run without checking.
 
-The thresholds sit a point below that, at 81, because CI scores mutants on PHP 8.4
-while the measurement was taken on PHP 8.5: a threshold resting exactly on the
-measured score turns red on a single mutant that a different runtime classifies
-differently. A suite that actually stops verifying loses mutants by the dozen, so
-the ratchet still catches the thing it is for. Raise both numbers when the score
-rises; that is the one routine edit these files should get.
+The thresholds sit below that, at 81. The figures above are the ones CI measured on
+PHP 8.4, the version the gate runs on, so what separates them is half a point —
+about seventy mutants. A threshold resting exactly on the measured score turns red
+on a single mutant that a different runtime classifies differently, and this margin
+is thinner than it should be: a slice of new code as weakly checked as the render
+pages once were would spend it. A suite that actually stops verifying still loses
+mutants by the dozen, so the ratchet catches the thing it is for. Raise both numbers
+when the score rises; that is the one routine edit these files should get.
 
 The changed-lines number is higher because new code has no backlog to pay off: code
 being written now can be held to a bar the whole tree cannot reach yet, and that is
 the only moment when enforcing it is cheap.
 
 85 is where this codebase's own idiom puts the ceiling. The largest single source of
-surviving mutants is `Coalesce`: 491 mutants, 106 killed, 385 escaped. Nearly all of
-them come from optional constructor injection — `$this->x = $x ?? new X()`, which
-appears at 510 sites in `src` — where the mutant reorders the operands into
+surviving mutants is `Coalesce`: 542 of the 2305 that survive. Nearly all of them
+come from optional constructor injection — `$this->x = $x ?? new X()`, which
+appears at 519 sites in `src` — where the mutant reorders the operands into
 `new X() ?? $x`. Every collaborator injected this way is a stateless `final` class,
 so the injected instance and a fresh one behave identically, and no test can tell
 them apart: killing such a mutant would need reflection, which

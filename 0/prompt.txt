@@ -1,0 +1,1 @@
+https://github.com/k-kinzal/php-ai-toolkit/actions/runs/32552638671/job/96981749075 CIがまだ落ちているようです。

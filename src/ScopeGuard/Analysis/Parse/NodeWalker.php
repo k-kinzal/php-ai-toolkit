@@ -51,14 +51,29 @@ final class NodeWalker
     /**
      * Returns the direct sub-node values of one node.
      *
-     * @return array<mixed>
+     * @return list<\PhpParser\Node|list<\PhpParser\Node>>
      */
     public function children(\PhpParser\Node $node): array
     {
         $values = get_object_vars($node);
         $children = [];
         foreach ($node->getSubNodeNames() as $name) {
-            $children[] = $values[$name] ?? null;
+            $value = $values[$name] ?? null;
+            if ($value instanceof \PhpParser\Node) {
+                $children[] = $value;
+                continue;
+            }
+            if (!is_array($value)) {
+                continue;
+            }
+
+            $nestedNodes = [];
+            foreach ($value as $nested) {
+                if ($nested instanceof \PhpParser\Node) {
+                    $nestedNodes[] = $nested;
+                }
+            }
+            $children[] = $nestedNodes;
         }
 
         return $children;

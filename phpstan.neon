@@ -38,6 +38,15 @@ parameters:
             # alongside the others. This is the only file that runs that text,
             # so it is the only place the catch is needed.
             - 'src/Doctest/Executor/ExpressionEvaluator.php'
+        mixedArrayReturnAllowedPaths:
+            # The serialized cache is intentionally untyped at this lowest
+            # storage boundary. ParseCache and RenderCache validate their own
+            # precise shapes immediately after reading it.
+            - 'src/DocGen/Cache/CacheStore.php'
+            # Doctest evaluates arbitrary example code. The variables that code
+            # defines can therefore be any PHP value; the context is the one
+            # boundary that carries them between evaluations.
+            - 'src/Doctest/Executor/ExecutionContext.php'
     ignoreErrors:
         # PHPStan's ErrorFormatterTestCase and related internal classes
         # (ErrorsConsoleStyle, SymfonyOutput, SymfonyStyle) are not marked

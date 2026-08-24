@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Parallel;
 
+use function array_key_exists;
 use function array_map;
 use function count;
 use function fclose;
 use function fwrite;
 use function is_array;
+use function is_bool;
 use function is_int;
 use function is_string;
 use function ob_end_clean;
@@ -198,7 +200,7 @@ final class WorkerPool
      *
      * @param string|false $payload what the worker wrote to its socket
      *
-     * @return ?array<mixed>
+     * @return ?array{ok: bool, result: mixed}
      */
     public function unframed($payload): ?array
     {
@@ -217,8 +219,15 @@ final class WorkerPool
         }
 
         $decoded = unserialize($body);
+        if (!is_array($decoded)
+            || !array_key_exists('ok', $decoded)
+            || !is_bool($decoded['ok'])
+            || !array_key_exists('result', $decoded)
+        ) {
+            return null;
+        }
 
-        return is_array($decoded) ? $decoded : null;
+        return ['ok' => $decoded['ok'], 'result' => $decoded['result']];
     }
 
     /**
@@ -278,7 +287,7 @@ final class WorkerPool
         }
 
         $decoded = $this->unframed($payload);
-        if ($decoded === null || !isset($decoded['ok'])) {
+        if ($decoded === null) {
             return ['ok' => false, 'result' => null, 'reason' => 'the worker process sent no result'];
         }
 

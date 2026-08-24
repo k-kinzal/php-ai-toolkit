@@ -8,6 +8,7 @@ parametersSchema:
         forbiddenNamespacePrefixes: listOf(string())
         forbiddenClassLikeNameSuffixes: listOf(string())
         broadCatchAllowedPaths: listOf(string())
+        mixedArrayReturnAllowedPaths: listOf(string())
     ])
 
 parameters:
@@ -83,6 +84,7 @@ parameters:
             - Probe
             - Probes
         broadCatchAllowedPaths: []
+        mixedArrayReturnAllowedPaths: []
 
 services:
     aiRules.throwType.tokenGetAll:
@@ -273,6 +275,13 @@ services:
 
     aiRules.rule.forbidGenericThrowsTag:
         class: PhpAiToolkit\PhpStan\Rule\ForbidGenericThrowsTagRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidMixedArrayReturnType:
+        class: PhpAiToolkit\PhpStan\Rule\PhpDoc\ForbidMixedArrayReturnTypeRule
+        arguments:
+            mixedArrayReturnAllowedPaths: %customRules.mixedArrayReturnAllowedPaths%
         tags:
             - phpstan.rules.rule
 

@@ -205,7 +205,7 @@ final class SourceScanner
     /**
      * Returns the direct sub-node values of one node.
      *
-     * @return array<mixed>
+     * @return list<\PhpParser\Node>
      */
     public function children(\PhpParser\Node $node): array
     {
@@ -222,7 +222,9 @@ final class SourceScanner
         foreach ($children as $child) {
             if (is_array($child)) {
                 foreach ($child as $item) {
-                    $flattened[] = $item;
+                    if ($item instanceof \PhpParser\Node) {
+                        $flattened[] = $item;
+                    }
                 }
                 continue;
             }

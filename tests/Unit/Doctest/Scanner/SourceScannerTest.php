@@ -200,14 +200,13 @@ final class SourceScannerTest extends TestCase
         self::assertSame([], iterator_to_array($scanner->functionTarget($function, '/a.php', null), false));
     }
 
-    public function testChildrenReturnsTheSubNodesOfANodeAndNothingElse(): void
+    public function testChildrenReturnsTheNodeSubNodes(): void
     {
         $scanner = new SourceScanner();
         $class = new \PhpParser\Node\Stmt\Class_('Widget', ['stmts' => [new \PhpParser\Node\Stmt\ClassMethod('run')]]);
 
         $children = $scanner->children($class);
 
-        self::assertNotSame([], $children);
-        self::assertContainsOnlyInstancesOf(\PhpParser\Node::class, $children);
+        self::assertSame([$class->name, $class->stmts[0]], $children);
     }
 }

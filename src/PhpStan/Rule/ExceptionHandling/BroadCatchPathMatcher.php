@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule\ExceptionHandling;
 
-use function fnmatch;
-use function ltrim;
-
+use PhpAiToolkit\PhpStan\Rule\Shared\RulePathMatcher;
 use PhpAiToolkit\PhpStan\Rule\Shared\RulePathNormalizer;
 
 /**
@@ -14,22 +12,15 @@ use PhpAiToolkit\PhpStan\Rule\Shared\RulePathNormalizer;
  */
 final class BroadCatchPathMatcher
 {
-    /**
-     * @var list<string>
-     * @readonly
-     */
-    private array $patterns;
-
     /** @readonly */
-    private RulePathNormalizer $pathNormalizer;
+    private RulePathMatcher $pathMatcher;
 
     /**
      * @param list<string> $patterns fnmatch patterns of boundary files or directories
      */
     public function __construct(array $patterns = [], ?RulePathNormalizer $pathNormalizer = null)
     {
-        $this->patterns = $patterns;
-        $this->pathNormalizer = $pathNormalizer ?? new RulePathNormalizer();
+        $this->pathMatcher = new RulePathMatcher($patterns, $pathNormalizer);
     }
 
     /**
@@ -37,14 +28,6 @@ final class BroadCatchPathMatcher
      */
     public function isAllowed(string $filePath): bool
     {
-        $path = $this->pathNormalizer->normalize($filePath);
-        foreach ($this->patterns as $pattern) {
-            $normalizedPattern = ltrim($this->pathNormalizer->normalize($pattern), '/');
-            if (fnmatch($normalizedPattern, $path) || fnmatch('*/' . $normalizedPattern, $path)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->pathMatcher->matches($filePath);
     }
 }

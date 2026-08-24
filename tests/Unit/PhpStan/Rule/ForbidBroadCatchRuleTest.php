@@ -7,6 +7,7 @@ namespace Tests\Unit\PhpStan\Rule;
 use Override;
 use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\BroadCatchPathMatcher;
 use PhpAiToolkit\PhpStan\Rule\ForbidBroadCatchRule;
+use PhpAiToolkit\PhpStan\Rule\Shared\RulePathMatcher;
 use PhpAiToolkit\PhpStan\Rule\Shared\RulePathNormalizer;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
@@ -20,6 +21,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[CoversClass(ForbidBroadCatchRule::class)]
 #[UsesClass(BroadCatchPathMatcher::class)]
 #[UsesClass(RulePathNormalizer::class)]
+#[UsesClass(RulePathMatcher::class)]
 #[Medium]
 final class ForbidBroadCatchRuleTest extends RuleTestCase
 {

@@ -97,15 +97,16 @@ final class WorkerPoolTest extends TestCase
     public function testUnframedRejectsAnythingThatIsNotAWholeResult(): void
     {
         $pool = new WorkerPool();
-        $whole = $pool->framed(serialize(['ok' => true]));
+        $whole = $pool->framed(serialize(['ok' => true, 'result' => null]));
 
-        self::assertSame(['ok' => true], $pool->unframed($whole));
+        self::assertSame(['ok' => true, 'result' => null], $pool->unframed($whole));
         self::assertNull($pool->unframed(substr($whole, 0, -3)));
         self::assertNull($pool->unframed(false));
         self::assertNull($pool->unframed(''));
         self::assertNull($pool->unframed('no frame at all'));
         self::assertNull($pool->unframed("x\nbody"));
         self::assertNull($pool->unframed($pool->framed(serialize('not an array'))));
+        self::assertNull($pool->unframed($pool->framed(serialize(['ok' => true]))));
     }
 
     public function testFinishReturnsTheResultsOfTheJobsThisProcessTookOver(): void

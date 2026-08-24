@@ -1,0 +1,1 @@
+<bash-stdout>Deleted branch docgen-cache (was 9eba5c8).</bash-stdout><bash-stderr></bash-stderr>

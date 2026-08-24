@@ -1,0 +1,147 @@
+<task-notification>
+<task-id>a8a2990787072258f</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-ab-Projects-php-ai-toolkit/71ff1415-1a04-4fb0-acce-60cb84154691/tasks/a8a2990787072258f.output</output-file>
+<status>completed</status>
+<summary>Agent "Explore skills and related tools" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>## 1. `skills/` inventory and what LocGuard actually is
+
+`/Users/ab/Projects/php-ai-toolkit/skills/` holds 8 skill directories, each with a `SKILL.md` (YAML frontmatter: `name`, `description`) plus optional literal config templates shipped alongside:
+
+| Skill dir | Template files shipped |
+|---|---|
+| `setup-toolkit-agents-md` | `AGENTS.md` |
+| `setup-toolkit-deptrac` | `examples/{application-layers,component-layers,library-public-api,module-boundaries,phpstan-extension-components}.deptrac.yaml` |
+| `setup-toolkit-github-actions` | `ci.yml` |
+| `setup-toolkit-loc-guard` | `loc.yaml` |
+| `setup-toolkit-php-compatibility` | `phpcs.xml.dist` |
+| `setup-toolkit-php-cs-fixer` | (none — inline) |
+| `setup-toolkit-phpstan` | `phpstan.neon` |
+| `setup-toolkit-phpunit` | `phpunit.xml.dist`, `phpunit9.xml.dist` |
+
+**LocGuard is not a separate composer package.** It is a first-party CLI *inside this repo*:
+
+- Package: `k-kinzal/php-ai-toolkit` (type `phpstan-extension`, not on Packagist — installed via VCS repository entry per `/Users/ab/Projects/php-ai-toolkit/README.md`).
+- Binary: `/Users/ab/Projects/php-ai-toolkit/bin/loc-guard`, declared in `composer.json` `"bin": ["bin/php-ai-toolkit", "bin/loc-guard"]`, so consumers get `vendor/bin/loc-guard`.
+- Source: `/Users/ab/Projects/php-ai-toolkit/src/LocGuard/` — namespace `PhpAiToolkit\LocGuard`, with subpackages `Cli/`, `Config/`, `Analysis/`, `Filesystem/`, `Reporting/`, plus `LocGuardException.php`. Deptrac treats it as its own layer (`LocGuard: ~`, i.e. depends on nothing).
+- Tests: `/Users/ab/Projects/php-ai-toolkit/tests/Unit/LocGuard/{Analysis,Cli,Config,Filesystem,Reporting}` — 64 test files.
+- Implementation is token-based (`PhpTokenNavigator`, `TokenLineCounter`, `CyclomaticComplexityCalculator`), not PHPStan/AST — it is fully independent of PHPStan.
+
+Config `/Users/ab/Projects/php-ai-toolkit/loc.yaml` (identical to skill template `/Users/ab/Projects/php-ai-toolkit/skills/setup-toolkit-loc-guard/loc.yaml`):
+
+```yaml
+paths:
+  - src
+exclude: []
+limits:
+  max_file_lines: 500
+  max_file_ncloc: 350
+  max_class_lines: 400
+  max_trait_lines: 300
+  max_interface_lines: 200
+  max_enum_lines: 200
+  max_function_lines: 50
+  max_method_lines: 50
+  max_cyclomatic_complexity: 20
+report:
+  reporter: ai
+  order_by: [path, line, rule]
+```
+
+Invocation and contract:
+- CLI: `vendor/bin/loc-guard --config=loc.yaml`, flags `--reporter=`/`--format=`, `--help`, `--version` (`src/LocGuard/Cli/Application.php`, VERSION `1.0.0`).
+- Composer script in this repo: `"loc-guard": "@php bin/loc-guard --config=loc.yaml"`; consumers get `"loc-guard": "loc-guard --config=loc.yaml"`.
+- Exit codes: `0` clean, `1` violations, `2` config/runtime error.
+- Reporters (`src/LocGuard/Reporting/ReporterFactory.php`): `ai` (default), `text`, `json`. The AI reporter emits a machine-greppable header `LOC_GUARD_FAILED` / `LOC_GUARD_PASSED`, then a summary, then per-violation remediation actions (`AiReportGuidance`, `AiViolationAction` — e.g. "Split the long function-like body into smaller named operations…"). Violation model is `path, line, rule, actual, limit, message` (`src/LocGuard/Analysis/Violation.php`), sortable by any of `path|line|rule|actual|limit`.
+
+Deptrac, by contrast, is a genuine third-party package (`deptrac/deptrac` in `require-dev`), invoked through a root launcher `/Users/ab/Projects/php-ai-toolkit/deptrac.php` because old versions lack `vendor/bin/deptrac`; config `/Users/ab/Projects/php-ai-toolkit/deptrac.yaml`.
+
+## 2. Setup-skill instruction structure (the house style)
+
+Every `SKILL.md` follows the same sections, in this order:
+
+1. Frontmatter `name` + long `description` stuffed with trigger phrases.
+2. **Prerequisites** — inspect `composer.json` (autoload roots, existing config, existing scripts, PHP floor) before writing anything; `composer require --dev k-kinzal/php-ai-toolkit`.
+3. **Template** — "Read the template from `vendor/k-kinzal/php-ai-toolkit/skills/&lt;skill&gt;/&lt;file&gt;` and apply it to the project root as `&lt;file&gt;`." Templates are literal files in the skill dir, never inlined.
+4. **Merging with existing configuration** — explicit per-key merge rules; recurring rule "do not add broad excludes/ignores just to make it pass; fix the source or report what needs a human decision."
+5. **Recommended Composer Scripts** — canonical names: `test` / `test:unit` / `test:unit:legacy`, `lint` (aggregate), `phpstan`, `compat`, `loc-guard`, `deptrac`, `format`, `format:check`. Aggregate order in root `composer.json`: `@format:check → @phpstan → @compat → @loc-guard → @deptrac`. Skills instruct merging into an existing `lint`/`check` rather than replacing.
+6. **Verification** — exact command + exit-code semantics.
+7. **References** — links to `vendor/k-kinzal/php-ai-toolkit/docs/&lt;tool&gt;.md`.
+
+Each tool also gets a matching doc under `docs/` (`docs/loc-guard.md`, `docs/deptrac.md`, …) linked from `README.md` and `AGENTS.md`.
+
+CI convention (`skills/setup-toolkit-github-actions/{SKILL.md,ci.yml}`): two jobs, `tests` and `lint`, both matrixed over PHP 8.0–8.5, each PHP minor copying `composer.lock.php-&lt;ver&gt;` into `composer.lock`; every gate is its own named step (`composer loc-guard`, `composer deptrac`, …) — the skill explicitly forbids hiding gates behind one `composer lint` step, and requires SHA-pinned actions, `permissions: contents: read`, `concurrency`, `fail-fast: false`, `timeout-minutes`.
+
+Distribution detail worth knowing: `/Users/ab/Projects/php-ai-toolkit/.gitattributes` `export-ignore`s `docs/` and `tests/` but **not** `skills/`, so skills ship in the dist tarball (skill "References" links into `vendor/.../docs/` which is not actually exported — a pre-existing inconsistency). Skills are auto-discovered by directory scan at install time (`src/Installer/Cli/Command/PackageSkillDirectoryScanner.php` — `scandir` over `skills/`, every subdirectory becomes an installable skill), so **adding a new `skills/setup-toolkit-&lt;x&gt;/` directory requires zero registration code**.
+
+## 3. `docs/` — no directory-structure feature exists or is planned
+
+Greps for `directory`, `structure`, `subdirector`, `max_files`, `required file`, `naming` across `docs/`, `skills/`, `README.md`, `AGENTS.md` return only:
+
+- `docs/loc-guard.md:66` — "`exclude` entries are glob patterns relative to the config directory".
+- `docs/rules/SrcUnitTestPairRule.md:122` — "maps files by mirroring the directory structure".
+- `skills/setup-toolkit-agents-md/SKILL.md:74,99,134` — `{{DIRECTORY_STRUCTURE}}` placeholder for the generated AGENTS.md tree.
+- Deptrac skill/examples — `directory` collectors.
+
+Nothing about file-count-per-directory, subdirectory-count, required filenames, or filename-pattern allowlists. There is no roadmap/TODO doc in the repo. Git log shows the LocGuard CLI was the most recent structural addition: `4b96c35 Add LocGuard CLI and reorganize toolkit`.
+
+The closest existing precedent is `SrcUnitTestPairRule` — a PHPStan rule that *does* touch the filesystem: it implements `Rule&lt;FileNode&gt;` and inspects `$scope-&gt;getFile()`, mapping `src/…Foo.php` ↔ `tests/Unit/…FooTest.php` via configurable `srcMarker` / `unitTestMarker` / `srcUnitTestPairExcludePatterns` (`src/PhpStan/Rule/SrcUnitTestPairRule.php`, registered in `extension.neon` under `parameters.customRules`). So a "required file must exist" check is provably expressible as a PHPStan rule — but only per-analysed-PHP-file. Counting files per directory, counting subdirectories, or flagging non-PHP files has no PHPStan entry point (PHPStan only visits files it analyses, and directories with zero PHP files are invisible).
+
+## 4. Sibling repo on disk: `/Users/ab/Projects/guard-rs` — the actual "LocGuard family"
+
+This is the reference architecture you're looking for. It is a **Rust** repo by the same author (`repository = "https://github.com/k-kinzal/guard-rs"`) containing three independently published crates, intentionally **not** a Cargo workspace and sharing no code:
+
+- `/Users/ab/Projects/guard-rs/locguard/` — size/length limits (the Rust analogue of the PHP LocGuard).
+- `/Users/ab/Projects/guard-rs/layerguard/` — directory-level layer boundaries (Rust analogue of Deptrac).
+- `/Users/ab/Projects/guard-rs/cycleguard/` — Acyclic Dependencies Principle over directory components (Tarjan SCC).
+
+`README.md` frames them as covering "the structural axes of ArchUnit-style architecture testing: **size** (locguard), **layering** (layerguard), and **cycle-freeness** (cycleguard)" — a directory/file-structure guard is the obvious fourth axis and there is currently no crate for it.
+
+The per-guard conventions are codified in `/Users/ab/Projects/guard-rs/AGENTS.md` ("Conventions"), and any new guard is expected to match:
+
+- Library crate `src/lib.rs` exposing `run(paths, config) -&gt; Result&lt;Report&gt;`, thin `src/main.rs` on `clap` derive.
+- Config loaded via `Config::load` from `&lt;tool&gt;.toml` (`locguard.toml`, `layerguard.toml`, `cycleguard.toml`) at the crate root.
+- `--format text|json`, exit code `1` on violations.
+- Library exposes a typed `Error` enum in `src/error.rs`; binary wraps with `anyhow` (never return `anyhow::Error` from the library).
+- `[lints]` table: `unsafe_code = "forbid"`, `clippy::all` + `clippy::pedantic`, panic-source guard (`unwrap_used`/`expect_used`/`panic`/`todo`/`unimplemented` = warn).
+- Internal module layout is uniform: `src/{config,analyze,discover,report,error,syntax|imports|resolve|graph}` with the leaf data layers forbidden from depending on logic layers.
+
+Config formats (TOML, flat `[limits]` for locguard; array-of-tables for the structural guards):
+
+`/Users/ab/Projects/guard-rs/layerguard/layerguard.toml`
+```toml
+exclude = ["target"]
+
+[[layers]]
+name = "imports"
+path = "src/imports"
+
+[[rules]]
+from = "imports"
+deny = ["analyze", "discover", "resolve", "config", "report", "error"]
+# or: allow = [...]  -&gt; non-empty allow forbids every unlisted layer
+```
+
+`/Users/ab/Projects/guard-rs/cycleguard/cycleguard.toml`
+```toml
+exclude = ["target"]
+
+[[components]]
+name = "imports"
+path = "src/imports"
+```
+
+`locguard.toml` is a single flat `[limits]` table with ~500 keys, each metric doubled with a `_without_tests` variant (e.g. `max_file_lines` / `max_file_lines_without_tests`, `max_items_per_file`, `max_top_level_structs_per_file`, `max_module_nesting = 4`, `max_columns = 120`). Note `max_items_per_module`, `max_mods_per_file`, `max_module_nesting` — the closest existing thing to "structure" limits, but they're *syntactic* modules, not filesystem directories. locguard also has a **calibration mode** (`--stats`, `--stats-summary`, both with `--format json`) that prints the max observed value per metric so you can seed a config against an existing codebase — a very useful pattern for a structure guard whose thresholds are inherently project-specific.
+
+Integration/CI in guard-rs (`/Users/ab/Projects/guard-rs/.github/workflows/ci.yml`): a `discover` job globs `*/Cargo.toml` to build the crate matrix, a `check` job runs fmt/clippy/test per crate, and a **`dogfood` job runs every guard against every crate that contains a matching `&lt;crate&gt;/&lt;guard&gt;.toml`** — so adding a fourth guard needs no CI change. Plus `/Users/ab/Projects/guard-rs/scripts/quality-guards.sh`, a hand-written ledger of grep-based guards for patterns the tools don't cover (e.g. TODO/FIXME debt markers).
+
+## Bearing on your decision
+
+Concrete constraints from the evidence, not opinions:
+
+- The "LocGuard pattern" in the PHP world is **not** a standalone package — it is a second binary inside `k-kinzal/php-ai-toolkit` with its own top-level namespace, its own YAML config at project root, its own `ai|text|json` reporters, and its own Composer script wired into `lint` + a named CI step. Replicating it for a structure guard means: `src/StructGuard/` + `bin/struct-guard` + `struct.yaml` + `skills/setup-toolkit-struct-guard/{SKILL.md,struct.yaml}` + `docs/struct-guard.md` + a `deptrac.yaml` layer + a `composer.json` `bin`/`scripts` entry. Zero installer changes (skills are scandir-discovered).
+- The "standalone tool with its own config" pattern is what `guard-rs` does, but that repo is Rust-only and Rust-parsing; a PHP/language-agnostic structure guard would not naturally live there unless you write it in Rust as a language-neutral filesystem checker (which is plausible — directory/file-count/naming rules need no parser at all).
+- The PHPStan-rule route is materially constrained: PHPStan only surfaces files it analyses (`Rule&lt;FileNode&gt;`, `$scope-&gt;getFile()` — see `SrcUnitTestPairRule`), it cannot see empty or non-PHP directories, has no per-directory aggregation node, and its errors must be attributable to a file+line. "Max files per directory" / "max subdirectories" / "required file `README.md` exists" are directory-scoped facts with no owning PHP file, so they fit the CLI shape (LocGuard's `Violation` already tolerates directory-ish reporting via `path` + `line`) far better than the rule shape.</result>
+<usage><subagent_tokens>86102</subagent_tokens><tool_uses>34</tool_uses><duration_ms>175379</duration_ms></usage>
+</task-notification>

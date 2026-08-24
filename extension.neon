@@ -285,6 +285,11 @@ services:
         tags:
             - phpstan.rules.rule
 
+    aiRules.rule.requireListForArrayLiteral:
+        class: PhpAiToolkit\PhpStan\Rule\PhpDoc\RequireListForArrayLiteralRule
+        tags:
+            - phpstan.rules.rule
+
     aiRules.rule.requireExhaustiveDispatch:
         class: PhpAiToolkit\PhpStan\Rule\RequireExhaustiveDispatchRule
         tags:

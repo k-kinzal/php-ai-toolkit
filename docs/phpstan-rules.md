@@ -25,6 +25,7 @@ Rules applied to all code.
 | [ForbidBroadCatchRule](rules/ForbidBroadCatchRule.md) | Forbids catching `Throwable`, `Exception`, and the `LogicException`/`Error` families outside configured boundary paths | `customRules.broadCatch` |
 | [ForbidGenericThrowsTagRule](rules/ForbidGenericThrowsTagRule.md) | Forbids `@throws \Exception` and `@throws \Throwable` tags | `customRules.genericThrowsTag` |
 | [ForbidMixedArrayReturnTypeRule](rules/ForbidMixedArrayReturnTypeRule.md) | Forbids generic arrays with `mixed` values in function and method return PHPDoc while leaving input declarations unrestricted | `customRules.mixedArrayReturnType` |
+| [RequireListForArrayLiteralRule](rules/RequireListForArrayLiteralRule.md) | Requires `list<V>` instead of `array<int, V>` when a property or callable visibly owns a non-empty list literal; input parameters remain unrestricted | `customRules.arrayLiteralListType` |
 | [RequireExhaustiveDispatchRule](rules/RequireExhaustiveDispatchRule.md) | Requires a `switch` or `match` that names its subject — `match ($suit)`, or `match ($payment::class)` for a sealed hierarchy — to name a branch for every value that subject can hold, the way Rust and Kotlin check a match over a closed type | `customRules.exhaustiveDispatch`, `customRules.exhaustiveDispatchDefault` |
 
 ## Test Class

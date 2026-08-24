@@ -1,0 +1,286 @@
+<task-notification>
+<task-id>ab94e8873af590305</task-id>
+<tool-use-id>toolu_01Rpz1DbbQAZWzfgcPuDV5Di</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-ab-Projects-php-ai-toolkit/71ff1415-1a04-4fb0-acce-60cb84154691/tasks/ab94e8873af590305.output</output-file>
+<status>completed</status>
+<summary>Agent "Design tree-guard implementation plan" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I have verified everything I need from the repo. A few notable verification results before the plan: the CI lint job uses bare unnamed `- run: composer &lt;script&gt;` steps; LocGuard CLI tests do **not** clean up temp dirs (the try/finally cleanup pattern lives in `tests/Unit/Installer/`, using a src collaborator for removal); no `#[Medium]` attribute is used anywhere in `tests/Unit/LocGuard`; and Composer's lock `content-hash` does not cover `bin`/`scripts`, so the six `composer.lock.php-8.x` files do not need regeneration. The plan below reflects the codebase as it actually is.
+
+# Implementation Plan: tree-guard (directory/file structure constraint checker)
+
+Repo: `/Users/ab/Projects/php-ai-toolkit` · Namespace `PhpAiToolkit\TreeGuard` · Source `src/TreeGuard/` · Binary `bin/tree-guard` · Config `tree.yaml` · Mirrors LocGuard exactly (verified against `src/LocGuard/**`).
+
+---
+
+## 1. tree.yaml schema (the contract)
+
+```yaml
+paths:                      # list&lt;string&gt;, default ['src']; dirs relative to config dir (absolute allowed)
+  - src
+  - tests/Unit
+
+exclude: []                 # list&lt;string&gt; path globs relative to config dir; matching files are ignored,
+                            # matching directories are pruned (entire subtree skipped)
+
+rules:                      # list of rule blocks, default []
+  - path: 'src/*'           # REQUIRED. Directory pattern (semantics below)
+    max_files: 20           # int &gt;=1: max direct child files
+    max_dirs: 10            # int &gt;=1: max direct child subdirectories
+    max_total_files: 200    # int &gt;=1: max recursive file count under the matched dir (inclusive)
+    max_depth: 3            # int &gt;=1: max directory nesting depth below the matched dir
+    allow: ['*.php']        # list of basename globs; every direct child file must match at least one
+    deny: ['*Helper.php']   # list of basename globs; no direct child file may match any
+    allow_dirs: ['[A-Z]*']  # same as allow, for direct child directory names
+    deny_dirs: ['Helpers']  # same as deny, for direct child directory names
+    require: ['README.md']  # exact file names that must exist as direct children
+    forbid_empty: true      # bool, default false: matched dir must not be empty
+    file_case: pascal       # pascal|camel|snake|kebab: case convention for direct child file names
+    dir_case: pascal        # same for direct child directory names
+
+report:
+  reporter: ai              # ai|text|json, default ai
+  order_by: [path, rule]    # fields: path, rule, actual, limit; default [path, rule]
+```
+
+**Decided semantics (specify these verbatim in docs/tree-guard.md):**
+
+- **Pattern matching is segment-aware**, not raw `fnmatch` on the whole path. The pattern and the config-root-relative directory path are split on `/`. A segment of exactly `**` matches **zero or more** path segments; every other segment must match exactly one path segment via `fnmatch()` (so `*`, `?`, `[...]` never cross `/`). Patterns are anchored at both ends. Examples: `src` matches only `src`; `src/*` matches direct children of `src` only; `src/**` matches `src` itself and every descendant; `**/Rule` matches any directory named `Rule` at any depth. Rationale: a tree-structure tool must distinguish "direct children" from "all descendants"; plain `fnmatch` (where `*` crosses `/`, as in LocGuard's exclude handling) cannot. Divergence from gitignore (`a/**` there excludes `a` itself) is deliberate for a one-rule-no-exceptions spec and must be documented.
+- **Matchable directory set** = each `paths` entry directory itself + all non-excluded descendant directories. `exclude` still uses plain LocGuard-style `fnmatch` against the relative path (consistent with `loc.yaml` excludes; document the difference from `rules[].path`).
+- **Multiple matching rules all apply independently.** No first-wins/merging. Rationale: constraints are additive guardrails; ordering-dependent override semantics create silent shadowing that is hostile to both humans and AI agents. Each violation carries the originating rule's `pattern`, so overlapping rules stay individually identifiable.
+- **Absent constraint = unchecked.** `allow: []` (present but empty) means "no files allowed" — the reader must distinguish absent (null) from empty list.
+- **"Exactly these names"** is expressed by composition, not a separate key: `require: [a, b]` forces presence, `allow: [a, b]` forbids anything else (exact names are valid globs). No `only:` key — one way to say it.
+- **Counts:** `max_files`/`max_dirs` count non-excluded direct children only. `max_total_files` counts all non-excluded files in the subtree including direct children. The limit value itself passes (LocGuard convention: 50-line method passes at limit 50).
+- **Depth:** measured relative to the matched directory; a matched dir with no subdirectories has depth 0; `src/PhpUnit/TestReporter/Subscriber` is depth 3 relative to `src`. Files never add depth. One violation is emitted **per offending descendant directory** (its own depth as `actual`), so each violation names exactly the directory to flatten.
+- **Empty:** `forbid_empty: true` fires when a matched directory has zero non-excluded direct entries (files and dirs).
+- **Case conventions:** checked against the file basename with everything from the first `.` stripped (`AiReporter.php` → `AiReporter`; `phpunit.xml.dist` → `phpunit`); dotfiles (leading `.`) are skipped. Directory names are checked whole. Regexes: pascal `^[A-Z][A-Za-z0-9]*$`, camel `^[a-z][A-Za-z0-9]*$`, snake `^[a-z0-9]+(_[a-z0-9]+)*$`, kebab `^[a-z0-9]+(-[a-z0-9]+)*$`.
+- **Validation** (all errors `Invalid tree.yaml: ...`, thrown as `TreeGuardException`, exit 2, mirroring `ConfigScalarReader` message style): top level must be a mapping; `rules` must be a list of mappings; each rule requires non-empty string `path`; counts are ints ≥ 1; `file_case`/`dir_case` in the enum; `forbid_empty` bool; **unknown keys inside a rule block are rejected** with `Invalid tree.yaml: "rules[0]" contains unsupported key "max_file".` (deliberate divergence from LocGuard's ignore-unknown-limits behavior — a typo in a constraint key must not silently disable the check).
+- If a `paths` entry is missing → `Configured path does not exist: %s`; if it is a file → `Configured path is not a directory: %s` (LocGuard allows file path entries; tree-guard is directory-scoped).
+
+## 2. Violation model and rule identifiers
+
+`src/TreeGuard/Analysis/Violation.php` — same `__get()` + `@property-read` + `/** @readonly */` promoted-private idiom as `src/LocGuard/Analysis/Violation.php`, but **no `line` field** (violations are directory/file scoped) and a new `pattern` field:
+
+| field | type | meaning |
+|---|---|---|
+| `path` | string | offending dir, or offending/missing file path, relative to config root |
+| `rule` | string | rule id below |
+| `pattern` | string | the `rules[].path` pattern of the rule block that fired |
+| `actual` | ?int | measured value; null for name-based rules |
+| `limit` | ?int | configured limit; null for name-based rules |
+| `message` | string | imperative, self-contained |
+
+Rule ids and message templates (path column = Violation::path):
+
+| rule id | path | message template |
+|---|---|---|
+| `max_files` | dir | `Directory "src/PhpStan/Rule" contains 82 files but the limit is 20. Move or merge files until at most 20 remain.` |
+| `max_dirs` | dir | `Directory "src" contains 9 subdirectories but the limit is 8. Merge or flatten subdirectories.` |
+| `max_total_files` | dir | `Directory "src/PhpStan" contains 97 files in total but the limit is 80. Restructure or split the subtree.` |
+| `max_depth` | offending descendant dir | `Directory "src/A/B/C/D" is nested 4 levels below "src" but the limit is 3. Flatten the directory structure.` |
+| `disallowed_file` | file | `File "src/notes.txt" does not match any allowed pattern (*.php). Rename, move, or delete it.` |
+| `denied_file` | file | `File "src/Foo/BarHelper.php" matches denied pattern "*Helper.php". Rename or remove it.` |
+| `disallowed_dir` | dir | `Directory "src/tmp" does not match any allowed pattern ([A-Z]*). Rename, move, or delete it.` |
+| `denied_dir` | dir | `Directory "src/Helpers" matches denied pattern "Helpers". Rename or remove it.` |
+| `missing_required_file` | `&lt;dir&gt;/&lt;name&gt;` of the missing file | `Directory "skills/setup-toolkit-tree-guard" is missing required file "SKILL.md". Create it.` |
+| `empty_directory` | dir | `Directory "src/Empty" is empty. Delete it or add its intended contents.` |
+| `file_case` | file | `File name "my_reporter.php" in "src/Reporting" does not follow the pascal convention. Rename it.` |
+| `dir_case` | dir | `Directory name "error_formatter" does not follow the pascal convention. Rename it.` |
+
+## 3. Class decomposition (all `final`, all-public, no private methods, `/** @readonly */` docblocks, multi-line PHPDoc on every public element, no comments)
+
+**`src/TreeGuard/`**
+- `TreeGuardException.php` — `final class extends RuntimeException` (copy of `LocGuardException`).
+
+**`src/TreeGuard/Cli/`** (each a near-verbatim port of the LocGuard sibling; default config string `'tree.yaml'`, error prefix `TreeGuard error:`, version line `tree-guard 1.0.0`)
+- `Application.php` — entry: shift argv, parse (catch → 2), `--help` → 0, `--version` → 0, else delegate to runner; injectable collaborators + `?Closure $stdout/$stderr` exactly like `src/LocGuard/Cli/Application.php`.
+- `TreeGuardCliArgumentParser.php` — `--config X`/`--config=X`, `--reporter`/`--format` (+ `=` forms), `-h/--help`, `-V/--version`, unknown-option/missing-value errors (port of `LocGuardCliArgumentParser`).
+- `TreeGuardConfigPathResolver.php` — workdir-relative → absolute config path.
+- `TreeGuardHelpText.php` — heredoc: `tree-guard checks directory and file structure constraints.` + Usage/Options.
+- `TreeGuardOutputWriter.php` — injectable stdout/stderr closures (port of `LocGuardOutputWriter`).
+- `TreeGuardReporterOverride.php` — rebuilds `TreeGuardConfig` with overridden `ReportConfig`.
+- `TreeGuardAnalysisRunner.php` — load config → override → analyze → reporter → write; exit 0/1/2 (port of `LocGuardAnalysisRunner`).
+
+**`src/TreeGuard/Config/`**
+- `ConfigLoader.php` — `Yaml::parseFile`, top-level mapping check, `dirname($path)` as root; reads `paths` (default `['src']`), `exclude` (default `[]`), `rules` (default `[]`), `report`.
+- `ConfigStringListReader.php` — port of LocGuard's, message prefix `Invalid tree.yaml:`; add a nullable variant `readOptional(array $data, string $key): ?array` (returns null when key absent — needed for allow/allow_dirs).
+- `ConfigScalarReader.php` — `string()`, `bool()`, `optionalPositiveInt(array $data, string $key, string $context): ?int` (null when absent; context string like `rules[0].max_files` for exact error messages), `optionalCase()` validating the pascal/camel/snake/kebab enum.
+- `RuleConfig.php` — value object (`__get` idiom): `pattern`, `maxFiles/maxDirs/maxTotalFiles/maxDepth` (?int), `allow/allowDirs` (?list&lt;string&gt;), `deny/denyDirs/require` (list&lt;string&gt;), `forbidEmpty` (bool), `fileCase/dirCase` (?string).
+- `RuleConfigReader.php` — one rule mapping → `RuleConfig`; requires `path`; rejects unknown keys against a `KEYS` const; index-aware messages.
+- `RuleListConfigReader.php` — `rules` value → `list&lt;RuleConfig&gt;`; must be a list of mappings.
+- `ReportConfig.php` — `reporter`, `orderBy` (port).
+- `ReportConfigReader.php` — port; `ORDER_FIELDS = ['path', 'rule', 'actual', 'limit']`, default `order_by` `['path', 'rule']`.
+- `TreeGuardConfig.php` — `root`, `paths`, `exclude`, `rules` (list&lt;RuleConfig&gt;), `report` (`__get` idiom).
+
+**`src/TreeGuard/Filesystem/`** (differs from LocGuard's PhpFileFinder chain: all file types, directory entries, exclude-pruning)
+- `TreeGuardPathResolver.php` — `absolute()`/`relative()` (port of `LocGuardPathResolver`).
+- `PathInclusionPolicy.php` — `includes(TreeGuardConfig, string $absolutePath): bool`: plain `fnmatch` of each exclude glob against the config-root-relative path; no `.php` filter.
+- `DirectoryListing.php` — value object (`__get`): `relativePath`, `fileNames` (sorted list of basenames), `dirNames` (sorted list of basenames).
+- `DirectoryListingReader.php` — reads one directory's direct children via `scandir` (skip `.`/`..`), applies the inclusion policy, splits files/dirs, sorts → `DirectoryListing`.
+- `DirectoryTreeScanner.php` — validates each `paths` entry is an existing directory (throws `TreeGuardException` otherwise); recursively walks (excluded dirs pruned, i.e. not listed and not descended into); returns `array&lt;string, DirectoryListing&gt;` keyed by relative dir path, union-merged across paths entries, `ksort`ed. Includes each paths-entry dir itself.
+
+**`src/TreeGuard/Analysis/`**
+- `Violation.php`, `AnalysisResult.php` — `AnalysisResult` holds `array&lt;string, DirectoryListing&gt;` + `list&lt;Violation&gt;`; exposes `hasViolations()`, `violationCount()`, `directoryCount()`, `fileCount()` (sum of per-listing file counts — each file counted once since it has one parent).
+- `DirectoryPatternMatcher.php` — `matches(string $pattern, string $relativeDirPath): bool`; splits on `/`; iterative/recursive `**` handling (zero-or-more segments), per-segment `fnmatch`; anchored.
+- `CaseConventionMatcher.php` — `matches(string $case, string $name): bool` via `preg_match` on the four regexes; `stem(string $fileName): ?string` (before first dot; null for dotfiles).
+- Constraint inspectors, each with one public `inspect(...)` returning `list&lt;Violation&gt;`:
+  - `ChildCountInspector.php` — `max_files` + `max_dirs` from one `DirectoryListing`.
+  - `TotalFileCountInspector.php` — `max_total_files`; sums the matched dir's listing plus every listing whose key starts with `&lt;dir&gt;/`.
+  - `DepthInspector.php` — `max_depth`; for each listing key with prefix `&lt;dir&gt;/`, depth = `substr_count(remainder, '/') + 1`; emits one violation per dir whose depth exceeds the limit.
+  - `FileNameInspector.php` — `allow` / `deny` / `file_case` over direct child file names.
+  - `DirNameInspector.php` — `allow_dirs` / `deny_dirs` / `dir_case` over direct child dir names.
+  - `RequiredFileInspector.php` — `require`.
+  - `EmptyDirectoryInspector.php` — `forbid_empty`.
+- `DirectoryRuleInspector.php` — fans one `(RuleConfig, DirectoryListing, listingMap)` out to all seven inspectors and merges results (keeps `TreeGuardAnalyzer` tiny).
+- `TreeGuardAnalyzer.php` — orchestrates scanner → rules × directories → `DirectoryRuleInspector` (see §4).
+
+**`src/TreeGuard/Reporting/`** (ports of the LocGuard siblings)
+- `Reporter.php` (interface), `ReporterFactory.php` (`ai|text|json`, unknown → `Unknown TreeGuard reporter: %s`), `ViolationSorter.php`, `ViolationFieldComparator.php` (string compare for path/rule/pattern; int compare for actual/limit with **null ordered before any int**), `AiReporter.php`, `AiReportSummary.php`, `AiReportGuidance.php`, `AiViolationFormatter.php`, `AiViolationAction.php`, `TextReporter.php`, `JsonReporter.php`.
+
+Total: 46 source classes → 46 paired tests. Every class stays far below the loc.yaml limits (biggest are `RuleConfigReader`, `DirectoryPatternMatcher`, `TreeGuardCliArgumentParser`, all well under 50-line methods; keep `DirectoryPatternMatcher::matches` iterative with a simple backtracking loop, complexity &lt; 20).
+
+## 4. Analysis algorithm (exact)
+
+1. `ConfigLoader::load(resolvedPath)` → `TreeGuardConfig` (root = `dirname(configPath)`).
+2. `DirectoryTreeScanner::scan(config)` → `array&lt;string relDir, DirectoryListing&gt;`: for each `paths` entry, resolve absolute (`TreeGuardPathResolver::absolute`), assert directory, walk depth-first; at each dir, `DirectoryListingReader::read` (policy filters both files and dirs; an excluded dir is neither listed nor entered); record listing under `TreeGuardPathResolver::relative(root, dir)`; union-merge maps (`+=`, first wins on overlap, like `PhpFileFinder`), then `ksort`.
+3. `TreeGuardAnalyzer::analyze(config)`:
+   ```
+   violations = []
+   foreach config-&gt;rules as ruleConfig
+       foreach listings as relDir =&gt; listing
+           if DirectoryPatternMatcher::matches(ruleConfig-&gt;pattern, relDir)
+               violations = merge(violations, DirectoryRuleInspector::inspect(ruleConfig, listing, listings))
+   return new AnalysisResult(listings, violations)
+   ```
+4. Reporter renders; runner returns `hasViolations() ? 1 : 0`; any `TreeGuardException` → stderr + 2.
+
+Single scan; rule evaluation is pure in-memory over the listing map. `max_total_files`/`max_depth` derive from map keys (prefix `relDir . '/'`), so no second filesystem pass.
+
+## 5. Reporter output
+
+**ai** (`AiReporter`): header `TREE_GUARD_FAILED` / `TREE_GUARD_PASSED`, then
+```
+summary:
+- directories: 38
+- files: 292
+- violations: 2
+guidance:
+- Fix the listed directories and files directly; do not relax rules unless the project owner accepts that policy change.
+- For count and depth violations, restructure directories instead of renaming rules.
+- For name violations, rename or relocate the offending entries to satisfy the configured patterns.
+violations:
+1. src/PhpStan/Rule [max_files]
+   pattern: src/*
+   actual: 82
+   limit: 20
+   message: Directory "src/PhpStan/Rule" contains 82 files but the limit is 20. ...
+   action: Split the directory into cohesive subdirectories or relocate files until the count fits the limit.
+```
+`AiViolationFormatter` omits the `actual:`/`limit:` lines when null (name-based rules). `AiViolationAction` maps rule id → imperative action: max_files/max_dirs → restructure/flatten; max_total_files → split the subtree; max_depth → promote deeply nested directories; disallowed_/denied_ file/dir → rename, relocate, or delete; missing_required_file → create the file; empty_directory → delete or populate; file_case/dir_case → rename to the convention; default fallback → restructure to satisfy the pattern.
+
+**text** (`TextReporter`): `TreeGuard passed. No violations found.` / `TreeGuard found N violations.` + `Summary: %d directories, %d files.` + per violation `\n%s [%s]\n  pattern: %s\n  %s\n  Actual: %d, Limit: %d` (actual/limit line omitted when null).
+
+**json** (`JsonReporter`): `{status, summary: {directories, files, violations}, violations: [{path, rule, pattern, actual, limit, message}]}` with `JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES`; `actual`/`limit` emitted as `null` for name rules.
+
+## 6. Dogfooding `tree.yaml` for this repo (verified to pass against today's tree, including the ~46 new TreeGuard files)
+
+```yaml
+paths:
+  - src
+  - tests/Unit
+  - skills
+
+exclude: []
+
+rules:
+  - path: 'src'
+    max_dirs: 8
+    max_depth: 3
+    allow: []
+  - path: 'src/**'
+    forbid_empty: true
+    allow: ['*.php']
+    deny: ['*Helper.php', '*Helpers.php', '*Manager.php', '*Util.php', '*Utils.php', '*Service.php']
+    file_case: pascal
+    dir_case: pascal
+    max_files: 100
+  - path: 'src/*'
+    max_total_files: 250
+  - path: 'tests/Unit/**'
+    forbid_empty: true
+    allow: ['*Test.php']
+    file_case: pascal
+    dir_case: pascal
+  - path: 'skills/*'
+    require: ['SKILL.md']
+    forbid_empty: true
+
+report:
+  reporter: ai
+  order_by:
+    - path
+    - rule
+```
+
+Verified against actual counts: `src` has 5 dirs (6 with TreeGuard, ≤ 8), 0 direct files; deepest dir is 3 levels (`src/PhpUnit/TestReporter/Subscriber`, `src/Installer/Cli/Command` — passes at limit); largest dir `src/PhpStan/Rule` = 82 files (≤ 100); largest subtree `src/PhpStan` = 97 files (≤ 250); all src/tests file names are PascalCase `.php` / `*Test.php`; `tests/Unit/LocGuard` root holds only `LocGuardExceptionTest.php`; each `skills/*` dir contains `SKILL.md`. Note `tests/Fixture` and `tests/PhpUnit` are deliberately out of `paths`.
+
+## 7. Test plan
+
+**Strategy.** Follow the LocGuard suite it mirrors (verified in `tests/Unit/LocGuard/Cli/ApplicationTest.php`): build real temp trees inline per test method with `sys_get_temp_dir() . '/treeguard-...' . bin2hex(random_bytes(4))`, `mkdir`/`file_put_contents`, inject stdout/stderr-capturing closures; **no cleanup, no `#[Medium]`** — LocGuard tests use neither (the try/finally cleanup pattern exists only in `tests/Unit/Installer/`, and it relies on a src collaborator; copying it would drag `Installer` classes into `#[UsesClass]` lists). Do not add static fixtures under `tests/Fixture/` (it is classmap-autoloaded and PHPStan-excluded; LocGuard uses none). Discrepancy flag: the task brief asserted try/finally + `#[Medium]` as house style; the verified LocGuard template does not use them — recommend matching LocGuard, since the mandate is "follows the LocGuard pattern exactly."
+
+**Paired test files** (SrcUnitTestPairRule enforces 1:1, including the `Reporter` interface — LocGuard has `ReporterTest.php`): one `tests/Unit/TreeGuard/&lt;Sub&gt;/&lt;Class&gt;Test.php` for each of the 46 classes listed in §3, `final`, `#[CoversClass]` + exhaustive `#[UsesClass]`, no properties/constants/helpers/setUp/Reflection, method names `test` + PascalCase with at least one `testFoo*` per public method `foo()`.
+
+**Key scenarios per constraint** (each in the owning inspector's test, plus one end-to-end assertion in `ApplicationTest`):
+- `DirectoryPatternMatcher`: `src` exact; `src/*` matches child not grandchild; `*` does not cross `/`; `src/**` matches `src`, child, grandchild; `**/Rule` at any depth; anchoring (no prefix match); `?`/`[...]` per segment.
+- `ChildCountInspector`: at-limit passes, limit+1 fails, null limits unchecked.
+- `TotalFileCountInspector`: includes direct + nested files; sibling dirs with shared name prefix (`src/Ab` vs `src/Abc`) not conflated (prefix must be `dir . '/'`).
+- `DepthInspector`: depth 0 dir passes; chain a/b/c with limit 1 yields two violations (b:2? — verify exact expectation: dirs at depth 2 and 3); files never add depth.
+- `FileNameInspector` / `DirNameInspector`: allow-null unchecked; `allow: []` flags everything; deny match; deny+allow independence; each case convention accept/reject; dotfile skipped; multi-dot stem.
+- `RequiredFileInspector`: missing → violation with `&lt;dir&gt;/&lt;name&gt;` path; present passes.
+- `EmptyDirectoryInspector`: empty fails; dir with only a subdir passes; dir emptied by excludes counts as empty (policy applied before inspection).
+- `DirectoryTreeScanner`: missing path → exception; file path → exception; excluded dir pruned (its children absent from map); map keys sorted, roots included.
+- `ConfigLoader`/`RuleConfigReader`: defaults; missing `path` in rule; unknown rule key; wrong types; bad case enum; bad reporter/order_by.
+- `Application`: pass → exit 0 + `TREE_GUARD_PASSED`; violation → 1 + rule id in output; missing config → 2; `--help`/`-V`; `--reporter=json` override; unknown option → 2.
+- Reporters: null actual/limit omitted (ai/text) and `null` in json; sorter with nullable fields.
+
+## 8. Shipping surface (exact edits)
+
+1. `bin/tree-guard` — byte-level port of `bin/loc-guard`: PHP_VERSION_ID guard message `tree-guard requires PHP 8.0 or later.`, same 3-path autoload discovery, `new \PhpAiToolkit\TreeGuard\Cli\Application($workingDirectory)`, `exit($app-&gt;run($argv))`. Mark executable.
+2. `composer.json` — `"bin": ["bin/php-ai-toolkit", "bin/loc-guard", "bin/tree-guard"]`; script `"tree-guard": "@php bin/tree-guard --config=tree.yaml"`; `lint` becomes `["@format:check", "@phpstan", "@compat", "@loc-guard", "@tree-guard", "@deptrac"]`. No `composer.lock.php-8.x` regeneration needed: Composer's lock `content-hash` ignores `bin`/`scripts`, and `composer validate --strict` in CI will stay green.
+3. `tree.yaml` — the dogfood config from §6.
+4. `deptrac.yaml` — add layer `TreeGuard` with `- type: directory` / `value: src/TreeGuard/.*` (after LocGuard, keeping list order), ruleset entry `TreeGuard: ~` (depends on nothing; like LocGuard, no `Shared/AgentDetector` usage — reporter selection is config/flag only).
+5. `.github/workflows/ci.yml` — in the `lint` job, insert `- run: composer tree-guard` between the existing `- run: composer loc-guard` and `- run: composer deptrac` (steps are unnamed `run:` entries; keep that style).
+6. `docs/tree-guard.md` — mirror `docs/loc-guard.md` structure: Purpose / Command + exit codes / Configuration (full default tree.yaml) / Pattern Semantics (§1 rules verbatim, incl. `**` and exclude-vs-rule-path difference) / Rules reference table (rule key → violation id → meaning) / Reporting / at-limit-passes note.
+7. `README.md` — insert after line 66 (`LocGuard Configuration`): `- [TreeGuard Configuration](docs/tree-guard.md) — Directory and file structure constraints`.
+8. `skills/setup-toolkit-tree-guard/SKILL.md` + `skills/setup-toolkit-tree-guard/tree.yaml` — frontmatter `name: setup-toolkit-tree-guard`, `description:` with trigger phrases ("configure tree-guard, tree.yaml, directory structure constraints, max files per directory, forbidden file names, required files, empty directory checks, directory depth limits, naming case conventions, Composer scripts for TreeGuard, or CI checks for directory structure"); sections Prerequisites / Template / Merging with existing configuration / Recommended Composer Scripts / Verification (exit codes 0/1/2) / References (link `vendor/k-kinzal/php-ai-toolkit/docs/tree-guard.md`), following `skills/setup-toolkit-loc-guard/SKILL.md`. The template `tree.yaml` should be a generic starter (`paths: [src]`, one `src/**` rule with `forbid_empty`, `allow: ['*.php']`, `file_case: pascal`, plus a commented example of `max_files`; YAML comments are fine — the comment ban is PHP-only).
+9. `AGENTS.md` — read-only for agents; note in the PR/handoff that a human should add tree-guard to the tooling list.
+
+## 9. Implementation order
+
+1. `src/TreeGuard/TreeGuardException.php` + test.
+2. Config layer: `ConfigScalarReader`, `ConfigStringListReader`, `RuleConfig`, `RuleConfigReader`, `RuleListConfigReader`, `ReportConfig`, `ReportConfigReader`, `TreeGuardConfig`, `ConfigLoader` + tests (bottom-up; loader last).
+3. Filesystem layer: `TreeGuardPathResolver`, `PathInclusionPolicy`, `DirectoryListing`, `DirectoryListingReader`, `DirectoryTreeScanner` + tests.
+4. Analysis layer: `Violation`, `AnalysisResult`, `DirectoryPatternMatcher`, `CaseConventionMatcher`, the seven inspectors, `DirectoryRuleInspector`, `TreeGuardAnalyzer` + tests.
+5. Reporting layer: `Reporter`, `ViolationFieldComparator`, `ViolationSorter`, `AiReportSummary`, `AiReportGuidance`, `AiViolationAction`, `AiViolationFormatter`, `AiReporter`, `TextReporter`, `JsonReporter`, `ReporterFactory` + tests.
+6. Cli layer: `TreeGuardOutputWriter`, `TreeGuardHelpText`, `TreeGuardCliArgumentParser`, `TreeGuardConfigPathResolver`, `TreeGuardReporterOverride`, `TreeGuardAnalysisRunner`, `Application` + tests.
+7. `bin/tree-guard` (chmod +x).
+8. Config/infra edits: `composer.json`, `tree.yaml`, `deptrac.yaml`, `.github/workflows/ci.yml`.
+9. Docs + skill: `docs/tree-guard.md`, `README.md` entry, `skills/setup-toolkit-tree-guard/{SKILL.md,tree.yaml}`.
+10. Verification gate, in order: `composer format` → `composer lint` (runs format:check, phpstan level max + strict + the 17 self-applied AI rules — SrcUnitTestPairRule fails on any unpaired class, so steps 1–6 must land classes and tests together; phpcs PHP 8.0 compat catches any readonly/enum/first-class-callable slip; loc-guard; the new tree-guard against §6's config; deptrac with the new layer) → `composer test`. Also run `bin/tree-guard --help`, `--version`, and `--reporter=json` manually once.
+
+## 10. Open questions for the user
+
+1. `**` semantics: proposed zero-or-more segments, so `src/**` includes `src` itself (diverges from gitignore, where `a/**` excludes `a`). Acceptable, or should trailing `**` require at least one segment?
+2. Overlapping rules: proposed "all matching rules apply". Confirm no override/merge behavior is wanted.
+3. Zero-valued limits (`max_files: 0`) are intentionally invalid — "no files/dirs allowed" is expressed as `allow: []` / `allow_dirs: []`. OK?
+4. v1 constraint set includes the proposed extras (`allow_dirs`/`deny_dirs`, `file_case`/`dir_case`); anything to cut or add (e.g. `require_dirs` was deliberately dropped)?
+5. Dogfood strictness in §6 (e.g. `max_files: 100` only because `src/PhpStan/Rule` has 82 files) — tighten with per-directory carve-outs instead?
+
+### Critical Files for Implementation
+- /Users/ab/Projects/php-ai-toolkit/src/LocGuard/Cli/Application.php (template for the whole Cli layer and DI/testing idiom)
+- /Users/ab/Projects/php-ai-toolkit/src/LocGuard/Config/ConfigLoader.php (template for tree.yaml loading/validation style)
+- /Users/ab/Projects/php-ai-toolkit/src/LocGuard/Analysis/Violation.php (the `__get`/`@property-read`/`@readonly` value-object idiom to replicate with the new field set)
+- /Users/ab/Projects/php-ai-toolkit/tests/Unit/LocGuard/Cli/ApplicationTest.php (temp-tree test pattern, closure capture, CoversClass/UsesClass discipline)
+- /Users/ab/Projects/php-ai-toolkit/composer.json (bin/scripts/lint wiring; plus deptrac.yaml and .github/workflows/ci.yml for the remaining infra edits)</result>
+<usage><subagent_tokens>76352</subagent_tokens><tool_uses>51</tool_uses><duration_ms>443747</duration_ms></usage>
+</task-notification>

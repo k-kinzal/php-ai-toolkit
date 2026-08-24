@@ -47,9 +47,10 @@
   --coverage-xml build/infection-coverage/coverage-xml \
   --log-junit build/infection-coverage/junit.xml
 
-php -d memory_limit=1G vendor/bin/infection --configuration=infection.json5 \
+php -d memory_limit=4G vendor/bin/infection --configuration=infection.json5 \
   --threads=max --coverage=build/infection-coverage --skip-initial-tests</code></pre>
 <p>That second command is the whole-tree gate. For the changed-lines gate, add <code>--git-diff-lines --git-diff-base=origin/main --ignore-msi-with-no-mutations --min-msi=85 --min-covered-msi=85</code>.</p>
+<p>Infection holds every mutant result in memory and encodes all of them into <code>build/infection/infection.json</code> after the score is printed, so the report writer needs several times the memory the run itself does. At <code>1G</code> the whole-tree gate died in that writer with an exhausted memory limit — after reporting the score, so the job failed on a report rather than on the gate. <code>4G</code> is what the whole tree needs today; raise it with the tree, and keep the workflow and this page on the same number.</p>
 <p>Exit codes:</p>
 <ul><li><code>0</code>: every threshold was met</li><li>non-zero: a threshold was missed, or Infection could not run</li></ul>
 <p><code>composer infection</code> is not a command and is not meant to become one. If it answers &quot;Command infection is not defined&quot;, that is this design working as intended, not a script that went missing: run the two commands above, or push the branch and read the job.</p>

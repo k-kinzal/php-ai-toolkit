@@ -162,7 +162,7 @@
 <span class="src-line" id="L126"><a class="ln" href="#L126">126</a></span>
 <span class="src-line" id="L127"><a class="ln" href="#L127">127</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testExtractCodeFencesMatchesOnlyBarePhpFences</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L128"><a class="ln" href="#L128">128</a>    {</span>
-<span class="src-line" id="L129"><a class="ln" href="#L129">129</a>        <span class="tok-var">$cleaned</span> = <span class="tok-str">&quot;```php\necho 1;\n```\n\n```php ignore\necho 2;\n```\n\n```\necho 3;\n```&quot;</span>;</span>
+<span class="src-line" id="L129"><a class="ln" href="#L129">129</a>        <span class="tok-var">$cleaned</span> = <span class="tok-str">&quot;```php\necho 1;\n```\n\n```php ignore\necho 2;\n```\n\n```\necho 3;\n```\n\n```php\n```&quot;</span>;</span>
 <span class="src-line" id="L130"><a class="ln" href="#L130">130</a>        <span class="tok-var">$target</span> = <span class="tok-kw">new</span> <span class="tok-id">Target</span>(<span class="tok-id">TargetKind</span>::<span class="tok-id">CLASS_LIKE</span>, <span class="tok-str">&#039;/a.php&#039;</span>, <span class="tok-str">&#039;/** */&#039;</span>, <span class="tok-str">&#039;Widget&#039;</span>, <span class="tok-num">4</span>);</span>
 <span class="src-line" id="L131"><a class="ln" href="#L131">131</a>        <span class="tok-var">$index</span> = <span class="tok-num">0</span>;</span>
 <span class="src-line" id="L132"><a class="ln" href="#L132">132</a></span>

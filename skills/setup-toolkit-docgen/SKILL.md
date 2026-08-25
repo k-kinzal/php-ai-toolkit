@@ -1,8 +1,8 @@
 ---
-name: setup-toolkit-doc-gen
+name: setup-toolkit-docgen
 description: >-
   Set up DocGen static documentation generation for a PHP project. Use when
-  asked to configure doc-gen, its command line options, API documentation
+  asked to configure docgen, its command line options, API documentation
   generation, a docs.rs-style documentation site, GitHub Pages hosting,
   multi-package or monorepo documentation, documenting vendor packages,
   architecture layer visualization from deptrac, per-method test coverage
@@ -14,7 +14,7 @@ description: >-
 
 # Setup DocGen (Static Documentation Site)
 
-This skill configures `doc-gen`, the php-ai-toolkit CLI that generates a dense, fully cross-linked static HTML
+This skill configures `docgen`, the php-ai-toolkit CLI that generates a dense, fully cross-linked static HTML
 documentation site — complete types, interface implementations, call sites, architecture layers, coverage-backed
 test references, runnable doctest examples, and an optional comparison of two git revisions — for the composer
 packages of a project.
@@ -26,7 +26,7 @@ Inspect `composer.json` before configuring:
 - Confirm the target project requires `k-kinzal/php-ai-toolkit`.
 - Read the Composer PSR-4 autoload maps; they define exactly what gets documented.
 - Check whether the repository is a monorepo (`packages/*/composer.json`) or a single package.
-- Check for an existing documentation step, such as a `doc-gen` Composer script or a docs workflow.
+- Check for an existing documentation step, such as a `docgen` Composer script or a docs workflow.
 
 Install the toolkit if missing:
 
@@ -58,10 +58,10 @@ job that calls it.
 | `--coverage=DIR` | none | PHPUnit `--coverage-xml` report directory; links every method to the test cases covering it. |
 | `--base-url=URL` | none | Absolute address the site is published at, without a trailing slash. Pass it where the site is published from; it is what the canonical links and the social preview are written from. |
 | `--repository=URL` | what the root `composer.json` declares | Absolute address of the repository the project lives in, which every page links back to. Pass it only to override `support.source` or `homepage`. |
-| `--cache-dir=DIR` | `build/doc-gen-cache` | Directory the parsed sources and written pages are remembered in; `--no-cache` turns caching off for one run. Keep it outside the output directory. |
+| `--cache-dir=DIR` | `build/docgen-cache` | Directory the parsed sources and written pages are remembered in; `--no-cache` turns caching off for one run. Keep it outside the output directory. |
 
 Every option that takes `GLOBS` reads a comma-separated list and may be repeated, which adds to what the earlier
-occurrences named. `doc-gen --help` lists these together with the run options (`--jobs`, `--memory-limit`,
+occurrences named. `docgen --help` lists these together with the run options (`--jobs`, `--memory-limit`,
 `--serve`, `--diff`, `--clear-cache`).
 
 ## Scope Semantics
@@ -100,24 +100,24 @@ Page content and design are fixed by the generator on purpose — only the scope
 ## Recommended Composer Scripts
 
 The scripts are where the project's own settings live, because there is no configuration file to keep them in.
-Write the settings once in `doc-gen`, and let the other scripts add to it:
+Write the settings once in `docgen`, and let the other scripts add to it:
 
 ```json
 {
     "scripts": {
-        "doc-gen": "doc-gen --exclude='tests/Fixture/*' --coverage=build/coverage-xml",
-        "doc-gen:serve": "@doc-gen --serve",
-        "doc-gen:diff": "@doc-gen --diff=main --serve",
-        "doc-gen:fresh": "@doc-gen --no-cache"
+        "docgen": "docgen --exclude='tests/Fixture/*' --coverage=build/coverage-xml",
+        "docgen:serve": "@docgen --serve",
+        "docgen:diff": "@docgen --diff=main --serve",
+        "docgen:fresh": "@docgen --no-cache"
     }
 }
 ```
 
 Quote a glob that a shell would otherwise expand, as `'tests/Fixture/*'` above. A caller adds to the script's
-options with `composer doc-gen -- --base-url=https://example.github.io/project`, which is how a CI job passes what
+options with `composer docgen -- --base-url=https://example.github.io/project`, which is how a CI job passes what
 only it knows.
 
-Do not add `doc-gen` to `lint`; it is a generator, not a check.
+Do not add `docgen` to `lint`; it is a generator, not a check.
 
 ## GitHub Pages Publishing
 
@@ -127,14 +127,14 @@ install is the user's decision — ask before writing any workflow file**:
 
 | Answer | What to install |
 |--------|-----------------|
-| No CI publishing | Nothing; `doc-gen` stays a local command. |
+| No CI publishing | Nothing; `docgen` stays a local command. |
 | Publish the default branch | `docs.yml` only. |
 | Publish and preview pull requests | `docs.yml` and `docs-preview.yml`. |
 
 Never install `docs-preview.yml` without `docs.yml`: the preview workflow writes only below `pr/<number>/` and
 expects the site workflow to own the root of the branch.
 
-Read the templates from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-doc-gen/docs.yml` and
+Read the templates from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-docgen/docs.yml` and
 `docs-preview.yml` and apply them as `.github/workflows/docs.yml` and `.github/workflows/docs-preview.yml`.
 
 - `docs.yml` runs on pushes to the default branch: it generates the site and syncs it to the root of the `gh-pages`
@@ -152,7 +152,7 @@ Adapt both to the project before applying:
 - Derive extensions from Composer platform requirements plus the workflow itself:
   coverage needs pcov or Xdebug, social images need GD with FreeType, and a
   parallel coverage script needs pcntl. Do not copy the template list blindly.
-- Match the generation command to the project: the Composer script, or `vendor/bin/doc-gen` with the project's own
+- Match the generation command to the project: the Composer script, or `vendor/bin/docgen` with the project's own
   options spelled out.
 - Match the `on.push.branches` entry to the default branch, and `DOCS_BRANCH` to the branch Pages serves.
 - Keep the action pins as full commit SHAs with the release tag in a comment, the per-job `contents: write`
@@ -200,7 +200,7 @@ Then set Settings > Pages > Build and deployment > Source to "Deploy from a bran
 After applying:
 
 ```bash
-composer doc-gen
+composer docgen
 ```
 
 Exit codes:
@@ -208,7 +208,7 @@ Exit codes:
 - `0`: documentation generated
 - `2`: configuration or runtime error
 
-Then preview locally with `vendor/bin/doc-gen --serve` and spot-check the index page, one class page, and search.
+Then preview locally with `vendor/bin/docgen --serve` and spot-check the index page, one class page, and search.
 
 When a workflow was installed, check it too, and say plainly that the publishing itself is only observable after the
 workflow runs on the default branch:
@@ -219,5 +219,5 @@ go run github.com/rhysd/actionlint/cmd/actionlint@latest .github/workflows/docs.
 
 ## References
 
-- [DocGen Configuration](vendor/k-kinzal/php-ai-toolkit/docs/doc-gen.md) — Settings, scope semantics, caching, publishing, and CLI behavior.
+- [DocGen Configuration](vendor/k-kinzal/php-ai-toolkit/docs/docgen.md) — Settings, scope semantics, caching, publishing, and CLI behavior.
 - [GitHub Actions Configuration](vendor/k-kinzal/php-ai-toolkit/docs/github-actions.md) — Workflow hardening rules the documentation workflows follow.

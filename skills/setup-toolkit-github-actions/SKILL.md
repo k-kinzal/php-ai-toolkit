@@ -94,12 +94,12 @@ to a version the default config supports.
 
 Do not add documentation generation or GitHub Pages publishing to `ci.yml`.
 Those live in their own workflows, and their templates and the questions to ask
-before installing them belong to the `/setup-toolkit-doc-gen` skill.
+before installing them belong to the `/setup-toolkit-docgen` skill.
 
-Do not silently finish when the project has a `doc-gen` script but no DocGen
+Do not silently finish when the project has a `docgen` script but no DocGen
 workflow. Ask the user to choose one of the three supported outcomes: local only,
 publish the default branch, or publish the default branch plus pull-request diff
-previews. Then use `/setup-toolkit-doc-gen` for the chosen workflows. The workflows
+previews. Then use `/setup-toolkit-docgen` for the chosen workflows. The workflows
 remain separate from `ci.yml` so publishing permissions do not leak into CI.
 
 ## Out of Scope: Mutation Testing

@@ -359,7 +359,7 @@ final class DiffWorkspaceTest extends TestCase
 
     public function testConfigForKeepsTheDocumentedScopeAndMovesOnlyTheRoot(): void
     {
-        $config = new DocGenConfig('/tmp/project', ['.', 'packages/*'], ['acme/*'], ['tests/*'], 'build/docs', 'Demo Docs', 'deptrac.yaml', 'build/coverage-xml', ['phpunit/*'], 'build/doc-gen-cache', 'https://example.github.io/project', 'https://github.com/example/project');
+        $config = new DocGenConfig('/tmp/project', ['.', 'packages/*'], ['acme/*'], ['tests/*'], 'build/docs', 'Demo Docs', 'deptrac.yaml', 'build/coverage-xml', ['phpunit/*'], 'build/docgen-cache', 'https://example.github.io/project', 'https://github.com/example/project');
 
         $moved = (new DiffWorkspace())->configFor($config, '/tmp/checkout', null);
 

@@ -33,7 +33,7 @@ final class DocGenConfig
     /**
      * Where the generation caches are kept unless a run says otherwise.
      */
-    public const DEFAULT_CACHE = 'build/doc-gen-cache';
+    public const DEFAULT_CACHE = 'build/docgen-cache';
 
     /**
      * The directory globs probed for a composer.json unless a run names its own.

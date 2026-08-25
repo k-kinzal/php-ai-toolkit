@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Toolkit\DocGen\Cli;
 
 /**
- * Provides the doc-gen CLI usage text.
+ * Provides the docgen CLI usage text.
  */
 final class DocGenHelpText
 {
@@ -18,12 +18,12 @@ final class DocGenHelpText
     }
 
     /**
-     * Returns the opening lines that state what doc-gen does.
+     * Returns the opening lines that state what docgen does.
      */
     public function purpose(): string
     {
         return <<<'TEXT'
-Usage: doc-gen [options]
+Usage: docgen [options]
 
 Generates a static HTML documentation site for the composer packages of the
 current project. Everything is named on the command line: without options,
@@ -116,7 +116,7 @@ TEXT;
   --cache-dir=DIR    Directory the parsed sources and the written pages are
                      remembered in, so the next run only parses what
                      changed and only rewrites the pages that changed
-                     (default: build/doc-gen-cache)
+                     (default: build/docgen-cache)
   --no-cache         Parse every source and write every page, and remember
                      nothing of it
   --clear-cache      Remove the cache directory before generating

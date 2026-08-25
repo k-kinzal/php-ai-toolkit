@@ -70,7 +70,7 @@ final class DocGenConfigFactoryTest extends TestCase
         self::assertSame([], $config->vendorDev);
         self::assertSame([], $config->exclude);
         self::assertSame('build/docs', $config->output);
-        self::assertSame('build/doc-gen-cache', $config->cache);
+        self::assertSame('build/docgen-cache', $config->cache);
         self::assertNull($config->title);
         self::assertNull($config->deptrac);
         self::assertNull($config->coverage);
@@ -91,7 +91,7 @@ final class DocGenConfigFactoryTest extends TestCase
         $parser = new DocGenCliArgumentParser();
         $factory = new DocGenConfigFactory();
 
-        self::assertSame('build/doc-gen-cache', $factory->cache($parser->parse([])));
+        self::assertSame('build/docgen-cache', $factory->cache($parser->parse([])));
         self::assertSame('.docgen', $factory->cache($parser->parse(['--cache-dir=.docgen'])));
         self::assertNull($factory->cache($parser->parse(['--no-cache'])));
         self::assertNull($factory->cache($parser->parse(['--no-cache', '--cache-dir=.docgen'])));
@@ -102,7 +102,7 @@ final class DocGenConfigFactoryTest extends TestCase
         $parser = new DocGenCliArgumentParser();
         $factory = new DocGenConfigFactory();
 
-        self::assertSame('build/doc-gen-cache', $factory->cacheDirectory($parser->parse([])));
+        self::assertSame('build/docgen-cache', $factory->cacheDirectory($parser->parse([])));
         self::assertSame('.docgen', $factory->cacheDirectory($parser->parse(['--no-cache', '--cache-dir=.docgen'])));
     }
 

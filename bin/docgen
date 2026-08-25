@@ -8,7 +8,7 @@ use Toolkit\DocGen\Cli\Application;
 if (PHP_VERSION_ID < 80000) {
     fwrite(
         STDERR,
-        'doc-gen requires PHP 8.0 or later.' . PHP_EOL,
+        'docgen requires PHP 8.0 or later.' . PHP_EOL,
     );
 
     exit(1);

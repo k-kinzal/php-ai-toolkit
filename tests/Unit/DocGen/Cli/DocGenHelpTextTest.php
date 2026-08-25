@@ -16,7 +16,7 @@ final class DocGenHelpTextTest extends TestCase
 {
     public function testTextDescribesUsageLine(): void
     {
-        self::assertStringContainsString('Usage: doc-gen', (new DocGenHelpText())->text());
+        self::assertStringContainsString('Usage: docgen', (new DocGenHelpText())->text());
     }
 
     public function testTextListsEveryOption(): void
@@ -46,7 +46,7 @@ final class DocGenHelpTextTest extends TestCase
 
     public function testPurposeStatesWhatDocGenDoes(): void
     {
-        self::assertStringContainsString('Usage: doc-gen [options]', (new DocGenHelpText())->purpose());
+        self::assertStringContainsString('Usage: docgen [options]', (new DocGenHelpText())->purpose());
     }
 
     public function testScopeOptionsListWhatIsDocumented(): void

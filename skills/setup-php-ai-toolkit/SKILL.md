@@ -71,7 +71,7 @@ Read and use the component skills relevant to each step:
 4. `/setup-toolkit-loc-guard` and `/setup-toolkit-tree-guard`
 5. `/setup-toolkit-deptrac`
 6. `/setup-toolkit-infection`
-7. `/setup-toolkit-doc-gen`
+7. `/setup-toolkit-docgen`
 8. `/setup-toolkit-github-actions`
 
 Do not invoke `/setup-toolkit-agents-md` unless the user explicitly requests an

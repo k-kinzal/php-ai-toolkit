@@ -572,8 +572,8 @@ PHP);
     {
         $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
         mkdir($dir . '/src', 0777, true);
-        mkdir($dir . '/build/doc-gen-cache', 0777, true);
-        file_put_contents($dir . '/build/doc-gen-cache/stale.cache', 'stale');
+        mkdir($dir . '/build/docgen-cache', 0777, true);
+        file_put_contents($dir . '/build/docgen-cache/stale.cache', 'stale');
         file_put_contents($dir . '/composer.json', '{"name": "acme/demo", "autoload": {"psr-4": {"Acme\\\\Demo\\\\": "src/"}}}');
         file_put_contents($dir . '/src/Greeter.php', '<?php namespace Acme\Demo; final class Greeter { public function greet(): string { return "hi"; } }');
 
@@ -581,7 +581,7 @@ PHP);
         }));
 
         self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => 1, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => true, 'help' => false, 'version' => false]));
-        self::assertFileDoesNotExist($dir . '/build/doc-gen-cache/stale.cache');
+        self::assertFileDoesNotExist($dir . '/build/docgen-cache/stale.cache');
     }
 
     public function testRunLaunchesPreviewServerForServeOption(): void
@@ -733,14 +733,14 @@ PHP);
     {
         $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
         mkdir($dir, 0777, true);
-        $config = new DocGenConfig($dir, ['.'], [], [], 'build/docs', null, null, null, [], 'build/doc-gen-cache');
+        $config = new DocGenConfig($dir, ['.'], [], [], 'build/docs', null, null, null, [], 'build/docgen-cache');
         $runner = new DocGenGenerationRunner($dir);
 
         $cache = $runner->caches($config, $dir . '/build/docs');
 
         self::assertInstanceOf(ParseCache::class, $cache->sources);
         self::assertInstanceOf(RenderCache::class, $cache->pages);
-        self::assertDirectoryExists($dir . '/build/doc-gen-cache');
+        self::assertDirectoryExists($dir . '/build/docgen-cache');
     }
 
     public function testCachesHoldsNothingForARunThatCachesNothing(): void
@@ -758,13 +758,13 @@ PHP);
     public function testClearRemovesTheCacheDirectoryOfTheProject(): void
     {
         $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
-        mkdir($dir . '/build/doc-gen-cache', 0777, true);
-        file_put_contents($dir . '/build/doc-gen-cache/entry.cache', '');
+        mkdir($dir . '/build/docgen-cache', 0777, true);
+        file_put_contents($dir . '/build/docgen-cache/entry.cache', '');
         $runner = new DocGenGenerationRunner($dir);
 
-        $runner->clear($dir, 'build/doc-gen-cache');
+        $runner->clear($dir, 'build/docgen-cache');
 
-        self::assertDirectoryDoesNotExist($dir . '/build/doc-gen-cache');
+        self::assertDirectoryDoesNotExist($dir . '/build/docgen-cache');
     }
 
     public function testReportCacheStatesWhatWasReusedAndKeepsWhatWasLearned(): void

@@ -99,8 +99,8 @@ the DocGen site on every push to the default branch and publishes it to the
 read-only. It restores the DocGen cache between runs, so a documentation job
 costs the size of the change.
 
-It runs `composer test:coverage` before `composer doc-gen`, and sets up PHP with
-`coverage: pcov` to make that possible. The `doc-gen` script passes
+It runs `composer test:coverage` before `composer docgen`, and sets up PHP with
+`coverage: pcov` to make that possible. The `docgen` script passes
 `--coverage=build/coverage-xml`, which is what lets every method on the site
 name the test cases covering it. DocGen reads no configuration file, so the
 workflow passes what only it knows: `--base-url`, derived from
@@ -112,11 +112,11 @@ declare in `#[CoversClass]` or `#[UsesClass]` is reported as risky and fails the
 run. Without a coverage run somewhere on the default branch, that metadata drifts
 unnoticed — the rest of CI never asks for it.
 
-The `/setup-toolkit-doc-gen` skill also ships a pull request preview workflow
+The `/setup-toolkit-docgen` skill also ships a pull request preview workflow
 (`docs-preview.yml`) that publishes a diff-mode site under `pr/<number>/` of the
 same branch and comments the link. Install it only if the project reviews through
 pull requests; it owns `pr/<number>/` and nothing else, so it is never a
-replacement for `docs.yml`. See [DocGen Configuration](doc-gen.md) for the
+replacement for `docs.yml`. See [DocGen Configuration](docgen.md) for the
 publishing model and the one-time Pages setup.
 
 ## Status Badges

@@ -430,13 +430,13 @@ final class ApplicationTest extends TestCase
             $output .= $message;
         });
 
-        self::assertSame(0, $app->run(['doc-gen', '--help']));
-        self::assertStringContainsString('Usage: doc-gen', $output);
+        self::assertSame(0, $app->run(['docgen', '--help']));
+        self::assertStringContainsString('Usage: docgen', $output);
 
         $output = '';
 
-        self::assertSame(0, $app->run(['doc-gen', '-V']));
-        self::assertStringContainsString('doc-gen 1.0.0', $output);
+        self::assertSame(0, $app->run(['docgen', '-V']));
+        self::assertStringContainsString('docgen 1.0.0', $output);
     }
 
     public function testRunRejectsUnknownOption(): void
@@ -449,7 +449,7 @@ final class ApplicationTest extends TestCase
             $errors .= $message;
         });
 
-        self::assertSame(2, $app->run(['doc-gen', '--bogus']));
+        self::assertSame(2, $app->run(['docgen', '--bogus']));
         self::assertStringContainsString('Unknown option: --bogus', $errors);
     }
 
@@ -489,7 +489,7 @@ PHP);
             },
         );
 
-        self::assertSame(0, $app->run(['doc-gen']));
+        self::assertSame(0, $app->run(['docgen']));
         self::assertStringContainsString('Generated', $output);
         self::assertSame('', $errors);
         self::assertFileExists($dir . '/build/docs/index.html');
@@ -505,7 +505,7 @@ PHP);
             $errors .= $message;
         });
 
-        self::assertSame(2, $app->run(['doc-gen']));
+        self::assertSame(2, $app->run(['docgen']));
         self::assertStringContainsString('DocGen error: No composer packages found.', $errors);
     }
 }

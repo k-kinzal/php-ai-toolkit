@@ -26,7 +26,7 @@ final class DocGenConfigTest extends TestCase
             'deptrac.yaml',
             'build/coverage.xml',
             ['phpunit/*'],
-            'build/doc-gen-cache',
+            'build/docgen-cache',
             'https://example.github.io/project',
             'https://github.com/example/project',
             true,
@@ -41,7 +41,7 @@ final class DocGenConfigTest extends TestCase
         self::assertSame('My Project', $config->title);
         self::assertSame('deptrac.yaml', $config->deptrac);
         self::assertSame('build/coverage.xml', $config->coverage);
-        self::assertSame('build/doc-gen-cache', $config->cache);
+        self::assertSame('build/docgen-cache', $config->cache);
         self::assertSame('https://example.github.io/project', $config->baseUrl);
         self::assertSame('https://github.com/example/project', $config->repository);
         self::assertTrue($config->publicApi);

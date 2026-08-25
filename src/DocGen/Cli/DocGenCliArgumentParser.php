@@ -22,7 +22,7 @@ use Toolkit\DocGen\DocGenException;
 use function trim;
 
 /**
- * Parses the doc-gen command line arguments.
+ * Parses the docgen command line arguments.
  */
 final class DocGenCliArgumentParser
 {

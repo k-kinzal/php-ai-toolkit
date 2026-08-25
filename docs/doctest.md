@@ -188,10 +188,10 @@ requirement is adopted one boundary at a time.
 
 ## Relationship to DocGen
 
-`doc-gen` renders the same examples the suite runs. Each `@example` block and each ` ```php ` fence
+`docgen` renders the same examples the suite runs. Each `@example` block and each ` ```php ` fence
 becomes a figure carrying a **doctest** badge, its assertions styled by kind, a **copy** button for
 the example itself, and a **run** button carrying the `vendor/bin/phpunit --filter` command for that
-one example. See [DocGen Configuration](doc-gen.md).
+one example. See [DocGen Configuration](docgen.md).
 
 ## Differences From the Upstream Project
 

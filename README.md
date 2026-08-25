@@ -67,7 +67,7 @@ The component skills are also available for focused setup or maintenance:
 - `/setup-toolkit-loc-guard` — LocGuard metrics checks for production source complexity and length limits
 - `/setup-toolkit-tree-guard` — TreeGuard directory and file structure constraints
 - `/setup-toolkit-doctest` — Doctest, the port of k-kinzal/doctest-php that runs PHPDoc examples as PHPUnit test cases
-- `/setup-toolkit-doc-gen` — DocGen static documentation site with full types, relations, layers, doctest examples, and a two-revision diff mode
+- `/setup-toolkit-docgen` — DocGen static documentation site with full types, relations, layers, doctest examples, and a two-revision diff mode
 - `/setup-toolkit-deptrac` — Deptrac architecture dependency rules for web apps, CLI apps, libraries, and modular projects
 - `/setup-toolkit-github-actions` — GitHub Actions CI for tests, lint gates, PHP compatibility, and pinned actions
 - `/setup-toolkit-agents-md` — AGENTS.md with project conventions and AI agent guidelines
@@ -78,7 +78,7 @@ the first measured result.
 
 ## Documentation
 
-The [API documentation site](https://k-kinzal.github.io/php-ai-toolkit/) is generated from the source by `doc-gen`
+The [API documentation site](https://k-kinzal.github.io/php-ai-toolkit/) is generated from the source by `docgen`
 and published on every push to `main`.
 
 - [PHPStan Rules](docs/phpstan-rules.md) — Custom rules and their error identifiers
@@ -91,7 +91,7 @@ and published on every push to `main`.
 - [TreeGuard Configuration](docs/tree-guard.md) — Directory and file structure constraints
 - [EnforceVisibilityScopeRule](docs/rules/EnforceVisibilityScopeRule.md) — Namespace visibility scopes declared with `@visibility`, enforced during PHPStan analysis
 - [Doctest Configuration](docs/doctest.md) — Running PHPDoc examples as PHPUnit test cases, and how the port differs from upstream
-- [DocGen Configuration](docs/doc-gen.md) — Static documentation site generation and scope control
+- [DocGen Configuration](docs/docgen.md) — Static documentation site generation and scope control
 - [Deptrac Configuration](docs/deptrac.md) — Architecture dependency rules and adaptation guidance
 - [GitHub Actions Configuration](docs/github-actions.md) — CI jobs, PHP version coverage, and workflow hardening
 

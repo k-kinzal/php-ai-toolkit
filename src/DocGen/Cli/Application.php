@@ -77,7 +77,7 @@ final class Application
         }
 
         if ($arguments['version']) {
-            $this->writer->write(sprintf("doc-gen %s\n", self::VERSION));
+            $this->writer->write(sprintf("docgen %s\n", self::VERSION));
 
             return 0;
         }

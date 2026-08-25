@@ -67,11 +67,11 @@ jobs:
       - name: Restore the DocGen cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: build/doc-gen-cache
-          key: doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-${{ github.sha }}
+          path: build/docgen-cache
+          key: docgen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-${{ github.sha }}
           restore-keys: |
-            doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-
-            doc-gen-${{ runner.os }}-
+            docgen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-
+            docgen-${{ runner.os }}-
 
       # The report --coverage points at below. A strict PHPUnit configuration
       # reports a test that executes an undeclared class as risky, so this step
@@ -81,7 +81,7 @@ jobs:
       - name: Generate the coverage report the site reads
         run: vendor/bin/phpunit --coverage-xml build/coverage-xml
 
-      # doc-gen is configured by its options alone, so this command is the
+      # docgen is configured by its options alone, so this command is the
       # whole documentation configuration. The address the site is published
       # at is what the workflow knows and the command cannot work out, so the
       # job passes it: every page then carries its canonical link and the tags
@@ -91,7 +91,7 @@ jobs:
           set -euo pipefail
 
           repository="$(printf '%s' "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')"
-          vendor/bin/doc-gen --coverage=build/coverage-xml \
+          vendor/bin/docgen --coverage=build/coverage-xml \
             --base-url="https://${repository%%/*}.github.io/${repository#*/}"
 
       - name: Check out the documentation branch

@@ -1,6 +1,6 @@
 # DocGen Configuration
 
-The DocGen setup written by the `/setup-toolkit-doc-gen` skill. DocGen has no configuration file: the setup is the
+The DocGen setup written by the `/setup-toolkit-docgen` skill. DocGen has no configuration file: the setup is the
 Composer scripts and workflows that call the CLI with the options a project wants.
 
 ## Purpose
@@ -13,7 +13,7 @@ density, from the code and its PHPDoc without any manual documentation step.
 ## Command
 
 ```bash
-vendor/bin/doc-gen
+vendor/bin/docgen
 ```
 
 Exit codes:
@@ -34,7 +34,7 @@ to), `--diff=RANGE` / `--base=REVISION` / `--head=REVISION` (compare two git rev
 A project keeps the options it always passes in a Composer script, and a caller adds to them:
 
 ```bash
-composer doc-gen -- --base-url=https://example.github.io/project
+composer docgen -- --base-url=https://example.github.io/project
 ```
 
 That split is the point of having no file. What a project documents is the same wherever the command runs, while the
@@ -56,8 +56,8 @@ the process that waits for them, and never more than 16. `--jobs=N` sets the cou
 sharing its cores with other jobs wants, and `--jobs=1` keeps everything in one process.
 
 ```bash
-vendor/bin/doc-gen --jobs=4    # four workers
-vendor/bin/doc-gen --jobs=1    # one process, no workers
+vendor/bin/docgen --jobs=4    # four workers
+vendor/bin/docgen --jobs=1    # one process, no workers
 ```
 
 Workers need the `pcntl` extension, and they are not used while OPcache or the JIT is on for the CLI, because their
@@ -72,10 +72,10 @@ A run remembers two things in its cache directory: what every source file parsed
 site was written from. The next run parses only the files that changed, and rewrites only the pages that changed.
 
 ```bash
-vendor/bin/doc-gen                       # parse and write only what changed
-vendor/bin/doc-gen --no-cache            # parse everything, write everything, remember nothing
-vendor/bin/doc-gen --clear-cache         # start from an empty cache
-vendor/bin/doc-gen --cache-dir=.docgen   # keep the cache somewhere else
+vendor/bin/docgen                       # parse and write only what changed
+vendor/bin/docgen --no-cache            # parse everything, write everything, remember nothing
+vendor/bin/docgen --clear-cache         # start from an empty cache
+vendor/bin/docgen --cache-dir=.docgen   # keep the cache somewhere else
 ```
 
 Every run reports what it reused:
@@ -119,7 +119,7 @@ megabytes.
 ## Options
 
 ```bash
-vendor/bin/doc-gen \
+vendor/bin/docgen \
     --packages=.,packages/* \
     --exclude='tests/Fixture/*' \
     --output=build/docs \
@@ -150,7 +150,7 @@ occurrences named — a Composer script and the job that calls it both get a say
 `--output` (default `build/docs`) is the site output directory. `--title` (default: the root package name, else the
 project directory name) overrides the site title.
 
-`--cache-dir` (default `build/doc-gen-cache`) is the directory the parsed sources and the written pages are
+`--cache-dir` (default `build/docgen-cache`) is the directory the parsed sources and the written pages are
 remembered in; `--no-cache` turns caching off for one run. Keep it outside the output directory: everything below the
 output directory is part of the published site.
 
@@ -169,7 +169,7 @@ own packages declare, which is the answer where a repository has moved, where th
 where the site is generated from a checkout that is not the published one. An address that is not an absolute
 `http` or `https` URL is rejected.
 
-An unknown option is rejected with an error, and `doc-gen --help` lists every option there is.
+An unknown option is rejected with an error, and `docgen --help` lists every option there is.
 
 ## Scope Semantics
 
@@ -190,7 +190,7 @@ a second implementation of those rules.
 `--public-api` publishes a consumer-facing view:
 
 ```bash
-vendor/bin/doc-gen --public-api
+vendor/bin/docgen --public-api
 ```
 
 - Package, architecture-layer, namespace, all-item, sidebar, count, and search surfaces include only top-level
@@ -301,7 +301,7 @@ with FreeType support; without it the run writes no image, the pages carry no `o
 `summary` card, and a warning says so — a card that names an image the site does not serve would be worse.
 
 ```bash
-vendor/bin/doc-gen --base-url=https://example.github.io/project/pr/42
+vendor/bin/docgen --base-url=https://example.github.io/project/pr/42
 ```
 
 names the address of one run, which is what a pull request preview published under its own directory wants.
@@ -309,8 +309,8 @@ names the address of one run, which is what a pull request preview published und
 ## Publishing
 
 The site is published by committing the output directory to a branch GitHub Pages serves. Two workflow templates
-ship with the `/setup-toolkit-doc-gen` skill, in
-`vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-doc-gen/`:
+ship with the `/setup-toolkit-docgen` skill, in
+`vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-docgen/`:
 
 | Template | Trigger | What it does |
 |----------|---------|--------------|
@@ -343,7 +343,7 @@ which would run the pull request's code with a write token.
 A project that does not review through pull requests installs `docs.yml` alone; `docs-preview.yml` has nothing to
 publish without them.
 
-Point the `composer doc-gen` script at a coverage report with `--coverage=build/coverage-xml` and run
+Point the `composer docgen` script at a coverage report with `--coverage=build/coverage-xml` and run
 `composer test:coverage` under pcov before it, and every method on the published site names the test cases covering
 it. That step earns its minutes twice over: it is usually the only place on the default branch where PHPUnit's
 `beStrictAboutCoverageMetadata` is exercised, so it is what keeps `#[CoversClass]` and `#[UsesClass]` declarations
@@ -353,7 +353,7 @@ one value the repository cannot state for itself. See [GitHub Actions Configurat
 ## Local Preview
 
 ```bash
-vendor/bin/doc-gen --serve
+vendor/bin/docgen --serve
 ```
 
 generates the site and serves it with the PHP built-in web server at `127.0.0.1:8090` until interrupted. Pass
@@ -362,9 +362,9 @@ generates the site and serves it with the PHP built-in web server at `127.0.0.1:
 ## Diff Mode
 
 ```bash
-vendor/bin/doc-gen --diff=main            # main against the working tree
-vendor/bin/doc-gen --diff=v1.0.0..HEAD    # two revisions
-vendor/bin/doc-gen --base=main --serve    # the same, previewed locally
+vendor/bin/docgen --diff=main            # main against the working tree
+vendor/bin/docgen --diff=v1.0.0..HEAD    # two revisions
+vendor/bin/docgen --base=main --serve    # the same, previewed locally
 ```
 
 `--diff=BASE` compares the working tree against `BASE`; `--diff=BASE..HEAD` compares two revisions. `--base` and

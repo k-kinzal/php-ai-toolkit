@@ -71,13 +71,13 @@
         "compat": "phpcs",
         "loc-guard": "@php bin/loc-guard --config=loc.yaml",
         "tree-guard": "@php bin/tree-guard --config=tree.yaml",
-        "doc-gen": "@php bin/doc-gen --packages=. --exclude='tests/Fixture/*' --coverage=build/coverage-xml",
+        "docgen": "@php bin/docgen --packages=. --exclude='tests/Fixture/*' --coverage=build/coverage-xml",
         "doctest": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite doctest",
         "deptrac": "@php deptrac.php analyse --config-file=deptrac.yaml",
         "format": "php-cs-fixer fix --allow-risky=yes",
         "format:check": "php-cs-fixer fix --dry-run --diff --allow-risky=yes"
     },
-    "bin": ["bin/php-ai-toolkit", "bin/loc-guard", "bin/tree-guard", "bin/doc-gen"],
+    "bin": ["bin/php-ai-toolkit", "bin/loc-guard", "bin/tree-guard", "bin/docgen"],
     "config": {
         "sort-packages": true,
         "allow-plugins": {

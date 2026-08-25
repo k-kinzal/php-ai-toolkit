@@ -21,7 +21,9 @@ It is a PHPUnit extension plus a test suite. The project already has a runner, a
 Inspect the project before configuring:
 
 - Confirm it requires `k-kinzal/php-ai-toolkit`.
-- Read the installed PHPUnit major. 10 or later takes the extension; 9 has no extension API and needs the legacy runner.
+- Read the installed PHPUnit version and available extension API. Use the modern
+  extension path when the resolved target version supports it; use the legacy
+  runner only when the actual graph resolves the legacy PHPUnit line.
 - Read `phpunit.xml` (or `phpunit.xml.dist`) and its existing `<testsuites>` and `<extensions>`.
 - Read Composer production autoload roots. Usually this is `src/`, not `tests/`.
 - Check whether the project autoloads everything it ships. A project with non-autoloadable function files needs a bootstrap.
@@ -35,7 +37,8 @@ composer require --dev k-kinzal/php-ai-toolkit
 
 ## Apply
 
-Register the extension and add the suite. No test file is written:
+For PHPUnit 10 or later, register the extension and add the suite. This is a
+configuration-only integration: no test file is written.
 
 ```xml
 <testsuites>
@@ -54,6 +57,13 @@ Register the extension and add the suite. No test file is written:
 </extensions>
 ```
 
+The `<file>` entry is the toolkit's installed, concrete suite, not a template.
+Do not create or copy a project-local `DoctestSuite.php`, and do not subclass
+`DoctestRunner` for an ordinary setup. The example uses Composer's default
+`vendor-dir`; read the target project's value with `composer config vendor-dir`
+and replace the leading `vendor` when it differs. If the file is not found, fix
+that installed-package path instead of scaffolding a local suite.
+
 | Parameter | Meaning |
 |-----------|---------|
 | `directories` | Comma-separated directories to scan |
@@ -64,7 +74,8 @@ Register the extension and add the suite. No test file is written:
 
 Set `directories` from the discovered autoload roots. Leave `bootstrap` unset unless the project has code an autoloader cannot resolve.
 
-On PHPUnit 9 there is no extension API to read those parameters. Copy
+Only when the resolved test graph actually runs PHPUnit 9 is a local compatibility
+class required: that version has no extension API to read those parameters. Copy
 `LegacyDoctestSuiteTest.php` from this skill to
 `tests/Doctest/LegacyDoctestSuiteTest.php`, adapt its namespace and production
 autoload roots, and register that directory as the doctest suite in the PHPUnit 9
@@ -182,7 +193,9 @@ report the same expected examples (apart from explicitly documented version-only
 sources), then write one example, confirm it passes, break it on purpose, and
 confirm the failure names the example.
 
-If the suite reports no tests, the configuration reached it empty: check the `<bootstrap>` class name, the `directories` parameter, and that `enabled` is not `false`.
+If the modern suite reports no tests, do not create a local suite class. Check the
+installed path reported by `composer config vendor-dir`, the `<bootstrap>` class
+name, the `directories` parameter, and that `enabled` is not `false`.
 
 ## Fixing Failures
 

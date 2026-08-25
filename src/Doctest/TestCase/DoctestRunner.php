@@ -16,10 +16,13 @@ use Toolkit\Doctest\Scanner\FileScanner;
 use Toolkit\Doctest\Scanner\SourceScanner;
 
 /**
- * Base class for running doctests as PHPUnit tests.
+ * Base class behind the toolkit's PHPUnit doctest suite.
  *
- * Extend this class and implement the configure() method to run doctests
- * for your project. Each example found becomes one PHPUnit test case.
+ * A project on PHPUnit 10 or later normally does not extend this class. It
+ * points its PHPUnit configuration at the package's DoctestSuite.php and
+ * supplies scan paths to DoctestExtension. Extending this runner is a custom
+ * integration point, not the setup path. Each example found becomes one
+ * PHPUnit test case.
  *
  * This class binds its data provider with a PHPUnit attribute and therefore
  * needs PHPUnit 10 or later. On PHPUnit 9 extend

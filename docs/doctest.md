@@ -28,7 +28,9 @@ disagrees with the code is reported as a failing test by whatever reporter the p
 
 ## Setup
 
-Register the extension and point a test suite at the shipped suite file:
+On PHPUnit 10 or later, setup is configuration only. Do not create a project-local
+`DoctestSuite.php` and do not subclass `DoctestRunner`. Point PHPUnit at the concrete suite shipped
+by the installed toolkit and register its extension:
 
 ```xml
 <phpunit>
@@ -49,8 +51,23 @@ Register the extension and point a test suite at the shipped suite file:
 </phpunit>
 ```
 
-That is the whole setup: no test file to write. Each example becomes one test case named
-`<target> example #<n>: <description>`.
+The path above uses Composer's default `vendor-dir`. When a project changes that setting, read it
+with `composer config vendor-dir` and use the resulting directory instead. A missing suite file or
+an empty suite is a configuration problem: correct the installed-package path, extension class, or
+scan roots instead of creating another suite class.
+
+PHPUnit 9 is the sole exception because it does not provide the extension API used to read these
+parameters. The setup skill keeps that compatibility path separate; it must not be applied merely
+because a package declares PHPUnit 9 in a wider support constraint.
+
+## Runtime Model
+
+`Toolkit\Doctest\DoctestExtension` and the shipped doctest suite provide the PHPUnit 10-or-later
+integration. PHPUnit 9 is supported through
+`Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner`; the modern runner is
+`Toolkit\Doctest\TestCase\DoctestRunner`. All integrations execute the same extracted examples.
+
+Each example becomes one test case named `<target> example #<n>: <description>`.
 
 | Parameter | Meaning |
 |-----------|---------|
@@ -70,26 +87,7 @@ need that. `--no-extensions` bootstraps nothing, and mutation testing usually pa
 builds the test suite before it bootstraps extensions, so on that version the suite is always asked
 first. Either way the examples run.
 
-Switching them off is `enabled="false"`, or selecting the other suites — `--testsuite unit`.
-
-### On PHPUnit 9
-
-PHPUnit 9 has no extension API and reads test metadata from doc-comments. Extend
-`Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner` there and state the configuration in the
-class instead:
-
-```php
-final class DoctestSuiteTest extends LegacyDoctestRunner
-{
-    public static function configure(): Configuration
-    {
-        return new Configuration(directories: [__DIR__ . '/../src']);
-    }
-}
-```
-
-`Toolkit\Doctest\TestCase\DoctestRunner` is the same class for PHPUnit 10 and later; extend it
-directly when a project wants to state its configuration in PHP rather than in `phpunit.xml`.
+Switching them off is `enabled="false"`, or selecting a test suite that does not contain doctest.
 
 ## Where Examples Are Written
 

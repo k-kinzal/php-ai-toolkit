@@ -14,9 +14,10 @@ use Toolkit\Doctest\TestCase\DoctestRunner;
  * The test suite PHPUnit loads to run a project's documented examples.
  *
  * It is the one concrete DoctestRunner the package ships, so a project runs its
- * examples without writing a test class of its own. PHPUnit's testsuite element
- * takes a file rather than a class name, which is why this one is named by path
- * even though it is autoloadable like the rest of the source:
+ * examples without writing or copying a test class of its own. A consuming
+ * project points PHPUnit directly at this installed file. PHPUnit's testsuite
+ * element takes a file rather than a class name, which is why this one is named
+ * by path even though it is autoloadable like the rest of the source:
  *
  *     <testsuite name="doctest">
  *         <file>vendor/k-kinzal/php-ai-toolkit/src/Doctest/DoctestSuite.php</file>

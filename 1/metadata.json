@@ -1,0 +1,42 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M0WRDD0N3NXZ7KFAPF90YX9T",
+  "session_id": "8e22653b-584b-448b-b696-42c1c2b724cf",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-25T15:25:25.104428Z",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "save_step_count": 1,
+  "files_touched": [
+    "skills/setup-php-ai-toolkit/SKILL.md",
+    "skills/setup-toolkit-doctest/SKILL.md",
+    "skills/setup-toolkit-phpstan/SKILL.md",
+    "skills/setup-toolkit-scope-guard/SKILL.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5",
+  "turn_id": "19e3df455c6a",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 52,
+    "cache_creation_tokens": 73804,
+    "cache_read_tokens": 2078507,
+    "output_tokens": 42367,
+    "api_call_count": 26
+  },
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-25T15:25:25.088384Z",
+    "agent_lines": 0,
+    "agent_removed": 6,
+    "human_added": 3464,
+    "human_modified": 227,
+    "human_removed": 0,
+    "total_committed": 3567,
+    "total_lines_changed": 12552,
+    "agent_percentage": 0.04780114722753346,
+    "metric_version": 2
+  }
+}

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\ExceptionHandling;
+namespace Toolkit\PhpStan\Rule\ExceptionHandling;
 
 use PhpParser\Node\Name;
 

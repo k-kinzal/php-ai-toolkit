@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Diff;
+namespace Toolkit\DocGen\Analysis\Diff;
 
 use function array_fill;
 use function array_keys;

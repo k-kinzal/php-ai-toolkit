@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Executor;
 
-use PhpAiToolkit\Doctest\Executor\Evaluation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Toolkit\Doctest\Executor\Evaluation;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Executor\Evaluation
+ * @covers \Toolkit\Doctest\Executor\Evaluation
  */
 #[CoversClass(Evaluation::class)]
 final class EvaluationTest extends TestCase

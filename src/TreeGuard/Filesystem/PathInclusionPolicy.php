@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Filesystem;
+namespace Toolkit\TreeGuard\Filesystem;
 
 use function fnmatch;
 
-use PhpAiToolkit\TreeGuard\Config\TreeGuardConfig;
+use Toolkit\TreeGuard\Config\TreeGuardConfig;
 
 /**
  * Decides whether a discovered file or directory belongs in TreeGuard analysis.

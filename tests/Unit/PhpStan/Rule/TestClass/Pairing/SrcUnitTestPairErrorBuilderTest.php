@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass\Pairing;
 
-use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairErrorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairErrorBuilder;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairErrorBuilder
+ * @covers \Toolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairErrorBuilder
  */
 #[CoversClass(SrcUnitTestPairErrorBuilder::class)]
 final class SrcUnitTestPairErrorBuilderTest extends TestCase

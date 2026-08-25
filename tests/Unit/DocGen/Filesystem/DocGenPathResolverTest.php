@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Filesystem;
 
-use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Filesystem\DocGenPathResolver;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver
+ * @covers \Toolkit\DocGen\Filesystem\DocGenPathResolver
  */
 #[CoversClass(DocGenPathResolver::class)]
 final class DocGenPathResolverTest extends TestCase

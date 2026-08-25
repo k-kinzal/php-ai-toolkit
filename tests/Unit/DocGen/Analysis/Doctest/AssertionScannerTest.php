@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Doctest;
 
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine;
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Doctest\AssertionLine;
+use Toolkit\DocGen\Analysis\Doctest\AssertionScanner;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner
- * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine
+ * @covers \Toolkit\DocGen\Analysis\Doctest\AssertionScanner
+ * @uses \Toolkit\DocGen\Analysis\Doctest\AssertionLine
  */
 #[CoversClass(AssertionScanner::class)]
 #[UsesClass(AssertionLine::class)]

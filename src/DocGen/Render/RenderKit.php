@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render;
+namespace Toolkit\DocGen\Render;
 
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
-use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
-use PhpAiToolkit\DocGen\Analysis\ProjectModel;
-use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
+use Toolkit\DocGen\Analysis\Doctest\AssertionScanner;
+use Toolkit\DocGen\Analysis\Doctest\DoctestExtractor;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Render\Diff\DiffHtml;
 
 /**
  * Shared renderer collaborators for one site generation run.

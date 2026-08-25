@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Config;
 
-use PhpAiToolkit\LocGuard\Config\ConfigScalarReader;
-use PhpAiToolkit\LocGuard\LocGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Config\ConfigScalarReader;
+use Toolkit\LocGuard\LocGuardException;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Config\ConfigScalarReader
+ * @covers \Toolkit\LocGuard\Config\ConfigScalarReader
  */
 #[CoversClass(ConfigScalarReader::class)]
 final class ConfigScalarReaderTest extends TestCase

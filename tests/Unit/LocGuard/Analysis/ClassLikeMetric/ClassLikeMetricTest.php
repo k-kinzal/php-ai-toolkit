@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\ClassLikeMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric
+ * @covers \Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric
  */
 #[CoversClass(ClassLikeMetric::class)]
 final class ClassLikeMetricTest extends TestCase

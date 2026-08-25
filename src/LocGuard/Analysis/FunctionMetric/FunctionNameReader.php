@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\FunctionMetric;
+namespace Toolkit\LocGuard\Analysis\FunctionMetric;
 
 use function count;
 

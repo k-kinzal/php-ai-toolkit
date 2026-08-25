@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render;
+namespace Toolkit\DocGen\Render;
 
 use function json_encode;
 
@@ -11,9 +11,9 @@ use const JSON_UNESCAPED_UNICODE;
 
 use function mb_strimwidth;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
-use PhpAiToolkit\DocGen\Analysis\ProjectModel;
-use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Render\Diff\DiffHtml;
 
 /**
  * Builds the client-side search index script.
@@ -111,7 +111,7 @@ final class SearchIndexBuilder
      *
      * @return list<array{n: string, f: string, k: string, u: string, s: string, d?: string}>
      */
-    public function memberItems(\PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc $classLike, string $page, ?DiffHtml $diff = null): array
+    public function memberItems(\Toolkit\DocGen\Analysis\Model\ClassLikeDoc $classLike, string $page, ?DiffHtml $diff = null): array
     {
         $diff ??= new DiffHtml();
         $items = [];

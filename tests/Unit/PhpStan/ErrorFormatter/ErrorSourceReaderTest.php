@@ -6,12 +6,12 @@ namespace Tests\Unit\PhpStan\ErrorFormatter;
 
 use function dirname;
 
-use PhpAiToolkit\PhpStan\ErrorFormatter\ErrorSourceReader;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\ErrorFormatter\ErrorSourceReader;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\ErrorSourceReader
+ * @covers \Toolkit\PhpStan\ErrorFormatter\ErrorSourceReader
  */
 #[CoversClass(ErrorSourceReader::class)]
 final class ErrorSourceReaderTest extends TestCase

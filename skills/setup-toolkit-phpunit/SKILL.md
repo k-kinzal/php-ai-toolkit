@@ -110,7 +110,7 @@ Add the toolkit extension alongside existing extensions. Do not remove existing 
 ```xml
 <extensions>
     <bootstrap class="Existing\Extension"/>                              <!-- keep -->
-    <bootstrap class="PhpAiToolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>  <!-- add -->
+    <bootstrap class="Toolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>  <!-- add -->
 </extensions>
 ```
 
@@ -122,7 +122,7 @@ Add the legacy listener alongside existing listeners:
 ```xml
 <listeners>
     <listener class="Existing\Listener"/>                                                <!-- keep -->
-    <listener class="PhpAiToolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener"/>  <!-- add -->
+    <listener class="Toolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener"/>  <!-- add -->
 </listeners>
 ```
 

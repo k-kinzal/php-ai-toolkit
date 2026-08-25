@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor;
-use PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\Throw_;
@@ -17,14 +15,16 @@ use PhpParser\NodeTraverser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor;
+use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor
- * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression
+ * @covers \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor
+ * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite
+ * @uses \Toolkit\PhpStan\Rule\Shared\ThrownExpression
  */
 #[CoversClass(ThrowSiteVisitor::class)]
-#[UsesClass(\PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite::class)]
+#[UsesClass(\Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite::class)]
 #[UsesClass(ThrownExpression::class)]
 final class ThrowSiteVisitorTest extends TestCase
 {

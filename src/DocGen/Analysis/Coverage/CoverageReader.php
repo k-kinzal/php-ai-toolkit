@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Coverage;
+namespace Toolkit\DocGen\Analysis\Coverage;
 
 use function count;
 
@@ -12,14 +12,14 @@ use DOMElement;
 use function is_dir;
 use function is_file;
 use function ltrim;
-
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
-
 use function preg_replace;
 use function scandir;
 use function sprintf;
 use function str_ends_with;
+
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Filesystem\DocGenPathResolver;
+
 use function trim;
 
 /**

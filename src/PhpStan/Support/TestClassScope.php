@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Support;
+namespace Toolkit\PhpStan\Support;
 
 use PHPStan\Analyser\Scope;
 

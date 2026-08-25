@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Support;
+namespace Toolkit\PhpStan\Support;
 
 /**
  * Classifies tokenizer tokens for non-PHPDoc comment context tracking.

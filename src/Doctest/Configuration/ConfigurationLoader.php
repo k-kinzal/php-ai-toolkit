@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Configuration;
+namespace Toolkit\Doctest\Configuration;
 
 use function array_filter;
 use function array_map;
@@ -26,7 +26,7 @@ use PHPUnit\Runner\Extension\ParameterCollection;
  *         'directories' => 'src,lib',
  *         'exclude' => '*Test.php',
  *     ]);
- *     $config = \PhpAiToolkit\Doctest\Configuration\ConfigurationLoader::fromParameters($params, '/app');
+ *     $config = \Toolkit\Doctest\Configuration\ConfigurationLoader::fromParameters($params, '/app');
  *     $config->getDirectories() // => ['/app/src', '/app/lib']
  *     $config->getExcludePatterns() // => ['*Test.php']
  */

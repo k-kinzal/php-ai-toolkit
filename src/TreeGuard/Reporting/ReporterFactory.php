@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Reporting;
-
-use PhpAiToolkit\TreeGuard\TreeGuardException;
+namespace Toolkit\TreeGuard\Reporting;
 
 use function sprintf;
+
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
  * Creates TreeGuard reporters from configuration names.

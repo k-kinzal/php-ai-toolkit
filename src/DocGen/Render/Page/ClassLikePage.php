@@ -2,30 +2,29 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page;
+namespace Toolkit\DocGen\Render\Page;
 
 use function array_merge;
 use function count;
-
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
-use PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\DocTextHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\MemberHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\RelationsHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\SignatureHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\SymbolDescription;
-use PhpAiToolkit\DocGen\Render\Page\Component\TestCaseHtml;
-use PhpAiToolkit\DocGen\Render\PageChrome;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-use PhpAiToolkit\DocGen\Render\TypeRenderContext;
-
 use function sprintf;
 use function strtolower;
+
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Render\Diff\DiffBanner;
+use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
+use Toolkit\DocGen\Render\Page\Component\DocTextHtml;
+use Toolkit\DocGen\Render\Page\Component\MemberHtml;
+use Toolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml;
+use Toolkit\DocGen\Render\Page\Component\RelationsHtml;
+use Toolkit\DocGen\Render\Page\Component\SidebarHtml;
+use Toolkit\DocGen\Render\Page\Component\SignatureHtml;
+use Toolkit\DocGen\Render\Page\Component\SymbolDescription;
+use Toolkit\DocGen\Render\Page\Component\TestCaseHtml;
+use Toolkit\DocGen\Render\PageChrome;
+use Toolkit\DocGen\Render\RenderKit;
+use Toolkit\DocGen\Render\TypeRenderContext;
 
 /**
  * Renders the documentation page of one class, interface, trait, or enum.
@@ -161,7 +160,7 @@ final class ClassLikePage
     /**
      * Filters the members that are part of the documented public surface.
      *
-     * @template T of \PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc|\PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc|\PhpAiToolkit\DocGen\Analysis\Model\MethodDoc
+     * @template T of \Toolkit\DocGen\Analysis\Model\ConstantDoc|\Toolkit\DocGen\Analysis\Model\PropertyDoc|\Toolkit\DocGen\Analysis\Model\MethodDoc
      *
      * @param list<T> $members
      *
@@ -182,7 +181,7 @@ final class ClassLikePage
     /**
      * Builds the type resolution context of this page.
      *
-     * @param list<\PhpAiToolkit\DocGen\Analysis\Model\TemplateDoc> $extraTemplates
+     * @param list<\Toolkit\DocGen\Analysis\Model\TemplateDoc> $extraTemplates
      */
     public function context(RenderKit $services, string $pagePath, ClassLikeDoc $classLike, array $extraTemplates): TypeRenderContext
     {
@@ -398,7 +397,7 @@ final class ClassLikePage
      * nothing touched steps aside when only changes are asked for, while a
      * section holding one new member stays and shows it.
      *
-     * @param list<\PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc|\PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc|\PhpAiToolkit\DocGen\Analysis\Model\MethodDoc|\PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc> $members
+     * @param list<\Toolkit\DocGen\Analysis\Model\ConstantDoc|\Toolkit\DocGen\Analysis\Model\PropertyDoc|\Toolkit\DocGen\Analysis\Model\MethodDoc|\Toolkit\DocGen\Analysis\Model\EnumCaseDoc> $members
      */
     public function sectionMark(RenderKit $services, ClassLikeDoc $classLike, string $kind, array $members): string
     {
@@ -408,7 +407,7 @@ final class ClassLikePage
     /**
      * Combines the state of the members of one section.
      *
-     * @param list<\PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc|\PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc|\PhpAiToolkit\DocGen\Analysis\Model\MethodDoc|\PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc> $members
+     * @param list<\Toolkit\DocGen\Analysis\Model\ConstantDoc|\Toolkit\DocGen\Analysis\Model\PropertyDoc|\Toolkit\DocGen\Analysis\Model\MethodDoc|\Toolkit\DocGen\Analysis\Model\EnumCaseDoc> $members
      */
     public function sectionStatus(RenderKit $services, ClassLikeDoc $classLike, string $kind, array $members): string
     {

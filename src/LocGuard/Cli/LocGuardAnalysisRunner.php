@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Cli;
-
-use PhpAiToolkit\LocGuard\Analysis\LocGuardAnalyzer;
-use PhpAiToolkit\LocGuard\Config\ConfigLoader;
-use PhpAiToolkit\LocGuard\LocGuardException;
-use PhpAiToolkit\LocGuard\Reporting\ReporterFactory;
+namespace Toolkit\LocGuard\Cli;
 
 use function sprintf;
+
+use Toolkit\LocGuard\Analysis\LocGuardAnalyzer;
+use Toolkit\LocGuard\Config\ConfigLoader;
+use Toolkit\LocGuard\LocGuardException;
+use Toolkit\LocGuard\Reporting\ReporterFactory;
 
 /**
  * Runs LocGuard analysis from resolved CLI options.

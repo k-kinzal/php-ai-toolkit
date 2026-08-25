@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page\Component;
 
-use PhpAiToolkit\DocGen\Render\HtmlText;
-use PhpAiToolkit\DocGen\Render\Page\Component\GraphSvg;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Render\HtmlText;
+use Toolkit\DocGen\Render\Page\Component\GraphSvg;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\Page\Component\GraphSvg
- * @uses \PhpAiToolkit\DocGen\Render\HtmlText
+ * @covers \Toolkit\DocGen\Render\Page\Component\GraphSvg
+ * @uses \Toolkit\DocGen\Render\HtmlText
  */
 #[CoversClass(GraphSvg::class)]
 #[UsesClass(HtmlText::class)]

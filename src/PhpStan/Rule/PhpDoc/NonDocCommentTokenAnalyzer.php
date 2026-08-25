@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\PhpDoc;
+namespace Toolkit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern;
-use PhpAiToolkit\PhpStan\Support\NonDocCommentContext;
 use PHPStan\Rules\IdentifierRuleError;
+use Toolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern;
+use Toolkit\PhpStan\Support\NonDocCommentContext;
 
 /**
  * Analyses tokenizer comments for non-PHPDoc comments.

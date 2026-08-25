@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Presentation;
+namespace Toolkit\PhpUnit\TestReporter\Presentation;
 
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
+use Toolkit\PhpUnit\TestReporter\TestIssue;
 
 /**
  * Presents test issue types as labels and terminal colors.

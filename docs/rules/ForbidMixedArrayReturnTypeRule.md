@@ -1,6 +1,6 @@
 # ForbidMixedArrayReturnTypeRule
 
-> This is a legacy opt-in rule class and is no longer registered by `toolkit.neon`. The default extension uses [ForbidInternalMixedTypeRule](ForbidInternalMixedTypeRule.md), which permits deliberate public `mixed` contracts and forbids concrete `mixed` in internal declarations instead.
+> This is a legacy opt-in rule class and is no longer registered by `rules.neon`. The default extension uses [ForbidInternalMixedTypeRule](ForbidInternalMixedTypeRule.md), which permits deliberate public `mixed` contracts and forbids concrete `mixed` in internal declarations instead.
 
 | Property | Value |
 |----------|-------|
@@ -79,7 +79,7 @@ If the method itself must expose arbitrary values — for example, the lowest-le
 
 ```neon
 parameters:
-    customRules:
+    toolkit:
         mixedArrayReturnAllowedPaths:
             - 'src/Infrastructure/SerializedCache.php'
 ```

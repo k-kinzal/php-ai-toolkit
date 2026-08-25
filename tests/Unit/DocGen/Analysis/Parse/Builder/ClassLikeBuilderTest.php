@@ -4,27 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Parse\Builder;
 
-use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
-use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\MethodDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
-use PhpAiToolkit\DocGen\Analysis\Parse\AstParser;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\MethodBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter;
-use PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter;
-use PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers;
-use PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge;
-use PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Enum_;
@@ -34,29 +13,50 @@ use PhpParser\Node\Stmt\Trait_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
+use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\ConstantDoc;
+use Toolkit\DocGen\Analysis\Model\EnumCaseDoc;
+use Toolkit\DocGen\Analysis\Model\MethodDoc;
+use Toolkit\DocGen\Analysis\Model\ParameterDoc;
+use Toolkit\DocGen\Analysis\Model\PropertyDoc;
+use Toolkit\DocGen\Analysis\Model\TypeSignature;
+use Toolkit\DocGen\Analysis\Parse\AstParser;
+use Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
+use Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder;
+use Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder;
+use Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder;
+use Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder;
+use Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder;
+use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
+use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
+use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
+use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\AstParser
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\MethodDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers
- * @uses \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ * @covers \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
+ * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
+ * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
+ * @uses \Toolkit\DocGen\Analysis\Model\ConstantDoc
+ * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
+ * @uses \Toolkit\DocGen\Analysis\Model\EnumCaseDoc
+ * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
+ * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
+ * @uses \Toolkit\DocGen\Analysis\Model\MethodDoc
+ * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
+ * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
+ * @uses \Toolkit\DocGen\Analysis\Model\ParameterDoc
+ * @uses \Toolkit\DocGen\Analysis\Parse\ParameterModifiers
+ * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
+ * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
+ * @uses \Toolkit\DocGen\Analysis\Model\PropertyDoc
+ * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
+ * @uses \Toolkit\DocGen\Analysis\Model\TypeSignature
  */
 #[CoversClass(ClassLikeBuilder::class)]
 #[UsesClass(AstParser::class)]

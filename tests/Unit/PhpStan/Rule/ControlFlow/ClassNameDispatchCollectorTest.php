@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\ObjectType;
@@ -14,10 +12,12 @@ use PHPStan\Type\Type;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector;
+use Toolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
+ * @covers \Toolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
  */
 #[CoversClass(ClassNameDispatchCollector::class)]
 #[UsesClass(DispatchSubjectResolver::class)]

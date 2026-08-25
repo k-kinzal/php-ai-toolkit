@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric;
+namespace Toolkit\LocGuard\Analysis\ClassLikeMetric;
 
 use function count;
 
-use PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 use PhpToken;
+use Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 
 /**
  * Collects class-like declaration metrics from tokenized PHP source.

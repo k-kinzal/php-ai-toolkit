@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Reporting;
-
-use PhpAiToolkit\LocGuard\LocGuardException;
+namespace Toolkit\LocGuard\Reporting;
 
 use function sprintf;
+
+use Toolkit\LocGuard\LocGuardException;
 
 /**
  * Creates LocGuard reporters from configuration names.

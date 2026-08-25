@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page\Component;
+namespace Toolkit\DocGen\Render\Page\Component;
 
 use Closure;
 
 use function count;
 use function implode;
-
-use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
-use PhpAiToolkit\DocGen\Render\MarkdownInline;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-use PhpAiToolkit\DocGen\Render\TypeRenderContext;
-
 use function sprintf;
+
+use Toolkit\DocGen\Analysis\Model\DocBlock;
+use Toolkit\DocGen\Render\MarkdownInline;
+use Toolkit\DocGen\Render\RenderKit;
+use Toolkit\DocGen\Render\TypeRenderContext;
 
 /**
  * Renders the prose of one PHPDoc block.

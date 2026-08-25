@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Diff;
+namespace Toolkit\DocGen\Analysis\Diff;
 
 use function file_get_contents;
 use function is_file;

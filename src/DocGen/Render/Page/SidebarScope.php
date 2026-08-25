@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page;
+namespace Toolkit\DocGen\Render\Page;
 
 /**
  * Navigation scope of one rendered page.

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Config;
 
-use PhpAiToolkit\ScopeGuard\Config\ReportConfig;
-use PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Config\ReportConfig;
+use Toolkit\ScopeGuard\Config\ScopeGuardConfig;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig
- * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
+ * @covers \Toolkit\ScopeGuard\Config\ScopeGuardConfig
+ * @uses \Toolkit\ScopeGuard\Config\ReportConfig
  */
 #[CoversClass(ScopeGuardConfig::class)]
 #[UsesClass(ReportConfig::class)]

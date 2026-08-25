@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Parse\Builder;
+namespace Toolkit\DocGen\Analysis\Parse\Builder;
 
-use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
-use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
-use PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter;
-use PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext;
 use PhpParser\Node\Stmt\Function_;
+use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
+use Toolkit\DocGen\Analysis\Model\FunctionDoc;
+use Toolkit\DocGen\Analysis\Model\TypeSignature;
+use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
+use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 
 /**
  * Builds function models from php-parser function nodes.

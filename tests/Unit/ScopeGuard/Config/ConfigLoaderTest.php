@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Config;
 
-use PhpAiToolkit\ScopeGuard\Config\ConfigLoader;
-use PhpAiToolkit\ScopeGuard\Config\ConfigScalarReader;
-use PhpAiToolkit\ScopeGuard\Config\ConfigStringListReader;
-use PhpAiToolkit\ScopeGuard\Config\ReportConfig;
-use PhpAiToolkit\ScopeGuard\Config\ReportConfigReader;
-use PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Config\ConfigLoader;
+use Toolkit\ScopeGuard\Config\ConfigScalarReader;
+use Toolkit\ScopeGuard\Config\ConfigStringListReader;
+use Toolkit\ScopeGuard\Config\ReportConfig;
+use Toolkit\ScopeGuard\Config\ReportConfigReader;
+use Toolkit\ScopeGuard\Config\ScopeGuardConfig;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Config\ConfigLoader
- * @uses \PhpAiToolkit\ScopeGuard\Config\ConfigScalarReader
- * @uses \PhpAiToolkit\ScopeGuard\Config\ConfigStringListReader
- * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfigReader
- * @uses \PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig
- * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ * @covers \Toolkit\ScopeGuard\Config\ConfigLoader
+ * @uses \Toolkit\ScopeGuard\Config\ConfigScalarReader
+ * @uses \Toolkit\ScopeGuard\Config\ConfigStringListReader
+ * @uses \Toolkit\ScopeGuard\Config\ReportConfig
+ * @uses \Toolkit\ScopeGuard\Config\ReportConfigReader
+ * @uses \Toolkit\ScopeGuard\Config\ScopeGuardConfig
+ * @uses \Toolkit\ScopeGuard\ScopeGuardException
  */
 #[CoversClass(ConfigLoader::class)]
 #[UsesClass(ConfigScalarReader::class)]

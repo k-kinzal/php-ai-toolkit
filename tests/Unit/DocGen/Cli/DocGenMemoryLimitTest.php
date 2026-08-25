@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Cli;
 
-use PhpAiToolkit\DocGen\Cli\DocGenMemoryLimit;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Cli\DocGenMemoryLimit;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Cli\DocGenMemoryLimit
+ * @covers \Toolkit\DocGen\Cli\DocGenMemoryLimit
  */
 #[CoversClass(DocGenMemoryLimit::class)]
 final class DocGenMemoryLimitTest extends TestCase

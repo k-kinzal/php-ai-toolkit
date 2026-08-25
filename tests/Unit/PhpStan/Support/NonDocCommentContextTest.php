@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Support;
 
-use PhpAiToolkit\PhpStan\Support\NonDocCommentArrayContext;
-use PhpAiToolkit\PhpStan\Support\NonDocCommentCatchContext;
-use PhpAiToolkit\PhpStan\Support\NonDocCommentContext;
-use PhpAiToolkit\PhpStan\Support\NonDocCommentTokenClassifier;
-use PhpAiToolkit\PhpStan\Support\ShortArrayOpeningPolicy;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Support\NonDocCommentArrayContext;
+use Toolkit\PhpStan\Support\NonDocCommentCatchContext;
+use Toolkit\PhpStan\Support\NonDocCommentContext;
+use Toolkit\PhpStan\Support\NonDocCommentTokenClassifier;
+use Toolkit\PhpStan\Support\ShortArrayOpeningPolicy;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Support\NonDocCommentContext
- * @uses \PhpAiToolkit\PhpStan\Support\NonDocCommentArrayContext
- * @uses \PhpAiToolkit\PhpStan\Support\NonDocCommentCatchContext
- * @uses \PhpAiToolkit\PhpStan\Support\NonDocCommentTokenClassifier
- * @uses \PhpAiToolkit\PhpStan\Support\ShortArrayOpeningPolicy
+ * @covers \Toolkit\PhpStan\Support\NonDocCommentContext
+ * @uses \Toolkit\PhpStan\Support\NonDocCommentArrayContext
+ * @uses \Toolkit\PhpStan\Support\NonDocCommentCatchContext
+ * @uses \Toolkit\PhpStan\Support\NonDocCommentTokenClassifier
+ * @uses \Toolkit\PhpStan\Support\ShortArrayOpeningPolicy
  */
 #[CoversClass(NonDocCommentContext::class)]
 #[UsesClass(NonDocCommentArrayContext::class)]

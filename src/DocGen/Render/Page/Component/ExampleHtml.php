@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page\Component;
+namespace Toolkit\DocGen\Render\Page\Component;
 
 use function implode;
-
-use PhpAiToolkit\DocGen\Render\RenderKit;
-
 use function preg_match;
 use function preg_quote;
 use function sprintf;
+
+use Toolkit\DocGen\Render\RenderKit;
 
 /**
  * Renders executable examples with doctest assertion styling.

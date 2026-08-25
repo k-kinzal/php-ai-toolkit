@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter;
+namespace Toolkit\PhpUnit\TestReporter;
 
 /**
  * Normalized test issue data produced by PHPUnit-version-specific adapters.

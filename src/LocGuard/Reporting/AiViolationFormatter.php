@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Reporting;
-
-use PhpAiToolkit\LocGuard\Analysis\Violation;
+namespace Toolkit\LocGuard\Reporting;
 
 use function sprintf;
+
+use Toolkit\LocGuard\Analysis\Violation;
 
 /**
  * Formats one violation block for AI LocGuard reports.

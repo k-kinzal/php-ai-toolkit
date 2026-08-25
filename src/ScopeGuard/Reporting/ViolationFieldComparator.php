@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Reporting;
-
-use PhpAiToolkit\ScopeGuard\Analysis\Violation;
+namespace Toolkit\ScopeGuard\Reporting;
 
 use function strcmp;
+
+use Toolkit\ScopeGuard\Analysis\Violation;
 
 /**
  * Compares ScopeGuard violations by one configured field.

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis\Scope;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces;
+use Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @covers \Toolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
  */
 #[CoversClass(ExemptNamespaces::class)]
 #[UsesClass(NamespaceLineage::class)]

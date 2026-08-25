@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\ExceptionHandling;
+namespace Toolkit\PhpStan\Rule\ExceptionHandling;
 
 use function is_string;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression;
 use PhpParser\Node;
 use PhpParser\Node\Expr\CallLike;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\NodeFinder;
+use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
 
 /**
  * Decides whether a throw inside a catch block chains the caught exception.

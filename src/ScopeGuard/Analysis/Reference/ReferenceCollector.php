@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis\Reference;
+namespace Toolkit\ScopeGuard\Analysis\Reference;
 
 use function array_merge;
 use function strtolower;

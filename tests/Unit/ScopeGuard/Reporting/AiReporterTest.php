@@ -4,31 +4,31 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Reporting;
 
-use PhpAiToolkit\ScopeGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\ScopeGuard\Analysis\Violation;
-use PhpAiToolkit\ScopeGuard\Config\ReportConfig;
-use PhpAiToolkit\ScopeGuard\Reporting\AiReporter;
-use PhpAiToolkit\ScopeGuard\Reporting\AiReportGuidance;
-use PhpAiToolkit\ScopeGuard\Reporting\AiReportSummary;
-use PhpAiToolkit\ScopeGuard\Reporting\AiViolationAction;
-use PhpAiToolkit\ScopeGuard\Reporting\AiViolationFormatter;
-use PhpAiToolkit\ScopeGuard\Reporting\ViolationFieldComparator;
-use PhpAiToolkit\ScopeGuard\Reporting\ViolationSorter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\AnalysisResult;
+use Toolkit\ScopeGuard\Analysis\Violation;
+use Toolkit\ScopeGuard\Config\ReportConfig;
+use Toolkit\ScopeGuard\Reporting\AiReporter;
+use Toolkit\ScopeGuard\Reporting\AiReportGuidance;
+use Toolkit\ScopeGuard\Reporting\AiReportSummary;
+use Toolkit\ScopeGuard\Reporting\AiViolationAction;
+use Toolkit\ScopeGuard\Reporting\AiViolationFormatter;
+use Toolkit\ScopeGuard\Reporting\ViolationFieldComparator;
+use Toolkit\ScopeGuard\Reporting\ViolationSorter;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Reporting\AiReporter
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiReportGuidance
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiReportSummary
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiViolationAction
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiViolationFormatter
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\AnalysisResult
- * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Violation
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationFieldComparator
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationSorter
+ * @covers \Toolkit\ScopeGuard\Reporting\AiReporter
+ * @uses \Toolkit\ScopeGuard\Reporting\AiReportGuidance
+ * @uses \Toolkit\ScopeGuard\Reporting\AiReportSummary
+ * @uses \Toolkit\ScopeGuard\Reporting\AiViolationAction
+ * @uses \Toolkit\ScopeGuard\Reporting\AiViolationFormatter
+ * @uses \Toolkit\ScopeGuard\Analysis\AnalysisResult
+ * @uses \Toolkit\ScopeGuard\Config\ReportConfig
+ * @uses \Toolkit\ScopeGuard\Analysis\Violation
+ * @uses \Toolkit\ScopeGuard\Reporting\ViolationFieldComparator
+ * @uses \Toolkit\ScopeGuard\Reporting\ViolationSorter
  */
 #[CoversClass(AiReporter::class)]
 #[UsesClass(AiReportGuidance::class)]

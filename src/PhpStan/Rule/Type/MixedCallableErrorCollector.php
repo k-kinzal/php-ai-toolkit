@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Type;
+namespace Toolkit\PhpStan\Rule\Type;
 
-use PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry;
 use PHPStan\Node\InArrowFunctionNode;
 use PHPStan\Node\InClassMethodNode;
 use PHPStan\Node\InClosureNode;
@@ -18,6 +17,8 @@ use function str_contains;
 use function strrpos;
 use function strtolower;
 use function substr;
+
+use Toolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry;
 
 /**
  * Collects mixed diagnostics from callable signatures.

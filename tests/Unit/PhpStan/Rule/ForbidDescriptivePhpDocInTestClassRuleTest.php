@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ForbidDescriptivePhpDocInTestClassRule;
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher;
-use PhpAiToolkit\PhpStan\Rule\TestClass\DescriptivePhpDocErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\ForbidDescriptivePhpDocInTestClassRule;
+use Toolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher;
+use Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocErrorCollector;
+use Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector;
 
 /**
  * @extends RuleTestCase<ForbidDescriptivePhpDocInTestClassRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\ForbidDescriptivePhpDocInTestClassRule
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\DescriptivePhpDocErrorCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher
+ * @covers \Toolkit\PhpStan\Rule\ForbidDescriptivePhpDocInTestClassRule
+ * @uses \Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocErrorCollector
+ * @uses \Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector
+ * @uses \Toolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher
  */
 #[CoversClass(ForbidDescriptivePhpDocInTestClassRule::class)]
 #[UsesClass(DescriptivePhpDocErrorCollector::class)]

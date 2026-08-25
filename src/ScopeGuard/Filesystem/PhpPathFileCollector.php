@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Filesystem;
+namespace Toolkit\ScopeGuard\Filesystem;
 
 use function is_dir;
 use function is_file;
 
-use PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 
 use function sprintf;
+
+use Toolkit\ScopeGuard\Config\ScopeGuardConfig;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
  * Collects PHP files from one configured absolute path.

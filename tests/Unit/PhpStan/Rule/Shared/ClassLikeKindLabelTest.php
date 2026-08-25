@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Shared;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\ClassLikeKindLabel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\ClassLikeKindLabel;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\Shared\ClassLikeKindLabel
+ * @covers \Toolkit\PhpStan\Rule\Shared\ClassLikeKindLabel
  */
 #[CoversClass(ClassLikeKindLabel::class)]
 final class ClassLikeKindLabelTest extends TestCase

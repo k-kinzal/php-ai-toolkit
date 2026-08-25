@@ -5,27 +5,27 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ForbiddenCommentRule;
-use PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter;
-use PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser;
-use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern;
-use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentTokenAnalyzer;
 use PHPStan\Analyser\Error;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\ForbiddenCommentRule;
+use Toolkit\PhpStan\Rule\Shared\CommentTextFormatter;
+use Toolkit\PhpStan\Rule\Shared\FileTokenParser;
+use Toolkit\PhpStan\Rule\Shared\ForbiddenCommentErrorBuilder;
+use Toolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern;
+use Toolkit\PhpStan\Rule\Shared\ForbiddenCommentTokenAnalyzer;
 
 /**
  * @extends RuleTestCase<ForbiddenCommentRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\ForbiddenCommentRule
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentTokenAnalyzer
+ * @covers \Toolkit\PhpStan\Rule\ForbiddenCommentRule
+ * @uses \Toolkit\PhpStan\Rule\Shared\CommentTextFormatter
+ * @uses \Toolkit\PhpStan\Rule\Shared\FileTokenParser
+ * @uses \Toolkit\PhpStan\Rule\Shared\ForbiddenCommentErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern
+ * @uses \Toolkit\PhpStan\Rule\Shared\ForbiddenCommentTokenAnalyzer
  */
 #[CoversClass(ForbiddenCommentRule::class)]
 #[UsesClass(CommentTextFormatter::class)]

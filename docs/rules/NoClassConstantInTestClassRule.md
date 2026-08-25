@@ -79,7 +79,7 @@ Customize which namespaces are considered restricted:
 
 ```neon
 parameters:
-    customRules:
+    toolkit:
         restrictedTestNamespacePrefixes:
             - 'Tests\Unit'
             - 'Tests\Integration'

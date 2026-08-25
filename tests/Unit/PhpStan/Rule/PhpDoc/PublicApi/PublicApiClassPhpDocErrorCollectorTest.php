@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc\PublicApi;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiClassPhpDocErrorCollector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiClassPhpDocErrorCollector;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiClassPhpDocErrorCollector
+ * @covers \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiClassPhpDocErrorCollector
  */
 #[CoversClass(PublicApiClassPhpDocErrorCollector::class)]
 final class PublicApiClassPhpDocErrorCollectorTest extends TestCase

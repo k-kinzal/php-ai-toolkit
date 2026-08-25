@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page\Component;
-
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
+namespace Toolkit\DocGen\Render\Page\Component;
 
 use function sprintf;
+
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\FunctionDoc;
 
 /**
  * Says in one sentence what one documented symbol is.

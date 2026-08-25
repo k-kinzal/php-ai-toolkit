@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Parse;
 
-use PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Parse\FileSymbols;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols
+ * @covers \Toolkit\DocGen\Analysis\Parse\FileSymbols
  */
 #[CoversClass(FileSymbols::class)]
 final class FileSymbolsTest extends TestCase

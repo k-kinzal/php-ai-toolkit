@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis\Scope;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\ScopeProblemReader;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
+use Toolkit\ScopeGuard\Analysis\Scope\ScopeProblemReader;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\Scope\ScopeProblemReader
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
+ * @covers \Toolkit\ScopeGuard\Analysis\Scope\ScopeProblemReader
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
  */
 #[CoversClass(ScopeProblemReader::class)]
 #[UsesClass(NamespaceLineage::class)]

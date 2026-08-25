@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfTypeMatcher;
 use PHPStan\Testing\PHPStanTestCase;
 use PHPStan\Type\ObjectType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfTypeMatcher;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfTypeMatcher
+ * @covers \Toolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfTypeMatcher
  */
 #[CoversClass(AssertInstanceOfTypeMatcher::class)]
 #[Medium]

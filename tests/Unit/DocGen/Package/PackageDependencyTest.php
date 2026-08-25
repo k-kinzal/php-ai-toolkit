@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Package;
 
-use PhpAiToolkit\DocGen\Package\PackageDependency;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Package\PackageDependency;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Package\PackageDependency
+ * @covers \Toolkit\DocGen\Package\PackageDependency
  */
 #[CoversClass(PackageDependency::class)]
 final class PackageDependencyTest extends TestCase

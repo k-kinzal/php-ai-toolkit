@@ -4,30 +4,30 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc\PublicApi;
 
-use PhpAiToolkit\Doctest\Parser\Example;
-use PhpAiToolkit\Doctest\Parser\ExampleExtractor;
-use PhpAiToolkit\Doctest\Scanner\Target;
-use PhpAiToolkit\Doctest\Scanner\TargetKind;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\MissingExampleErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiExampleErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiVisibilityDetector;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\RunnableExampleDetector;
-use PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 use PhpParser\Comment\Doc;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Parser\Example;
+use Toolkit\Doctest\Parser\ExampleExtractor;
+use Toolkit\Doctest\Scanner\Target;
+use Toolkit\Doctest\Scanner\TargetKind;
+use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\MissingExampleErrorBuilder;
+use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiExampleErrorCollector;
+use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiVisibilityDetector;
+use Toolkit\PhpStan\Rule\PhpDoc\RunnableExampleDetector;
+use Toolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiExampleErrorCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiVisibilityDetector
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\RunnableExampleDetector
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\MissingExampleErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors
- * @uses \PhpAiToolkit\Doctest\Parser\Example
- * @uses \PhpAiToolkit\Doctest\Parser\ExampleExtractor
- * @uses \PhpAiToolkit\Doctest\Scanner\Target
- * @uses \PhpAiToolkit\Doctest\Scanner\TargetKind
+ * @covers \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiExampleErrorCollector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiVisibilityDetector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\RunnableExampleDetector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\MissingExampleErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\Shared\LineOrderedErrors
+ * @uses \Toolkit\Doctest\Parser\Example
+ * @uses \Toolkit\Doctest\Parser\ExampleExtractor
+ * @uses \Toolkit\Doctest\Scanner\Target
+ * @uses \Toolkit\Doctest\Scanner\TargetKind
  */
 #[CoversClass(PublicApiExampleErrorCollector::class)]
 #[UsesClass(PublicApiVisibilityDetector::class)]

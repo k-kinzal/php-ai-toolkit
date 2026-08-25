@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Config;
+namespace Toolkit\TreeGuard\Config;
 
 use function is_array;
 
-use PhpAiToolkit\TreeGuard\TreeGuardException;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
  * Reads the tree.yaml rules list.

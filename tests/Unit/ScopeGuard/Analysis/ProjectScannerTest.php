@@ -4,60 +4,60 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind;
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration;
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationCollector;
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
-use PhpAiToolkit\ScopeGuard\Analysis\Parse\FileNamespaces;
-use PhpAiToolkit\ScopeGuard\Analysis\Parse\NodeWalker;
-use PhpAiToolkit\ScopeGuard\Analysis\Parse\PhpParserBridge;
-use PhpAiToolkit\ScopeGuard\Analysis\Parse\SourceFileParser;
-use PhpAiToolkit\ScopeGuard\Analysis\ProjectScan;
-use PhpAiToolkit\ScopeGuard\Analysis\ProjectScanner;
-use PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference;
-use PhpAiToolkit\ScopeGuard\Analysis\Reference\ReferenceCollector;
-use PhpAiToolkit\ScopeGuard\Analysis\Reference\TypeNameReader;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser;
-use PhpAiToolkit\ScopeGuard\Config\ReportConfig;
-use PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig;
-use PhpAiToolkit\ScopeGuard\Filesystem\PhpFileFinder;
-use PhpAiToolkit\ScopeGuard\Filesystem\PhpFileInclusionPolicy;
-use PhpAiToolkit\ScopeGuard\Filesystem\PhpPathFileCollector;
-use PhpAiToolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind;
+use Toolkit\ScopeGuard\Analysis\Declaration\Declaration;
+use Toolkit\ScopeGuard\Analysis\Declaration\DeclarationCollector;
+use Toolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
+use Toolkit\ScopeGuard\Analysis\Parse\FileNamespaces;
+use Toolkit\ScopeGuard\Analysis\Parse\NodeWalker;
+use Toolkit\ScopeGuard\Analysis\Parse\PhpParserBridge;
+use Toolkit\ScopeGuard\Analysis\Parse\SourceFileParser;
+use Toolkit\ScopeGuard\Analysis\ProjectScan;
+use Toolkit\ScopeGuard\Analysis\ProjectScanner;
+use Toolkit\ScopeGuard\Analysis\Reference\Reference;
+use Toolkit\ScopeGuard\Analysis\Reference\ReferenceCollector;
+use Toolkit\ScopeGuard\Analysis\Reference\TypeNameReader;
+use Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser;
+use Toolkit\ScopeGuard\Config\ReportConfig;
+use Toolkit\ScopeGuard\Config\ScopeGuardConfig;
+use Toolkit\ScopeGuard\Filesystem\PhpFileFinder;
+use Toolkit\ScopeGuard\Filesystem\PhpFileInclusionPolicy;
+use Toolkit\ScopeGuard\Filesystem\PhpPathFileCollector;
+use Toolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\ProjectScanner
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationCollector
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\FileNamespaces
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\NodeWalker
- * @uses \PhpAiToolkit\ScopeGuard\Filesystem\PhpFileFinder
- * @uses \PhpAiToolkit\ScopeGuard\Filesystem\PhpFileInclusionPolicy
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\PhpParserBridge
- * @uses \PhpAiToolkit\ScopeGuard\Filesystem\PhpPathFileCollector
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\ProjectScan
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\ReferenceCollector
- * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig
- * @uses \PhpAiToolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\SourceFileParser
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\TypeNameReader
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
+ * @covers \Toolkit\ScopeGuard\Analysis\ProjectScanner
+ * @uses \Toolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind
+ * @uses \Toolkit\ScopeGuard\Analysis\Declaration\Declaration
+ * @uses \Toolkit\ScopeGuard\Analysis\Declaration\DeclarationCollector
+ * @uses \Toolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
+ * @uses \Toolkit\ScopeGuard\Analysis\Parse\FileNamespaces
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @uses \Toolkit\ScopeGuard\Analysis\Parse\NodeWalker
+ * @uses \Toolkit\ScopeGuard\Filesystem\PhpFileFinder
+ * @uses \Toolkit\ScopeGuard\Filesystem\PhpFileInclusionPolicy
+ * @uses \Toolkit\ScopeGuard\Analysis\Parse\PhpParserBridge
+ * @uses \Toolkit\ScopeGuard\Filesystem\PhpPathFileCollector
+ * @uses \Toolkit\ScopeGuard\Analysis\ProjectScan
+ * @uses \Toolkit\ScopeGuard\Analysis\Reference\Reference
+ * @uses \Toolkit\ScopeGuard\Analysis\Reference\ReferenceCollector
+ * @uses \Toolkit\ScopeGuard\Config\ReportConfig
+ * @uses \Toolkit\ScopeGuard\Config\ScopeGuardConfig
+ * @uses \Toolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver
+ * @uses \Toolkit\ScopeGuard\Analysis\Parse\SourceFileParser
+ * @uses \Toolkit\ScopeGuard\Analysis\Reference\TypeNameReader
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\VisibilityScope
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
  */
 #[CoversClass(ProjectScanner::class)]
 #[UsesClass(ClassLikeKind::class)]

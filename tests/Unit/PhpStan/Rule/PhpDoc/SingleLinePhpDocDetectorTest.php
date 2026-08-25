@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector
+ * @covers \Toolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector
  */
 #[CoversClass(SingleLinePhpDocDetector::class)]
 final class SingleLinePhpDocDetectorTest extends TestCase

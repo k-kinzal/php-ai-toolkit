@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Executor;
 
-use PhpAiToolkit\Doctest\Executor\Evaluation;
-use PhpAiToolkit\Doctest\Executor\ExecutionContext;
-use PhpAiToolkit\Doctest\Executor\ExpressionEvaluator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Executor\Evaluation;
+use Toolkit\Doctest\Executor\ExecutionContext;
+use Toolkit\Doctest\Executor\ExpressionEvaluator;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Executor\ExpressionEvaluator
- * @uses \PhpAiToolkit\Doctest\Executor\ExecutionContext
- * @uses \PhpAiToolkit\Doctest\Executor\Evaluation
+ * @covers \Toolkit\Doctest\Executor\ExpressionEvaluator
+ * @uses \Toolkit\Doctest\Executor\ExecutionContext
+ * @uses \Toolkit\Doctest\Executor\Evaluation
  */
 #[CoversClass(ExpressionEvaluator::class)]
 #[UsesClass(ExecutionContext::class)]

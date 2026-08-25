@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Git;
 
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Git\GitCommandRunner;
-use PhpAiToolkit\DocGen\Git\GitRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Git\GitCommandRunner;
+use Toolkit\DocGen\Git\GitRepository;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Git\GitRepository
- * @uses \PhpAiToolkit\DocGen\DocGenException
- * @uses \PhpAiToolkit\DocGen\Git\GitCommandRunner
+ * @covers \Toolkit\DocGen\Git\GitRepository
+ * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Git\GitCommandRunner
  */
 #[CoversClass(GitRepository::class)]
 #[UsesClass(DocGenException::class)]

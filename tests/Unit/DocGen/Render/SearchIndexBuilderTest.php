@@ -4,45 +4,45 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
-use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\MethodDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
-use PhpAiToolkit\DocGen\Analysis\ProjectModel;
-use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
-use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
-use PhpAiToolkit\DocGen\Package\PackageGraph;
-use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
-use PhpAiToolkit\DocGen\Render\SearchIndexBuilder;
-use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\ConstantDoc;
+use Toolkit\DocGen\Analysis\Model\DocBlock;
+use Toolkit\DocGen\Analysis\Model\FunctionDoc;
+use Toolkit\DocGen\Analysis\Model\MethodDoc;
+use Toolkit\DocGen\Analysis\Model\TypeSignature;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Package\PackageGraph;
+use Toolkit\DocGen\Render\Diff\DiffHtml;
+use Toolkit\DocGen\Render\SearchIndexBuilder;
+use Toolkit\DocGen\Render\SiteUrl;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\SearchIndexBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc
- * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffHtml
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\MethodDoc
- * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
- * @uses \PhpAiToolkit\DocGen\Analysis\ProjectModel
- * @uses \PhpAiToolkit\DocGen\Render\SiteUrl
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
+ * @covers \Toolkit\DocGen\Render\SearchIndexBuilder
+ * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Model\ConstantDoc
+ * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Analysis\Model\DocBlock
+ * @uses \Toolkit\DocGen\Analysis\Model\FunctionDoc
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Analysis\Model\MethodDoc
+ * @uses \Toolkit\DocGen\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\ProjectModel
+ * @uses \Toolkit\DocGen\Render\SiteUrl
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Analysis\Model\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  */
 #[CoversClass(SearchIndexBuilder::class)]
 #[UsesClass(ClassLikeDoc::class)]

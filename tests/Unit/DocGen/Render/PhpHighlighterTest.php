@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render;
 
-use PhpAiToolkit\DocGen\Render\HtmlText;
-use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Render\HtmlText;
+use Toolkit\DocGen\Render\PhpHighlighter;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\PhpHighlighter
- * @uses \PhpAiToolkit\DocGen\Render\HtmlText
+ * @covers \Toolkit\DocGen\Render\PhpHighlighter
+ * @uses \Toolkit\DocGen\Render\HtmlText
  */
 #[CoversClass(PhpHighlighter::class)]
 #[UsesClass(HtmlText::class)]

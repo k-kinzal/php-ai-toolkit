@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Doctest;
 
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Doctest\AssertionLine;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine
+ * @covers \Toolkit\DocGen\Analysis\Doctest\AssertionLine
  */
 #[CoversClass(AssertionLine::class)]
 final class AssertionLineTest extends TestCase

@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render;
 
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
-use PhpAiToolkit\DocGen\Render\AssetPublisher;
-use PhpAiToolkit\DocGen\Render\Social\SocialCard;
-use PhpAiToolkit\DocGen\Render\Social\SocialCardText;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Filesystem\SiteFileWriter;
+use Toolkit\DocGen\Render\AssetPublisher;
+use Toolkit\DocGen\Render\Social\SocialCard;
+use Toolkit\DocGen\Render\Social\SocialCardText;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\AssetPublisher
- * @uses \PhpAiToolkit\DocGen\DocGenException
- * @uses \PhpAiToolkit\DocGen\Filesystem\SiteFileWriter
- * @uses \PhpAiToolkit\DocGen\Render\Social\SocialCard
- * @uses \PhpAiToolkit\DocGen\Render\Social\SocialCardText
+ * @covers \Toolkit\DocGen\Render\AssetPublisher
+ * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Filesystem\SiteFileWriter
+ * @uses \Toolkit\DocGen\Render\Social\SocialCard
+ * @uses \Toolkit\DocGen\Render\Social\SocialCardText
  */
 #[CoversClass(AssetPublisher::class)]
 #[UsesClass(DocGenException::class)]

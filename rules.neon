@@ -1,0 +1,447 @@
+parametersSchema:
+    toolkit: structure([
+        allRules: bool()
+        forbiddenComment: structure([enabled: bool()])
+        noPropertyInTestClass: structure([enabled: bool()])
+        noClassConstantInTestClass: structure([enabled: bool()])
+        noPrivateMethodInTestClass: structure([enabled: bool()])
+        phpUnitMockApi: structure([enabled: bool()])
+        forbiddenMagicMethodCall: structure([enabled: bool()])
+        forbiddenNamespace: structure([enabled: bool()])
+        forbidClassLikeNameSuffix: structure([enabled: bool()])
+        noNonPublicMethod: structure([enabled: bool()])
+        noHelperMethodInTestClass: structure([enabled: bool()])
+        overrideMustHaveAttribute: structure([enabled: bool()])
+        noControlFlowInTestMethod: structure([enabled: bool()])
+        noReflectionInTestClass: structure([enabled: bool()])
+        noRedundantAssertInstanceOf: structure([enabled: bool()])
+        noBrokenCodeExpectation: structure([enabled: bool()])
+        noTraitUseInTestClass: structure([enabled: bool()])
+        srcUnitTestPair: structure([enabled: bool()])
+        requirePhpDocOnPublicApi: structure([enabled: bool()])
+        requireExampleOnPublicApi: structure([enabled: bool()])
+        forbidSingleLinePhpDoc: structure([enabled: bool()])
+        forbidNonDocComment: structure([enabled: bool()])
+        forbidDescriptivePhpDocInTestClass: structure([enabled: bool()])
+        testNamingConvention: structure([enabled: bool()])
+        forbidEmptyCatch: structure([enabled: bool()])
+        requireThrowsTagOnDirectThrow: structure([enabled: bool()])
+        requireExceptionChaining: structure([enabled: bool()])
+        forbidBroadCatch: structure([enabled: bool()])
+        forbidGenericThrowsTag: structure([enabled: bool()])
+        forbidInternalMixedType: structure([enabled: bool()])
+        requireListForArrayLiteral: structure([enabled: bool()])
+        requireExhaustiveDispatch: structure([enabled: bool()])
+        testNamespacePrefixes: listOf(string())
+        restrictedTestNamespacePrefixes: listOf(string())
+        srcUnitTestPairExcludePatterns: listOf(string())
+        srcMarker: string()
+        unitTestMarker: string()
+        forbiddenNamespacePrefixes: listOf(string())
+        forbiddenClassLikeNameSuffixes: listOf(string())
+        broadCatchAllowedPaths: listOf(string())
+    ])
+
+parameters:
+    exceptions:
+        implicitThrows: false
+        check:
+            missingCheckedExceptionInThrows: true
+            tooWideThrowType: true
+        uncheckedExceptionClasses:
+            - LogicException
+            - RuntimeException
+            - Error
+            - Random\RandomException
+            - PHPUnit\Framework\MockObject\Exception
+    toolkit:
+        allRules: true
+        forbiddenComment:
+            enabled: %toolkit.allRules%
+        noPropertyInTestClass:
+            enabled: %toolkit.allRules%
+        noClassConstantInTestClass:
+            enabled: %toolkit.allRules%
+        noPrivateMethodInTestClass:
+            enabled: %toolkit.allRules%
+        phpUnitMockApi:
+            enabled: %toolkit.allRules%
+        forbiddenMagicMethodCall:
+            enabled: %toolkit.allRules%
+        forbiddenNamespace:
+            enabled: %toolkit.allRules%
+        forbidClassLikeNameSuffix:
+            enabled: %toolkit.allRules%
+        noNonPublicMethod:
+            enabled: %toolkit.allRules%
+        noHelperMethodInTestClass:
+            enabled: %toolkit.allRules%
+        overrideMustHaveAttribute:
+            enabled: %toolkit.allRules%
+        noControlFlowInTestMethod:
+            enabled: %toolkit.allRules%
+        noReflectionInTestClass:
+            enabled: %toolkit.allRules%
+        noRedundantAssertInstanceOf:
+            enabled: %toolkit.allRules%
+        noBrokenCodeExpectation:
+            enabled: %toolkit.allRules%
+        noTraitUseInTestClass:
+            enabled: %toolkit.allRules%
+        srcUnitTestPair:
+            enabled: %toolkit.allRules%
+        requirePhpDocOnPublicApi:
+            enabled: %toolkit.allRules%
+        requireExampleOnPublicApi:
+            enabled: %toolkit.allRules%
+        forbidSingleLinePhpDoc:
+            enabled: %toolkit.allRules%
+        forbidNonDocComment:
+            enabled: %toolkit.allRules%
+        forbidDescriptivePhpDocInTestClass:
+            enabled: %toolkit.allRules%
+        testNamingConvention:
+            enabled: %toolkit.allRules%
+        forbidEmptyCatch:
+            enabled: %toolkit.allRules%
+        requireThrowsTagOnDirectThrow:
+            enabled: %toolkit.allRules%
+        requireExceptionChaining:
+            enabled: %toolkit.allRules%
+        forbidBroadCatch:
+            enabled: %toolkit.allRules%
+        forbidGenericThrowsTag:
+            enabled: %toolkit.allRules%
+        forbidInternalMixedType:
+            enabled: %toolkit.allRules%
+        requireListForArrayLiteral:
+            enabled: %toolkit.allRules%
+        requireExhaustiveDispatch:
+            enabled: %toolkit.allRules%
+        testNamespacePrefixes:
+            - 'Tests'
+        restrictedTestNamespacePrefixes:
+            - 'Tests\Unit'
+            - 'Tests\Integration'
+        srcUnitTestPairExcludePatterns: []
+        srcMarker: '/src/'
+        unitTestMarker: '/tests/Unit/'
+        forbiddenNamespacePrefixes:
+            - 'Tests\Support'
+            - 'Tests\Supports'
+            - 'Tests\Helper'
+            - 'Tests\Helpers'
+            - 'Tests\Util'
+            - 'Tests\Utils'
+            - 'Tests\Utility'
+            - 'Tests\Utilities'
+        forbiddenClassLikeNameSuffixes:
+            - Helper
+            - Helpers
+            - Manager
+            - Managers
+            - Util
+            - Utils
+            - Utility
+            - Utilities
+            - Common
+            - Shared
+            - General
+            - Misc
+            - Miscellaneous
+            - Stuff
+            - Things
+            - Thing
+            - Object
+            - Objects
+            - Data
+            - Info
+            - Information
+            - Detail
+            - Details
+            - Value
+            - Values
+            - Type
+            - Types
+            - Base
+            - Abstract
+            - Generic
+            - Default
+            - Standard
+            - Simple
+            - Basic
+            - Custom
+            - Special
+            - Temp
+            - Temporary
+            - Wrapper
+            - Wrappers
+            - Service
+            - Services
+            - Engine
+            - Engines
+            - System
+            - Systems
+            - Evidence
+            - Evidences
+            - Outcome
+            - Outcomes
+            - Probe
+            - Probes
+        broadCatchAllowedPaths: []
+
+services:
+    toolkit.throwType.tokenGetAll:
+        class: Toolkit\PhpStan\ThrowType\TokenGetAllThrowTypeExtension
+        tags:
+            - phpstan.dynamicFunctionThrowTypeExtension
+
+    toolkit.support.testClassScope:
+        class: Toolkit\PhpStan\Support\TestClassScope
+        arguments:
+            testNamespacePrefixes: %toolkit.testNamespacePrefixes%
+            restrictedTestNamespacePrefixes: %toolkit.restrictedTestNamespacePrefixes%
+
+    toolkit.rule.forbiddenComment:
+        class: Toolkit\PhpStan\Rule\ForbiddenCommentRule
+
+    toolkit.rule.noPropertyInTestClass:
+        class: Toolkit\PhpStan\Rule\NoPropertyInTestClassRule
+        arguments:
+            testClassScope: @toolkit.support.testClassScope
+
+    toolkit.rule.noClassConstantInTestClass:
+        class: Toolkit\PhpStan\Rule\NoClassConstantInTestClassRule
+        arguments:
+            testClassScope: @toolkit.support.testClassScope
+
+    toolkit.rule.noPrivateMethodInTestClass:
+        class: Toolkit\PhpStan\Rule\NoPrivateMethodInTestClassRule
+        arguments:
+            testClassScope: @toolkit.support.testClassScope
+
+    toolkit.rule.phpUnitMockApi:
+        class: Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiRule
+        arguments:
+            testClassScope: @toolkit.support.testClassScope
+
+    toolkit.rule.forbiddenMagicMethodCall:
+        class: Toolkit\PhpStan\Rule\ClassDesign\ForbiddenMagicMethodCallRule
+
+    toolkit.rule.forbiddenNamespace:
+        class: Toolkit\PhpStan\Rule\Naming\ForbiddenNamespaceRule
+        arguments:
+            forbiddenNamespacePrefixes: %toolkit.forbiddenNamespacePrefixes%
+
+    toolkit.rule.forbidClassLikeNameSuffix:
+        class: Toolkit\PhpStan\Rule\Naming\ForbidClassLikeNameSuffixRule
+        arguments:
+            forbiddenSuffixes: %toolkit.forbiddenClassLikeNameSuffixes%
+
+    toolkit.rule.noNonPublicMethod:
+        class: Toolkit\PhpStan\Rule\ClassDesign\NoNonPublicMethodRule
+
+    toolkit.rule.noHelperMethodInTestClass:
+        class: Toolkit\PhpStan\Rule\NoHelperMethodInTestClassRule
+        arguments:
+            testClassScope: @toolkit.support.testClassScope
+
+    toolkit.rule.overrideMustHaveAttribute:
+        class: Toolkit\PhpStan\Rule\ClassDesign\OverrideMustHaveAttributeRule
+
+    toolkit.rule.noControlFlowInTestMethod:
+        class: Toolkit\PhpStan\Rule\NoControlFlowInTestMethodRule
+        arguments:
+            testClassScope: @toolkit.support.testClassScope
+
+    toolkit.rule.noReflectionInTestClass:
+        class: Toolkit\PhpStan\Rule\NoReflectionInTestClassRule
+        arguments:
+            testClassScope: @toolkit.support.testClassScope
+
+    toolkit.rule.noRedundantAssertInstanceOf:
+        class: Toolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfRule
+        arguments:
+            testClassScope: @toolkit.support.testClassScope
+
+    toolkit.rule.noBrokenCodeExpectation:
+        class: Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationRule
+        arguments:
+            testClassScope: @toolkit.support.testClassScope
+
+    toolkit.rule.noTraitUseInTestClass:
+        class: Toolkit\PhpStan\Rule\NoTraitUseInTestClassRule
+        arguments:
+            testClassScope: @toolkit.support.testClassScope
+
+    toolkit.rule.srcUnitTestPair:
+        class: Toolkit\PhpStan\Rule\SrcUnitTestPairRule
+        arguments:
+            excludePatterns: %toolkit.srcUnitTestPairExcludePatterns%
+            srcMarker: %toolkit.srcMarker%
+            unitTestMarker: %toolkit.unitTestMarker%
+
+    toolkit.rule.requirePhpDocOnPublicApi:
+        class: Toolkit\PhpStan\Rule\RequirePhpDocOnPublicApiRule
+        arguments:
+            restrictedTestNamespacePrefixes: %toolkit.restrictedTestNamespacePrefixes%
+
+    toolkit.rule.requireExampleOnPublicApi:
+        class: Toolkit\PhpStan\Rule\RequireExampleOnPublicApiRule
+        arguments:
+            restrictedTestNamespacePrefixes: %toolkit.restrictedTestNamespacePrefixes%
+
+    toolkit.rule.forbidSingleLinePhpDoc:
+        class: Toolkit\PhpStan\Rule\ForbidSingleLinePhpDocRule
+
+    toolkit.rule.forbidNonDocComment:
+        class: Toolkit\PhpStan\Rule\ForbidNonDocCommentRule
+
+    toolkit.rule.forbidDescriptivePhpDocInTestClass:
+        class: Toolkit\PhpStan\Rule\ForbidDescriptivePhpDocInTestClassRule
+        arguments:
+            restrictedTestNamespacePrefixes: %toolkit.restrictedTestNamespacePrefixes%
+
+    toolkit.rule.testNamingConvention:
+        class: Toolkit\PhpStan\Rule\TestNamingConventionRule
+        arguments:
+            testClassScope: @toolkit.support.testClassScope
+            srcMarker: %toolkit.srcMarker%
+            unitTestMarker: %toolkit.unitTestMarker%
+
+    toolkit.rule.forbidEmptyCatch:
+        class: Toolkit\PhpStan\Rule\ExceptionHandling\ForbidEmptyCatchRule
+
+    toolkit.rule.requireThrowsTagOnDirectThrow:
+        class: Toolkit\PhpStan\Rule\ExceptionHandling\RequireThrowsTagOnDirectThrowRule
+
+    toolkit.rule.requireExceptionChaining:
+        class: Toolkit\PhpStan\Rule\ExceptionHandling\RequireExceptionChainingRule
+
+    toolkit.rule.forbidBroadCatch:
+        class: Toolkit\PhpStan\Rule\ExceptionHandling\ForbidBroadCatchRule
+        arguments:
+            broadCatchAllowedPaths: %toolkit.broadCatchAllowedPaths%
+
+    toolkit.rule.forbidGenericThrowsTag:
+        class: Toolkit\PhpStan\Rule\ExceptionHandling\ForbidGenericThrowsTagRule
+
+    toolkit.rule.forbidInternalMixedType:
+        class: Toolkit\PhpStan\Rule\Type\ForbidInternalMixedTypeRule
+
+    toolkit.rule.forbidInternalMixedFunction:
+        class: Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedFunctionRule
+
+    toolkit.rule.forbidInternalMixedClosure:
+        class: Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClosureRule
+
+    toolkit.rule.forbidInternalMixedArrowFunction:
+        class: Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedArrowFunctionRule
+
+    toolkit.rule.forbidInternalMixedProperty:
+        class: Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedPropertyRule
+
+    toolkit.rule.forbidInternalMixedClassPhpDoc:
+        class: Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClassPhpDocRule
+
+    toolkit.rule.forbidInternalMixedLocalVar:
+        class: Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedLocalVarRule
+
+    toolkit.rule.requireListForArrayLiteral:
+        class: Toolkit\PhpStan\Rule\PhpDoc\RequireListForArrayLiteralRule
+
+    toolkit.rule.requireExhaustiveDispatch:
+        class: Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchRule
+
+    toolkit.rule.requireExhaustiveClassDispatch:
+        class: Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveClassDispatchRule
+
+    toolkit.collector.classAncestor:
+        class: Toolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector
+        arguments:
+            reflectionProvider: @reflectionProvider
+
+    toolkit.collector.classNameDispatch:
+        class: Toolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector
+
+conditionalTags:
+    Toolkit\PhpStan\Rule\ForbiddenCommentRule:
+        phpstan.rules.rule: %toolkit.forbiddenComment.enabled%
+    Toolkit\PhpStan\Rule\NoPropertyInTestClassRule:
+        phpstan.rules.rule: %toolkit.noPropertyInTestClass.enabled%
+    Toolkit\PhpStan\Rule\NoClassConstantInTestClassRule:
+        phpstan.rules.rule: %toolkit.noClassConstantInTestClass.enabled%
+    Toolkit\PhpStan\Rule\NoPrivateMethodInTestClassRule:
+        phpstan.rules.rule: %toolkit.noPrivateMethodInTestClass.enabled%
+    Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiRule:
+        phpstan.rules.rule: %toolkit.phpUnitMockApi.enabled%
+    Toolkit\PhpStan\Rule\ClassDesign\ForbiddenMagicMethodCallRule:
+        phpstan.rules.rule: %toolkit.forbiddenMagicMethodCall.enabled%
+    Toolkit\PhpStan\Rule\Naming\ForbiddenNamespaceRule:
+        phpstan.rules.rule: %toolkit.forbiddenNamespace.enabled%
+    Toolkit\PhpStan\Rule\Naming\ForbidClassLikeNameSuffixRule:
+        phpstan.rules.rule: %toolkit.forbidClassLikeNameSuffix.enabled%
+    Toolkit\PhpStan\Rule\ClassDesign\NoNonPublicMethodRule:
+        phpstan.rules.rule: %toolkit.noNonPublicMethod.enabled%
+    Toolkit\PhpStan\Rule\NoHelperMethodInTestClassRule:
+        phpstan.rules.rule: %toolkit.noHelperMethodInTestClass.enabled%
+    Toolkit\PhpStan\Rule\ClassDesign\OverrideMustHaveAttributeRule:
+        phpstan.rules.rule: %toolkit.overrideMustHaveAttribute.enabled%
+    Toolkit\PhpStan\Rule\NoControlFlowInTestMethodRule:
+        phpstan.rules.rule: %toolkit.noControlFlowInTestMethod.enabled%
+    Toolkit\PhpStan\Rule\NoReflectionInTestClassRule:
+        phpstan.rules.rule: %toolkit.noReflectionInTestClass.enabled%
+    Toolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfRule:
+        phpstan.rules.rule: %toolkit.noRedundantAssertInstanceOf.enabled%
+    Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationRule:
+        phpstan.rules.rule: %toolkit.noBrokenCodeExpectation.enabled%
+    Toolkit\PhpStan\Rule\NoTraitUseInTestClassRule:
+        phpstan.rules.rule: %toolkit.noTraitUseInTestClass.enabled%
+    Toolkit\PhpStan\Rule\SrcUnitTestPairRule:
+        phpstan.rules.rule: %toolkit.srcUnitTestPair.enabled%
+    Toolkit\PhpStan\Rule\RequirePhpDocOnPublicApiRule:
+        phpstan.rules.rule: %toolkit.requirePhpDocOnPublicApi.enabled%
+    Toolkit\PhpStan\Rule\RequireExampleOnPublicApiRule:
+        phpstan.rules.rule: %toolkit.requireExampleOnPublicApi.enabled%
+    Toolkit\PhpStan\Rule\ForbidSingleLinePhpDocRule:
+        phpstan.rules.rule: %toolkit.forbidSingleLinePhpDoc.enabled%
+    Toolkit\PhpStan\Rule\ForbidNonDocCommentRule:
+        phpstan.rules.rule: %toolkit.forbidNonDocComment.enabled%
+    Toolkit\PhpStan\Rule\ForbidDescriptivePhpDocInTestClassRule:
+        phpstan.rules.rule: %toolkit.forbidDescriptivePhpDocInTestClass.enabled%
+    Toolkit\PhpStan\Rule\TestNamingConventionRule:
+        phpstan.rules.rule: %toolkit.testNamingConvention.enabled%
+    Toolkit\PhpStan\Rule\ExceptionHandling\ForbidEmptyCatchRule:
+        phpstan.rules.rule: %toolkit.forbidEmptyCatch.enabled%
+    Toolkit\PhpStan\Rule\ExceptionHandling\RequireThrowsTagOnDirectThrowRule:
+        phpstan.rules.rule: %toolkit.requireThrowsTagOnDirectThrow.enabled%
+    Toolkit\PhpStan\Rule\ExceptionHandling\RequireExceptionChainingRule:
+        phpstan.rules.rule: %toolkit.requireExceptionChaining.enabled%
+    Toolkit\PhpStan\Rule\ExceptionHandling\ForbidBroadCatchRule:
+        phpstan.rules.rule: %toolkit.forbidBroadCatch.enabled%
+    Toolkit\PhpStan\Rule\ExceptionHandling\ForbidGenericThrowsTagRule:
+        phpstan.rules.rule: %toolkit.forbidGenericThrowsTag.enabled%
+    Toolkit\PhpStan\Rule\Type\ForbidInternalMixedTypeRule:
+        phpstan.rules.rule: %toolkit.forbidInternalMixedType.enabled%
+    Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedFunctionRule:
+        phpstan.rules.rule: %toolkit.forbidInternalMixedType.enabled%
+    Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClosureRule:
+        phpstan.rules.rule: %toolkit.forbidInternalMixedType.enabled%
+    Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedArrowFunctionRule:
+        phpstan.rules.rule: %toolkit.forbidInternalMixedType.enabled%
+    Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedPropertyRule:
+        phpstan.rules.rule: %toolkit.forbidInternalMixedType.enabled%
+    Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClassPhpDocRule:
+        phpstan.rules.rule: %toolkit.forbidInternalMixedType.enabled%
+    Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedLocalVarRule:
+        phpstan.rules.rule: %toolkit.forbidInternalMixedType.enabled%
+    Toolkit\PhpStan\Rule\PhpDoc\RequireListForArrayLiteralRule:
+        phpstan.rules.rule: %toolkit.requireListForArrayLiteral.enabled%
+    Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchRule:
+        phpstan.rules.rule: %toolkit.requireExhaustiveDispatch.enabled%
+    Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveClassDispatchRule:
+        phpstan.rules.rule: %toolkit.requireExhaustiveDispatch.enabled%
+    Toolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector:
+        phpstan.collector: %toolkit.requireExhaustiveDispatch.enabled%
+    Toolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector:
+        phpstan.collector: %toolkit.requireExhaustiveDispatch.enabled%

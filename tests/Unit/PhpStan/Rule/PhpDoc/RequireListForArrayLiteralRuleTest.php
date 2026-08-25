@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\FixedListExpressionInspector;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\ListTypeDeclarationInspector;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\RequireListForArrayLiteralRule;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Property;
@@ -18,13 +14,17 @@ use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\PhpDoc\FixedListExpressionInspector;
+use Toolkit\PhpStan\Rule\PhpDoc\ListTypeDeclarationInspector;
+use Toolkit\PhpStan\Rule\PhpDoc\RequireListForArrayLiteralRule;
+use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 
 /**
  * @extends RuleTestCase<RequireListForArrayLiteralRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\RequireListForArrayLiteralRule
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\FixedListExpressionInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\ListTypeDeclarationInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
+ * @covers \Toolkit\PhpStan\Rule\PhpDoc\RequireListForArrayLiteralRule
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\FixedListExpressionInspector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\ListTypeDeclarationInspector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
  */
 #[CoversClass(RequireListForArrayLiteralRule::class)]
 #[UsesClass(FixedListExpressionInspector::class)]

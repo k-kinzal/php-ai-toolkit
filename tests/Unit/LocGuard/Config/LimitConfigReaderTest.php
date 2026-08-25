@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Config;
 
-use PhpAiToolkit\LocGuard\Config\ConfigScalarReader;
-use PhpAiToolkit\LocGuard\Config\LimitConfig;
-use PhpAiToolkit\LocGuard\Config\LimitConfigReader;
-use PhpAiToolkit\LocGuard\LocGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Config\ConfigScalarReader;
+use Toolkit\LocGuard\Config\LimitConfig;
+use Toolkit\LocGuard\Config\LimitConfigReader;
+use Toolkit\LocGuard\LocGuardException;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Config\LimitConfigReader
- * @uses \PhpAiToolkit\LocGuard\Config\ConfigScalarReader
- * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
+ * @covers \Toolkit\LocGuard\Config\LimitConfigReader
+ * @uses \Toolkit\LocGuard\Config\ConfigScalarReader
+ * @uses \Toolkit\LocGuard\Config\LimitConfig
  */
 #[CoversClass(LimitConfigReader::class)]
 #[UsesClass(ConfigScalarReader::class)]

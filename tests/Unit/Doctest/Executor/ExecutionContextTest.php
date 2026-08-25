@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Executor;
 
-use PhpAiToolkit\Doctest\Executor\ExecutionContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Executor\ExecutionContext;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Executor\ExecutionContext
+ * @covers \Toolkit\Doctest\Executor\ExecutionContext
  */
 #[CoversClass(ExecutionContext::class)]
 final class ExecutionContextTest extends TestCase

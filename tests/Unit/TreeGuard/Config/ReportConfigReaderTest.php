@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Config;
 
-use PhpAiToolkit\TreeGuard\Config\ConfigScalarReader;
-use PhpAiToolkit\TreeGuard\Config\ConfigStringListReader;
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
-use PhpAiToolkit\TreeGuard\Config\ReportConfigReader;
-use PhpAiToolkit\TreeGuard\TreeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Config\ConfigScalarReader;
+use Toolkit\TreeGuard\Config\ConfigStringListReader;
+use Toolkit\TreeGuard\Config\ReportConfig;
+use Toolkit\TreeGuard\Config\ReportConfigReader;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Config\ReportConfigReader
- * @uses \PhpAiToolkit\TreeGuard\Config\ConfigScalarReader
- * @uses \PhpAiToolkit\TreeGuard\Config\ConfigStringListReader
- * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ * @covers \Toolkit\TreeGuard\Config\ReportConfigReader
+ * @uses \Toolkit\TreeGuard\Config\ConfigScalarReader
+ * @uses \Toolkit\TreeGuard\Config\ConfigStringListReader
+ * @uses \Toolkit\TreeGuard\Config\ReportConfig
+ * @uses \Toolkit\TreeGuard\TreeGuardException
  */
 #[CoversClass(ReportConfigReader::class)]
 #[UsesClass(ConfigScalarReader::class)]

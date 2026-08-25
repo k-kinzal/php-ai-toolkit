@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Parse;
+namespace Toolkit\DocGen\Analysis\Parse;
 
 use function file_get_contents;
 use function filesize;
@@ -10,24 +10,25 @@ use function is_array;
 use function is_dir;
 use function is_string;
 
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
-use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
-use PhpAiToolkit\DocGen\Analysis\Reference\UsageCollector;
-use PhpAiToolkit\DocGen\Cache\ParseCache;
-use PhpAiToolkit\DocGen\Cache\SourceFileKey;
-use PhpAiToolkit\DocGen\Cache\ToolkitFingerprint;
-use PhpAiToolkit\DocGen\Config\DocGenConfig;
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
-use PhpAiToolkit\DocGen\Filesystem\SourceFileFinder;
-use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
-use PhpAiToolkit\DocGen\Parallel\WorkerPool;
-use PhpAiToolkit\DocGen\Parallel\WorkScheduler;
 use PhpParser\NodeTraverser;
 
 use function sprintf;
 use function strtolower;
+
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\FunctionDoc;
+use Toolkit\DocGen\Analysis\Reference\Usage;
+use Toolkit\DocGen\Analysis\Reference\UsageCollector;
+use Toolkit\DocGen\Cache\ParseCache;
+use Toolkit\DocGen\Cache\SourceFileKey;
+use Toolkit\DocGen\Cache\ToolkitFingerprint;
+use Toolkit\DocGen\Config\DocGenConfig;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Filesystem\SourceFileFinder;
+use Toolkit\DocGen\Package\DiscoveredPackage;
+use Toolkit\DocGen\Parallel\WorkerPool;
+use Toolkit\DocGen\Parallel\WorkScheduler;
 
 /**
  * Parses the sources of every documented package into symbol lists.

@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Reporting;
 
-use PhpAiToolkit\TreeGuard\Analysis\Violation;
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
-use PhpAiToolkit\TreeGuard\Reporting\ViolationFieldComparator;
-use PhpAiToolkit\TreeGuard\Reporting\ViolationSorter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Analysis\Violation;
+use Toolkit\TreeGuard\Config\ReportConfig;
+use Toolkit\TreeGuard\Reporting\ViolationFieldComparator;
+use Toolkit\TreeGuard\Reporting\ViolationSorter;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Reporting\ViolationSorter
- * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\TreeGuard\Analysis\Violation
- * @uses \PhpAiToolkit\TreeGuard\Reporting\ViolationFieldComparator
+ * @covers \Toolkit\TreeGuard\Reporting\ViolationSorter
+ * @uses \Toolkit\TreeGuard\Config\ReportConfig
+ * @uses \Toolkit\TreeGuard\Analysis\Violation
+ * @uses \Toolkit\TreeGuard\Reporting\ViolationFieldComparator
  */
 #[CoversClass(ViolationSorter::class)]
 #[UsesClass(ReportConfig::class)]

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Installer\Cli;
 
-use PhpAiToolkit\Installer\Cli\CliArgumentParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Installer\Cli\CliArgumentParser;
 
 /**
- * @covers \PhpAiToolkit\Installer\Cli\CliArgumentParser
+ * @covers \Toolkit\Installer\Cli\CliArgumentParser
  */
 #[CoversClass(CliArgumentParser::class)]
 final class CliArgumentParserTest extends TestCase

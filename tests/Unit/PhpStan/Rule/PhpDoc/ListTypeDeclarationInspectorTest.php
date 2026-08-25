@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\ListTypeDeclarationInspector;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\PhpDoc\ListTypeDeclarationInspector;
+use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\ListTypeDeclarationInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
+ * @covers \Toolkit\PhpStan\Rule\PhpDoc\ListTypeDeclarationInspector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
  */
 #[CoversClass(ListTypeDeclarationInspector::class)]
 #[UsesClass(RulePhpDocParser::class)]

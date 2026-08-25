@@ -23,7 +23,7 @@ public function add(int $left, int $right): int
 
 This is a port of [k-kinzal/doctest-php](https://github.com/k-kinzal/doctest-php) into the toolkit:
 same notation, same extension-and-suite mechanism, same class structure under
-`PhpAiToolkit\Doctest`. It is a PHPUnit extension plus a test suite, so a documented example that
+`Toolkit\Doctest`. It is a PHPUnit extension plus a test suite, so a documented example that
 disagrees with the code is reported as a failing test by whatever reporter the project already runs.
 
 ## Setup
@@ -42,7 +42,7 @@ Register the extension and point a test suite at the shipped suite file:
     </testsuites>
 
     <extensions>
-        <bootstrap class="PhpAiToolkit\Doctest\DoctestExtension">
+        <bootstrap class="Toolkit\Doctest\DoctestExtension">
             <parameter name="directories" value="src"/>
         </bootstrap>
     </extensions>
@@ -75,7 +75,7 @@ Switching them off is `enabled="false"`, or selecting the other suites — `--te
 ### On PHPUnit 9
 
 PHPUnit 9 has no extension API and reads test metadata from doc-comments. Extend
-`PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner` there and state the configuration in the
+`Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner` there and state the configuration in the
 class instead:
 
 ```php
@@ -88,7 +88,7 @@ final class DoctestSuiteTest extends LegacyDoctestRunner
 }
 ```
 
-`PhpAiToolkit\Doctest\TestCase\DoctestRunner` is the same class for PHPUnit 10 and later; extend it
+`Toolkit\Doctest\TestCase\DoctestRunner` is the same class for PHPUnit 10 and later; extend it
 directly when a project wants to state its configuration in PHP rather than in `phpunit.xml`.
 
 ## Where Examples Are Written

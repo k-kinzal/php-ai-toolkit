@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteCollector;
-use PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteCollector;
+use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite
- * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression
+ * @covers \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteCollector
+ * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite
+ * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor
+ * @uses \Toolkit\PhpStan\Rule\Shared\ThrownExpression
  */
 #[CoversClass(ThrowSiteCollector::class)]
-#[UsesClass(\PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite::class)]
-#[UsesClass(\PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor::class)]
+#[UsesClass(\Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite::class)]
+#[UsesClass(\Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor::class)]
 #[UsesClass(ThrownExpression::class)]
 final class ThrowSiteCollectorTest extends TestCase
 {

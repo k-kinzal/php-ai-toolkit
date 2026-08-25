@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi;
+namespace Toolkit\PhpStan\Rule\PhpDoc\PublicApi;
 
 use function array_merge;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\RunnableExampleDetector;
-use PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 use PHPStan\Rules\IdentifierRuleError;
 
 use function sprintf;
+
+use Toolkit\PhpStan\Rule\PhpDoc\RunnableExampleDetector;
+use Toolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 
 /**
  * Collects missing-example errors across the declarations of one class-like.

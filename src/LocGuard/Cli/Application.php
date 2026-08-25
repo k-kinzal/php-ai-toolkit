@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Cli;
+namespace Toolkit\LocGuard\Cli;
 
 use function array_shift;
 
 use Closure;
-use PhpAiToolkit\LocGuard\Analysis\LocGuardAnalyzer;
-use PhpAiToolkit\LocGuard\Config\ConfigLoader;
-use PhpAiToolkit\LocGuard\LocGuardException;
-use PhpAiToolkit\LocGuard\Reporting\ReporterFactory;
 
 use function sprintf;
+
+use Toolkit\LocGuard\Analysis\LocGuardAnalyzer;
+use Toolkit\LocGuard\Config\ConfigLoader;
+use Toolkit\LocGuard\LocGuardException;
+use Toolkit\LocGuard\Reporting\ReporterFactory;
 
 /**
  * CLI entry point for LocGuard.

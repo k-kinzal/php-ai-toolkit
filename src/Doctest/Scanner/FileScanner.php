@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Scanner;
+namespace Toolkit\Doctest\Scanner;
 
 use function fnmatch;
 
@@ -11,11 +11,11 @@ use Generator;
 use function is_dir;
 use function is_file;
 
-use PhpAiToolkit\Doctest\Configuration\Configuration;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RegexIterator;
 use SplFileInfo;
+use Toolkit\Doctest\Configuration\Configuration;
 
 /**
  * Scans directories and files for PHP source files based on configuration.

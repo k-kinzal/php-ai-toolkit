@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\FunctionMetric;
+namespace Toolkit\LocGuard\Analysis\FunctionMetric;
 
 use function count;
 
-use PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 use PhpToken;
 
 use const T_DOUBLE_ARROW;
+
+use Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 
 /**
  * Locates block and expression bodies for function-like declarations.

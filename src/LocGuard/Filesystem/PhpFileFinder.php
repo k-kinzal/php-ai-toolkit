@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Filesystem;
+namespace Toolkit\LocGuard\Filesystem;
 
 use function ksort;
 
-use PhpAiToolkit\LocGuard\Config\LocGuardConfig;
+use Toolkit\LocGuard\Config\LocGuardConfig;
 
 /**
  * Finds PHP files from configured source paths.

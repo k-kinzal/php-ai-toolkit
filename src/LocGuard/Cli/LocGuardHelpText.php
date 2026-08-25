@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Cli;
+namespace Toolkit\LocGuard\Cli;
 
 /**
  * Provides LocGuard CLI help text.

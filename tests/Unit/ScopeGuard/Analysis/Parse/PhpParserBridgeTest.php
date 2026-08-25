@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis\Parse;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Parse\PhpParserBridge;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Parse\PhpParserBridge;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\Parse\PhpParserBridge
- * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ * @covers \Toolkit\ScopeGuard\Analysis\Parse\PhpParserBridge
+ * @uses \Toolkit\ScopeGuard\ScopeGuardException
  */
 #[CoversClass(PhpParserBridge::class)]
 #[UsesClass(ScopeGuardException::class)]

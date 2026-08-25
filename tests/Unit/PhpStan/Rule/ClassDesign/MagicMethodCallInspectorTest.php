@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ClassDesign;
 
-use PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodCallErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodCallInspector;
-use PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ClassDesign\MagicMethodCallErrorBuilder;
+use Toolkit\PhpStan\Rule\ClassDesign\MagicMethodCallInspector;
+use Toolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodCallInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodCallErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry
+ * @covers \Toolkit\PhpStan\Rule\ClassDesign\MagicMethodCallInspector
+ * @uses \Toolkit\PhpStan\Rule\ClassDesign\MagicMethodCallErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry
  */
 #[CoversClass(MagicMethodCallInspector::class)]
 #[UsesClass(MagicMethodCallErrorBuilder::class)]

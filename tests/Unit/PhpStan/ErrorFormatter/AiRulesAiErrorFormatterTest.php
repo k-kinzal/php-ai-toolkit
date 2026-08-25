@@ -6,19 +6,19 @@ namespace Tests\Unit\PhpStan\ErrorFormatter;
 
 use function dirname;
 
-use PhpAiToolkit\PhpStan\ErrorFormatter\AiRulesAiErrorFormatter;
-use PhpAiToolkit\PhpStan\ErrorFormatter\ErrorCollectionSummary;
-use PhpAiToolkit\PhpStan\ErrorFormatter\ErrorGrouping;
-use PhpAiToolkit\PhpStan\ErrorFormatter\ErrorSourceReader;
 use PHPStan\Analyser\Error;
 use PHPStan\Command\AnalysisResult;
 use PHPStan\File\SimpleRelativePathHelper;
 use PHPStan\Testing\ErrorFormatterTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\ErrorFormatter\AiRulesAiErrorFormatter;
+use Toolkit\PhpStan\ErrorFormatter\ErrorCollectionSummary;
+use Toolkit\PhpStan\ErrorFormatter\ErrorGrouping;
+use Toolkit\PhpStan\ErrorFormatter\ErrorSourceReader;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\AiRulesAiErrorFormatter
+ * @covers \Toolkit\PhpStan\ErrorFormatter\AiRulesAiErrorFormatter
  */
 #[CoversClass(AiRulesAiErrorFormatter::class)]
 #[Medium]

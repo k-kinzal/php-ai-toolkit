@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Reporting;
+namespace Toolkit\TreeGuard\Reporting;
 
-use PhpAiToolkit\TreeGuard\Analysis\Violation;
+use Toolkit\TreeGuard\Analysis\Violation;
 
 /**
  * Selects remediation actions for individual TreeGuard violations.

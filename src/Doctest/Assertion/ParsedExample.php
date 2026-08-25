@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Assertion;
+namespace Toolkit\Doctest\Assertion;
 
-use PhpAiToolkit\Doctest\Parser\Example;
+use Toolkit\Doctest\Parser\Example;
 
 /**
  * Represents an example that has been parsed into individual statements.

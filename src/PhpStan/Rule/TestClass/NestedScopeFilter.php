@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\TestClass;
+namespace Toolkit\PhpStan\Rule\TestClass;
 
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Closure;

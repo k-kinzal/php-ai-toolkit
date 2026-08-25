@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis;
+namespace Toolkit\ScopeGuard\Analysis;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
-use PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference;
+use Toolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
+use Toolkit\ScopeGuard\Analysis\Reference\Reference;
 
 /**
  * Everything one pass over the analyzed sources found.

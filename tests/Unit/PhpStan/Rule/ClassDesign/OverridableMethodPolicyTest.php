@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ClassDesign;
 
-use PhpAiToolkit\PhpStan\Rule\ClassDesign\OverridableMethodPolicy;
 use PHPStan\Reflection\MethodReflection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ClassDesign\OverridableMethodPolicy;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\OverridableMethodPolicy
+ * @covers \Toolkit\PhpStan\Rule\ClassDesign\OverridableMethodPolicy
  */
 #[CoversClass(OverridableMethodPolicy::class)]
 final class OverridableMethodPolicyTest extends TestCase

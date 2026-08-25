@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\PhpDoc;
+namespace Toolkit\PhpStan\Rule\PhpDoc;
 
 /**
  * Detects PHPDoc comments written on one line.

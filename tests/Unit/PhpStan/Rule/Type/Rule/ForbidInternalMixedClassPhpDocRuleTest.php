@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Type\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
-use PhpAiToolkit\PhpStan\Rule\Type\MixedClassPhpDocErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClassPhpDocRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
+use Toolkit\PhpStan\Rule\Type\MixedClassPhpDocErrorCollector;
+use Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClassPhpDocRule;
 
 /**
  * @extends RuleTestCase<ForbidInternalMixedClassPhpDocRule>

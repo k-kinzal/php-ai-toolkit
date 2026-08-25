@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page\Component;
 
-use PhpAiToolkit\DocGen\Render\Page\Component\SymbolRow;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Render\Page\Component\SymbolRow;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\Page\Component\SymbolRow
+ * @covers \Toolkit\DocGen\Render\Page\Component\SymbolRow
  */
 #[CoversClass(SymbolRow::class)]
 final class SymbolRowTest extends TestCase

@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Reporting;
 
-use PhpAiToolkit\LocGuard\LocGuardException;
-use PhpAiToolkit\LocGuard\Reporting\AiReporter;
-use PhpAiToolkit\LocGuard\Reporting\AiViolationFormatter;
-use PhpAiToolkit\LocGuard\Reporting\JsonReporter;
-use PhpAiToolkit\LocGuard\Reporting\ReporterFactory;
-use PhpAiToolkit\LocGuard\Reporting\TextReporter;
-use PhpAiToolkit\LocGuard\Reporting\ViolationSorter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\LocGuardException;
+use Toolkit\LocGuard\Reporting\AiReporter;
+use Toolkit\LocGuard\Reporting\AiViolationFormatter;
+use Toolkit\LocGuard\Reporting\JsonReporter;
+use Toolkit\LocGuard\Reporting\ReporterFactory;
+use Toolkit\LocGuard\Reporting\TextReporter;
+use Toolkit\LocGuard\Reporting\ViolationSorter;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Reporting\ReporterFactory
- * @uses \PhpAiToolkit\LocGuard\Reporting\AiReporter
- * @uses \PhpAiToolkit\LocGuard\Reporting\AiViolationFormatter
- * @uses \PhpAiToolkit\LocGuard\Reporting\JsonReporter
- * @uses \PhpAiToolkit\LocGuard\Reporting\TextReporter
- * @uses \PhpAiToolkit\LocGuard\Reporting\ViolationSorter
+ * @covers \Toolkit\LocGuard\Reporting\ReporterFactory
+ * @uses \Toolkit\LocGuard\Reporting\AiReporter
+ * @uses \Toolkit\LocGuard\Reporting\AiViolationFormatter
+ * @uses \Toolkit\LocGuard\Reporting\JsonReporter
+ * @uses \Toolkit\LocGuard\Reporting\TextReporter
+ * @uses \Toolkit\LocGuard\Reporting\ViolationSorter
  */
 #[CoversClass(ReporterFactory::class)]
 #[UsesClass(AiReporter::class)]

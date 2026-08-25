@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Reporting;
-
-use PhpAiToolkit\ScopeGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\ScopeGuard\Config\ReportConfig;
+namespace Toolkit\ScopeGuard\Reporting;
 
 use function sprintf;
+
+use Toolkit\ScopeGuard\Analysis\AnalysisResult;
+use Toolkit\ScopeGuard\Config\ReportConfig;
 
 /**
  * Human-readable ScopeGuard reporter.

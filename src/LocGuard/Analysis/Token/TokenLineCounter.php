@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\Token;
+namespace Toolkit\LocGuard\Analysis\Token;
 
 use function count;
 

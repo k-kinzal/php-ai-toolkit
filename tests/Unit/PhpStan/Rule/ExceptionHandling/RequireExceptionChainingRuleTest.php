@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowCollector;
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor;
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\RequireExceptionChainingRule;
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowChainEvaluator;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowCollector;
+use Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor;
+use Toolkit\PhpStan\Rule\ExceptionHandling\RequireExceptionChainingRule;
+use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowChainEvaluator;
 
 /**
  * @extends RuleTestCase<RequireExceptionChainingRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\RequireExceptionChainingRule
- * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor
- * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowChainEvaluator
+ * @covers \Toolkit\PhpStan\Rule\ExceptionHandling\RequireExceptionChainingRule
+ * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowCollector
+ * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor
+ * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowChainEvaluator
  */
 #[CoversClass(RequireExceptionChainingRule::class)]
 #[UsesClass(CatchThrowCollector::class)]

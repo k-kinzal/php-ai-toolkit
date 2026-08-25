@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\FunctionMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowExpressionBoundary;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\FunctionMetric\ArrowExpressionBoundary;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowExpressionBoundary
+ * @covers \Toolkit\LocGuard\Analysis\FunctionMetric\ArrowExpressionBoundary
  */
 #[CoversClass(ArrowExpressionBoundary::class)]
 final class ArrowExpressionBoundaryTest extends TestCase

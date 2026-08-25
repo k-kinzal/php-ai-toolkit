@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\PhpDoc;
+namespace Toolkit\PhpStan\Rule\PhpDoc;
 
 use function array_key_exists;
 use function get_object_vars;

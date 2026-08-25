@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Installer;
+namespace Toolkit\Installer;
 
 use function array_slice;
 use function count;

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Coverage;
 
-use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex;
-use PhpAiToolkit\DocGen\Analysis\Coverage\MethodCoverage;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
+use Toolkit\DocGen\Analysis\Coverage\MethodCoverage;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex
- * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\MethodCoverage
+ * @covers \Toolkit\DocGen\Analysis\Coverage\CoverageIndex
+ * @uses \Toolkit\DocGen\Analysis\Coverage\MethodCoverage
  */
 #[CoversClass(CoverageIndex::class)]
 #[UsesClass(MethodCoverage::class)]

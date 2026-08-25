@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\ClassDesign;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ClassDesign\NoNonPublicMethodRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\ClassDesign\NoNonPublicMethodRule;
 
 /**
  * @extends RuleTestCase<NoNonPublicMethodRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\NoNonPublicMethodRule
+ * @covers \Toolkit\PhpStan\Rule\ClassDesign\NoNonPublicMethodRule
  */
 #[CoversClass(NoNonPublicMethodRule::class)]
 #[Medium]

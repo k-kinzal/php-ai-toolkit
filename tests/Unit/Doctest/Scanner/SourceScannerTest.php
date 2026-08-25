@@ -7,18 +7,18 @@ namespace Tests\Unit\Doctest\Scanner;
 use function array_map;
 use function iterator_to_array;
 
-use PhpAiToolkit\Doctest\Scanner\ParserFactoryBridge;
-use PhpAiToolkit\Doctest\Scanner\SourceScanner;
-use PhpAiToolkit\Doctest\Scanner\Target;
-use PhpAiToolkit\Doctest\Scanner\TargetKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Scanner\ParserFactoryBridge;
+use Toolkit\Doctest\Scanner\SourceScanner;
+use Toolkit\Doctest\Scanner\Target;
+use Toolkit\Doctest\Scanner\TargetKind;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Scanner\SourceScanner
- * @uses \PhpAiToolkit\Doctest\Scanner\Target
- * @uses \PhpAiToolkit\Doctest\Scanner\ParserFactoryBridge
+ * @covers \Toolkit\Doctest\Scanner\SourceScanner
+ * @uses \Toolkit\Doctest\Scanner\Target
+ * @uses \Toolkit\Doctest\Scanner\ParserFactoryBridge
  */
 #[CoversClass(SourceScanner::class)]
 #[UsesClass(Target::class)]

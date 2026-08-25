@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Reporting;
 
-use PhpAiToolkit\ScopeGuard\Reporting\Reporter;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Reporting\Reporter;
 
 /**
  * @coversNothing

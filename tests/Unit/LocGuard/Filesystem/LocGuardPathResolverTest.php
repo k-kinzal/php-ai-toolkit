@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Filesystem;
 
-use PhpAiToolkit\LocGuard\Filesystem\LocGuardPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Filesystem\LocGuardPathResolver;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Filesystem\LocGuardPathResolver
+ * @covers \Toolkit\LocGuard\Filesystem\LocGuardPathResolver
  */
 #[CoversClass(LocGuardPathResolver::class)]
 final class LocGuardPathResolverTest extends TestCase

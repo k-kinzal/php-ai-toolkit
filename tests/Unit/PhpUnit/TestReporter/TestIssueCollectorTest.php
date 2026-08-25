@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter;
 
-use PhpAiToolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser;
-use PhpAiToolkit\PhpUnit\TestReporter\TestFailureLineResolver;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueInput;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser;
+use Toolkit\PhpUnit\TestReporter\TestFailureLineResolver;
+use Toolkit\PhpUnit\TestReporter\TestIssue;
+use Toolkit\PhpUnit\TestReporter\TestIssueCollector;
+use Toolkit\PhpUnit\TestReporter\TestIssueInput;
+use Toolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver;
 
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestIssueInput
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestFailureLineResolver
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssue
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver
+ * @covers \Toolkit\PhpUnit\TestReporter\TestIssueCollector
+ * @covers \Toolkit\PhpUnit\TestReporter\TestIssueInput
+ * @uses \Toolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser
+ * @uses \Toolkit\PhpUnit\TestReporter\TestFailureLineResolver
+ * @uses \Toolkit\PhpUnit\TestReporter\TestIssue
+ * @uses \Toolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver
  */
 #[CoversClass(TestIssueCollector::class)]
 #[CoversClass(TestIssueInput::class)]

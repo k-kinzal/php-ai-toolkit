@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Configuration;
 
-use PhpAiToolkit\Doctest\Configuration\Configuration;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Configuration\Configuration;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Configuration\Configuration
+ * @covers \Toolkit\Doctest\Configuration\Configuration
  */
 #[CoversClass(Configuration::class)]
 final class ConfigurationTest extends TestCase

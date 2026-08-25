@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Model;
 
-use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
-use PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Model\DocBlock;
+use Toolkit\DocGen\Analysis\Model\PropertyDoc;
+use Toolkit\DocGen\Analysis\Model\TypeSignature;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ * @covers \Toolkit\DocGen\Analysis\Model\PropertyDoc
+ * @uses \Toolkit\DocGen\Analysis\Model\DocBlock
+ * @uses \Toolkit\DocGen\Analysis\Model\TypeSignature
  */
 #[CoversClass(PropertyDoc::class)]
 #[UsesClass(DocBlock::class)]

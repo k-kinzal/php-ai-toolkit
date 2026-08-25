@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\MissingThrowsTagErrorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ExceptionHandling\MissingThrowsTagErrorBuilder;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\MissingThrowsTagErrorBuilder
+ * @covers \Toolkit\PhpStan\Rule\ExceptionHandling\MissingThrowsTagErrorBuilder
  */
 #[CoversClass(MissingThrowsTagErrorBuilder::class)]
 final class MissingThrowsTagErrorBuilderTest extends TestCase

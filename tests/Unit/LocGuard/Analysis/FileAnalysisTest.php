@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis;
 
-use PhpAiToolkit\LocGuard\Analysis\FileAnalysis;
-use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric;
-use PhpAiToolkit\LocGuard\Analysis\Violation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\FileAnalysis;
+use Toolkit\LocGuard\Analysis\FileMetric\FileMetric;
+use Toolkit\LocGuard\Analysis\Violation;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\FileAnalysis
- * @uses \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric
- * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ * @covers \Toolkit\LocGuard\Analysis\FileAnalysis
+ * @uses \Toolkit\LocGuard\Analysis\FileMetric\FileMetric
+ * @uses \Toolkit\LocGuard\Analysis\Violation
  */
 #[CoversClass(FileAnalysis::class)]
 #[UsesClass(FileMetric::class)]

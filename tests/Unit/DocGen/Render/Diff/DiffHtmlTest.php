@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Diff;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Diff\DiffIndex;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Render\Diff\DiffHtml;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\Diff\DiffHtml
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ * @covers \Toolkit\DocGen\Render\Diff\DiffHtml
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffIndex
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
  */
 #[CoversClass(DiffHtml::class)]
 #[UsesClass(DiffIndex::class)]

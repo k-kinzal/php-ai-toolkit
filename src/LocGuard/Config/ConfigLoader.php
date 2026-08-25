@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Config;
+namespace Toolkit\LocGuard\Config;
 
 use function dirname;
 use function is_array;
 use function is_file;
-
-use PhpAiToolkit\LocGuard\LocGuardException;
-
 use function sprintf;
 
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use Toolkit\LocGuard\LocGuardException;
 
 /**
  * Loads and validates loc.yaml.

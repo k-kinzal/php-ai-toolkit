@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page\Component;
+namespace Toolkit\DocGen\Render\Page\Component;
 
 use function count;
-
-use PhpAiToolkit\DocGen\Analysis\Reference\TestCase;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-
 use function sprintf;
 use function strrchr;
 use function substr;
+
+use Toolkit\DocGen\Analysis\Reference\TestCase;
+use Toolkit\DocGen\Render\RenderKit;
 
 /**
  * Renders the test cases that exercise a symbol or member.

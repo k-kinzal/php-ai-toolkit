@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\ClassDesign;
+namespace Toolkit\PhpStan\Rule\ClassDesign;
 
 /**
  * Provides magic method alternatives for direct-call diagnostics.

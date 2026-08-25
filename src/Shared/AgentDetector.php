@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Shared;
+namespace Toolkit\Shared;
 
 /**
  * Detects whether an AI agent is driving the current session.

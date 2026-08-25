@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Layer;
+namespace Toolkit\DocGen\Analysis\Layer;
 
 use function is_array;
 use function is_file;
 use function is_string;
-
-use PhpAiToolkit\DocGen\DocGenException;
-
 use function sprintf;
 
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use Toolkit\DocGen\DocGenException;
 
 /**
  * Reads layer definitions and the ruleset from a deptrac.yaml file.

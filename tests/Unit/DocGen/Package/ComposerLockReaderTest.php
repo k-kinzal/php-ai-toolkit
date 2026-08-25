@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Package;
 
-use PhpAiToolkit\DocGen\Package\ComposerLockReader;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Package\ComposerLockReader;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Package\ComposerLockReader
+ * @covers \Toolkit\DocGen\Package\ComposerLockReader
  */
 #[CoversClass(ComposerLockReader::class)]
 final class ComposerLockReaderTest extends TestCase

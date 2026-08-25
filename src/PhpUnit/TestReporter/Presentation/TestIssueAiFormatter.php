@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Presentation;
+namespace Toolkit\PhpUnit\TestReporter\Presentation;
 
 use function count;
-
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader;
-
 use function sprintf;
+
+use Toolkit\PhpUnit\TestReporter\TestIssue;
+use Toolkit\PhpUnit\TestReporter\TestIssueSourceReader;
+
 use function trim;
 
 /**

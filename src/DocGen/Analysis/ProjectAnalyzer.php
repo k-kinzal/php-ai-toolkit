@@ -2,33 +2,32 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis;
+namespace Toolkit\DocGen\Analysis;
 
 use function array_merge;
 use function basename;
 use function fnmatch;
 use function is_file;
-
-use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex;
-use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageReader;
-use PhpAiToolkit\DocGen\Analysis\Document\DocumentCollector;
-use PhpAiToolkit\DocGen\Analysis\Layer\DeptracConfigReader;
-use PhpAiToolkit\DocGen\Analysis\Layer\LayerAssigner;
-use PhpAiToolkit\DocGen\Analysis\Layer\LayerModel;
-use PhpAiToolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
-use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
-use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
-use PhpAiToolkit\DocGen\Cache\ParseCache;
-use PhpAiToolkit\DocGen\Config\DocGenConfig;
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
-use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
-use PhpAiToolkit\DocGen\Package\PackageDiscovery;
-use PhpAiToolkit\DocGen\Package\PackageGraphBuilder;
-
 use function sprintf;
+
+use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
+use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
+use Toolkit\DocGen\Analysis\Document\DocumentCollector;
+use Toolkit\DocGen\Analysis\Layer\DeptracConfigReader;
+use Toolkit\DocGen\Analysis\Layer\LayerAssigner;
+use Toolkit\DocGen\Analysis\Layer\LayerModel;
+use Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Cache\ParseCache;
+use Toolkit\DocGen\Config\DocGenConfig;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Package\DiscoveredPackage;
+use Toolkit\DocGen\Package\PackageDiscovery;
+use Toolkit\DocGen\Package\PackageGraphBuilder;
 
 /**
  * Runs the full analysis pipeline from configuration to project model.

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Assertion;
+namespace Toolkit\Doctest\Assertion;
 
 use function explode;
-
-use PhpAiToolkit\Doctest\Parser\Example;
-
 use function preg_match;
+
+use Toolkit\Doctest\Parser\Example;
+
 use function trim;
 
 /**

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass\Pairing;
 
-use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\FilenameExclusionMatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\TestClass\Pairing\FilenameExclusionMatcher;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\FilenameExclusionMatcher
+ * @covers \Toolkit\PhpStan\Rule\TestClass\Pairing\FilenameExclusionMatcher
  */
 #[CoversClass(FilenameExclusionMatcher::class)]
 final class FilenameExclusionMatcherTest extends TestCase

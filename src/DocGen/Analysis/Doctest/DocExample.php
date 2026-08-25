@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Doctest;
+namespace Toolkit\DocGen\Analysis\Doctest;
 
 /**
  * One executable example extracted from a PHPDoc block.

@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Filesystem;
+namespace Toolkit\TreeGuard\Filesystem;
 
 use function is_dir;
-
-use PhpAiToolkit\TreeGuard\TreeGuardException;
-
 use function scandir;
 use function sort;
 use function sprintf;
+
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
  * Reads the direct entries of one directory from the filesystem.

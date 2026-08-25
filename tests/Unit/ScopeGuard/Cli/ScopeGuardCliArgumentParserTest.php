@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Cli;
 
-use PhpAiToolkit\ScopeGuard\Cli\ScopeGuardCliArgumentParser;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Cli\ScopeGuardCliArgumentParser;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardCliArgumentParser
- * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ * @covers \Toolkit\ScopeGuard\Cli\ScopeGuardCliArgumentParser
+ * @uses \Toolkit\ScopeGuard\ScopeGuardException
  */
 #[CoversClass(ScopeGuardCliArgumentParser::class)]
 #[UsesClass(ScopeGuardException::class)]

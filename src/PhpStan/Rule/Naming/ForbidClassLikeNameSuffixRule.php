@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Naming;
+namespace Toolkit\PhpStan\Rule\Naming;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\ClassLikeKindLabel;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+use Toolkit\PhpStan\Rule\Shared\ClassLikeKindLabel;
 
 /**
  * Forbids configured suffixes on class-like declaration names.

@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveClassDispatchRule;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\SubtypeIndex;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector;
+use Toolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector;
+use Toolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver;
+use Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveClassDispatchRule;
+use Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder;
+use Toolkit\PhpStan\Rule\ControlFlow\SubtypeIndex;
 
 /**
  * @extends RuleTestCase<RequireExhaustiveClassDispatchRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveClassDispatchRule
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\SubtypeIndex
+ * @covers \Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveClassDispatchRule
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\SubtypeIndex
  */
 #[CoversClass(RequireExhaustiveClassDispatchRule::class)]
 #[UsesClass(ClassAncestorCollector::class)]

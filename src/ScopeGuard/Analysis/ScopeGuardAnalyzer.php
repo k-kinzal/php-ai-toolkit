@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis;
+namespace Toolkit\ScopeGuard\Analysis;
 
 use function count;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces;
-use PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
+use Toolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces;
+use Toolkit\ScopeGuard\Config\ScopeGuardConfig;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
  * Runs a full ScopeGuard analysis of a configured project.

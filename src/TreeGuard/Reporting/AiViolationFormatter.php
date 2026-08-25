@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Reporting;
-
-use PhpAiToolkit\TreeGuard\Analysis\Violation;
+namespace Toolkit\TreeGuard\Reporting;
 
 use function sprintf;
+
+use Toolkit\TreeGuard\Analysis\Violation;
 
 /**
  * Formats one violation block for AI TreeGuard reports.

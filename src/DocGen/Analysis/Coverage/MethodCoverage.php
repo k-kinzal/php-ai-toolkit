@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Coverage;
+namespace Toolkit\DocGen\Analysis\Coverage;
 
 /**
  * Coverage figures of one method as reported by the PHPUnit XML report.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Signature;
+namespace Toolkit\DocGen\Render\Signature;
 
 use function file_get_contents;
 use function hash;

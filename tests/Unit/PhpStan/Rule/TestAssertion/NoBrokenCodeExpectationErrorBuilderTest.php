@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder
+ * @covers \Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder
  */
 #[CoversClass(NoBrokenCodeExpectationErrorBuilder::class)]
 final class NoBrokenCodeExpectationErrorBuilderTest extends TestCase

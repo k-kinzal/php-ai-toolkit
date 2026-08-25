@@ -4,13 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\CallArgumentResolver;
-use PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver;
-use PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver;
-use PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher;
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier;
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\ExpectExceptionCallInspector;
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder;
 use PHPStan\Analyser\Scope;
 use PHPStan\Testing\PHPStanTestCase;
 use PHPStan\Type\ObjectType;
@@ -18,15 +11,22 @@ use PHPStan\Type\StringType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\Shared\CallArgumentResolver;
+use Toolkit\PhpStan\Rule\Shared\CallMethodNameResolver;
+use Toolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver;
+use Toolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher;
+use Toolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier;
+use Toolkit\PhpStan\Rule\TestAssertion\ExpectExceptionCallInspector;
+use Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\ExpectExceptionCallInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CallArgumentResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
+ * @covers \Toolkit\PhpStan\Rule\TestAssertion\ExpectExceptionCallInspector
+ * @uses \Toolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier
+ * @uses \Toolkit\PhpStan\Rule\Shared\CallArgumentResolver
+ * @uses \Toolkit\PhpStan\Rule\Shared\CallMethodNameResolver
+ * @uses \Toolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver
+ * @uses \Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
  */
 #[CoversClass(ExpectExceptionCallInspector::class)]
 #[UsesClass(BrokenCodeExceptionClassifier::class)]

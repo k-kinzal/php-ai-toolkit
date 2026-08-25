@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\FileMetric;
+namespace Toolkit\LocGuard\Analysis\FileMetric;
 
 /**
  * File-level physical LOC and NCLOC metrics.

@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page;
+namespace Toolkit\DocGen\Render\Page;
 
 use function array_unshift;
 use function count;
 use function implode;
-
-use PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\SymbolListHtml;
-use PhpAiToolkit\DocGen\Render\PageChrome;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-
 use function sprintf;
+
+use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
+use Toolkit\DocGen\Render\Page\Component\SidebarHtml;
+use Toolkit\DocGen\Render\Page\Component\SymbolListHtml;
+use Toolkit\DocGen\Render\PageChrome;
+use Toolkit\DocGen\Render\RenderKit;
 
 /**
  * Renders the symbols of one architecture layer.

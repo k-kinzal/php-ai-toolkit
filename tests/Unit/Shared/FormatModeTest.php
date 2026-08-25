@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Shared;
 
-use PhpAiToolkit\Shared\FormatMode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Shared\FormatMode;
 
 /**
- * @covers \PhpAiToolkit\Shared\FormatMode
+ * @covers \Toolkit\Shared\FormatMode
  */
 #[CoversClass(FormatMode::class)]
 final class FormatModeTest extends TestCase

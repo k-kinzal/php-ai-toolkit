@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Cli;
+namespace Toolkit\DocGen\Cli;
 
 /**
  * Provides the doc-gen CLI usage text.

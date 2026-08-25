@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Cache;
 
-use PhpAiToolkit\DocGen\Cache\CacheStore;
-use PhpAiToolkit\DocGen\Cache\PageRecord;
-use PhpAiToolkit\DocGen\Cache\RenderCache;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Cache\CacheStore;
+use Toolkit\DocGen\Cache\PageRecord;
+use Toolkit\DocGen\Cache\RenderCache;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Cache\RenderCache
- * @uses \PhpAiToolkit\DocGen\Cache\CacheStore
- * @uses \PhpAiToolkit\DocGen\Cache\PageRecord
+ * @covers \Toolkit\DocGen\Cache\RenderCache
+ * @uses \Toolkit\DocGen\Cache\CacheStore
+ * @uses \Toolkit\DocGen\Cache\PageRecord
  */
 #[CoversClass(RenderCache::class)]
 #[UsesClass(CacheStore::class)]

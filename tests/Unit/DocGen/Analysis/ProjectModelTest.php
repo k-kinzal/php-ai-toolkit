@@ -4,33 +4,33 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis;
 
-use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex;
-use PhpAiToolkit\DocGen\Analysis\Layer\LayerModel;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\ProjectModel;
-use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
-use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
-use PhpAiToolkit\DocGen\Package\ComposerManifest;
-use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
-use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
+use Toolkit\DocGen\Analysis\Layer\LayerModel;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Package\ComposerManifest;
+use Toolkit\DocGen\Package\DiscoveredPackage;
+use Toolkit\DocGen\Package\PackageGraph;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\ProjectModel
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
- * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
- * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex
- * @uses \PhpAiToolkit\DocGen\Package\DiscoveredPackage
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex
- * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerModel
- * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
+ * @covers \Toolkit\DocGen\Analysis\ProjectModel
+ * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageIndex
+ * @uses \Toolkit\DocGen\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Analysis\Layer\LayerModel
+ * @uses \Toolkit\DocGen\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  */
 #[CoversClass(ProjectModel::class)]
 #[UsesClass(ClassLikeDoc::class)]

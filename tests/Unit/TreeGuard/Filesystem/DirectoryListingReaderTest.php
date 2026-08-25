@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Filesystem;
 
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListingReader;
-use PhpAiToolkit\TreeGuard\TreeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Filesystem\DirectoryListingReader;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListingReader
- * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ * @covers \Toolkit\TreeGuard\Filesystem\DirectoryListingReader
+ * @uses \Toolkit\TreeGuard\TreeGuardException
  */
 #[CoversClass(DirectoryListingReader::class)]
 #[UsesClass(TreeGuardException::class)]

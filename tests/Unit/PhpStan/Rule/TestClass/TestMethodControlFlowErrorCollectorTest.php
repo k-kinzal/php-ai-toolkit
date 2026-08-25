@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass;
 
-use PhpAiToolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver;
-use PhpAiToolkit\PhpStan\Rule\TestClass\NestedScopeFilter;
-use PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver;
+use Toolkit\PhpStan\Rule\TestClass\NestedScopeFilter;
+use Toolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\NestedScopeFilter
+ * @covers \Toolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector
+ * @uses \Toolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver
+ * @uses \Toolkit\PhpStan\Rule\TestClass\NestedScopeFilter
  */
 #[CoversClass(TestMethodControlFlowErrorCollector::class)]
 #[UsesClass(ControlFlowTypeResolver::class)]

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Reference;
+namespace Toolkit\DocGen\Analysis\Reference;
 
 use function array_values;
-
-use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-
 use function strrpos;
 use function strtolower;
 use function substr;
+
+use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+
 use function usort;
 
 /**

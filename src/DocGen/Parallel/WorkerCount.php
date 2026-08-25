@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Parallel;
+namespace Toolkit\DocGen\Parallel;
 
 use function max;
 use function min;

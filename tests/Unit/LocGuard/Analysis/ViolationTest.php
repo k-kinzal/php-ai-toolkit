@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis;
 
-use PhpAiToolkit\LocGuard\Analysis\Violation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\Violation;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\Violation
+ * @covers \Toolkit\LocGuard\Analysis\Violation
  */
 #[CoversClass(Violation::class)]
 final class ViolationTest extends TestCase

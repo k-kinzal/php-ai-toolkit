@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Subscriber;
+namespace Toolkit\PhpUnit\TestReporter\Subscriber;
 
 use Override;
-use PhpAiToolkit\PhpUnit\TestReporter\EventTestIssueFactory;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\ErroredSubscriber;
+use Toolkit\PhpUnit\TestReporter\EventTestIssueFactory;
+use Toolkit\PhpUnit\TestReporter\TestIssueCollector;
 
 /**
  * Forwards test error events to the issue collector.

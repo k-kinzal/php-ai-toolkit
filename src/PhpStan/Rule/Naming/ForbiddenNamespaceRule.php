@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Naming;
+namespace Toolkit\PhpStan\Rule\Naming;
 
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;

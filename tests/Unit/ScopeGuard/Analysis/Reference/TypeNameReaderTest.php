@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis\Reference;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Reference\TypeNameReader;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Reference\TypeNameReader;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\Reference\TypeNameReader
+ * @covers \Toolkit\ScopeGuard\Analysis\Reference\TypeNameReader
  */
 #[CoversClass(TypeNameReader::class)]
 final class TypeNameReaderTest extends TestCase

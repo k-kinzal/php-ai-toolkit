@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Reference;
-
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind;
+namespace Toolkit\DocGen\Analysis\Reference;
 
 use function sort;
 use function strtolower;
+
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\ClassLikeKind;
 
 /**
  * Answers inheritance questions across all documented class-like symbols.

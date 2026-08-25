@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Doctest;
 
-use PhpAiToolkit\DocGen\Analysis\Doctest\DocExample;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Doctest\DocExample;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Doctest\DocExample
+ * @covers \Toolkit\DocGen\Analysis\Doctest\DocExample
  */
 #[CoversClass(DocExample::class)]
 final class DocExampleTest extends TestCase

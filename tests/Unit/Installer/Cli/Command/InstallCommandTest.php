@@ -11,15 +11,6 @@ use function is_dir;
 use function is_link;
 use function mkdir;
 
-use PhpAiToolkit\Installer\Cli\Command\AgentSkillDirectoryDetector;
-use PhpAiToolkit\Installer\Cli\Command\InstallCommand;
-use PhpAiToolkit\Installer\Cli\Command\PackageSkillDirectoryScanner;
-use PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator;
-use PhpAiToolkit\Installer\Cli\Command\SkillInstallationRunner;
-use PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter;
-use PhpAiToolkit\Installer\Cli\Command\SkillInstaller;
-use PhpAiToolkit\Installer\PathNormalizer;
-use PhpAiToolkit\Installer\RelativePathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -32,19 +23,30 @@ use SplFileInfo;
 
 use function symlink;
 use function sys_get_temp_dir;
+
+use Toolkit\Installer\Cli\Command\AgentSkillDirectoryDetector;
+use Toolkit\Installer\Cli\Command\InstallCommand;
+use Toolkit\Installer\Cli\Command\PackageSkillDirectoryScanner;
+use Toolkit\Installer\Cli\Command\SkillFilesystemOperator;
+use Toolkit\Installer\Cli\Command\SkillInstallationRunner;
+use Toolkit\Installer\Cli\Command\SkillInstallationWriter;
+use Toolkit\Installer\Cli\Command\SkillInstaller;
+use Toolkit\Installer\PathNormalizer;
+use Toolkit\Installer\RelativePathResolver;
+
 use function uniqid;
 use function unlink;
 
 /**
- * @covers \PhpAiToolkit\Installer\Cli\Command\InstallCommand
- * @uses \PhpAiToolkit\Installer\Cli\Command\AgentSkillDirectoryDetector
- * @uses \PhpAiToolkit\Installer\Cli\Command\PackageSkillDirectoryScanner
- * @uses \PhpAiToolkit\Installer\PathNormalizer
- * @uses \PhpAiToolkit\Installer\RelativePathResolver
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstallationRunner
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstaller
+ * @covers \Toolkit\Installer\Cli\Command\InstallCommand
+ * @uses \Toolkit\Installer\Cli\Command\AgentSkillDirectoryDetector
+ * @uses \Toolkit\Installer\Cli\Command\PackageSkillDirectoryScanner
+ * @uses \Toolkit\Installer\PathNormalizer
+ * @uses \Toolkit\Installer\RelativePathResolver
+ * @uses \Toolkit\Installer\Cli\Command\SkillFilesystemOperator
+ * @uses \Toolkit\Installer\Cli\Command\SkillInstallationRunner
+ * @uses \Toolkit\Installer\Cli\Command\SkillInstallationWriter
+ * @uses \Toolkit\Installer\Cli\Command\SkillInstaller
  */
 #[CoversClass(InstallCommand::class)]
 #[UsesClass(AgentSkillDirectoryDetector::class)]

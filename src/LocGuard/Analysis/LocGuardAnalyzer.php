@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis;
+namespace Toolkit\LocGuard\Analysis;
 
-use PhpAiToolkit\LocGuard\Config\LocGuardConfig;
-use PhpAiToolkit\LocGuard\Filesystem\PhpFileFinder;
+use Toolkit\LocGuard\Config\LocGuardConfig;
+use Toolkit\LocGuard\Filesystem\PhpFileFinder;
 
 /**
  * Runs LocGuard analysis across all configured files.

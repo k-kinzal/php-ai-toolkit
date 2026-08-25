@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Installer;
 
-use PhpAiToolkit\Installer\PathNormalizer;
-use PhpAiToolkit\Installer\RelativePathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Installer\PathNormalizer;
+use Toolkit\Installer\RelativePathResolver;
 
 /**
- * @covers \PhpAiToolkit\Installer\RelativePathResolver
- * @uses \PhpAiToolkit\Installer\PathNormalizer
+ * @covers \Toolkit\Installer\RelativePathResolver
+ * @uses \Toolkit\Installer\PathNormalizer
  */
 #[CoversClass(RelativePathResolver::class)]
 #[UsesClass(PathNormalizer::class)]

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule;
+namespace Toolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\TestMethodDetector;
-use PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector;
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
+use Toolkit\PhpStan\Rule\Shared\TestMethodDetector;
+use Toolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @implements Rule<\PhpParser\Node\Stmt\ClassMethod>

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Git;
 
-use PhpAiToolkit\DocGen\Git\RevisionRange;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Git\RevisionRange;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Git\RevisionRange
+ * @covers \Toolkit\DocGen\Git\RevisionRange
  */
 #[CoversClass(RevisionRange::class)]
 final class RevisionRangeTest extends TestCase

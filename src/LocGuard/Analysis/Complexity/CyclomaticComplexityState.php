@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\Complexity;
+namespace Toolkit\LocGuard\Analysis\Complexity;
 
 use function array_pop;
 use function count;

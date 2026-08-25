@@ -15,7 +15,6 @@ use Override;
 
 use const PHP_BINARY;
 
-use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\ExecutionFinishedSubscriber;
 use PHPUnit\Event\TestRunner\ExecutionFinishedSubscriber as ExecutionFinishedSubscriberInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
@@ -25,8 +24,10 @@ use function proc_close;
 use function proc_open;
 use function stream_get_contents;
 
+use Toolkit\PhpUnit\TestReporter\Subscriber\ExecutionFinishedSubscriber;
+
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\Subscriber\ExecutionFinishedSubscriber
+ * @covers \Toolkit\PhpUnit\TestReporter\Subscriber\ExecutionFinishedSubscriber
  */
 #[CoversClass(ExecutionFinishedSubscriber::class)]
 #[Large]

@@ -27,8 +27,8 @@
         </testsuite>
     </testsuites>
     <extensions>
-        <bootstrap class="PhpAiToolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>
-        <bootstrap class="PhpAiToolkit\Doctest\DoctestExtension">
+        <bootstrap class="Toolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>
+        <bootstrap class="Toolkit\Doctest\DoctestExtension">
             <parameter name="directories" value="src"/>
         </bootstrap>
     </extensions>

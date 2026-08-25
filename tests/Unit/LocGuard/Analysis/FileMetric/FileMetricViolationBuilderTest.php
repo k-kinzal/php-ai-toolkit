@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\FileMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric;
-use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder;
-use PhpAiToolkit\LocGuard\Analysis\Violation;
-use PhpAiToolkit\LocGuard\Config\LimitConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\FileMetric\FileMetric;
+use Toolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder;
+use Toolkit\LocGuard\Analysis\Violation;
+use Toolkit\LocGuard\Config\LimitConfig;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder
- * @uses \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric
- * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
- * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ * @covers \Toolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder
+ * @uses \Toolkit\LocGuard\Analysis\FileMetric\FileMetric
+ * @uses \Toolkit\LocGuard\Config\LimitConfig
+ * @uses \Toolkit\LocGuard\Analysis\Violation
  */
 #[CoversClass(FileMetricViolationBuilder::class)]
 #[UsesClass(FileMetric::class)]

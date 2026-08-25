@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Cli;
 
-use PhpAiToolkit\LocGuard\Cli\LocGuardCliArgumentParser;
-use PhpAiToolkit\LocGuard\LocGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Cli\LocGuardCliArgumentParser;
+use Toolkit\LocGuard\LocGuardException;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Cli\LocGuardCliArgumentParser
+ * @covers \Toolkit\LocGuard\Cli\LocGuardCliArgumentParser
  */
 #[CoversClass(LocGuardCliArgumentParser::class)]
 final class LocGuardCliArgumentParserTest extends TestCase

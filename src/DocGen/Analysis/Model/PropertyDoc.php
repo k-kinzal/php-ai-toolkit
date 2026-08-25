@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Model;
+namespace Toolkit\DocGen\Analysis\Model;
 
 /**
  * One property declaration, including constructor-promoted properties.

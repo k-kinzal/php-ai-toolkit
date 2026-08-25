@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfRule;
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfRule;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @extends RuleTestCase<NoRedundantAssertInstanceOfRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfRule
+ * @covers \Toolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfRule
  */
 #[CoversClass(NoRedundantAssertInstanceOfRule::class)]
 #[Medium]

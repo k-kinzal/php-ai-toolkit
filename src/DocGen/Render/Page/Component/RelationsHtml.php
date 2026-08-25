@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page\Component;
+namespace Toolkit\DocGen\Render\Page\Component;
 
 use function count;
 use function in_array;
-
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-
 use function sprintf;
+
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\ClassLikeKind;
+use Toolkit\DocGen\Render\RenderKit;
 
 /**
  * Renders the relationship sections of a class-like page.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard;
+namespace Toolkit\TreeGuard;
 
 use RuntimeException;
 

@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\ForbidMixedArrayReturnTypeRule;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\MixedArrayReturnTypeInspector;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathMatcher;
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\PhpDoc\ForbidMixedArrayReturnTypeRule;
+use Toolkit\PhpStan\Rule\PhpDoc\MixedArrayReturnTypeInspector;
+use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
+use Toolkit\PhpStan\Rule\Shared\Path\RulePathMatcher;
+use Toolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
 
 /**
  * @extends RuleTestCase<ForbidMixedArrayReturnTypeRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\ForbidMixedArrayReturnTypeRule
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\MixedArrayReturnTypeInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathMatcher
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer
+ * @covers \Toolkit\PhpStan\Rule\PhpDoc\ForbidMixedArrayReturnTypeRule
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\MixedArrayReturnTypeInspector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
+ * @uses \Toolkit\PhpStan\Rule\Shared\Path\RulePathMatcher
+ * @uses \Toolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer
  */
 #[CoversClass(ForbidMixedArrayReturnTypeRule::class)]
 #[UsesClass(MixedArrayReturnTypeInspector::class)]

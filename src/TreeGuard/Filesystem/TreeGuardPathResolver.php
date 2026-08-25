@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Filesystem;
+namespace Toolkit\TreeGuard\Filesystem;
 
 use function rtrim;
 use function str_replace;

@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Filesystem;
+namespace Toolkit\DocGen\Filesystem;
 
 use function dirname;
 use function file_put_contents;
 use function is_dir;
 use function mkdir;
-
-use PhpAiToolkit\DocGen\DocGenException;
-
 use function sprintf;
+
+use Toolkit\DocGen\DocGenException;
 
 /**
  * Writes generated files below the site output directory.

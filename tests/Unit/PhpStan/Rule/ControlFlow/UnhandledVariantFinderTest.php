@@ -6,7 +6,6 @@ namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
 use function array_map;
 
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\NeverType;
@@ -15,9 +14,10 @@ use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\VerbosityLevel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder
+ * @covers \Toolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder
  */
 #[CoversClass(UnhandledVariantFinder::class)]
 final class UnhandledVariantFinderTest extends TestCase

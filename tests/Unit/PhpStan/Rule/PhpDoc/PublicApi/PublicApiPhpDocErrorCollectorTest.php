@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc\PublicApi;
 
-use PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiClassPhpDocErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiConstantPhpDocErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiMethodPhpDocErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiPhpDocErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiPropertyPhpDocErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 use PhpParser\Node\Stmt\Class_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiClassPhpDocErrorCollector;
+use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiConstantPhpDocErrorCollector;
+use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiMethodPhpDocErrorCollector;
+use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiPhpDocErrorCollector;
+use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiPropertyPhpDocErrorCollector;
+use Toolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiPhpDocErrorCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiClassPhpDocErrorCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiConstantPhpDocErrorCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiMethodPhpDocErrorCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiPropertyPhpDocErrorCollector
+ * @covers \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiPhpDocErrorCollector
+ * @uses \Toolkit\PhpStan\Rule\Shared\LineOrderedErrors
+ * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiClassPhpDocErrorCollector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiConstantPhpDocErrorCollector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiMethodPhpDocErrorCollector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiPropertyPhpDocErrorCollector
  */
 #[CoversClass(PublicApiPhpDocErrorCollector::class)]
 #[UsesClass(LineOrderedErrors::class)]

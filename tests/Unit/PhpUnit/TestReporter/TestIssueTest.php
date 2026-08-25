@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter;
 
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpUnit\TestReporter\TestIssue;
 
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestIssue
+ * @covers \Toolkit\PhpUnit\TestReporter\TestIssue
  */
 #[CoversClass(TestIssue::class)]
 final class TestIssueTest extends TestCase

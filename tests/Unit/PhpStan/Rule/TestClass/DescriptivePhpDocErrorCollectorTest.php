@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher;
-use PhpAiToolkit\PhpStan\Rule\TestClass\DescriptivePhpDocErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher;
+use Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocErrorCollector;
+use Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\DescriptivePhpDocErrorCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher
+ * @covers \Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocErrorCollector
+ * @uses \Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector
+ * @uses \Toolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher
  */
 #[CoversClass(DescriptivePhpDocErrorCollector::class)]
 #[UsesClass(DescriptivePhpDocTextDetector::class)]

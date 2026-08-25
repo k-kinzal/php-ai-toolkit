@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render;
+namespace Toolkit\DocGen\Render;
 
 use function array_pop;
 use function explode;

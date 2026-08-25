@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Diff;
-
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
+namespace Toolkit\DocGen\Render\Diff;
 
 use function sprintf;
+
+use Toolkit\DocGen\Analysis\Diff\DiffIndex;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 
 /**
  * The diff state of the page being rendered, as the renderers ask for it.

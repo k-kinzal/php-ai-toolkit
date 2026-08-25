@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Analysis;
+namespace Toolkit\TreeGuard\Analysis;
 
 use function fnmatch;
 use function implode;
-
-use PhpAiToolkit\TreeGuard\Config\RuleConfig;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
-use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
-
 use function sprintf;
+
+use Toolkit\TreeGuard\Config\RuleConfig;
+use Toolkit\TreeGuard\Filesystem\DirectoryListing;
+use Toolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 
 /**
  * Checks direct subdirectory names of one directory against allow, deny, and case rules.

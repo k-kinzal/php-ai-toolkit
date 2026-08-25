@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Cli;
 
-use PhpAiToolkit\TreeGuard\Cli\TreeGuardOutputWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Cli\TreeGuardOutputWriter;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Cli\TreeGuardOutputWriter
+ * @covers \Toolkit\TreeGuard\Cli\TreeGuardOutputWriter
  */
 #[CoversClass(TreeGuardOutputWriter::class)]
 final class TreeGuardOutputWriterTest extends TestCase

@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\NoClassConstantInTestClassRule;
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\NoClassConstantInTestClassRule;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @extends RuleTestCase<NoClassConstantInTestClassRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\NoClassConstantInTestClassRule
+ * @covers \Toolkit\PhpStan\Rule\NoClassConstantInTestClassRule
  */
 #[CoversClass(NoClassConstantInTestClassRule::class)]
 #[Medium]

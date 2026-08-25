@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Filesystem;
+namespace Toolkit\TreeGuard\Filesystem;
 
 /**
  * The direct, exclusion-filtered contents of one scanned directory.

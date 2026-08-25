@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Support;
+namespace Toolkit\PhpStan\Support;
 
 /**
  * Tracks token context where // comments are allowed by ForbidNonDocCommentRule.

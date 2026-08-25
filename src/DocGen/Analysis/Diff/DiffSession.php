@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Diff;
+namespace Toolkit\DocGen\Analysis\Diff;
 
-use PhpAiToolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\ProjectModel;
 
 /**
  * One opened comparison of two revisions.

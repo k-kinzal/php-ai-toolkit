@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Cache;
 
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols;
-use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
-use PhpAiToolkit\DocGen\Cache\CacheStore;
-use PhpAiToolkit\DocGen\Cache\ParseCache;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Parse\FileSymbols;
+use Toolkit\DocGen\Analysis\Reference\Usage;
+use Toolkit\DocGen\Cache\CacheStore;
+use Toolkit\DocGen\Cache\ParseCache;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Cache\ParseCache
- * @uses \PhpAiToolkit\DocGen\Cache\CacheStore
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\Usage
+ * @covers \Toolkit\DocGen\Cache\ParseCache
+ * @uses \Toolkit\DocGen\Cache\CacheStore
+ * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbols
+ * @uses \Toolkit\DocGen\Analysis\Reference\Usage
  */
 #[CoversClass(ParseCache::class)]
 #[UsesClass(CacheStore::class)]

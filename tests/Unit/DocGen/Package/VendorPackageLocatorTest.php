@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Package;
 
-use PhpAiToolkit\DocGen\Package\VendorPackageLocator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Package\VendorPackageLocator;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Package\VendorPackageLocator
+ * @covers \Toolkit\DocGen\Package\VendorPackageLocator
  */
 #[CoversClass(VendorPackageLocator::class)]
 final class VendorPackageLocatorTest extends TestCase

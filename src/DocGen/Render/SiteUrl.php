@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render;
-
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
+namespace Toolkit\DocGen\Render;
 
 use function preg_replace;
 use function str_repeat;
 use function str_replace;
 use function substr_count;
+
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\FunctionDoc;
 
 /**
  * Computes the output paths and relative links of the generated site.

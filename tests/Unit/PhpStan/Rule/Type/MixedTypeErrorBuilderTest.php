@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Type;
 
-use PhpAiToolkit\PhpStan\Rule\Type\MixedTypeErrorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Type\MixedTypeErrorBuilder;
 
 #[CoversClass(MixedTypeErrorBuilder::class)]
 final class MixedTypeErrorBuilderTest extends TestCase

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Config;
+namespace Toolkit\DocGen\Config;
 
 /**
  * Immutable DocGen configuration, as one command line described it.

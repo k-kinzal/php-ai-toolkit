@@ -6,12 +6,12 @@ declare(strict_types=1);
  * Configuration module for doctest.
  *
  * @example File-level example: creating config with defaults
- *     $config = new \PhpAiToolkit\Doctest\Configuration\Configuration();
+ *     $config = new \Toolkit\Doctest\Configuration\Configuration();
  *     $config->isEnabled() // => true
  *     $config->getDirectories() // => []
  */
 
-namespace PhpAiToolkit\Doctest\Configuration;
+namespace Toolkit\Doctest\Configuration;
 
 use function str_starts_with;
 
@@ -22,14 +22,14 @@ use function str_starts_with;
  * examples, patterns to exclude, and optional bootstrap file.
  *
  * @example Creating a basic configuration
- *     $config = new \PhpAiToolkit\Doctest\Configuration\Configuration(
+ *     $config = new \Toolkit\Doctest\Configuration\Configuration(
  *         directories: ['/app/src'],
  *     );
  *     $config->getDirectories() // => ['/app/src']
  *     $config->isEnabled() // => true
  *
  * @example Configuration with exclusions
- *     $config = new \PhpAiToolkit\Doctest\Configuration\Configuration(
+ *     $config = new \Toolkit\Doctest\Configuration\Configuration(
  *         directories: ['/app/src'],
  *         excludePatterns: ['*Test.php', '*Interface.php'],
  *     );
@@ -64,7 +64,7 @@ final class Configuration
      * @return list<string>
      *
      * @example Getting directories
-     *     $config = new \PhpAiToolkit\Doctest\Configuration\Configuration(directories: ['/src', '/lib']);
+     *     $config = new \Toolkit\Doctest\Configuration\Configuration(directories: ['/src', '/lib']);
      *     $config->getDirectories() // => ['/src', '/lib']
      */
     public function getDirectories(): array
@@ -78,7 +78,7 @@ final class Configuration
      * @return list<string>
      *
      * @example Getting files
-     *     $config = new \PhpAiToolkit\Doctest\Configuration\Configuration(files: ['/app/helpers.php']);
+     *     $config = new \Toolkit\Doctest\Configuration\Configuration(files: ['/app/helpers.php']);
      *     $config->getFiles() // => ['/app/helpers.php']
      */
     public function getFiles(): array
@@ -92,7 +92,7 @@ final class Configuration
      * @return list<string>
      *
      * @example Getting exclude patterns
-     *     $config = new \PhpAiToolkit\Doctest\Configuration\Configuration(excludePatterns: ['*Test.php']);
+     *     $config = new \Toolkit\Doctest\Configuration\Configuration(excludePatterns: ['*Test.php']);
      *     $config->getExcludePatterns() // => ['*Test.php']
      */
     public function getExcludePatterns(): array
@@ -104,11 +104,11 @@ final class Configuration
      * Returns the path to the bootstrap file.
      *
      * @example Getting bootstrap when set
-     *     $config = new \PhpAiToolkit\Doctest\Configuration\Configuration(bootstrap: '/app/bootstrap.php');
+     *     $config = new \Toolkit\Doctest\Configuration\Configuration(bootstrap: '/app/bootstrap.php');
      *     $config->getBootstrap() // => '/app/bootstrap.php'
      *
      * @example Getting bootstrap when not set
-     *     $config = new \PhpAiToolkit\Doctest\Configuration\Configuration();
+     *     $config = new \Toolkit\Doctest\Configuration\Configuration();
      *     $config->getBootstrap() // => null
      */
     public function getBootstrap(): ?string
@@ -120,7 +120,7 @@ final class Configuration
      * Returns whether doctest is enabled.
      *
      * @example Checking enabled state
-     *     $config = new \PhpAiToolkit\Doctest\Configuration\Configuration(enabled: false);
+     *     $config = new \Toolkit\Doctest\Configuration\Configuration(enabled: false);
      *     $config->isEnabled() // => false
      */
     public function isEnabled(): bool

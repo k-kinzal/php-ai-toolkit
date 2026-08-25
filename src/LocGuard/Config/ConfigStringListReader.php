@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Config;
+namespace Toolkit\LocGuard\Config;
 
 use function is_array;
 use function is_string;
-
-use PhpAiToolkit\LocGuard\LocGuardException;
-
 use function sprintf;
+
+use Toolkit\LocGuard\LocGuardException;
 
 /**
  * Reads non-empty string lists from loc.yaml mappings.

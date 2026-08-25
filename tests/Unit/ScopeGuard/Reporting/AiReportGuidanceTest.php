@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Reporting;
 
-use PhpAiToolkit\ScopeGuard\Reporting\AiReportGuidance;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Reporting\AiReportGuidance;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Reporting\AiReportGuidance
+ * @covers \Toolkit\ScopeGuard\Reporting\AiReportGuidance
  */
 #[CoversClass(AiReportGuidance::class)]
 final class AiReportGuidanceTest extends TestCase

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\SubtypeIndex;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ControlFlow\SubtypeIndex;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\SubtypeIndex
+ * @covers \Toolkit\PhpStan\Rule\ControlFlow\SubtypeIndex
  */
 #[CoversClass(SubtypeIndex::class)]
 final class SubtypeIndexTest extends TestCase

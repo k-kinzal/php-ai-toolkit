@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Cli;
-
-use PhpAiToolkit\ScopeGuard\Analysis\ScopeGuardAnalyzer;
-use PhpAiToolkit\ScopeGuard\Config\ConfigLoader;
-use PhpAiToolkit\ScopeGuard\Reporting\ReporterFactory;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
+namespace Toolkit\ScopeGuard\Cli;
 
 use function sprintf;
+
+use Toolkit\ScopeGuard\Analysis\ScopeGuardAnalyzer;
+use Toolkit\ScopeGuard\Config\ConfigLoader;
+use Toolkit\ScopeGuard\Reporting\ReporterFactory;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
  * Runs ScopeGuard analysis from resolved CLI options.

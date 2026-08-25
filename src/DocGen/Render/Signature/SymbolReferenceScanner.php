@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Signature;
+namespace Toolkit\DocGen\Render\Signature;
 
 use function array_keys;
 use function explode;
 use function hash;
 use function implode;
-
-use PhpAiToolkit\DocGen\Render\RenderKit;
-
 use function preg_match_all;
 use function str_contains;
 use function strtolower;
+
+use Toolkit\DocGen\Render\RenderKit;
 
 /**
  * Digests what the names on a page currently resolve to.

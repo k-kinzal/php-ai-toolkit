@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis\Scope;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
+ * @covers \Toolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
  */
 #[CoversClass(VisibilityTagParser::class)]
 final class VisibilityTagParserTest extends TestCase

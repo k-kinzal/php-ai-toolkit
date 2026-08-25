@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc\PublicApi;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\MissingExampleErrorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\MissingExampleErrorBuilder;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\MissingExampleErrorBuilder
+ * @covers \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\MissingExampleErrorBuilder
  */
 #[CoversClass(MissingExampleErrorBuilder::class)]
 final class MissingExampleErrorBuilderTest extends TestCase

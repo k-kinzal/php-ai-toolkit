@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Scanner;
+namespace Toolkit\Doctest\Scanner;
 
 /**
  * Represents the type of target that contains docblock examples.

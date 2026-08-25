@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Parallel;
 
-use PhpAiToolkit\DocGen\Parallel\CpuCoreCounter;
-use PhpAiToolkit\DocGen\Parallel\WorkerCount;
-use PhpAiToolkit\DocGen\Parallel\WorkScheduler;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Parallel\CpuCoreCounter;
+use Toolkit\DocGen\Parallel\WorkerCount;
+use Toolkit\DocGen\Parallel\WorkScheduler;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Parallel\WorkScheduler
- * @uses \PhpAiToolkit\DocGen\Parallel\CpuCoreCounter
- * @uses \PhpAiToolkit\DocGen\Parallel\WorkerCount
+ * @covers \Toolkit\DocGen\Parallel\WorkScheduler
+ * @uses \Toolkit\DocGen\Parallel\CpuCoreCounter
+ * @uses \Toolkit\DocGen\Parallel\WorkerCount
  */
 #[CoversClass(WorkScheduler::class)]
 #[UsesClass(CpuCoreCounter::class)]

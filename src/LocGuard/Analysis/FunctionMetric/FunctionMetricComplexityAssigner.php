@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\FunctionMetric;
+namespace Toolkit\LocGuard\Analysis\FunctionMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityCalculator;
 use PhpToken;
+use Toolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityCalculator;
 
 /**
  * Assigns cyclomatic complexity values to collected function metrics.

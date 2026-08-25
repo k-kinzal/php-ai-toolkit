@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Reporting;
-
-use PhpAiToolkit\TreeGuard\Analysis\AnalysisResult;
+namespace Toolkit\TreeGuard\Reporting;
 
 use function sprintf;
+
+use Toolkit\TreeGuard\Analysis\AnalysisResult;
 
 /**
  * Formats the summary block for AI TreeGuard reports.

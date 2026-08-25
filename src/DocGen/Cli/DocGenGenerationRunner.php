@@ -2,25 +2,24 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Cli;
+namespace Toolkit\DocGen\Cli;
 
 use function count;
-
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffWorkspace;
-use PhpAiToolkit\DocGen\Analysis\ProjectAnalyzer;
-use PhpAiToolkit\DocGen\Analysis\ProjectModel;
-use PhpAiToolkit\DocGen\Cache\CacheStore;
-use PhpAiToolkit\DocGen\Cache\GenerationCache;
-use PhpAiToolkit\DocGen\Cache\ParseCache;
-use PhpAiToolkit\DocGen\Cache\RenderCache;
-use PhpAiToolkit\DocGen\Config\DocGenConfig;
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
-use PhpAiToolkit\DocGen\Git\RevisionRange;
-use PhpAiToolkit\DocGen\Render\SiteRenderer;
-use PhpAiToolkit\DocGen\Render\Social\SocialCard;
-
 use function sprintf;
+
+use Toolkit\DocGen\Analysis\Diff\DiffWorkspace;
+use Toolkit\DocGen\Analysis\ProjectAnalyzer;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Cache\CacheStore;
+use Toolkit\DocGen\Cache\GenerationCache;
+use Toolkit\DocGen\Cache\ParseCache;
+use Toolkit\DocGen\Cache\RenderCache;
+use Toolkit\DocGen\Config\DocGenConfig;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Git\RevisionRange;
+use Toolkit\DocGen\Render\SiteRenderer;
+use Toolkit\DocGen\Render\Social\SocialCard;
 
 /**
  * Runs the documentation generation for parsed CLI arguments.

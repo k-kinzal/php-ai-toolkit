@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Config;
+namespace Toolkit\TreeGuard\Config;
 
 use function array_key_exists;
 use function is_array;
 use function is_string;
-
-use PhpAiToolkit\TreeGuard\TreeGuardException;
-
 use function sprintf;
+
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
  * Reads string lists from tree.yaml mappings with contextual error messages.

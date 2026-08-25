@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Type;
+namespace Toolkit\PhpStan\Rule\Type;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 use PHPStan\Node\InClassNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasTagValueNode;
 use PHPStan\Rules\IdentifierRuleError;
 
 use function sprintf;
+
+use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 
 /**
  * Collects mixed from restricted virtual members and local type aliases.

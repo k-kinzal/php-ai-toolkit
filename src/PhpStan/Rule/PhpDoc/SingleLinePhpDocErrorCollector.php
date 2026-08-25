@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\PhpDoc;
+namespace Toolkit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\AnonymousClassDetector;
-use PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
+use Toolkit\PhpStan\Rule\Shared\AnonymousClassDetector;
+use Toolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 
 /**
  * Collects single-line PHPDoc errors from public class-like API elements.

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Filesystem;
 
-use PhpAiToolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver
+ * @covers \Toolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver
  */
 #[CoversClass(ScopeGuardPathResolver::class)]
 final class ScopeGuardPathResolverTest extends TestCase

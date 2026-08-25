@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Shared;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver;
 use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver
+ * @covers \Toolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver
  */
 #[CoversClass(ClassStringExpressionResolver::class)]
 final class ClassStringExpressionResolverTest extends TestCase

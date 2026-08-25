@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Presentation;
+namespace Toolkit\PhpUnit\TestReporter\Presentation;
 
 use function max;
-
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
-
 use function str_pad;
 
 use const STR_PAD_LEFT;
 
 use function strlen;
+
+use Toolkit\PhpUnit\TestReporter\TestIssue;
 
 /**
  * Formats line-number gutters for human issue output.

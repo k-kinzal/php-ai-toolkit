@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\Complexity;
 
-use PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState;
-use PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticDecisionWeight;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -15,9 +13,12 @@ use const T_DOUBLE_ARROW;
 use const T_IF;
 use const T_MATCH;
 
+use Toolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState;
+use Toolkit\LocGuard\Analysis\Complexity\CyclomaticDecisionWeight;
+
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticDecisionWeight
- * @uses \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState
+ * @covers \Toolkit\LocGuard\Analysis\Complexity\CyclomaticDecisionWeight
+ * @uses \Toolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState
  */
 #[CoversClass(CyclomaticDecisionWeight::class)]
 #[UsesClass(CyclomaticComplexityState::class)]

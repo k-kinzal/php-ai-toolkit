@@ -33,7 +33,7 @@ the project must support PHPUnit 9.6.
         </testsuite>
     </testsuites>
     <extensions>
-        <bootstrap class="PhpAiToolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>
+        <bootstrap class="Toolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>
     </extensions>
     <source restrictNotices="true"
             restrictWarnings="true"
@@ -60,7 +60,7 @@ PHPUnit 9.6 does not provide the PHPUnit 10+ event extension API. For PHPUnit
 
 ```xml
 <listeners>
-    <listener class="PhpAiToolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener"/>
+    <listener class="Toolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener"/>
 </listeners>
 ```
 

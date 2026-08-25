@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\TestAssertion;
+namespace Toolkit\PhpStan\Rule\TestAssertion;
 
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @implements Rule<\PhpParser\Node\Expr>

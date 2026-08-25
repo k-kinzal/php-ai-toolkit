@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Parse;
 
-use PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 use PhpParser\Node\Scalar\String_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 use function str_repeat;
 
+use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
+
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter
+ * @covers \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
  */
 #[CoversClass(ExprTextPrinter::class)]
 final class ExprTextPrinterTest extends TestCase

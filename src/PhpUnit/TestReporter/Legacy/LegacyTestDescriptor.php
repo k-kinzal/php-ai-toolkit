@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Legacy;
+namespace Toolkit\PhpUnit\TestReporter\Legacy;
 
 /**
  * Normalized PHPUnit 9 test identity and source location.

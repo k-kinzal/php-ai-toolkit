@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Executor;
 
-use PhpAiToolkit\Doctest\Assertion\AssertionResult;
-use PhpAiToolkit\Doctest\Assertion\Statement;
-use PhpAiToolkit\Doctest\Executor\ExecutionResult;
-use PhpAiToolkit\Doctest\Parser\Example;
-use PhpAiToolkit\Doctest\Scanner\Target;
-use PhpAiToolkit\Doctest\Scanner\TargetKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Assertion\AssertionResult;
+use Toolkit\Doctest\Assertion\Statement;
+use Toolkit\Doctest\Executor\ExecutionResult;
+use Toolkit\Doctest\Parser\Example;
+use Toolkit\Doctest\Scanner\Target;
+use Toolkit\Doctest\Scanner\TargetKind;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Executor\ExecutionResult
- * @uses \PhpAiToolkit\Doctest\Parser\Example
- * @uses \PhpAiToolkit\Doctest\Scanner\Target
- * @uses \PhpAiToolkit\Doctest\Assertion\AssertionResult
- * @uses \PhpAiToolkit\Doctest\Assertion\Statement
+ * @covers \Toolkit\Doctest\Executor\ExecutionResult
+ * @uses \Toolkit\Doctest\Parser\Example
+ * @uses \Toolkit\Doctest\Scanner\Target
+ * @uses \Toolkit\Doctest\Assertion\AssertionResult
+ * @uses \Toolkit\Doctest\Assertion\Statement
  */
 #[CoversClass(ExecutionResult::class)]
 #[UsesClass(Example::class)]

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter;
 
-use PhpAiToolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser;
+use Toolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver;
 
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser
+ * @covers \Toolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver
+ * @uses \Toolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser
  */
 #[CoversClass(TestIssueSourceLocationResolver::class)]
 #[UsesClass(StackTraceFrameLocationParser::class)]

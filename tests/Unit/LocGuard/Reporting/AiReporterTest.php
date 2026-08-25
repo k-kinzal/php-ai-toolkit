@@ -4,33 +4,33 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Reporting;
 
-use PhpAiToolkit\LocGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric;
-use PhpAiToolkit\LocGuard\Analysis\Violation;
-use PhpAiToolkit\LocGuard\Config\ReportConfig;
-use PhpAiToolkit\LocGuard\Reporting\AiReporter;
-use PhpAiToolkit\LocGuard\Reporting\AiReportGuidance;
-use PhpAiToolkit\LocGuard\Reporting\AiReportSummary;
-use PhpAiToolkit\LocGuard\Reporting\AiViolationAction;
-use PhpAiToolkit\LocGuard\Reporting\AiViolationFormatter;
-use PhpAiToolkit\LocGuard\Reporting\ViolationFieldComparator;
-use PhpAiToolkit\LocGuard\Reporting\ViolationSorter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\AnalysisResult;
+use Toolkit\LocGuard\Analysis\FileMetric\FileMetric;
+use Toolkit\LocGuard\Analysis\Violation;
+use Toolkit\LocGuard\Config\ReportConfig;
+use Toolkit\LocGuard\Reporting\AiReporter;
+use Toolkit\LocGuard\Reporting\AiReportGuidance;
+use Toolkit\LocGuard\Reporting\AiReportSummary;
+use Toolkit\LocGuard\Reporting\AiViolationAction;
+use Toolkit\LocGuard\Reporting\AiViolationFormatter;
+use Toolkit\LocGuard\Reporting\ViolationFieldComparator;
+use Toolkit\LocGuard\Reporting\ViolationSorter;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Reporting\AiReporter
- * @uses \PhpAiToolkit\LocGuard\Analysis\AnalysisResult
- * @uses \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric
- * @uses \PhpAiToolkit\LocGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\LocGuard\Reporting\AiReportGuidance
- * @uses \PhpAiToolkit\LocGuard\Reporting\AiReportSummary
- * @uses \PhpAiToolkit\LocGuard\Reporting\AiViolationAction
- * @uses \PhpAiToolkit\LocGuard\Reporting\AiViolationFormatter
- * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
- * @uses \PhpAiToolkit\LocGuard\Reporting\ViolationFieldComparator
- * @uses \PhpAiToolkit\LocGuard\Reporting\ViolationSorter
+ * @covers \Toolkit\LocGuard\Reporting\AiReporter
+ * @uses \Toolkit\LocGuard\Analysis\AnalysisResult
+ * @uses \Toolkit\LocGuard\Analysis\FileMetric\FileMetric
+ * @uses \Toolkit\LocGuard\Config\ReportConfig
+ * @uses \Toolkit\LocGuard\Reporting\AiReportGuidance
+ * @uses \Toolkit\LocGuard\Reporting\AiReportSummary
+ * @uses \Toolkit\LocGuard\Reporting\AiViolationAction
+ * @uses \Toolkit\LocGuard\Reporting\AiViolationFormatter
+ * @uses \Toolkit\LocGuard\Analysis\Violation
+ * @uses \Toolkit\LocGuard\Reporting\ViolationFieldComparator
+ * @uses \Toolkit\LocGuard\Reporting\ViolationSorter
  */
 #[CoversClass(AiReporter::class)]
 #[UsesClass(AnalysisResult::class)]

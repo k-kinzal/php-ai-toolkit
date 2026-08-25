@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis\Parse;
+namespace Toolkit\ScopeGuard\Analysis\Parse;
 
 use function file_get_contents;
 use function is_file;
 
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 use PhpParser\ErrorHandler\Collecting;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 
 use function sprintf;
+
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
  * Parses one source file into statements whose names are fully qualified.

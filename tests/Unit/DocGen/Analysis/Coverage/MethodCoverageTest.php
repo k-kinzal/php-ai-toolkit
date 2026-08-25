@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Coverage;
 
-use PhpAiToolkit\DocGen\Analysis\Coverage\MethodCoverage;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Coverage\MethodCoverage;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Coverage\MethodCoverage
+ * @covers \Toolkit\DocGen\Analysis\Coverage\MethodCoverage
  */
 #[CoversClass(MethodCoverage::class)]
 final class MethodCoverageTest extends TestCase

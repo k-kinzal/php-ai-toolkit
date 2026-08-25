@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard;
+namespace Toolkit\LocGuard;
 
 use RuntimeException;
 

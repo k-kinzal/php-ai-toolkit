@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Reporting;
-
-use PhpAiToolkit\LocGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\LocGuard\Config\ReportConfig;
+namespace Toolkit\LocGuard\Reporting;
 
 use function sprintf;
+
+use Toolkit\LocGuard\Analysis\AnalysisResult;
+use Toolkit\LocGuard\Config\ReportConfig;
 
 /**
  * Human-readable LocGuard reporter.

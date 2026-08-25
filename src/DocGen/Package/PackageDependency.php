@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Package;
+namespace Toolkit\DocGen\Package;
 
 /**
  * One dependency edge between two documented packages.

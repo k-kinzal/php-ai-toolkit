@@ -4,31 +4,31 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Config;
 
-use PhpAiToolkit\TreeGuard\Config\ConfigLoader;
-use PhpAiToolkit\TreeGuard\Config\ConfigScalarReader;
-use PhpAiToolkit\TreeGuard\Config\ConfigStringListReader;
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
-use PhpAiToolkit\TreeGuard\Config\ReportConfigReader;
-use PhpAiToolkit\TreeGuard\Config\RuleConfig;
-use PhpAiToolkit\TreeGuard\Config\RuleConfigReader;
-use PhpAiToolkit\TreeGuard\Config\RuleListConfigReader;
-use PhpAiToolkit\TreeGuard\Config\TreeGuardConfig;
-use PhpAiToolkit\TreeGuard\TreeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Config\ConfigLoader;
+use Toolkit\TreeGuard\Config\ConfigScalarReader;
+use Toolkit\TreeGuard\Config\ConfigStringListReader;
+use Toolkit\TreeGuard\Config\ReportConfig;
+use Toolkit\TreeGuard\Config\ReportConfigReader;
+use Toolkit\TreeGuard\Config\RuleConfig;
+use Toolkit\TreeGuard\Config\RuleConfigReader;
+use Toolkit\TreeGuard\Config\RuleListConfigReader;
+use Toolkit\TreeGuard\Config\TreeGuardConfig;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Config\ConfigLoader
- * @uses \PhpAiToolkit\TreeGuard\Config\ConfigScalarReader
- * @uses \PhpAiToolkit\TreeGuard\Config\ConfigStringListReader
- * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfigReader
- * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig
- * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfigReader
- * @uses \PhpAiToolkit\TreeGuard\Config\RuleListConfigReader
- * @uses \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig
- * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ * @covers \Toolkit\TreeGuard\Config\ConfigLoader
+ * @uses \Toolkit\TreeGuard\Config\ConfigScalarReader
+ * @uses \Toolkit\TreeGuard\Config\ConfigStringListReader
+ * @uses \Toolkit\TreeGuard\Config\ReportConfig
+ * @uses \Toolkit\TreeGuard\Config\ReportConfigReader
+ * @uses \Toolkit\TreeGuard\Config\RuleConfig
+ * @uses \Toolkit\TreeGuard\Config\RuleConfigReader
+ * @uses \Toolkit\TreeGuard\Config\RuleListConfigReader
+ * @uses \Toolkit\TreeGuard\Config\TreeGuardConfig
+ * @uses \Toolkit\TreeGuard\TreeGuardException
  */
 #[CoversClass(ConfigLoader::class)]
 #[UsesClass(ConfigScalarReader::class)]

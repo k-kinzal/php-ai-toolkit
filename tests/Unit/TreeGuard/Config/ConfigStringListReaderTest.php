@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Config;
 
-use PhpAiToolkit\TreeGuard\Config\ConfigStringListReader;
-use PhpAiToolkit\TreeGuard\TreeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Config\ConfigStringListReader;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Config\ConfigStringListReader
- * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ * @covers \Toolkit\TreeGuard\Config\ConfigStringListReader
+ * @uses \Toolkit\TreeGuard\TreeGuardException
  */
 #[CoversClass(ConfigStringListReader::class)]
 #[UsesClass(TreeGuardException::class)]

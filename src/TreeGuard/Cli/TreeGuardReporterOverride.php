@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Cli;
+namespace Toolkit\TreeGuard\Cli;
 
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
-use PhpAiToolkit\TreeGuard\Config\TreeGuardConfig;
+use Toolkit\TreeGuard\Config\ReportConfig;
+use Toolkit\TreeGuard\Config\TreeGuardConfig;
 
 /**
  * Applies a CLI reporter override to TreeGuard config.

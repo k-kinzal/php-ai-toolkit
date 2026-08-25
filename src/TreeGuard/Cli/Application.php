@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Cli;
+namespace Toolkit\TreeGuard\Cli;
 
 use function array_shift;
 
 use Closure;
-use PhpAiToolkit\TreeGuard\Analysis\TreeGuardAnalyzer;
-use PhpAiToolkit\TreeGuard\Config\ConfigLoader;
-use PhpAiToolkit\TreeGuard\Reporting\ReporterFactory;
-use PhpAiToolkit\TreeGuard\TreeGuardException;
 
 use function sprintf;
+
+use Toolkit\TreeGuard\Analysis\TreeGuardAnalyzer;
+use Toolkit\TreeGuard\Config\ConfigLoader;
+use Toolkit\TreeGuard\Reporting\ReporterFactory;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
  * CLI entry point for TreeGuard.

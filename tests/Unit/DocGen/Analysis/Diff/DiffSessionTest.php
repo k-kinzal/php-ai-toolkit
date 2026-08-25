@@ -4,29 +4,29 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Diff;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffSession;
-use PhpAiToolkit\DocGen\Analysis\ProjectModel;
-use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
-use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
-use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Diff\DiffIndex;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffSession;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Package\PackageGraph;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Diff\DiffSession
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex
- * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
- * @uses \PhpAiToolkit\DocGen\Analysis\ProjectModel
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
+ * @covers \Toolkit\DocGen\Analysis\Diff\DiffSession
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffIndex
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\ProjectModel
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  */
 #[CoversClass(DiffSession::class)]
 #[UsesClass(DiffIndex::class)]

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Package;
 
-use PhpAiToolkit\DocGen\Package\ComposerManifest;
-use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Package\ComposerManifest;
+use Toolkit\DocGen\Package\DiscoveredPackage;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Package\DiscoveredPackage
- * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
+ * @covers \Toolkit\DocGen\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Package\ComposerManifest
  */
 #[CoversClass(DiscoveredPackage::class)]
 #[UsesClass(ComposerManifest::class)]

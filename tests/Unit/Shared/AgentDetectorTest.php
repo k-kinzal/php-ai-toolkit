@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Shared;
 
 use Override;
-use PhpAiToolkit\Shared\AgentDetector;
-use PhpAiToolkit\Shared\FormatMode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -14,8 +12,11 @@ use PHPUnit\Framework\TestCase;
 use function putenv;
 use function sprintf;
 
+use Toolkit\Shared\AgentDetector;
+use Toolkit\Shared\FormatMode;
+
 /**
- * @covers \PhpAiToolkit\Shared\AgentDetector
+ * @covers \Toolkit\Shared\AgentDetector
  */
 #[CoversClass(AgentDetector::class)]
 final class AgentDetectorTest extends TestCase

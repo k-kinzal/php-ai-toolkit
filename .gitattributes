@@ -17,7 +17,6 @@
 /phpcs.xml.dist   export-ignore
 /tests/           export-ignore
 /phpstan.neon     export-ignore
-/extension-src.neon export-ignore
 /phpunit.xml.dist export-ignore
 /phpunit9.xml.dist export-ignore
 AGENTS.md         export-ignore

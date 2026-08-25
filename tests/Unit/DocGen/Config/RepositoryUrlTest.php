@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Config;
 
-use PhpAiToolkit\DocGen\Config\RepositoryUrl;
-use PhpAiToolkit\DocGen\DocGenException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Config\RepositoryUrl;
+use Toolkit\DocGen\DocGenException;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Config\RepositoryUrl
- * @uses \PhpAiToolkit\DocGen\DocGenException
+ * @covers \Toolkit\DocGen\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\DocGenException
  */
 #[CoversClass(RepositoryUrl::class)]
 #[UsesClass(DocGenException::class)]

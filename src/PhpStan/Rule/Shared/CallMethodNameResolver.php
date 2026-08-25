@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Shared;
+namespace Toolkit\PhpStan\Rule\Shared;
 
 /**
  * Resolves method names from PHP-Parser call name nodes.

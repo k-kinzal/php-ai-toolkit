@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Type\Rule;
+namespace Toolkit\PhpStan\Rule\Type\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\Type\MixedClassPhpDocErrorCollector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\InClassNode;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
+use Toolkit\PhpStan\Rule\Type\MixedClassPhpDocErrorCollector;
 
 /**
  * Applies the internal mixed policy to class-level virtual declarations.

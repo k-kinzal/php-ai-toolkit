@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Analysis;
+namespace Toolkit\TreeGuard\Analysis;
 
 use function count;
 
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
+use Toolkit\TreeGuard\Filesystem\DirectoryListing;
 
 /**
  * Aggregated TreeGuard analysis result for a configured project.

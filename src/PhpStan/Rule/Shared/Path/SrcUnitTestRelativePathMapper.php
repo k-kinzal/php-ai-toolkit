@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Shared\Path;
+namespace Toolkit\PhpStan\Rule\Shared\Path;
 
 /**
  * Maps source relative paths to unit test relative paths and back.

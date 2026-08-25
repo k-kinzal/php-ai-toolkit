@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page\Component;
+namespace Toolkit\DocGen\Render\Page\Component;
 
 use function count;
-
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-use PhpAiToolkit\DocGen\Render\TypeRenderContext;
-
 use function sprintf;
+
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Render\RenderKit;
+use Toolkit\DocGen\Render\TypeRenderContext;
 
 /**
  * Renders the private members of a class-like symbol.
@@ -35,7 +34,7 @@ final class PrivateSurfaceHtml
     /**
      * Collects the private members of a class-like symbol.
      *
-     * @return list<\PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc|\PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc|\PhpAiToolkit\DocGen\Analysis\Model\MethodDoc>
+     * @return list<\Toolkit\DocGen\Analysis\Model\ConstantDoc|\Toolkit\DocGen\Analysis\Model\PropertyDoc|\Toolkit\DocGen\Analysis\Model\MethodDoc>
      */
     public function members(ClassLikeDoc $classLike): array
     {

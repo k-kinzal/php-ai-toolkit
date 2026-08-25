@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Git;
+namespace Toolkit\DocGen\Git;
 
 use function file_exists;
 use function is_dir;
-
-use PhpAiToolkit\DocGen\DocGenException;
-
 use function symlink;
+
+use Toolkit\DocGen\DocGenException;
 
 /**
  * Checks a commit out into a throwaway worktree next to the project.

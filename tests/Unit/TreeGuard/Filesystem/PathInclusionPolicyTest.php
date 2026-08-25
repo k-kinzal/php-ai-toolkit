@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Filesystem;
 
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
-use PhpAiToolkit\TreeGuard\Config\TreeGuardConfig;
-use PhpAiToolkit\TreeGuard\Filesystem\PathInclusionPolicy;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Config\ReportConfig;
+use Toolkit\TreeGuard\Config\TreeGuardConfig;
+use Toolkit\TreeGuard\Filesystem\PathInclusionPolicy;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Filesystem\PathInclusionPolicy
- * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig
+ * @covers \Toolkit\TreeGuard\Filesystem\PathInclusionPolicy
+ * @uses \Toolkit\TreeGuard\Config\ReportConfig
+ * @uses \Toolkit\TreeGuard\Config\TreeGuardConfig
  */
 #[CoversClass(PathInclusionPolicy::class)]
 #[UsesClass(ReportConfig::class)]

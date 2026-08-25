@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Config;
+namespace Toolkit\LocGuard\Config;
 
 use function implode;
 use function in_array;
 use function is_array;
-
-use PhpAiToolkit\LocGuard\LocGuardException;
-
 use function sprintf;
+
+use Toolkit\LocGuard\LocGuardException;
 
 /**
  * Reads LocGuard report configuration from loc.yaml.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Shared\Path;
+namespace Toolkit\PhpStan\Rule\Shared\Path;
 
 /**
  * Normalizes filesystem paths for PHPStan path-based rules.

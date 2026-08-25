@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Reference;
 
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
-use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\FunctionDoc;
+use Toolkit\DocGen\Analysis\Model\TypeSignature;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ * @covers \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Model\FunctionDoc
+ * @uses \Toolkit\DocGen\Analysis\Model\TypeSignature
  */
 #[CoversClass(SymbolTable::class)]
 #[UsesClass(ClassLikeDoc::class)]

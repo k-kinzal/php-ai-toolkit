@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Cli;
+namespace Toolkit\ScopeGuard\Cli;
 
-use PhpAiToolkit\ScopeGuard\Config\ReportConfig;
-use PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig;
+use Toolkit\ScopeGuard\Config\ReportConfig;
+use Toolkit\ScopeGuard\Config\ScopeGuardConfig;
 
 /**
  * Applies a CLI reporter override to ScopeGuard config.

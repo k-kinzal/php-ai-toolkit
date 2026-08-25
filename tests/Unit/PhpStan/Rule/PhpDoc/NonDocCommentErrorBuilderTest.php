@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\NonDocCommentErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\PhpDoc\NonDocCommentErrorBuilder;
+use Toolkit\PhpStan\Rule\Shared\CommentTextFormatter;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\NonDocCommentErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter
+ * @covers \Toolkit\PhpStan\Rule\PhpDoc\NonDocCommentErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\Shared\CommentTextFormatter
  */
 #[CoversClass(NonDocCommentErrorBuilder::class)]
 #[UsesClass(CommentTextFormatter::class)]

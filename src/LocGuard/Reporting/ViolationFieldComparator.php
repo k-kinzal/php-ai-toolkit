@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Reporting;
-
-use PhpAiToolkit\LocGuard\Analysis\Violation;
+namespace Toolkit\LocGuard\Reporting;
 
 use function strcmp;
+
+use Toolkit\LocGuard\Analysis\Violation;
 
 /**
  * Compares LocGuard violations by one configured field.

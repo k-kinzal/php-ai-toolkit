@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Type;
+namespace Toolkit\PhpStan\Rule\Type;
 
 use PHPStan\Type\Generic\TemplateType;
 use PHPStan\Type\MixedType;

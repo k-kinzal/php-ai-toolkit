@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Config;
 
-use PhpAiToolkit\LocGuard\Config\ConfigLoader;
-use PhpAiToolkit\LocGuard\Config\ConfigScalarReader;
-use PhpAiToolkit\LocGuard\Config\ConfigStringListReader;
-use PhpAiToolkit\LocGuard\Config\LimitConfig;
-use PhpAiToolkit\LocGuard\Config\LimitConfigReader;
-use PhpAiToolkit\LocGuard\Config\LocGuardConfig;
-use PhpAiToolkit\LocGuard\Config\ReportConfig;
-use PhpAiToolkit\LocGuard\Config\ReportConfigReader;
-use PhpAiToolkit\LocGuard\LocGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Config\ConfigLoader;
+use Toolkit\LocGuard\Config\ConfigScalarReader;
+use Toolkit\LocGuard\Config\ConfigStringListReader;
+use Toolkit\LocGuard\Config\LimitConfig;
+use Toolkit\LocGuard\Config\LimitConfigReader;
+use Toolkit\LocGuard\Config\LocGuardConfig;
+use Toolkit\LocGuard\Config\ReportConfig;
+use Toolkit\LocGuard\Config\ReportConfigReader;
+use Toolkit\LocGuard\LocGuardException;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Config\ConfigLoader
- * @uses \PhpAiToolkit\LocGuard\Config\ConfigScalarReader
- * @uses \PhpAiToolkit\LocGuard\Config\ConfigStringListReader
- * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
- * @uses \PhpAiToolkit\LocGuard\Config\LimitConfigReader
- * @uses \PhpAiToolkit\LocGuard\Config\LocGuardConfig
- * @uses \PhpAiToolkit\LocGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\LocGuard\Config\ReportConfigReader
+ * @covers \Toolkit\LocGuard\Config\ConfigLoader
+ * @uses \Toolkit\LocGuard\Config\ConfigScalarReader
+ * @uses \Toolkit\LocGuard\Config\ConfigStringListReader
+ * @uses \Toolkit\LocGuard\Config\LimitConfig
+ * @uses \Toolkit\LocGuard\Config\LimitConfigReader
+ * @uses \Toolkit\LocGuard\Config\LocGuardConfig
+ * @uses \Toolkit\LocGuard\Config\ReportConfig
+ * @uses \Toolkit\LocGuard\Config\ReportConfigReader
  */
 #[CoversClass(ConfigLoader::class)]
 #[UsesClass(ConfigScalarReader::class)]

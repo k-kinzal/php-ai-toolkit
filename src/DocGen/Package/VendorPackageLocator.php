@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Package;
+namespace Toolkit\DocGen\Package;
 
 use function basename;
 use function dirname;

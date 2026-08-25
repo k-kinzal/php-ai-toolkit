@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis;
+namespace Toolkit\ScopeGuard\Analysis;
 
 use function array_merge;
 use function count;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationCollector;
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
-use PhpAiToolkit\ScopeGuard\Analysis\Parse\FileNamespaces;
-use PhpAiToolkit\ScopeGuard\Analysis\Parse\SourceFileParser;
-use PhpAiToolkit\ScopeGuard\Analysis\Reference\ReferenceCollector;
-use PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig;
-use PhpAiToolkit\ScopeGuard\Filesystem\PhpFileFinder;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
+use Toolkit\ScopeGuard\Analysis\Declaration\DeclarationCollector;
+use Toolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
+use Toolkit\ScopeGuard\Analysis\Parse\FileNamespaces;
+use Toolkit\ScopeGuard\Analysis\Parse\SourceFileParser;
+use Toolkit\ScopeGuard\Analysis\Reference\ReferenceCollector;
+use Toolkit\ScopeGuard\Config\ScopeGuardConfig;
+use Toolkit\ScopeGuard\Filesystem\PhpFileFinder;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
  * Reads every configured source file into declarations and references.

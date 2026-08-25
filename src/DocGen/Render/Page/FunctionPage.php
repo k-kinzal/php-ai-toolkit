@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page;
-
-use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
-use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
-use PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\DocTextHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\MemberHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\SignatureHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\SymbolDescription;
-use PhpAiToolkit\DocGen\Render\Page\Component\TestCaseHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\UsageListHtml;
-use PhpAiToolkit\DocGen\Render\PageChrome;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-use PhpAiToolkit\DocGen\Render\TypeRenderContext;
+namespace Toolkit\DocGen\Render\Page;
 
 use function sprintf;
+
+use Toolkit\DocGen\Analysis\Model\FunctionDoc;
+use Toolkit\DocGen\Render\Diff\DiffBanner;
+use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
+use Toolkit\DocGen\Render\Page\Component\DocTextHtml;
+use Toolkit\DocGen\Render\Page\Component\MemberHtml;
+use Toolkit\DocGen\Render\Page\Component\SidebarHtml;
+use Toolkit\DocGen\Render\Page\Component\SignatureHtml;
+use Toolkit\DocGen\Render\Page\Component\SymbolDescription;
+use Toolkit\DocGen\Render\Page\Component\TestCaseHtml;
+use Toolkit\DocGen\Render\Page\Component\UsageListHtml;
+use Toolkit\DocGen\Render\PageChrome;
+use Toolkit\DocGen\Render\RenderKit;
+use Toolkit\DocGen\Render\TypeRenderContext;
 
 /**
  * Renders the documentation page of one top-level function.

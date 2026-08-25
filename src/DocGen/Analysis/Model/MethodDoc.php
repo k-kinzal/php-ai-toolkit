@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Model;
+namespace Toolkit\DocGen\Analysis\Model;
 
 /**
  * One method declaration of a documented class-like symbol.

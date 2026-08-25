@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page\Component;
+namespace Toolkit\DocGen\Render\Page\Component;
 
 use function count;
 use function ksort;
-
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Render\MarkdownInline;
-use PhpAiToolkit\DocGen\Render\Page\SymbolIndex;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-
 use function sprintf;
 use function strtolower;
+
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Render\MarkdownInline;
+use Toolkit\DocGen\Render\Page\SymbolIndex;
+use Toolkit\DocGen\Render\RenderKit;
 
 /**
  * Renders kind-grouped symbol listings.

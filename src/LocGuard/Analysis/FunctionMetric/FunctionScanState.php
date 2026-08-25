@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\FunctionMetric;
+namespace Toolkit\LocGuard\Analysis\FunctionMetric;
 
 use function array_key_exists;
 use function array_pop;

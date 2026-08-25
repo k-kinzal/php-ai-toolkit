@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration;
-use PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
-use PhpAiToolkit\ScopeGuard\Analysis\ScopeViolationBuilder;
-use PhpAiToolkit\ScopeGuard\Analysis\Violation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Declaration\Declaration;
+use Toolkit\ScopeGuard\Analysis\Reference\Reference;
+use Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
+use Toolkit\ScopeGuard\Analysis\ScopeViolationBuilder;
+use Toolkit\ScopeGuard\Analysis\Violation;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\ScopeViolationBuilder
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Violation
+ * @covers \Toolkit\ScopeGuard\Analysis\ScopeViolationBuilder
+ * @uses \Toolkit\ScopeGuard\Analysis\Declaration\Declaration
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @uses \Toolkit\ScopeGuard\Analysis\Reference\Reference
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\VisibilityScope
+ * @uses \Toolkit\ScopeGuard\Analysis\Violation
  */
 #[CoversClass(ScopeViolationBuilder::class)]
 #[UsesClass(Declaration::class)]

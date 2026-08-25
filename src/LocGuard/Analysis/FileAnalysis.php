@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis;
+namespace Toolkit\LocGuard\Analysis;
 
-use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric;
+use Toolkit\LocGuard\Analysis\FileMetric\FileMetric;
 
 /**
  * LocGuard analysis result for one PHP file.

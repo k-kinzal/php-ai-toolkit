@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule;
+namespace Toolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher;
-use PhpAiToolkit\PhpStan\Rule\TestClass\DescriptivePhpDocErrorCollector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
+use Toolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher;
+use Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocErrorCollector;
 
 /**
  * Forbids descriptive (non-annotation) PHPDoc text in test classes.

@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Diff;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffLine;
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher;
-use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Diff\DiffLine;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\LcsMatcher;
+use Toolkit\DocGen\Analysis\Diff\LineDiffer;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffLine
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher
+ * @covers \Toolkit\DocGen\Analysis\Diff\LineDiffer
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffLine
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Analysis\Diff\LcsMatcher
  */
 #[CoversClass(LineDiffer::class)]
 #[UsesClass(DiffLine::class)]

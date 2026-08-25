@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Reporting;
+namespace Toolkit\TreeGuard\Reporting;
 
-use PhpAiToolkit\TreeGuard\Analysis\Violation;
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
+use Toolkit\TreeGuard\Analysis\Violation;
+use Toolkit\TreeGuard\Config\ReportConfig;
 
 use function usort;
 

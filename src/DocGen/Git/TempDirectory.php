@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Git;
+namespace Toolkit\DocGen\Git;
 
 use function is_dir;
 use function is_file;
 use function is_link;
 use function mkdir;
-
-use PhpAiToolkit\DocGen\DocGenException;
-
 use function rmdir;
 use function rtrim;
 use function scandir;
 use function sprintf;
 use function sys_get_temp_dir;
+
+use Toolkit\DocGen\DocGenException;
+
 use function uniqid;
 use function unlink;
 

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter;
 
-use PhpAiToolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser;
 
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser
+ * @covers \Toolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser
  */
 #[CoversClass(StackTraceFrameLocationParser::class)]
 final class StackTraceFrameLocationParserTest extends TestCase

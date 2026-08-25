@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Scanner;
 
-use PhpAiToolkit\Doctest\Scanner\Target;
-use PhpAiToolkit\Doctest\Scanner\TargetKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Scanner\Target;
+use Toolkit\Doctest\Scanner\TargetKind;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Scanner\Target
+ * @covers \Toolkit\Doctest\Scanner\Target
  */
 #[CoversClass(Target::class)]
 final class TargetTest extends TestCase

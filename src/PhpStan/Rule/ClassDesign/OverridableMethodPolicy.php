@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\ClassDesign;
+namespace Toolkit\PhpStan\Rule\ClassDesign;
 
 use PHPStan\Reflection\MethodReflection;
 

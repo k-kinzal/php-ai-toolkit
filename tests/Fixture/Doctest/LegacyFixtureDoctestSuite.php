@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Fixture\Doctest;
 
 use Override;
-use PhpAiToolkit\Doctest\Configuration\Configuration;
-use PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner;
+use Toolkit\Doctest\Configuration\Configuration;
+use Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner;
 
 /**
  * Binds the PHPUnit 9 doctest runner to the fixture project.

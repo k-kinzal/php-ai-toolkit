@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Coverage;
+namespace Toolkit\DocGen\Analysis\Coverage;
 
 use function array_keys;
 use function ksort;

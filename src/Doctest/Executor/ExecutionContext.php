@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Executor;
+namespace Toolkit\Doctest\Executor;
 
 use function array_key_exists;
 
@@ -14,12 +14,12 @@ use function array_key_exists;
  * echo/print statements for output assertions.
  *
  * @example Checking variable existence
- *     $ctx = new \PhpAiToolkit\Doctest\Executor\ExecutionContext();
+ *     $ctx = new \Toolkit\Doctest\Executor\ExecutionContext();
  *     $ctx->setVariable('x', 42);
  *     $ctx->hasVariable('x') // => true
  *
  * @example Getting variable value
- *     $ctx = new \PhpAiToolkit\Doctest\Executor\ExecutionContext();
+ *     $ctx = new \Toolkit\Doctest\Executor\ExecutionContext();
  *     $ctx->setVariable('y', 99);
  *     $ctx->getVariable('y') // => 99
  *

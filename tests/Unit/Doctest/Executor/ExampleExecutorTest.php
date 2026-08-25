@@ -5,41 +5,41 @@ declare(strict_types=1);
 namespace Tests\Unit\Doctest\Executor;
 
 use InvalidArgumentException;
-use PhpAiToolkit\Doctest\Assertion\Assertion;
-use PhpAiToolkit\Doctest\Assertion\AssertionKind;
-use PhpAiToolkit\Doctest\Assertion\AssertionParser;
-use PhpAiToolkit\Doctest\Assertion\AssertionResult;
-use PhpAiToolkit\Doctest\Assertion\ParsedExample;
-use PhpAiToolkit\Doctest\Assertion\Statement;
-use PhpAiToolkit\Doctest\Executor\Evaluation;
-use PhpAiToolkit\Doctest\Executor\ExampleExecutor;
-use PhpAiToolkit\Doctest\Executor\ExceptionMatcher;
-use PhpAiToolkit\Doctest\Executor\ExecutionContext;
-use PhpAiToolkit\Doctest\Executor\ExecutionResult;
-use PhpAiToolkit\Doctest\Executor\ExpressionEvaluator;
-use PhpAiToolkit\Doctest\Parser\Example;
-use PhpAiToolkit\Doctest\Scanner\Target;
-use PhpAiToolkit\Doctest\Scanner\TargetKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Toolkit\Doctest\Assertion\Assertion;
+use Toolkit\Doctest\Assertion\AssertionKind;
+use Toolkit\Doctest\Assertion\AssertionParser;
+use Toolkit\Doctest\Assertion\AssertionResult;
+use Toolkit\Doctest\Assertion\ParsedExample;
+use Toolkit\Doctest\Assertion\Statement;
+use Toolkit\Doctest\Executor\Evaluation;
+use Toolkit\Doctest\Executor\ExampleExecutor;
+use Toolkit\Doctest\Executor\ExceptionMatcher;
+use Toolkit\Doctest\Executor\ExecutionContext;
+use Toolkit\Doctest\Executor\ExecutionResult;
+use Toolkit\Doctest\Executor\ExpressionEvaluator;
+use Toolkit\Doctest\Parser\Example;
+use Toolkit\Doctest\Scanner\Target;
+use Toolkit\Doctest\Scanner\TargetKind;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Executor\ExampleExecutor
- * @uses \PhpAiToolkit\Doctest\Parser\Example
- * @uses \PhpAiToolkit\Doctest\Scanner\Target
- * @uses \PhpAiToolkit\Doctest\Assertion\Statement
- * @uses \PhpAiToolkit\Doctest\Assertion\Assertion
- * @uses \PhpAiToolkit\Doctest\Assertion\AssertionParser
- * @uses \PhpAiToolkit\Doctest\Assertion\AssertionResult
- * @uses \PhpAiToolkit\Doctest\Assertion\ParsedExample
- * @uses \PhpAiToolkit\Doctest\Executor\ExecutionResult
- * @uses \PhpAiToolkit\Doctest\Executor\ExecutionContext
- * @uses \PhpAiToolkit\Doctest\Executor\ExpressionEvaluator
- * @uses \PhpAiToolkit\Doctest\Executor\Evaluation
- * @uses \PhpAiToolkit\Doctest\Executor\ExceptionMatcher
+ * @covers \Toolkit\Doctest\Executor\ExampleExecutor
+ * @uses \Toolkit\Doctest\Parser\Example
+ * @uses \Toolkit\Doctest\Scanner\Target
+ * @uses \Toolkit\Doctest\Assertion\Statement
+ * @uses \Toolkit\Doctest\Assertion\Assertion
+ * @uses \Toolkit\Doctest\Assertion\AssertionParser
+ * @uses \Toolkit\Doctest\Assertion\AssertionResult
+ * @uses \Toolkit\Doctest\Assertion\ParsedExample
+ * @uses \Toolkit\Doctest\Executor\ExecutionResult
+ * @uses \Toolkit\Doctest\Executor\ExecutionContext
+ * @uses \Toolkit\Doctest\Executor\ExpressionEvaluator
+ * @uses \Toolkit\Doctest\Executor\Evaluation
+ * @uses \Toolkit\Doctest\Executor\ExceptionMatcher
  */
 #[CoversClass(ExampleExecutor::class)]
 #[UsesClass(Example::class)]

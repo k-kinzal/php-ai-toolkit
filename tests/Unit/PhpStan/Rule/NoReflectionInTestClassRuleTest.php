@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\NoReflectionInTestClassRule;
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\NoReflectionInTestClassRule;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @extends RuleTestCase<NoReflectionInTestClassRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\NoReflectionInTestClassRule
+ * @covers \Toolkit\PhpStan\Rule\NoReflectionInTestClassRule
  */
 #[CoversClass(NoReflectionInTestClassRule::class)]
 #[Medium]

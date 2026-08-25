@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render;
+namespace Toolkit\DocGen\Render;
 
 use function explode;
 use function implode;
 use function in_array;
 
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
 use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNode;
 use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprStringNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode;
@@ -33,6 +32,8 @@ use function str_starts_with;
 use function strrpos;
 use function strtolower;
 use function substr;
+
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
 
 /**
  * Renders complete type expressions as linked, styled HTML.

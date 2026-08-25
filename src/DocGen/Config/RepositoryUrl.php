@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Config;
+namespace Toolkit\DocGen\Config;
 
 use function is_string;
-
-use PhpAiToolkit\DocGen\DocGenException;
-
 use function preg_match;
 use function rtrim;
 use function sprintf;
+
+use Toolkit\DocGen\DocGenException;
+
 use function trim;
 
 /**

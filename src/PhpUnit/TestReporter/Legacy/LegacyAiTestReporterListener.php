@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Legacy;
+namespace Toolkit\PhpUnit\TestReporter\Legacy;
 
 use function getenv;
 use function max;
 
-use PhpAiToolkit\PhpUnit\TestReporter\TestReporterRuntime;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use Throwable;
+use Toolkit\PhpUnit\TestReporter\TestReporterRuntime;
 
 /**
  * PHPUnit 9 listener adapter for the shared TestReporter runtime.

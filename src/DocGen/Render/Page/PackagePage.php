@@ -2,23 +2,22 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page;
+namespace Toolkit\DocGen\Render\Page;
 
 use function implode;
 use function ksort;
-
-use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
-use PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\DocumentListHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\GraphSvg;
-use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\SymbolListHtml;
-use PhpAiToolkit\DocGen\Render\PageChrome;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-use PhpAiToolkit\DocGen\Render\RepositoryLink;
-
 use function sprintf;
 use function str_starts_with;
+
+use Toolkit\DocGen\Package\DiscoveredPackage;
+use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
+use Toolkit\DocGen\Render\Page\Component\DocumentListHtml;
+use Toolkit\DocGen\Render\Page\Component\GraphSvg;
+use Toolkit\DocGen\Render\Page\Component\SidebarHtml;
+use Toolkit\DocGen\Render\Page\Component\SymbolListHtml;
+use Toolkit\DocGen\Render\PageChrome;
+use Toolkit\DocGen\Render\RenderKit;
+use Toolkit\DocGen\Render\RepositoryLink;
 
 /**
  * Renders the overview page of one package.

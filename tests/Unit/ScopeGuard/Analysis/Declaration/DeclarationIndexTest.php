@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis\Declaration;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration;
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Declaration\Declaration;
+use Toolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
+use Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope
+ * @covers \Toolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
+ * @uses \Toolkit\ScopeGuard\Analysis\Declaration\Declaration
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\VisibilityScope
  */
 #[CoversClass(DeclarationIndex::class)]
 #[UsesClass(Declaration::class)]

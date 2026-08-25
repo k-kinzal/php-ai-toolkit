@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page\Component;
+namespace Toolkit\DocGen\Render\Page\Component;
 
 use function implode;
-
-use PhpAiToolkit\DocGen\Render\RenderKit;
-
 use function sprintf;
+
+use Toolkit\DocGen\Render\RenderKit;
 
 /**
  * Renders the breadcrumb trail of one page.

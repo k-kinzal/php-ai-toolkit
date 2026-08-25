@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Model;
 
-use PhpAiToolkit\DocGen\Analysis\Model\DocTag;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Model\DocTag;
+use Toolkit\DocGen\Analysis\Model\TypeSignature;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocTag
+ * @covers \Toolkit\DocGen\Analysis\Model\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Model\DocTag
  */
 #[CoversClass(TypeSignature::class)]
 #[UsesClass(DocTag::class)]

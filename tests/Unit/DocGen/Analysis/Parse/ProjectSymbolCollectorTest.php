@@ -4,91 +4,91 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Parse;
 
-use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
-use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\MethodDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
-use PhpAiToolkit\DocGen\Analysis\Parse\AstParser;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\MethodBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter;
-use PhpAiToolkit\DocGen\Analysis\Parse\FileSymbolCollector;
-use PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols;
-use PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter;
-use PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers;
-use PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge;
-use PhpAiToolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
-use PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext;
-use PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector;
-use PhpAiToolkit\DocGen\Analysis\Reference\LocalTypeMap;
-use PhpAiToolkit\DocGen\Analysis\Reference\PropertyTypeScanner;
-use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
-use PhpAiToolkit\DocGen\Analysis\Reference\UsageCollector;
-use PhpAiToolkit\DocGen\Cache\SourceFileKey;
-use PhpAiToolkit\DocGen\Cache\ToolkitFingerprint;
-use PhpAiToolkit\DocGen\Config\DocGenConfig;
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
-use PhpAiToolkit\DocGen\Filesystem\SourceFileFinder;
-use PhpAiToolkit\DocGen\Package\ComposerManifest;
-use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
-use PhpAiToolkit\DocGen\Parallel\CpuCoreCounter;
-use PhpAiToolkit\DocGen\Parallel\ForkSupport;
-use PhpAiToolkit\DocGen\Parallel\WorkerCount;
-use PhpAiToolkit\DocGen\Parallel\WorkerPool;
-use PhpAiToolkit\DocGen\Parallel\WorkScheduler;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
+use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\MethodDoc;
+use Toolkit\DocGen\Analysis\Model\ParameterDoc;
+use Toolkit\DocGen\Analysis\Model\TypeSignature;
+use Toolkit\DocGen\Analysis\Parse\AstParser;
+use Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
+use Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder;
+use Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder;
+use Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder;
+use Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder;
+use Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder;
+use Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder;
+use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
+use Toolkit\DocGen\Analysis\Parse\FileSymbolCollector;
+use Toolkit\DocGen\Analysis\Parse\FileSymbols;
+use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
+use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
+use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
+use Toolkit\DocGen\Analysis\Parse\SymbolContext;
+use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
+use Toolkit\DocGen\Analysis\Reference\LocalTypeMap;
+use Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner;
+use Toolkit\DocGen\Analysis\Reference\Usage;
+use Toolkit\DocGen\Analysis\Reference\UsageCollector;
+use Toolkit\DocGen\Cache\SourceFileKey;
+use Toolkit\DocGen\Cache\ToolkitFingerprint;
+use Toolkit\DocGen\Config\DocGenConfig;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Filesystem\SourceFileFinder;
+use Toolkit\DocGen\Package\ComposerManifest;
+use Toolkit\DocGen\Package\DiscoveredPackage;
+use Toolkit\DocGen\Parallel\CpuCoreCounter;
+use Toolkit\DocGen\Parallel\ForkSupport;
+use Toolkit\DocGen\Parallel\WorkerCount;
+use Toolkit\DocGen\Parallel\WorkerPool;
+use Toolkit\DocGen\Parallel\WorkScheduler;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Parse\ProjectSymbolCollector
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\AstParser
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
- * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
- * @uses \PhpAiToolkit\DocGen\Parallel\CpuCoreCounter
- * @uses \PhpAiToolkit\DocGen\Package\DiscoveredPackage
- * @uses \PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \PhpAiToolkit\DocGen\Config\DocGenConfig
- * @uses \PhpAiToolkit\DocGen\DocGenException
- * @uses \PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbolCollector
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols
- * @uses \PhpAiToolkit\DocGen\Parallel\ForkSupport
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\LocalTypeMap
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\MethodDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers
- * @uses \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\PropertyTypeScanner
- * @uses \PhpAiToolkit\DocGen\Filesystem\SourceFileFinder
- * @uses \PhpAiToolkit\DocGen\Cache\SourceFileKey
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext
- * @uses \PhpAiToolkit\DocGen\Cache\ToolkitFingerprint
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\Usage
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageCollector
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector
- * @uses \PhpAiToolkit\DocGen\Parallel\WorkScheduler
- * @uses \PhpAiToolkit\DocGen\Parallel\WorkerCount
- * @uses \PhpAiToolkit\DocGen\Parallel\WorkerPool
+ * @covers \Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector
+ * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
+ * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
+ * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
+ * @uses \Toolkit\DocGen\Parallel\CpuCoreCounter
+ * @uses \Toolkit\DocGen\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Config\DocGenConfig
+ * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Filesystem\DocGenPathResolver
+ * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
+ * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
+ * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector
+ * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbols
+ * @uses \Toolkit\DocGen\Parallel\ForkSupport
+ * @uses \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
+ * @uses \Toolkit\DocGen\Analysis\Reference\LocalTypeMap
+ * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
+ * @uses \Toolkit\DocGen\Analysis\Model\MethodDoc
+ * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
+ * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
+ * @uses \Toolkit\DocGen\Analysis\Model\ParameterDoc
+ * @uses \Toolkit\DocGen\Analysis\Parse\ParameterModifiers
+ * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
+ * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
+ * @uses \Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner
+ * @uses \Toolkit\DocGen\Filesystem\SourceFileFinder
+ * @uses \Toolkit\DocGen\Cache\SourceFileKey
+ * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
+ * @uses \Toolkit\DocGen\Cache\ToolkitFingerprint
+ * @uses \Toolkit\DocGen\Analysis\Model\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Reference\Usage
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageCollector
+ * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
+ * @uses \Toolkit\DocGen\Parallel\WorkScheduler
+ * @uses \Toolkit\DocGen\Parallel\WorkerCount
+ * @uses \Toolkit\DocGen\Parallel\WorkerPool
  */
 #[CoversClass(ProjectSymbolCollector::class)]
 #[UsesClass(AstParser::class)]

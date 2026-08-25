@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis;
+namespace Toolkit\ScopeGuard\Analysis;
 
 /**
  * A single ScopeGuard visibility violation.

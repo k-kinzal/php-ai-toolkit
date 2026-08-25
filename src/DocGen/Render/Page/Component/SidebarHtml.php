@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page\Component;
-
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
-use PhpAiToolkit\DocGen\Render\Page\SymbolIndex;
-use PhpAiToolkit\DocGen\Render\RenderKit;
+namespace Toolkit\DocGen\Render\Page\Component;
 
 use function sprintf;
 use function strrpos;
 use function strtolower;
 use function substr;
+
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Render\Page\SidebarScope;
+use Toolkit\DocGen\Render\Page\SymbolIndex;
+use Toolkit\DocGen\Render\RenderKit;
 
 /**
  * Renders the navigation sidebar shared by all pages.

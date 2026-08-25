@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Reporting;
 
-use PhpAiToolkit\ScopeGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\ScopeGuard\Analysis\Violation;
-use PhpAiToolkit\ScopeGuard\Config\ReportConfig;
-use PhpAiToolkit\ScopeGuard\Reporting\JsonReporter;
-use PhpAiToolkit\ScopeGuard\Reporting\ViolationFieldComparator;
-use PhpAiToolkit\ScopeGuard\Reporting\ViolationSorter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\AnalysisResult;
+use Toolkit\ScopeGuard\Analysis\Violation;
+use Toolkit\ScopeGuard\Config\ReportConfig;
+use Toolkit\ScopeGuard\Reporting\JsonReporter;
+use Toolkit\ScopeGuard\Reporting\ViolationFieldComparator;
+use Toolkit\ScopeGuard\Reporting\ViolationSorter;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Reporting\JsonReporter
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\AnalysisResult
- * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Violation
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationFieldComparator
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationSorter
+ * @covers \Toolkit\ScopeGuard\Reporting\JsonReporter
+ * @uses \Toolkit\ScopeGuard\Analysis\AnalysisResult
+ * @uses \Toolkit\ScopeGuard\Config\ReportConfig
+ * @uses \Toolkit\ScopeGuard\Analysis\Violation
+ * @uses \Toolkit\ScopeGuard\Reporting\ViolationFieldComparator
+ * @uses \Toolkit\ScopeGuard\Reporting\ViolationSorter
  */
 #[CoversClass(JsonReporter::class)]
 #[UsesClass(AnalysisResult::class)]

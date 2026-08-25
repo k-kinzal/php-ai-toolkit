@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Legacy;
+namespace Toolkit\PhpUnit\TestReporter\Legacy;
 
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueInput;
 use PHPUnit\Framework\AssertionFailedError;
 use Throwable;
+use Toolkit\PhpUnit\TestReporter\TestIssue;
+use Toolkit\PhpUnit\TestReporter\TestIssueInput;
 
 /**
  * Converts PHPUnit 9 TestListener arguments into version-neutral issue inputs.

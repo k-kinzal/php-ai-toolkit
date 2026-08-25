@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Reporting;
 
-use PhpAiToolkit\LocGuard\Analysis\Violation;
-use PhpAiToolkit\LocGuard\Reporting\ViolationFieldComparator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\Violation;
+use Toolkit\LocGuard\Reporting\ViolationFieldComparator;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Reporting\ViolationFieldComparator
- * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ * @covers \Toolkit\LocGuard\Reporting\ViolationFieldComparator
+ * @uses \Toolkit\LocGuard\Analysis\Violation
  */
 #[CoversClass(ViolationFieldComparator::class)]
 #[UsesClass(Violation::class)]

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Reporting;
+namespace Toolkit\LocGuard\Reporting;
 
 use function implode;
 

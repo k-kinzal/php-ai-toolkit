@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule;
+namespace Toolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiPhpDocErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\Shared\AnonymousClassDetector;
-use PhpAiToolkit\PhpStan\Rule\Shared\ClassLikeKindLabel;
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
+use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiPhpDocErrorCollector;
+use Toolkit\PhpStan\Rule\Shared\AnonymousClassDetector;
+use Toolkit\PhpStan\Rule\Shared\ClassLikeKindLabel;
+use Toolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher;
 
 /**
  * Requires PHPDoc comments on all public API elements.

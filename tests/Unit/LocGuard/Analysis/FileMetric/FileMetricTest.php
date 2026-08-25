@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\FileMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\FileMetric\FileMetric;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric
+ * @covers \Toolkit\LocGuard\Analysis\FileMetric\FileMetric
  */
 #[CoversClass(FileMetric::class)]
 final class FileMetricTest extends TestCase

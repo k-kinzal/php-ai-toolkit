@@ -4,33 +4,33 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Reporting;
 
-use PhpAiToolkit\TreeGuard\Reporting\AiReporter;
-use PhpAiToolkit\TreeGuard\Reporting\AiReportGuidance;
-use PhpAiToolkit\TreeGuard\Reporting\AiReportSummary;
-use PhpAiToolkit\TreeGuard\Reporting\AiViolationAction;
-use PhpAiToolkit\TreeGuard\Reporting\AiViolationFormatter;
-use PhpAiToolkit\TreeGuard\Reporting\JsonReporter;
-use PhpAiToolkit\TreeGuard\Reporting\ReporterFactory;
-use PhpAiToolkit\TreeGuard\Reporting\TextReporter;
-use PhpAiToolkit\TreeGuard\Reporting\ViolationFieldComparator;
-use PhpAiToolkit\TreeGuard\Reporting\ViolationSorter;
-use PhpAiToolkit\TreeGuard\TreeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Reporting\AiReporter;
+use Toolkit\TreeGuard\Reporting\AiReportGuidance;
+use Toolkit\TreeGuard\Reporting\AiReportSummary;
+use Toolkit\TreeGuard\Reporting\AiViolationAction;
+use Toolkit\TreeGuard\Reporting\AiViolationFormatter;
+use Toolkit\TreeGuard\Reporting\JsonReporter;
+use Toolkit\TreeGuard\Reporting\ReporterFactory;
+use Toolkit\TreeGuard\Reporting\TextReporter;
+use Toolkit\TreeGuard\Reporting\ViolationFieldComparator;
+use Toolkit\TreeGuard\Reporting\ViolationSorter;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Reporting\ReporterFactory
- * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReporter
- * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReportGuidance
- * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReportSummary
- * @uses \PhpAiToolkit\TreeGuard\Reporting\AiViolationAction
- * @uses \PhpAiToolkit\TreeGuard\Reporting\AiViolationFormatter
- * @uses \PhpAiToolkit\TreeGuard\Reporting\JsonReporter
- * @uses \PhpAiToolkit\TreeGuard\Reporting\TextReporter
- * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
- * @uses \PhpAiToolkit\TreeGuard\Reporting\ViolationFieldComparator
- * @uses \PhpAiToolkit\TreeGuard\Reporting\ViolationSorter
+ * @covers \Toolkit\TreeGuard\Reporting\ReporterFactory
+ * @uses \Toolkit\TreeGuard\Reporting\AiReporter
+ * @uses \Toolkit\TreeGuard\Reporting\AiReportGuidance
+ * @uses \Toolkit\TreeGuard\Reporting\AiReportSummary
+ * @uses \Toolkit\TreeGuard\Reporting\AiViolationAction
+ * @uses \Toolkit\TreeGuard\Reporting\AiViolationFormatter
+ * @uses \Toolkit\TreeGuard\Reporting\JsonReporter
+ * @uses \Toolkit\TreeGuard\Reporting\TextReporter
+ * @uses \Toolkit\TreeGuard\TreeGuardException
+ * @uses \Toolkit\TreeGuard\Reporting\ViolationFieldComparator
+ * @uses \Toolkit\TreeGuard\Reporting\ViolationSorter
  */
 #[CoversClass(ReporterFactory::class)]
 #[UsesClass(AiReporter::class)]

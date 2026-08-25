@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Analysis;
+namespace Toolkit\TreeGuard\Analysis;
 
 /**
  * A single TreeGuard structure violation.

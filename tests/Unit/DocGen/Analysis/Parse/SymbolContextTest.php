@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Parse;
 
-use PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext
+ * @covers \Toolkit\DocGen\Analysis\Parse\SymbolContext
  */
 #[CoversClass(SymbolContext::class)]
 final class SymbolContextTest extends TestCase

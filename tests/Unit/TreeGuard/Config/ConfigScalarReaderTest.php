@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Config;
 
-use PhpAiToolkit\TreeGuard\Config\ConfigScalarReader;
-use PhpAiToolkit\TreeGuard\TreeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Config\ConfigScalarReader;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Config\ConfigScalarReader
- * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ * @covers \Toolkit\TreeGuard\Config\ConfigScalarReader
+ * @uses \Toolkit\TreeGuard\TreeGuardException
  */
 #[CoversClass(ConfigScalarReader::class)]
 #[UsesClass(TreeGuardException::class)]

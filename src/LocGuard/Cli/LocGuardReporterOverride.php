@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Cli;
+namespace Toolkit\LocGuard\Cli;
 
-use PhpAiToolkit\LocGuard\Config\LocGuardConfig;
-use PhpAiToolkit\LocGuard\Config\ReportConfig;
+use Toolkit\LocGuard\Config\LocGuardConfig;
+use Toolkit\LocGuard\Config\ReportConfig;
 
 /**
  * Applies a CLI reporter override to LocGuard config.

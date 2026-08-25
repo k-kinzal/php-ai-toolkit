@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Scanner;
+namespace Toolkit\Doctest\Scanner;
 
 use function constant;
 

@@ -4,52 +4,52 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page\Component;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
-use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\ProjectModel;
-use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
-use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
-use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
-use PhpAiToolkit\DocGen\Package\PackageGraph;
-use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
-use PhpAiToolkit\DocGen\Render\HtmlText;
-use PhpAiToolkit\DocGen\Render\MarkdownInline;
-use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
-use PhpAiToolkit\DocGen\Render\Page\Component\UsageListHtml;
-use PhpAiToolkit\DocGen\Render\PhpHighlighter;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-use PhpAiToolkit\DocGen\Render\SiteUrl;
-use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Doctest\AssertionScanner;
+use Toolkit\DocGen\Analysis\Doctest\DoctestExtractor;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\Usage;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Package\PackageGraph;
+use Toolkit\DocGen\Render\Diff\DiffHtml;
+use Toolkit\DocGen\Render\HtmlText;
+use Toolkit\DocGen\Render\MarkdownInline;
+use Toolkit\DocGen\Render\MarkdownRenderer;
+use Toolkit\DocGen\Render\Page\Component\UsageListHtml;
+use Toolkit\DocGen\Render\PhpHighlighter;
+use Toolkit\DocGen\Render\RenderKit;
+use Toolkit\DocGen\Render\SiteUrl;
+use Toolkit\DocGen\Render\TypeHtml;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\Page\Component\UsageListHtml
- * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
- * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffHtml
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
- * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex
- * @uses \PhpAiToolkit\DocGen\Render\HtmlText
- * @uses \PhpAiToolkit\DocGen\Render\MarkdownInline
- * @uses \PhpAiToolkit\DocGen\Render\MarkdownRenderer
- * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
- * @uses \PhpAiToolkit\DocGen\Analysis\ProjectModel
- * @uses \PhpAiToolkit\DocGen\Render\RenderKit
- * @uses \PhpAiToolkit\DocGen\Render\SiteUrl
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
- * @uses \PhpAiToolkit\DocGen\Render\TypeHtml
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\Usage
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
+ * @covers \Toolkit\DocGen\Render\Page\Component\UsageListHtml
+ * @uses \Toolkit\DocGen\Analysis\Doctest\AssertionScanner
+ * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Analysis\Doctest\DoctestExtractor
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Render\HtmlText
+ * @uses \Toolkit\DocGen\Render\MarkdownInline
+ * @uses \Toolkit\DocGen\Render\MarkdownRenderer
+ * @uses \Toolkit\DocGen\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\ProjectModel
+ * @uses \Toolkit\DocGen\Render\RenderKit
+ * @uses \Toolkit\DocGen\Render\SiteUrl
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Render\TypeHtml
+ * @uses \Toolkit\DocGen\Analysis\Reference\Usage
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  */
 #[CoversClass(UsageListHtml::class)]
 #[UsesClass(AssertionScanner::class)]

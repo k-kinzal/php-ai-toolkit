@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowCollector;
-use PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowCollector;
+use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression
+ * @covers \Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowCollector
+ * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor
+ * @uses \Toolkit\PhpStan\Rule\Shared\ThrownExpression
  */
 #[CoversClass(CatchThrowCollector::class)]
-#[UsesClass(\PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor::class)]
+#[UsesClass(\Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor::class)]
 #[UsesClass(ThrownExpression::class)]
 final class CatchThrowCollectorTest extends TestCase
 {

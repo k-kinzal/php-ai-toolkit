@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Diff;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Diff\LcsMatcher;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher
+ * @covers \Toolkit\DocGen\Analysis\Diff\LcsMatcher
  */
 #[CoversClass(LcsMatcher::class)]
 final class LcsMatcherTest extends TestCase

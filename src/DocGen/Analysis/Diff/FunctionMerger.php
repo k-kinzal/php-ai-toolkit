@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Diff;
+namespace Toolkit\DocGen\Analysis\Diff;
 
-use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
+use Toolkit\DocGen\Analysis\Model\FunctionDoc;
 
 /**
  * Merges the two revisions of one top-level function.
@@ -90,7 +90,7 @@ final class FunctionMerger
     /**
      * Rebuilds one function around its merged parameter list.
      *
-     * @param list<\PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
+     * @param list<\Toolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
      */
     public function rebuild(FunctionDoc $function, array $parameters): FunctionDoc
     {

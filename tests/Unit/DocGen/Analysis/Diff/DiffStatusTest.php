@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Diff;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ * @covers \Toolkit\DocGen\Analysis\Diff\DiffStatus
  */
 #[CoversClass(DiffStatus::class)]
 final class DiffStatusTest extends TestCase

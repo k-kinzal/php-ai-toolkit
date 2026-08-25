@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\TestClass\Pairing;
+namespace Toolkit\PhpStan\Rule\TestClass\Pairing;
 
 /**
  * Matches files that belong to a configured source directory marker.

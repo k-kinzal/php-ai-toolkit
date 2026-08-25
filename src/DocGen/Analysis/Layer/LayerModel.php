@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Layer;
+namespace Toolkit\DocGen\Analysis\Layer;
 
 /**
  * The architectural layers and allowed dependencies of a project.

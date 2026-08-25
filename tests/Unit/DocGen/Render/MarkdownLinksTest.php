@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render;
 
-use PhpAiToolkit\DocGen\Render\MarkdownLinks;
-use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Render\MarkdownLinks;
+use Toolkit\DocGen\Render\SiteUrl;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\MarkdownLinks
- * @uses \PhpAiToolkit\DocGen\Render\SiteUrl
+ * @covers \Toolkit\DocGen\Render\MarkdownLinks
+ * @uses \Toolkit\DocGen\Render\SiteUrl
  */
 #[CoversClass(MarkdownLinks::class)]
 #[UsesClass(SiteUrl::class)]

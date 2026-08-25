@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Cli;
 
-use PhpAiToolkit\ScopeGuard\Cli\ScopeGuardOutputWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Cli\ScopeGuardOutputWriter;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardOutputWriter
+ * @covers \Toolkit\ScopeGuard\Cli\ScopeGuardOutputWriter
  */
 #[CoversClass(ScopeGuardOutputWriter::class)]
 final class ScopeGuardOutputWriterTest extends TestCase

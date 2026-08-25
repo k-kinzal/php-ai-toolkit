@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\Complexity;
 
-use PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 use const T_MATCH;
 
+use Toolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState;
+
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState
+ * @covers \Toolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState
  */
 #[CoversClass(CyclomaticComplexityState::class)]
 final class CyclomaticComplexityStateTest extends TestCase

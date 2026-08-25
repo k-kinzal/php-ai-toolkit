@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Doctest;
+namespace Toolkit\DocGen\Analysis\Doctest;
 
 /**
  * One example line classified by its doctest assertion marker.

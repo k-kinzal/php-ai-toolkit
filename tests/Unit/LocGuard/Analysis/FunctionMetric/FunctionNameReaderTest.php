@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\FunctionMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionNameReader;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionNameReader;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionNameReader
+ * @covers \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionNameReader
  */
 #[CoversClass(FunctionNameReader::class)]
 final class FunctionNameReaderTest extends TestCase

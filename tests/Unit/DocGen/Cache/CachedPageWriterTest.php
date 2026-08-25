@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Cache;
 
-use PhpAiToolkit\DocGen\Cache\CachedPageWriter;
-use PhpAiToolkit\DocGen\Cache\CacheStore;
-use PhpAiToolkit\DocGen\Cache\PageRecord;
-use PhpAiToolkit\DocGen\Cache\RenderCache;
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Cache\CachedPageWriter;
+use Toolkit\DocGen\Cache\CacheStore;
+use Toolkit\DocGen\Cache\PageRecord;
+use Toolkit\DocGen\Cache\RenderCache;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Filesystem\SiteFileWriter;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Cache\CachedPageWriter
- * @uses \PhpAiToolkit\DocGen\Cache\CacheStore
- * @uses \PhpAiToolkit\DocGen\DocGenException
- * @uses \PhpAiToolkit\DocGen\Cache\PageRecord
- * @uses \PhpAiToolkit\DocGen\Cache\RenderCache
- * @uses \PhpAiToolkit\DocGen\Filesystem\SiteFileWriter
+ * @covers \Toolkit\DocGen\Cache\CachedPageWriter
+ * @uses \Toolkit\DocGen\Cache\CacheStore
+ * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Cache\PageRecord
+ * @uses \Toolkit\DocGen\Cache\RenderCache
+ * @uses \Toolkit\DocGen\Filesystem\SiteFileWriter
  */
 #[CoversClass(CachedPageWriter::class)]
 #[UsesClass(CacheStore::class)]

@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Filesystem;
+namespace Toolkit\LocGuard\Filesystem;
 
 use function is_dir;
 use function is_file;
 
-use PhpAiToolkit\LocGuard\Config\LocGuardConfig;
-use PhpAiToolkit\LocGuard\LocGuardException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 
 use function sprintf;
+
+use Toolkit\LocGuard\Config\LocGuardConfig;
+use Toolkit\LocGuard\LocGuardException;
 
 /**
  * Collects PHP files from one configured absolute path.

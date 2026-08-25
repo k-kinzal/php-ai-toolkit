@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter\Legacy;
 
-use PhpAiToolkit\PhpUnit\TestReporter\Legacy\LegacyTestDescriptorFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use Toolkit\PhpUnit\TestReporter\Legacy\LegacyTestDescriptorFactory;
 
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\Legacy\LegacyTestDescriptorFactory
+ * @covers \Toolkit\PhpUnit\TestReporter\Legacy\LegacyTestDescriptorFactory
  */
 #[CoversClass(LegacyTestDescriptorFactory::class)]
 final class LegacyTestDescriptorFactoryTest extends TestCase

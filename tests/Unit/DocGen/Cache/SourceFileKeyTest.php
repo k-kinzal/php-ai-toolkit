@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Cache;
 
-use PhpAiToolkit\DocGen\Cache\SourceFileKey;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Cache\SourceFileKey;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Cache\SourceFileKey
+ * @covers \Toolkit\DocGen\Cache\SourceFileKey
  */
 #[CoversClass(SourceFileKey::class)]
 final class SourceFileKeyTest extends TestCase

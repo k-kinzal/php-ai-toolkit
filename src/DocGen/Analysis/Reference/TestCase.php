@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Reference;
+namespace Toolkit\DocGen\Analysis\Reference;
 
 /**
  * One test case that exercises a documented class or member.

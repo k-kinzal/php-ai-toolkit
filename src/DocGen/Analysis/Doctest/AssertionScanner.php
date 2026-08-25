@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Doctest;
+namespace Toolkit\DocGen\Analysis\Doctest;
 
 use function explode;
 use function preg_match;

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Cache;
 
-use PhpAiToolkit\DocGen\Cache\PageRecord;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Cache\PageRecord;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Cache\PageRecord
+ * @covers \Toolkit\DocGen\Cache\PageRecord
  */
 #[CoversClass(PageRecord::class)]
 final class PageRecordTest extends TestCase

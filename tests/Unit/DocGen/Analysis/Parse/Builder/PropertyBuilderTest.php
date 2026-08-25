@@ -4,31 +4,31 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Parse\Builder;
 
-use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
-use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
-use PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
-use PhpAiToolkit\DocGen\Analysis\Parse\AstParser;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter;
-use PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter;
-use PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Property;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
+use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Analysis\Model\PropertyDoc;
+use Toolkit\DocGen\Analysis\Model\TypeSignature;
+use Toolkit\DocGen\Analysis\Parse\AstParser;
+use Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder;
+use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
+use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
+use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\AstParser
- * @uses \PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter
- * @uses \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ * @covers \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
+ * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
+ * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
+ * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
+ * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
+ * @uses \Toolkit\DocGen\Analysis\Model\PropertyDoc
+ * @uses \Toolkit\DocGen\Analysis\Model\TypeSignature
  */
 #[CoversClass(PropertyBuilder::class)]
 #[UsesClass(AstParser::class)]

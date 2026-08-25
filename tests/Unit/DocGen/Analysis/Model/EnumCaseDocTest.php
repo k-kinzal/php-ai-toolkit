@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Model;
 
-use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
-use PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Model\DocBlock;
+use Toolkit\DocGen\Analysis\Model\EnumCaseDoc;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
+ * @covers \Toolkit\DocGen\Analysis\Model\EnumCaseDoc
+ * @uses \Toolkit\DocGen\Analysis\Model\DocBlock
  */
 #[CoversClass(EnumCaseDoc::class)]
 #[UsesClass(DocBlock::class)]

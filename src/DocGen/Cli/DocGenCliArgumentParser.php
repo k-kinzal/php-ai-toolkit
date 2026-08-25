@@ -2,16 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Cli;
+namespace Toolkit\DocGen\Cli;
 
 use function array_merge;
 use function count;
 use function explode;
-
-use PhpAiToolkit\DocGen\Config\BaseUrl;
-use PhpAiToolkit\DocGen\Config\RepositoryUrl;
-use PhpAiToolkit\DocGen\DocGenException;
-
 use function preg_match;
 use function sprintf;
 use function str_contains;
@@ -19,6 +14,11 @@ use function str_starts_with;
 use function strlen;
 use function strpos;
 use function substr;
+
+use Toolkit\DocGen\Config\BaseUrl;
+use Toolkit\DocGen\Config\RepositoryUrl;
+use Toolkit\DocGen\DocGenException;
+
 use function trim;
 
 /**

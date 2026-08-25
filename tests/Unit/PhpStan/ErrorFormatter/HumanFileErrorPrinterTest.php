@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\ErrorFormatter;
 
-use PhpAiToolkit\PhpStan\ErrorFormatter\ErrorGutter;
-use PhpAiToolkit\PhpStan\ErrorFormatter\ErrorSourceReader;
-use PhpAiToolkit\PhpStan\ErrorFormatter\HumanErrorPrinter;
-use PhpAiToolkit\PhpStan\ErrorFormatter\HumanFileErrorPrinter;
 use PHPStan\Analyser\Error;
 use PHPStan\Command\Output;
 use PHPStan\File\RelativePathHelper;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\ErrorFormatter\ErrorGutter;
+use Toolkit\PhpStan\ErrorFormatter\ErrorSourceReader;
+use Toolkit\PhpStan\ErrorFormatter\HumanErrorPrinter;
+use Toolkit\PhpStan\ErrorFormatter\HumanFileErrorPrinter;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\HumanFileErrorPrinter
- * @uses \PhpAiToolkit\PhpStan\ErrorFormatter\ErrorGutter
- * @uses \PhpAiToolkit\PhpStan\ErrorFormatter\ErrorSourceReader
- * @uses \PhpAiToolkit\PhpStan\ErrorFormatter\HumanErrorPrinter
+ * @covers \Toolkit\PhpStan\ErrorFormatter\HumanFileErrorPrinter
+ * @uses \Toolkit\PhpStan\ErrorFormatter\ErrorGutter
+ * @uses \Toolkit\PhpStan\ErrorFormatter\ErrorSourceReader
+ * @uses \Toolkit\PhpStan\ErrorFormatter\HumanErrorPrinter
  */
 #[CoversClass(HumanFileErrorPrinter::class)]
 #[UsesClass(ErrorGutter::class)]

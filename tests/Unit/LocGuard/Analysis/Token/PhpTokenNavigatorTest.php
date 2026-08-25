@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\Token;
 
-use PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -14,8 +13,10 @@ use const T_DOC_COMMENT;
 use const T_STRING;
 use const T_WHITESPACE;
 
+use Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
+
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator
+ * @covers \Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator
  */
 #[CoversClass(PhpTokenNavigator::class)]
 final class PhpTokenNavigatorTest extends TestCase

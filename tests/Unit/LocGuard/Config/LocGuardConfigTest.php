@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Config;
 
-use PhpAiToolkit\LocGuard\Config\LimitConfig;
-use PhpAiToolkit\LocGuard\Config\LocGuardConfig;
-use PhpAiToolkit\LocGuard\Config\ReportConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Config\LimitConfig;
+use Toolkit\LocGuard\Config\LocGuardConfig;
+use Toolkit\LocGuard\Config\ReportConfig;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Config\LocGuardConfig
- * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
- * @uses \PhpAiToolkit\LocGuard\Config\ReportConfig
+ * @covers \Toolkit\LocGuard\Config\LocGuardConfig
+ * @uses \Toolkit\LocGuard\Config\LimitConfig
+ * @uses \Toolkit\LocGuard\Config\ReportConfig
  */
 #[CoversClass(LocGuardConfig::class)]
 #[UsesClass(LimitConfig::class)]

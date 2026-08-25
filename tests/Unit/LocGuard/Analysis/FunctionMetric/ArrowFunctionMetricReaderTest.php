@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\FunctionMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowExpressionBoundary;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowFunctionMetricReader;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionBodyLocator;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric;
-use PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\FunctionMetric\ArrowExpressionBoundary;
+use Toolkit\LocGuard\Analysis\FunctionMetric\ArrowFunctionMetricReader;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionBodyLocator;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric;
+use Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowFunctionMetricReader
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowExpressionBoundary
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionBodyLocator
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric
- * @uses \PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator
+ * @covers \Toolkit\LocGuard\Analysis\FunctionMetric\ArrowFunctionMetricReader
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\ArrowExpressionBoundary
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionBodyLocator
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric
+ * @uses \Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator
  */
 #[CoversClass(ArrowFunctionMetricReader::class)]
 #[UsesClass(ArrowExpressionBoundary::class)]

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule;
+namespace Toolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
-use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SourceFileRuleMatcher;
-use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver;
-use PhpAiToolkit\PhpStan\Rule\TestClass\ProviderNameValidator;
-use PhpAiToolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageValidator;
-use PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodNameValidator;
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
+use Toolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
+use Toolkit\PhpStan\Rule\TestClass\Pairing\SourceFileRuleMatcher;
+use Toolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver;
+use Toolkit\PhpStan\Rule\TestClass\ProviderNameValidator;
+use Toolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageValidator;
+use Toolkit\PhpStan\Rule\TestClass\TestMethodNameValidator;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @implements Rule<\PhpParser\Node\Stmt\ClassMethod>

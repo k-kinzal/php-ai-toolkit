@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Type;
+namespace Toolkit\PhpStan\Rule\Type;
 
 use function array_map;
 use function in_array;

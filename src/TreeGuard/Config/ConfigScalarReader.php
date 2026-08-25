@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Config;
+namespace Toolkit\TreeGuard\Config;
 
 use function array_key_exists;
 use function implode;
@@ -10,10 +10,9 @@ use function in_array;
 use function is_bool;
 use function is_int;
 use function is_string;
-
-use PhpAiToolkit\TreeGuard\TreeGuardException;
-
 use function sprintf;
+
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
  * Reads scalar values from tree.yaml mappings with contextual error messages.

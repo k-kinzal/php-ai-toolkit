@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\ErrorFormatter;
 
-use PhpAiToolkit\PhpStan\ErrorFormatter\ErrorGutter;
-use PhpAiToolkit\PhpStan\ErrorFormatter\ErrorSourceReader;
-use PhpAiToolkit\PhpStan\ErrorFormatter\HumanErrorPrinter;
 use PHPStan\Analyser\Error;
 use PHPStan\Command\Output;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\ErrorFormatter\ErrorGutter;
+use Toolkit\PhpStan\ErrorFormatter\ErrorSourceReader;
+use Toolkit\PhpStan\ErrorFormatter\HumanErrorPrinter;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\HumanErrorPrinter
- * @uses \PhpAiToolkit\PhpStan\ErrorFormatter\ErrorGutter
- * @uses \PhpAiToolkit\PhpStan\ErrorFormatter\ErrorSourceReader
+ * @covers \Toolkit\PhpStan\ErrorFormatter\HumanErrorPrinter
+ * @uses \Toolkit\PhpStan\ErrorFormatter\ErrorGutter
+ * @uses \Toolkit\PhpStan\ErrorFormatter\ErrorSourceReader
  */
 #[CoversClass(HumanErrorPrinter::class)]
 #[UsesClass(ErrorGutter::class)]

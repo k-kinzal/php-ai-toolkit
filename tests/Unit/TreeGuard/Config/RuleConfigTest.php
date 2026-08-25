@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Config;
 
-use PhpAiToolkit\TreeGuard\Config\RuleConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Config\RuleConfig;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Config\RuleConfig
+ * @covers \Toolkit\TreeGuard\Config\RuleConfig
  */
 #[CoversClass(RuleConfig::class)]
 final class RuleConfigTest extends TestCase

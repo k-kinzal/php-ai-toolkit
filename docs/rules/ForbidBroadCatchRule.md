@@ -79,7 +79,7 @@ $slice = array_slice($items, $offset, $length);
 
 ```neon
 parameters:
-    customRules:
+    toolkit:
         broadCatchAllowedPaths:
             - 'src/*/Cli/Application.php'
             - 'src/Http/Middleware/ErrorHandler.php'

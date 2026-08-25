@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Reporting;
-
-use PhpAiToolkit\TreeGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
+namespace Toolkit\TreeGuard\Reporting;
 
 use function sprintf;
+
+use Toolkit\TreeGuard\Analysis\AnalysisResult;
+use Toolkit\TreeGuard\Config\ReportConfig;
 
 /**
  * Human-readable TreeGuard reporter.

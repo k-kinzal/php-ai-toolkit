@@ -2,15 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Doc;
+namespace Toolkit\DocGen\Analysis\Doc;
 
 use function array_values;
 use function implode;
 
-use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
-use PhpAiToolkit\DocGen\Analysis\Model\DocTag;
-use PhpAiToolkit\DocGen\Analysis\Model\TemplateDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeAliasDoc;
 use PHPStan\PhpDocParser\Ast\PhpDoc\DeprecatedTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ExtendsTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ImplementsTagValueNode;
@@ -27,6 +23,12 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\UsesTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 
 use function preg_split;
+
+use Toolkit\DocGen\Analysis\Model\DocBlock;
+use Toolkit\DocGen\Analysis\Model\DocTag;
+use Toolkit\DocGen\Analysis\Model\TemplateDoc;
+use Toolkit\DocGen\Analysis\Model\TypeAliasDoc;
+
 use function trim;
 
 /**

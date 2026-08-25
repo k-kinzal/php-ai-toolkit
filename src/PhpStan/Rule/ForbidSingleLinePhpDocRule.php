@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule;
+namespace Toolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorCollector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
+use Toolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorCollector;
 
 /**
  * Forbids single-line PHPDoc comments on public API elements.

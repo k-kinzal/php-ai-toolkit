@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Shared;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher;
 use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
+ * @covers \Toolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
  */
 #[CoversClass(PhpUnitCallTargetMatcher::class)]
 final class PhpUnitCallTargetMatcherTest extends TestCase

@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass\Pairing;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter;
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper;
-use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter;
+use Toolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper;
+use Toolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper
+ * @covers \Toolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver
+ * @uses \Toolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter
+ * @uses \Toolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper
  */
 #[CoversClass(SourceUnitTestFileResolver::class)]
 #[UsesClass(PathMarkerSplitter::class)]

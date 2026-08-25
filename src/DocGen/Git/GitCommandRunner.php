@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Git;
+namespace Toolkit\DocGen\Git;
 
 use Closure;
 
 use function escapeshellarg;
 use function exec;
 use function implode;
-
-use PhpAiToolkit\DocGen\DocGenException;
-
 use function sprintf;
+
+use Toolkit\DocGen\DocGenException;
+
 use function trim;
 
 /**

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Shared;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern
+ * @covers \Toolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern
  */
 #[CoversClass(ForbiddenCommentPattern::class)]
 final class ForbiddenCommentPatternTest extends TestCase

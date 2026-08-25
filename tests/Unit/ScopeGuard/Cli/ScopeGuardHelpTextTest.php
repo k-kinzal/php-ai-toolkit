@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Cli;
 
-use PhpAiToolkit\ScopeGuard\Cli\ScopeGuardHelpText;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Cli\ScopeGuardHelpText;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardHelpText
+ * @covers \Toolkit\ScopeGuard\Cli\ScopeGuardHelpText
  */
 #[CoversClass(ScopeGuardHelpText::class)]
 final class ScopeGuardHelpTextTest extends TestCase

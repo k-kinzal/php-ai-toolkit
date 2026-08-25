@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Filesystem;
 
-use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
-use PhpAiToolkit\DocGen\Filesystem\MarkdownFileFinder;
-use PhpAiToolkit\DocGen\Filesystem\SourceFileFinder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Filesystem\MarkdownFileFinder;
+use Toolkit\DocGen\Filesystem\SourceFileFinder;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Filesystem\MarkdownFileFinder
- * @uses \PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver
- * @uses \PhpAiToolkit\DocGen\Filesystem\SourceFileFinder
+ * @covers \Toolkit\DocGen\Filesystem\MarkdownFileFinder
+ * @uses \Toolkit\DocGen\Filesystem\DocGenPathResolver
+ * @uses \Toolkit\DocGen\Filesystem\SourceFileFinder
  */
 #[CoversClass(MarkdownFileFinder::class)]
 #[UsesClass(DocGenPathResolver::class)]

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Presentation;
+namespace Toolkit\PhpUnit\TestReporter\Presentation;
 
 use function rtrim;
 use function str_starts_with;

@@ -6,21 +6,21 @@ declare(strict_types=1);
  * PHPUnit extension entry point for doctest.
  *
  * @example File-level example: checking extension class
- *     class_exists(\PhpAiToolkit\Doctest\DoctestExtension::class) // => true
+ *     class_exists(\Toolkit\Doctest\DoctestExtension::class) // => true
  */
 
-namespace PhpAiToolkit\Doctest;
+namespace Toolkit\Doctest;
 
 use function dirname;
 use function getcwd;
 
-use PhpAiToolkit\Doctest\Configuration\Configuration;
-use PhpAiToolkit\Doctest\Configuration\ConfigurationLoader;
 use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Configuration as PhpUnitConfiguration;
 use PHPUnit\TextUI\Configuration\Registry;
+use Toolkit\Doctest\Configuration\Configuration;
+use Toolkit\Doctest\Configuration\ConfigurationLoader;
 
 /**
  * PHPUnit Extension for doctest.
@@ -29,7 +29,7 @@ use PHPUnit\TextUI\Configuration\Registry;
  * and makes it available to DoctestSuite.
  *
  * @example Checking extension interface
- *     $implements = class_implements(\PhpAiToolkit\Doctest\DoctestExtension::class);
+ *     $implements = class_implements(\Toolkit\Doctest\DoctestExtension::class);
  *     in_array(\PHPUnit\Runner\Extension\Extension::class, $implements, true) // => true
  */
 final class DoctestExtension implements Extension

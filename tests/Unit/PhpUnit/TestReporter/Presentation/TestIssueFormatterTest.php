@@ -7,35 +7,36 @@ namespace Tests\Unit\PhpUnit\TestReporter\Presentation;
 use function dirname;
 
 use Override;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueBlockIndenter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueGutter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueHumanFormatter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader;
-use PhpAiToolkit\Shared\AgentDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 use function putenv;
 
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueBlockIndenter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueGutter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueHumanFormatter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation;
+use Toolkit\PhpUnit\TestReporter\TestIssue;
+use Toolkit\PhpUnit\TestReporter\TestIssueSourceReader;
+use Toolkit\Shared\AgentDetector;
+
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter
- * @uses \PhpAiToolkit\Shared\AgentDetector
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssue
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueBlockIndenter
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueGutter
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueHumanFormatter
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation
+ * @covers \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter
+ * @uses \Toolkit\Shared\AgentDetector
+ * @uses \Toolkit\PhpUnit\TestReporter\TestIssue
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueBlockIndenter
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueGutter
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueHumanFormatter
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter
+ * @uses \Toolkit\PhpUnit\TestReporter\TestIssueSourceReader
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation
  */
 #[CoversClass(TestIssueFormatter::class)]
 #[UsesClass(AgentDetector::class)]

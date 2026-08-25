@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Config;
-
-use PhpAiToolkit\DocGen\DocGenException;
+namespace Toolkit\DocGen\Config;
 
 use function preg_match;
 use function rtrim;
 use function sprintf;
+
+use Toolkit\DocGen\DocGenException;
+
 use function trim;
 
 /**

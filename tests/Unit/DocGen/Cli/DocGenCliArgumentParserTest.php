@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Cli;
 
-use PhpAiToolkit\DocGen\Cli\DocGenCliArgumentParser;
-use PhpAiToolkit\DocGen\Config\BaseUrl;
-use PhpAiToolkit\DocGen\Config\RepositoryUrl;
-use PhpAiToolkit\DocGen\DocGenException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Cli\DocGenCliArgumentParser;
+use Toolkit\DocGen\Config\BaseUrl;
+use Toolkit\DocGen\Config\RepositoryUrl;
+use Toolkit\DocGen\DocGenException;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Cli\DocGenCliArgumentParser
- * @uses \PhpAiToolkit\DocGen\Config\BaseUrl
- * @uses \PhpAiToolkit\DocGen\DocGenException
- * @uses \PhpAiToolkit\DocGen\Config\RepositoryUrl
+ * @covers \Toolkit\DocGen\Cli\DocGenCliArgumentParser
+ * @uses \Toolkit\DocGen\Config\BaseUrl
+ * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Config\RepositoryUrl
  */
 #[CoversClass(DocGenCliArgumentParser::class)]
 #[UsesClass(BaseUrl::class)]

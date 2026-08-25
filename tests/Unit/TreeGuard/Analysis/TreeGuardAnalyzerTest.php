@@ -4,53 +4,53 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Analysis;
 
-use PhpAiToolkit\TreeGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\TreeGuard\Analysis\CaseConventionMatcher;
-use PhpAiToolkit\TreeGuard\Analysis\ChildCountInspector;
-use PhpAiToolkit\TreeGuard\Analysis\DepthInspector;
-use PhpAiToolkit\TreeGuard\Analysis\DirectoryPatternMatcher;
-use PhpAiToolkit\TreeGuard\Analysis\DirectoryRuleInspector;
-use PhpAiToolkit\TreeGuard\Analysis\DirNameInspector;
-use PhpAiToolkit\TreeGuard\Analysis\EmptyDirectoryInspector;
-use PhpAiToolkit\TreeGuard\Analysis\FileNameInspector;
-use PhpAiToolkit\TreeGuard\Analysis\RequiredFileInspector;
-use PhpAiToolkit\TreeGuard\Analysis\TotalFileCountInspector;
-use PhpAiToolkit\TreeGuard\Analysis\TreeGuardAnalyzer;
-use PhpAiToolkit\TreeGuard\Analysis\Violation;
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
-use PhpAiToolkit\TreeGuard\Config\RuleConfig;
-use PhpAiToolkit\TreeGuard\Config\TreeGuardConfig;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListingReader;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryTreeScanner;
-use PhpAiToolkit\TreeGuard\Filesystem\PathInclusionPolicy;
-use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Analysis\AnalysisResult;
+use Toolkit\TreeGuard\Analysis\CaseConventionMatcher;
+use Toolkit\TreeGuard\Analysis\ChildCountInspector;
+use Toolkit\TreeGuard\Analysis\DepthInspector;
+use Toolkit\TreeGuard\Analysis\DirectoryPatternMatcher;
+use Toolkit\TreeGuard\Analysis\DirectoryRuleInspector;
+use Toolkit\TreeGuard\Analysis\DirNameInspector;
+use Toolkit\TreeGuard\Analysis\EmptyDirectoryInspector;
+use Toolkit\TreeGuard\Analysis\FileNameInspector;
+use Toolkit\TreeGuard\Analysis\RequiredFileInspector;
+use Toolkit\TreeGuard\Analysis\TotalFileCountInspector;
+use Toolkit\TreeGuard\Analysis\TreeGuardAnalyzer;
+use Toolkit\TreeGuard\Analysis\Violation;
+use Toolkit\TreeGuard\Config\ReportConfig;
+use Toolkit\TreeGuard\Config\RuleConfig;
+use Toolkit\TreeGuard\Config\TreeGuardConfig;
+use Toolkit\TreeGuard\Filesystem\DirectoryListing;
+use Toolkit\TreeGuard\Filesystem\DirectoryListingReader;
+use Toolkit\TreeGuard\Filesystem\DirectoryTreeScanner;
+use Toolkit\TreeGuard\Filesystem\PathInclusionPolicy;
+use Toolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Analysis\TreeGuardAnalyzer
- * @uses \PhpAiToolkit\TreeGuard\Analysis\AnalysisResult
- * @uses \PhpAiToolkit\TreeGuard\Analysis\CaseConventionMatcher
- * @uses \PhpAiToolkit\TreeGuard\Analysis\ChildCountInspector
- * @uses \PhpAiToolkit\TreeGuard\Analysis\DepthInspector
- * @uses \PhpAiToolkit\TreeGuard\Analysis\DirNameInspector
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListingReader
- * @uses \PhpAiToolkit\TreeGuard\Analysis\DirectoryPatternMatcher
- * @uses \PhpAiToolkit\TreeGuard\Analysis\DirectoryRuleInspector
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryTreeScanner
- * @uses \PhpAiToolkit\TreeGuard\Analysis\EmptyDirectoryInspector
- * @uses \PhpAiToolkit\TreeGuard\Analysis\FileNameInspector
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\PathInclusionPolicy
- * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\TreeGuard\Analysis\RequiredFileInspector
- * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig
- * @uses \PhpAiToolkit\TreeGuard\Analysis\TotalFileCountInspector
- * @uses \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver
- * @uses \PhpAiToolkit\TreeGuard\Analysis\Violation
+ * @covers \Toolkit\TreeGuard\Analysis\TreeGuardAnalyzer
+ * @uses \Toolkit\TreeGuard\Analysis\AnalysisResult
+ * @uses \Toolkit\TreeGuard\Analysis\CaseConventionMatcher
+ * @uses \Toolkit\TreeGuard\Analysis\ChildCountInspector
+ * @uses \Toolkit\TreeGuard\Analysis\DepthInspector
+ * @uses \Toolkit\TreeGuard\Analysis\DirNameInspector
+ * @uses \Toolkit\TreeGuard\Filesystem\DirectoryListing
+ * @uses \Toolkit\TreeGuard\Filesystem\DirectoryListingReader
+ * @uses \Toolkit\TreeGuard\Analysis\DirectoryPatternMatcher
+ * @uses \Toolkit\TreeGuard\Analysis\DirectoryRuleInspector
+ * @uses \Toolkit\TreeGuard\Filesystem\DirectoryTreeScanner
+ * @uses \Toolkit\TreeGuard\Analysis\EmptyDirectoryInspector
+ * @uses \Toolkit\TreeGuard\Analysis\FileNameInspector
+ * @uses \Toolkit\TreeGuard\Filesystem\PathInclusionPolicy
+ * @uses \Toolkit\TreeGuard\Config\ReportConfig
+ * @uses \Toolkit\TreeGuard\Analysis\RequiredFileInspector
+ * @uses \Toolkit\TreeGuard\Config\RuleConfig
+ * @uses \Toolkit\TreeGuard\Analysis\TotalFileCountInspector
+ * @uses \Toolkit\TreeGuard\Config\TreeGuardConfig
+ * @uses \Toolkit\TreeGuard\Filesystem\TreeGuardPathResolver
+ * @uses \Toolkit\TreeGuard\Analysis\Violation
  */
 #[CoversClass(TreeGuardAnalyzer::class)]
 #[UsesClass(AnalysisResult::class)]

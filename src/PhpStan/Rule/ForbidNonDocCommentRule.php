@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule;
+namespace Toolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\NonDocCommentTokenAnalyzer;
-use PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\FileNode;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
+use Toolkit\PhpStan\Rule\PhpDoc\NonDocCommentTokenAnalyzer;
+use Toolkit\PhpStan\Rule\Shared\FileTokenParser;
 
 /**
  * @implements Rule<FileNode>

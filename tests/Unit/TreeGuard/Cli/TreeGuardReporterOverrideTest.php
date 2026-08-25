@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Cli;
 
-use PhpAiToolkit\TreeGuard\Cli\TreeGuardReporterOverride;
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
-use PhpAiToolkit\TreeGuard\Config\RuleConfig;
-use PhpAiToolkit\TreeGuard\Config\TreeGuardConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Cli\TreeGuardReporterOverride;
+use Toolkit\TreeGuard\Config\ReportConfig;
+use Toolkit\TreeGuard\Config\RuleConfig;
+use Toolkit\TreeGuard\Config\TreeGuardConfig;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Cli\TreeGuardReporterOverride
- * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig
- * @uses \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig
+ * @covers \Toolkit\TreeGuard\Cli\TreeGuardReporterOverride
+ * @uses \Toolkit\TreeGuard\Config\ReportConfig
+ * @uses \Toolkit\TreeGuard\Config\RuleConfig
+ * @uses \Toolkit\TreeGuard\Config\TreeGuardConfig
  */
 #[CoversClass(TreeGuardReporterOverride::class)]
 #[UsesClass(ReportConfig::class)]

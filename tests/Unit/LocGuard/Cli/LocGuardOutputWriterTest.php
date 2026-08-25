@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Cli;
 
-use PhpAiToolkit\LocGuard\Cli\LocGuardOutputWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Cli\LocGuardOutputWriter;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Cli\LocGuardOutputWriter
+ * @covers \Toolkit\LocGuard\Cli\LocGuardOutputWriter
  */
 #[CoversClass(LocGuardOutputWriter::class)]
 final class LocGuardOutputWriterTest extends TestCase

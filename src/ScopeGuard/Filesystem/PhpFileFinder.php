@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Filesystem;
+namespace Toolkit\ScopeGuard\Filesystem;
 
 use function ksort;
 
-use PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
+use Toolkit\ScopeGuard\Config\ScopeGuardConfig;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
  * Finds PHP files from configured source paths.

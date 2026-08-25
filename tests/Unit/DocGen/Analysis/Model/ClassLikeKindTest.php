@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Model;
 
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Model\ClassLikeKind;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind
+ * @covers \Toolkit\DocGen\Analysis\Model\ClassLikeKind
  */
 #[CoversClass(ClassLikeKind::class)]
 final class ClassLikeKindTest extends TestCase

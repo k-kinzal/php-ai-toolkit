@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ClassDesign;
 
-use PhpAiToolkit\PhpStan\Rule\ClassDesign\ProtectedMethodPolicy;
-use PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
 use PhpParser\Node\Stmt\Class_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ClassDesign\ProtectedMethodPolicy;
+use Toolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\ProtectedMethodPolicy
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector
+ * @covers \Toolkit\PhpStan\Rule\ClassDesign\ProtectedMethodPolicy
+ * @uses \Toolkit\PhpStan\Rule\Shared\OverrideAttributeDetector
  */
 #[CoversClass(ProtectedMethodPolicy::class)]
 #[UsesClass(OverrideAttributeDetector::class)]

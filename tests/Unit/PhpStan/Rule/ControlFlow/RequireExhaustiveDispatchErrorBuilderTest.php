@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 use PHPStan\Rules\FileRuleError;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\NullType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder;
+use Toolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors
+ * @covers \Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\Shared\LineOrderedErrors
  */
 #[CoversClass(RequireExhaustiveDispatchErrorBuilder::class)]
 #[UsesClass(LineOrderedErrors::class)]

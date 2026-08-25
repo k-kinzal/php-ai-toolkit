@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Type;
+namespace Toolkit\PhpStan\Rule\Type;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\Rules\IdentifierRuleError;
+use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 
 /**
  * Collects mixed from explicit local @var declarations.

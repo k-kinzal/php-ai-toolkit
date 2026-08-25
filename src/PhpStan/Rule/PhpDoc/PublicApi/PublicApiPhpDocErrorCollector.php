@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi;
+namespace Toolkit\PhpStan\Rule\PhpDoc\PublicApi;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 use PHPStan\Rules\IdentifierRuleError;
+use Toolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 
 /**
  * Collects missing PHPDoc errors across public API declaration surfaces.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Reporting;
+namespace Toolkit\TreeGuard\Reporting;
 
 use function implode;
 

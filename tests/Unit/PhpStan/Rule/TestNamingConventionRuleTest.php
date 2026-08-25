@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\TestNamingConventionRule;
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\TestNamingConventionRule;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @extends RuleTestCase<TestNamingConventionRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\TestNamingConventionRule
+ * @covers \Toolkit\PhpStan\Rule\TestNamingConventionRule
  */
 #[CoversClass(TestNamingConventionRule::class)]
 #[Medium]

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\TestAssertion;
+namespace Toolkit\PhpStan\Rule\TestAssertion;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\CallArgumentResolver;
-use PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver;
-use PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver;
-use PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\IdentifierRuleError;
+use Toolkit\PhpStan\Rule\Shared\CallArgumentResolver;
+use Toolkit\PhpStan\Rule\Shared\CallMethodNameResolver;
+use Toolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver;
+use Toolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher;
 
 /**
  * Detects prohibited PHPUnit mock API calls in test classes.

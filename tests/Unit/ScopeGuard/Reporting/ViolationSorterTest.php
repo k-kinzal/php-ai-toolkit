@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Reporting;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Violation;
-use PhpAiToolkit\ScopeGuard\Config\ReportConfig;
-use PhpAiToolkit\ScopeGuard\Reporting\ViolationFieldComparator;
-use PhpAiToolkit\ScopeGuard\Reporting\ViolationSorter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Violation;
+use Toolkit\ScopeGuard\Config\ReportConfig;
+use Toolkit\ScopeGuard\Reporting\ViolationFieldComparator;
+use Toolkit\ScopeGuard\Reporting\ViolationSorter;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Reporting\ViolationSorter
- * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Violation
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationFieldComparator
+ * @covers \Toolkit\ScopeGuard\Reporting\ViolationSorter
+ * @uses \Toolkit\ScopeGuard\Config\ReportConfig
+ * @uses \Toolkit\ScopeGuard\Analysis\Violation
+ * @uses \Toolkit\ScopeGuard\Reporting\ViolationFieldComparator
  */
 #[CoversClass(ViolationSorter::class)]
 #[UsesClass(ReportConfig::class)]

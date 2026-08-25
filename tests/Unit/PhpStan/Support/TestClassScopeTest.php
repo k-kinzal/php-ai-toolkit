@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Support;
 
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Analyser\Scope;
 use PHPStan\Testing\PHPStanTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Support\TestClassScope
+ * @covers \Toolkit\PhpStan\Support\TestClassScope
  */
 #[CoversClass(TestClassScope::class)]
 #[Medium]
@@ -33,7 +33,7 @@ final class TestClassScopeTest extends PHPStanTestCase
     {
         $scope = self::createStub(Scope::class);
         $scope->method('getClassReflection')->willReturn(
-            self::createReflectionProvider()->getClass('PhpAiToolkit\PhpStan\Support\TestClassScope')
+            self::createReflectionProvider()->getClass('Toolkit\PhpStan\Support\TestClassScope')
         );
 
         $testClassScope = new TestClassScope();
@@ -79,7 +79,7 @@ final class TestClassScopeTest extends PHPStanTestCase
     {
         $scope = self::createStub(Scope::class);
         $scope->method('getClassReflection')->willReturn(
-            self::createReflectionProvider()->getClass('PhpAiToolkit\PhpStan\Support\TestClassScope')
+            self::createReflectionProvider()->getClass('Toolkit\PhpStan\Support\TestClassScope')
         );
 
         $testClassScope = new TestClassScope();

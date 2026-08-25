@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render;
 
-use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
-use PhpAiToolkit\DocGen\Render\TypeRenderContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Render\TypeRenderContext;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\TypeRenderContext
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
+ * @covers \Toolkit\DocGen\Render\TypeRenderContext
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
  */
 #[CoversClass(TypeRenderContext::class)]
 #[UsesClass(SymbolTable::class)]

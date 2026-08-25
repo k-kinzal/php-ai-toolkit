@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter;
+namespace Toolkit\PhpUnit\TestReporter;
 
 use function preg_match_all;
 use function preg_quote;

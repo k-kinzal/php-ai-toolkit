@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Model;
 
-use PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Model\ConstantDoc;
+use Toolkit\DocGen\Analysis\Model\DocBlock;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
+ * @covers \Toolkit\DocGen\Analysis\Model\ConstantDoc
+ * @uses \Toolkit\DocGen\Analysis\Model\DocBlock
  */
 #[CoversClass(ConstantDoc::class)]
 #[UsesClass(DocBlock::class)]

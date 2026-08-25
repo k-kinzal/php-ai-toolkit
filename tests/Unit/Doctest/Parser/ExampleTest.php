@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Parser;
 
-use PhpAiToolkit\Doctest\Parser\Example;
-use PhpAiToolkit\Doctest\Scanner\Target;
-use PhpAiToolkit\Doctest\Scanner\TargetKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Parser\Example;
+use Toolkit\Doctest\Scanner\Target;
+use Toolkit\Doctest\Scanner\TargetKind;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Parser\Example
- * @uses \PhpAiToolkit\Doctest\Scanner\Target
+ * @covers \Toolkit\Doctest\Parser\Example
+ * @uses \Toolkit\Doctest\Scanner\Target
  */
 #[CoversClass(Example::class)]
 #[UsesClass(Target::class)]

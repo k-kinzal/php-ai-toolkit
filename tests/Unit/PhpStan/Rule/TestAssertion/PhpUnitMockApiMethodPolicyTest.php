@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiMethodPolicy;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiMethodPolicy;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiMethodPolicy
+ * @covers \Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiMethodPolicy
  */
 #[CoversClass(PhpUnitMockApiMethodPolicy::class)]
 final class PhpUnitMockApiMethodPolicyTest extends TestCase

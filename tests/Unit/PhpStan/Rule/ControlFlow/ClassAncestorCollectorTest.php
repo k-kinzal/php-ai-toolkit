@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Testing\PHPStanTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use Tests\Fixture\RequireExhaustiveDispatch\MasterCard;
 use Tests\Fixture\RequireExhaustiveDispatch\Payment;
+use Toolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector
+ * @covers \Toolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector
  */
 #[CoversClass(ClassAncestorCollector::class)]
 #[Medium]

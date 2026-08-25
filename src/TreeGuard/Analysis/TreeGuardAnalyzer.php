@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Analysis;
+namespace Toolkit\TreeGuard\Analysis;
 
 use function array_merge;
 
-use PhpAiToolkit\TreeGuard\Config\TreeGuardConfig;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryTreeScanner;
+use Toolkit\TreeGuard\Config\TreeGuardConfig;
+use Toolkit\TreeGuard\Filesystem\DirectoryTreeScanner;
 
 /**
  * Runs TreeGuard analysis across all configured paths and rules.

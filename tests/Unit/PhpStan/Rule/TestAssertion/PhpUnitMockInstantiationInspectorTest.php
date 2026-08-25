@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockInstantiationInspector;
 use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiErrorBuilder;
+use Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockInstantiationInspector;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockInstantiationInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiErrorBuilder
+ * @covers \Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockInstantiationInspector
+ * @uses \Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiErrorBuilder
  */
 #[CoversClass(PhpUnitMockInstantiationInspector::class)]
 #[UsesClass(PhpUnitMockApiErrorBuilder::class)]

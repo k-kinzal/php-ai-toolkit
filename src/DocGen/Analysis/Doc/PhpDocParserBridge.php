@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Doc;
+namespace Toolkit\DocGen\Analysis\Doc;
 
 use function array_merge;
 use function class_exists;

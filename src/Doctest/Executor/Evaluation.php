@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Executor;
+namespace Toolkit\Doctest\Executor;
 
 use Throwable;
 

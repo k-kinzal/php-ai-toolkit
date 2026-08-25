@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Reporting;
+namespace Toolkit\TreeGuard\Reporting;
 
 use function array_map;
 use function json_encode;
@@ -10,9 +10,9 @@ use function json_encode;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 
-use PhpAiToolkit\TreeGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\TreeGuard\Analysis\Violation;
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
+use Toolkit\TreeGuard\Analysis\AnalysisResult;
+use Toolkit\TreeGuard\Analysis\Violation;
+use Toolkit\TreeGuard\Config\ReportConfig;
 
 /**
  * Machine-readable JSON TreeGuard reporter.

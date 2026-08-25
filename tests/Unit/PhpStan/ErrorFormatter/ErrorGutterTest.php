@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\ErrorFormatter;
 
-use PhpAiToolkit\PhpStan\ErrorFormatter\ErrorGutter;
 use PHPStan\Analyser\Error;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\ErrorFormatter\ErrorGutter;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\ErrorGutter
+ * @covers \Toolkit\PhpStan\ErrorFormatter\ErrorGutter
  */
 #[CoversClass(ErrorGutter::class)]
 final class ErrorGutterTest extends TestCase

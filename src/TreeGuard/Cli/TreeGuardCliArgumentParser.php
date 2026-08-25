@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Cli;
-
-use PhpAiToolkit\TreeGuard\TreeGuardException;
+namespace Toolkit\TreeGuard\Cli;
 
 use function sprintf;
+
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
  * Parses TreeGuard command-line arguments.

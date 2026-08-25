@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen;
 
-use PhpAiToolkit\DocGen\DocGenException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\DocGenException;
 
 /**
- * @covers \PhpAiToolkit\DocGen\DocGenException
+ * @covers \Toolkit\DocGen\DocGenException
  */
 #[CoversClass(DocGenException::class)]
 final class DocGenExceptionTest extends TestCase

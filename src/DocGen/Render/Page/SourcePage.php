@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page;
+namespace Toolkit\DocGen\Render\Page;
 
 use function explode;
-
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
-use PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
-use PhpAiToolkit\DocGen\Render\PageChrome;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-
 use function sprintf;
 use function str_replace;
+
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Render\Diff\DiffBanner;
+use Toolkit\DocGen\Render\Diff\SourceDiffHtml;
+use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
+use Toolkit\DocGen\Render\Page\Component\SidebarHtml;
+use Toolkit\DocGen\Render\PageChrome;
+use Toolkit\DocGen\Render\RenderKit;
 
 /**
  * Renders one highlighted source file with linkable line anchors.

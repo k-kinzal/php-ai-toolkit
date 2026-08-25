@@ -1,7 +1,10 @@
 includes:
-    - extension-src.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - extension.neon
+    - rules.neon
 
 parameters:
+    level: max
     paths:
         - src
         - tests
@@ -9,7 +12,7 @@ parameters:
         - tests/Fixture
     bootstrapFiles:
         - phpstan-stubs/bootstrap.php
-    customRules:
+    toolkit:
         broadCatchAllowedPaths:
             - 'src/PhpStan/Rule/Shared/FileTokenParser.php'
             # A forked documentation worker is a process boundary: whatever
@@ -48,13 +51,13 @@ parameters:
             path: tests/Unit/PhpStan/ErrorFormatter/AiRulesAiErrorFormatterTest.php
         -
             identifier: phpstanApi.class
-            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesErrorFormatterTest.php
+            path: tests/Unit/PhpStan/ErrorFormatter/AiErrorFormatterTest.php
         -
             identifier: phpstanApi.method
-            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesErrorFormatterTest.php
+            path: tests/Unit/PhpStan/ErrorFormatter/AiErrorFormatterTest.php
         -
             identifier: phpstanApi.constructor
-            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesErrorFormatterTest.php
+            path: tests/Unit/PhpStan/ErrorFormatter/AiErrorFormatterTest.php
         -
             identifier: phpstanApi.class
             path: tests/Unit/PhpStan/ErrorFormatter/AiRulesHumanErrorFormatterTest.php

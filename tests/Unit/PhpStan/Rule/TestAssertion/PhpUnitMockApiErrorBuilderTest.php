@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiErrorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiErrorBuilder;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiErrorBuilder
+ * @covers \Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiErrorBuilder
  */
 #[CoversClass(PhpUnitMockApiErrorBuilder::class)]
 final class PhpUnitMockApiErrorBuilderTest extends TestCase

@@ -68,7 +68,7 @@ Customize which namespaces are considered test classes:
 
 ```neon
 parameters:
-    customRules:
+    toolkit:
         testNamespacePrefixes:
             - 'Tests'
 ```

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Installer\Cli\Command;
 
-use PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Installer\Cli\Command\SkillInstallationWriter;
 
 /**
- * @covers \PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter
+ * @covers \Toolkit\Installer\Cli\Command\SkillInstallationWriter
  */
 #[CoversClass(SkillInstallationWriter::class)]
 final class SkillInstallationWriterTest extends TestCase

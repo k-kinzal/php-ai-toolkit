@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\Token;
 
-use PhpAiToolkit\LocGuard\Analysis\Token\CodeTokenLineResolver;
-use PhpAiToolkit\LocGuard\Analysis\Token\TokenLineCounter;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\Token\CodeTokenLineResolver;
+use Toolkit\LocGuard\Analysis\Token\TokenLineCounter;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\Token\TokenLineCounter
- * @uses \PhpAiToolkit\LocGuard\Analysis\Token\CodeTokenLineResolver
+ * @covers \Toolkit\LocGuard\Analysis\Token\TokenLineCounter
+ * @uses \Toolkit\LocGuard\Analysis\Token\CodeTokenLineResolver
  */
 #[CoversClass(TokenLineCounter::class)]
 #[UsesClass(CodeTokenLineResolver::class)]

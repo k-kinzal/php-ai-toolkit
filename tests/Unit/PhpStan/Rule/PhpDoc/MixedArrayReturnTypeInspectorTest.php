@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\MixedArrayReturnTypeInspector;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\PhpDoc\MixedArrayReturnTypeInspector;
+use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\MixedArrayReturnTypeInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
+ * @covers \Toolkit\PhpStan\Rule\PhpDoc\MixedArrayReturnTypeInspector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
  */
 #[CoversClass(MixedArrayReturnTypeInspector::class)]
 #[UsesClass(RulePhpDocParser::class)]

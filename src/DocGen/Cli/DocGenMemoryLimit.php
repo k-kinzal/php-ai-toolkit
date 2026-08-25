@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Cli;
+namespace Toolkit\DocGen\Cli;
 
 use function ini_get;
 use function ini_set;

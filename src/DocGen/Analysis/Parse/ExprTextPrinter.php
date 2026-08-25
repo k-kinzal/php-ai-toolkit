@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Parse;
+namespace Toolkit\DocGen\Analysis\Parse;
 
 use function mb_strlen;
 use function mb_substr;

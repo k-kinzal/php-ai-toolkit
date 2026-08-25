@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Parse;
 
-use PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers
+ * @covers \Toolkit\DocGen\Analysis\Parse\ParameterModifiers
  */
 #[CoversClass(ParameterModifiers::class)]
 final class ParameterModifiersTest extends TestCase

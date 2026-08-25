@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Analysis;
+namespace Toolkit\TreeGuard\Analysis;
 
 use function count;
-
-use PhpAiToolkit\TreeGuard\Config\RuleConfig;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
-
 use function sprintf;
+
+use Toolkit\TreeGuard\Config\RuleConfig;
+use Toolkit\TreeGuard\Filesystem\DirectoryListing;
 
 /**
  * Checks the direct file and subdirectory count limits of one directory.

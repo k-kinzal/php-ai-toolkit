@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Analysis;
-
-use PhpAiToolkit\TreeGuard\Config\RuleConfig;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
-use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
+namespace Toolkit\TreeGuard\Analysis;
 
 use function sprintf;
 use function strlen;
 use function substr;
 use function substr_count;
+
+use Toolkit\TreeGuard\Config\RuleConfig;
+use Toolkit\TreeGuard\Filesystem\DirectoryListing;
+use Toolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 
 /**
  * Checks the nesting depth limit below one matched directory.

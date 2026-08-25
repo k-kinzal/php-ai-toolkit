@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Config;
+namespace Toolkit\LocGuard\Config;
 
 /**
  * Reporter selection and output ordering configuration.

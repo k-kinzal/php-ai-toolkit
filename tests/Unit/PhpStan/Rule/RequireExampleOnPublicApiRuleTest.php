@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\RequireExampleOnPublicApiRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\RequireExampleOnPublicApiRule;
 
 /**
  * @extends RuleTestCase<RequireExampleOnPublicApiRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\RequireExampleOnPublicApiRule
+ * @covers \Toolkit\PhpStan\Rule\RequireExampleOnPublicApiRule
  */
 #[CoversClass(RequireExampleOnPublicApiRule::class)]
 #[Medium]

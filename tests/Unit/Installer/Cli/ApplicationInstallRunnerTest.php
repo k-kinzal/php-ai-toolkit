@@ -8,34 +8,36 @@ use function file_put_contents;
 use function implode;
 use function mkdir;
 
-use PhpAiToolkit\Installer\Cli\ApplicationInstallRunner;
-use PhpAiToolkit\Installer\Cli\CliOutputWriter;
-use PhpAiToolkit\Installer\Cli\Command\AgentSkillDirectoryDetector;
-use PhpAiToolkit\Installer\Cli\Command\InstallCommand;
-use PhpAiToolkit\Installer\Cli\Command\PackageSkillDirectoryScanner;
-use PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator;
-use PhpAiToolkit\Installer\Cli\Command\SkillInstallationRunner;
-use PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter;
-use PhpAiToolkit\Installer\Cli\Command\SkillInstaller;
-use PhpAiToolkit\Installer\RelativePathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 use function sys_get_temp_dir;
+
+use Toolkit\Installer\Cli\ApplicationInstallRunner;
+use Toolkit\Installer\Cli\CliOutputWriter;
+use Toolkit\Installer\Cli\Command\AgentSkillDirectoryDetector;
+use Toolkit\Installer\Cli\Command\InstallCommand;
+use Toolkit\Installer\Cli\Command\PackageSkillDirectoryScanner;
+use Toolkit\Installer\Cli\Command\SkillFilesystemOperator;
+use Toolkit\Installer\Cli\Command\SkillInstallationRunner;
+use Toolkit\Installer\Cli\Command\SkillInstallationWriter;
+use Toolkit\Installer\Cli\Command\SkillInstaller;
+use Toolkit\Installer\RelativePathResolver;
+
 use function uniqid;
 
 /**
- * @covers \PhpAiToolkit\Installer\Cli\ApplicationInstallRunner
- * @uses \PhpAiToolkit\Installer\Cli\Command\AgentSkillDirectoryDetector
- * @uses \PhpAiToolkit\Installer\Cli\CliOutputWriter
- * @uses \PhpAiToolkit\Installer\Cli\Command\InstallCommand
- * @uses \PhpAiToolkit\Installer\Cli\Command\PackageSkillDirectoryScanner
- * @uses \PhpAiToolkit\Installer\RelativePathResolver
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstallationRunner
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstaller
+ * @covers \Toolkit\Installer\Cli\ApplicationInstallRunner
+ * @uses \Toolkit\Installer\Cli\Command\AgentSkillDirectoryDetector
+ * @uses \Toolkit\Installer\Cli\CliOutputWriter
+ * @uses \Toolkit\Installer\Cli\Command\InstallCommand
+ * @uses \Toolkit\Installer\Cli\Command\PackageSkillDirectoryScanner
+ * @uses \Toolkit\Installer\RelativePathResolver
+ * @uses \Toolkit\Installer\Cli\Command\SkillFilesystemOperator
+ * @uses \Toolkit\Installer\Cli\Command\SkillInstallationRunner
+ * @uses \Toolkit\Installer\Cli\Command\SkillInstallationWriter
+ * @uses \Toolkit\Installer\Cli\Command\SkillInstaller
  */
 #[CoversClass(ApplicationInstallRunner::class)]
 #[UsesClass(AgentSkillDirectoryDetector::class)]

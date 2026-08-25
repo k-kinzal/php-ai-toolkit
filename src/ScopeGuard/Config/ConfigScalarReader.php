@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Config;
+namespace Toolkit\ScopeGuard\Config;
 
 use function is_string;
-
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
-
 use function sprintf;
+
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
  * Reads scalar values from scope.yaml mappings with contextual error messages.

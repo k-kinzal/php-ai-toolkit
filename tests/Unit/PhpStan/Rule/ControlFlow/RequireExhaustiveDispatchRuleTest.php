@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchInspector;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchRule;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants;
+use Toolkit\PhpStan\Rule\ControlFlow\DispatchInspector;
+use Toolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver;
+use Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder;
+use Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchRule;
+use Toolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder;
 
 /**
  * @extends RuleTestCase<RequireExhaustiveDispatchRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchRule
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder
+ * @covers \Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchRule
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\DispatchInspector
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder
  */
 #[CoversClass(RequireExhaustiveDispatchRule::class)]
 #[UsesClass(ClosedTypeVariants::class)]

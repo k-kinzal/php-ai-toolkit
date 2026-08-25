@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Analysis;
-
-use PhpAiToolkit\TreeGuard\Config\RuleConfig;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
+namespace Toolkit\TreeGuard\Analysis;
 
 use function sprintf;
+
+use Toolkit\TreeGuard\Config\RuleConfig;
+use Toolkit\TreeGuard\Filesystem\DirectoryListing;
 
 /**
  * Checks that one directory is not empty after exclusions are applied.

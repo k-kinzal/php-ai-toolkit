@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Reporting;
 
-use PhpAiToolkit\LocGuard\Analysis\Violation;
-use PhpAiToolkit\LocGuard\Reporting\AiViolationAction;
-use PhpAiToolkit\LocGuard\Reporting\AiViolationFormatter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\Violation;
+use Toolkit\LocGuard\Reporting\AiViolationAction;
+use Toolkit\LocGuard\Reporting\AiViolationFormatter;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Reporting\AiViolationFormatter
- * @uses \PhpAiToolkit\LocGuard\Reporting\AiViolationAction
- * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ * @covers \Toolkit\LocGuard\Reporting\AiViolationFormatter
+ * @uses \Toolkit\LocGuard\Reporting\AiViolationAction
+ * @uses \Toolkit\LocGuard\Analysis\Violation
  */
 #[CoversClass(AiViolationFormatter::class)]
 #[UsesClass(AiViolationAction::class)]

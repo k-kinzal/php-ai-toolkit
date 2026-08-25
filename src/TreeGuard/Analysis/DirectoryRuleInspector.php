@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Analysis;
+namespace Toolkit\TreeGuard\Analysis;
 
 use function array_merge;
 
-use PhpAiToolkit\TreeGuard\Config\RuleConfig;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
+use Toolkit\TreeGuard\Config\RuleConfig;
+use Toolkit\TreeGuard\Filesystem\DirectoryListing;
 
 /**
  * Applies every constraint of one rule block to one matched directory.

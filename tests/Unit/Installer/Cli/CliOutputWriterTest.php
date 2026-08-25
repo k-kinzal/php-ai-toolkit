@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Installer\Cli;
 
-use PhpAiToolkit\Installer\Cli\CliOutputWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Installer\Cli\CliOutputWriter;
 
 /**
- * @covers \PhpAiToolkit\Installer\Cli\CliOutputWriter
+ * @covers \Toolkit\Installer\Cli\CliOutputWriter
  */
 #[CoversClass(CliOutputWriter::class)]
 final class CliOutputWriterTest extends TestCase

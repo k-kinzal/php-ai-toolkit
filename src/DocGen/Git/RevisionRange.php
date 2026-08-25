@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Git;
+namespace Toolkit\DocGen\Git;
 
 /**
  * The two revisions a diff site compares.

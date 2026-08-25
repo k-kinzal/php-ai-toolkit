@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpUnit\TestReporter\Legacy;
 
 use Override;
-use PhpAiToolkit\PhpUnit\TestReporter\Legacy\LegacyTestIssueFactory;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SebastianBergmann\Comparator\ComparisonFailure;
+use Toolkit\PhpUnit\TestReporter\Legacy\LegacyTestIssueFactory;
+use Toolkit\PhpUnit\TestReporter\TestIssue;
 
 /**
  * @coversNothing

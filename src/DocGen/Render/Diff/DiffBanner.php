@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Diff;
-
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Render\RenderKit;
+namespace Toolkit\DocGen\Render\Diff;
 
 use function sprintf;
+
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Render\RenderKit;
 
 /**
  * States on the page itself that a whole symbol was added or removed.

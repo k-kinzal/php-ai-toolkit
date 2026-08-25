@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Config;
 
-use PhpAiToolkit\DocGen\Config\DocGenConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Config\DocGenConfig;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Config\DocGenConfig
+ * @covers \Toolkit\DocGen\Config\DocGenConfig
  */
 #[CoversClass(DocGenConfig::class)]
 final class DocGenConfigTest extends TestCase

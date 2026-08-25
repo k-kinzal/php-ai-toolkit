@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass;
 
-use PhpAiToolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver
+ * @covers \Toolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver
  */
 #[CoversClass(ControlFlowTypeResolver::class)]
 final class ControlFlowTypeResolverTest extends TestCase

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Config;
 
-use PhpAiToolkit\ScopeGuard\Config\ConfigStringListReader;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Config\ConfigStringListReader;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Config\ConfigStringListReader
- * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ * @covers \Toolkit\ScopeGuard\Config\ConfigStringListReader
+ * @uses \Toolkit\ScopeGuard\ScopeGuardException
  */
 #[CoversClass(ConfigStringListReader::class)]
 #[UsesClass(ScopeGuardException::class)]

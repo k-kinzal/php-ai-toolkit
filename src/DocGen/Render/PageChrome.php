@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render;
-
-use PhpAiToolkit\DocGen\Render\Diff\DiffModeControl;
-use PhpAiToolkit\DocGen\Render\Social\SocialMeta;
+namespace Toolkit\DocGen\Render;
 
 use function sprintf;
+
+use Toolkit\DocGen\Render\Diff\DiffModeControl;
+use Toolkit\DocGen\Render\Social\SocialMeta;
 
 /**
  * Renders the shared document shell around every generated page.

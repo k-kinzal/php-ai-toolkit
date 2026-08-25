@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\ClassLikeMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader;
-use PhpAiToolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher;
-use PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -21,10 +18,14 @@ use const T_STRING;
 use const T_TRAIT;
 use const T_WHITESPACE;
 
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader;
+use Toolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher;
+use Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
+
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader
- * @uses \PhpAiToolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher
- * @uses \PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator
+ * @covers \Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader
+ * @uses \Toolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher
+ * @uses \Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator
  */
 #[CoversClass(ClassLikeDeclarationReader::class)]
 #[UsesClass(ClassLikeTokenMatcher::class)]

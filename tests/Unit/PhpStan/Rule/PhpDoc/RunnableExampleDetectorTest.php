@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\Doctest\Parser\Example;
-use PhpAiToolkit\Doctest\Parser\ExampleExtractor;
-use PhpAiToolkit\Doctest\Scanner\Target;
-use PhpAiToolkit\Doctest\Scanner\TargetKind;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\RunnableExampleDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Parser\Example;
+use Toolkit\Doctest\Parser\ExampleExtractor;
+use Toolkit\Doctest\Scanner\Target;
+use Toolkit\Doctest\Scanner\TargetKind;
+use Toolkit\PhpStan\Rule\PhpDoc\RunnableExampleDetector;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\RunnableExampleDetector
- * @uses \PhpAiToolkit\Doctest\Parser\Example
- * @uses \PhpAiToolkit\Doctest\Parser\ExampleExtractor
- * @uses \PhpAiToolkit\Doctest\Scanner\Target
- * @uses \PhpAiToolkit\Doctest\Scanner\TargetKind
+ * @covers \Toolkit\PhpStan\Rule\PhpDoc\RunnableExampleDetector
+ * @uses \Toolkit\Doctest\Parser\Example
+ * @uses \Toolkit\Doctest\Parser\ExampleExtractor
+ * @uses \Toolkit\Doctest\Scanner\Target
+ * @uses \Toolkit\Doctest\Scanner\TargetKind
  */
 #[CoversClass(RunnableExampleDetector::class)]
 #[UsesClass(Example::class)]

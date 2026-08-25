@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\PhpDoc;
+namespace Toolkit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathMatcher;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
@@ -12,6 +11,8 @@ use PHPStan\Rules\RuleErrorBuilder;
 
 use function sprintf;
 use function str_contains;
+
+use Toolkit\PhpStan\Rule\Shared\Path\RulePathMatcher;
 
 /**
  * Forbids generic arrays with mixed values in callable return PHPDoc.

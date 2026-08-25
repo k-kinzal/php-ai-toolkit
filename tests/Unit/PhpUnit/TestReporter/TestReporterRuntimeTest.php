@@ -4,43 +4,44 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter;
 
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueGutter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueHumanFormatter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation;
-use PhpAiToolkit\PhpUnit\TestReporter\TestFailureLineResolver;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueInput;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader;
-use PhpAiToolkit\PhpUnit\TestReporter\TestReporterRuntime;
-use PhpAiToolkit\Shared\AgentDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 use function putenv;
 
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueGutter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueHumanFormatter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation;
+use Toolkit\PhpUnit\TestReporter\TestFailureLineResolver;
+use Toolkit\PhpUnit\TestReporter\TestIssue;
+use Toolkit\PhpUnit\TestReporter\TestIssueCollector;
+use Toolkit\PhpUnit\TestReporter\TestIssueInput;
+use Toolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver;
+use Toolkit\PhpUnit\TestReporter\TestIssueSourceReader;
+use Toolkit\PhpUnit\TestReporter\TestReporterRuntime;
+use Toolkit\Shared\AgentDetector;
+
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestReporterRuntime
- * @uses \PhpAiToolkit\Shared\AgentDetector
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestFailureLineResolver
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssue
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueGutter
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueHumanFormatter
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssueInput
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation
+ * @covers \Toolkit\PhpUnit\TestReporter\TestReporterRuntime
+ * @uses \Toolkit\Shared\AgentDetector
+ * @uses \Toolkit\PhpUnit\TestReporter\TestFailureLineResolver
+ * @uses \Toolkit\PhpUnit\TestReporter\TestIssue
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter
+ * @uses \Toolkit\PhpUnit\TestReporter\TestIssueCollector
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueGutter
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueHumanFormatter
+ * @uses \Toolkit\PhpUnit\TestReporter\TestIssueInput
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter
+ * @uses \Toolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver
+ * @uses \Toolkit\PhpUnit\TestReporter\TestIssueSourceReader
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation
  */
 #[CoversClass(TestReporterRuntime::class)]
 #[UsesClass(AgentDetector::class)]

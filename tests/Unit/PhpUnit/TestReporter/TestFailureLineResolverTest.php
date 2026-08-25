@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter;
 
-use PhpAiToolkit\PhpUnit\TestReporter\TestFailureLineResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpUnit\TestReporter\TestFailureLineResolver;
 
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestFailureLineResolver
+ * @covers \Toolkit\PhpUnit\TestReporter\TestFailureLineResolver
  */
 #[CoversClass(TestFailureLineResolver::class)]
 final class TestFailureLineResolverTest extends TestCase

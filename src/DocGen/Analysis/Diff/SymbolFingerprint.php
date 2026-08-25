@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Diff;
+namespace Toolkit\DocGen\Analysis\Diff;
 
 use function implode;
-
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
-use PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\MethodDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
-
 use function preg_replace;
+
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\ConstantDoc;
+use Toolkit\DocGen\Analysis\Model\DocBlock;
+use Toolkit\DocGen\Analysis\Model\EnumCaseDoc;
+use Toolkit\DocGen\Analysis\Model\FunctionDoc;
+use Toolkit\DocGen\Analysis\Model\MethodDoc;
+use Toolkit\DocGen\Analysis\Model\ParameterDoc;
+use Toolkit\DocGen\Analysis\Model\PropertyDoc;
+use Toolkit\DocGen\Analysis\Model\TypeSignature;
+
 use function trim;
 
 /**

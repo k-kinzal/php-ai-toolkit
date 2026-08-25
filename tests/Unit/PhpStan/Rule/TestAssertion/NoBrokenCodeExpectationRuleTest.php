@@ -5,32 +5,32 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\Shared\CallArgumentResolver;
-use PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver;
-use PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver;
-use PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher;
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier;
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\ExpectExceptionCallInspector;
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationRule;
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\Shared\CallArgumentResolver;
+use Toolkit\PhpStan\Rule\Shared\CallMethodNameResolver;
+use Toolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver;
+use Toolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher;
+use Toolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier;
+use Toolkit\PhpStan\Rule\TestAssertion\ExpectExceptionCallInspector;
+use Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder;
+use Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationRule;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @extends RuleTestCase<NoBrokenCodeExpectationRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationRule
- * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CallArgumentResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\ExpectExceptionCallInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
- * @uses \PhpAiToolkit\PhpStan\Support\TestClassScope
+ * @covers \Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationRule
+ * @uses \Toolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier
+ * @uses \Toolkit\PhpStan\Rule\Shared\CallArgumentResolver
+ * @uses \Toolkit\PhpStan\Rule\Shared\CallMethodNameResolver
+ * @uses \Toolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver
+ * @uses \Toolkit\PhpStan\Rule\TestAssertion\ExpectExceptionCallInspector
+ * @uses \Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
+ * @uses \Toolkit\PhpStan\Support\TestClassScope
  */
 #[CoversClass(NoBrokenCodeExpectationRule::class)]
 #[UsesClass(BrokenCodeExceptionClassifier::class)]

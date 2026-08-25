@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Signature;
 
-use PhpAiToolkit\DocGen\Render\Signature\SourceDigestIndex;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Render\Signature\SourceDigestIndex;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\Signature\SourceDigestIndex
+ * @covers \Toolkit\DocGen\Render\Signature\SourceDigestIndex
  */
 #[CoversClass(SourceDigestIndex::class)]
 final class SourceDigestIndexTest extends TestCase

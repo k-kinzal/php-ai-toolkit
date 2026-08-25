@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Type;
 
-use PhpAiToolkit\PhpStan\Rule\Type\ConcreteMixedTypeInspector;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Type\ConcreteMixedTypeInspector;
 
 #[CoversClass(ConcreteMixedTypeInspector::class)]
 final class ConcreteMixedTypeInspectorTest extends TestCase

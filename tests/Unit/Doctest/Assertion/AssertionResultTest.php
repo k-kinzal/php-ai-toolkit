@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Assertion;
 
-use PhpAiToolkit\Doctest\Assertion\Assertion;
-use PhpAiToolkit\Doctest\Assertion\AssertionKind;
-use PhpAiToolkit\Doctest\Assertion\AssertionResult;
-use PhpAiToolkit\Doctest\Assertion\Statement;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use Toolkit\Doctest\Assertion\Assertion;
+use Toolkit\Doctest\Assertion\AssertionKind;
+use Toolkit\Doctest\Assertion\AssertionResult;
+use Toolkit\Doctest\Assertion\Statement;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Assertion\AssertionResult
- * @uses \PhpAiToolkit\Doctest\Assertion\Statement
- * @uses \PhpAiToolkit\Doctest\Assertion\Assertion
+ * @covers \Toolkit\Doctest\Assertion\AssertionResult
+ * @uses \Toolkit\Doctest\Assertion\Statement
+ * @uses \Toolkit\Doctest\Assertion\Assertion
  */
 #[CoversClass(AssertionResult::class)]
 #[UsesClass(Statement::class)]

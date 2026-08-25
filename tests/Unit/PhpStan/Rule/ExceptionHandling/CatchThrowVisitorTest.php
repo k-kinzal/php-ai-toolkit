@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor;
-use PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\Throw_;
@@ -15,10 +13,12 @@ use PhpParser\NodeTraverser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor;
+use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression
+ * @covers \Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor
+ * @uses \Toolkit\PhpStan\Rule\Shared\ThrownExpression
  */
 #[CoversClass(CatchThrowVisitor::class)]
 #[UsesClass(ThrownExpression::class)]

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\Token;
 
-use PhpAiToolkit\LocGuard\Analysis\Token\CodeTokenLineResolver;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -14,8 +13,10 @@ use const T_OPEN_TAG;
 use const T_STRING;
 use const T_WHITESPACE;
 
+use Toolkit\LocGuard\Analysis\Token\CodeTokenLineResolver;
+
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\Token\CodeTokenLineResolver
+ * @covers \Toolkit\LocGuard\Analysis\Token\CodeTokenLineResolver
  */
 #[CoversClass(CodeTokenLineResolver::class)]
 final class CodeTokenLineResolverTest extends TestCase

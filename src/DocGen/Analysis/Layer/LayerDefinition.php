@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Layer;
+namespace Toolkit\DocGen\Analysis\Layer;
 
 /**
  * One deptrac layer with its collector definitions.

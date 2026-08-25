@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Reporting;
-
-use PhpAiToolkit\TreeGuard\Analysis\Violation;
+namespace Toolkit\TreeGuard\Reporting;
 
 use function strcmp;
+
+use Toolkit\TreeGuard\Analysis\Violation;
 
 /**
  * Compares TreeGuard violations by one configured field.

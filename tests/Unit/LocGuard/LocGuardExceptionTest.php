@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard;
 
-use PhpAiToolkit\LocGuard\LocGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Toolkit\LocGuard\LocGuardException;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\LocGuardException
+ * @covers \Toolkit\LocGuard\LocGuardException
  */
 #[CoversClass(LocGuardException::class)]
 final class LocGuardExceptionTest extends TestCase

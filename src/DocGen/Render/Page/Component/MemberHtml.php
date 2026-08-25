@@ -2,25 +2,24 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page\Component;
+namespace Toolkit\DocGen\Render\Page\Component;
 
 use function in_array;
-
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
-use PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\MethodDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
-use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
-use PhpAiToolkit\DocGen\Render\HtmlText;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-use PhpAiToolkit\DocGen\Render\TypeRenderContext;
-
 use function sprintf;
+
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\ConstantDoc;
+use Toolkit\DocGen\Analysis\Model\DocBlock;
+use Toolkit\DocGen\Analysis\Model\EnumCaseDoc;
+use Toolkit\DocGen\Analysis\Model\MethodDoc;
+use Toolkit\DocGen\Analysis\Model\ParameterDoc;
+use Toolkit\DocGen\Analysis\Model\PropertyDoc;
+use Toolkit\DocGen\Analysis\Model\TypeSignature;
+use Toolkit\DocGen\Analysis\Reference\Usage;
+use Toolkit\DocGen\Render\HtmlText;
+use Toolkit\DocGen\Render\RenderKit;
+use Toolkit\DocGen\Render\TypeRenderContext;
 
 /**
  * Renders one member section of a class-like page.

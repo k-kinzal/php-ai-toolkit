@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Reporting;
 
-use PhpAiToolkit\TreeGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\TreeGuard\Analysis\Violation;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
-use PhpAiToolkit\TreeGuard\Reporting\AiReportSummary;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Analysis\AnalysisResult;
+use Toolkit\TreeGuard\Analysis\Violation;
+use Toolkit\TreeGuard\Filesystem\DirectoryListing;
+use Toolkit\TreeGuard\Reporting\AiReportSummary;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Reporting\AiReportSummary
- * @uses \PhpAiToolkit\TreeGuard\Analysis\AnalysisResult
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing
- * @uses \PhpAiToolkit\TreeGuard\Analysis\Violation
+ * @covers \Toolkit\TreeGuard\Reporting\AiReportSummary
+ * @uses \Toolkit\TreeGuard\Analysis\AnalysisResult
+ * @uses \Toolkit\TreeGuard\Filesystem\DirectoryListing
+ * @uses \Toolkit\TreeGuard\Analysis\Violation
  */
 #[CoversClass(AiReportSummary::class)]
 #[UsesClass(AnalysisResult::class)]

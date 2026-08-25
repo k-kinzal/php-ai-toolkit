@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Diff;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher;
-use PhpAiToolkit\DocGen\Analysis\Diff\ParameterMerger;
-use PhpAiToolkit\DocGen\Analysis\Diff\SymbolFingerprint;
-use PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Diff\DiffIndex;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\LcsMatcher;
+use Toolkit\DocGen\Analysis\Diff\ParameterMerger;
+use Toolkit\DocGen\Analysis\Diff\SymbolFingerprint;
+use Toolkit\DocGen\Analysis\Model\ParameterDoc;
+use Toolkit\DocGen\Analysis\Model\TypeSignature;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Diff\ParameterMerger
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\SymbolFingerprint
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ * @covers \Toolkit\DocGen\Analysis\Diff\ParameterMerger
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffIndex
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Analysis\Diff\LcsMatcher
+ * @uses \Toolkit\DocGen\Analysis\Model\ParameterDoc
+ * @uses \Toolkit\DocGen\Analysis\Diff\SymbolFingerprint
+ * @uses \Toolkit\DocGen\Analysis\Model\TypeSignature
  */
 #[CoversClass(ParameterMerger::class)]
 #[UsesClass(DiffIndex::class)]

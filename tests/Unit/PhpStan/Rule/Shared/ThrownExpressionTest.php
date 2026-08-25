@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Shared;
 
-use PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge;
-use PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression;
 use PhpParser\Node;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\Throw_;
@@ -17,10 +15,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
+ * @covers \Toolkit\PhpStan\Rule\Shared\ThrownExpression
+ * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  */
 #[CoversClass(ThrownExpression::class)]
 #[UsesClass(PhpParserBridge::class)]

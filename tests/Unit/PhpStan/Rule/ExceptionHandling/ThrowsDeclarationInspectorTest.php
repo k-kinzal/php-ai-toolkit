@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowsDeclarationInspector;
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite;
 use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Testing\PHPStanTestCase;
@@ -13,10 +11,12 @@ use PHPStan\Type\ObjectType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowsDeclarationInspector;
+use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowsDeclarationInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite
+ * @covers \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowsDeclarationInspector
+ * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite
  */
 #[CoversClass(ThrowsDeclarationInspector::class)]
 #[UsesClass(ThrowSite::class)]

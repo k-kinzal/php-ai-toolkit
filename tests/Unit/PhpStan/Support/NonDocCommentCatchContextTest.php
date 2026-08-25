@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Support;
 
-use PhpAiToolkit\PhpStan\Support\NonDocCommentCatchContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Support\NonDocCommentCatchContext;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Support\NonDocCommentCatchContext
+ * @covers \Toolkit\PhpStan\Support\NonDocCommentCatchContext
  */
 #[CoversClass(NonDocCommentCatchContext::class)]
 final class NonDocCommentCatchContextTest extends TestCase

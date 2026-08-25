@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Parse\Builder;
+namespace Toolkit\DocGen\Analysis\Parse\Builder;
 
-use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
-use PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
-use PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter;
-use PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter;
 use PhpParser\Node\Stmt\Property;
+use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
+use Toolkit\DocGen\Analysis\Model\PropertyDoc;
+use Toolkit\DocGen\Analysis\Model\TypeSignature;
+use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
+use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
 
 /**
  * Builds property models from php-parser property nodes.

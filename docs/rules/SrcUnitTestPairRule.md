@@ -100,7 +100,7 @@ Customize the source and test directory markers:
 
 ```neon
 parameters:
-    customRules:
+    toolkit:
         srcMarker: '/src/'
         unitTestMarker: '/tests/Unit/'
 ```
@@ -111,7 +111,7 @@ Exclude files from the source-side check by file name pattern:
 
 ```neon
 parameters:
-    customRules:
+    toolkit:
         srcUnitTestPairExcludePatterns:
             - '*.generated.php'
             - 'bootstrap.php'

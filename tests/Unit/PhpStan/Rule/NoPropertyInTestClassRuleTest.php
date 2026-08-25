@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\NoPropertyInTestClassRule;
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
+use Toolkit\PhpStan\Rule\NoPropertyInTestClassRule;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @extends RuleTestCase<NoPropertyInTestClassRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\NoPropertyInTestClassRule
+ * @covers \Toolkit\PhpStan\Rule\NoPropertyInTestClassRule
  */
 #[CoversClass(NoPropertyInTestClassRule::class)]
 #[Large]

@@ -1,5 +1,11 @@
-includes:
-    # Resolve from this package, not from the consuming project's assumed
-    # vendor/ directory. This works with Composer's custom vendor-dir setting.
-    - ../../phpstan/phpstan-strict-rules/rules.neon
-    - toolkit.neon
+parameters:
+    errorFormat: ai
+
+services:
+    toolkit.agentDetector:
+        class: Toolkit\Shared\AgentDetector
+
+    errorFormatter.ai:
+        class: Toolkit\PhpStan\ErrorFormatter\AiErrorFormatter
+        arguments:
+            relativePathHelper: @simpleRelativePathHelper

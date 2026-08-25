@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Presentation;
+namespace Toolkit\PhpUnit\TestReporter\Presentation;
 
 use function array_key_exists;
 use function count;
 use function implode;
-
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
-
 use function sprintf;
+
+use Toolkit\PhpUnit\TestReporter\TestIssue;
 
 /**
  * Counts and summarizes PHPUnit issue types.

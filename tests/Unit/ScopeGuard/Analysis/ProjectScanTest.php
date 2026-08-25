@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
-use PhpAiToolkit\ScopeGuard\Analysis\ProjectScan;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
+use Toolkit\ScopeGuard\Analysis\ProjectScan;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\ProjectScan
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
+ * @covers \Toolkit\ScopeGuard\Analysis\ProjectScan
+ * @uses \Toolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
  */
 #[CoversClass(ProjectScan::class)]
 #[UsesClass(DeclarationIndex::class)]

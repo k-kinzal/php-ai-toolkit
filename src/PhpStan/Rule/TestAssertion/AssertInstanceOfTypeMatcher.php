@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\TestAssertion;
+namespace Toolkit\PhpStan\Rule\TestAssertion;
 
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter;
+namespace Toolkit\PhpUnit\TestReporter;
 
 use Closure;
 
 use function fwrite;
 use function getcwd;
 
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter;
-use PhpAiToolkit\Shared\AgentDetector;
-use PhpAiToolkit\Shared\FormatMode;
-
 use const STDERR;
+
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter;
+use Toolkit\Shared\AgentDetector;
+use Toolkit\Shared\FormatMode;
 
 /**
  * Shared TestReporter runtime used by PHPUnit-version-specific adapters.

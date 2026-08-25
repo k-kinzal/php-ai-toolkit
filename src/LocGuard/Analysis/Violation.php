@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis;
+namespace Toolkit\LocGuard\Analysis;
 
 /**
  * A single LocGuard threshold violation.

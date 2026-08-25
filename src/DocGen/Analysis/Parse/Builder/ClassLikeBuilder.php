@@ -2,14 +2,8 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Parse\Builder;
+namespace Toolkit\DocGen\Analysis\Parse\Builder;
 
-use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind;
-use PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc;
-use PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter;
-use PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\ClassLike;
@@ -20,6 +14,12 @@ use PhpParser\Node\Stmt\Interface_;
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\Trait_;
 use PhpParser\Node\Stmt\TraitUse;
+use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\ClassLikeKind;
+use Toolkit\DocGen\Analysis\Model\PropertyDoc;
+use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
+use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 
 /**
  * Builds class-like models from php-parser declarations.
@@ -187,7 +187,7 @@ final class ClassLikeBuilder
      * Constructor-promoted parameters are added to the property list so the
      * documented property surface is complete.
      *
-     * @return array{constants: list<\PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc>, properties: list<PropertyDoc>, methods: list<\PhpAiToolkit\DocGen\Analysis\Model\MethodDoc>, cases: list<\PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc>}
+     * @return array{constants: list<\Toolkit\DocGen\Analysis\Model\ConstantDoc>, properties: list<PropertyDoc>, methods: list<\Toolkit\DocGen\Analysis\Model\MethodDoc>, cases: list<\Toolkit\DocGen\Analysis\Model\EnumCaseDoc>}
      */
     public function members(ClassLike $node): array
     {
@@ -223,7 +223,7 @@ final class ClassLikeBuilder
     /**
      * Builds property models for constructor-promoted parameters.
      *
-     * @param list<\PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
+     * @param list<\Toolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
      *
      * @return list<PropertyDoc>
      */

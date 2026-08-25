@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\FunctionMetric;
+namespace Toolkit\LocGuard\Analysis\FunctionMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader;
-use PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 use PhpToken;
 
 use const T_FN;
 use const T_FUNCTION;
+
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader;
+use Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 
 /**
  * Collects function-like line metrics from tokenized PHP source.

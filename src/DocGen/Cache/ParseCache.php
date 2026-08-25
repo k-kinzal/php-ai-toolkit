@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Cache;
+namespace Toolkit\DocGen\Cache;
 
 use function filemtime;
 use function is_array;
 use function is_string;
-
-use PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols;
-use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
-
 use function scandir;
 use function substr;
 use function time;
+
+use Toolkit\DocGen\Analysis\Parse\FileSymbols;
+use Toolkit\DocGen\Analysis\Reference\Usage;
+
 use function touch;
 use function unlink;
 

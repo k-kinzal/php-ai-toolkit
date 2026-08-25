@@ -84,9 +84,9 @@ zero-target green run is an omission, not a successful setup.
 
 ## Non-Negotiable Defaults
 
-- PHPStan: the target config has exactly one baseline include,
-  `vendor/k-kinzal/php-ai-toolkit/extension.neon`; the extension owns level max,
-  strict rules, checked exceptions, toolkit rules, and the formatter. Add only
+- PHPStan: the target config includes strict-rules' `rules.neon` plus the
+  toolkit's `extension.neon` and `rules.neon`, and sets `level: max`. The
+  toolkit rules and formatter remain separate public responsibilities. Add only
   evidenced project-specific parameters, never copied or weaker policy.
 - TreeGuard: every maintained production and unit-test directory has at most 15
   direct files and 20 direct subdirectories. Apply the limits to all real code

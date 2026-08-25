@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Cache;
+namespace Toolkit\DocGen\Cache;
 
 use function dirname;
 use function file_get_contents;

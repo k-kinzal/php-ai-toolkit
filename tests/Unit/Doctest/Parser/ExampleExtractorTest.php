@@ -6,18 +6,18 @@ namespace Tests\Unit\Doctest\Parser;
 
 use function iterator_to_array;
 
-use PhpAiToolkit\Doctest\Parser\Example;
-use PhpAiToolkit\Doctest\Parser\ExampleExtractor;
-use PhpAiToolkit\Doctest\Scanner\Target;
-use PhpAiToolkit\Doctest\Scanner\TargetKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Parser\Example;
+use Toolkit\Doctest\Parser\ExampleExtractor;
+use Toolkit\Doctest\Scanner\Target;
+use Toolkit\Doctest\Scanner\TargetKind;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Parser\ExampleExtractor
- * @uses \PhpAiToolkit\Doctest\Parser\Example
- * @uses \PhpAiToolkit\Doctest\Scanner\Target
+ * @covers \Toolkit\Doctest\Parser\ExampleExtractor
+ * @uses \Toolkit\Doctest\Parser\Example
+ * @uses \Toolkit\Doctest\Scanner\Target
  */
 #[CoversClass(ExampleExtractor::class)]
 #[UsesClass(Example::class)]

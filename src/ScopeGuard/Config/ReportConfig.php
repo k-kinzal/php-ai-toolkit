@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Config;
+namespace Toolkit\ScopeGuard\Config;
 
 /**
  * Reporter selection and output ordering configuration.

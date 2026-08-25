@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Shared;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector
+ * @covers \Toolkit\PhpStan\Rule\Shared\OverrideAttributeDetector
  */
 #[CoversClass(OverrideAttributeDetector::class)]
 #[Small]

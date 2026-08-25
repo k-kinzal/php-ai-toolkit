@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Analysis;
 
-use PhpAiToolkit\TreeGuard\Analysis\Violation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Analysis\Violation;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Analysis\Violation
+ * @covers \Toolkit\TreeGuard\Analysis\Violation
  */
 #[CoversClass(Violation::class)]
 final class ViolationTest extends TestCase

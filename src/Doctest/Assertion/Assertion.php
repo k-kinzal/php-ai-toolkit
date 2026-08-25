@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Assertion;
+namespace Toolkit\Doctest\Assertion;
 
 /**
  * Represents an assertion to verify in a doctest example.

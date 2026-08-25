@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Cache;
 
-use PhpAiToolkit\DocGen\Cache\ToolkitFingerprint;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Cache\ToolkitFingerprint;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Cache\ToolkitFingerprint
+ * @covers \Toolkit\DocGen\Cache\ToolkitFingerprint
  */
 #[CoversClass(ToolkitFingerprint::class)]
 final class ToolkitFingerprintTest extends TestCase

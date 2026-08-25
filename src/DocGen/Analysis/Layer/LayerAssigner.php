@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Layer;
-
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
+namespace Toolkit\DocGen\Analysis\Layer;
 
 use function preg_match;
 use function str_replace;
+
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
 
 /**
  * Assigns documented classes to deptrac layers.

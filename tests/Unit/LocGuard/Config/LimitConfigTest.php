@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Config;
 
-use PhpAiToolkit\LocGuard\Config\LimitConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Config\LimitConfig;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Config\LimitConfig
+ * @covers \Toolkit\LocGuard\Config\LimitConfig
  */
 #[CoversClass(LimitConfig::class)]
 final class LimitConfigTest extends TestCase

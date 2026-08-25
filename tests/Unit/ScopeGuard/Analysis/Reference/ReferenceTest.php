@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis\Reference;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Reference\Reference;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference
+ * @covers \Toolkit\ScopeGuard\Analysis\Reference\Reference
  */
 #[CoversClass(Reference::class)]
 final class ReferenceTest extends TestCase

@@ -8,22 +8,22 @@ description: >-
 
 # Set Up PHPStan
 
-The toolkit extension owns the baseline. A target project loads that one file;
-it does not copy the baseline into its own `phpstan.neon` and tune it until the
-current code passes.
+The target configuration assembles the baseline from PHPStan's strict rules and
+the toolkit's two public configuration files. Do not copy their contents into
+the target or tune the baseline until the current code passes.
 
-## Baseline Supplied by the Extension
+## Configuration Responsibilities
 
-`vendor/k-kinzal/php-ai-toolkit/extension.neon` enables:
+- `phpstan/phpstan-strict-rules/rules.neon` registers the official strict rules;
+- `php-ai-toolkit/extension.neon` registers the `ai` error formatter and its
+  agent detector;
+- `php-ai-toolkit/rules.neon` defines checked-exception policy and registers
+  every toolkit rule through configurable conditional tags; and
+- the target `phpstan.neon` selects PHPStan level `max`.
 
-- PHPStan level `max`;
-- `phpstan/phpstan-strict-rules` with every rule enabled;
-- every php-ai-toolkit PHPStan rule;
-- checked-exception analysis with the toolkit's unchecked families; and
-- the `aiRules` error formatter.
-
-These are one baseline. Do not repeat them in the target configuration and do
-not disable or weaken them during adoption.
+Together these are one baseline. `toolkit.allRules` defaults to `true`, and every
+rule-specific `toolkit.<rule>.enabled` value inherits it. Do not disable or
+weaken them during adoption.
 
 ## Installation
 
@@ -37,10 +37,8 @@ composer require --dev "phpstan/phpstan:^1.12 || ^2.0" k-kinzal/php-ai-toolkit
 ```
 
 Do not copy that union into a target with a different support range; derive its
-constraint. Read `composer config vendor-dir` as well. The include below is rooted
-at that project-derived directory (`vendor` is only Composer's default), while the
-toolkit extension resolves its strict-rules dependency relative to its own package
-and therefore also supports a custom vendor directory.
+constraint. Read `composer config vendor-dir` as well. Every include below is
+rooted at that project-derived directory (`vendor` is only Composer's default).
 
 `phpstan/phpstan-strict-rules` is a runtime dependency of the toolkit; do not add
 a separately chosen version constraint to the target project.
@@ -50,8 +48,8 @@ The default setup loads the toolkit explicitly and does not need
 toolkit or strict-rules, remove it and its `allow-plugins` entry. If another
 PHPStan extension genuinely needs the plugin, keep it but add both
 `k-kinzal/php-ai-toolkit` and `phpstan/phpstan-strict-rules` to
-`extra.phpstan/extension-installer.ignore`; the toolkit extension loads both and
-PHPStan rejects a configuration file included twice.
+`extra.phpstan/extension-installer.ignore`; the target configuration loads both
+explicitly and PHPStan rejects a configuration file included twice.
 
 ## Target Configuration
 
@@ -60,7 +58,12 @@ Copy the shipped template to the configuration name the project already uses
 
 ```neon
 includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
     - vendor/k-kinzal/php-ai-toolkit/extension.neon
+    - vendor/k-kinzal/php-ai-toolkit/rules.neon
+
+parameters:
+    level: max
 ```
 
 That is the complete standard configuration. Put analysis paths on the Composer
@@ -83,24 +86,23 @@ Derive `src tests` from the production and test autoload roots in
 
 ## Existing Configuration
 
-Reduce an existing configuration to the extension include unless a setting is
-both project-specific and necessary. Remove copied baseline settings such as
-`level`, strict-rules includes, the error-formatter include, and the standard
-`exceptions` block.
+Reduce an existing configuration to the three baseline includes, `level: max`,
+and settings that are both project-specific and necessary. Remove copied rule
+definitions, the old error-formatter include, and copied exception defaults.
 
 The following additions can be legitimate:
 
 - `bootstrapFiles` for runtime symbols PHPStan cannot otherwise discover;
 - narrow `excludePaths` for generated or deliberately invalid fixtures;
 - PHP version bounds derived from the declared support range; and
-- `parameters.customRules` when the project uses non-standard namespace or path
+- `parameters.toolkit` when the project uses non-standard namespace or path
   conventions.
 
 Custom rule parameters describe facts; they are not escape hatches. Examples:
 
 ```neon
 parameters:
-    customRules:
+    toolkit:
         testNamespacePrefixes:
             - 'App\Tests'
         restrictedTestNamespacePrefixes:
@@ -130,7 +132,7 @@ Run the exact Composer script that CI will run:
 composer phpstan
 ```
 
-Confirm the output uses the `aiRules` formatter and intentionally introduce one
+Confirm the output uses the `ai` formatter and intentionally introduce one
 known toolkit violation in a disposable local probe if there is any doubt that
 the extension loaded. Remove the probe immediately after verification.
 

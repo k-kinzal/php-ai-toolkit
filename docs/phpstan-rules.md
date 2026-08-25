@@ -47,19 +47,25 @@ Rules applied to test classes in the `Tests\Unit` / `Tests\Integration` namespac
 | [ForbidDescriptivePhpDocInTestClassRule](rules/ForbidDescriptivePhpDocInTestClassRule.md) | Forbids descriptive PHPDoc text in test classes | `customRules.forbidDescriptivePhpDocInTestClass` |
 | [TestNamingConventionRule](rules/TestNamingConventionRule.md) | Enforces naming conventions for test methods and data providers | `customRules.testNamingConvention` |
 
-## Disabling Rules
+## Enabling and Disabling Rules
 
-To disable a specific rule, suppress its error identifier in your project's `phpstan.neon`:
+All rules inherit `toolkit.allRules`, which defaults to `true`. Override a
+specific rule through its `enabled` value:
 
 ```neon
 parameters:
-    ignoreErrors:
-        - identifier: customRules.infectionIgnoreAllComment
+    toolkit:
+        forbidEmptyCatch:
+            enabled: false
 ```
+
+Set `allRules: false` to make every rule opt-in. Toolkit adoption keeps the
+default; changing a switch is an explicit project policy decision.
 
 ## Parameters
 
-The following parameters can be customized in your project's `phpstan.neon`:
+The following values can be customized under `parameters.toolkit` in a project's
+`phpstan.neon`:
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
@@ -69,5 +75,5 @@ The following parameters can be customized in your project's `phpstan.neon`:
 | `srcMarker` | `'/src/'` | Source code path marker |
 | `unitTestMarker` | `'/tests/Unit/'` | Unit test path marker |
 | `forbiddenNamespacePrefixes` | `['Tests\Support', 'Tests\Supports', 'Tests\Helper', 'Tests\Helpers', 'Tests\Util', 'Tests\Utils', 'Tests\Utility', 'Tests\Utilities']` | Namespace prefixes to forbid |
-| `forbiddenClassLikeNameSuffixes` | See [`toolkit.neon`](../toolkit.neon) | Class-like declaration name suffixes to forbid |
+| `forbiddenClassLikeNameSuffixes` | See [`rules.neon`](../rules.neon) | Class-like declaration name suffixes to forbid |
 | `broadCatchAllowedPaths` | `[]` | fnmatch patterns of boundary files allowed to catch `Throwable`, `Exception`, and the `LogicException`/`Error` families |

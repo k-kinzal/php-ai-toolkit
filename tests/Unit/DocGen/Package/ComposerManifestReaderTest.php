@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Package;
 
-use PhpAiToolkit\DocGen\Config\RepositoryUrl;
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Package\ComposerManifest;
-use PhpAiToolkit\DocGen\Package\ComposerManifestReader;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Config\RepositoryUrl;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Package\ComposerManifest;
+use Toolkit\DocGen\Package\ComposerManifestReader;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Package\ComposerManifestReader
- * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
- * @uses \PhpAiToolkit\DocGen\DocGenException
- * @uses \PhpAiToolkit\DocGen\Config\RepositoryUrl
+ * @covers \Toolkit\DocGen\Package\ComposerManifestReader
+ * @uses \Toolkit\DocGen\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Config\RepositoryUrl
  */
 #[CoversClass(ComposerManifestReader::class)]
 #[UsesClass(ComposerManifest::class)]

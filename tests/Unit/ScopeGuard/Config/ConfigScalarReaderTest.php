@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Config;
 
-use PhpAiToolkit\ScopeGuard\Config\ConfigScalarReader;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Config\ConfigScalarReader;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Config\ConfigScalarReader
- * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ * @covers \Toolkit\ScopeGuard\Config\ConfigScalarReader
+ * @uses \Toolkit\ScopeGuard\ScopeGuardException
  */
 #[CoversClass(ConfigScalarReader::class)]
 #[UsesClass(ScopeGuardException::class)]

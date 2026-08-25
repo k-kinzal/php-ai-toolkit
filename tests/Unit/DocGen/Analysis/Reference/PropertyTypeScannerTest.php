@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Reference;
 
-use PhpAiToolkit\DocGen\Analysis\Parse\AstParser;
-use PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge;
-use PhpAiToolkit\DocGen\Analysis\Reference\PropertyTypeScanner;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ClassLike;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Parse\AstParser;
+use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Reference\PropertyTypeScanner
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\AstParser
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
+ * @covers \Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner
+ * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
+ * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  */
 #[CoversClass(PropertyTypeScanner::class)]
 #[UsesClass(AstParser::class)]

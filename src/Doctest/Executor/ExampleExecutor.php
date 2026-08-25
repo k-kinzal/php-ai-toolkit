@@ -2,21 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Executor;
+namespace Toolkit\Doctest\Executor;
 
 use function get_class;
 use function in_array;
-
-use PhpAiToolkit\Doctest\Assertion\AssertionKind;
-use PhpAiToolkit\Doctest\Assertion\AssertionParser;
-use PhpAiToolkit\Doctest\Assertion\AssertionResult;
-use PhpAiToolkit\Doctest\Assertion\ParsedExample;
-use PhpAiToolkit\Doctest\Assertion\Statement;
-use PhpAiToolkit\Doctest\Parser\Example;
-
 use function sprintf;
 
 use Throwable;
+use Toolkit\Doctest\Assertion\AssertionKind;
+use Toolkit\Doctest\Assertion\AssertionParser;
+use Toolkit\Doctest\Assertion\AssertionResult;
+use Toolkit\Doctest\Assertion\ParsedExample;
+use Toolkit\Doctest\Assertion\Statement;
+use Toolkit\Doctest\Parser\Example;
 
 /**
  * Executes doctest examples and verifies assertions.
@@ -34,8 +32,8 @@ use Throwable;
  * hands back an Evaluation, so the port has one boundary rather than three.
  *
  * @example Creating and checking executor
- *     $executor = new \PhpAiToolkit\Doctest\Executor\ExampleExecutor();
- *     $executor instanceof \PhpAiToolkit\Doctest\Executor\ExampleExecutor // => true
+ *     $executor = new \Toolkit\Doctest\Executor\ExampleExecutor();
+ *     $executor instanceof \Toolkit\Doctest\Executor\ExampleExecutor // => true
  */
 final class ExampleExecutor
 {

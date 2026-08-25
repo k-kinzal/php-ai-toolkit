@@ -8,11 +8,11 @@
 
 ## Configuration
 
-The default suffix list is defined in [`toolkit.neon`](../../toolkit.neon). You can override the list under `customRules.forbiddenClassLikeNameSuffixes`:
+The default suffix list is defined in [`rules.neon`](../../rules.neon). You can override the list under `toolkit.forbiddenClassLikeNameSuffixes`:
 
 ```neon
 parameters:
-    customRules:
+    toolkit:
         forbiddenClassLikeNameSuffixes:
             - Helper
             - Manager

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Parser;
+namespace Toolkit\Doctest\Parser;
 
 use function array_pop;
 use function array_shift;
@@ -12,9 +12,6 @@ use function explode;
 use Generator;
 
 use function implode;
-
-use PhpAiToolkit\Doctest\Scanner\Target;
-
 use function preg_match;
 use function preg_match_all;
 
@@ -32,6 +29,9 @@ use function str_starts_with;
 use function strpos;
 use function substr;
 use function substr_count;
+
+use Toolkit\Doctest\Scanner\Target;
+
 use function trim;
 
 /**

@@ -7,8 +7,6 @@ namespace Tests\Unit\PhpStan\ErrorFormatter;
 use function dirname;
 
 use Override;
-use PhpAiToolkit\PhpStan\ErrorFormatter\AiRulesErrorFormatter;
-use PhpAiToolkit\Shared\AgentDetector;
 use PHPStan\Analyser\Error;
 use PHPStan\Command\AnalysisResult;
 use PHPStan\File\SimpleRelativePathHelper;
@@ -18,12 +16,15 @@ use PHPUnit\Framework\Attributes\Medium;
 
 use function putenv;
 
+use Toolkit\PhpStan\ErrorFormatter\AiErrorFormatter;
+use Toolkit\Shared\AgentDetector;
+
 /**
- * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\AiRulesErrorFormatter
+ * @covers \Toolkit\PhpStan\ErrorFormatter\AiErrorFormatter
  */
-#[CoversClass(AiRulesErrorFormatter::class)]
+#[CoversClass(AiErrorFormatter::class)]
 #[Medium]
-final class AiRulesErrorFormatterTest extends ErrorFormatterTestCase
+final class AiErrorFormatterTest extends ErrorFormatterTestCase
 {
     #[Override]
     protected function setUp(): void
@@ -67,7 +68,7 @@ final class AiRulesErrorFormatterTest extends ErrorFormatterTestCase
 
     public function testFormatErrorsNoErrorsHumanMode(): void
     {
-        $formatter = new AiRulesErrorFormatter(
+        $formatter = new AiErrorFormatter(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
@@ -83,7 +84,7 @@ final class AiRulesErrorFormatterTest extends ErrorFormatterTestCase
     {
         putenv('CLAUDE_CODE=1');
 
-        $formatter = new AiRulesErrorFormatter(
+        $formatter = new AiErrorFormatter(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
@@ -97,7 +98,7 @@ final class AiRulesErrorFormatterTest extends ErrorFormatterTestCase
 
     public function testFormatErrorsHumanModeShowsCodeContextAndIdentifier(): void
     {
-        $formatter = new AiRulesErrorFormatter(
+        $formatter = new AiErrorFormatter(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
@@ -131,7 +132,7 @@ final class AiRulesErrorFormatterTest extends ErrorFormatterTestCase
 
     public function testFormatErrorsHumanModeShowsErrorCountSummary(): void
     {
-        $formatter = new AiRulesErrorFormatter(
+        $formatter = new AiErrorFormatter(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
@@ -151,7 +152,7 @@ final class AiRulesErrorFormatterTest extends ErrorFormatterTestCase
     {
         putenv('CLAUDE_CODE=1');
 
-        $formatter = new AiRulesErrorFormatter(
+        $formatter = new AiErrorFormatter(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
@@ -198,7 +199,7 @@ final class AiRulesErrorFormatterTest extends ErrorFormatterTestCase
     {
         putenv('CLAUDE_CODE=1');
 
-        $formatter = new AiRulesErrorFormatter(
+        $formatter = new AiErrorFormatter(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
@@ -219,7 +220,7 @@ final class AiRulesErrorFormatterTest extends ErrorFormatterTestCase
     {
         putenv('CLAUDE_CODE=1');
 
-        $formatter = new AiRulesErrorFormatter(
+        $formatter = new AiErrorFormatter(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
@@ -234,7 +235,7 @@ final class AiRulesErrorFormatterTest extends ErrorFormatterTestCase
 
     public function testFormatErrorsHumanModeHandlesWarnings(): void
     {
-        $formatter = new AiRulesErrorFormatter(
+        $formatter = new AiErrorFormatter(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
@@ -251,7 +252,7 @@ final class AiRulesErrorFormatterTest extends ErrorFormatterTestCase
     {
         putenv('CLAUDE_CODE=1');
 
-        $formatter = new AiRulesErrorFormatter(
+        $formatter = new AiErrorFormatter(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
@@ -270,7 +271,7 @@ final class AiRulesErrorFormatterTest extends ErrorFormatterTestCase
 
     public function testFormatErrorsReturnValues(): void
     {
-        $formatter = new AiRulesErrorFormatter(
+        $formatter = new AiErrorFormatter(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );

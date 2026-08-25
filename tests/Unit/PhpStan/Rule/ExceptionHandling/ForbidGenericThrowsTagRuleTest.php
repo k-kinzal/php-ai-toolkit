@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ForbidGenericThrowsTagRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\ExceptionHandling\ForbidGenericThrowsTagRule;
 
 /**
  * @extends RuleTestCase<ForbidGenericThrowsTagRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ForbidGenericThrowsTagRule
+ * @covers \Toolkit\PhpStan\Rule\ExceptionHandling\ForbidGenericThrowsTagRule
  */
 #[CoversClass(ForbidGenericThrowsTagRule::class)]
 #[Medium]

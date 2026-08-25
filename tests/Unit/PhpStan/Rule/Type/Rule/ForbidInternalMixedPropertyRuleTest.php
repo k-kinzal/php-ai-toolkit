@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Type\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\Type\MixedPropertyErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedPropertyRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\Type\MixedPropertyErrorCollector;
+use Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedPropertyRule;
 
 /**
  * @extends RuleTestCase<ForbidInternalMixedPropertyRule>

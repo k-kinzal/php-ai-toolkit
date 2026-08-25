@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\TestClass\Pairing;
+namespace Toolkit\PhpStan\Rule\TestClass\Pairing;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper;
 use PHPStan\Rules\IdentifierRuleError;
+use Toolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper;
 
 /**
  * Inspects a unit test file for its expected source file pair.

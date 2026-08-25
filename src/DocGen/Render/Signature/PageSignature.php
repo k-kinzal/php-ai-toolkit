@@ -2,23 +2,22 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Signature;
+namespace Toolkit\DocGen\Render\Signature;
 
 use function hash;
 use function implode;
-
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc;
-use PhpAiToolkit\DocGen\Cache\ToolkitFingerprint;
-use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
-use PhpAiToolkit\DocGen\Render\Page\Component\DocumentListHtml;
-use PhpAiToolkit\DocGen\Render\Page\SymbolIndex;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-use PhpAiToolkit\DocGen\Render\Social\SocialCard;
-
 use function serialize;
 use function strtolower;
+
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\FunctionDoc;
+use Toolkit\DocGen\Analysis\Model\MarkdownDoc;
+use Toolkit\DocGen\Cache\ToolkitFingerprint;
+use Toolkit\DocGen\Package\DiscoveredPackage;
+use Toolkit\DocGen\Render\Page\Component\DocumentListHtml;
+use Toolkit\DocGen\Render\Page\SymbolIndex;
+use Toolkit\DocGen\Render\RenderKit;
+use Toolkit\DocGen\Render\Social\SocialCard;
 
 /**
  * Digests everything one page of a site is rendered from.

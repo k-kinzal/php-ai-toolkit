@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Naming;
+namespace Toolkit\PhpStan\Rule\Naming;
 
 /**
  * Finds forbidden namespace prefixes that match a namespace.

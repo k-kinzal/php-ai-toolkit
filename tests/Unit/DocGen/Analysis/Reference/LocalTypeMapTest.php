@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Reference;
 
-use PhpAiToolkit\DocGen\Analysis\Reference\LocalTypeMap;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Reference\LocalTypeMap;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Reference\LocalTypeMap
+ * @covers \Toolkit\DocGen\Analysis\Reference\LocalTypeMap
  */
 #[CoversClass(LocalTypeMap::class)]
 final class LocalTypeMapTest extends TestCase

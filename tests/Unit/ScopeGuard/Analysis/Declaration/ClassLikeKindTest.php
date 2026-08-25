@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis\Declaration;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind
+ * @covers \Toolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind
  */
 #[CoversClass(ClassLikeKind::class)]
 final class ClassLikeKindTest extends TestCase

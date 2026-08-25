@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Parse\Builder;
 
-use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
-use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
-use PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc;
-use PhpAiToolkit\DocGen\Analysis\Parse\AstParser;
-use PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter;
-use PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use PhpParser\Node\Stmt\Enum_;
 use PhpParser\Node\Stmt\EnumCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
+use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Analysis\Model\EnumCaseDoc;
+use Toolkit\DocGen\Analysis\Parse\AstParser;
+use Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder;
+use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
+use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\AstParser
- * @uses \PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter
- * @uses \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge
- * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
+ * @covers \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
+ * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
+ * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Analysis\Model\EnumCaseDoc
+ * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
+ * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  */
 #[CoversClass(EnumCaseBuilder::class)]
 #[UsesClass(AstParser::class)]

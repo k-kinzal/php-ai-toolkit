@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Violation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Violation;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\Violation
+ * @covers \Toolkit\ScopeGuard\Analysis\Violation
  */
 #[CoversClass(Violation::class)]
 final class ViolationTest extends TestCase

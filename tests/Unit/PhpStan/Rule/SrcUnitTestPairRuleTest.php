@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\SrcUnitTestPairRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\SrcUnitTestPairRule;
 
 /**
  * @extends RuleTestCase<SrcUnitTestPairRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\SrcUnitTestPairRule
+ * @covers \Toolkit\PhpStan\Rule\SrcUnitTestPairRule
  */
 #[CoversClass(SrcUnitTestPairRule::class)]
 #[Medium]

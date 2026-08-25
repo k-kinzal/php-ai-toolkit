@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\FunctionMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric
+ * @covers \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric
  */
 #[CoversClass(FunctionMetric::class)]
 final class FunctionMetricTest extends TestCase

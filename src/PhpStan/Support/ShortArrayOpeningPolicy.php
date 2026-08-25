@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Support;
+namespace Toolkit\PhpStan\Support;
 
 /**
  * Decides whether a bracket opens a short array literal.

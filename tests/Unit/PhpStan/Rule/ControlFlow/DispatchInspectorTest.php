@@ -6,12 +6,6 @@ namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
 use function array_map;
 
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchInspector;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder;
-use PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Testing\PHPStanTestCase;
@@ -23,14 +17,20 @@ use PHPStan\Type\TypeCombinator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants;
+use Toolkit\PhpStan\Rule\ControlFlow\DispatchInspector;
+use Toolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver;
+use Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder;
+use Toolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder;
+use Toolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder
+ * @covers \Toolkit\PhpStan\Rule\ControlFlow\DispatchInspector
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants
+ * @uses \Toolkit\PhpStan\Rule\Shared\LineOrderedErrors
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder
  */
 #[CoversClass(DispatchInspector::class)]
 #[UsesClass(ClosedTypeVariants::class)]

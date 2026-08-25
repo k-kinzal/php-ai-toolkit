@@ -4,33 +4,33 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis\Declaration;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind;
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration;
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationCollector;
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
-use PhpAiToolkit\ScopeGuard\Analysis\Parse\PhpParserBridge;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 use PhpParser\Comment\Doc;
 use PhpParser\Node\Stmt\ClassLike;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind;
+use Toolkit\ScopeGuard\Analysis\Declaration\Declaration;
+use Toolkit\ScopeGuard\Analysis\Declaration\DeclarationCollector;
+use Toolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
+use Toolkit\ScopeGuard\Analysis\Parse\PhpParserBridge;
+use Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationCollector
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\PhpParserBridge
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
+ * @covers \Toolkit\ScopeGuard\Analysis\Declaration\DeclarationCollector
+ * @uses \Toolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind
+ * @uses \Toolkit\ScopeGuard\Analysis\Declaration\Declaration
+ * @uses \Toolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @uses \Toolkit\ScopeGuard\Analysis\Parse\PhpParserBridge
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\VisibilityScope
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
  */
 #[CoversClass(DeclarationCollector::class)]
 #[UsesClass(ClassLikeKind::class)]

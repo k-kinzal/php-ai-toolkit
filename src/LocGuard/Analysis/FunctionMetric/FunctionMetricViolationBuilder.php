@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\FunctionMetric;
+namespace Toolkit\LocGuard\Analysis\FunctionMetric;
 
 use function array_merge;
 
-use PhpAiToolkit\LocGuard\Analysis\Violation;
-use PhpAiToolkit\LocGuard\Config\LimitConfig;
+use Toolkit\LocGuard\Analysis\Violation;
+use Toolkit\LocGuard\Config\LimitConfig;
 
 /**
  * Builds LocGuard violations for collected function metrics.

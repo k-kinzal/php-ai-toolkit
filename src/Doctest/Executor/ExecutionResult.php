@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Executor;
+namespace Toolkit\Doctest\Executor;
 
 use function implode;
 
-use PhpAiToolkit\Doctest\Assertion\AssertionResult;
-use PhpAiToolkit\Doctest\Parser\Example;
+use Toolkit\Doctest\Assertion\AssertionResult;
+use Toolkit\Doctest\Parser\Example;
 
 /**
  * Represents the result of executing an example.
@@ -20,15 +20,15 @@ use PhpAiToolkit\Doctest\Parser\Example;
  * @property-read list<AssertionResult> $failures
  *
  * @example Creating a passing result
- *     $target = new \PhpAiToolkit\Doctest\Scanner\Target(
- *         \PhpAiToolkit\Doctest\Scanner\TargetKind::CLASS_LIKE,
+ *     $target = new \Toolkit\Doctest\Scanner\Target(
+ *         \Toolkit\Doctest\Scanner\TargetKind::CLASS_LIKE,
  *         __FILE__,
  *         'docs',
  *         'Test',
  *         1,
  *     );
- *     $example = new \PhpAiToolkit\Doctest\Parser\Example('1+1', $target, 1, 0);
- *     $result = new \PhpAiToolkit\Doctest\Executor\ExecutionResult($example, true);
+ *     $example = new \Toolkit\Doctest\Parser\Example('1+1', $target, 1, 0);
+ *     $result = new \Toolkit\Doctest\Executor\ExecutionResult($example, true);
  *     $result->passed // => true
  *     $result->getErrorMessage() // => ''
  */

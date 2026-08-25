@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Social;
+namespace Toolkit\DocGen\Render\Social;
 
 use function count;
 use function file_get_contents;
@@ -19,13 +19,13 @@ use function imagettftext;
 use function is_file;
 use function max;
 use function min;
-
-use PhpAiToolkit\DocGen\DocGenException;
-
 use function round;
 use function substr;
 use function sys_get_temp_dir;
 use function tempnam;
+
+use Toolkit\DocGen\DocGenException;
+
 use function unlink;
 
 /**

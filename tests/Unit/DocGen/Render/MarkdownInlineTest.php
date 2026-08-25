@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render;
 
-use PhpAiToolkit\DocGen\Render\HtmlText;
-use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Render\HtmlText;
+use Toolkit\DocGen\Render\MarkdownInline;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\MarkdownInline
- * @uses \PhpAiToolkit\DocGen\Render\HtmlText
+ * @covers \Toolkit\DocGen\Render\MarkdownInline
+ * @uses \Toolkit\DocGen\Render\HtmlText
  */
 #[CoversClass(MarkdownInline::class)]
 #[UsesClass(HtmlText::class)]

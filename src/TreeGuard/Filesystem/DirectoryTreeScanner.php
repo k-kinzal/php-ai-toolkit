@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Filesystem;
+namespace Toolkit\TreeGuard\Filesystem;
 
 use function count;
 use function is_dir;
 use function ksort;
-
-use PhpAiToolkit\TreeGuard\Config\TreeGuardConfig;
-use PhpAiToolkit\TreeGuard\TreeGuardException;
-
 use function sprintf;
+
+use Toolkit\TreeGuard\Config\TreeGuardConfig;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
  * Scans configured paths into per-directory listings in one filesystem pass.

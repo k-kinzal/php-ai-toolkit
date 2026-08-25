@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\StringType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
+ * @covers \Toolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
  */
 #[CoversClass(DispatchSubjectResolver::class)]
 final class DispatchSubjectResolverTest extends TestCase

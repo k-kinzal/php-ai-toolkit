@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis\Parse;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Parse\FileNamespaces;
-use PhpAiToolkit\ScopeGuard\Analysis\Parse\NodeWalker;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Parse\FileNamespaces;
+use Toolkit\ScopeGuard\Analysis\Parse\NodeWalker;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\Parse\FileNamespaces
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\NodeWalker
+ * @covers \Toolkit\ScopeGuard\Analysis\Parse\FileNamespaces
+ * @uses \Toolkit\ScopeGuard\Analysis\Parse\NodeWalker
  */
 #[CoversClass(FileNamespaces::class)]
 #[UsesClass(NodeWalker::class)]

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Scanner;
 
-use PhpAiToolkit\Doctest\Scanner\ParserFactoryBridge;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Scanner\ParserFactoryBridge;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Scanner\ParserFactoryBridge
+ * @covers \Toolkit\Doctest\Scanner\ParserFactoryBridge
  */
 #[CoversClass(ParserFactoryBridge::class)]
 final class ParserFactoryBridgeTest extends TestCase

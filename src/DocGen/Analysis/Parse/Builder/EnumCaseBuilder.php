@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Parse\Builder;
+namespace Toolkit\DocGen\Analysis\Parse\Builder;
 
-use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
-use PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc;
-use PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 use PhpParser\Node\Stmt\EnumCase;
+use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
+use Toolkit\DocGen\Analysis\Model\EnumCaseDoc;
+use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 
 /**
  * Builds enum case models from php-parser enum case nodes.

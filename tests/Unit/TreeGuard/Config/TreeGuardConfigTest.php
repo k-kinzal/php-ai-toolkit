@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Config;
 
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
-use PhpAiToolkit\TreeGuard\Config\RuleConfig;
-use PhpAiToolkit\TreeGuard\Config\TreeGuardConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Config\ReportConfig;
+use Toolkit\TreeGuard\Config\RuleConfig;
+use Toolkit\TreeGuard\Config\TreeGuardConfig;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig
- * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig
+ * @covers \Toolkit\TreeGuard\Config\TreeGuardConfig
+ * @uses \Toolkit\TreeGuard\Config\ReportConfig
+ * @uses \Toolkit\TreeGuard\Config\RuleConfig
  */
 #[CoversClass(TreeGuardConfig::class)]
 #[UsesClass(ReportConfig::class)]

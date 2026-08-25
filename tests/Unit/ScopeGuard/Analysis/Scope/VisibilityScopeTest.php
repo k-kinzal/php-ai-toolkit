@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis\Scope;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @covers \Toolkit\ScopeGuard\Analysis\Scope\VisibilityScope
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
  */
 #[CoversClass(VisibilityScope::class)]
 #[UsesClass(NamespaceLineage::class)]

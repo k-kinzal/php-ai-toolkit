@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Reporting;
+namespace Toolkit\TreeGuard\Reporting;
 
-use PhpAiToolkit\TreeGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
+use Toolkit\TreeGuard\Analysis\AnalysisResult;
+use Toolkit\TreeGuard\Config\ReportConfig;
 
 /**
  * AI-oriented TreeGuard reporter with explicit remediation guidance.

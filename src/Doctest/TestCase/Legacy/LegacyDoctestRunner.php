@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\TestCase\Legacy;
+namespace Toolkit\Doctest\TestCase\Legacy;
 
 use Generator;
-use PhpAiToolkit\Doctest\Configuration\Configuration;
-use PhpAiToolkit\Doctest\Executor\ExampleExecutor;
-use PhpAiToolkit\Doctest\Parser\Example;
-use PhpAiToolkit\Doctest\Parser\ExampleExtractor;
-use PhpAiToolkit\Doctest\Scanner\FileScanner;
-use PhpAiToolkit\Doctest\Scanner\SourceScanner;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Configuration\Configuration;
+use Toolkit\Doctest\Executor\ExampleExecutor;
+use Toolkit\Doctest\Parser\Example;
+use Toolkit\Doctest\Parser\ExampleExtractor;
+use Toolkit\Doctest\Scanner\FileScanner;
+use Toolkit\Doctest\Scanner\SourceScanner;
 
 /**
  * Base class for running doctests as PHPUnit 9 tests.

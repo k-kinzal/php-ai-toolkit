@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Shared\Path;
+namespace Toolkit\PhpStan\Rule\Shared\Path;
 
 /**
  * Splits a normalized path around a configured directory marker.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\ExceptionHandling;
+namespace Toolkit\PhpStan\Rule\ExceptionHandling;
 
 use function array_pop;
 use function array_values;
@@ -10,7 +10,6 @@ use function count;
 use function is_string;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Closure;
@@ -23,6 +22,7 @@ use PhpParser\Node\Stmt\Finally_;
 use PhpParser\Node\Stmt\TryCatch;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
+use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
 
 /**
  * Collects throw statements that escape the traversed statement list.

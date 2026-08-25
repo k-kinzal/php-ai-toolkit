@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter\Presentation;
 
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter;
 
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter
+ * @covers \Toolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter
  */
 #[CoversClass(TestIssuePathFormatter::class)]
 final class TestIssuePathFormatterTest extends TestCase

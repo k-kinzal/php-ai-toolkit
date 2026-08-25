@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Naming;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\Naming\ForbidClassLikeNameSuffixRule;
-use PhpAiToolkit\PhpStan\Rule\Naming\ForbiddenClassLikeSuffixes;
-use PhpAiToolkit\PhpStan\Rule\Shared\ClassLikeKindLabel;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\Naming\ForbidClassLikeNameSuffixRule;
+use Toolkit\PhpStan\Rule\Naming\ForbiddenClassLikeSuffixes;
+use Toolkit\PhpStan\Rule\Shared\ClassLikeKindLabel;
 
 /**
  * @extends RuleTestCase<ForbidClassLikeNameSuffixRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\Naming\ForbidClassLikeNameSuffixRule
- * @covers \PhpAiToolkit\PhpStan\Rule\Shared\ClassLikeKindLabel
- * @covers \PhpAiToolkit\PhpStan\Rule\Naming\ForbiddenClassLikeSuffixes
+ * @covers \Toolkit\PhpStan\Rule\Naming\ForbidClassLikeNameSuffixRule
+ * @covers \Toolkit\PhpStan\Rule\Shared\ClassLikeKindLabel
+ * @covers \Toolkit\PhpStan\Rule\Naming\ForbiddenClassLikeSuffixes
  */
 #[CoversClass(ForbidClassLikeNameSuffixRule::class)]
 #[CoversClass(ClassLikeKindLabel::class)]

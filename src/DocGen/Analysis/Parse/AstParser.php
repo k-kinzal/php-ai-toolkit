@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Parse;
+namespace Toolkit\DocGen\Analysis\Parse;
 
-use PhpAiToolkit\DocGen\DocGenException;
 use PhpParser\ErrorHandler\Collecting;
 use PhpParser\Node\Stmt;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 
 use function sprintf;
+
+use Toolkit\DocGen\DocGenException;
 
 /**
  * Parses PHP source into an AST with fully resolved names.

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis\Parse;
+namespace Toolkit\ScopeGuard\Analysis\Parse;
 
 use function constant;
 
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use ReflectionClass;
 use ReflectionException;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
  * Creates a PHP parser for both nikic/php-parser 4 and 5.

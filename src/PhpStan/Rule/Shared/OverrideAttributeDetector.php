@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Shared;
+namespace Toolkit\PhpStan\Rule\Shared;
 
 /**
  * Detects the PHP Override attribute on class methods.

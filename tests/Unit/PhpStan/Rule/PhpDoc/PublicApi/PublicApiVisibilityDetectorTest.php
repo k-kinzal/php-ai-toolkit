@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc\PublicApi;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiVisibilityDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiVisibilityDetector;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiVisibilityDetector
+ * @covers \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiVisibilityDetector
  */
 #[CoversClass(PublicApiVisibilityDetector::class)]
 final class PublicApiVisibilityDetectorTest extends TestCase

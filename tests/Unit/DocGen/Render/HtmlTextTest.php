@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render;
 
-use PhpAiToolkit\DocGen\Render\HtmlText;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Render\HtmlText;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\HtmlText
+ * @covers \Toolkit\DocGen\Render\HtmlText
  */
 #[CoversClass(HtmlText::class)]
 final class HtmlTextTest extends TestCase

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Type\Rule;
+namespace Toolkit\PhpStan\Rule\Type\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\Type\MixedPropertyErrorCollector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\ClassPropertyNode;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
+use Toolkit\PhpStan\Rule\Type\MixedPropertyErrorCollector;
 
 /**
  * Applies the internal mixed policy to stored properties.

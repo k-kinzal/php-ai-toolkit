@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis\Scope;
+namespace Toolkit\ScopeGuard\Analysis\Scope;
 
 use function preg_match_all;
 use function str_contains;

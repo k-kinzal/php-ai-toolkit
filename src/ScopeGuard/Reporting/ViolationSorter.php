@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Reporting;
+namespace Toolkit\ScopeGuard\Reporting;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Violation;
-use PhpAiToolkit\ScopeGuard\Config\ReportConfig;
+use Toolkit\ScopeGuard\Analysis\Violation;
+use Toolkit\ScopeGuard\Config\ReportConfig;
 
 use function usort;
 

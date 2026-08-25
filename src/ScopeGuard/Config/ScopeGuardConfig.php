@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Config;
+namespace Toolkit\ScopeGuard\Config;
 
 /**
  * Fully resolved ScopeGuard configuration.

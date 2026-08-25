@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Reference;
 
-use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\MethodDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
-use PhpAiToolkit\DocGen\Analysis\Reference\TestCase as ReferenceTestCase;
-use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\MethodDoc;
+use Toolkit\DocGen\Analysis\Model\TypeSignature;
+use Toolkit\DocGen\Analysis\Reference\TestCase as ReferenceTestCase;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\Usage;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\MethodDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCase
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\Usage
+ * @covers \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageIndex
+ * @uses \Toolkit\DocGen\Analysis\Model\MethodDoc
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCase
+ * @uses \Toolkit\DocGen\Analysis\Model\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Reference\Usage
  */
 #[CoversClass(TestCaseIndex::class)]
 #[UsesClass(ClassLikeDoc::class)]

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\FunctionMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionScanState;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionScanState;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionScanState
+ * @covers \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionScanState
  */
 #[CoversClass(FunctionScanState::class)]
 final class FunctionScanStateTest extends TestCase

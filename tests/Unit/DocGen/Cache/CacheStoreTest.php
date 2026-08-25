@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Cache;
 
-use PhpAiToolkit\DocGen\Cache\CacheStore;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Cache\CacheStore;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Cache\CacheStore
+ * @covers \Toolkit\DocGen\Cache\CacheStore
  */
 #[CoversClass(CacheStore::class)]
 final class CacheStoreTest extends TestCase

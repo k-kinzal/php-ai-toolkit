@@ -2,35 +2,35 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render;
+namespace Toolkit\DocGen\Render;
 
 use function count;
 use function filesize;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex;
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
-use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\ProjectModel;
-use PhpAiToolkit\DocGen\Cache\CachedPageWriter;
-use PhpAiToolkit\DocGen\Cache\PageRecord;
-use PhpAiToolkit\DocGen\Cache\RenderCache;
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
-use PhpAiToolkit\DocGen\Parallel\WorkerPool;
-use PhpAiToolkit\DocGen\Parallel\WorkScheduler;
-use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
-use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
-use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
-use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
-use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
-use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
-use PhpAiToolkit\DocGen\Render\Page\IndexPage;
-use PhpAiToolkit\DocGen\Render\Page\LayerPage;
-use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
-use PhpAiToolkit\DocGen\Render\Page\PackagePage;
-use PhpAiToolkit\DocGen\Render\Page\SourcePage;
-use PhpAiToolkit\DocGen\Render\Signature\PageSignature;
+use Toolkit\DocGen\Analysis\Diff\DiffIndex;
+use Toolkit\DocGen\Analysis\Doctest\AssertionScanner;
+use Toolkit\DocGen\Analysis\Doctest\DoctestExtractor;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Cache\CachedPageWriter;
+use Toolkit\DocGen\Cache\PageRecord;
+use Toolkit\DocGen\Cache\RenderCache;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Filesystem\SiteFileWriter;
+use Toolkit\DocGen\Parallel\WorkerPool;
+use Toolkit\DocGen\Parallel\WorkScheduler;
+use Toolkit\DocGen\Render\Diff\DiffHtml;
+use Toolkit\DocGen\Render\Page\AllItemsPage;
+use Toolkit\DocGen\Render\Page\ClassLikePage;
+use Toolkit\DocGen\Render\Page\Component\SidebarHtml;
+use Toolkit\DocGen\Render\Page\DocumentPage;
+use Toolkit\DocGen\Render\Page\FunctionPage;
+use Toolkit\DocGen\Render\Page\IndexPage;
+use Toolkit\DocGen\Render\Page\LayerPage;
+use Toolkit\DocGen\Render\Page\NamespacePage;
+use Toolkit\DocGen\Render\Page\PackagePage;
+use Toolkit\DocGen\Render\Page\SourcePage;
+use Toolkit\DocGen\Render\Signature\PageSignature;
 
 /**
  * Renders the complete static documentation site of a project model.

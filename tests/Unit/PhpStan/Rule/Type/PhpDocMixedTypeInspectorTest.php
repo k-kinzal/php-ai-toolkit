@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Type;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
-use PhpAiToolkit\PhpStan\Rule\Type\PhpDocMixedTypeInspector;
 use PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasTagValueNode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
+use Toolkit\PhpStan\Rule\Type\PhpDocMixedTypeInspector;
 
 #[CoversClass(PhpDocMixedTypeInspector::class)]
 #[UsesClass(RulePhpDocParser::class)]

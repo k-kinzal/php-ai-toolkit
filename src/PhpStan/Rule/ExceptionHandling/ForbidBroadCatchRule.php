@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\ExceptionHandling;
+namespace Toolkit\PhpStan\Rule\ExceptionHandling;
 
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
@@ -74,7 +74,7 @@ final class ForbidBroadCatchRule implements Rule
 
             $errors[] = RuleErrorBuilder::message(
                 sprintf(
-                    'Catch a specific exception type instead of "%s": %s. If this catch is an intentional top-level boundary handler, add its file path to customRules.broadCatchAllowedPaths.',
+                    'Catch a specific exception type instead of "%s": %s. If this catch is an intentional top-level boundary handler, add its file path to toolkit.broadCatchAllowedPaths.',
                     $writtenName,
                     $reason
                 )

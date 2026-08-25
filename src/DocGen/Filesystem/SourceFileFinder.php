@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Filesystem;
+namespace Toolkit\DocGen\Filesystem;
 
 use function count;
 use function fnmatch;

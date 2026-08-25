@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Package;
+namespace Toolkit\DocGen\Package;
 
 use function array_key_exists;
 use function glob;
@@ -11,12 +11,12 @@ use const GLOB_ONLYDIR;
 
 use function is_dir;
 use function is_file;
-
-use PhpAiToolkit\DocGen\Config\DocGenConfig;
-use PhpAiToolkit\DocGen\DocGenException;
-
 use function realpath;
 use function rtrim;
+
+use Toolkit\DocGen\Config\DocGenConfig;
+use Toolkit\DocGen\DocGenException;
+
 use function usort;
 
 /**

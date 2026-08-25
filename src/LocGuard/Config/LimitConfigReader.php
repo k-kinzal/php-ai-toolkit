@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Config;
+namespace Toolkit\LocGuard\Config;
 
 use function is_array;
 
-use PhpAiToolkit\LocGuard\LocGuardException;
+use Toolkit\LocGuard\LocGuardException;
 
 /**
  * Reads LocGuard numeric limits from loc.yaml.

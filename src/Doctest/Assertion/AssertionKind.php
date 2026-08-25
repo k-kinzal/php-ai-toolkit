@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Assertion;
+namespace Toolkit\Doctest\Assertion;
 
 /**
  * Types of assertions that can be made in doctest examples.

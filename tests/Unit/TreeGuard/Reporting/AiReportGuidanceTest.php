@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Reporting;
 
-use PhpAiToolkit\TreeGuard\Reporting\AiReportGuidance;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Reporting\AiReportGuidance;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Reporting\AiReportGuidance
+ * @covers \Toolkit\TreeGuard\Reporting\AiReportGuidance
  */
 #[CoversClass(AiReportGuidance::class)]
 final class AiReportGuidanceTest extends TestCase

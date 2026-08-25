@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Installer\Cli;
+namespace Toolkit\Installer\Cli;
 
 /**
  * Parses php-ai-toolkit CLI arguments into command flags.

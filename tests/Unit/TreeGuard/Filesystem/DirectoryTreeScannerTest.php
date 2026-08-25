@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Filesystem;
 
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
-use PhpAiToolkit\TreeGuard\Config\TreeGuardConfig;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListingReader;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryTreeScanner;
-use PhpAiToolkit\TreeGuard\Filesystem\PathInclusionPolicy;
-use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
-use PhpAiToolkit\TreeGuard\TreeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Config\ReportConfig;
+use Toolkit\TreeGuard\Config\TreeGuardConfig;
+use Toolkit\TreeGuard\Filesystem\DirectoryListing;
+use Toolkit\TreeGuard\Filesystem\DirectoryListingReader;
+use Toolkit\TreeGuard\Filesystem\DirectoryTreeScanner;
+use Toolkit\TreeGuard\Filesystem\PathInclusionPolicy;
+use Toolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Filesystem\DirectoryTreeScanner
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListingReader
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\PathInclusionPolicy
- * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig
- * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver
+ * @covers \Toolkit\TreeGuard\Filesystem\DirectoryTreeScanner
+ * @uses \Toolkit\TreeGuard\Filesystem\DirectoryListing
+ * @uses \Toolkit\TreeGuard\Filesystem\DirectoryListingReader
+ * @uses \Toolkit\TreeGuard\Filesystem\PathInclusionPolicy
+ * @uses \Toolkit\TreeGuard\Config\ReportConfig
+ * @uses \Toolkit\TreeGuard\Config\TreeGuardConfig
+ * @uses \Toolkit\TreeGuard\TreeGuardException
+ * @uses \Toolkit\TreeGuard\Filesystem\TreeGuardPathResolver
  */
 #[CoversClass(DirectoryTreeScanner::class)]
 #[UsesClass(DirectoryListing::class)]

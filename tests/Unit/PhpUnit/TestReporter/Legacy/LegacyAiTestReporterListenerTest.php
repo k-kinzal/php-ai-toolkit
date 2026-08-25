@@ -14,11 +14,6 @@ use Override;
 
 use const PHP_BINARY;
 
-use PhpAiToolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
-use PhpAiToolkit\PhpUnit\TestReporter\TestReporterRuntime;
-use PhpAiToolkit\Shared\AgentDetector;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
@@ -32,6 +27,12 @@ use RuntimeException;
 
 use function stream_get_contents;
 use function substr_count;
+
+use Toolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter;
+use Toolkit\PhpUnit\TestReporter\TestIssueCollector;
+use Toolkit\PhpUnit\TestReporter\TestReporterRuntime;
+use Toolkit\Shared\AgentDetector;
 
 /**
  * @coversNothing

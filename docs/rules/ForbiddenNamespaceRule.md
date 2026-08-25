@@ -8,11 +8,11 @@
 
 ## Configuration
 
-The default forbidden namespace prefixes are defined in [`toolkit.neon`](../../toolkit.neon). You can override the list under `customRules.forbiddenNamespacePrefixes`:
+The default forbidden namespace prefixes are defined in [`rules.neon`](../../rules.neon). You can override the list under `toolkit.forbiddenNamespacePrefixes`:
 
 ```neon
 parameters:
-    customRules:
+    toolkit:
         forbiddenNamespacePrefixes:
             - 'Tests\Support'
             - 'Tests\Supports'

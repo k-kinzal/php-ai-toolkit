@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric;
+namespace Toolkit\LocGuard\Analysis\ClassLikeMetric;
 
 use function count;
 use function in_array;
 
-use PhpAiToolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher;
-use PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 use PhpToken;
 
 use const T_DOUBLE_COLON;
@@ -18,6 +16,9 @@ use const T_IMPLEMENTS;
 use const T_INTERFACE;
 use const T_STRING;
 use const T_TRAIT;
+
+use Toolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher;
+use Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 
 /**
  * Reads class-like declarations from tokenized PHP source.

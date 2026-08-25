@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Configuration;
 
-use PhpAiToolkit\Doctest\Configuration\Configuration;
-use PhpAiToolkit\Doctest\Configuration\ConfigurationLoader;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Extension\ParameterCollection;
+use Toolkit\Doctest\Configuration\Configuration;
+use Toolkit\Doctest\Configuration\ConfigurationLoader;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Configuration\ConfigurationLoader
- * @uses \PhpAiToolkit\Doctest\Configuration\Configuration
+ * @covers \Toolkit\Doctest\Configuration\ConfigurationLoader
+ * @uses \Toolkit\Doctest\Configuration\Configuration
  */
 #[CoversClass(ConfigurationLoader::class)]
 #[UsesClass(Configuration::class)]

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Model;
 
-use PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Model\MarkdownDoc;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc
+ * @covers \Toolkit\DocGen\Analysis\Model\MarkdownDoc
  */
 #[CoversClass(MarkdownDoc::class)]
 final class MarkdownDocTest extends TestCase

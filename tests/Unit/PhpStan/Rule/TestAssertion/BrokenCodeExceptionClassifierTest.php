@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier;
 use PHPStan\Testing\PHPStanTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier
+ * @covers \Toolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier
  */
 #[CoversClass(BrokenCodeExceptionClassifier::class)]
 #[Medium]

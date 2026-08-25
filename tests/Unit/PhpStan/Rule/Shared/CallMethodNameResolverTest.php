@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Shared;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\CallMethodNameResolver;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver
+ * @covers \Toolkit\PhpStan\Rule\Shared\CallMethodNameResolver
  */
 #[CoversClass(CallMethodNameResolver::class)]
 final class CallMethodNameResolverTest extends TestCase

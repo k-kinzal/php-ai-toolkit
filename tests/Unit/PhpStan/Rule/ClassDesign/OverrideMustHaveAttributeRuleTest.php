@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\ClassDesign;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ClassDesign\OverrideMustHaveAttributeRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\ClassDesign\OverrideMustHaveAttributeRule;
 
 /**
  * @extends RuleTestCase<OverrideMustHaveAttributeRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\OverrideMustHaveAttributeRule
+ * @covers \Toolkit\PhpStan\Rule\ClassDesign\OverrideMustHaveAttributeRule
  */
 #[CoversClass(OverrideMustHaveAttributeRule::class)]
 #[Medium]

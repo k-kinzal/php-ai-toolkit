@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Model;
 
-use PhpAiToolkit\DocGen\Analysis\Model\TemplateDoc;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Model\TemplateDoc;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Model\TemplateDoc
+ * @covers \Toolkit\DocGen\Analysis\Model\TemplateDoc
  */
 #[CoversClass(TemplateDoc::class)]
 final class TemplateDocTest extends TestCase

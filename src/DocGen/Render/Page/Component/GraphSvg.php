@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page\Component;
+namespace Toolkit\DocGen\Render\Page\Component;
 
 use function array_fill;
 use function array_keys;
 use function count;
 use function max;
-
-use PhpAiToolkit\DocGen\Render\HtmlText;
-
 use function sprintf;
 use function strlen;
+
+use Toolkit\DocGen\Render\HtmlText;
+
 use function usort;
 
 /**

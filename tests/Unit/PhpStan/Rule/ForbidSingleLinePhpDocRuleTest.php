@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDocRule;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\Shared\AnonymousClassDetector;
-use PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\ForbidSingleLinePhpDocRule;
+use Toolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector;
+use Toolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorBuilder;
+use Toolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorCollector;
+use Toolkit\PhpStan\Rule\Shared\AnonymousClassDetector;
+use Toolkit\PhpStan\Rule\Shared\CommentTextFormatter;
 
 /**
  * @extends RuleTestCase<ForbidSingleLinePhpDocRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDocRule
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\AnonymousClassDetector
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorCollector
+ * @covers \Toolkit\PhpStan\Rule\ForbidSingleLinePhpDocRule
+ * @uses \Toolkit\PhpStan\Rule\Shared\AnonymousClassDetector
+ * @uses \Toolkit\PhpStan\Rule\Shared\CommentTextFormatter
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorCollector
  */
 #[CoversClass(ForbidSingleLinePhpDocRule::class)]
 #[UsesClass(AnonymousClassDetector::class)]

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest;
+namespace Toolkit\Doctest;
 
 use Override;
-use PhpAiToolkit\Doctest\Configuration\Configuration;
-use PhpAiToolkit\Doctest\TestCase\DoctestRunner;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\Doctest\Configuration\Configuration;
+use Toolkit\Doctest\TestCase\DoctestRunner;
 
 /**
  * The test suite PHPUnit loads to run a project's documented examples.
@@ -23,7 +23,7 @@ use PHPUnit\Framework\Attributes\Medium;
  *     </testsuite>
  *
  *     <extensions>
- *         <bootstrap class="PhpAiToolkit\Doctest\DoctestExtension">
+ *         <bootstrap class="Toolkit\Doctest\DoctestExtension">
  *             <parameter name="directories" value="src"/>
  *         </bootstrap>
  *     </extensions>

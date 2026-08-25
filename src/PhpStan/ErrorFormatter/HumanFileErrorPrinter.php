@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\ErrorFormatter;
+namespace Toolkit\PhpStan\ErrorFormatter;
 
 use PHPStan\Analyser\Error;
 use PHPStan\Command\Output;

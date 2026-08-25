@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Reporting;
+namespace Toolkit\LocGuard\Reporting;
 
-use PhpAiToolkit\LocGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\LocGuard\Config\ReportConfig;
+use Toolkit\LocGuard\Analysis\AnalysisResult;
+use Toolkit\LocGuard\Config\ReportConfig;
 
 /**
  * AI-oriented LocGuard reporter with explicit remediation guidance.

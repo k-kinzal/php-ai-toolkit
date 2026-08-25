@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Support;
 
-use PhpAiToolkit\PhpStan\Support\NonDocCommentTokenClassifier;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Support\NonDocCommentTokenClassifier;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Support\NonDocCommentTokenClassifier
+ * @covers \Toolkit\PhpStan\Support\NonDocCommentTokenClassifier
  */
 #[CoversClass(NonDocCommentTokenClassifier::class)]
 final class NonDocCommentTokenClassifierTest extends TestCase

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Cli;
 
-use PhpAiToolkit\ScopeGuard\Cli\ScopeGuardConfigPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Cli\ScopeGuardConfigPathResolver;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardConfigPathResolver
+ * @covers \Toolkit\ScopeGuard\Cli\ScopeGuardConfigPathResolver
  */
 #[CoversClass(ScopeGuardConfigPathResolver::class)]
 final class ScopeGuardConfigPathResolverTest extends TestCase

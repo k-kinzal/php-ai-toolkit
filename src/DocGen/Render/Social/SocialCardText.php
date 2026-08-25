@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Social;
+namespace Toolkit\DocGen\Render\Social;
 
 use function abs;
 use function array_slice;

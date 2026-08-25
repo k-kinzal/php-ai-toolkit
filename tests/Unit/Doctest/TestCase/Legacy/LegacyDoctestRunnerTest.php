@@ -7,15 +7,15 @@ namespace Tests\Unit\Doctest\TestCase\Legacy;
 use function array_keys;
 use function iterator_to_array;
 
-use PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
 use Tests\Fixture\Doctest\LegacyFixtureDoctestSuite;
+use Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner;
 
 /**
- * @covers \PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner
+ * @covers \Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner
  */
 #[CoversClass(LegacyDoctestRunner::class)]
 #[Medium]

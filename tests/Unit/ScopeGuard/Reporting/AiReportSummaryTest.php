@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Reporting;
 
-use PhpAiToolkit\ScopeGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\ScopeGuard\Reporting\AiReportSummary;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\AnalysisResult;
+use Toolkit\ScopeGuard\Reporting\AiReportSummary;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Reporting\AiReportSummary
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\AnalysisResult
+ * @covers \Toolkit\ScopeGuard\Reporting\AiReportSummary
+ * @uses \Toolkit\ScopeGuard\Analysis\AnalysisResult
  */
 #[CoversClass(AiReportSummary::class)]
 #[UsesClass(AnalysisResult::class)]

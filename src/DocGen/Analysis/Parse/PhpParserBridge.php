@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Parse;
+namespace Toolkit\DocGen\Analysis\Parse;
 
 use function constant;
 
-use PhpAiToolkit\DocGen\DocGenException;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use ReflectionClass;
 use ReflectionException;
+use Toolkit\DocGen\DocGenException;
 
 /**
  * Creates a PHP parser for both nikic/php-parser 4 and 5.

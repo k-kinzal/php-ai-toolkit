@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\NoHelperMethodInTestClassRule;
-use PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
-use PhpAiToolkit\PhpStan\Rule\Shared\TestMethodDetector;
-use PhpAiToolkit\PhpStan\Rule\TestClass\OverrideMethodDetector;
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\NoHelperMethodInTestClassRule;
+use Toolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
+use Toolkit\PhpStan\Rule\Shared\TestMethodDetector;
+use Toolkit\PhpStan\Rule\TestClass\OverrideMethodDetector;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @extends RuleTestCase<NoHelperMethodInTestClassRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\NoHelperMethodInTestClassRule
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\OverrideMethodDetector
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\TestMethodDetector
+ * @covers \Toolkit\PhpStan\Rule\NoHelperMethodInTestClassRule
+ * @uses \Toolkit\PhpStan\Rule\Shared\OverrideAttributeDetector
+ * @uses \Toolkit\PhpStan\Rule\TestClass\OverrideMethodDetector
+ * @uses \Toolkit\PhpStan\Rule\Shared\TestMethodDetector
  */
 #[CoversClass(NoHelperMethodInTestClassRule::class)]
 #[UsesClass(OverrideAttributeDetector::class)]

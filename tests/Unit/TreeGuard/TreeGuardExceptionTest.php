@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard;
 
-use PhpAiToolkit\TreeGuard\TreeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\TreeGuardException
+ * @covers \Toolkit\TreeGuard\TreeGuardException
  */
 #[CoversClass(TreeGuardException::class)]
 final class TreeGuardExceptionTest extends TestCase

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Presentation;
+namespace Toolkit\PhpUnit\TestReporter\Presentation;
 
 use function count;
 
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader;
-use PhpAiToolkit\Shared\AgentDetector;
-use PhpAiToolkit\Shared\FormatMode;
+use Toolkit\PhpUnit\TestReporter\TestIssue;
+use Toolkit\PhpUnit\TestReporter\TestIssueSourceReader;
+use Toolkit\Shared\AgentDetector;
+use Toolkit\Shared\FormatMode;
 
 /**
  * Selects the PHPUnit issue renderer for the current execution context.

@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Config;
 
-use PhpAiToolkit\LocGuard\Config\ConfigScalarReader;
-use PhpAiToolkit\LocGuard\Config\ConfigStringListReader;
-use PhpAiToolkit\LocGuard\Config\ReportConfig;
-use PhpAiToolkit\LocGuard\Config\ReportConfigReader;
-use PhpAiToolkit\LocGuard\LocGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Config\ConfigScalarReader;
+use Toolkit\LocGuard\Config\ConfigStringListReader;
+use Toolkit\LocGuard\Config\ReportConfig;
+use Toolkit\LocGuard\Config\ReportConfigReader;
+use Toolkit\LocGuard\LocGuardException;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Config\ReportConfigReader
- * @uses \PhpAiToolkit\LocGuard\Config\ConfigScalarReader
- * @uses \PhpAiToolkit\LocGuard\Config\ConfigStringListReader
- * @uses \PhpAiToolkit\LocGuard\Config\ReportConfig
+ * @covers \Toolkit\LocGuard\Config\ReportConfigReader
+ * @uses \Toolkit\LocGuard\Config\ConfigScalarReader
+ * @uses \Toolkit\LocGuard\Config\ConfigStringListReader
+ * @uses \Toolkit\LocGuard\Config\ReportConfig
  */
 #[CoversClass(ReportConfigReader::class)]
 #[UsesClass(ConfigScalarReader::class)]

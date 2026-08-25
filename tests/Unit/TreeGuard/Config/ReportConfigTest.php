@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Config;
 
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Config\ReportConfig;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Config\ReportConfig
+ * @covers \Toolkit\TreeGuard\Config\ReportConfig
  */
 #[CoversClass(ReportConfig::class)]
 final class ReportConfigTest extends TestCase

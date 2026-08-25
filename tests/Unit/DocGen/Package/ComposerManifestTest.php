@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Package;
 
-use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Package\ComposerManifest;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Package\ComposerManifest
+ * @covers \Toolkit\DocGen\Package\ComposerManifest
  */
 #[CoversClass(ComposerManifest::class)]
 final class ComposerManifestTest extends TestCase

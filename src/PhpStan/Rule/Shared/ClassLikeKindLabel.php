@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Shared;
+namespace Toolkit\PhpStan\Rule\Shared;
 
 /**
  * Resolves a human-readable label for a class-like declaration kind.

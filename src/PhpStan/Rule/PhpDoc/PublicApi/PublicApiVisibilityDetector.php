@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi;
+namespace Toolkit\PhpStan\Rule\PhpDoc\PublicApi;
 
 use function preg_match;
 use function str_contains;

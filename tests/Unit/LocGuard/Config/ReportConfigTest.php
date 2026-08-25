@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Config;
 
-use PhpAiToolkit\LocGuard\Config\ReportConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Config\ReportConfig;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Config\ReportConfig
+ * @covers \Toolkit\LocGuard\Config\ReportConfig
  */
 #[CoversClass(ReportConfig::class)]
 final class ReportConfigTest extends TestCase

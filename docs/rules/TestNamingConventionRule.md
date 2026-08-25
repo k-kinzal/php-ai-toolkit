@@ -190,7 +190,7 @@ Customize which namespaces are considered restricted and which path markers iden
 
 ```neon
 parameters:
-    customRules:
+    toolkit:
         restrictedTestNamespacePrefixes:
             - 'Tests\Unit'
             - 'Tests\Integration'

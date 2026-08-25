@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter\Presentation;
 
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueBlockIndenter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary;
-use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueBlockIndenter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary;
+use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation;
+use Toolkit\PhpUnit\TestReporter\TestIssue;
+use Toolkit\PhpUnit\TestReporter\TestIssueSourceReader;
 
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssue
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary
- * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation
+ * @covers \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter
+ * @uses \Toolkit\PhpUnit\TestReporter\TestIssue
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter
+ * @uses \Toolkit\PhpUnit\TestReporter\TestIssueSourceReader
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary
+ * @uses \Toolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation
  */
 #[CoversClass(TestIssueAiFormatter::class)]
 #[UsesClass(TestIssue::class)]

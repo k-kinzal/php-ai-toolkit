@@ -15,7 +15,6 @@ use Override;
 
 use const PHP_BINARY;
 
-use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\TestConsideredRiskySubscriber;
 use PHPUnit\Event\Test\ConsideredRiskySubscriber;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
@@ -25,8 +24,10 @@ use function proc_close;
 use function proc_open;
 use function stream_get_contents;
 
+use Toolkit\PhpUnit\TestReporter\Subscriber\TestConsideredRiskySubscriber;
+
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\Subscriber\TestConsideredRiskySubscriber
+ * @covers \Toolkit\PhpUnit\TestReporter\Subscriber\TestConsideredRiskySubscriber
  */
 #[CoversClass(TestConsideredRiskySubscriber::class)]
 #[Large]

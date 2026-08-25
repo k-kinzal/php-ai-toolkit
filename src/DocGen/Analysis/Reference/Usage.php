@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Reference;
+namespace Toolkit\DocGen\Analysis\Reference;
 
 /**
  * One reference to a documented symbol found in source code.

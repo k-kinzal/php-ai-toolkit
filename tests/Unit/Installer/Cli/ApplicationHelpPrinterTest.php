@@ -6,15 +6,15 @@ namespace Tests\Unit\Installer\Cli;
 
 use function implode;
 
-use PhpAiToolkit\Installer\Cli\ApplicationHelpPrinter;
-use PhpAiToolkit\Installer\Cli\CliOutputWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Installer\Cli\ApplicationHelpPrinter;
+use Toolkit\Installer\Cli\CliOutputWriter;
 
 /**
- * @covers \PhpAiToolkit\Installer\Cli\ApplicationHelpPrinter
- * @uses \PhpAiToolkit\Installer\Cli\CliOutputWriter
+ * @covers \Toolkit\Installer\Cli\ApplicationHelpPrinter
+ * @uses \Toolkit\Installer\Cli\CliOutputWriter
  */
 #[CoversClass(ApplicationHelpPrinter::class)]
 #[UsesClass(CliOutputWriter::class)]

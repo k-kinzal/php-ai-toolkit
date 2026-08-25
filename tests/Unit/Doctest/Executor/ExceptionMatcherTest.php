@@ -6,14 +6,14 @@ namespace Tests\Unit\Doctest\Executor;
 
 use InvalidArgumentException;
 use LogicException;
-use PhpAiToolkit\Doctest\Executor\ExceptionMatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Tests\Fixture\Doctest\RuntimeException as CollidingRuntimeException;
+use Toolkit\Doctest\Executor\ExceptionMatcher;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Executor\ExceptionMatcher
+ * @covers \Toolkit\Doctest\Executor\ExceptionMatcher
  */
 #[CoversClass(ExceptionMatcher::class)]
 final class ExceptionMatcherTest extends TestCase

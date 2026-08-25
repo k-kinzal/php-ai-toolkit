@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Config;
+namespace Toolkit\ScopeGuard\Config;
 
 use function implode;
 use function in_array;
 use function is_array;
-
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
-
 use function sprintf;
+
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
  * Reads ScopeGuard report configuration from scope.yaml.

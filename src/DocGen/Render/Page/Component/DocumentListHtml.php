@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page\Component;
+namespace Toolkit\DocGen\Render\Page\Component;
 
 use function count;
-
-use PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc;
-use PhpAiToolkit\DocGen\Render\MarkdownLinks;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-
 use function sprintf;
+
+use Toolkit\DocGen\Analysis\Model\MarkdownDoc;
+use Toolkit\DocGen\Render\MarkdownLinks;
+use Toolkit\DocGen\Render\RenderKit;
 
 /**
  * Renders and resolves the Markdown documents of a package.

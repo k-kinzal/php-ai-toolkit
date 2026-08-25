@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ClassDesign;
 
-use PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry
+ * @covers \Toolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry
  */
 #[CoversClass(MagicMethodRegistry::class)]
 final class MagicMethodRegistryTest extends TestCase

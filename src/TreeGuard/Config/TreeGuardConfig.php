@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Config;
+namespace Toolkit\TreeGuard\Config;
 
 /**
  * Fully resolved TreeGuard configuration.

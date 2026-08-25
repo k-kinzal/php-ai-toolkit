@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass;
 
-use PhpAiToolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector
+ * @covers \Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector
  */
 #[CoversClass(DescriptivePhpDocTextDetector::class)]
 final class DescriptivePhpDocTextDetectorTest extends TestCase

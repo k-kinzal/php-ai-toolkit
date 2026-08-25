@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Support;
 
-use PhpAiToolkit\PhpStan\Support\NonDocCommentTokenClassifier;
-use PhpAiToolkit\PhpStan\Support\ShortArrayOpeningPolicy;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Support\NonDocCommentTokenClassifier;
+use Toolkit\PhpStan\Support\ShortArrayOpeningPolicy;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Support\ShortArrayOpeningPolicy
- * @uses \PhpAiToolkit\PhpStan\Support\NonDocCommentTokenClassifier
+ * @covers \Toolkit\PhpStan\Support\ShortArrayOpeningPolicy
+ * @uses \Toolkit\PhpStan\Support\NonDocCommentTokenClassifier
  */
 #[CoversClass(ShortArrayOpeningPolicy::class)]
 #[UsesClass(NonDocCommentTokenClassifier::class)]

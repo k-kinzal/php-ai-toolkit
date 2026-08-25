@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Cli;
-
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
+namespace Toolkit\ScopeGuard\Cli;
 
 use function sprintf;
 use function str_starts_with;
 use function substr;
+
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
  * Parses ScopeGuard command-line arguments.

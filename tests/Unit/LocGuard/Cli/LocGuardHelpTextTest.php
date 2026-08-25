@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Cli;
 
-use PhpAiToolkit\LocGuard\Cli\LocGuardHelpText;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Cli\LocGuardHelpText;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Cli\LocGuardHelpText
+ * @covers \Toolkit\LocGuard\Cli\LocGuardHelpText
  */
 #[CoversClass(LocGuardHelpText::class)]
 final class LocGuardHelpTextTest extends TestCase

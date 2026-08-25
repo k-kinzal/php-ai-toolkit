@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Analysis;
 
-use PhpAiToolkit\TreeGuard\Analysis\RequiredFileInspector;
-use PhpAiToolkit\TreeGuard\Analysis\Violation;
-use PhpAiToolkit\TreeGuard\Config\RuleConfig;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
-use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Analysis\RequiredFileInspector;
+use Toolkit\TreeGuard\Analysis\Violation;
+use Toolkit\TreeGuard\Config\RuleConfig;
+use Toolkit\TreeGuard\Filesystem\DirectoryListing;
+use Toolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Analysis\RequiredFileInspector
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing
- * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver
- * @uses \PhpAiToolkit\TreeGuard\Analysis\Violation
+ * @covers \Toolkit\TreeGuard\Analysis\RequiredFileInspector
+ * @uses \Toolkit\TreeGuard\Filesystem\DirectoryListing
+ * @uses \Toolkit\TreeGuard\Config\RuleConfig
+ * @uses \Toolkit\TreeGuard\Filesystem\TreeGuardPathResolver
+ * @uses \Toolkit\TreeGuard\Analysis\Violation
  */
 #[CoversClass(RequiredFileInspector::class)]
 #[UsesClass(DirectoryListing::class)]

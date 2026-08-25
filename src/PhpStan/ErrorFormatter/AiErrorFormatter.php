@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\ErrorFormatter;
+namespace Toolkit\PhpStan\ErrorFormatter;
 
-use PhpAiToolkit\Shared\AgentDetector;
-use PhpAiToolkit\Shared\FormatMode;
 use PHPStan\Command\AnalysisResult;
 use PHPStan\Command\ErrorFormatter\ErrorFormatter;
 use PHPStan\Command\Output;
 use PHPStan\File\RelativePathHelper;
+use Toolkit\Shared\AgentDetector;
+use Toolkit\Shared\FormatMode;
 
 /**
  * Selects the PHPStan error renderer for the current execution context.
  */
-final class AiRulesErrorFormatter implements ErrorFormatter
+final class AiErrorFormatter implements ErrorFormatter
 {
     /** @readonly */
     private AiRulesHumanErrorFormatter $humanFormatter;

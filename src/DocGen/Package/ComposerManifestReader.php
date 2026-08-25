@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Package;
+namespace Toolkit\DocGen\Package;
 
 use function basename;
 use function dirname;
@@ -12,13 +12,12 @@ use function is_file;
 use function is_string;
 use function json_decode;
 use function json_last_error_msg;
-
-use PhpAiToolkit\DocGen\Config\RepositoryUrl;
-use PhpAiToolkit\DocGen\DocGenException;
-
 use function rtrim;
 use function sprintf;
 use function str_replace;
+
+use Toolkit\DocGen\Config\RepositoryUrl;
+use Toolkit\DocGen\DocGenException;
 
 /**
  * Reads composer.json files into ComposerManifest values.

@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Cli;
+namespace Toolkit\DocGen\Cli;
 
 use function array_shift;
 
 use Closure;
-use PhpAiToolkit\DocGen\DocGenException;
 
 use function sprintf;
+
+use Toolkit\DocGen\DocGenException;
 
 /**
  * CLI entry point for DocGen.

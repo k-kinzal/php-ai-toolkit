@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Cli;
 
-use PhpAiToolkit\TreeGuard\Cli\TreeGuardCliArgumentParser;
-use PhpAiToolkit\TreeGuard\TreeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Cli\TreeGuardCliArgumentParser;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Cli\TreeGuardCliArgumentParser
- * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ * @covers \Toolkit\TreeGuard\Cli\TreeGuardCliArgumentParser
+ * @uses \Toolkit\TreeGuard\TreeGuardException
  */
 #[CoversClass(TreeGuardCliArgumentParser::class)]
 #[UsesClass(TreeGuardException::class)]

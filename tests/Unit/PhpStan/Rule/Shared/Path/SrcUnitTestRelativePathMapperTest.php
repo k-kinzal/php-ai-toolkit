@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Shared\Path;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper
+ * @covers \Toolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper
  */
 #[CoversClass(SrcUnitTestRelativePathMapper::class)]
 final class SrcUnitTestRelativePathMapperTest extends TestCase

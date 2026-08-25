@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Diff;
-
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffLine;
-use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
-use PhpAiToolkit\DocGen\Render\RenderKit;
+namespace Toolkit\DocGen\Render\Diff;
 
 use function sprintf;
+
+use Toolkit\DocGen\Analysis\Diff\DiffLine;
+use Toolkit\DocGen\Analysis\Diff\LineDiffer;
+use Toolkit\DocGen\Render\RenderKit;
 
 /**
  * Renders one source file as the merge of its two revisions.

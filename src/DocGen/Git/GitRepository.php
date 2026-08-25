@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Git;
-
-use PhpAiToolkit\DocGen\DocGenException;
+namespace Toolkit\DocGen\Git;
 
 use function sprintf;
+
+use Toolkit\DocGen\DocGenException;
 
 /**
  * Answers the repository questions a diff run asks before checking out.

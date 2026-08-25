@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Model;
 
-use PhpAiToolkit\DocGen\Analysis\Model\TypeAliasDoc;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Model\TypeAliasDoc;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Model\TypeAliasDoc
+ * @covers \Toolkit\DocGen\Analysis\Model\TypeAliasDoc
  */
 #[CoversClass(TypeAliasDoc::class)]
 final class TypeAliasDocTest extends TestCase

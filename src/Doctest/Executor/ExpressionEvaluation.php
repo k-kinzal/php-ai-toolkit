@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Executor;
+namespace Toolkit\Doctest\Executor;
 
 /**
  * Evaluates arbitrary doctest code at the public runtime boundary.

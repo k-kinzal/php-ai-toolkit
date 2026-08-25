@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Shared;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\FileTokenParser;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser
+ * @covers \Toolkit\PhpStan\Rule\Shared\FileTokenParser
  */
 #[CoversClass(FileTokenParser::class)]
 final class FileTokenParserTest extends TestCase

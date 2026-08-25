@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Reporting;
 
-use PhpAiToolkit\LocGuard\Reporting\Reporter;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Reporting\Reporter;
 
 /**
  * @coversNothing

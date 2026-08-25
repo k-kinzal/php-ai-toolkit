@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Cli;
 
-use PhpAiToolkit\TreeGuard\Cli\TreeGuardConfigPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Cli\TreeGuardConfigPathResolver;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Cli\TreeGuardConfigPathResolver
+ * @covers \Toolkit\TreeGuard\Cli\TreeGuardConfigPathResolver
  */
 #[CoversClass(TreeGuardConfigPathResolver::class)]
 final class TreeGuardConfigPathResolverTest extends TestCase

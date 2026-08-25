@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass\Pairing;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter;
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper;
-use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\FilenameExclusionMatcher;
-use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SourceFileUnitTestPairInspector;
-use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairFileInspector;
-use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\UnitTestSourcePairInspector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter;
+use Toolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
+use Toolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper;
+use Toolkit\PhpStan\Rule\TestClass\Pairing\FilenameExclusionMatcher;
+use Toolkit\PhpStan\Rule\TestClass\Pairing\SourceFileUnitTestPairInspector;
+use Toolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairErrorBuilder;
+use Toolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairFileInspector;
+use Toolkit\PhpStan\Rule\TestClass\Pairing\UnitTestSourcePairInspector;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairFileInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\FilenameExclusionMatcher
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SourceFileUnitTestPairInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\UnitTestSourcePairInspector
+ * @covers \Toolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairFileInspector
+ * @uses \Toolkit\PhpStan\Rule\TestClass\Pairing\FilenameExclusionMatcher
+ * @uses \Toolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter
+ * @uses \Toolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer
+ * @uses \Toolkit\PhpStan\Rule\TestClass\Pairing\SourceFileUnitTestPairInspector
+ * @uses \Toolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper
+ * @uses \Toolkit\PhpStan\Rule\TestClass\Pairing\UnitTestSourcePairInspector
  */
 #[CoversClass(SrcUnitTestPairFileInspector::class)]
 #[UsesClass(FilenameExclusionMatcher::class)]

@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Filesystem;
+namespace Toolkit\ScopeGuard\Filesystem;
 
 use function fnmatch;
-
-use PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig;
-
 use function str_ends_with;
+
+use Toolkit\ScopeGuard\Config\ScopeGuardConfig;
 
 /**
  * Decides whether a discovered file belongs in ScopeGuard analysis.

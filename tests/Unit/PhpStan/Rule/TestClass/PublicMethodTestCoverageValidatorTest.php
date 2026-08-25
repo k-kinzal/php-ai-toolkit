@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter;
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper;
-use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver;
-use PhpAiToolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageValidator;
-use PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodFileReader;
 use PhpParser\Node\Stmt\Class_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter;
+use Toolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper;
+use Toolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver;
+use Toolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageErrorBuilder;
+use Toolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageValidator;
+use Toolkit\PhpStan\Rule\TestClass\TestMethodFileReader;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageValidator
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodFileReader
+ * @covers \Toolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageValidator
+ * @uses \Toolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter
+ * @uses \Toolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver
+ * @uses \Toolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper
+ * @uses \Toolkit\PhpStan\Rule\TestClass\TestMethodFileReader
  */
 #[CoversClass(PublicMethodTestCoverageValidator::class)]
 #[UsesClass(PathMarkerSplitter::class)]

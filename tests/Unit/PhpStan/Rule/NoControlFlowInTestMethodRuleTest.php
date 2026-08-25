@@ -5,25 +5,25 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\NoControlFlowInTestMethodRule;
-use PhpAiToolkit\PhpStan\Rule\Shared\TestMethodDetector;
-use PhpAiToolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver;
-use PhpAiToolkit\PhpStan\Rule\TestClass\NestedScopeFilter;
-use PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector;
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\NoControlFlowInTestMethodRule;
+use Toolkit\PhpStan\Rule\Shared\TestMethodDetector;
+use Toolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver;
+use Toolkit\PhpStan\Rule\TestClass\NestedScopeFilter;
+use Toolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @extends RuleTestCase<NoControlFlowInTestMethodRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\NoControlFlowInTestMethodRule
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\NestedScopeFilter
- * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\TestMethodDetector
+ * @covers \Toolkit\PhpStan\Rule\NoControlFlowInTestMethodRule
+ * @uses \Toolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver
+ * @uses \Toolkit\PhpStan\Rule\TestClass\NestedScopeFilter
+ * @uses \Toolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector
+ * @uses \Toolkit\PhpStan\Rule\Shared\TestMethodDetector
  */
 #[CoversClass(NoControlFlowInTestMethodRule::class)]
 #[UsesClass(ControlFlowTypeResolver::class)]

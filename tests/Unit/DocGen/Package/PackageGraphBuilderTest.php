@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Package;
 
-use PhpAiToolkit\DocGen\Package\ComposerManifest;
-use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
-use PhpAiToolkit\DocGen\Package\PackageDependency;
-use PhpAiToolkit\DocGen\Package\PackageGraph;
-use PhpAiToolkit\DocGen\Package\PackageGraphBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Package\ComposerManifest;
+use Toolkit\DocGen\Package\DiscoveredPackage;
+use Toolkit\DocGen\Package\PackageDependency;
+use Toolkit\DocGen\Package\PackageGraph;
+use Toolkit\DocGen\Package\PackageGraphBuilder;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Package\PackageGraphBuilder
- * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
- * @uses \PhpAiToolkit\DocGen\Package\DiscoveredPackage
- * @uses \PhpAiToolkit\DocGen\Package\PackageDependency
- * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
+ * @covers \Toolkit\DocGen\Package\PackageGraphBuilder
+ * @uses \Toolkit\DocGen\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Package\PackageDependency
+ * @uses \Toolkit\DocGen\Package\PackageGraph
  */
 #[CoversClass(PackageGraphBuilder::class)]
 #[UsesClass(ComposerManifest::class)]

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Cli;
 
-use PhpAiToolkit\TreeGuard\Cli\TreeGuardHelpText;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Cli\TreeGuardHelpText;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Cli\TreeGuardHelpText
+ * @covers \Toolkit\TreeGuard\Cli\TreeGuardHelpText
  */
 #[CoversClass(TreeGuardHelpText::class)]
 final class TreeGuardHelpTextTest extends TestCase

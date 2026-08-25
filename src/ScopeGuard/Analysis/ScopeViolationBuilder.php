@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis;
-
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration;
-use PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
+namespace Toolkit\ScopeGuard\Analysis;
 
 use function sprintf;
+
+use Toolkit\ScopeGuard\Analysis\Declaration\Declaration;
+use Toolkit\ScopeGuard\Analysis\Reference\Reference;
+use Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
+
 use function ucfirst;
 
 /**

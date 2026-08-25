@@ -4,91 +4,91 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Cli;
 
-use PhpAiToolkit\TreeGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\TreeGuard\Analysis\CaseConventionMatcher;
-use PhpAiToolkit\TreeGuard\Analysis\ChildCountInspector;
-use PhpAiToolkit\TreeGuard\Analysis\DepthInspector;
-use PhpAiToolkit\TreeGuard\Analysis\DirectoryPatternMatcher;
-use PhpAiToolkit\TreeGuard\Analysis\DirectoryRuleInspector;
-use PhpAiToolkit\TreeGuard\Analysis\DirNameInspector;
-use PhpAiToolkit\TreeGuard\Analysis\EmptyDirectoryInspector;
-use PhpAiToolkit\TreeGuard\Analysis\FileNameInspector;
-use PhpAiToolkit\TreeGuard\Analysis\RequiredFileInspector;
-use PhpAiToolkit\TreeGuard\Analysis\TotalFileCountInspector;
-use PhpAiToolkit\TreeGuard\Analysis\TreeGuardAnalyzer;
-use PhpAiToolkit\TreeGuard\Analysis\Violation;
-use PhpAiToolkit\TreeGuard\Cli\TreeGuardAnalysisRunner;
-use PhpAiToolkit\TreeGuard\Cli\TreeGuardConfigPathResolver;
-use PhpAiToolkit\TreeGuard\Cli\TreeGuardOutputWriter;
-use PhpAiToolkit\TreeGuard\Cli\TreeGuardReporterOverride;
-use PhpAiToolkit\TreeGuard\Config\ConfigLoader;
-use PhpAiToolkit\TreeGuard\Config\ConfigScalarReader;
-use PhpAiToolkit\TreeGuard\Config\ConfigStringListReader;
-use PhpAiToolkit\TreeGuard\Config\ReportConfig;
-use PhpAiToolkit\TreeGuard\Config\ReportConfigReader;
-use PhpAiToolkit\TreeGuard\Config\RuleConfig;
-use PhpAiToolkit\TreeGuard\Config\RuleConfigReader;
-use PhpAiToolkit\TreeGuard\Config\RuleListConfigReader;
-use PhpAiToolkit\TreeGuard\Config\TreeGuardConfig;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListingReader;
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryTreeScanner;
-use PhpAiToolkit\TreeGuard\Filesystem\PathInclusionPolicy;
-use PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
-use PhpAiToolkit\TreeGuard\Reporting\AiReporter;
-use PhpAiToolkit\TreeGuard\Reporting\AiReportGuidance;
-use PhpAiToolkit\TreeGuard\Reporting\AiReportSummary;
-use PhpAiToolkit\TreeGuard\Reporting\AiViolationAction;
-use PhpAiToolkit\TreeGuard\Reporting\AiViolationFormatter;
-use PhpAiToolkit\TreeGuard\Reporting\JsonReporter;
-use PhpAiToolkit\TreeGuard\Reporting\ReporterFactory;
-use PhpAiToolkit\TreeGuard\Reporting\ViolationSorter;
-use PhpAiToolkit\TreeGuard\TreeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Analysis\AnalysisResult;
+use Toolkit\TreeGuard\Analysis\CaseConventionMatcher;
+use Toolkit\TreeGuard\Analysis\ChildCountInspector;
+use Toolkit\TreeGuard\Analysis\DepthInspector;
+use Toolkit\TreeGuard\Analysis\DirectoryPatternMatcher;
+use Toolkit\TreeGuard\Analysis\DirectoryRuleInspector;
+use Toolkit\TreeGuard\Analysis\DirNameInspector;
+use Toolkit\TreeGuard\Analysis\EmptyDirectoryInspector;
+use Toolkit\TreeGuard\Analysis\FileNameInspector;
+use Toolkit\TreeGuard\Analysis\RequiredFileInspector;
+use Toolkit\TreeGuard\Analysis\TotalFileCountInspector;
+use Toolkit\TreeGuard\Analysis\TreeGuardAnalyzer;
+use Toolkit\TreeGuard\Analysis\Violation;
+use Toolkit\TreeGuard\Cli\TreeGuardAnalysisRunner;
+use Toolkit\TreeGuard\Cli\TreeGuardConfigPathResolver;
+use Toolkit\TreeGuard\Cli\TreeGuardOutputWriter;
+use Toolkit\TreeGuard\Cli\TreeGuardReporterOverride;
+use Toolkit\TreeGuard\Config\ConfigLoader;
+use Toolkit\TreeGuard\Config\ConfigScalarReader;
+use Toolkit\TreeGuard\Config\ConfigStringListReader;
+use Toolkit\TreeGuard\Config\ReportConfig;
+use Toolkit\TreeGuard\Config\ReportConfigReader;
+use Toolkit\TreeGuard\Config\RuleConfig;
+use Toolkit\TreeGuard\Config\RuleConfigReader;
+use Toolkit\TreeGuard\Config\RuleListConfigReader;
+use Toolkit\TreeGuard\Config\TreeGuardConfig;
+use Toolkit\TreeGuard\Filesystem\DirectoryListing;
+use Toolkit\TreeGuard\Filesystem\DirectoryListingReader;
+use Toolkit\TreeGuard\Filesystem\DirectoryTreeScanner;
+use Toolkit\TreeGuard\Filesystem\PathInclusionPolicy;
+use Toolkit\TreeGuard\Filesystem\TreeGuardPathResolver;
+use Toolkit\TreeGuard\Reporting\AiReporter;
+use Toolkit\TreeGuard\Reporting\AiReportGuidance;
+use Toolkit\TreeGuard\Reporting\AiReportSummary;
+use Toolkit\TreeGuard\Reporting\AiViolationAction;
+use Toolkit\TreeGuard\Reporting\AiViolationFormatter;
+use Toolkit\TreeGuard\Reporting\JsonReporter;
+use Toolkit\TreeGuard\Reporting\ReporterFactory;
+use Toolkit\TreeGuard\Reporting\ViolationSorter;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Cli\TreeGuardAnalysisRunner
- * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReportGuidance
- * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReportSummary
- * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReporter
- * @uses \PhpAiToolkit\TreeGuard\Reporting\AiViolationAction
- * @uses \PhpAiToolkit\TreeGuard\Reporting\AiViolationFormatter
- * @uses \PhpAiToolkit\TreeGuard\Analysis\AnalysisResult
- * @uses \PhpAiToolkit\TreeGuard\Analysis\CaseConventionMatcher
- * @uses \PhpAiToolkit\TreeGuard\Analysis\ChildCountInspector
- * @uses \PhpAiToolkit\TreeGuard\Config\ConfigLoader
- * @uses \PhpAiToolkit\TreeGuard\Config\ConfigScalarReader
- * @uses \PhpAiToolkit\TreeGuard\Config\ConfigStringListReader
- * @uses \PhpAiToolkit\TreeGuard\Analysis\DepthInspector
- * @uses \PhpAiToolkit\TreeGuard\Analysis\DirNameInspector
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListingReader
- * @uses \PhpAiToolkit\TreeGuard\Analysis\DirectoryPatternMatcher
- * @uses \PhpAiToolkit\TreeGuard\Analysis\DirectoryRuleInspector
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryTreeScanner
- * @uses \PhpAiToolkit\TreeGuard\Analysis\EmptyDirectoryInspector
- * @uses \PhpAiToolkit\TreeGuard\Analysis\FileNameInspector
- * @uses \PhpAiToolkit\TreeGuard\Reporting\JsonReporter
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\PathInclusionPolicy
- * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfigReader
- * @uses \PhpAiToolkit\TreeGuard\Reporting\ReporterFactory
- * @uses \PhpAiToolkit\TreeGuard\Analysis\RequiredFileInspector
- * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig
- * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfigReader
- * @uses \PhpAiToolkit\TreeGuard\Config\RuleListConfigReader
- * @uses \PhpAiToolkit\TreeGuard\Analysis\TotalFileCountInspector
- * @uses \PhpAiToolkit\TreeGuard\Analysis\TreeGuardAnalyzer
- * @uses \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig
- * @uses \PhpAiToolkit\TreeGuard\Cli\TreeGuardConfigPathResolver
- * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
- * @uses \PhpAiToolkit\TreeGuard\Cli\TreeGuardOutputWriter
- * @uses \PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver
- * @uses \PhpAiToolkit\TreeGuard\Cli\TreeGuardReporterOverride
- * @uses \PhpAiToolkit\TreeGuard\Analysis\Violation
- * @uses \PhpAiToolkit\TreeGuard\Reporting\ViolationSorter
+ * @covers \Toolkit\TreeGuard\Cli\TreeGuardAnalysisRunner
+ * @uses \Toolkit\TreeGuard\Reporting\AiReportGuidance
+ * @uses \Toolkit\TreeGuard\Reporting\AiReportSummary
+ * @uses \Toolkit\TreeGuard\Reporting\AiReporter
+ * @uses \Toolkit\TreeGuard\Reporting\AiViolationAction
+ * @uses \Toolkit\TreeGuard\Reporting\AiViolationFormatter
+ * @uses \Toolkit\TreeGuard\Analysis\AnalysisResult
+ * @uses \Toolkit\TreeGuard\Analysis\CaseConventionMatcher
+ * @uses \Toolkit\TreeGuard\Analysis\ChildCountInspector
+ * @uses \Toolkit\TreeGuard\Config\ConfigLoader
+ * @uses \Toolkit\TreeGuard\Config\ConfigScalarReader
+ * @uses \Toolkit\TreeGuard\Config\ConfigStringListReader
+ * @uses \Toolkit\TreeGuard\Analysis\DepthInspector
+ * @uses \Toolkit\TreeGuard\Analysis\DirNameInspector
+ * @uses \Toolkit\TreeGuard\Filesystem\DirectoryListing
+ * @uses \Toolkit\TreeGuard\Filesystem\DirectoryListingReader
+ * @uses \Toolkit\TreeGuard\Analysis\DirectoryPatternMatcher
+ * @uses \Toolkit\TreeGuard\Analysis\DirectoryRuleInspector
+ * @uses \Toolkit\TreeGuard\Filesystem\DirectoryTreeScanner
+ * @uses \Toolkit\TreeGuard\Analysis\EmptyDirectoryInspector
+ * @uses \Toolkit\TreeGuard\Analysis\FileNameInspector
+ * @uses \Toolkit\TreeGuard\Reporting\JsonReporter
+ * @uses \Toolkit\TreeGuard\Filesystem\PathInclusionPolicy
+ * @uses \Toolkit\TreeGuard\Config\ReportConfig
+ * @uses \Toolkit\TreeGuard\Config\ReportConfigReader
+ * @uses \Toolkit\TreeGuard\Reporting\ReporterFactory
+ * @uses \Toolkit\TreeGuard\Analysis\RequiredFileInspector
+ * @uses \Toolkit\TreeGuard\Config\RuleConfig
+ * @uses \Toolkit\TreeGuard\Config\RuleConfigReader
+ * @uses \Toolkit\TreeGuard\Config\RuleListConfigReader
+ * @uses \Toolkit\TreeGuard\Analysis\TotalFileCountInspector
+ * @uses \Toolkit\TreeGuard\Analysis\TreeGuardAnalyzer
+ * @uses \Toolkit\TreeGuard\Config\TreeGuardConfig
+ * @uses \Toolkit\TreeGuard\Cli\TreeGuardConfigPathResolver
+ * @uses \Toolkit\TreeGuard\TreeGuardException
+ * @uses \Toolkit\TreeGuard\Cli\TreeGuardOutputWriter
+ * @uses \Toolkit\TreeGuard\Filesystem\TreeGuardPathResolver
+ * @uses \Toolkit\TreeGuard\Cli\TreeGuardReporterOverride
+ * @uses \Toolkit\TreeGuard\Analysis\Violation
+ * @uses \Toolkit\TreeGuard\Reporting\ViolationSorter
  */
 #[CoversClass(TreeGuardAnalysisRunner::class)]
 #[UsesClass(AiReportGuidance::class)]

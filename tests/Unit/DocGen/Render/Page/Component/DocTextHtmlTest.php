@@ -4,131 +4,131 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page\Component;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer;
-use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
-use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine;
-use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner;
-use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
-use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
-use PhpAiToolkit\DocGen\Analysis\ProjectModel;
-use PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable;
-use PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
-use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
-use PhpAiToolkit\DocGen\Package\ComposerManifest;
-use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
-use PhpAiToolkit\DocGen\Package\PackageGraph;
-use PhpAiToolkit\DocGen\Parallel\WorkerCount;
-use PhpAiToolkit\DocGen\Parallel\WorkerPool;
-use PhpAiToolkit\DocGen\Parallel\WorkScheduler;
-use PhpAiToolkit\DocGen\Render\AssetPublisher;
-use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
-use PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml;
-use PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml;
-use PhpAiToolkit\DocGen\Render\HtmlText;
-use PhpAiToolkit\DocGen\Render\MarkdownInline;
-use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
-use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
-use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
-use PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\DocTextHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\ExampleHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\GraphSvg;
-use PhpAiToolkit\DocGen\Render\Page\Component\MemberHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\RelationsHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\SignatureHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\SymbolListHtml;
-use PhpAiToolkit\DocGen\Render\Page\Component\UsageListHtml;
-use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
-use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
-use PhpAiToolkit\DocGen\Render\Page\IndexPage;
-use PhpAiToolkit\DocGen\Render\Page\LayerPage;
-use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
-use PhpAiToolkit\DocGen\Render\Page\PackagePage;
-use PhpAiToolkit\DocGen\Render\Page\SourcePage;
-use PhpAiToolkit\DocGen\Render\PageChrome;
-use PhpAiToolkit\DocGen\Render\PhpHighlighter;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-use PhpAiToolkit\DocGen\Render\SearchIndexBuilder;
-use PhpAiToolkit\DocGen\Render\Signature\PageSignature;
-use PhpAiToolkit\DocGen\Render\Signature\SidebarDigest;
-use PhpAiToolkit\DocGen\Render\SiteRenderer;
-use PhpAiToolkit\DocGen\Render\SiteUrl;
-use PhpAiToolkit\DocGen\Render\Social\SocialCard;
-use PhpAiToolkit\DocGen\Render\Social\SocialMeta;
-use PhpAiToolkit\DocGen\Render\TypeHtml;
-use PhpAiToolkit\DocGen\Render\TypeRenderContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\LineDiffer;
+use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
+use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Analysis\Doctest\AssertionLine;
+use Toolkit\DocGen\Analysis\Doctest\AssertionScanner;
+use Toolkit\DocGen\Analysis\Doctest\DoctestExtractor;
+use Toolkit\DocGen\Analysis\Model\DocBlock;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Filesystem\SiteFileWriter;
+use Toolkit\DocGen\Package\ComposerManifest;
+use Toolkit\DocGen\Package\DiscoveredPackage;
+use Toolkit\DocGen\Package\PackageGraph;
+use Toolkit\DocGen\Parallel\WorkerCount;
+use Toolkit\DocGen\Parallel\WorkerPool;
+use Toolkit\DocGen\Parallel\WorkScheduler;
+use Toolkit\DocGen\Render\AssetPublisher;
+use Toolkit\DocGen\Render\Diff\DiffHtml;
+use Toolkit\DocGen\Render\Diff\MarkdownDiffHtml;
+use Toolkit\DocGen\Render\Diff\SourceDiffHtml;
+use Toolkit\DocGen\Render\HtmlText;
+use Toolkit\DocGen\Render\MarkdownInline;
+use Toolkit\DocGen\Render\MarkdownRenderer;
+use Toolkit\DocGen\Render\Page\AllItemsPage;
+use Toolkit\DocGen\Render\Page\ClassLikePage;
+use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
+use Toolkit\DocGen\Render\Page\Component\DocTextHtml;
+use Toolkit\DocGen\Render\Page\Component\ExampleHtml;
+use Toolkit\DocGen\Render\Page\Component\GraphSvg;
+use Toolkit\DocGen\Render\Page\Component\MemberHtml;
+use Toolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml;
+use Toolkit\DocGen\Render\Page\Component\RelationsHtml;
+use Toolkit\DocGen\Render\Page\Component\SidebarHtml;
+use Toolkit\DocGen\Render\Page\Component\SignatureHtml;
+use Toolkit\DocGen\Render\Page\Component\SymbolListHtml;
+use Toolkit\DocGen\Render\Page\Component\UsageListHtml;
+use Toolkit\DocGen\Render\Page\DocumentPage;
+use Toolkit\DocGen\Render\Page\FunctionPage;
+use Toolkit\DocGen\Render\Page\IndexPage;
+use Toolkit\DocGen\Render\Page\LayerPage;
+use Toolkit\DocGen\Render\Page\NamespacePage;
+use Toolkit\DocGen\Render\Page\PackagePage;
+use Toolkit\DocGen\Render\Page\SourcePage;
+use Toolkit\DocGen\Render\PageChrome;
+use Toolkit\DocGen\Render\PhpHighlighter;
+use Toolkit\DocGen\Render\RenderKit;
+use Toolkit\DocGen\Render\SearchIndexBuilder;
+use Toolkit\DocGen\Render\Signature\PageSignature;
+use Toolkit\DocGen\Render\Signature\SidebarDigest;
+use Toolkit\DocGen\Render\SiteRenderer;
+use Toolkit\DocGen\Render\SiteUrl;
+use Toolkit\DocGen\Render\Social\SocialCard;
+use Toolkit\DocGen\Render\Social\SocialMeta;
+use Toolkit\DocGen\Render\TypeHtml;
+use Toolkit\DocGen\Render\TypeRenderContext;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\Page\Component\DocTextHtml
- * @uses \PhpAiToolkit\DocGen\Render\Page\AllItemsPage
- * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine
- * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner
- * @uses \PhpAiToolkit\DocGen\Render\AssetPublisher
- * @uses \PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml
- * @uses \PhpAiToolkit\DocGen\Render\Page\ClassLikePage
- * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
- * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffHtml
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
- * @uses \PhpAiToolkit\DocGen\Package\DiscoveredPackage
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
- * @uses \PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor
- * @uses \PhpAiToolkit\DocGen\Render\Page\DocumentPage
- * @uses \PhpAiToolkit\DocGen\Render\Page\Component\ExampleHtml
- * @uses \PhpAiToolkit\DocGen\Render\Page\FunctionPage
- * @uses \PhpAiToolkit\DocGen\Render\Page\Component\GraphSvg
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex
- * @uses \PhpAiToolkit\DocGen\Render\HtmlText
- * @uses \PhpAiToolkit\DocGen\Render\Page\IndexPage
- * @uses \PhpAiToolkit\DocGen\Render\Page\LayerPage
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer
- * @uses \PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml
- * @uses \PhpAiToolkit\DocGen\Render\MarkdownInline
- * @uses \PhpAiToolkit\DocGen\Render\MarkdownRenderer
- * @uses \PhpAiToolkit\DocGen\Render\Page\Component\MemberHtml
- * @uses \PhpAiToolkit\DocGen\Render\Page\NamespacePage
- * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
- * @uses \PhpAiToolkit\DocGen\Render\Page\PackagePage
- * @uses \PhpAiToolkit\DocGen\Render\PageChrome
- * @uses \PhpAiToolkit\DocGen\Render\Signature\PageSignature
- * @uses \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge
- * @uses \PhpAiToolkit\DocGen\Render\PhpHighlighter
- * @uses \PhpAiToolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml
- * @uses \PhpAiToolkit\DocGen\Analysis\ProjectModel
- * @uses \PhpAiToolkit\DocGen\Render\Page\Component\RelationsHtml
- * @uses \PhpAiToolkit\DocGen\Render\RenderKit
- * @uses \PhpAiToolkit\DocGen\Render\SearchIndexBuilder
- * @uses \PhpAiToolkit\DocGen\Render\Signature\SidebarDigest
- * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml
- * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SignatureHtml
- * @uses \PhpAiToolkit\DocGen\Filesystem\SiteFileWriter
- * @uses \PhpAiToolkit\DocGen\Render\SiteRenderer
- * @uses \PhpAiToolkit\DocGen\Render\SiteUrl
- * @uses \PhpAiToolkit\DocGen\Render\Social\SocialCard
- * @uses \PhpAiToolkit\DocGen\Render\Social\SocialMeta
- * @uses \PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml
- * @uses \PhpAiToolkit\DocGen\Render\Page\SourcePage
- * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SymbolListHtml
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
- * @uses \PhpAiToolkit\DocGen\Render\TypeHtml
- * @uses \PhpAiToolkit\DocGen\Render\TypeRenderContext
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
- * @uses \PhpAiToolkit\DocGen\Render\Page\Component\UsageListHtml
- * @uses \PhpAiToolkit\DocGen\Parallel\WorkScheduler
- * @uses \PhpAiToolkit\DocGen\Parallel\WorkerCount
- * @uses \PhpAiToolkit\DocGen\Parallel\WorkerPool
+ * @covers \Toolkit\DocGen\Render\Page\Component\DocTextHtml
+ * @uses \Toolkit\DocGen\Render\Page\AllItemsPage
+ * @uses \Toolkit\DocGen\Analysis\Doctest\AssertionLine
+ * @uses \Toolkit\DocGen\Analysis\Doctest\AssertionScanner
+ * @uses \Toolkit\DocGen\Render\AssetPublisher
+ * @uses \Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml
+ * @uses \Toolkit\DocGen\Render\Page\ClassLikePage
+ * @uses \Toolkit\DocGen\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Analysis\Model\DocBlock
+ * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Analysis\Doctest\DoctestExtractor
+ * @uses \Toolkit\DocGen\Render\Page\DocumentPage
+ * @uses \Toolkit\DocGen\Render\Page\Component\ExampleHtml
+ * @uses \Toolkit\DocGen\Render\Page\FunctionPage
+ * @uses \Toolkit\DocGen\Render\Page\Component\GraphSvg
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Render\HtmlText
+ * @uses \Toolkit\DocGen\Render\Page\IndexPage
+ * @uses \Toolkit\DocGen\Render\Page\LayerPage
+ * @uses \Toolkit\DocGen\Analysis\Diff\LineDiffer
+ * @uses \Toolkit\DocGen\Render\Diff\MarkdownDiffHtml
+ * @uses \Toolkit\DocGen\Render\MarkdownInline
+ * @uses \Toolkit\DocGen\Render\MarkdownRenderer
+ * @uses \Toolkit\DocGen\Render\Page\Component\MemberHtml
+ * @uses \Toolkit\DocGen\Render\Page\NamespacePage
+ * @uses \Toolkit\DocGen\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Render\Page\PackagePage
+ * @uses \Toolkit\DocGen\Render\PageChrome
+ * @uses \Toolkit\DocGen\Render\Signature\PageSignature
+ * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Render\PhpHighlighter
+ * @uses \Toolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml
+ * @uses \Toolkit\DocGen\Analysis\ProjectModel
+ * @uses \Toolkit\DocGen\Render\Page\Component\RelationsHtml
+ * @uses \Toolkit\DocGen\Render\RenderKit
+ * @uses \Toolkit\DocGen\Render\SearchIndexBuilder
+ * @uses \Toolkit\DocGen\Render\Signature\SidebarDigest
+ * @uses \Toolkit\DocGen\Render\Page\Component\SidebarHtml
+ * @uses \Toolkit\DocGen\Render\Page\Component\SignatureHtml
+ * @uses \Toolkit\DocGen\Filesystem\SiteFileWriter
+ * @uses \Toolkit\DocGen\Render\SiteRenderer
+ * @uses \Toolkit\DocGen\Render\SiteUrl
+ * @uses \Toolkit\DocGen\Render\Social\SocialCard
+ * @uses \Toolkit\DocGen\Render\Social\SocialMeta
+ * @uses \Toolkit\DocGen\Render\Diff\SourceDiffHtml
+ * @uses \Toolkit\DocGen\Render\Page\SourcePage
+ * @uses \Toolkit\DocGen\Render\Page\Component\SymbolListHtml
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Render\TypeHtml
+ * @uses \Toolkit\DocGen\Render\TypeRenderContext
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Render\Page\Component\UsageListHtml
+ * @uses \Toolkit\DocGen\Parallel\WorkScheduler
+ * @uses \Toolkit\DocGen\Parallel\WorkerCount
+ * @uses \Toolkit\DocGen\Parallel\WorkerPool
  */
 #[CoversClass(DocTextHtml::class)]
 #[UsesClass(AllItemsPage::class)]

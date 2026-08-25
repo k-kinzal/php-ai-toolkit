@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Doctest;
 
-use PhpAiToolkit\DocGen\Analysis\Doctest\DocExample;
-use PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Doctest\DocExample;
+use Toolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor
- * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\DocExample
+ * @covers \Toolkit\DocGen\Analysis\Doctest\DoctestExtractor
+ * @uses \Toolkit\DocGen\Analysis\Doctest\DocExample
  */
 #[CoversClass(DoctestExtractor::class)]
 #[UsesClass(DocExample::class)]

@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render;
+namespace Toolkit\DocGen\Render;
 
 use function file_get_contents;
 use function is_file;
-
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
-use PhpAiToolkit\DocGen\Render\Social\SocialCard;
-
 use function sprintf;
+
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Filesystem\SiteFileWriter;
+use Toolkit\DocGen\Render\Social\SocialCard;
 
 /**
  * Publishes the static stylesheet and script assets into the site.

@@ -48,7 +48,7 @@ Register the extension and add the suite. No test file is written:
 </testsuites>
 
 <extensions>
-    <bootstrap class="PhpAiToolkit\Doctest\DoctestExtension">
+    <bootstrap class="Toolkit\Doctest\DoctestExtension">
         <parameter name="directories" value="src"/>
     </bootstrap>
 </extensions>
@@ -77,7 +77,7 @@ configuration:
 ```
 
 The template extends
-`PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner` and returns the exact
+`Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner` and returns the exact
 `Configuration` from `configure()`. Do not merely add the suite name: a PHPUnit 9
 matrix leg with no concrete legacy runner discovers zero doctests and is not a
 completed setup. Keep this directory out of the modern configuration because its

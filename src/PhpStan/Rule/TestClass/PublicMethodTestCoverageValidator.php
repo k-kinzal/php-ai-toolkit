@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\TestClass;
+namespace Toolkit\PhpStan\Rule\TestClass;
 
-use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver;
 use PHPStan\Rules\IdentifierRuleError;
+use Toolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver;
 
 /**
  * Validates that each public source method has a matching unit test method.

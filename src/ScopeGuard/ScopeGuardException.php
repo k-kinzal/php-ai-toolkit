@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard;
+namespace Toolkit\ScopeGuard;
 
 use RuntimeException;
 

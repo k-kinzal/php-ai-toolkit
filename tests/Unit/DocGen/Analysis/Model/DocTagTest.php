@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Model;
 
-use PhpAiToolkit\DocGen\Analysis\Model\DocTag;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Model\DocTag;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Model\DocTag
+ * @covers \Toolkit\DocGen\Analysis\Model\DocTag
  */
 #[CoversClass(DocTag::class)]
 final class DocTagTest extends TestCase

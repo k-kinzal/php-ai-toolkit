@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter;
+namespace Toolkit\PhpUnit\TestReporter;
 
 /**
  * Immutable value object representing a single test issue.

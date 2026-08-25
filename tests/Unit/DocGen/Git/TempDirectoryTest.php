@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Git;
 
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Git\TempDirectory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Git\TempDirectory;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Git\TempDirectory
- * @uses \PhpAiToolkit\DocGen\DocGenException
+ * @covers \Toolkit\DocGen\Git\TempDirectory
+ * @uses \Toolkit\DocGen\DocGenException
  */
 #[CoversClass(TempDirectory::class)]
 #[UsesClass(DocGenException::class)]

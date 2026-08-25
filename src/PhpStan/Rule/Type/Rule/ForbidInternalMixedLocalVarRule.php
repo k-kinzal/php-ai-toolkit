@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Type\Rule;
+namespace Toolkit\PhpStan\Rule\Type\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\Type\MixedLocalPhpDocErrorCollector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
 
 use function sprintf;
+
+use Toolkit\PhpStan\Rule\Type\MixedLocalPhpDocErrorCollector;
 
 /**
  * Applies the internal mixed policy to local @var declarations.

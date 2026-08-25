@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Signature;
+namespace Toolkit\DocGen\Render\Signature;
 
 use function hash;
 
-use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
-use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-use PhpAiToolkit\DocGen\Render\SiteUrl;
+use Toolkit\DocGen\Render\Page\Component\SidebarHtml;
+use Toolkit\DocGen\Render\Page\SidebarScope;
+use Toolkit\DocGen\Render\RenderKit;
+use Toolkit\DocGen\Render\SiteUrl;
 
 /**
  * Digests the navigation every page of one scope shares.

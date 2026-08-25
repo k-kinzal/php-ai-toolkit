@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\ErrorFormatter;
 
-use PhpAiToolkit\PhpStan\ErrorFormatter\ErrorGrouping;
 use PHPStan\Analyser\Error;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\ErrorFormatter\ErrorGrouping;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\ErrorGrouping
+ * @covers \Toolkit\PhpStan\ErrorFormatter\ErrorGrouping
  */
 #[CoversClass(ErrorGrouping::class)]
 final class ErrorGroupingTest extends TestCase

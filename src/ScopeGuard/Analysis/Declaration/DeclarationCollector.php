@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis\Declaration;
-
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver;
+namespace Toolkit\ScopeGuard\Analysis\Declaration;
 
 use function sprintf;
+
+use Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver;
 
 /**
  * Collects the scoped declarations of one namespace group into the index.

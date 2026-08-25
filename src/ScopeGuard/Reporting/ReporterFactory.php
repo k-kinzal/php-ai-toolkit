@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Reporting;
-
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
+namespace Toolkit\ScopeGuard\Reporting;
 
 use function sprintf;
+
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
  * Creates ScopeGuard reporters from configuration names.

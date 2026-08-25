@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule;
+namespace Toolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\TestMethodDetector;
-use PhpAiToolkit\PhpStan\Rule\TestClass\OverrideMethodDetector;
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+use Toolkit\PhpStan\Rule\Shared\TestMethodDetector;
+use Toolkit\PhpStan\Rule\TestClass\OverrideMethodDetector;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @implements Rule<\PhpParser\Node\Stmt\ClassMethod>

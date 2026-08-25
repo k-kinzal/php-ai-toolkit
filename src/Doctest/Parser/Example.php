@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\Parser;
-
-use PhpAiToolkit\Doctest\Scanner\Target;
+namespace Toolkit\Doctest\Parser;
 
 use function sprintf;
+
+use Toolkit\Doctest\Scanner\Target;
 
 /**
  * Represents a single example extracted from a docblock.

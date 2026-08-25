@@ -2,29 +2,30 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Page\Component;
+namespace Toolkit\DocGen\Render\Page\Component;
 
 use function count;
 use function html_entity_decode;
 use function implode;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind;
-use PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\DocTag;
-use PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\MethodDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TemplateDoc;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-use PhpAiToolkit\DocGen\Render\TypeRenderContext;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 
 use function strcasecmp;
 use function strip_tags;
 use function strlen;
+
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\ClassLikeKind;
+use Toolkit\DocGen\Analysis\Model\ConstantDoc;
+use Toolkit\DocGen\Analysis\Model\DocTag;
+use Toolkit\DocGen\Analysis\Model\EnumCaseDoc;
+use Toolkit\DocGen\Analysis\Model\FunctionDoc;
+use Toolkit\DocGen\Analysis\Model\MethodDoc;
+use Toolkit\DocGen\Analysis\Model\PropertyDoc;
+use Toolkit\DocGen\Analysis\Model\TemplateDoc;
+use Toolkit\DocGen\Render\RenderKit;
+use Toolkit\DocGen\Render\TypeRenderContext;
 
 /**
  * Renders PHP declaration signatures with fully linked types.
@@ -187,7 +188,7 @@ final class SignatureHtml
     /**
      * Renders a callable head with its parameter list, wrapping when long.
      *
-     * @param list<\PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
+     * @param list<\Toolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
      * @param string $ownerKey the diff key the parameter states are under
      */
     public function callableSignature(RenderKit $services, string $head, array $parameters, string $returnSuffix, TypeRenderContext $context, string $ownerKey = ''): string
@@ -211,7 +212,7 @@ final class SignatureHtml
      * One of the two is displayed, so the plain view of a signature is
      * never a merged signature with a gap in it.
      *
-     * @param list<\PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
+     * @param list<\Toolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
      * @param string $ownerKey the diff key the parameter states are under
      * @param bool $headOnly whether the parameters the head dropped are skipped
      */
@@ -239,7 +240,7 @@ final class SignatureHtml
     /**
      * Reports whether the head revision dropped one of the parameters.
      *
-     * @param list<\PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
+     * @param list<\Toolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
      * @param string $ownerKey the diff key the parameter states are under
      */
     public function hasRemovedParameter(RenderKit $services, array $parameters, string $ownerKey): bool
@@ -258,7 +259,7 @@ final class SignatureHtml
      *
      * @param string $ownerKey the diff key the parameter states are under
      */
-    public function isRemovedParameter(RenderKit $services, \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc $parameter, string $ownerKey): bool
+    public function isRemovedParameter(RenderKit $services, \Toolkit\DocGen\Analysis\Model\ParameterDoc $parameter, string $ownerKey): bool
     {
         return $ownerKey !== ''
             && $services->diff->isActive()
@@ -273,7 +274,7 @@ final class SignatureHtml
      *
      * @param string $ownerKey the diff key the parameter states are under
      */
-    public function markedParameter(RenderKit $services, \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc $parameter, string $html, string $ownerKey): string
+    public function markedParameter(RenderKit $services, \Toolkit\DocGen\Analysis\Model\ParameterDoc $parameter, string $html, string $ownerKey): string
     {
         if ($ownerKey === '' || !$services->diff->isActive()) {
             return $html;
@@ -285,7 +286,7 @@ final class SignatureHtml
     /**
      * Renders one parameter with its most precise type.
      */
-    public function parameter(RenderKit $services, \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc $parameter, TypeRenderContext $context): string
+    public function parameter(RenderKit $services, \Toolkit\DocGen\Analysis\Model\ParameterDoc $parameter, TypeRenderContext $context): string
     {
         $html = '';
         if ($parameter->promotedVisibility !== null) {

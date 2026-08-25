@@ -8,22 +8,24 @@ use function file_put_contents;
 use function is_dir;
 use function mkdir;
 
-use PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator;
-use PhpAiToolkit\Installer\Cli\Command\SkillInstallationRunner;
-use PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter;
-use PhpAiToolkit\Installer\Cli\Command\SkillInstaller;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 use function sys_get_temp_dir;
+
+use Toolkit\Installer\Cli\Command\SkillFilesystemOperator;
+use Toolkit\Installer\Cli\Command\SkillInstallationRunner;
+use Toolkit\Installer\Cli\Command\SkillInstallationWriter;
+use Toolkit\Installer\Cli\Command\SkillInstaller;
+
 use function uniqid;
 
 /**
- * @covers \PhpAiToolkit\Installer\Cli\Command\SkillInstallationRunner
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstaller
+ * @covers \Toolkit\Installer\Cli\Command\SkillInstallationRunner
+ * @uses \Toolkit\Installer\Cli\Command\SkillFilesystemOperator
+ * @uses \Toolkit\Installer\Cli\Command\SkillInstallationWriter
+ * @uses \Toolkit\Installer\Cli\Command\SkillInstaller
  */
 #[CoversClass(SkillInstallationRunner::class)]
 #[UsesClass(SkillFilesystemOperator::class)]

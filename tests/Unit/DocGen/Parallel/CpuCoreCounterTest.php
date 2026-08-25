@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Parallel;
 
-use PhpAiToolkit\DocGen\Parallel\CpuCoreCounter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Parallel\CpuCoreCounter;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Parallel\CpuCoreCounter
+ * @covers \Toolkit\DocGen\Parallel\CpuCoreCounter
  */
 #[CoversClass(CpuCoreCounter::class)]
 final class CpuCoreCounterTest extends TestCase

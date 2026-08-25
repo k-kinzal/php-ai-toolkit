@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Cli;
+namespace Toolkit\ScopeGuard\Cli;
 
 use function array_shift;
 
 use Closure;
-use PhpAiToolkit\ScopeGuard\Analysis\ScopeGuardAnalyzer;
-use PhpAiToolkit\ScopeGuard\Config\ConfigLoader;
-use PhpAiToolkit\ScopeGuard\Reporting\ReporterFactory;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 
 use function sprintf;
+
+use Toolkit\ScopeGuard\Analysis\ScopeGuardAnalyzer;
+use Toolkit\ScopeGuard\Config\ConfigLoader;
+use Toolkit\ScopeGuard\Reporting\ReporterFactory;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
  * CLI entry point for ScopeGuard.

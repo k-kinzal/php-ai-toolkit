@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Reference;
+namespace Toolkit\DocGen\Analysis\Reference;
 
 use function ltrim;
-
-use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
-
 use function strtolower;
+
+use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\FunctionDoc;
 
 /**
  * Case-insensitive lookup table of all documented symbols.

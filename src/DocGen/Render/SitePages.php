@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render;
+namespace Toolkit\DocGen\Render;
 
 use function array_keys;
 use function file_get_contents;
 use function is_file;
 use function ksort;
 
-use PhpAiToolkit\DocGen\Analysis\ProjectModel;
-use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Package\DiscoveredPackage;
 
 /**
  * Answers which pages a site has and what they are written from.

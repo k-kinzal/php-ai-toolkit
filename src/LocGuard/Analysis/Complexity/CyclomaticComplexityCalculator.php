@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\Complexity;
+namespace Toolkit\LocGuard\Analysis\Complexity;
 
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\NestedFunctionMetricRange;
 use PhpToken;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric;
+use Toolkit\LocGuard\Analysis\FunctionMetric\NestedFunctionMetricRange;
 
 /**
  * Calculates cyclomatic complexity for one function-like metric.

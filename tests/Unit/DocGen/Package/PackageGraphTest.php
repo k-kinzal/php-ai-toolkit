@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Package;
 
-use PhpAiToolkit\DocGen\Package\PackageDependency;
-use PhpAiToolkit\DocGen\Package\PackageGraph;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Package\PackageDependency;
+use Toolkit\DocGen\Package\PackageGraph;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Package\PackageGraph
- * @uses \PhpAiToolkit\DocGen\Package\PackageDependency
+ * @covers \Toolkit\DocGen\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Package\PackageDependency
  */
 #[CoversClass(PackageGraph::class)]
 #[UsesClass(PackageDependency::class)]

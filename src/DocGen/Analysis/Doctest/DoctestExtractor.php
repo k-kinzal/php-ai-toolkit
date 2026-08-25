@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Doctest;
+namespace Toolkit\DocGen\Analysis\Doctest;
 
 use function array_pop;
 use function array_shift;

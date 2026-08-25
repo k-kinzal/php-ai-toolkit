@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric;
+namespace Toolkit\LocGuard\Analysis\ClassLikeMetric;
 
 /**
  * Metrics for a class, trait, interface, enum, or anonymous class body.

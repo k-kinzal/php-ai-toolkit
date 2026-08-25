@@ -6,7 +6,6 @@ namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
 use function array_map;
 
-use PhpAiToolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants;
 use PHPStan\Testing\PHPStanTestCase;
 use PHPStan\Type\BooleanType;
 use PHPStan\Type\IntegerRangeType;
@@ -16,9 +15,10 @@ use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants
+ * @covers \Toolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants
  */
 #[CoversClass(ClosedTypeVariants::class)]
 #[Medium]

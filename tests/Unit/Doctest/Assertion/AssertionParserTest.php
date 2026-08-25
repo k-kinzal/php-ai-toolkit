@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Assertion;
 
-use PhpAiToolkit\Doctest\Assertion\Assertion;
-use PhpAiToolkit\Doctest\Assertion\AssertionKind;
-use PhpAiToolkit\Doctest\Assertion\AssertionParser;
-use PhpAiToolkit\Doctest\Assertion\ParsedExample;
-use PhpAiToolkit\Doctest\Assertion\Statement;
-use PhpAiToolkit\Doctest\Parser\Example;
-use PhpAiToolkit\Doctest\Scanner\Target;
-use PhpAiToolkit\Doctest\Scanner\TargetKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Assertion\Assertion;
+use Toolkit\Doctest\Assertion\AssertionKind;
+use Toolkit\Doctest\Assertion\AssertionParser;
+use Toolkit\Doctest\Assertion\ParsedExample;
+use Toolkit\Doctest\Assertion\Statement;
+use Toolkit\Doctest\Parser\Example;
+use Toolkit\Doctest\Scanner\Target;
+use Toolkit\Doctest\Scanner\TargetKind;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Assertion\AssertionParser
- * @uses \PhpAiToolkit\Doctest\Assertion\Statement
- * @uses \PhpAiToolkit\Doctest\Assertion\Assertion
- * @uses \PhpAiToolkit\Doctest\Assertion\ParsedExample
- * @uses \PhpAiToolkit\Doctest\Parser\Example
- * @uses \PhpAiToolkit\Doctest\Scanner\Target
+ * @covers \Toolkit\Doctest\Assertion\AssertionParser
+ * @uses \Toolkit\Doctest\Assertion\Statement
+ * @uses \Toolkit\Doctest\Assertion\Assertion
+ * @uses \Toolkit\Doctest\Assertion\ParsedExample
+ * @uses \Toolkit\Doctest\Parser\Example
+ * @uses \Toolkit\Doctest\Scanner\Target
  */
 #[CoversClass(AssertionParser::class)]
 #[UsesClass(Statement::class)]

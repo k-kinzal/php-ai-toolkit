@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Config;
+namespace Toolkit\TreeGuard\Config;
 
 use function array_keys;
 use function in_array;
 use function is_array;
-
-use PhpAiToolkit\TreeGuard\TreeGuardException;
-
 use function sprintf;
+
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
  * Reads one tree.yaml rule block, rejecting unknown keys so that a typo

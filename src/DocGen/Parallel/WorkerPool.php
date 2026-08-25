@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Parallel;
+namespace Toolkit\DocGen\Parallel;
 
 use function array_key_exists;
 use function array_map;
@@ -19,9 +19,6 @@ use function pcntl_fork;
 use function pcntl_waitpid;
 use function pcntl_wexitstatus;
 use function pcntl_wifexited;
-
-use PhpAiToolkit\DocGen\DocGenException;
-
 use function preg_match;
 use function serialize;
 use function sprintf;
@@ -37,6 +34,7 @@ use function strpos;
 use function substr;
 
 use Throwable;
+use Toolkit\DocGen\DocGenException;
 
 use function unserialize;
 

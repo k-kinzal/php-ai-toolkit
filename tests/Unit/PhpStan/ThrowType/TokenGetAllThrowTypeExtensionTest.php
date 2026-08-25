@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\ThrowType;
 
-use PhpAiToolkit\PhpStan\ThrowType\TokenGetAllThrowTypeExtension;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\Constant\ConstantIntegerType;
@@ -12,9 +11,10 @@ use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\ThrowType\TokenGetAllThrowTypeExtension;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\ThrowType\TokenGetAllThrowTypeExtension
+ * @covers \Toolkit\PhpStan\ThrowType\TokenGetAllThrowTypeExtension
  */
 #[CoversClass(TokenGetAllThrowTypeExtension::class)]
 final class TokenGetAllThrowTypeExtensionTest extends TestCase

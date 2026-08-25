@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\ClassDesign;
+namespace Toolkit\PhpStan\Rule\ClassDesign;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
+use Toolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
 
 /**
  * Decides which protected methods represent intentional extension points.

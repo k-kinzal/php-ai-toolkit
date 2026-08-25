@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Config;
+namespace Toolkit\ScopeGuard\Config;
 
 use function dirname;
 use function is_array;
 use function is_file;
-
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
-
 use function sprintf;
 
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
  * Loads and validates scope.yaml.

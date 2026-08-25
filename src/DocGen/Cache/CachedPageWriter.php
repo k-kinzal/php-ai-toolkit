@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Cache;
+namespace Toolkit\DocGen\Cache;
 
 use Closure;
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
 
 use function strlen;
+
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Filesystem\SiteFileWriter;
 
 /**
  * Writes the pages of a site, skipping the ones already written.

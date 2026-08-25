@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Config;
 
-use PhpAiToolkit\LocGuard\Config\ConfigStringListReader;
-use PhpAiToolkit\LocGuard\LocGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Config\ConfigStringListReader;
+use Toolkit\LocGuard\LocGuardException;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Config\ConfigStringListReader
+ * @covers \Toolkit\LocGuard\Config\ConfigStringListReader
  */
 #[CoversClass(ConfigStringListReader::class)]
 final class ConfigStringListReaderTest extends TestCase

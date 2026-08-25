@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Parallel;
 
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Parallel\ForkSupport;
-use PhpAiToolkit\DocGen\Parallel\WorkerPool;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Parallel\ForkSupport;
+use Toolkit\DocGen\Parallel\WorkerPool;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Parallel\WorkerPool
- * @uses \PhpAiToolkit\DocGen\Parallel\ForkSupport
+ * @covers \Toolkit\DocGen\Parallel\WorkerPool
+ * @uses \Toolkit\DocGen\Parallel\ForkSupport
  */
 #[CoversClass(WorkerPool::class)]
 #[UsesClass(ForkSupport::class)]

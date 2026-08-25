@@ -7,17 +7,17 @@ namespace Tests\Unit\Doctest\TestCase;
 use function array_keys;
 use function iterator_to_array;
 
-use PhpAiToolkit\Doctest\Parser\Example;
-use PhpAiToolkit\Doctest\TestCase\DoctestRunner;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Tests\Fixture\Doctest\FixtureDoctestSuite;
+use Toolkit\Doctest\Parser\Example;
+use Toolkit\Doctest\TestCase\DoctestRunner;
 
 /**
- * @covers \PhpAiToolkit\Doctest\TestCase\DoctestRunner
+ * @covers \Toolkit\Doctest\TestCase\DoctestRunner
  */
 #[CoversClass(DoctestRunner::class)]
 #[Medium]
@@ -61,8 +61,8 @@ final class DoctestRunnerTest extends TestCase
 
     public function testTestDocblockExampleFailsWithTheDoctestReport(): void
     {
-        $target = new \PhpAiToolkit\Doctest\Scanner\Target(
-            \PhpAiToolkit\Doctest\Scanner\TargetKind::CLASS_LIKE,
+        $target = new \Toolkit\Doctest\Scanner\Target(
+            \Toolkit\Doctest\Scanner\TargetKind::CLASS_LIKE,
             (string) realpath(__DIR__ . '/../../../Fixture/Doctest/project/src/Calculator.php'),
             '/** */',
             'Calculator',

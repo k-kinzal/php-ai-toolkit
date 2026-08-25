@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter;
+namespace Toolkit\PhpUnit\TestReporter;
 
 use Closure;
 
 use function getenv;
 
 use Override;
-use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\ExecutionFinishedSubscriber;
-use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\TestConsideredRiskySubscriber;
-use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\TestErroredSubscriber;
-use PhpAiToolkit\PhpUnit\TestReporter\Subscriber\TestFailedSubscriber;
 use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Configuration;
+use Toolkit\PhpUnit\TestReporter\Subscriber\ExecutionFinishedSubscriber;
+use Toolkit\PhpUnit\TestReporter\Subscriber\TestConsideredRiskySubscriber;
+use Toolkit\PhpUnit\TestReporter\Subscriber\TestErroredSubscriber;
+use Toolkit\PhpUnit\TestReporter\Subscriber\TestFailedSubscriber;
 
 /**
  * PHPUnit extension that provides dual-mode test result reporting.

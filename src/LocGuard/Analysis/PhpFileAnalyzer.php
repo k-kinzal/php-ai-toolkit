@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis;
+namespace Toolkit\LocGuard\Analysis;
 
 use function array_merge;
 use function array_values;
 use function file_get_contents;
 
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector;
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder;
-use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric;
-use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricCollector;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricViolationBuilder;
-use PhpAiToolkit\LocGuard\Analysis\Token\TokenLineCounter;
-use PhpAiToolkit\LocGuard\Config\LimitConfig;
 use PhpToken;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder;
+use Toolkit\LocGuard\Analysis\FileMetric\FileMetric;
+use Toolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricCollector;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricViolationBuilder;
+use Toolkit\LocGuard\Analysis\Token\TokenLineCounter;
+use Toolkit\LocGuard\Config\LimitConfig;
 
 /**
  * Calculates LocGuard metrics and violations for one PHP source file.

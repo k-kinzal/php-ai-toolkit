@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Shared;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors
+ * @covers \Toolkit\PhpStan\Rule\Shared\LineOrderedErrors
  */
 #[CoversClass(LineOrderedErrors::class)]
 final class LineOrderedErrorsTest extends TestCase

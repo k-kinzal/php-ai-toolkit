@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\ControlFlow;
+namespace Toolkit\PhpStan\Rule\ControlFlow;
 
 use function implode;
 

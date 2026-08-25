@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Reporting;
+namespace Toolkit\ScopeGuard\Reporting;
 
-use PhpAiToolkit\ScopeGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\ScopeGuard\Config\ReportConfig;
+use Toolkit\ScopeGuard\Analysis\AnalysisResult;
+use Toolkit\ScopeGuard\Config\ReportConfig;
 
 /**
  * AI-oriented ScopeGuard reporter with explicit remediation guidance.

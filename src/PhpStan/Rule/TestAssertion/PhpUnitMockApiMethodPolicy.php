@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\TestAssertion;
+namespace Toolkit\PhpStan\Rule\TestAssertion;
 
 /**
  * Classifies PHPUnit mock APIs by the project's allowed test-double policy.

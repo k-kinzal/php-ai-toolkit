@@ -7,18 +7,20 @@ namespace Tests\Unit\Installer\Cli\Command;
 use function file_put_contents;
 use function mkdir;
 
-use PhpAiToolkit\Installer\Cli\Command\PackageSkillDirectoryScanner;
-use PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 use function sys_get_temp_dir;
+
+use Toolkit\Installer\Cli\Command\PackageSkillDirectoryScanner;
+use Toolkit\Installer\Cli\Command\SkillFilesystemOperator;
+
 use function uniqid;
 
 /**
- * @covers \PhpAiToolkit\Installer\Cli\Command\PackageSkillDirectoryScanner
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator
+ * @covers \Toolkit\Installer\Cli\Command\PackageSkillDirectoryScanner
+ * @uses \Toolkit\Installer\Cli\Command\SkillFilesystemOperator
  */
 #[CoversClass(PackageSkillDirectoryScanner::class)]
 #[UsesClass(SkillFilesystemOperator::class)]

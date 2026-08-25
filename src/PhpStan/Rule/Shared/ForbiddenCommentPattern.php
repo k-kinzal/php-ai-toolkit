@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\Shared;
+namespace Toolkit\PhpStan\Rule\Shared;
 
-use PhpAiToolkit\PhpStan\Rule\ForbiddenCommentRule;
+use Toolkit\PhpStan\Rule\ForbiddenCommentRule;
 
 /**
  * Detects suppression comments handled by ForbiddenCommentRule.

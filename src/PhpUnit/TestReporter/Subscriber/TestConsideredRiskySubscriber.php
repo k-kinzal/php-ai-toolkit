@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Subscriber;
+namespace Toolkit\PhpUnit\TestReporter\Subscriber;
 
 use Override;
-use PhpAiToolkit\PhpUnit\TestReporter\EventTestIssueFactory;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\ConsideredRiskySubscriber;
+use Toolkit\PhpUnit\TestReporter\EventTestIssueFactory;
+use Toolkit\PhpUnit\TestReporter\TestIssueCollector;
 
 /**
  * Forwards risky test events to the issue collector.

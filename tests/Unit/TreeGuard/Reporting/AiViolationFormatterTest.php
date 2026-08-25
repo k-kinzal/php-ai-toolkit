@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Reporting;
 
-use PhpAiToolkit\TreeGuard\Analysis\Violation;
-use PhpAiToolkit\TreeGuard\Reporting\AiViolationAction;
-use PhpAiToolkit\TreeGuard\Reporting\AiViolationFormatter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Analysis\Violation;
+use Toolkit\TreeGuard\Reporting\AiViolationAction;
+use Toolkit\TreeGuard\Reporting\AiViolationFormatter;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Reporting\AiViolationFormatter
- * @uses \PhpAiToolkit\TreeGuard\Reporting\AiViolationAction
- * @uses \PhpAiToolkit\TreeGuard\Analysis\Violation
+ * @covers \Toolkit\TreeGuard\Reporting\AiViolationFormatter
+ * @uses \Toolkit\TreeGuard\Reporting\AiViolationAction
+ * @uses \Toolkit\TreeGuard\Analysis\Violation
  */
 #[CoversClass(AiViolationFormatter::class)]
 #[UsesClass(AiViolationAction::class)]

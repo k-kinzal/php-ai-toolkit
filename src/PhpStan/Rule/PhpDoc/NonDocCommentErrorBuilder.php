@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\PhpDoc;
+namespace Toolkit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\RuleErrorBuilder;
+use Toolkit\PhpStan\Rule\Shared\CommentTextFormatter;
 
 /**
  * Builds errors for non-PHPDoc comments.

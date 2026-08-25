@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Installer\Cli;
-
-use PhpAiToolkit\Installer\Cli\Command\InstallCommand;
+namespace Toolkit\Installer\Cli;
 
 use function sprintf;
+
+use Toolkit\Installer\Cli\Command\InstallCommand;
 
 /**
  * Runs the install command with application header output.

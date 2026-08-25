@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Reporting;
+namespace Toolkit\LocGuard\Reporting;
 
-use PhpAiToolkit\LocGuard\Analysis\Violation;
-use PhpAiToolkit\LocGuard\Config\ReportConfig;
+use Toolkit\LocGuard\Analysis\Violation;
+use Toolkit\LocGuard\Config\ReportConfig;
 
 use function usort;
 

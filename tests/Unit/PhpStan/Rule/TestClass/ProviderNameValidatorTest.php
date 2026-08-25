@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass;
 
-use PhpAiToolkit\PhpStan\Rule\TestClass\ProviderNameValidator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\TestClass\ProviderNameValidator;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\ProviderNameValidator
+ * @covers \Toolkit\PhpStan\Rule\TestClass\ProviderNameValidator
  */
 #[CoversClass(ProviderNameValidator::class)]
 final class ProviderNameValidatorTest extends TestCase

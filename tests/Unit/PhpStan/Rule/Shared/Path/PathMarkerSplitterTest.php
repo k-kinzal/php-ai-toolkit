@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Shared\Path;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter
+ * @covers \Toolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter
  */
 #[CoversClass(PathMarkerSplitter::class)]
 final class PathMarkerSplitterTest extends TestCase

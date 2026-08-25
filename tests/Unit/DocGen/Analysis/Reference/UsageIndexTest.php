@@ -6,15 +6,15 @@ namespace Tests\Unit\DocGen\Analysis\Reference;
 
 use function array_keys;
 
-use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
-use PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Reference\Usage;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
- * @uses \PhpAiToolkit\DocGen\Analysis\Reference\Usage
+ * @covers \Toolkit\DocGen\Analysis\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\Usage
  */
 #[CoversClass(UsageIndex::class)]
 #[UsesClass(Usage::class)]

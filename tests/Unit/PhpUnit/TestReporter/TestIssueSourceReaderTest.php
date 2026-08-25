@@ -6,12 +6,12 @@ namespace Tests\Unit\PhpUnit\TestReporter;
 
 use function dirname;
 
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpUnit\TestReporter\TestIssueSourceReader;
 
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader
+ * @covers \Toolkit\PhpUnit\TestReporter\TestIssueSourceReader
  */
 #[CoversClass(TestIssueSourceReader::class)]
 final class TestIssueSourceReaderTest extends TestCase

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Filesystem;
+namespace Toolkit\ScopeGuard\Filesystem;
 
 use function rtrim;
 use function str_replace;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Diff;
+namespace Toolkit\DocGen\Render\Diff;
 
 use function array_slice;
 
@@ -11,15 +11,15 @@ use Closure;
 use function count;
 use function explode;
 use function implode;
-
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher;
-use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
-use PhpAiToolkit\DocGen\Render\RenderKit;
-
 use function rtrim;
 use function sprintf;
 use function str_replace;
+
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\LcsMatcher;
+use Toolkit\DocGen\Render\MarkdownRenderer;
+use Toolkit\DocGen\Render\RenderKit;
+
 use function trim;
 
 /**

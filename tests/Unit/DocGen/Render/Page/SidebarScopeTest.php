@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Page;
 
-use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Render\Page\SidebarScope;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\Page\SidebarScope
+ * @covers \Toolkit\DocGen\Render\Page\SidebarScope
  */
 #[CoversClass(SidebarScope::class)]
 final class SidebarScopeTest extends TestCase

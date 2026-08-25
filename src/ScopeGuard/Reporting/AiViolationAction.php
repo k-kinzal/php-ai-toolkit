@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Reporting;
+namespace Toolkit\ScopeGuard\Reporting;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Violation;
+use Toolkit\ScopeGuard\Analysis\Violation;
 
 /**
  * Selects remediation actions for individual ScopeGuard violations.

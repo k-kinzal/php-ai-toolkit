@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis;
+namespace Toolkit\ScopeGuard\Analysis;
 
 use function array_merge;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration;
-use PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\ScopeProblemReader;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver;
+use Toolkit\ScopeGuard\Analysis\Declaration\Declaration;
+use Toolkit\ScopeGuard\Analysis\Reference\Reference;
+use Toolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces;
+use Toolkit\ScopeGuard\Analysis\Scope\ScopeProblemReader;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver;
 
 /**
  * Checks a scanned project against the scopes its declarations carry.

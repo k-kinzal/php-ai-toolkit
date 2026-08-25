@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Type\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\Type\MixedCallableErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClosureRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\Type\MixedCallableErrorCollector;
+use Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClosureRule;
 
 /**
  * @extends RuleTestCase<ForbidInternalMixedClosureRule>

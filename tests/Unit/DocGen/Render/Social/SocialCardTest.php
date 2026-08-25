@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render\Social;
 
-use PhpAiToolkit\DocGen\Render\Social\SocialCard;
-use PhpAiToolkit\DocGen\Render\Social\SocialCardText;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Render\Social\SocialCard;
+use Toolkit\DocGen\Render\Social\SocialCardText;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\Social\SocialCard
- * @uses \PhpAiToolkit\DocGen\Render\Social\SocialCardText
+ * @covers \Toolkit\DocGen\Render\Social\SocialCard
+ * @uses \Toolkit\DocGen\Render\Social\SocialCardText
  */
 #[CoversClass(SocialCard::class)]
 #[UsesClass(SocialCardText::class)]

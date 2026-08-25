@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Cli;
+namespace Toolkit\TreeGuard\Cli;
 
 use Closure;
 

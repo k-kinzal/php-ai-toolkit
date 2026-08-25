@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Parse;
+namespace Toolkit\DocGen\Analysis\Parse;
 
 /**
  * Constructor promotion flag values of php-parser parameter nodes.

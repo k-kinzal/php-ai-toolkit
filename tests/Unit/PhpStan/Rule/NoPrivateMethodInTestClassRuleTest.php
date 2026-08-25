@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\NoPrivateMethodInTestClassRule;
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\NoPrivateMethodInTestClassRule;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @extends RuleTestCase<NoPrivateMethodInTestClassRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\NoPrivateMethodInTestClassRule
+ * @covers \Toolkit\PhpStan\Rule\NoPrivateMethodInTestClassRule
  */
 #[CoversClass(NoPrivateMethodInTestClassRule::class)]
 #[Medium]

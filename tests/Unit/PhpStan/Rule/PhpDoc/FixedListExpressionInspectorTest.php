@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\FixedListExpressionInspector;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\PhpDoc\FixedListExpressionInspector;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\FixedListExpressionInspector
+ * @covers \Toolkit\PhpStan\Rule\PhpDoc\FixedListExpressionInspector
  */
 #[CoversClass(FixedListExpressionInspector::class)]
 final class FixedListExpressionInspectorTest extends TestCase

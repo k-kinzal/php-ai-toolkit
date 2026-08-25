@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Document;
+namespace Toolkit\DocGen\Analysis\Document;
 
 use function explode;
 use function file_get_contents;
 use function is_file;
-
-use PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc;
-use PhpAiToolkit\DocGen\Config\DocGenConfig;
-use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
-use PhpAiToolkit\DocGen\Filesystem\MarkdownFileFinder;
-use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
-
 use function preg_match;
+
+use Toolkit\DocGen\Analysis\Model\MarkdownDoc;
+use Toolkit\DocGen\Config\DocGenConfig;
+use Toolkit\DocGen\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Filesystem\MarkdownFileFinder;
+use Toolkit\DocGen\Package\DiscoveredPackage;
 
 /**
  * Collects the Markdown documents that belong to the analyzed repository.

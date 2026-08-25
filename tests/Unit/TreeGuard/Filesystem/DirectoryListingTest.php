@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Filesystem;
 
-use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Filesystem\DirectoryListing;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing
+ * @covers \Toolkit\TreeGuard\Filesystem\DirectoryListing
  */
 #[CoversClass(DirectoryListing::class)]
 final class DirectoryListingTest extends TestCase

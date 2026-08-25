@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Reference;
 
-use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Reference\Usage;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Reference\Usage
+ * @covers \Toolkit\DocGen\Analysis\Reference\Usage
  */
 #[CoversClass(Usage::class)]
 final class UsageTest extends TestCase

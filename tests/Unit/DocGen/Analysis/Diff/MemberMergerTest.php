@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Diff;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
-use PhpAiToolkit\DocGen\Analysis\Diff\MemberMerger;
-use PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\MemberMerger;
+use Toolkit\DocGen\Analysis\Model\ConstantDoc;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Diff\MemberMerger
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ * @covers \Toolkit\DocGen\Analysis\Diff\MemberMerger
+ * @uses \Toolkit\DocGen\Analysis\Model\ConstantDoc
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
  */
 #[CoversClass(MemberMerger::class)]
 #[UsesClass(ConstantDoc::class)]

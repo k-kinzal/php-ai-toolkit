@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Subscriber;
+namespace Toolkit\PhpUnit\TestReporter\Subscriber;
 
 use Override;
-use PhpAiToolkit\PhpUnit\TestReporter\TestReporterRuntime;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
 use PHPUnit\Event\TestRunner\ExecutionFinishedSubscriber as ExecutionFinishedSubscriberInterface;
+use Toolkit\PhpUnit\TestReporter\TestReporterRuntime;
 
 /**
  * Outputs formatted test results when execution finishes.

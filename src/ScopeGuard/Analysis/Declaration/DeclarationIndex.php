@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis\Declaration;
+namespace Toolkit\ScopeGuard\Analysis\Declaration;
 
 use function sprintf;
 use function strtolower;

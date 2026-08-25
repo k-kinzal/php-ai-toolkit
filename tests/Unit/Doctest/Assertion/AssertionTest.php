@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Assertion;
 
-use PhpAiToolkit\Doctest\Assertion\Assertion;
-use PhpAiToolkit\Doctest\Assertion\AssertionKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Assertion\Assertion;
+use Toolkit\Doctest\Assertion\AssertionKind;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Assertion\Assertion
+ * @covers \Toolkit\Doctest\Assertion\Assertion
  */
 #[CoversClass(Assertion::class)]
 final class AssertionTest extends TestCase

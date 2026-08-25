@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis\Declaration;
+namespace Toolkit\ScopeGuard\Analysis\Declaration;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
 
 /**
  * One declaration that carries a visibility scope.

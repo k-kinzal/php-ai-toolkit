@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\FunctionMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionComplexityViolationBuilder;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric;
-use PhpAiToolkit\LocGuard\Analysis\Violation;
-use PhpAiToolkit\LocGuard\Config\LimitConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionComplexityViolationBuilder;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric;
+use Toolkit\LocGuard\Analysis\Violation;
+use Toolkit\LocGuard\Config\LimitConfig;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionComplexityViolationBuilder
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric
- * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
- * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ * @covers \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionComplexityViolationBuilder
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric
+ * @uses \Toolkit\LocGuard\Config\LimitConfig
+ * @uses \Toolkit\LocGuard\Analysis\Violation
  */
 #[CoversClass(FunctionComplexityViolationBuilder::class)]
 #[UsesClass(FunctionMetric::class)]

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard;
 
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ * @covers \Toolkit\ScopeGuard\ScopeGuardException
  */
 #[CoversClass(ScopeGuardException::class)]
 final class ScopeGuardExceptionTest extends TestCase

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Reporting;
-
-use PhpAiToolkit\ScopeGuard\Analysis\AnalysisResult;
+namespace Toolkit\ScopeGuard\Reporting;
 
 use function sprintf;
+
+use Toolkit\ScopeGuard\Analysis\AnalysisResult;
 
 /**
  * Formats the summary block for AI ScopeGuard reports.

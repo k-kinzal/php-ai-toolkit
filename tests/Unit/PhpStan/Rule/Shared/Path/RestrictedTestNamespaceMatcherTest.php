@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Shared\Path;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher
+ * @covers \Toolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher
  */
 #[CoversClass(RestrictedTestNamespaceMatcher::class)]
 final class RestrictedTestNamespaceMatcherTest extends TestCase

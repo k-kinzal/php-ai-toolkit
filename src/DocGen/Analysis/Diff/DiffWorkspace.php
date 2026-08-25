@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Diff;
+namespace Toolkit\DocGen\Analysis\Diff;
 
-use PhpAiToolkit\DocGen\Analysis\ProjectAnalyzer;
-use PhpAiToolkit\DocGen\Cache\ParseCache;
-use PhpAiToolkit\DocGen\Config\DocGenConfig;
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
-use PhpAiToolkit\DocGen\Git\GitRepository;
-use PhpAiToolkit\DocGen\Git\GitWorktree;
-use PhpAiToolkit\DocGen\Git\RevisionRange;
+use Toolkit\DocGen\Analysis\ProjectAnalyzer;
+use Toolkit\DocGen\Cache\ParseCache;
+use Toolkit\DocGen\Config\DocGenConfig;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Git\GitRepository;
+use Toolkit\DocGen\Git\GitWorktree;
+use Toolkit\DocGen\Git\RevisionRange;
 
 /**
  * Opens, analyzes, and closes the two revisions a diff site compares.

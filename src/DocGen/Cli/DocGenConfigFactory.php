@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Cli;
-
-use PhpAiToolkit\DocGen\Config\DocGenConfig;
+namespace Toolkit\DocGen\Cli;
 
 use function realpath;
+
+use Toolkit\DocGen\Config\DocGenConfig;
 
 /**
  * Builds the configuration of one run out of its command line.

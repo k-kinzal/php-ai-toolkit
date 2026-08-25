@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Config;
+namespace Toolkit\TreeGuard\Config;
 
 use function dirname;
 use function is_array;
 use function is_file;
-
-use PhpAiToolkit\TreeGuard\TreeGuardException;
-
 use function sprintf;
 
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
  * Loads and validates tree.yaml.

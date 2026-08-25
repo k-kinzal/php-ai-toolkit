@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest;
 
-use PhpAiToolkit\Doctest\Configuration\Configuration;
-use PhpAiToolkit\Doctest\Configuration\ConfigurationLoader;
-use PhpAiToolkit\Doctest\DoctestExtension;
-use PhpAiToolkit\Doctest\DoctestSuite;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Configuration\Configuration;
+use Toolkit\Doctest\Configuration\ConfigurationLoader;
+use Toolkit\Doctest\DoctestExtension;
+use Toolkit\Doctest\DoctestSuite;
 
 /**
- * @covers \PhpAiToolkit\Doctest\DoctestSuite
- * @uses \PhpAiToolkit\Doctest\Configuration\Configuration
- * @uses \PhpAiToolkit\Doctest\Configuration\ConfigurationLoader
- * @uses \PhpAiToolkit\Doctest\DoctestExtension
+ * @covers \Toolkit\Doctest\DoctestSuite
+ * @uses \Toolkit\Doctest\Configuration\Configuration
+ * @uses \Toolkit\Doctest\Configuration\ConfigurationLoader
+ * @uses \Toolkit\Doctest\DoctestExtension
  */
 #[CoversClass(DoctestSuite::class)]
 #[UsesClass(Configuration::class)]

@@ -4,33 +4,33 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Reporting;
 
-use PhpAiToolkit\ScopeGuard\Reporting\AiReporter;
-use PhpAiToolkit\ScopeGuard\Reporting\AiReportGuidance;
-use PhpAiToolkit\ScopeGuard\Reporting\AiReportSummary;
-use PhpAiToolkit\ScopeGuard\Reporting\AiViolationAction;
-use PhpAiToolkit\ScopeGuard\Reporting\AiViolationFormatter;
-use PhpAiToolkit\ScopeGuard\Reporting\JsonReporter;
-use PhpAiToolkit\ScopeGuard\Reporting\ReporterFactory;
-use PhpAiToolkit\ScopeGuard\Reporting\TextReporter;
-use PhpAiToolkit\ScopeGuard\Reporting\ViolationFieldComparator;
-use PhpAiToolkit\ScopeGuard\Reporting\ViolationSorter;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Reporting\AiReporter;
+use Toolkit\ScopeGuard\Reporting\AiReportGuidance;
+use Toolkit\ScopeGuard\Reporting\AiReportSummary;
+use Toolkit\ScopeGuard\Reporting\AiViolationAction;
+use Toolkit\ScopeGuard\Reporting\AiViolationFormatter;
+use Toolkit\ScopeGuard\Reporting\JsonReporter;
+use Toolkit\ScopeGuard\Reporting\ReporterFactory;
+use Toolkit\ScopeGuard\Reporting\TextReporter;
+use Toolkit\ScopeGuard\Reporting\ViolationFieldComparator;
+use Toolkit\ScopeGuard\Reporting\ViolationSorter;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Reporting\ReporterFactory
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiReporter
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiReportGuidance
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiReportSummary
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiViolationAction
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiViolationFormatter
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\JsonReporter
- * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\TextReporter
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationFieldComparator
- * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationSorter
+ * @covers \Toolkit\ScopeGuard\Reporting\ReporterFactory
+ * @uses \Toolkit\ScopeGuard\Reporting\AiReporter
+ * @uses \Toolkit\ScopeGuard\Reporting\AiReportGuidance
+ * @uses \Toolkit\ScopeGuard\Reporting\AiReportSummary
+ * @uses \Toolkit\ScopeGuard\Reporting\AiViolationAction
+ * @uses \Toolkit\ScopeGuard\Reporting\AiViolationFormatter
+ * @uses \Toolkit\ScopeGuard\Reporting\JsonReporter
+ * @uses \Toolkit\ScopeGuard\ScopeGuardException
+ * @uses \Toolkit\ScopeGuard\Reporting\TextReporter
+ * @uses \Toolkit\ScopeGuard\Reporting\ViolationFieldComparator
+ * @uses \Toolkit\ScopeGuard\Reporting\ViolationSorter
  */
 #[CoversClass(ReporterFactory::class)]
 #[UsesClass(AiReporter::class)]

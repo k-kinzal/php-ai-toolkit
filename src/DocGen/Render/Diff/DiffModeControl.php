@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Diff;
-
-use PhpAiToolkit\DocGen\Render\RenderKit;
+namespace Toolkit\DocGen\Render\Diff;
 
 use function sprintf;
+
+use Toolkit\DocGen\Render\RenderKit;
 
 /**
  * Renders the three-way display mode switch of a diff site.

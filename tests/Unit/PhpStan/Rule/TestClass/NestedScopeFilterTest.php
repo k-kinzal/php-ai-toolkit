@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass;
 
-use PhpAiToolkit\PhpStan\Rule\TestClass\NestedScopeFilter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\TestClass\NestedScopeFilter;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\NestedScopeFilter
+ * @covers \Toolkit\PhpStan\Rule\TestClass\NestedScopeFilter
  */
 #[CoversClass(NestedScopeFilter::class)]
 final class NestedScopeFilterTest extends TestCase

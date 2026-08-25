@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass;
 
-use PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodNameValidator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\TestClass\TestMethodNameValidator;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodNameValidator
+ * @covers \Toolkit\PhpStan\Rule\TestClass\TestMethodNameValidator
  */
 #[CoversClass(TestMethodNameValidator::class)]
 final class TestMethodNameValidatorTest extends TestCase

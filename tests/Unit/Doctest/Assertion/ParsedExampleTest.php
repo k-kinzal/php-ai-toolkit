@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Assertion;
 
-use PhpAiToolkit\Doctest\Assertion\ParsedExample;
-use PhpAiToolkit\Doctest\Assertion\Statement;
-use PhpAiToolkit\Doctest\Parser\Example;
-use PhpAiToolkit\Doctest\Scanner\Target;
-use PhpAiToolkit\Doctest\Scanner\TargetKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Assertion\ParsedExample;
+use Toolkit\Doctest\Assertion\Statement;
+use Toolkit\Doctest\Parser\Example;
+use Toolkit\Doctest\Scanner\Target;
+use Toolkit\Doctest\Scanner\TargetKind;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Assertion\ParsedExample
- * @uses \PhpAiToolkit\Doctest\Parser\Example
- * @uses \PhpAiToolkit\Doctest\Scanner\Target
- * @uses \PhpAiToolkit\Doctest\Assertion\Statement
+ * @covers \Toolkit\Doctest\Assertion\ParsedExample
+ * @uses \Toolkit\Doctest\Parser\Example
+ * @uses \Toolkit\Doctest\Scanner\Target
+ * @uses \Toolkit\Doctest\Assertion\Statement
  */
 #[CoversClass(ParsedExample::class)]
 #[UsesClass(Example::class)]

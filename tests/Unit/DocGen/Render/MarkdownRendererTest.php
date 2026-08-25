@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Render;
 
-use PhpAiToolkit\DocGen\Render\HtmlText;
-use PhpAiToolkit\DocGen\Render\MarkdownInline;
-use PhpAiToolkit\DocGen\Render\MarkdownLinks;
-use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
-use PhpAiToolkit\DocGen\Render\SiteUrl;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Render\HtmlText;
+use Toolkit\DocGen\Render\MarkdownInline;
+use Toolkit\DocGen\Render\MarkdownLinks;
+use Toolkit\DocGen\Render\MarkdownRenderer;
+use Toolkit\DocGen\Render\SiteUrl;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Render\MarkdownRenderer
- * @uses \PhpAiToolkit\DocGen\Render\HtmlText
- * @uses \PhpAiToolkit\DocGen\Render\MarkdownInline
- * @uses \PhpAiToolkit\DocGen\Render\MarkdownLinks
- * @uses \PhpAiToolkit\DocGen\Render\SiteUrl
+ * @covers \Toolkit\DocGen\Render\MarkdownRenderer
+ * @uses \Toolkit\DocGen\Render\HtmlText
+ * @uses \Toolkit\DocGen\Render\MarkdownInline
+ * @uses \Toolkit\DocGen\Render\MarkdownLinks
+ * @uses \Toolkit\DocGen\Render\SiteUrl
  */
 #[CoversClass(MarkdownRenderer::class)]
 #[UsesClass(HtmlText::class)]

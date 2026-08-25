@@ -3,7 +3,7 @@
 
 declare(strict_types=1);
 
-use PhpAiToolkit\LocGuard\Cli\Application;
+use Toolkit\LocGuard\Cli\Application;
 
 if (PHP_VERSION_ID < 80000) {
     fwrite(

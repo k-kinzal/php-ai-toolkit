@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Installer\Cli\Command;
+namespace Toolkit\Installer\Cli\Command;
 
 use function is_dir;
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\TestClass;
+namespace Toolkit\PhpStan\Rule\TestClass;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
 use PHPStan\Analyser\Scope;
 use PHPStan\TrinaryLogic;
+use Toolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
 
 /**
  * Detects methods that intentionally override parent methods.

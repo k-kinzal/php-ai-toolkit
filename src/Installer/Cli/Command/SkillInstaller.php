@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Installer\Cli\Command;
+namespace Toolkit\Installer\Cli\Command;
 
 use function is_dir;
 use function is_link;
-
-use PhpAiToolkit\Installer\RelativePathResolver;
-
 use function sprintf;
+
+use Toolkit\Installer\RelativePathResolver;
 
 /**
  * Installs one skill into one agent skill directory.

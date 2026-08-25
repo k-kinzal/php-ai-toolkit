@@ -14,7 +14,6 @@ use Override;
 
 use const PHP_BINARY;
 
-use PhpAiToolkit\PhpUnit\TestReporter\EventTestNameResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
@@ -23,8 +22,10 @@ use function proc_close;
 use function proc_open;
 use function stream_get_contents;
 
+use Toolkit\PhpUnit\TestReporter\EventTestNameResolver;
+
 /**
- * @covers \PhpAiToolkit\PhpUnit\TestReporter\EventTestNameResolver
+ * @covers \Toolkit\PhpUnit\TestReporter\EventTestNameResolver
  */
 #[CoversClass(EventTestNameResolver::class)]
 #[Large]

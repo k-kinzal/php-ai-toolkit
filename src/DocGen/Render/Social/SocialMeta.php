@@ -2,14 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Render\Social;
+namespace Toolkit\DocGen\Render\Social;
 
 use function array_slice;
 use function count;
 use function implode;
-
-use PhpAiToolkit\DocGen\Render\RenderKit;
-
 use function preg_replace;
 use function preg_split;
 
@@ -20,6 +17,9 @@ use function str_ends_with;
 use function strip_tags;
 use function strlen;
 use function substr;
+
+use Toolkit\DocGen\Render\RenderKit;
+
 use function trim;
 
 /**

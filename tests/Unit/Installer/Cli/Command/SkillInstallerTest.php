@@ -10,24 +10,26 @@ use function is_dir;
 use function is_link;
 use function mkdir;
 
-use PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator;
-use PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter;
-use PhpAiToolkit\Installer\Cli\Command\SkillInstaller;
-use PhpAiToolkit\Installer\PathNormalizer;
-use PhpAiToolkit\Installer\RelativePathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 use function sys_get_temp_dir;
+
+use Toolkit\Installer\Cli\Command\SkillFilesystemOperator;
+use Toolkit\Installer\Cli\Command\SkillInstallationWriter;
+use Toolkit\Installer\Cli\Command\SkillInstaller;
+use Toolkit\Installer\PathNormalizer;
+use Toolkit\Installer\RelativePathResolver;
+
 use function uniqid;
 
 /**
- * @covers \PhpAiToolkit\Installer\Cli\Command\SkillInstaller
- * @uses \PhpAiToolkit\Installer\PathNormalizer
- * @uses \PhpAiToolkit\Installer\RelativePathResolver
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator
- * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter
+ * @covers \Toolkit\Installer\Cli\Command\SkillInstaller
+ * @uses \Toolkit\Installer\PathNormalizer
+ * @uses \Toolkit\Installer\RelativePathResolver
+ * @uses \Toolkit\Installer\Cli\Command\SkillFilesystemOperator
+ * @uses \Toolkit\Installer\Cli\Command\SkillInstallationWriter
  */
 #[CoversClass(SkillInstaller::class)]
 #[UsesClass(PathNormalizer::class)]

@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ClassDesign;
 
-use PhpAiToolkit\PhpStan\Rule\ClassDesign\ClassLikeNameResolver;
-use PhpAiToolkit\PhpStan\Rule\ClassDesign\NonPublicMethodErrorBuilder;
 use PhpParser\Node\Stmt\Class_;
 use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ClassDesign\ClassLikeNameResolver;
+use Toolkit\PhpStan\Rule\ClassDesign\NonPublicMethodErrorBuilder;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\NonPublicMethodErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\ClassDesign\ClassLikeNameResolver
+ * @covers \Toolkit\PhpStan\Rule\ClassDesign\NonPublicMethodErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\ClassDesign\ClassLikeNameResolver
  */
 #[CoversClass(NonPublicMethodErrorBuilder::class)]
 #[UsesClass(ClassLikeNameResolver::class)]

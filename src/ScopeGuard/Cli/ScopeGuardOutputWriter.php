@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Cli;
+namespace Toolkit\ScopeGuard\Cli;
 
 use Closure;
 

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Parallel;
 
-use PhpAiToolkit\DocGen\Parallel\ForkSupport;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Parallel\ForkSupport;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Parallel\ForkSupport
+ * @covers \Toolkit\DocGen\Parallel\ForkSupport
  */
 #[CoversClass(ForkSupport::class)]
 final class ForkSupportTest extends TestCase

@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiRule;
-use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiRule;
+use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @extends RuleTestCase<PhpUnitMockApiRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiRule
+ * @covers \Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiRule
  */
 #[CoversClass(PhpUnitMockApiRule::class)]
 #[Medium]

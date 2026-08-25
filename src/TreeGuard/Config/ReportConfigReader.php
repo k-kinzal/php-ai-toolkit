@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\TreeGuard\Config;
+namespace Toolkit\TreeGuard\Config;
 
 use function implode;
 use function in_array;
 use function is_array;
-
-use PhpAiToolkit\TreeGuard\TreeGuardException;
-
 use function sprintf;
+
+use Toolkit\TreeGuard\TreeGuardException;
 
 /**
  * Reads TreeGuard report configuration from tree.yaml.

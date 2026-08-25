@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Filesystem;
 
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Filesystem\SiteFileWriter;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Filesystem\SiteFileWriter
- * @uses \PhpAiToolkit\DocGen\DocGenException
+ * @covers \Toolkit\DocGen\Filesystem\SiteFileWriter
+ * @uses \Toolkit\DocGen\DocGenException
  */
 #[CoversClass(SiteFileWriter::class)]
 #[UsesClass(DocGenException::class)]

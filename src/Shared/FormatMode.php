@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Shared;
+namespace Toolkit\Shared;
 
 /**
  * Output format mode constants for the dual-mode error formatter.

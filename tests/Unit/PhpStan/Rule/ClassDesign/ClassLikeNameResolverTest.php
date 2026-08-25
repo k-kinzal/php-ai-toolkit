@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ClassDesign;
 
-use PhpAiToolkit\PhpStan\Rule\ClassDesign\ClassLikeNameResolver;
 use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ClassDesign\ClassLikeNameResolver;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\ClassLikeNameResolver
+ * @covers \Toolkit\PhpStan\Rule\ClassDesign\ClassLikeNameResolver
  */
 #[CoversClass(ClassLikeNameResolver::class)]
 final class ClassLikeNameResolverTest extends TestCase

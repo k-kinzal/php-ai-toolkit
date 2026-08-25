@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Doc;
 
-use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge
+ * @covers \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
  */
 #[CoversClass(PhpDocParserBridge::class)]
 final class PhpDocParserBridgeTest extends TestCase

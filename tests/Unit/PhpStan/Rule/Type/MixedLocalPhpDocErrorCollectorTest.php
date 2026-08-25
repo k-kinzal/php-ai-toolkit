@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Type;
 
-use PhpAiToolkit\PhpStan\Rule\Type\MixedLocalPhpDocErrorCollector;
 use PhpParser\Comment\Doc;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Type\MixedLocalPhpDocErrorCollector;
 
 #[CoversClass(MixedLocalPhpDocErrorCollector::class)]
 final class MixedLocalPhpDocErrorCollectorTest extends TestCase

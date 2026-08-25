@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Cli;
-
-use PhpAiToolkit\LocGuard\LocGuardException;
+namespace Toolkit\LocGuard\Cli;
 
 use function sprintf;
+
+use Toolkit\LocGuard\LocGuardException;
 
 /**
  * Parses LocGuard command-line arguments.

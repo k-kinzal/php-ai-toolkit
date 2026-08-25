@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\FunctionMetric;
-
-use PhpAiToolkit\LocGuard\Analysis\Violation;
-use PhpAiToolkit\LocGuard\Config\LimitConfig;
+namespace Toolkit\LocGuard\Analysis\FunctionMetric;
 
 use function sprintf;
+
+use Toolkit\LocGuard\Analysis\Violation;
+use Toolkit\LocGuard\Config\LimitConfig;
 
 /**
  * Builds LocGuard line-count violations for one function metric.

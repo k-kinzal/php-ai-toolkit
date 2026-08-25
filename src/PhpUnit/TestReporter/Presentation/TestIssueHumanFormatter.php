@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Presentation;
+namespace Toolkit\PhpUnit\TestReporter\Presentation;
 
 use function array_key_exists;
 use function count;
 use function ltrim;
 use function max;
-
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader;
-
 use function sprintf;
 use function str_repeat;
 use function strlen;
+
+use Toolkit\PhpUnit\TestReporter\TestIssue;
+use Toolkit\PhpUnit\TestReporter\TestIssueSourceReader;
+
 use function trim;
 
 /**

@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Filesystem;
 
-use PhpAiToolkit\ScopeGuard\Config\ReportConfig;
-use PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig;
-use PhpAiToolkit\ScopeGuard\Filesystem\PhpFileInclusionPolicy;
-use PhpAiToolkit\ScopeGuard\Filesystem\PhpPathFileCollector;
-use PhpAiToolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver;
-use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Config\ReportConfig;
+use Toolkit\ScopeGuard\Config\ScopeGuardConfig;
+use Toolkit\ScopeGuard\Filesystem\PhpFileInclusionPolicy;
+use Toolkit\ScopeGuard\Filesystem\PhpPathFileCollector;
+use Toolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver;
+use Toolkit\ScopeGuard\ScopeGuardException;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Filesystem\PhpPathFileCollector
- * @uses \PhpAiToolkit\ScopeGuard\Filesystem\PhpFileInclusionPolicy
- * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
- * @uses \PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig
- * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
- * @uses \PhpAiToolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver
+ * @covers \Toolkit\ScopeGuard\Filesystem\PhpPathFileCollector
+ * @uses \Toolkit\ScopeGuard\Filesystem\PhpFileInclusionPolicy
+ * @uses \Toolkit\ScopeGuard\Config\ReportConfig
+ * @uses \Toolkit\ScopeGuard\Config\ScopeGuardConfig
+ * @uses \Toolkit\ScopeGuard\ScopeGuardException
+ * @uses \Toolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver
  */
 #[CoversClass(PhpPathFileCollector::class)]
 #[UsesClass(PhpFileInclusionPolicy::class)]

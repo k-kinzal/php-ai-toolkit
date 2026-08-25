@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\MissingThrowsTagErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\RequireThrowsTagOnDirectThrowRule;
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowsDeclarationInspector;
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite;
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteCollector;
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\ExceptionHandling\MissingThrowsTagErrorBuilder;
+use Toolkit\PhpStan\Rule\ExceptionHandling\RequireThrowsTagOnDirectThrowRule;
+use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowsDeclarationInspector;
+use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite;
+use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteCollector;
+use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor;
 
 /**
  * @extends RuleTestCase<RequireThrowsTagOnDirectThrowRule>
- * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\RequireThrowsTagOnDirectThrowRule
- * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\MissingThrowsTagErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite
- * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteCollector
- * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor
- * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowsDeclarationInspector
+ * @covers \Toolkit\PhpStan\Rule\ExceptionHandling\RequireThrowsTagOnDirectThrowRule
+ * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\MissingThrowsTagErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite
+ * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteCollector
+ * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor
+ * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowsDeclarationInspector
  */
 #[CoversClass(RequireThrowsTagOnDirectThrowRule::class)]
 #[UsesClass(MissingThrowsTagErrorBuilder::class)]

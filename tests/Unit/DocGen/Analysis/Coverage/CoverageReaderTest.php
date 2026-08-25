@@ -6,22 +6,22 @@ namespace Tests\Unit\DocGen\Analysis\Coverage;
 
 use DOMDocument;
 use DOMElement;
-use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex;
-use PhpAiToolkit\DocGen\Analysis\Coverage\CoverageReader;
-use PhpAiToolkit\DocGen\Analysis\Coverage\MethodCoverage;
-use PhpAiToolkit\DocGen\DocGenException;
-use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
+use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
+use Toolkit\DocGen\Analysis\Coverage\MethodCoverage;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Filesystem\DocGenPathResolver;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageReader
- * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex
- * @uses \PhpAiToolkit\DocGen\DocGenException
- * @uses \PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver
- * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\MethodCoverage
+ * @covers \Toolkit\DocGen\Analysis\Coverage\CoverageReader
+ * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageIndex
+ * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Filesystem\DocGenPathResolver
+ * @uses \Toolkit\DocGen\Analysis\Coverage\MethodCoverage
  */
 #[CoversClass(CoverageReader::class)]
 #[UsesClass(CoverageIndex::class)]

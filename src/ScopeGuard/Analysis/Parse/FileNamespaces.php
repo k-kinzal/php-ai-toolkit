@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\ScopeGuard\Analysis\Parse;
+namespace Toolkit\ScopeGuard\Analysis\Parse;
 
 use function array_merge;
 

@@ -4,38 +4,38 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Analysis;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration;
-use PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
-use PhpAiToolkit\ScopeGuard\Analysis\ProjectScan;
-use PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\ScopeProblemReader;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver;
-use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser;
-use PhpAiToolkit\ScopeGuard\Analysis\ScopeChecker;
-use PhpAiToolkit\ScopeGuard\Analysis\ScopeViolationBuilder;
-use PhpAiToolkit\ScopeGuard\Analysis\Violation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Declaration\Declaration;
+use Toolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex;
+use Toolkit\ScopeGuard\Analysis\ProjectScan;
+use Toolkit\ScopeGuard\Analysis\Reference\Reference;
+use Toolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces;
+use Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
+use Toolkit\ScopeGuard\Analysis\Scope\ScopeProblemReader;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityScope;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver;
+use Toolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser;
+use Toolkit\ScopeGuard\Analysis\ScopeChecker;
+use Toolkit\ScopeGuard\Analysis\ScopeViolationBuilder;
+use Toolkit\ScopeGuard\Analysis\Violation;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Analysis\ScopeChecker
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\ProjectScan
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\ScopeProblemReader
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\ScopeViolationBuilder
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Violation
+ * @covers \Toolkit\ScopeGuard\Analysis\ScopeChecker
+ * @uses \Toolkit\ScopeGuard\Analysis\Declaration\Declaration
+ * @uses \Toolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @uses \Toolkit\ScopeGuard\Analysis\ProjectScan
+ * @uses \Toolkit\ScopeGuard\Analysis\Reference\Reference
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\ScopeProblemReader
+ * @uses \Toolkit\ScopeGuard\Analysis\ScopeViolationBuilder
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\VisibilityScope
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver
+ * @uses \Toolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
+ * @uses \Toolkit\ScopeGuard\Analysis\Violation
  */
 #[CoversClass(ScopeChecker::class)]
 #[UsesClass(Declaration::class)]

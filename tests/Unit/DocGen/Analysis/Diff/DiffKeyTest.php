@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Diff;
 
-use PhpAiToolkit\DocGen\Analysis\Diff\DiffKey;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
+ * @covers \Toolkit\DocGen\Analysis\Diff\DiffKey
  */
 #[CoversClass(DiffKey::class)]
 final class DiffKeyTest extends TestCase

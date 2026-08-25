@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Model;
+namespace Toolkit\DocGen\Analysis\Model;
 
 /**
  * The complete type of one declaration site.

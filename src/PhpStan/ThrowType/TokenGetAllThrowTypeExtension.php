@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\ThrowType;
+namespace Toolkit\PhpStan\ThrowType;
 
 use function is_int;
 

@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Type;
 
 use Override;
-use PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry;
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
-use PhpAiToolkit\PhpStan\Rule\Type\ConcreteMixedTypeInspector;
-use PhpAiToolkit\PhpStan\Rule\Type\ForbidInternalMixedTypeRule;
-use PhpAiToolkit\PhpStan\Rule\Type\InheritedMixedContractInspector;
-use PhpAiToolkit\PhpStan\Rule\Type\MixedCallableErrorCollector;
-use PhpAiToolkit\PhpStan\Rule\Type\MixedTypeErrorBuilder;
-use PhpAiToolkit\PhpStan\Rule\Type\MixedVisibilityDetector;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Toolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry;
+use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
+use Toolkit\PhpStan\Rule\Type\ConcreteMixedTypeInspector;
+use Toolkit\PhpStan\Rule\Type\ForbidInternalMixedTypeRule;
+use Toolkit\PhpStan\Rule\Type\InheritedMixedContractInspector;
+use Toolkit\PhpStan\Rule\Type\MixedCallableErrorCollector;
+use Toolkit\PhpStan\Rule\Type\MixedTypeErrorBuilder;
+use Toolkit\PhpStan\Rule\Type\MixedVisibilityDetector;
 
 /**
  * @extends RuleTestCase<ForbidInternalMixedTypeRule>

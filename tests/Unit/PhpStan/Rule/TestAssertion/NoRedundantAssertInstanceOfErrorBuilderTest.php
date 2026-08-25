@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfErrorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfErrorBuilder;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfErrorBuilder
+ * @covers \Toolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfErrorBuilder
  */
 #[CoversClass(NoRedundantAssertInstanceOfErrorBuilder::class)]
 final class NoRedundantAssertInstanceOfErrorBuilderTest extends TestCase

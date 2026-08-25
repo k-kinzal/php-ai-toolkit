@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Parse;
+namespace Toolkit\DocGen\Analysis\Parse;
 
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\GroupUse;

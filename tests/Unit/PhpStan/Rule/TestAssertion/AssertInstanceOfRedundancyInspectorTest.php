@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\CallArgumentResolver;
-use PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver;
-use PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver;
-use PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher;
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfRedundancyInspector;
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfTypeMatcher;
-use PhpAiToolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfErrorBuilder;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\ObjectType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\Shared\CallArgumentResolver;
+use Toolkit\PhpStan\Rule\Shared\CallMethodNameResolver;
+use Toolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver;
+use Toolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher;
+use Toolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfRedundancyInspector;
+use Toolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfTypeMatcher;
+use Toolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfErrorBuilder;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfRedundancyInspector
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CallArgumentResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver
- * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfTypeMatcher
- * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfErrorBuilder
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
+ * @covers \Toolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfRedundancyInspector
+ * @uses \Toolkit\PhpStan\Rule\Shared\CallArgumentResolver
+ * @uses \Toolkit\PhpStan\Rule\Shared\CallMethodNameResolver
+ * @uses \Toolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver
+ * @uses \Toolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfTypeMatcher
+ * @uses \Toolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
  */
 #[CoversClass(AssertInstanceOfRedundancyInspector::class)]
 #[UsesClass(CallArgumentResolver::class)]

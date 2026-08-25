@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\ClassLikeMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric;
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricLimit;
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder;
-use PhpAiToolkit\LocGuard\Analysis\Violation;
-use PhpAiToolkit\LocGuard\Config\LimitConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricLimit;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder;
+use Toolkit\LocGuard\Analysis\Violation;
+use Toolkit\LocGuard\Config\LimitConfig;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder
- * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric
- * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricLimit
- * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
- * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ * @covers \Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder
+ * @uses \Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric
+ * @uses \Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricLimit
+ * @uses \Toolkit\LocGuard\Config\LimitConfig
+ * @uses \Toolkit\LocGuard\Analysis\Violation
  */
 #[CoversClass(ClassLikeMetricViolationBuilder::class)]
 #[UsesClass(ClassLikeMetric::class)]

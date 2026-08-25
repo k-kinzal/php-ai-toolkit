@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Cli;
 
-use PhpAiToolkit\DocGen\Cli\DocGenOutputWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Cli\DocGenOutputWriter;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Cli\DocGenOutputWriter
+ * @covers \Toolkit\DocGen\Cli\DocGenOutputWriter
  */
 #[CoversClass(DocGenOutputWriter::class)]
 final class DocGenOutputWriterTest extends TestCase

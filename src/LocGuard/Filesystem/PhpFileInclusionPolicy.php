@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Filesystem;
+namespace Toolkit\LocGuard\Filesystem;
 
 use function fnmatch;
-
-use PhpAiToolkit\LocGuard\Config\LocGuardConfig;
-
 use function str_ends_with;
+
+use Toolkit\LocGuard\Config\LocGuardConfig;
 
 /**
  * Decides whether a discovered file belongs in LocGuard analysis.

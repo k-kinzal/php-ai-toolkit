@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
-use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\BroadCatchPathMatcher;
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathMatcher;
-use PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ExceptionHandling\BroadCatchPathMatcher;
+use Toolkit\PhpStan\Rule\Shared\Path\RulePathMatcher;
+use Toolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\BroadCatchPathMatcher
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer
- * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathMatcher
+ * @covers \Toolkit\PhpStan\Rule\ExceptionHandling\BroadCatchPathMatcher
+ * @uses \Toolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer
+ * @uses \Toolkit\PhpStan\Rule\Shared\Path\RulePathMatcher
  */
 #[CoversClass(BroadCatchPathMatcher::class)]
 #[UsesClass(RulePathNormalizer::class)]

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\DocGen\Analysis\Model;
+namespace Toolkit\DocGen\Analysis\Model;
 
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 

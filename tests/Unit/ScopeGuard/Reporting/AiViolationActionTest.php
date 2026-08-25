@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ScopeGuard\Reporting;
 
-use PhpAiToolkit\ScopeGuard\Analysis\Violation;
-use PhpAiToolkit\ScopeGuard\Reporting\AiViolationAction;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\ScopeGuard\Analysis\Violation;
+use Toolkit\ScopeGuard\Reporting\AiViolationAction;
 
 /**
- * @covers \PhpAiToolkit\ScopeGuard\Reporting\AiViolationAction
- * @uses \PhpAiToolkit\ScopeGuard\Analysis\Violation
+ * @covers \Toolkit\ScopeGuard\Reporting\AiViolationAction
+ * @uses \Toolkit\ScopeGuard\Analysis\Violation
  */
 #[CoversClass(AiViolationAction::class)]
 #[UsesClass(Violation::class)]

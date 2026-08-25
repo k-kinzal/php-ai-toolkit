@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Filesystem;
+namespace Toolkit\LocGuard\Filesystem;
 
 use function rtrim;
 use function str_replace;

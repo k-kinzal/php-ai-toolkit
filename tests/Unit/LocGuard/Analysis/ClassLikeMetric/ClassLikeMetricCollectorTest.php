@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis\ClassLikeMetric;
 
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader;
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric;
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector;
-use PhpAiToolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher;
-use PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector;
+use Toolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher;
+use Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector
- * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader
- * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric
- * @uses \PhpAiToolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher
- * @uses \PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator
+ * @covers \Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector
+ * @uses \Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader
+ * @uses \Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric
+ * @uses \Toolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher
+ * @uses \Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator
  */
 #[CoversClass(ClassLikeMetricCollector::class)]
 #[UsesClass(ClassLikeDeclarationReader::class)]

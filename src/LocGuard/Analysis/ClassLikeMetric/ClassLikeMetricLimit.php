@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric;
+namespace Toolkit\LocGuard\Analysis\ClassLikeMetric;
 
-use PhpAiToolkit\LocGuard\Config\LimitConfig;
+use Toolkit\LocGuard\Config\LimitConfig;
 
 /**
  * Selects the configured line limit for one class-like metric.

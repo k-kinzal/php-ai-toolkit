@@ -4,73 +4,73 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Analysis;
 
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader;
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric;
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector;
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricLimit;
-use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder;
-use PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityCalculator;
-use PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState;
-use PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticDecisionWeight;
-use PhpAiToolkit\LocGuard\Analysis\FileAnalysis;
-use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric;
-use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowFunctionMetricReader;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\BlockFunctionMetricReader;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionBodyLocator;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionComplexityViolationBuilder;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionLineViolationBuilder;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricCollector;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricComplexityAssigner;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricLineCollector;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricViolationBuilder;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionNameReader;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionScanState;
-use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\NestedFunctionMetricRange;
-use PhpAiToolkit\LocGuard\Analysis\PhpFileAnalyzer;
-use PhpAiToolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher;
-use PhpAiToolkit\LocGuard\Analysis\Token\CodeTokenLineResolver;
-use PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
-use PhpAiToolkit\LocGuard\Analysis\Token\TokenLineCounter;
-use PhpAiToolkit\LocGuard\Analysis\Violation;
-use PhpAiToolkit\LocGuard\Config\LimitConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricLimit;
+use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder;
+use Toolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityCalculator;
+use Toolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState;
+use Toolkit\LocGuard\Analysis\Complexity\CyclomaticDecisionWeight;
+use Toolkit\LocGuard\Analysis\FileAnalysis;
+use Toolkit\LocGuard\Analysis\FileMetric\FileMetric;
+use Toolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder;
+use Toolkit\LocGuard\Analysis\FunctionMetric\ArrowFunctionMetricReader;
+use Toolkit\LocGuard\Analysis\FunctionMetric\BlockFunctionMetricReader;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionBodyLocator;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionComplexityViolationBuilder;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionLineViolationBuilder;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricCollector;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricComplexityAssigner;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricLineCollector;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricViolationBuilder;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionNameReader;
+use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionScanState;
+use Toolkit\LocGuard\Analysis\FunctionMetric\NestedFunctionMetricRange;
+use Toolkit\LocGuard\Analysis\PhpFileAnalyzer;
+use Toolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher;
+use Toolkit\LocGuard\Analysis\Token\CodeTokenLineResolver;
+use Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator;
+use Toolkit\LocGuard\Analysis\Token\TokenLineCounter;
+use Toolkit\LocGuard\Analysis\Violation;
+use Toolkit\LocGuard\Config\LimitConfig;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Analysis\PhpFileAnalyzer
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowFunctionMetricReader
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\BlockFunctionMetricReader
- * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader
- * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric
- * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector
- * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricLimit
- * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder
- * @uses \PhpAiToolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher
- * @uses \PhpAiToolkit\LocGuard\Analysis\Token\CodeTokenLineResolver
- * @uses \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityCalculator
- * @uses \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState
- * @uses \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticDecisionWeight
- * @uses \PhpAiToolkit\LocGuard\Analysis\FileAnalysis
- * @uses \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric
- * @uses \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionBodyLocator
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionComplexityViolationBuilder
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionLineViolationBuilder
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricCollector
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricComplexityAssigner
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricLineCollector
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricViolationBuilder
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionNameReader
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionScanState
- * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
- * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\NestedFunctionMetricRange
- * @uses \PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator
- * @uses \PhpAiToolkit\LocGuard\Analysis\Token\TokenLineCounter
- * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ * @covers \Toolkit\LocGuard\Analysis\PhpFileAnalyzer
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\ArrowFunctionMetricReader
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\BlockFunctionMetricReader
+ * @uses \Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader
+ * @uses \Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric
+ * @uses \Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector
+ * @uses \Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricLimit
+ * @uses \Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder
+ * @uses \Toolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher
+ * @uses \Toolkit\LocGuard\Analysis\Token\CodeTokenLineResolver
+ * @uses \Toolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityCalculator
+ * @uses \Toolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState
+ * @uses \Toolkit\LocGuard\Analysis\Complexity\CyclomaticDecisionWeight
+ * @uses \Toolkit\LocGuard\Analysis\FileAnalysis
+ * @uses \Toolkit\LocGuard\Analysis\FileMetric\FileMetric
+ * @uses \Toolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionBodyLocator
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionComplexityViolationBuilder
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionLineViolationBuilder
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricCollector
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricComplexityAssigner
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricLineCollector
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricViolationBuilder
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionNameReader
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\FunctionScanState
+ * @uses \Toolkit\LocGuard\Config\LimitConfig
+ * @uses \Toolkit\LocGuard\Analysis\FunctionMetric\NestedFunctionMetricRange
+ * @uses \Toolkit\LocGuard\Analysis\Token\PhpTokenNavigator
+ * @uses \Toolkit\LocGuard\Analysis\Token\TokenLineCounter
+ * @uses \Toolkit\LocGuard\Analysis\Violation
  */
 #[CoversClass(PhpFileAnalyzer::class)]
 #[UsesClass(ArrowFunctionMetricReader::class)]

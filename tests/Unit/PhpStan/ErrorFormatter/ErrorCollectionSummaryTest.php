@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\ErrorFormatter;
 
-use PhpAiToolkit\PhpStan\ErrorFormatter\ErrorCollectionSummary;
 use PHPStan\Analyser\Error;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\ErrorFormatter\ErrorCollectionSummary;
 
 /**
- * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\ErrorCollectionSummary
+ * @covers \Toolkit\PhpStan\ErrorFormatter\ErrorCollectionSummary
  */
 #[CoversClass(ErrorCollectionSummary::class)]
 final class ErrorCollectionSummaryTest extends TestCase

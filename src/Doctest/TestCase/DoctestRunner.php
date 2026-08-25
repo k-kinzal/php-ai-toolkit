@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\Doctest\TestCase;
+namespace Toolkit\Doctest\TestCase;
 
 use Generator;
-use PhpAiToolkit\Doctest\Configuration\Configuration;
-use PhpAiToolkit\Doctest\Executor\ExampleExecutor;
-use PhpAiToolkit\Doctest\Parser\Example;
-use PhpAiToolkit\Doctest\Parser\ExampleExtractor;
-use PhpAiToolkit\Doctest\Scanner\FileScanner;
-use PhpAiToolkit\Doctest\Scanner\SourceScanner;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Configuration\Configuration;
+use Toolkit\Doctest\Executor\ExampleExecutor;
+use Toolkit\Doctest\Parser\Example;
+use Toolkit\Doctest\Parser\ExampleExtractor;
+use Toolkit\Doctest\Scanner\FileScanner;
+use Toolkit\Doctest\Scanner\SourceScanner;
 
 /**
  * Base class for running doctests as PHPUnit tests.
@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
  *
  * This class binds its data provider with a PHPUnit attribute and therefore
  * needs PHPUnit 10 or later. On PHPUnit 9 extend
- * PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner, which binds the
+ * Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner, which binds the
  * same provider with a doc-comment annotation.
  *
  * An example exercises whatever code it documents, so a suite declares no

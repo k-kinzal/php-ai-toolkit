@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Installer;
 
-use PhpAiToolkit\Installer\PathNormalizer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Installer\PathNormalizer;
 
 /**
- * @covers \PhpAiToolkit\Installer\PathNormalizer
+ * @covers \Toolkit\Installer\PathNormalizer
  */
 #[CoversClass(PathNormalizer::class)]
 final class PathNormalizerTest extends TestCase

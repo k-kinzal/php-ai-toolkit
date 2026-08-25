@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpStan\Rule\ClassDesign;
+namespace Toolkit\PhpStan\Rule\ClassDesign;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\TrinaryLogic;
+use Toolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
 
 /**
  * Requires #[\Override] on methods that override a non-abstract parent method.

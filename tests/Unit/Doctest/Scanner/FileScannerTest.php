@@ -6,15 +6,15 @@ namespace Tests\Unit\Doctest\Scanner;
 
 use function iterator_to_array;
 
-use PhpAiToolkit\Doctest\Configuration\Configuration;
-use PhpAiToolkit\Doctest\Scanner\FileScanner;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Configuration\Configuration;
+use Toolkit\Doctest\Scanner\FileScanner;
 
 /**
- * @covers \PhpAiToolkit\Doctest\Scanner\FileScanner
- * @uses \PhpAiToolkit\Doctest\Configuration\Configuration
+ * @covers \Toolkit\Doctest\Scanner\FileScanner
+ * @uses \Toolkit\Doctest\Configuration\Configuration
  */
 #[CoversClass(FileScanner::class)]
 #[UsesClass(Configuration::class)]

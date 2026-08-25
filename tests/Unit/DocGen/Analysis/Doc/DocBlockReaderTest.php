@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Doc;
 
-use PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader;
-use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
-use PhpAiToolkit\DocGen\Analysis\Model\DocBlock;
-use PhpAiToolkit\DocGen\Analysis\Model\DocTag;
-use PhpAiToolkit\DocGen\Analysis\Model\TemplateDoc;
-use PhpAiToolkit\DocGen\Analysis\Model\TypeAliasDoc;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
+use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Analysis\Model\DocBlock;
+use Toolkit\DocGen\Analysis\Model\DocTag;
+use Toolkit\DocGen\Analysis\Model\TemplateDoc;
+use Toolkit\DocGen\Analysis\Model\TypeAliasDoc;
 
 /**
- * @covers \PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocTag
- * @uses \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\TemplateDoc
- * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeAliasDoc
+ * @covers \Toolkit\DocGen\Analysis\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Analysis\Model\DocBlock
+ * @uses \Toolkit\DocGen\Analysis\Model\DocTag
+ * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Analysis\Model\TemplateDoc
+ * @uses \Toolkit\DocGen\Analysis\Model\TypeAliasDoc
  */
 #[CoversClass(DocBlockReader::class)]
 #[UsesClass(DocBlock::class)]

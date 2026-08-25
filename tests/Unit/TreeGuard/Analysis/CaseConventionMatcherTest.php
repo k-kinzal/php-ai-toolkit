@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard\Analysis;
 
-use PhpAiToolkit\TreeGuard\Analysis\CaseConventionMatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\TreeGuard\Analysis\CaseConventionMatcher;
 
 /**
- * @covers \PhpAiToolkit\TreeGuard\Analysis\CaseConventionMatcher
+ * @covers \Toolkit\TreeGuard\Analysis\CaseConventionMatcher
  */
 #[CoversClass(CaseConventionMatcher::class)]
 final class CaseConventionMatcherTest extends TestCase

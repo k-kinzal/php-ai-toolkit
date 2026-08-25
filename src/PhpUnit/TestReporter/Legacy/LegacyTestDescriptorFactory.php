@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\PhpUnit\TestReporter\Legacy;
+namespace Toolkit\PhpUnit\TestReporter\Legacy;
 
 use function get_class;
 

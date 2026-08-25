@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpAiToolkit\LocGuard\Reporting;
+namespace Toolkit\LocGuard\Reporting;
 
 use function array_map;
 use function json_encode;
@@ -10,9 +10,9 @@ use function json_encode;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 
-use PhpAiToolkit\LocGuard\Analysis\AnalysisResult;
-use PhpAiToolkit\LocGuard\Analysis\Violation;
-use PhpAiToolkit\LocGuard\Config\ReportConfig;
+use Toolkit\LocGuard\Analysis\AnalysisResult;
+use Toolkit\LocGuard\Analysis\Violation;
+use Toolkit\LocGuard\Config\ReportConfig;
 
 /**
  * Machine-readable JSON LocGuard reporter.

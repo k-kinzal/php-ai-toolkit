@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Filesystem;
 
-use PhpAiToolkit\LocGuard\Config\LimitConfig;
-use PhpAiToolkit\LocGuard\Config\LocGuardConfig;
-use PhpAiToolkit\LocGuard\Config\ReportConfig;
-use PhpAiToolkit\LocGuard\Filesystem\LocGuardPathResolver;
-use PhpAiToolkit\LocGuard\Filesystem\PhpFileFinder;
-use PhpAiToolkit\LocGuard\Filesystem\PhpFileInclusionPolicy;
-use PhpAiToolkit\LocGuard\Filesystem\PhpPathFileCollector;
-use PhpAiToolkit\LocGuard\LocGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Config\LimitConfig;
+use Toolkit\LocGuard\Config\LocGuardConfig;
+use Toolkit\LocGuard\Config\ReportConfig;
+use Toolkit\LocGuard\Filesystem\LocGuardPathResolver;
+use Toolkit\LocGuard\Filesystem\PhpFileFinder;
+use Toolkit\LocGuard\Filesystem\PhpFileInclusionPolicy;
+use Toolkit\LocGuard\Filesystem\PhpPathFileCollector;
+use Toolkit\LocGuard\LocGuardException;
 
 /**
- * @covers \PhpAiToolkit\LocGuard\Filesystem\PhpFileFinder
- * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
- * @uses \PhpAiToolkit\LocGuard\Config\LocGuardConfig
- * @uses \PhpAiToolkit\LocGuard\Filesystem\LocGuardPathResolver
- * @uses \PhpAiToolkit\LocGuard\Filesystem\PhpFileInclusionPolicy
- * @uses \PhpAiToolkit\LocGuard\Filesystem\PhpPathFileCollector
- * @uses \PhpAiToolkit\LocGuard\Config\ReportConfig
+ * @covers \Toolkit\LocGuard\Filesystem\PhpFileFinder
+ * @uses \Toolkit\LocGuard\Config\LimitConfig
+ * @uses \Toolkit\LocGuard\Config\LocGuardConfig
+ * @uses \Toolkit\LocGuard\Filesystem\LocGuardPathResolver
+ * @uses \Toolkit\LocGuard\Filesystem\PhpFileInclusionPolicy
+ * @uses \Toolkit\LocGuard\Filesystem\PhpPathFileCollector
+ * @uses \Toolkit\LocGuard\Config\ReportConfig
  */
 #[CoversClass(PhpFileFinder::class)]
 #[UsesClass(LimitConfig::class)]

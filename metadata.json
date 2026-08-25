@@ -1,0 +1,37 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M0WDVMA6QRD9C7EP56SB2S10",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "tests/Unit/DocGen/Analysis/Coverage/CoverageIndexTest.php",
+    "tests/Unit/DocGen/Analysis/Coverage/CoverageReaderTest.php",
+    "tests/Unit/DocGen/Analysis/Diff/ClassLikeMergerTest.php",
+    "tests/Unit/DocGen/Render/Page/IndexPageTest.php",
+    "tests/Unit/DocGen/Render/PageChromeTest.php",
+    "tests/Unit/Doctest/Assertion/AssertionParserTest.php",
+    "tests/Unit/Doctest/Assertion/AssertionResultTest.php",
+    "tests/Unit/Doctest/Executor/ExampleExecutorTest.php",
+    "tests/Unit/Doctest/Executor/ExecutionContextTest.php",
+    "tests/Unit/Doctest/Executor/ExpressionEvaluatorTest.php",
+    "tests/Unit/Doctest/Parser/ExampleExtractorTest.php",
+    "tests/Unit/Doctest/Scanner/FileScannerTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 668,
+    "cache_creation_tokens": 2021983,
+    "cache_read_tokens": 90573249,
+    "output_tokens": 188108,
+    "api_call_count": 334
+  }
+}

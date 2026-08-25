@@ -1,0 +1,1 @@
+AGENTS.md/README.mdを更新しました。コミットしてください。

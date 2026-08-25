@@ -178,6 +178,36 @@ autoload sources get full API pages, search entries, and navigation; `autoload-d
 source pages only, so coverage references and test call sites remain linkable without polluting the API surface.
 Symbols reachable through more than one package autoload map are documented once, first package wins.
 
+## Visibility and Public API Sites
+
+DocGen reads the toolkit's custom `@visibility` tag from classes, interfaces, traits, enums, functions, and members.
+In the default complete site, symbol lists label explicit public API with a green **public API** chip and label narrower
+scopes with the tag as written, such as **@visibility namespace** or **@visibility App\\Billing**. Declaration and
+member pages repeat that status in a notice before the prose, so package, layer, and namespace routes all lead to the
+same boundary statement. Scope resolution and enforcement remain PHPStan's responsibility; DocGen does not maintain
+a second implementation of those rules.
+
+`--public-api` publishes a consumer-facing view:
+
+```bash
+vendor/bin/doc-gen --public-api
+```
+
+- Package, architecture-layer, namespace, all-item, sidebar, count, and search surfaces include only top-level
+  declarations carrying `@visibility public`. An untagged declaration is intentionally omitted: it remains reachable
+  in PHP, but it has not declared the public-API intent this mode publishes.
+- A listed class-like page includes its public and protected PHP members unless a member narrows its own scope with a
+  non-public `@visibility` tag. Private members, restricted members, test cases, call sites, and relation indexes are
+  omitted as implementation detail.
+- Non-listed production symbol pages and highlighted sources are still generated. A public signature can therefore
+  link to a support type without creating a broken link or promoting that type into navigation or search. This is
+  documentation curation, not an access-control or secrecy boundary; generated URLs and the source repository remain
+  readable.
+
+The default remains the complete internal view so adding `@visibility` cannot silently remove existing documentation.
+Use that view while developing and `--public-api` for a library's published site. Diff mode applies the same selection
+to both revisions, so public API additions and removals stay visible without internal churn entering the indexes.
+
 ## Analysis
 
 Types merge the native declaration with PHPDoc, where PHPStan-prefixed tags win over Psalm-prefixed tags, which win

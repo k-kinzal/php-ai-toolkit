@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\DocGen\Analysis\Model;
 
+use function strtolower;
+
 /**
  * Structured view of one PHPDoc block.
  *
@@ -100,5 +102,33 @@ final class DocBlock
             'visibility' => $this->visibility,
             default => null,
         };
+    }
+
+    /**
+     * Reports whether the declaration explicitly promises public API.
+     */
+    public function isPublicApi(): bool
+    {
+        foreach ($this->visibility as $scope) {
+            if (strtolower($scope) === 'public') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Reports whether the declaration names a narrower visibility scope.
+     */
+    public function isRestricted(): bool
+    {
+        foreach ($this->visibility as $scope) {
+            if (strtolower($scope) !== 'public') {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -133,18 +133,19 @@ final class ClassLikePage
      */
     public function sections(RenderKit $services, ClassLikeDoc $classLike): array
     {
-        $constants = $this->visibleMembers($classLike->constants);
-        $properties = $this->visibleMembers($classLike->properties);
-        $methods = $this->visibleMembers($classLike->methods);
+        $constants = $this->visibleMembers($classLike->constants, $services->model->publicApi);
+        $properties = $this->visibleMembers($classLike->properties, $services->model->publicApi);
+        $methods = $this->visibleMembers($classLike->methods, $services->model->publicApi);
+        $cases = $this->visibleCases($classLike->enumCases, $services->model->publicApi);
         $candidates = [
             ['id' => 'aliases', 'label' => 'Type aliases', 'present' => ($classLike->docBlock !== null ? $classLike->docBlock->aliases : []) !== [], 'status' => $services->diff->headerStatus($classLike->fqcn)],
-            ['id' => 'cases', 'label' => 'Cases', 'present' => $classLike->enumCases !== [], 'status' => $this->sectionStatus($services, $classLike, DiffKey::ENUM_CASE, $classLike->enumCases)],
+            ['id' => 'cases', 'label' => 'Cases', 'present' => $cases !== [], 'status' => $this->sectionStatus($services, $classLike, DiffKey::ENUM_CASE, $cases)],
             ['id' => 'constants', 'label' => 'Constants', 'present' => $constants !== [], 'status' => $this->sectionStatus($services, $classLike, DiffKey::CONSTANT, $constants)],
             ['id' => 'properties', 'label' => 'Properties', 'present' => $properties !== [], 'status' => $this->sectionStatus($services, $classLike, DiffKey::PROPERTY, $properties)],
             ['id' => 'methods', 'label' => 'Methods', 'present' => $methods !== [], 'status' => $this->sectionStatus($services, $classLike, DiffKey::METHOD, $methods)],
-            ['id' => 'private-surface', 'label' => 'Private surface', 'present' => $this->privateSurface->members($classLike) !== [], 'status' => $services->diff->combine($this->privateSurface->statuses($services, $classLike))],
-            ['id' => 'test-cases', 'label' => 'Test cases', 'present' => $services->model->testCases->forType($classLike->fqcn) !== [], 'status' => DiffStatus::SAME],
-            ['id' => 'relations', 'label' => 'Relations', 'present' => true, 'status' => DiffStatus::SAME],
+            ['id' => 'private-surface', 'label' => 'Private surface', 'present' => !$services->model->publicApi && $this->privateSurface->members($classLike) !== [], 'status' => $services->diff->combine($this->privateSurface->statuses($services, $classLike))],
+            ['id' => 'test-cases', 'label' => 'Test cases', 'present' => !$services->model->publicApi && $services->model->testCases->forType($classLike->fqcn) !== [], 'status' => DiffStatus::SAME],
+            ['id' => 'relations', 'label' => 'Relations', 'present' => !$services->model->publicApi, 'status' => DiffStatus::SAME],
         ];
 
         $sections = [];
@@ -166,12 +167,31 @@ final class ClassLikePage
      *
      * @return list<T>
      */
-    public function visibleMembers(array $members): array
+    public function visibleMembers(array $members, bool $publicApi = false): array
     {
         $visible = [];
         foreach ($members as $member) {
-            if ($member->visibility !== 'private') {
+            if ($member->visibility !== 'private' && (!$publicApi || $member->docBlock === null || !$member->docBlock->isRestricted())) {
                 $visible[] = $member;
+            }
+        }
+
+        return $visible;
+    }
+
+    /**
+     * Filters enum cases out of a public API page when their scope is restricted.
+     *
+     * @param list<\Toolkit\DocGen\Analysis\Model\EnumCaseDoc> $cases
+     *
+     * @return list<\Toolkit\DocGen\Analysis\Model\EnumCaseDoc>
+     */
+    public function visibleCases(array $cases, bool $publicApi = false): array
+    {
+        $visible = [];
+        foreach ($cases as $case) {
+            if (!$publicApi || $case->docBlock === null || !$case->docBlock->isRestricted()) {
+                $visible[] = $case;
             }
         }
 
@@ -228,10 +248,13 @@ final class ClassLikePage
         $html .= $this->aliasSection($services, $pagePath, $classLike, $context);
         $html .= $this->member->tagExamples($services, $classLike->docBlock, $classLike->shortName);
         $html .= $this->memberSections($services, $pagePath, $classLike, $context);
-        $html .= $this->privateSurface->section($services, $classLike, $context);
-        $html .= $this->testCaseSection($services, $pagePath, $classLike);
+        if (!$services->model->publicApi) {
+            $html .= $this->privateSurface->section($services, $classLike, $context);
+            $html .= $this->testCaseSection($services, $pagePath, $classLike);
+            $html .= $this->relations->build($services, $pagePath, $classLike);
+        }
 
-        return $html . $this->relations->build($services, $pagePath, $classLike);
+        return $html;
     }
 
     /**
@@ -311,23 +334,18 @@ final class ClassLikePage
     public function memberSections(RenderKit $services, string $pagePath, ClassLikeDoc $classLike, TypeRenderContext $context): string
     {
         $html = '';
-        if ($classLike->enumCases !== []) {
-            $html .= '<section' . $this->sectionMark($services, $classLike, DiffKey::ENUM_CASE, $classLike->enumCases)
+        $cases = $this->visibleCases($classLike->enumCases, $services->model->publicApi);
+        if ($cases !== []) {
+            $html .= '<section' . $this->sectionMark($services, $classLike, DiffKey::ENUM_CASE, $cases)
                 . '><h2 id="cases">Cases<a class="anchor" href="#cases">§</a></h2>';
-            foreach ($classLike->enumCases as $case) {
+            foreach ($cases as $case) {
                 $html .= $this->member->enumCase($services, $pagePath, $classLike, $case, $context);
             }
 
             $html .= '</section>' . "\n";
         }
 
-        $visible = static fn (string $visibility): bool => $visibility !== 'private';
-        $constants = [];
-        foreach ($classLike->constants as $constant) {
-            if ($visible($constant->visibility)) {
-                $constants[] = $constant;
-            }
-        }
+        $constants = $this->visibleMembers($classLike->constants, $services->model->publicApi);
 
         if ($constants !== []) {
             $html .= '<section' . $this->sectionMark($services, $classLike, DiffKey::CONSTANT, $constants)
@@ -339,12 +357,7 @@ final class ClassLikePage
             $html .= '</section>' . "\n";
         }
 
-        $properties = [];
-        foreach ($classLike->properties as $property) {
-            if ($visible($property->visibility)) {
-                $properties[] = $property;
-            }
-        }
+        $properties = $this->visibleMembers($classLike->properties, $services->model->publicApi);
 
         if ($properties !== []) {
             $html .= '<section' . $this->sectionMark($services, $classLike, DiffKey::PROPERTY, $properties)
@@ -364,12 +377,7 @@ final class ClassLikePage
      */
     public function methodSection(RenderKit $services, string $pagePath, ClassLikeDoc $classLike): string
     {
-        $methods = [];
-        foreach ($classLike->methods as $method) {
-            if ($method->visibility !== 'private') {
-                $methods[] = $method;
-            }
-        }
+        $methods = $this->visibleMembers($classLike->methods, $services->model->publicApi);
 
         if ($methods === []) {
             return '';

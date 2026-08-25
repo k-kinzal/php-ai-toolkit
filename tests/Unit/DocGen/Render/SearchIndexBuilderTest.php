@@ -138,6 +138,46 @@ JS;
         self::assertStringNotContainsString('hide', $js);
     }
 
+    public function testBuildPublicApiModeExcludesUnmarkedSymbolsAndRestrictedMembers(): void
+    {
+        $publicDoc = new DocBlock('Client API.', '', [], null, null, [], [], [], [], [], [], null, false, '', ['PUBLIC']);
+        $restrictedDoc = new DocBlock('Internal operation.', '', [], null, null, [], [], [], [], [], [], null, false, '', ['namespace']);
+        $client = new ClassLikeDoc(
+            'Demo\Client',
+            'Client',
+            'Demo',
+            'class',
+            'demo/pkg',
+            'src/Client.php',
+            5,
+            30,
+            false,
+            true,
+            [],
+            [],
+            [],
+            [new ConstantDoc('VERSION', 'public', "'1'", null, 7), new ConstantDoc('INTERNAL', 'public', "'x'", $restrictedDoc, 8)],
+            [],
+            [new MethodDoc('run', 'public', false, false, false, [], new TypeSignature('void', null), null, 10, 12), new MethodDoc('inspect', 'public', false, false, false, [], new TypeSignature('void', null), $restrictedDoc, 14, 16)],
+            [],
+            null,
+            $publicDoc,
+            [],
+            false,
+        );
+        $helper = new ClassLikeDoc('Demo\Helper', 'Helper', 'Demo', 'class', 'demo/pkg', 'src/Helper.php', 3, 5, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $model = new ProjectModel('Demo Docs', '/tmp/docgen-root', [], new PackageGraph([]), [$client, $helper], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, true);
+
+        $js = (new SearchIndexBuilder())->build($model);
+
+        self::assertStringContainsString('Client', $js);
+        self::assertStringContainsString('run', $js);
+        self::assertStringContainsString('VERSION', $js);
+        self::assertStringNotContainsString('Helper', $js);
+        self::assertStringNotContainsString('inspect', $js);
+        self::assertStringNotContainsString('INTERNAL', $js);
+    }
+
     public function testMemberItemsListsPublicMethodsAndConstants(): void
     {
         $methodSummary = new DocBlock('Runs the widget.', '', [], null, null, [], [], [], [], [], [], null, false, '/** */');

@@ -27,9 +27,15 @@ final class DocGenCliArgumentParserTest extends TestCase
     public function testParseReturnsInactiveDefaults(): void
     {
         self::assertSame(
-            ['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false],
+            ['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'publicApi' => false, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false],
             (new DocGenCliArgumentParser())->parse([]),
         );
+    }
+
+    public function testParseEnablesPublicApiModeExplicitly(): void
+    {
+        self::assertTrue((new DocGenCliArgumentParser())->parse(['--public-api'])['publicApi']);
+        self::assertFalse((new DocGenCliArgumentParser())->parse([])['publicApi']);
     }
 
     public function testParseReadsDiffRangeAsBaseAndHead(): void

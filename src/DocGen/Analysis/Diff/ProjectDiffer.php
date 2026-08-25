@@ -90,6 +90,9 @@ final class ProjectDiffer
             $this->documents->merge($base, $head, $index),
             $head->baseUrl,
             $head->repository,
+            $head->publicApi,
+            array_merge($base->publicApiClassLikes(), $head->publicApiClassLikes()),
+            array_merge($base->publicApiFunctions(), $head->publicApiFunctions()),
         );
     }
 

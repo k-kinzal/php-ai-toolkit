@@ -57,7 +57,7 @@ final class ProjectModelTest extends TestCase
         $hierarchy->build([$classLike]);
         $usages = new UsageIndex();
 
-        $model = new ProjectModel('Demo Docs', '/tmp/demo', [$package], $graph, [$classLike], [], $symbolTable, $hierarchy, $usages, new TestCaseIndex(), null, [], null, ['one warning'], [], 'https://example.github.io/demo', 'https://github.com/example/demo');
+        $model = new ProjectModel('Demo Docs', '/tmp/demo', [$package], $graph, [$classLike], [], $symbolTable, $hierarchy, $usages, new TestCaseIndex(), null, [], null, ['one warning'], [], 'https://example.github.io/demo', 'https://github.com/example/demo', true);
 
         self::assertSame('Demo Docs', $model->title);
         self::assertSame('/tmp/demo', $model->root);
@@ -74,6 +74,45 @@ final class ProjectModelTest extends TestCase
         self::assertSame(['one warning'], $model->warnings);
         self::assertSame('https://example.github.io/demo', $model->baseUrl);
         self::assertSame('https://github.com/example/demo', $model->repository);
+        self::assertTrue($model->publicApi);
+        self::assertFalse($model->isPublicApiClassLike('Demo\Greeter'));
+        self::assertSame([], $model->publicApiClassLikes());
+        self::assertSame([], $model->publicApiFunctions());
+    }
+
+    public function testIsPublicApiClassLikeIndexesExplicitAndHistoricalNamesCaseInsensitively(): void
+    {
+        $docBlock = new \Toolkit\DocGen\Analysis\Model\DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '', ['PUBLIC']);
+        $classLike = new ClassLikeDoc('Demo\Client', 'Client', 'Demo', 'class', 'demo/app', 'src/Client.php', 1, 5, false, true, [], [], [], [], [], [], [], null, $docBlock, [], false);
+        $model = new ProjectModel('Docs', '/tmp/demo', [], new PackageGraph([]), [$classLike], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, true, ['Demo\Removed'], ['Demo\removedFunction']);
+
+        self::assertTrue($model->isPublicApiClassLike('demo\CLIENT'));
+        self::assertTrue($model->isPublicApiClassLike('DEMO\REMOVED'));
+        self::assertTrue($model->isPublicApiFunction('demo\removedfunction'));
+        self::assertSame(['demo\removed', 'demo\client'], $model->publicApiClassLikes());
+        self::assertSame(['demo\removedfunction'], $model->publicApiFunctions());
+    }
+
+    public function testIsPublicApiFunctionIndexesHistoricalNamesCaseInsensitively(): void
+    {
+        $model = new ProjectModel('Docs', '/tmp/demo', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, true, [], ['Demo\create']);
+
+        self::assertTrue($model->isPublicApiFunction('demo\CREATE'));
+        self::assertFalse($model->isPublicApiFunction('Demo\inspect'));
+    }
+
+    public function testPublicApiClassLikesListsNormalizedNames(): void
+    {
+        $model = new ProjectModel('Docs', '/tmp/demo', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, true, ['Demo\Client']);
+
+        self::assertSame(['demo\client'], $model->publicApiClassLikes());
+    }
+
+    public function testPublicApiFunctionsListsNormalizedNames(): void
+    {
+        $model = new ProjectModel('Docs', '/tmp/demo', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, true, [], ['Demo\create']);
+
+        self::assertSame(['demo\create'], $model->publicApiFunctions());
     }
 
     public function testStoresOptionalLayerAndCoverageData(): void
@@ -89,5 +128,6 @@ final class ProjectModelTest extends TestCase
         self::assertSame([], $model->warnings);
         self::assertNull($model->baseUrl);
         self::assertNull($model->repository);
+        self::assertFalse($model->publicApi);
     }
 }

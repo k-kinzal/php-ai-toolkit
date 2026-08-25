@@ -73,17 +73,37 @@ final class SymbolListHtml
         $html = '<div class="table-wrap"><table class="item-table">';
         foreach ($rows as $row) {
             $html .= sprintf(
-                '<tr%s><td><a class="item-name k-%s" href="%s">%s</a></td>%s<td class="item-summary">%s</td></tr>',
+                '<tr%s><td><a class="item-name k-%s" href="%s">%s</a>%s</td>%s<td class="item-summary">%s</td></tr>',
                 $services->diff->mark($row->status),
                 $services->escaper->e($row->kind),
                 $services->escaper->e($services->url->href($pagePath, $row->page)),
                 $services->escaper->e($row->name),
+                $this->visibilityBadges($services, $row),
                 $withNamespace ? $this->namespaceCell($services, $pagePath, $row) : '',
                 $this->inline->render($row->summary),
             );
         }
 
         return $html . '</table></div>';
+    }
+
+    /**
+     * Renders the declared API status beside one listed symbol.
+     */
+    public function visibilityBadges(RenderKit $services, SymbolRow $row): string
+    {
+        $badges = '';
+        foreach ($row->visibility as $scope) {
+            $public = strtolower($scope) === 'public';
+            $badges .= sprintf(
+                ' <span class="chip chip-sm %s" title="@visibility %s">%s</span>',
+                $public ? 'chip-public' : 'chip-visibility',
+                $services->escaper->e($scope),
+                $public ? 'public API' : '@visibility ' . $services->escaper->e($scope),
+            );
+        }
+
+        return $badges;
     }
 
     /**

@@ -9,6 +9,7 @@ use Closure;
 use function count;
 use function implode;
 use function sprintf;
+use function strtolower;
 
 use Toolkit\DocGen\Analysis\Model\DocBlock;
 use Toolkit\DocGen\Render\MarkdownInline;
@@ -129,18 +130,20 @@ final class DocTextHtml
     {
         $scopes = [];
         foreach ($docBlock->visibility as $scope) {
-            if ($scope !== 'public') {
+            if (strtolower($scope) !== 'public') {
                 $scopes[] = sprintf('"@visibility %s"', $services->escaper->e($scope));
             }
         }
 
-        if ($scopes === []) {
-            return '';
+        if ($scopes !== []) {
+            return sprintf(
+                '<div class="notice notice-visibility"><strong>Restricted visibility</strong>: declared %s. Code outside that scope must not name this declaration.</div>',
+                implode(' and ', $scopes)
+            ) . "\n";
         }
 
-        return sprintf(
-            '<div class="notice notice-visibility"><strong>Restricted visibility</strong>: declared %s. Code outside that scope must not name this declaration.</div>',
-            implode(' and ', $scopes)
-        ) . "\n";
+        return $docBlock->isPublicApi()
+            ? '<div class="notice notice-public"><strong>Public API</strong>: explicitly declared with <code>@visibility public</code>.</div>' . "\n"
+            : '';
     }
 }

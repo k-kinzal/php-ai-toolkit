@@ -53,13 +53,13 @@ final class DocGenCliArgumentParser
      *
      * @param list<string> $argv
      *
-     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, publicApi: bool, noCache: bool, clearCache: bool, help: bool, version: bool}
      *
      * @throws DocGenException when an option is unknown or lacks a value
      */
     public function parse(array $argv): array
     {
-        $options = ['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
+        $options = ['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'publicApi' => false, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
         $count = count($argv);
         for ($index = 0; $index < $count; $index++) {
             $argument = $argv[$index];
@@ -71,6 +71,8 @@ final class DocGenCliArgumentParser
                 $options['noCache'] = true;
             } elseif ($argument === '--clear-cache') {
                 $options['clearCache'] = true;
+            } elseif ($argument === '--public-api') {
+                $options['publicApi'] = true;
             } elseif ($argument === '--serve') {
                 $options['serve'] = '127.0.0.1:8090';
             } elseif (str_starts_with($argument, '--serve=')) {
@@ -119,9 +121,9 @@ final class DocGenCliArgumentParser
     /**
      * Applies one value option to the option map.
      *
-     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
+     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, publicApi: bool, noCache: bool, clearCache: bool, help: bool, version: bool} $options
      *
-     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, publicApi: bool, noCache: bool, clearCache: bool, help: bool, version: bool}
      *
      * @throws DocGenException when the value of the option is malformed
      */
@@ -153,9 +155,9 @@ final class DocGenCliArgumentParser
     /**
      * Applies one option that decides how a run is carried out.
      *
-     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
+     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, publicApi: bool, noCache: bool, clearCache: bool, help: bool, version: bool} $options
      *
-     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, publicApi: bool, noCache: bool, clearCache: bool, help: bool, version: bool}
      *
      * @throws DocGenException when the value of the option is malformed
      */
@@ -184,9 +186,9 @@ final class DocGenCliArgumentParser
      * A range without a head compares against the working tree, which is
      * what a reader looking at their own uncommitted change wants.
      *
-     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
+     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, publicApi: bool, noCache: bool, clearCache: bool, help: bool, version: bool} $options
      *
-     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, publicApi: bool, noCache: bool, clearCache: bool, help: bool, version: bool}
      *
      * @throws DocGenException when the range names no base revision
      */
@@ -211,9 +213,9 @@ final class DocGenCliArgumentParser
     /**
      * Rejects the option combinations that cannot be acted on.
      *
-     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $options
+     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, publicApi: bool, noCache: bool, clearCache: bool, help: bool, version: bool} $options
      *
-     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool}
+     * @return array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, publicApi: bool, noCache: bool, clearCache: bool, help: bool, version: bool}
      *
      * @throws DocGenException when a head revision has nothing to compare against
      */

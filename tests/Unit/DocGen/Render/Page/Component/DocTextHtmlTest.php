@@ -264,7 +264,10 @@ PHP);
             '<div class="notice notice-visibility"><strong>Restricted visibility</strong>: declared "@visibility namespace". Code outside that scope must not name this declaration.</div>' . "\n",
             (new DocTextHtml())->visibilityBox($services, $scoped),
         );
-        self::assertSame('', (new DocTextHtml())->visibilityBox($services, $public));
+        self::assertSame(
+            '<div class="notice notice-public"><strong>Public API</strong>: explicitly declared with <code>@visibility public</code>.</div>' . "\n",
+            (new DocTextHtml())->visibilityBox($services, $public),
+        );
         self::assertSame('', (new DocTextHtml())->visibilityBox($services, $untagged));
     }
 

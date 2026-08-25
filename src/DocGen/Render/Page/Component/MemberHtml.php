@@ -85,9 +85,11 @@ final class MemberHtml
         $html .= $this->docText->render($services, $method->docBlock, $context, sprintf('%s::%s()', $owner->shortName, $method->name));
         $html .= $this->paramTable($services, $method, $context, $key);
         $html .= $this->tagExamples($services, $method->docBlock, sprintf('%s::%s()', $owner->shortName, $method->name));
-        $html .= $this->testCases->section($services, $pagePath, $services->model->testCases->forMember($owner->fqcn, $method->name));
-        $html .= $this->usageList->section($services, $pagePath, 'Called from', $this->callers($services, $owner, $method), false);
-        $html .= $this->usageList->callSection($services, $pagePath, 'Calls', $services->model->usages->callsFrom($owner->fqcn, $method->name));
+        if (!$services->model->publicApi) {
+            $html .= $this->testCases->section($services, $pagePath, $services->model->testCases->forMember($owner->fqcn, $method->name));
+            $html .= $this->usageList->section($services, $pagePath, 'Called from', $this->callers($services, $owner, $method), false);
+            $html .= $this->usageList->callSection($services, $pagePath, 'Calls', $services->model->usages->callsFrom($owner->fqcn, $method->name));
+        }
 
         return $html . '</div></div>' . "\n";
     }

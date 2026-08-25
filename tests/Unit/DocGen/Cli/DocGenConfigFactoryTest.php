@@ -41,6 +41,7 @@ final class DocGenConfigFactoryTest extends TestCase
             '--cache-dir=.docgen',
             '--base-url=https://example.github.io/project',
             '--repository=https://github.com/example/project',
+            '--public-api',
         ]);
 
         $config = (new DocGenConfigFactory())->create(sys_get_temp_dir(), $arguments);
@@ -57,6 +58,7 @@ final class DocGenConfigFactoryTest extends TestCase
         self::assertSame('.docgen', $config->cache);
         self::assertSame('https://example.github.io/project', $config->baseUrl);
         self::assertSame('https://github.com/example/project', $config->repository);
+        self::assertTrue($config->publicApi);
     }
 
     public function testCreateFallsBackToTheDefaultsOfARunWithoutOptions(): void
@@ -74,6 +76,7 @@ final class DocGenConfigFactoryTest extends TestCase
         self::assertNull($config->coverage);
         self::assertNull($config->baseUrl);
         self::assertNull($config->repository);
+        self::assertFalse($config->publicApi);
     }
 
     public function testCreateKeepsTheWorkingDirectoryThatCannotBeResolved(): void

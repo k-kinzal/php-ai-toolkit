@@ -49,7 +49,7 @@ final class SearchIndexBuilder
         $json = '';
         $separator = '';
         foreach ($model->classLikes as $classLike) {
-            if ($classLike->isDev) {
+            if ($classLike->isDev || ($model->publicApi && !$model->isPublicApiClassLike($classLike->fqcn))) {
                 continue;
             }
 
@@ -58,13 +58,13 @@ final class SearchIndexBuilder
             $status = $diff->isActive() ? $diff->classLikeStatus($classLike->fqcn) : null;
             $json .= $separator . $this->encode($this->item($classLike->shortName, $classLike->fqcn, $classLike->kind, $page, $summary, $status));
             $separator = ',';
-            foreach ($this->memberItems($classLike, $page, $diff) as $memberItem) {
+            foreach ($this->memberItems($classLike, $page, $diff, $model->publicApi) as $memberItem) {
                 $json .= $separator . $this->encode($memberItem);
             }
         }
 
         foreach ($model->functions as $function) {
-            if (!$function->isDev) {
+            if (!$function->isDev && (!$model->publicApi || $model->isPublicApiFunction($function->fqn))) {
                 $json .= $separator . $this->encode($this->item(
                     $function->shortName,
                     $function->fqn . '()',
@@ -111,12 +111,12 @@ final class SearchIndexBuilder
      *
      * @return list<array{n: string, f: string, k: string, u: string, s: string, d?: string}>
      */
-    public function memberItems(\Toolkit\DocGen\Analysis\Model\ClassLikeDoc $classLike, string $page, ?DiffHtml $diff = null): array
+    public function memberItems(\Toolkit\DocGen\Analysis\Model\ClassLikeDoc $classLike, string $page, ?DiffHtml $diff = null, bool $publicApi = false): array
     {
         $diff ??= new DiffHtml();
         $items = [];
         foreach ($classLike->methods as $method) {
-            if ($method->visibility === 'private') {
+            if ($method->visibility === 'private' || ($publicApi && $method->docBlock !== null && $method->docBlock->isRestricted())) {
                 continue;
             }
 
@@ -131,7 +131,7 @@ final class SearchIndexBuilder
         }
 
         foreach ($classLike->constants as $constant) {
-            if ($constant->visibility !== 'private') {
+            if ($constant->visibility !== 'private' && (!$publicApi || $constant->docBlock === null || !$constant->docBlock->isRestricted())) {
                 $items[] = $this->item(
                     $classLike->shortName . '::' . $constant->name,
                     $classLike->fqcn . '::' . $constant->name,

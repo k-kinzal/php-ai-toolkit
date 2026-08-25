@@ -91,7 +91,7 @@ final class DocGenGenerationRunner
     /**
      * Generates the site and optionally serves it.
      *
-     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
+     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, publicApi?: bool, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
      */
     public function run(array $arguments): int
     {

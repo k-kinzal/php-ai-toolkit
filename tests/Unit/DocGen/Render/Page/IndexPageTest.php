@@ -74,6 +74,7 @@ use Toolkit\DocGen\Render\Page\NamespacePage;
 use Toolkit\DocGen\Render\Page\PackagePage;
 use Toolkit\DocGen\Render\Page\SidebarScope;
 use Toolkit\DocGen\Render\Page\SourcePage;
+use Toolkit\DocGen\Render\Page\SymbolIndex;
 use Toolkit\DocGen\Render\PageChrome;
 use Toolkit\DocGen\Render\PhpHighlighter;
 use Toolkit\DocGen\Render\RenderKit;
@@ -158,6 +159,7 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\Page\SourcePage
  * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
  * @uses \Toolkit\DocGen\Render\Page\Component\SymbolListHtml
+ * @uses \Toolkit\DocGen\Render\Page\SymbolIndex
  * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
  * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
  * @uses \Toolkit\DocGen\Render\TypeHtml
@@ -238,6 +240,7 @@ use Toolkit\DocGen\Render\TypeHtml;
 #[UsesClass(SourcePage::class)]
 #[UsesClass(SymbolContext::class)]
 #[UsesClass(SymbolListHtml::class)]
+#[UsesClass(SymbolIndex::class)]
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(TypeHtml::class)]
@@ -311,6 +314,34 @@ final class IndexPageTest extends TestCase
             . '<ul><li>Something odd happened</li></ul></details>',
             $html,
         );
+    }
+
+    public function testContentLabelsPublicApiModeAndCountsOnlyItsEntryPoints(): void
+    {
+        $statements = (new AstParser())->parse(<<<'PHP'
+<?php
+
+namespace Demo;
+
+/**
+ * @visibility public
+ */
+class Client
+{
+}
+
+class Helper
+{
+}
+PHP, 'src/Demo/Client.php');
+        $symbols = (new FileSymbolCollector())->collect($statements, 'demo/app', 'src/Demo/Client.php', false);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/app', 'Demo application', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), $symbols->classLikes, [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, true);
+
+        $html = (new IndexPage())->content((new SiteRenderer())->services($model));
+
+        self::assertStringContainsString('<strong>Public API documentation</strong>', $html);
+        self::assertStringContainsString('<td class="pkg-count">1 symbols</td>', $html);
     }
 
     public function testContentWritesEveryLineOfTheIndex(): void

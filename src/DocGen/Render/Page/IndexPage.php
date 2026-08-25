@@ -26,6 +26,9 @@ final class IndexPage
     /** @readonly */
     private GraphSvg $graph;
 
+    /** @readonly */
+    private SymbolIndex $symbols;
+
     /**
      * Creates an index page renderer from its collaborators.
      */
@@ -33,10 +36,12 @@ final class IndexPage
         ?PageChrome $chrome = null,
         ?SidebarHtml $sidebar = null,
         ?GraphSvg $graph = null,
+        ?SymbolIndex $symbols = null,
     ) {
         $this->chrome = $chrome ?? new PageChrome();
         $this->sidebar = $sidebar ?? new SidebarHtml();
         $this->graph = $graph ?? new GraphSvg();
+        $this->symbols = $symbols ?? new SymbolIndex();
     }
 
     /**
@@ -80,6 +85,10 @@ final class IndexPage
     {
         $escaper = $services->escaper;
         $html = sprintf('<div class="symbol-head"><h1>%s</h1></div>', $escaper->e($services->model->title)) . "\n";
+        if ($services->model->publicApi) {
+            $html .= '<div class="notice notice-public"><strong>Public API documentation</strong>: navigation, listings, counts, and search include only declarations marked <code>@visibility public</code>.</div>' . "\n";
+        }
+
         $html .= $this->packageTable($services);
         $html .= $this->packageGraph($services);
         if ($services->model->warnings !== []) {
@@ -100,13 +109,6 @@ final class IndexPage
     public function packageTable(RenderKit $services): string
     {
         $escaper = $services->escaper;
-        $counts = [];
-        foreach ($services->model->classLikes as $classLike) {
-            if (!$classLike->isDev) {
-                $counts[$classLike->packageName] = ($counts[$classLike->packageName] ?? 0) + 1;
-            }
-        }
-
         $statuses = [];
         foreach ($services->model->packages as $package) {
             $statuses[] = $services->diff->packageStatus($package->manifest->name);
@@ -121,7 +123,7 @@ final class IndexPage
                 $escaper->e($services->url->packagePage($package->manifest->name)),
                 $escaper->e($package->manifest->name),
                 $package->isVendor ? sprintf(' <span class="chip chip-sm chip-ghost">%s</span>', $package->isDevDependency ? 'dev dependency' : 'vendor') : '',
-                $counts[$package->manifest->name] ?? 0,
+                count($this->symbols->inPackage($services, $package->manifest->name)),
                 $escaper->e($package->manifest->description),
             );
         }

@@ -17,12 +17,14 @@ use Toolkit\DocGen\Analysis\Diff\DiffStatus;
  * @property-read list<string> $layers
  * @property-read string $namespace
  * @property-read string $status
+ * @property-read list<string> $visibility
  */
 final class SymbolRow
 {
     /**
      * @param list<string> $layers
      * @param string $status the diff state of the listed symbol
+     * @param list<string> $visibility namespace visibility scopes declared by the symbol
      */
     public function __construct(
         /** @readonly */
@@ -41,6 +43,8 @@ final class SymbolRow
         private string $namespace = '',
         /** @readonly */
         private string $status = DiffStatus::SAME,
+        /** @readonly */
+        private array $visibility = [],
     ) {
     }
 
@@ -60,6 +64,7 @@ final class SymbolRow
             'layers' => $this->layers,
             'namespace' => $this->namespace,
             'status' => $this->status,
+            'visibility' => $this->visibility,
             default => null,
         };
     }

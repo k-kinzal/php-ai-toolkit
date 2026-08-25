@@ -26,6 +26,7 @@ namespace Toolkit\DocGen\Config;
  * @property-read ?string $cache
  * @property-read ?string $baseUrl
  * @property-read ?string $repository
+ * @property-read bool $publicApi
  */
 final class DocGenConfig
 {
@@ -80,6 +81,8 @@ final class DocGenConfig
         private ?string $baseUrl = null,
         /** @readonly */
         private ?string $repository = null,
+        /** @readonly */
+        private bool $publicApi = false,
     ) {
     }
 
@@ -103,6 +106,7 @@ final class DocGenConfig
             'cache' => $this->cache,
             'baseUrl' => $this->baseUrl,
             'repository' => $this->repository,
+            'publicApi' => $this->publicApi,
             default => null,
         };
     }

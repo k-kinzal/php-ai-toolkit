@@ -74,4 +74,27 @@ final class DocBlockTest extends TestCase
         self::assertFalse($docBlock->internal);
         self::assertSame('/** Summary. */', $docBlock->raw);
     }
+
+    public function testIsPublicApiRecognizesTheKeywordCaseInsensitively(): void
+    {
+        $public = new DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '', ['PUBLIC']);
+        $restricted = new DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '', ['namespace', 'Demo\Console']);
+        $untagged = new DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '');
+
+        self::assertTrue($public->isPublicApi());
+        self::assertFalse($public->isRestricted());
+        self::assertFalse($restricted->isPublicApi());
+        self::assertTrue($restricted->isRestricted());
+        self::assertFalse($untagged->isPublicApi());
+        self::assertFalse($untagged->isRestricted());
+    }
+
+    public function testIsRestrictedRecognizesEveryNarrowerScope(): void
+    {
+        $restricted = new DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '', ['namespace', 'Demo\Console']);
+        $public = new DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '', ['public']);
+
+        self::assertTrue($restricted->isRestricted());
+        self::assertFalse($public->isRestricted());
+    }
 }

@@ -203,6 +203,33 @@ final class ProjectDifferTest extends TestCase
         self::assertSame(['Demo\Fresh', 'Demo\Gone'], [$classLikes[0]->fqcn, $classLikes[1]->fqcn]);
     }
 
+    public function testDiffKeepsAnEntryPointWhenTheHeadNarrowsItsVisibility(): void
+    {
+        $baseSymbols = (new FileSymbolCollector())->collect(
+            (new AstParser())->parse('<?php namespace Demo; /** @visibility public */ class Client {}', 'src/Client.php'),
+            'demo/pkg',
+            'src/Client.php',
+            false,
+        );
+        $headSymbols = (new FileSymbolCollector())->collect(
+            (new AstParser())->parse('<?php namespace Demo; /** @visibility namespace */ class Client {}', 'src/Client.php'),
+            'demo/pkg',
+            'src/Client.php',
+            false,
+        );
+
+        $model = (new ProjectDiffer())->diff(
+            new ProjectModel('Demo', '/tmp/base', [], new PackageGraph([]), $baseSymbols->classLikes, [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, true),
+            new ProjectModel('Demo', '/tmp/head', [], new PackageGraph([]), $headSymbols->classLikes, [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, true),
+            new DiffIndex('main', 'HEAD'),
+        );
+
+        self::assertTrue($model->isPublicApiClassLike('Demo\Client'));
+        $docBlock = $model->classLikes[0]->docBlock;
+        self::assertNotNull($docBlock);
+        self::assertTrue($docBlock->isRestricted());
+    }
+
     public function testFunctionsAreMergedByTheirFullyQualifiedName(): void
     {
         $baseSymbols = (new FileSymbolCollector())->collect(

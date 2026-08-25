@@ -144,6 +144,21 @@ final class SymbolListHtmlTest extends TestCase
         );
     }
 
+    public function testVisibilityBadgesLabelsPublicAndRestrictedDeclarations(): void
+    {
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+        $rows = [
+            new SymbolRow('class', 'Client', 'Demo\Client', 'client.html', '', [], '', DiffStatus::SAME, ['public']),
+            new SymbolRow('class', 'Worker', 'Demo\Worker', 'worker.html', '', [], '', DiffStatus::SAME, ['namespace']),
+        ];
+
+        $html = (new SymbolListHtml())->table($services, 'index.html', $rows);
+
+        self::assertStringContainsString('<span class="chip chip-sm chip-public" title="@visibility public">public API</span>', $html);
+        self::assertStringContainsString('<span class="chip chip-sm chip-visibility" title="@visibility namespace">@visibility namespace</span>', $html);
+    }
+
     public function testNamespaceOverviewListsEveryNamespaceOfTheListingSorted(): void
     {
         $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/pkg', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);

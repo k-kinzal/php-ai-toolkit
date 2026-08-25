@@ -134,7 +134,8 @@ final class SymbolIndex
     {
         $grouped = [];
         foreach ($services->model->classLikes as $classLike) {
-            if ($classLike->packageName !== $packageName || $classLike->isDev) {
+            if ($classLike->packageName !== $packageName || $classLike->isDev
+                || ($services->model->publicApi && !$services->model->isPublicApiClassLike($classLike->fqcn))) {
                 continue;
             }
 
@@ -147,6 +148,7 @@ final class SymbolIndex
                 $services->model->layerAssignments[strtolower($classLike->fqcn)] ?? [],
                 $classLike->namespace,
                 $services->diff->classLikeStatus($classLike->fqcn),
+                $classLike->docBlock !== null ? $classLike->docBlock->visibility : [],
             );
         }
 
@@ -162,7 +164,8 @@ final class SymbolIndex
     {
         $grouped = [];
         foreach ($services->model->functions as $function) {
-            if ($function->packageName !== $packageName || $function->isDev) {
+            if ($function->packageName !== $packageName || $function->isDev
+                || ($services->model->publicApi && !$services->model->isPublicApiFunction($function->fqn))) {
                 continue;
             }
 
@@ -175,6 +178,7 @@ final class SymbolIndex
                 [],
                 $function->namespace,
                 $services->diff->statusOf($services->diff->functionKey($function->fqn)),
+                $function->docBlock !== null ? $function->docBlock->visibility : [],
             );
         }
 

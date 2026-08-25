@@ -98,6 +98,7 @@ final class PageSignature
                 $services->model->title,
                 (string) $services->model->baseUrl,
                 (string) $services->model->repository,
+                $services->model->publicApi ? 'public-api' : 'all-symbols',
                 $this->card->supported() ? 'card' : 'no-card',
                 $services->diff->digest(),
             ]));
@@ -130,10 +131,8 @@ final class PageSignature
     public function index(RenderKit $services): string
     {
         $counts = [];
-        foreach ($services->model->classLikes as $classLike) {
-            if (!$classLike->isDev) {
-                $counts[$classLike->packageName] = ($counts[$classLike->packageName] ?? 0) + 1;
-            }
+        foreach ($services->model->packages as $package) {
+            $counts[$package->manifest->name] = count($this->symbols->inPackage($services, $package->manifest->name));
         }
 
         return $this->of($services, [

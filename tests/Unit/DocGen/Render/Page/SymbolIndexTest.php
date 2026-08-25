@@ -191,6 +191,26 @@ final class SymbolIndexTest extends TestCase
         self::assertSame([], (new SymbolIndex())->functionRows($services, 'missing/pkg'));
     }
 
+    public function testPublicApiModeListsOnlyExplicitPublicDeclarations(): void
+    {
+        $publicDoc = new DocBlock('Client API.', '', [], null, null, [], [], [], [], [], [], null, false, '', ['public']);
+        $restrictedDoc = new DocBlock('Worker.', '', [], null, null, [], [], [], [], [], [], null, false, '', ['namespace']);
+        $client = new ClassLikeDoc('Demo\Client', 'Client', 'Demo', 'class', 'demo/pkg', 'src/Client.php', 5, 20, false, true, [], [], [], [], [], [], [], null, $publicDoc, [], false);
+        $worker = new ClassLikeDoc('Demo\Worker', 'Worker', 'Demo', 'class', 'demo/pkg', 'src/Worker.php', 5, 20, false, true, [], [], [], [], [], [], [], null, $restrictedDoc, [], false);
+        $unmarked = new ClassLikeDoc('Demo\Helper', 'Helper', 'Demo', 'class', 'demo/pkg', 'src/Helper.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);
+        $create = new FunctionDoc('Demo\create', 'create', 'Demo', 'demo/pkg', 'src/functions.php', 7, 10, [], new TypeSignature('int', null), $publicDoc, [], false);
+        $inspect = new FunctionDoc('Demo\inspect', 'inspect', 'Demo', 'demo/pkg', 'src/functions.php', 12, 15, [], new TypeSignature('int', null), null, [], false);
+        $package = new DiscoveredPackage(new ComposerManifest('/tmp/none', 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [$package], new PackageGraph([]), [$client, $worker, $unmarked], [$create, $inspect], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, true);
+        $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+
+        $rows = (new SymbolIndex())->inPackage($services, 'demo/pkg');
+
+        self::assertSame(['Demo\Client', 'Demo\create'], [$rows[0]->fqcn, $rows[1]->fqcn]);
+        self::assertSame(['public'], $rows[0]->visibility);
+        self::assertSame(['Demo'], (new SymbolIndex())->namespacesOf($services, 'demo/pkg'));
+    }
+
     public function testLayersOfListsAssignedLayersSortedAndUnique(): void
     {
         $engine = new ClassLikeDoc('Demo\Core\Engine', 'Engine', 'Demo\Core', 'class', 'demo/pkg', 'src/Core/Engine.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);

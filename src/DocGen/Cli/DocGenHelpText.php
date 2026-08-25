@@ -59,6 +59,9 @@ TEXT;
   --output=DIR       Output directory (default: build/docs)
   --title=TEXT       Site title (default: the name of the root package, else
                      the name of the project directory)
+  --public-api       Publish only declarations explicitly marked
+                     @visibility public in listings, navigation, counts, and
+                     search; linked support-type pages remain available
 
 TEXT;
     }

@@ -23,7 +23,7 @@ final class DocGenConfigFactory
     /**
      * Returns the configuration the arguments of one run describe.
      *
-     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
+     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, publicApi?: bool, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
      */
     public function create(string $workingDirectory, array $arguments): DocGenConfig
     {
@@ -42,6 +42,7 @@ final class DocGenConfigFactory
             $this->cache($arguments),
             $arguments['baseUrl'],
             $arguments['repository'],
+            $arguments['publicApi'] ?? false,
         );
     }
 
@@ -51,7 +52,7 @@ final class DocGenConfigFactory
      * A run that was told to cache nothing caches nothing, whichever
      * directory it would otherwise have kept its caches in.
      *
-     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
+     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, publicApi?: bool, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
      */
     public function cache(array $arguments): ?string
     {
@@ -69,7 +70,7 @@ final class DocGenConfigFactory
      * --clear-cache and --no-cache are asked for together by exactly the run
      * that wants to prove the site does not depend on what was remembered.
      *
-     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
+     * @param array{packages: ?list<string>, vendor: ?list<string>, vendorDev: ?list<string>, exclude: ?list<string>, output: ?string, title: ?string, deptrac: ?string, coverage: ?string, cacheDir: ?string, baseUrl: ?string, repository: ?string, serve: ?string, memoryLimit: ?string, jobs: ?int, base: ?string, head: ?string, publicApi?: bool, noCache: bool, clearCache: bool, help: bool, version: bool} $arguments
      */
     public function cacheDirectory(array $arguments): string
     {

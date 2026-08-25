@@ -130,6 +130,7 @@ final class ProjectAnalyzer
             $this->documentCollector->collect($config, $packages),
             $config->baseUrl,
             $this->repositoryFor($config, $packages),
+            $config->publicApi,
         );
     }
 

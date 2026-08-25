@@ -152,6 +152,7 @@ final class DiffWorkspace
             $config->cache,
             $config->baseUrl,
             $config->repository,
+            $config->publicApi,
         );
     }
 

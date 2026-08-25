@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Toolkit\DocGen\Analysis;
 
+use function array_keys;
+use function strtolower;
+
 use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
 use Toolkit\DocGen\Analysis\Layer\LayerModel;
 use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
@@ -36,9 +39,22 @@ use Toolkit\DocGen\Package\PackageGraph;
  * @property-read list<MarkdownDoc> $documents
  * @property-read ?string $baseUrl
  * @property-read ?string $repository
+ * @property-read bool $publicApi
  */
 final class ProjectModel
 {
+    /** @var list<string> */
+    private array $historicalPublicApiClassLikes;
+
+    /** @var list<string> */
+    private array $historicalPublicApiFunctions;
+
+    /** @var ?array<string, true> */
+    private ?array $publicApiClassLikeIndex = null;
+
+    /** @var ?array<string, true> */
+    private ?array $publicApiFunctionIndex = null;
+
     /**
      * @param list<DiscoveredPackage> $packages
      * @param list<ClassLikeDoc> $classLikes
@@ -48,6 +64,8 @@ final class ProjectModel
      * @param list<MarkdownDoc> $documents
      * @param ?string $baseUrl the address the site is published at, without a trailing slash, or null when it is unknown
      * @param ?string $repository the address of the repository the documented project lives in, or null when it names none
+     * @param list<string> $historicalPublicApiClassLikes public class-like names contributed by another diff revision
+     * @param list<string> $historicalPublicApiFunctions public function names contributed by another diff revision
      */
     public function __construct(
         /** @readonly */
@@ -84,7 +102,13 @@ final class ProjectModel
         private ?string $baseUrl = null,
         /** @readonly */
         private ?string $repository = null,
+        /** @readonly */
+        private bool $publicApi = false,
+        array $historicalPublicApiClassLikes = [],
+        array $historicalPublicApiFunctions = [],
     ) {
+        $this->historicalPublicApiClassLikes = $historicalPublicApiClassLikes;
+        $this->historicalPublicApiFunctions = $historicalPublicApiFunctions;
     }
 
     /**
@@ -112,7 +136,82 @@ final class ProjectModel
             'documents' => $this->documents,
             'baseUrl' => $this->baseUrl,
             'repository' => $this->repository,
+            'publicApi' => $this->publicApi,
             default => null,
         };
+    }
+
+    /**
+     * Reports whether a class-like is part of this run's public API surface.
+     */
+    public function isPublicApiClassLike(string $fqcn): bool
+    {
+        $this->publicApiClassLikes();
+
+        return $this->publicApiClassLikeIndex !== null && isset($this->publicApiClassLikeIndex[strtolower($fqcn)]);
+    }
+
+    /**
+     * Reports whether a function is part of this run's public API surface.
+     */
+    public function isPublicApiFunction(string $fqn): bool
+    {
+        $this->publicApiFunctions();
+
+        return $this->publicApiFunctionIndex !== null && isset($this->publicApiFunctionIndex[strtolower($fqn)]);
+    }
+
+    /**
+     * Lists public class-like names, including names from another diff revision.
+     *
+     * @return list<string>
+     */
+    public function publicApiClassLikes(): array
+    {
+        if ($this->publicApiClassLikeIndex !== null) {
+            return array_keys($this->publicApiClassLikeIndex);
+        }
+
+        $names = [];
+        foreach ($this->historicalPublicApiClassLikes as $fqcn) {
+            $names[strtolower($fqcn)] = true;
+        }
+
+        foreach ($this->classLikes as $classLike) {
+            if ($classLike->docBlock !== null && $classLike->docBlock->isPublicApi()) {
+                $names[strtolower($classLike->fqcn)] = true;
+            }
+        }
+
+        $this->publicApiClassLikeIndex = $names;
+
+        return array_keys($this->publicApiClassLikeIndex);
+    }
+
+    /**
+     * Lists public function names, including names from another diff revision.
+     *
+     * @return list<string>
+     */
+    public function publicApiFunctions(): array
+    {
+        if ($this->publicApiFunctionIndex !== null) {
+            return array_keys($this->publicApiFunctionIndex);
+        }
+
+        $names = [];
+        foreach ($this->historicalPublicApiFunctions as $fqn) {
+            $names[strtolower($fqn)] = true;
+        }
+
+        foreach ($this->functions as $function) {
+            if ($function->docBlock !== null && $function->docBlock->isPublicApi()) {
+                $names[strtolower($function->fqn)] = true;
+            }
+        }
+
+        $this->publicApiFunctionIndex = $names;
+
+        return array_keys($this->publicApiFunctionIndex);
     }
 }

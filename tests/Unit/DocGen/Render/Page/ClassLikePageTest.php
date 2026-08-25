@@ -675,6 +675,24 @@ PHP;
         self::assertSame([], (new ClassLikePage())->visibleMembers([]));
     }
 
+    public function testVisibleCasesDropsRestrictedCasesInPublicApiMode(): void
+    {
+        $restricted = new DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '', ['parent']);
+        $methods = [
+            new MethodDoc('run', 'public', false, false, false, [], new TypeSignature('int', null), null, 12, 15),
+            new MethodDoc('inspect', 'public', false, false, false, [], new TypeSignature('void', null), $restricted, 17, 19),
+        ];
+        $cases = [new EnumCaseDoc('READY', null, null, 22), new EnumCaseDoc('INTERNAL', null, $restricted, 23)];
+        $page = new ClassLikePage();
+
+        self::assertSame('run', $page->visibleMembers($methods, true)[0]->name);
+        self::assertCount(1, $page->visibleMembers($methods, true));
+        self::assertSame('READY', $page->visibleCases($cases, true)[0]->name);
+        self::assertCount(1, $page->visibleCases($cases, true));
+        self::assertCount(2, $page->visibleMembers($methods));
+        self::assertCount(2, $page->visibleCases($cases));
+    }
+
     public function testTestCaseSectionSplitsDedicatedTestsFromOtherTests(): void
     {
         $widget = new ClassLikeDoc('Demo\Widget', 'Widget', 'Demo', 'class', 'demo/pkg', 'src/Demo/Widget.php', 5, 20, false, true, [], [], [], [], [], [], [], null, null, [], false);

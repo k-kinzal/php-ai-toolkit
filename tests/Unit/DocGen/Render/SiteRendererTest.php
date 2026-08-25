@@ -328,6 +328,41 @@ final class SiteRendererTest extends TestCase
         self::assertFileExists($out . '/.nojekyll');
     }
 
+    public function testRenderPublicApiModeCuratesDiscoveryWithoutBreakingSupportTypeLinks(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-public-render-' . uniqid('', true);
+        mkdir($dir . '/src', 0777, true);
+        file_put_contents($dir . '/src/Client.php', "<?php\n\nnamespace Demo;\n\nclass Client extends Helper {}\n");
+        file_put_contents($dir . '/src/Helper.php', "<?php\n\nnamespace Demo;\n\nclass Helper {}\n");
+        $public = new DocBlock('Client API.', '', [], null, null, [], [], [], [], [], [], null, false, '', ['public']);
+        $restricted = new DocBlock('Support type.', '', [], null, null, [], [], [], [], [], [], null, false, '', ['namespace']);
+        $client = new ClassLikeDoc('Demo\Client', 'Client', 'Demo', 'class', 'demo/pkg', 'src/Client.php', 5, 5, false, false, ['Demo\Helper'], [], [], [], [], [], [], null, $public, [], false);
+        $helper = new ClassLikeDoc('Demo\Helper', 'Helper', 'Demo', 'class', 'demo/pkg', 'src/Helper.php', 5, 5, false, false, [], [], [], [], [], [], [], null, $restricted, [], false);
+        $table = new SymbolTable();
+        $table->registerClassLike($client);
+        $table->registerClassLike($helper);
+        $hierarchy = new HierarchyIndex();
+        $hierarchy->build([$client, $helper]);
+        $manifest = new ComposerManifest($dir, 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []);
+        $model = new ProjectModel('Demo Docs', $dir, [new DiscoveredPackage($manifest, false)], new PackageGraph([]), [$client, $helper], [], $table, $hierarchy, new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, true);
+        $out = $dir . '/site';
+
+        (new SiteRenderer())->render($model, $out);
+
+        $index = (string) file_get_contents($out . '/index.html');
+        $allItems = (string) file_get_contents($out . '/demo/pkg/all-items.html');
+        $clientPage = (string) file_get_contents($out . '/demo/pkg/Demo/class.Client.html');
+        $search = (string) file_get_contents($out . '/assets/search-index.js');
+        self::assertStringContainsString('Public API documentation', $index);
+        self::assertStringContainsString('>Client</a>', $allItems);
+        self::assertStringNotContainsString('>Helper</a>', $allItems);
+        self::assertStringContainsString('class.Helper.html', $clientPage);
+        self::assertStringNotContainsString('<h2 id="relations">', $clientPage);
+        self::assertStringContainsString('Client', $search);
+        self::assertStringNotContainsString('Helper', $search);
+        self::assertFileExists($out . '/demo/pkg/Demo/class.Helper.html');
+    }
+
     public function testRenderPackagePagesWritesPackageAndNamespaceIndexes(): void
     {
         $dir = sys_get_temp_dir() . '/docgen-render-' . uniqid('', true);

@@ -1,0 +1,15 @@
+doctest.mdを読んでて思いましたが、利用者はvendorのDoctestSuite.phpを設定すればいいんですよね？
+何かskillsの書き方がおかしかったりしますか？またこれはDoctestSuite.phpって名前あってます？PHPUnitの拡張としてどういう名前であるべきなんだろうなと思いまして。
+
+---
+
+doctest.mdを読んでて思いましたが、利用者はvendorのDoctestSuite.phpを設定すればいいんですよね？
+利用者側を見ているとDoctestSuite.phpを自前で作成しているケースをみかけており何かskillsの書き方がおかしかったりしますか？またこれはDoctestSuite.phpって名前あってます？PHPUnitの拡張としてどういう名前であるべきなんだろうなと思いまして。
+
+---
+
+はい、で、DoctestSuite.phpという名前の妥当性を知りたいです。一般的にこういうのは命名としてどのような命名になるのでしょうか？
+
+---
+
+ちなみに、これユーザーが読み込めるようにsrcにあるのだと思っていますがこういうtestライブラリの配布ってどうするものなんですか？testsに配置するのは違うよねと思いつつ。DoctestSuite.phpに限ってはtests以下がいいのですか？

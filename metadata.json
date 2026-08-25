@@ -3,7 +3,7 @@
   "checkpoint_id": "01M0WRDD0N3NXZ7KFAPF90YX9T",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 5,
+  "checkpoints_count": 8,
   "files_touched": [
     ".github/workflows/ci.yml",
     "README.md",
@@ -78,13 +78,20 @@
       "compact_transcript": "/1/transcript.jsonl",
       "content_hash": "/1/content_hash.txt",
       "prompt": "/1/prompt.txt"
+    },
+    {
+      "metadata": "/2/metadata.json",
+      "transcript": "/2/full.jsonl",
+      "compact_transcript": "/2/transcript.jsonl",
+      "content_hash": "/2/content_hash.txt",
+      "prompt": "/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 166,
-    "cache_creation_tokens": 237875,
-    "cache_read_tokens": 8135404,
-    "output_tokens": 98690,
-    "api_call_count": 83
+    "input_tokens": 212,
+    "cache_creation_tokens": 318006,
+    "cache_read_tokens": 9539797,
+    "output_tokens": 126214,
+    "api_call_count": 106
   }
 }

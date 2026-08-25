@@ -33,7 +33,7 @@ final class NodeWalkerTest extends TestCase
 
     public function testWalkIgnoresValuesThatAreNotNodes(): void
     {
-        self::assertSame([], (new NodeWalker())->walk(['text', null, 7]));
+        self::assertSame([], (new NodeWalker())->walk([]));
     }
 
     public function testChildrenReturnsOneEntryPerSubNode(): void

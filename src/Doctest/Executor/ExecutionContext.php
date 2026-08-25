@@ -22,6 +22,8 @@ use function array_key_exists;
  *     $ctx = new \PhpAiToolkit\Doctest\Executor\ExecutionContext();
  *     $ctx->setVariable('y', 99);
  *     $ctx->getVariable('y') // => 99
+ *
+ * @template T = mixed
  */
 final class ExecutionContext
 {
@@ -37,7 +39,7 @@ final class ExecutionContext
         'evalCode',
     ];
 
-    /** @var array<string, mixed> */
+    /** @var array<string, T> */
     private array $variables = [];
 
     /**
@@ -48,7 +50,7 @@ final class ExecutionContext
     /**
      * Returns all variables defined in this context.
      *
-     * @return array<string, mixed>
+     * @return array<string, T>
      */
     public function getVariables(): array
     {
@@ -58,7 +60,7 @@ final class ExecutionContext
     /**
      * Sets multiple variables at once, filtering internal variables.
      *
-     * @param array<string, mixed> $vars variables to set
+     * @param array<string, T> $vars variables to set
      */
     public function setVariables(array $vars): void
     {
@@ -72,7 +74,7 @@ final class ExecutionContext
     /**
      * Sets a single variable in the context.
      *
-     * @param mixed $value the value to store
+     * @param T $value the value to store
      */
     public function setVariable(string $name, $value): void
     {
@@ -84,7 +86,7 @@ final class ExecutionContext
      *
      * Returns null if the variable is not set.
      *
-     * @return mixed the stored value, or null
+     * @return T|null the stored value, or null
      */
     public function getVariable(string $name)
     {

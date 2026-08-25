@@ -21,7 +21,8 @@ final class ConfigStringListReader
     /**
      * Reads a list of non-empty strings, applying the default when absent.
      *
-     * @param array<mixed> $data
+     * @template TValue
+     * @param array<array-key, TValue> $data
      * @param list<string> $default
      * @return list<string>
      *

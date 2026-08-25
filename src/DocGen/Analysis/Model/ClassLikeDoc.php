@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Model;
 
-use function get_object_vars;
-
 /**
  * One documented class, interface, trait, or enum.
  *
@@ -45,7 +43,7 @@ final class ClassLikeDoc
      * one builds its table once instead. Rebuilding it on every read is
      * what a symbol that hundreds of pages ask about cannot afford.
      *
-     * @var ?array<mixed>
+     * @var array<string, bool|int|string|DocBlock|null|list<string>|list<ConstantDoc>|list<PropertyDoc>|list<MethodDoc>|list<EnumCaseDoc>|array<string, string>>|null
      */
     private ?array $propertyValues = null;
 
@@ -112,7 +110,29 @@ final class ClassLikeDoc
      */
     public function __get(string $name): mixed
     {
-        $this->propertyValues ??= get_object_vars($this);
+        $this->propertyValues ??= [
+            'fqcn' => $this->fqcn,
+            'shortName' => $this->shortName,
+            'namespace' => $this->namespace,
+            'kind' => $this->kind,
+            'packageName' => $this->packageName,
+            'file' => $this->file,
+            'startLine' => $this->startLine,
+            'endLine' => $this->endLine,
+            'isAbstract' => $this->isAbstract,
+            'isFinal' => $this->isFinal,
+            'extends' => $this->extends,
+            'implements' => $this->implements,
+            'traits' => $this->traits,
+            'constants' => $this->constants,
+            'properties' => $this->properties,
+            'methods' => $this->methods,
+            'enumCases' => $this->enumCases,
+            'backingType' => $this->backingType,
+            'docBlock' => $this->docBlock,
+            'useMap' => $this->useMap,
+            'isDev' => $this->isDev,
+        ];
 
         return $this->propertyValues[$name] ?? null;
     }

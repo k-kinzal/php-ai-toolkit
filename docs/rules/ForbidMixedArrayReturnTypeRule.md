@@ -1,5 +1,7 @@
 # ForbidMixedArrayReturnTypeRule
 
+> This is a legacy opt-in rule class and is no longer registered by `toolkit.neon`. The default extension uses [ForbidInternalMixedTypeRule](ForbidInternalMixedTypeRule.md), which permits deliberate public `mixed` contracts and forbids concrete `mixed` in internal declarations instead.
+
 | Property | Value |
 |----------|-------|
 | Identifier | `customRules.mixedArrayReturnType` |

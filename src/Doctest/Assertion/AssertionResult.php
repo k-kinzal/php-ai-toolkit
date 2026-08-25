@@ -20,11 +20,13 @@ use function var_export;
  * Contains information about whether the assertion passed, along with
  * details for generating meaningful error messages on failure.
  *
+ * @template TExpected = mixed
+ * @template TActual = mixed
  * @property-read bool $passed
  * @property-read string $message
  * @property-read Statement $statement
- * @property-read mixed $expected
- * @property-read mixed $actual
+ * @property-read TExpected|null $expected
+ * @property-read TActual|null $actual
  */
 final class AssertionResult
 {
@@ -32,8 +34,8 @@ final class AssertionResult
      * @param bool $passed whether the assertion passed
      * @param string $message error message if failed
      * @param Statement $statement the statement that was evaluated
-     * @param mixed $expected the expected value, if applicable
-     * @param mixed $actual the actual value, if applicable
+     * @param TExpected|null $expected the expected value, if applicable
+     * @param TActual|null $actual the actual value, if applicable
      */
     public function __construct(
         /** @readonly */
@@ -43,9 +45,9 @@ final class AssertionResult
         /** @readonly */
         private Statement $statement,
         /** @readonly */
-        private mixed $expected = null,
+        private $expected = null,
         /** @readonly */
-        private mixed $actual = null,
+        private $actual = null,
     ) {
     }
 

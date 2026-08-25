@@ -14,18 +14,19 @@ use Throwable;
  * thrown exception, which keeps the one place that runs untrusted text — and so
  * the one broad catch doctest needs — inside ExpressionEvaluator.
  *
- * @property-read mixed $value
+ * @template-covariant T = mixed
+ * @property-read T|null $value
  * @property-read ?Throwable $error
  */
 final class Evaluation
 {
     /**
-     * @param mixed $value the value the code produced, null when it raised
+     * @param T|null $value the value the code produced, null when it raised
      * @param Throwable|null $error what the code raised, null when it completed
      */
     public function __construct(
         /** @readonly */
-        private mixed $value = null,
+        private $value = null,
         /** @readonly */
         private ?Throwable $error = null,
     ) {

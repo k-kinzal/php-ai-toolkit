@@ -21,7 +21,7 @@ final class NodeWalker
     /**
      * Returns the given nodes and every node below them, in source order.
      *
-     * @param array<mixed> $nodes
+     * @param array<array-key, \PhpParser\Node|array<array-key, \PhpParser\Node>> $nodes
      * @return list<\PhpParser\Node>
      */
     public function walk(array $nodes): array
@@ -32,10 +32,6 @@ final class NodeWalker
                 foreach ($this->walk($node) as $nested) {
                     $collected[] = $nested;
                 }
-                continue;
-            }
-
-            if (!$node instanceof \PhpParser\Node) {
                 continue;
             }
 

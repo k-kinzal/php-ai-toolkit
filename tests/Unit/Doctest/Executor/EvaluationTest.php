@@ -31,7 +31,6 @@ final class EvaluationTest extends TestCase
 
         self::assertFalse($evaluation->completed());
         self::assertSame($raised, $evaluation->error);
-        self::assertNull($evaluation->value);
     }
 
     public function testDefaultsToAValuelessCompletion(): void

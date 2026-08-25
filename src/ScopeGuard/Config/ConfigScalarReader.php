@@ -20,7 +20,8 @@ final class ConfigScalarReader
     /**
      * Reads a required or defaulted non-empty string value.
      *
-     * @param array<mixed> $data
+     * @template TValue
+     * @param array<array-key, TValue> $data
      *
      * @throws ScopeGuardException when the value is not a non-empty string
      */

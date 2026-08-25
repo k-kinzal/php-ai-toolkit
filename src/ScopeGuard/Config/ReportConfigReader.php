@@ -45,7 +45,8 @@ final class ReportConfigReader
     /**
      * Reads report output configuration.
      *
-     * @param mixed $value
+     * @template TValue
+     * @param TValue $value
      *
      * @throws ScopeGuardException when the report section is not a mapping or contains unsupported values
      */

@@ -29,7 +29,7 @@ use function trim;
  *
  * @visibility parent
  */
-final class ExpressionEvaluator
+final class ExpressionEvaluator implements ExpressionEvaluation
 {
     /** @var list<string> */
     private const NO_RETURN_PATTERNS = [
@@ -58,6 +58,8 @@ final class ExpressionEvaluator
      * variables an example defines land in this method's scope, so they are
      * read back from here and this method's own locals are unset before the
      * scope is handed on. A statement that raises leaves the context untouched.
+     *
+     * @return Evaluation<mixed>|Evaluation<null>
      */
     public function evaluate(string $code, ExecutionContext $context): Evaluation
     {
@@ -84,7 +86,7 @@ final class ExpressionEvaluator
 
             return new Evaluation($__doctest_result__);
         } catch (Throwable $error) {
-            return new Evaluation(null, $error);
+            return new Evaluation(error: $error);
         } finally {
             ob_end_clean();
         }
@@ -92,13 +94,15 @@ final class ExpressionEvaluator
 
     /**
      * Evaluates the expression an assertion documents as its expected value.
+     *
+     * @return Evaluation<mixed>|Evaluation<null>
      */
     public function evaluateExpected(string $expectedRaw): Evaluation
     {
         try {
             return new Evaluation(eval('return ' . $expectedRaw . ';'));
         } catch (Throwable $error) {
-            return new Evaluation(null, $error);
+            return new Evaluation(error: $error);
         }
     }
 

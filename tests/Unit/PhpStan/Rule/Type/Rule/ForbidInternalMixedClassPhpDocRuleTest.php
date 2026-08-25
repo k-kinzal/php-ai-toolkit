@@ -1,0 +1,49 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\PhpStan\Rule\Type\Rule;
+
+use Override;
+use PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
+use PhpAiToolkit\PhpStan\Rule\Type\MixedClassPhpDocErrorCollector;
+use PhpAiToolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClassPhpDocRule;
+use PHPStan\Rules\Rule;
+use PHPStan\Testing\RuleTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\UsesClass;
+
+/**
+ * @extends RuleTestCase<ForbidInternalMixedClassPhpDocRule>
+ */
+#[CoversClass(ForbidInternalMixedClassPhpDocRule::class)]
+#[UsesClass(MixedClassPhpDocErrorCollector::class)]
+#[UsesClass(RulePhpDocParser::class)]
+#[Medium]
+final class ForbidInternalMixedClassPhpDocRuleTest extends RuleTestCase
+{
+    #[Override]
+    protected function getRule(): Rule
+    {
+        return new ForbidInternalMixedClassPhpDocRule();
+    }
+
+    public function testGetNodeTypeReturnsClassNode(): void
+    {
+        self::assertSame(\PHPStan\Node\InClassNode::class, $this->getRule()->getNodeType());
+    }
+
+    public function testProcessNodeReportsRestrictedVirtualContracts(): void
+    {
+        $guidance = ': this declaration is internal or scope-restricted, so it must state a deterministic PHPStan type. Validate arbitrary input at an unrestricted public boundary, then pass the narrowed type inward.';
+        $prefix = 'Tests\Fixture\ForbidInternalMixedType\RestrictedTypes';
+        $this->analyse([__DIR__ . '/../../../../../Fixture/ForbidInternalMixedType/ForbiddenMixedTypes.php'], [
+            ['Replace concrete mixed type "array<mixed>" in parameter $input of ' . $prefix . '::virtualCall()' . $guidance, 13],
+            ['Replace concrete mixed type "array<string, mixed>" in virtual property type of ' . $prefix . '::$virtualPayload' . $guidance, 13],
+            ['Replace concrete mixed type "array{payload: mixed}" in type alias Payload of ' . $prefix . $guidance, 13],
+            ['Replace concrete mixed type "mixed" in return type of ' . $prefix . '::virtualCall()' . $guidance, 13],
+        ]);
+        $this->analyse([__DIR__ . '/../../../../../Fixture/ForbidInternalMixedType/AllowedMixedTypes.php'], []);
+    }
+}

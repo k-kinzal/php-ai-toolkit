@@ -11,7 +11,6 @@ parametersSchema:
         forbiddenNamespacePrefixes: listOf(string())
         forbiddenClassLikeNameSuffixes: listOf(string())
         broadCatchAllowedPaths: listOf(string())
-        mixedArrayReturnAllowedPaths: listOf(string())
     ])
 
 parameters:
@@ -99,7 +98,6 @@ parameters:
             - Probe
             - Probes
         broadCatchAllowedPaths: []
-        mixedArrayReturnAllowedPaths: []
 
 services:
     aiRules.throwType.tokenGetAll:
@@ -293,10 +291,38 @@ services:
         tags:
             - phpstan.rules.rule
 
-    aiRules.rule.forbidMixedArrayReturnType:
-        class: PhpAiToolkit\PhpStan\Rule\PhpDoc\ForbidMixedArrayReturnTypeRule
-        arguments:
-            mixedArrayReturnAllowedPaths: %customRules.mixedArrayReturnAllowedPaths%
+    aiRules.rule.forbidInternalMixedType:
+        class: PhpAiToolkit\PhpStan\Rule\Type\ForbidInternalMixedTypeRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidInternalMixedFunction:
+        class: PhpAiToolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedFunctionRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidInternalMixedClosure:
+        class: PhpAiToolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClosureRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidInternalMixedArrowFunction:
+        class: PhpAiToolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedArrowFunctionRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidInternalMixedProperty:
+        class: PhpAiToolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedPropertyRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidInternalMixedClassPhpDoc:
+        class: PhpAiToolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClassPhpDocRule
+        tags:
+            - phpstan.rules.rule
+
+    aiRules.rule.forbidInternalMixedLocalVar:
+        class: PhpAiToolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedLocalVarRule
         tags:
             - phpstan.rules.rule
 

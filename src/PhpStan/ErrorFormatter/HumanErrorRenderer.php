@@ -15,7 +15,7 @@ use function sprintf;
 /**
  * Renders PHPStan errors for human terminal output.
  */
-final class AiRulesHumanErrorFormatter
+final class HumanErrorRenderer
 {
     /** @readonly */
     private HumanFileErrorPrinter $fileErrorPrinter;

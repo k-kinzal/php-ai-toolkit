@@ -12,22 +12,22 @@ use PHPStan\File\SimpleRelativePathHelper;
 use PHPStan\Testing\ErrorFormatterTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
-use Toolkit\PhpStan\ErrorFormatter\AiRulesHumanErrorFormatter;
 use Toolkit\PhpStan\ErrorFormatter\ErrorCollectionSummary;
 use Toolkit\PhpStan\ErrorFormatter\ErrorGrouping;
 use Toolkit\PhpStan\ErrorFormatter\ErrorGutter;
 use Toolkit\PhpStan\ErrorFormatter\ErrorSourceReader;
+use Toolkit\PhpStan\ErrorFormatter\HumanErrorRenderer;
 
 /**
- * @covers \Toolkit\PhpStan\ErrorFormatter\AiRulesHumanErrorFormatter
+ * @covers \Toolkit\PhpStan\ErrorFormatter\HumanErrorRenderer
  */
-#[CoversClass(AiRulesHumanErrorFormatter::class)]
+#[CoversClass(HumanErrorRenderer::class)]
 #[Medium]
-final class AiRulesHumanErrorFormatterTest extends ErrorFormatterTestCase
+final class HumanErrorRendererTest extends ErrorFormatterTestCase
 {
     public function testFormatWritesHumanFileBlockAndSummary(): void
     {
-        $formatter = new AiRulesHumanErrorFormatter(
+        $formatter = new HumanErrorRenderer(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new ErrorSourceReader(),
             new ErrorGutter(),

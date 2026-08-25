@@ -17,10 +17,10 @@ use Toolkit\Shared\FormatMode;
 final class AiErrorFormatter implements ErrorFormatter
 {
     /** @readonly */
-    private AiRulesHumanErrorFormatter $humanFormatter;
+    private HumanErrorRenderer $humanFormatter;
 
     /** @readonly */
-    private AiRulesAiErrorFormatter $aiFormatter;
+    private AiErrorRenderer $aiFormatter;
 
     /**
      * Creates the dual-mode formatter from path and agent detection services.
@@ -29,16 +29,16 @@ final class AiErrorFormatter implements ErrorFormatter
         RelativePathHelper $relativePathHelper,
         /** @readonly */
         private AgentDetector $agentDetector,
-        ?AiRulesHumanErrorFormatter $humanFormatter = null,
-        ?AiRulesAiErrorFormatter $aiFormatter = null,
+        ?HumanErrorRenderer $humanFormatter = null,
+        ?AiErrorRenderer $aiFormatter = null,
     ) {
         $sourceReader = new ErrorSourceReader();
         $gutter = new ErrorGutter();
         $grouping = new ErrorGrouping();
         $summary = new ErrorCollectionSummary();
 
-        $this->humanFormatter = $humanFormatter ?? new AiRulesHumanErrorFormatter($relativePathHelper, $sourceReader, $gutter, $grouping, $summary);
-        $this->aiFormatter = $aiFormatter ?? new AiRulesAiErrorFormatter($relativePathHelper, $sourceReader, $grouping, $summary);
+        $this->humanFormatter = $humanFormatter ?? new HumanErrorRenderer($relativePathHelper, $sourceReader, $gutter, $grouping, $summary);
+        $this->aiFormatter = $aiFormatter ?? new AiErrorRenderer($relativePathHelper, $sourceReader, $grouping, $summary);
     }
 
     /**

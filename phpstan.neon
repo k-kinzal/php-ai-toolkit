@@ -41,13 +41,13 @@ parameters:
         # See: https://github.com/phpstan/phpstan/discussions (no @api on ErrorFormatterTestCase)
         -
             identifier: phpstanApi.class
-            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesAiErrorFormatterTest.php
+            path: tests/Unit/PhpStan/ErrorFormatter/AiErrorRendererTest.php
         -
             identifier: phpstanApi.method
-            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesAiErrorFormatterTest.php
+            path: tests/Unit/PhpStan/ErrorFormatter/AiErrorRendererTest.php
         -
             identifier: phpstanApi.constructor
-            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesAiErrorFormatterTest.php
+            path: tests/Unit/PhpStan/ErrorFormatter/AiErrorRendererTest.php
         -
             identifier: phpstanApi.class
             path: tests/Unit/PhpStan/ErrorFormatter/AiErrorFormatterTest.php
@@ -59,13 +59,13 @@ parameters:
             path: tests/Unit/PhpStan/ErrorFormatter/AiErrorFormatterTest.php
         -
             identifier: phpstanApi.class
-            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesHumanErrorFormatterTest.php
+            path: tests/Unit/PhpStan/ErrorFormatter/HumanErrorRendererTest.php
         -
             identifier: phpstanApi.method
-            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesHumanErrorFormatterTest.php
+            path: tests/Unit/PhpStan/ErrorFormatter/HumanErrorRendererTest.php
         -
             identifier: phpstanApi.constructor
-            path: tests/Unit/PhpStan/ErrorFormatter/AiRulesHumanErrorFormatterTest.php
+            path: tests/Unit/PhpStan/ErrorFormatter/HumanErrorRendererTest.php
         -
             identifier: phpstanApi.constructor
             path: tests/Unit/PhpStan/ErrorFormatter/ErrorCollectionSummaryTest.php

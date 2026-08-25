@@ -12,21 +12,21 @@ use PHPStan\File\SimpleRelativePathHelper;
 use PHPStan\Testing\ErrorFormatterTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
-use Toolkit\PhpStan\ErrorFormatter\AiRulesAiErrorFormatter;
+use Toolkit\PhpStan\ErrorFormatter\AiErrorRenderer;
 use Toolkit\PhpStan\ErrorFormatter\ErrorCollectionSummary;
 use Toolkit\PhpStan\ErrorFormatter\ErrorGrouping;
 use Toolkit\PhpStan\ErrorFormatter\ErrorSourceReader;
 
 /**
- * @covers \Toolkit\PhpStan\ErrorFormatter\AiRulesAiErrorFormatter
+ * @covers \Toolkit\PhpStan\ErrorFormatter\AiErrorRenderer
  */
-#[CoversClass(AiRulesAiErrorFormatter::class)]
+#[CoversClass(AiErrorRenderer::class)]
 #[Medium]
-final class AiRulesAiErrorFormatterTest extends ErrorFormatterTestCase
+final class AiErrorRendererTest extends ErrorFormatterTestCase
 {
     public function testFormatWritesAiHeaderAndFlatErrors(): void
     {
-        $formatter = new AiRulesAiErrorFormatter(
+        $formatter = new AiErrorRenderer(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new ErrorSourceReader(),
             new ErrorGrouping(),
@@ -44,7 +44,7 @@ final class AiRulesAiErrorFormatterTest extends ErrorFormatterTestCase
 
     public function testFlatWritesOneBlockPerError(): void
     {
-        $formatter = new AiRulesAiErrorFormatter(
+        $formatter = new AiErrorRenderer(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new ErrorSourceReader(),
             new ErrorGrouping(),
@@ -61,7 +61,7 @@ final class AiRulesAiErrorFormatterTest extends ErrorFormatterTestCase
 
     public function testDeduplicatedWritesIdentifierGroup(): void
     {
-        $formatter = new AiRulesAiErrorFormatter(
+        $formatter = new AiErrorRenderer(
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new ErrorSourceReader(),
             new ErrorGrouping(),

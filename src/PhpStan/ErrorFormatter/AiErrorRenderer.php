@@ -17,7 +17,7 @@ use function trim;
 /**
  * Renders PHPStan errors as compact plain text for AI agents.
  */
-final class AiRulesAiErrorFormatter
+final class AiErrorRenderer
 {
     private const DEDUP_THRESHOLD = 3;
 

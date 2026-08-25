@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\Shared;
 
-use ParseError;
-
 /**
  * Parses PHP files into native tokenizer tokens for file-level rules.
  */
@@ -27,10 +25,6 @@ final class FileTokenParser
             return null;
         }
 
-        try {
-            return token_get_all($source, TOKEN_PARSE);
-        } catch (ParseError) {
-            return null;
-        }
+        return token_get_all($source);
     }
 }

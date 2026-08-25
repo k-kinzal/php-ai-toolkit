@@ -14,7 +14,6 @@ parameters:
         - phpstan-stubs/bootstrap.php
     toolkit:
         broadCatchAllowedPaths:
-            - 'src/PhpStan/Rule/Shared/FileTokenParser.php'
             # A forked documentation worker is a process boundary: whatever
             # goes wrong inside it has to be turned into a message the parent
             # can report, because a failure that only reaches the worker's

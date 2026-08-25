@@ -26,6 +26,21 @@ final class FileTokenParserTest extends TestCase
         }
     }
 
+    public function testParseTokenizesInvalidPhpWithoutParsingIt(): void
+    {
+        $file = sys_get_temp_dir() . '/file-token-parser-' . uniqid('', true) . '.php';
+        file_put_contents($file, '<?php function { // still tokenized');
+
+        try {
+            $tokens = (new FileTokenParser())->parse($file);
+
+            self::assertNotNull($tokens);
+            self::assertContains([T_COMMENT, '// still tokenized', 1], $tokens);
+        } finally {
+            unlink($file);
+        }
+    }
+
     public function testParseReturnsNullForMissingFile(): void
     {
         self::assertNull((new FileTokenParser())->parse(sys_get_temp_dir() . '/missing-' . uniqid('', true) . '.php'));

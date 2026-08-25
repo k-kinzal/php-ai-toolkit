@@ -44,25 +44,28 @@
 <span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\CoversClass</span>;</span>
 <span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;</span>
 <span class="src-line" id="L10"><a class="ln" href="#L10">10</a></span>
-<span class="src-line" id="L11"><a class="ln" href="#L11">11</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">LimitConfig</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">LimitConfigTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span></span>
-<span class="src-line" id="L13"><a class="ln" href="#L13">13</a>{</span>
-<span class="src-line" id="L14"><a class="ln" href="#L14">14</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testStoresNumericThresholds</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L15"><a class="ln" href="#L15">15</a>    {</span>
-<span class="src-line" id="L16"><a class="ln" href="#L16">16</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">LimitConfig</span>(<span class="tok-num">500</span>, <span class="tok-num">350</span>, <span class="tok-num">400</span>, <span class="tok-num">300</span>, <span class="tok-num">200</span>, <span class="tok-num">190</span>, <span class="tok-num">50</span>, <span class="tok-num">55</span>, <span class="tok-num">20</span>);</span>
-<span class="src-line" id="L17"><a class="ln" href="#L17">17</a></span>
-<span class="src-line" id="L18"><a class="ln" href="#L18">18</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">500</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxFileLines</span>);</span>
-<span class="src-line" id="L19"><a class="ln" href="#L19">19</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">350</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxFileNcloc</span>);</span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">400</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxClassLines</span>);</span>
-<span class="src-line" id="L21"><a class="ln" href="#L21">21</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">300</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxTraitLines</span>);</span>
-<span class="src-line" id="L22"><a class="ln" href="#L22">22</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">200</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxInterfaceLines</span>);</span>
-<span class="src-line" id="L23"><a class="ln" href="#L23">23</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">190</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxEnumLines</span>);</span>
-<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">50</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxFunctionLines</span>);</span>
-<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">55</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxMethodLines</span>);</span>
-<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">20</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxCyclomaticComplexity</span>);</span>
-<span class="src-line" id="L27"><a class="ln" href="#L27">27</a>    }</span>
-<span class="src-line" id="L28"><a class="ln" href="#L28">28</a>}</span>
-<span class="src-line" id="L29"><a class="ln" href="#L29">29</a></span>
+<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-com">/**</span></span>
+<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-com"> * @covers \PhpAiToolkit\LocGuard\Config\LimitConfig</span></span>
+<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-com"> */</span></span>
+<span class="src-line" id="L14"><a class="ln" href="#L14">14</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">LimitConfig</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">LimitConfigTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span></span>
+<span class="src-line" id="L16"><a class="ln" href="#L16">16</a>{</span>
+<span class="src-line" id="L17"><a class="ln" href="#L17">17</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testStoresNumericThresholds</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a>    {</span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">LimitConfig</span>(<span class="tok-num">500</span>, <span class="tok-num">350</span>, <span class="tok-num">400</span>, <span class="tok-num">300</span>, <span class="tok-num">200</span>, <span class="tok-num">190</span>, <span class="tok-num">50</span>, <span class="tok-num">55</span>, <span class="tok-num">20</span>);</span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a></span>
+<span class="src-line" id="L21"><a class="ln" href="#L21">21</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">500</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxFileLines</span>);</span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">350</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxFileNcloc</span>);</span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">400</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxClassLines</span>);</span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">300</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxTraitLines</span>);</span>
+<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">200</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxInterfaceLines</span>);</span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">190</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxEnumLines</span>);</span>
+<span class="src-line" id="L27"><a class="ln" href="#L27">27</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">50</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxFunctionLines</span>);</span>
+<span class="src-line" id="L28"><a class="ln" href="#L28">28</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">55</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxMethodLines</span>);</span>
+<span class="src-line" id="L29"><a class="ln" href="#L29">29</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">20</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">maxCyclomaticComplexity</span>);</span>
+<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>    }</span>
+<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>}</span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

@@ -84,96 +84,138 @@
 <span class="src-line" id="L48"><a class="ln" href="#L48">48</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\UsesClass</span>;</span>
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;</span>
 <span class="src-line" id="L50"><a class="ln" href="#L50">50</a></span>
-<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">TreeGuardAnalysisRunner</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AiReportGuidance</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AiReportSummary</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AiReporter</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AiViolationAction</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AiViolationFormatter</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AnalysisResult</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">CaseConventionMatcher</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ChildCountInspector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ConfigLoader</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ConfigScalarReader</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ConfigStringListReader</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DepthInspector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DirNameInspector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DirectoryListing</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DirectoryListingReader</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DirectoryPatternMatcher</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DirectoryRuleInspector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DirectoryTreeScanner</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">EmptyDirectoryInspector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">FileNameInspector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">JsonReporter</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PathInclusionPolicy</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ReportConfig</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ReportConfigReader</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ReporterFactory</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">RequiredFileInspector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">RuleConfig</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">RuleConfigReader</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">RuleListConfigReader</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TotalFileCountInspector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardAnalyzer</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardConfig</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardConfigPathResolver</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardException</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardOutputWriter</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardPathResolver</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardReporterOverride</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">Violation</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ViolationSorter</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L91"><a class="ln" href="#L91">91</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">TreeGuardAnalysisRunnerTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span></span>
-<span class="src-line" id="L92"><a class="ln" href="#L92">92</a>{</span>
-<span class="src-line" id="L93"><a class="ln" href="#L93">93</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunReturnsZeroAndWritesReportWithoutViolations</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>    {</span>
-<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/treeguard-runner-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>        <span class="tok-id">touch</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/App.php&#039;</span>);</span>
-<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/tree.yaml&#039;</span>, <span class="tok-str">&quot;paths:\n  - src\n&quot;</span>);</span>
-<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>        <span class="tok-var">$output</span> = <span class="tok-str">&#039;&#039;</span>;</span>
-<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>        <span class="tok-var">$writer</span> = <span class="tok-kw">new</span> <span class="tok-id">TreeGuardOutputWriter</span>(<span class="tok-kw">static</span> <span class="tok-kw">function</span> (<span class="tok-id">string</span> <span class="tok-var">$message</span>) <span class="tok-kw">use</span> (&amp;<span class="tok-var">$output</span>): <span class="tok-id">void</span> {</span>
-<span class="src-line" id="L101"><a class="ln" href="#L101">101</a>            <span class="tok-var">$output</span> .= <span class="tok-var">$message</span>;</span>
-<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>        });</span>
-<span class="src-line" id="L103"><a class="ln" href="#L103">103</a>        <span class="tok-var">$runner</span> = <span class="tok-kw">new</span> <span class="tok-id">TreeGuardAnalysisRunner</span>(<span class="tok-var">$dir</span>, <span class="tok-kw">new</span> <span class="tok-id">ConfigLoader</span>(), <span class="tok-kw">new</span> <span class="tok-id">TreeGuardAnalyzer</span>(), <span class="tok-kw">new</span> <span class="tok-id">ReporterFactory</span>(), <span class="tok-var">$writer</span>);</span>
-<span class="src-line" id="L104"><a class="ln" href="#L104">104</a></span>
-<span class="src-line" id="L105"><a class="ln" href="#L105">105</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">0</span>, <span class="tok-var">$runner</span>-&gt;<span class="tok-id">run</span>(<span class="tok-str">&#039;tree.yaml&#039;</span>, <span class="tok-id">null</span>));</span>
-<span class="src-line" id="L106"><a class="ln" href="#L106">106</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;TREE_GUARD_PASSED&#039;</span>, <span class="tok-var">$output</span>);</span>
-<span class="src-line" id="L107"><a class="ln" href="#L107">107</a>    }</span>
-<span class="src-line" id="L108"><a class="ln" href="#L108">108</a></span>
-<span class="src-line" id="L109"><a class="ln" href="#L109">109</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunReturnsOneAndAppliesReporterOverride</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L110"><a class="ln" href="#L110">110</a>    {</span>
-<span class="src-line" id="L111"><a class="ln" href="#L111">111</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/treeguard-runner-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L112"><a class="ln" href="#L112">112</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L113"><a class="ln" href="#L113">113</a>        <span class="tok-id">touch</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/notes.txt&#039;</span>);</span>
-<span class="src-line" id="L114"><a class="ln" href="#L114">114</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/tree.yaml&#039;</span>, <span class="tok-str">&quot;paths:\n  - src\nrules:\n  - path: src\n    allow: [&#039;*.php&#039;]\n&quot;</span>);</span>
-<span class="src-line" id="L115"><a class="ln" href="#L115">115</a>        <span class="tok-var">$output</span> = <span class="tok-str">&#039;&#039;</span>;</span>
-<span class="src-line" id="L116"><a class="ln" href="#L116">116</a>        <span class="tok-var">$writer</span> = <span class="tok-kw">new</span> <span class="tok-id">TreeGuardOutputWriter</span>(<span class="tok-kw">static</span> <span class="tok-kw">function</span> (<span class="tok-id">string</span> <span class="tok-var">$message</span>) <span class="tok-kw">use</span> (&amp;<span class="tok-var">$output</span>): <span class="tok-id">void</span> {</span>
-<span class="src-line" id="L117"><a class="ln" href="#L117">117</a>            <span class="tok-var">$output</span> .= <span class="tok-var">$message</span>;</span>
-<span class="src-line" id="L118"><a class="ln" href="#L118">118</a>        });</span>
-<span class="src-line" id="L119"><a class="ln" href="#L119">119</a>        <span class="tok-var">$runner</span> = <span class="tok-kw">new</span> <span class="tok-id">TreeGuardAnalysisRunner</span>(<span class="tok-var">$dir</span>, <span class="tok-kw">new</span> <span class="tok-id">ConfigLoader</span>(), <span class="tok-kw">new</span> <span class="tok-id">TreeGuardAnalyzer</span>(), <span class="tok-kw">new</span> <span class="tok-id">ReporterFactory</span>(), <span class="tok-var">$writer</span>);</span>
-<span class="src-line" id="L120"><a class="ln" href="#L120">120</a></span>
-<span class="src-line" id="L121"><a class="ln" href="#L121">121</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">1</span>, <span class="tok-var">$runner</span>-&gt;<span class="tok-id">run</span>(<span class="tok-str">&#039;tree.yaml&#039;</span>, <span class="tok-str">&#039;json&#039;</span>));</span>
-<span class="src-line" id="L122"><a class="ln" href="#L122">122</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;&quot;status&quot;: &quot;failed&quot;&#039;</span>, <span class="tok-var">$output</span>);</span>
-<span class="src-line" id="L123"><a class="ln" href="#L123">123</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;&quot;rule&quot;: &quot;disallowed_file&quot;&#039;</span>, <span class="tok-var">$output</span>);</span>
-<span class="src-line" id="L124"><a class="ln" href="#L124">124</a>    }</span>
-<span class="src-line" id="L125"><a class="ln" href="#L125">125</a></span>
-<span class="src-line" id="L126"><a class="ln" href="#L126">126</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunReturnsTwoAndWritesErrorForInvalidConfig</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L127"><a class="ln" href="#L127">127</a>    {</span>
-<span class="src-line" id="L128"><a class="ln" href="#L128">128</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/treeguard-runner-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L129"><a class="ln" href="#L129">129</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span>);</span>
-<span class="src-line" id="L130"><a class="ln" href="#L130">130</a>        <span class="tok-var">$error</span> = <span class="tok-str">&#039;&#039;</span>;</span>
-<span class="src-line" id="L131"><a class="ln" href="#L131">131</a>        <span class="tok-var">$writer</span> = <span class="tok-kw">new</span> <span class="tok-id">TreeGuardOutputWriter</span>(<span class="tok-id">null</span>, <span class="tok-kw">static</span> <span class="tok-kw">function</span> (<span class="tok-id">string</span> <span class="tok-var">$message</span>) <span class="tok-kw">use</span> (&amp;<span class="tok-var">$error</span>): <span class="tok-id">void</span> {</span>
-<span class="src-line" id="L132"><a class="ln" href="#L132">132</a>            <span class="tok-var">$error</span> .= <span class="tok-var">$message</span>;</span>
-<span class="src-line" id="L133"><a class="ln" href="#L133">133</a>        });</span>
-<span class="src-line" id="L134"><a class="ln" href="#L134">134</a>        <span class="tok-var">$runner</span> = <span class="tok-kw">new</span> <span class="tok-id">TreeGuardAnalysisRunner</span>(<span class="tok-var">$dir</span>, <span class="tok-kw">new</span> <span class="tok-id">ConfigLoader</span>(), <span class="tok-kw">new</span> <span class="tok-id">TreeGuardAnalyzer</span>(), <span class="tok-kw">new</span> <span class="tok-id">ReporterFactory</span>(), <span class="tok-var">$writer</span>);</span>
-<span class="src-line" id="L135"><a class="ln" href="#L135">135</a></span>
-<span class="src-line" id="L136"><a class="ln" href="#L136">136</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">2</span>, <span class="tok-var">$runner</span>-&gt;<span class="tok-id">run</span>(<span class="tok-str">&#039;tree.yaml&#039;</span>, <span class="tok-id">null</span>));</span>
-<span class="src-line" id="L137"><a class="ln" href="#L137">137</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;TreeGuard error: TreeGuard config not found:&#039;</span>, <span class="tok-var">$error</span>);</span>
-<span class="src-line" id="L138"><a class="ln" href="#L138">138</a>    }</span>
-<span class="src-line" id="L139"><a class="ln" href="#L139">139</a>}</span>
-<span class="src-line" id="L140"><a class="ln" href="#L140">140</a></span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a><span class="tok-com">/**</span></span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a><span class="tok-com"> * @covers \PhpAiToolkit\TreeGuard\Cli\TreeGuardAnalysisRunner</span></span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReportGuidance</span></span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReportSummary</span></span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReporter</span></span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Reporting\AiViolationAction</span></span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Reporting\AiViolationFormatter</span></span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Analysis\AnalysisResult</span></span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Analysis\CaseConventionMatcher</span></span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Analysis\ChildCountInspector</span></span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Config\ConfigLoader</span></span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Config\ConfigScalarReader</span></span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Config\ConfigStringListReader</span></span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Analysis\DepthInspector</span></span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Analysis\DirNameInspector</span></span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing</span></span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListingReader</span></span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Analysis\DirectoryPatternMatcher</span></span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Analysis\DirectoryRuleInspector</span></span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryTreeScanner</span></span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Analysis\EmptyDirectoryInspector</span></span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Analysis\FileNameInspector</span></span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Reporting\JsonReporter</span></span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Filesystem\PathInclusionPolicy</span></span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig</span></span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfigReader</span></span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Reporting\ReporterFactory</span></span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Analysis\RequiredFileInspector</span></span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig</span></span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfigReader</span></span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Config\RuleListConfigReader</span></span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Analysis\TotalFileCountInspector</span></span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Analysis\TreeGuardAnalyzer</span></span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig</span></span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Cli\TreeGuardConfigPathResolver</span></span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\TreeGuardException</span></span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Cli\TreeGuardOutputWriter</span></span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver</span></span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Cli\TreeGuardReporterOverride</span></span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Analysis\Violation</span></span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a><span class="tok-com"> * @uses \PhpAiToolkit\TreeGuard\Reporting\ViolationSorter</span></span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a><span class="tok-com"> */</span></span>
+<span class="src-line" id="L93"><a class="ln" href="#L93">93</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">TreeGuardAnalysisRunner</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AiReportGuidance</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AiReportSummary</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AiReporter</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AiViolationAction</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AiViolationFormatter</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AnalysisResult</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">CaseConventionMatcher</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L101"><a class="ln" href="#L101">101</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ChildCountInspector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ConfigLoader</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L103"><a class="ln" href="#L103">103</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ConfigScalarReader</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L104"><a class="ln" href="#L104">104</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ConfigStringListReader</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L105"><a class="ln" href="#L105">105</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DepthInspector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L106"><a class="ln" href="#L106">106</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DirNameInspector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L107"><a class="ln" href="#L107">107</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DirectoryListing</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L108"><a class="ln" href="#L108">108</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DirectoryListingReader</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L109"><a class="ln" href="#L109">109</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DirectoryPatternMatcher</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L110"><a class="ln" href="#L110">110</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DirectoryRuleInspector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L111"><a class="ln" href="#L111">111</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DirectoryTreeScanner</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L112"><a class="ln" href="#L112">112</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">EmptyDirectoryInspector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L113"><a class="ln" href="#L113">113</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">FileNameInspector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L114"><a class="ln" href="#L114">114</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">JsonReporter</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L115"><a class="ln" href="#L115">115</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PathInclusionPolicy</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L116"><a class="ln" href="#L116">116</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ReportConfig</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L117"><a class="ln" href="#L117">117</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ReportConfigReader</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L118"><a class="ln" href="#L118">118</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ReporterFactory</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L119"><a class="ln" href="#L119">119</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">RequiredFileInspector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L120"><a class="ln" href="#L120">120</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">RuleConfig</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L121"><a class="ln" href="#L121">121</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">RuleConfigReader</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L122"><a class="ln" href="#L122">122</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">RuleListConfigReader</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L123"><a class="ln" href="#L123">123</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TotalFileCountInspector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L124"><a class="ln" href="#L124">124</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardAnalyzer</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L125"><a class="ln" href="#L125">125</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardConfig</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L126"><a class="ln" href="#L126">126</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardConfigPathResolver</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L127"><a class="ln" href="#L127">127</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardException</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L128"><a class="ln" href="#L128">128</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardOutputWriter</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L129"><a class="ln" href="#L129">129</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardPathResolver</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L130"><a class="ln" href="#L130">130</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TreeGuardReporterOverride</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L131"><a class="ln" href="#L131">131</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">Violation</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L132"><a class="ln" href="#L132">132</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ViolationSorter</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L133"><a class="ln" href="#L133">133</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">TreeGuardAnalysisRunnerTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span></span>
+<span class="src-line" id="L134"><a class="ln" href="#L134">134</a>{</span>
+<span class="src-line" id="L135"><a class="ln" href="#L135">135</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunReturnsZeroAndWritesReportWithoutViolations</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L136"><a class="ln" href="#L136">136</a>    {</span>
+<span class="src-line" id="L137"><a class="ln" href="#L137">137</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/treeguard-runner-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L138"><a class="ln" href="#L138">138</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L139"><a class="ln" href="#L139">139</a>        <span class="tok-id">touch</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/App.php&#039;</span>);</span>
+<span class="src-line" id="L140"><a class="ln" href="#L140">140</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/tree.yaml&#039;</span>, <span class="tok-str">&quot;paths:\n  - src\n&quot;</span>);</span>
+<span class="src-line" id="L141"><a class="ln" href="#L141">141</a>        <span class="tok-var">$output</span> = <span class="tok-str">&#039;&#039;</span>;</span>
+<span class="src-line" id="L142"><a class="ln" href="#L142">142</a>        <span class="tok-var">$writer</span> = <span class="tok-kw">new</span> <span class="tok-id">TreeGuardOutputWriter</span>(<span class="tok-kw">static</span> <span class="tok-kw">function</span> (<span class="tok-id">string</span> <span class="tok-var">$message</span>) <span class="tok-kw">use</span> (&amp;<span class="tok-var">$output</span>): <span class="tok-id">void</span> {</span>
+<span class="src-line" id="L143"><a class="ln" href="#L143">143</a>            <span class="tok-var">$output</span> .= <span class="tok-var">$message</span>;</span>
+<span class="src-line" id="L144"><a class="ln" href="#L144">144</a>        });</span>
+<span class="src-line" id="L145"><a class="ln" href="#L145">145</a>        <span class="tok-var">$runner</span> = <span class="tok-kw">new</span> <span class="tok-id">TreeGuardAnalysisRunner</span>(<span class="tok-var">$dir</span>, <span class="tok-kw">new</span> <span class="tok-id">ConfigLoader</span>(), <span class="tok-kw">new</span> <span class="tok-id">TreeGuardAnalyzer</span>(), <span class="tok-kw">new</span> <span class="tok-id">ReporterFactory</span>(), <span class="tok-var">$writer</span>);</span>
+<span class="src-line" id="L146"><a class="ln" href="#L146">146</a></span>
+<span class="src-line" id="L147"><a class="ln" href="#L147">147</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">0</span>, <span class="tok-var">$runner</span>-&gt;<span class="tok-id">run</span>(<span class="tok-str">&#039;tree.yaml&#039;</span>, <span class="tok-id">null</span>));</span>
+<span class="src-line" id="L148"><a class="ln" href="#L148">148</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;TREE_GUARD_PASSED&#039;</span>, <span class="tok-var">$output</span>);</span>
+<span class="src-line" id="L149"><a class="ln" href="#L149">149</a>    }</span>
+<span class="src-line" id="L150"><a class="ln" href="#L150">150</a></span>
+<span class="src-line" id="L151"><a class="ln" href="#L151">151</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunReturnsOneAndAppliesReporterOverride</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L152"><a class="ln" href="#L152">152</a>    {</span>
+<span class="src-line" id="L153"><a class="ln" href="#L153">153</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/treeguard-runner-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L154"><a class="ln" href="#L154">154</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L155"><a class="ln" href="#L155">155</a>        <span class="tok-id">touch</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/notes.txt&#039;</span>);</span>
+<span class="src-line" id="L156"><a class="ln" href="#L156">156</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/tree.yaml&#039;</span>, <span class="tok-str">&quot;paths:\n  - src\nrules:\n  - path: src\n    allow: [&#039;*.php&#039;]\n&quot;</span>);</span>
+<span class="src-line" id="L157"><a class="ln" href="#L157">157</a>        <span class="tok-var">$output</span> = <span class="tok-str">&#039;&#039;</span>;</span>
+<span class="src-line" id="L158"><a class="ln" href="#L158">158</a>        <span class="tok-var">$writer</span> = <span class="tok-kw">new</span> <span class="tok-id">TreeGuardOutputWriter</span>(<span class="tok-kw">static</span> <span class="tok-kw">function</span> (<span class="tok-id">string</span> <span class="tok-var">$message</span>) <span class="tok-kw">use</span> (&amp;<span class="tok-var">$output</span>): <span class="tok-id">void</span> {</span>
+<span class="src-line" id="L159"><a class="ln" href="#L159">159</a>            <span class="tok-var">$output</span> .= <span class="tok-var">$message</span>;</span>
+<span class="src-line" id="L160"><a class="ln" href="#L160">160</a>        });</span>
+<span class="src-line" id="L161"><a class="ln" href="#L161">161</a>        <span class="tok-var">$runner</span> = <span class="tok-kw">new</span> <span class="tok-id">TreeGuardAnalysisRunner</span>(<span class="tok-var">$dir</span>, <span class="tok-kw">new</span> <span class="tok-id">ConfigLoader</span>(), <span class="tok-kw">new</span> <span class="tok-id">TreeGuardAnalyzer</span>(), <span class="tok-kw">new</span> <span class="tok-id">ReporterFactory</span>(), <span class="tok-var">$writer</span>);</span>
+<span class="src-line" id="L162"><a class="ln" href="#L162">162</a></span>
+<span class="src-line" id="L163"><a class="ln" href="#L163">163</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">1</span>, <span class="tok-var">$runner</span>-&gt;<span class="tok-id">run</span>(<span class="tok-str">&#039;tree.yaml&#039;</span>, <span class="tok-str">&#039;json&#039;</span>));</span>
+<span class="src-line" id="L164"><a class="ln" href="#L164">164</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;&quot;status&quot;: &quot;failed&quot;&#039;</span>, <span class="tok-var">$output</span>);</span>
+<span class="src-line" id="L165"><a class="ln" href="#L165">165</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;&quot;rule&quot;: &quot;disallowed_file&quot;&#039;</span>, <span class="tok-var">$output</span>);</span>
+<span class="src-line" id="L166"><a class="ln" href="#L166">166</a>    }</span>
+<span class="src-line" id="L167"><a class="ln" href="#L167">167</a></span>
+<span class="src-line" id="L168"><a class="ln" href="#L168">168</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunReturnsTwoAndWritesErrorForInvalidConfig</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L169"><a class="ln" href="#L169">169</a>    {</span>
+<span class="src-line" id="L170"><a class="ln" href="#L170">170</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/treeguard-runner-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L171"><a class="ln" href="#L171">171</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span>);</span>
+<span class="src-line" id="L172"><a class="ln" href="#L172">172</a>        <span class="tok-var">$error</span> = <span class="tok-str">&#039;&#039;</span>;</span>
+<span class="src-line" id="L173"><a class="ln" href="#L173">173</a>        <span class="tok-var">$writer</span> = <span class="tok-kw">new</span> <span class="tok-id">TreeGuardOutputWriter</span>(<span class="tok-id">null</span>, <span class="tok-kw">static</span> <span class="tok-kw">function</span> (<span class="tok-id">string</span> <span class="tok-var">$message</span>) <span class="tok-kw">use</span> (&amp;<span class="tok-var">$error</span>): <span class="tok-id">void</span> {</span>
+<span class="src-line" id="L174"><a class="ln" href="#L174">174</a>            <span class="tok-var">$error</span> .= <span class="tok-var">$message</span>;</span>
+<span class="src-line" id="L175"><a class="ln" href="#L175">175</a>        });</span>
+<span class="src-line" id="L176"><a class="ln" href="#L176">176</a>        <span class="tok-var">$runner</span> = <span class="tok-kw">new</span> <span class="tok-id">TreeGuardAnalysisRunner</span>(<span class="tok-var">$dir</span>, <span class="tok-kw">new</span> <span class="tok-id">ConfigLoader</span>(), <span class="tok-kw">new</span> <span class="tok-id">TreeGuardAnalyzer</span>(), <span class="tok-kw">new</span> <span class="tok-id">ReporterFactory</span>(), <span class="tok-var">$writer</span>);</span>
+<span class="src-line" id="L177"><a class="ln" href="#L177">177</a></span>
+<span class="src-line" id="L178"><a class="ln" href="#L178">178</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">2</span>, <span class="tok-var">$runner</span>-&gt;<span class="tok-id">run</span>(<span class="tok-str">&#039;tree.yaml&#039;</span>, <span class="tok-id">null</span>));</span>
+<span class="src-line" id="L179"><a class="ln" href="#L179">179</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;TreeGuard error: TreeGuard config not found:&#039;</span>, <span class="tok-var">$error</span>);</span>
+<span class="src-line" id="L180"><a class="ln" href="#L180">180</a>    }</span>
+<span class="src-line" id="L181"><a class="ln" href="#L181">181</a>}</span>
+<span class="src-line" id="L182"><a class="ln" href="#L182">182</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

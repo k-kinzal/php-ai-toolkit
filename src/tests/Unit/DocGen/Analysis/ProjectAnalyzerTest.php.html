@@ -56,20 +56,20 @@
 <span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc</span>;</span>
 <span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Model\TypeSignature</span>;</span>
 <span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\AstParser</span>;</span>
-<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\ClassLikeBuilder</span>;</span>
-<span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\ConstantBuilder</span>;</span>
-<span class="src-line" id="L25"><a class="ln" href="#L25">25</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\EnumCaseBuilder</span>;</span>
-<span class="src-line" id="L26"><a class="ln" href="#L26">26</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter</span>;</span>
-<span class="src-line" id="L27"><a class="ln" href="#L27">27</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\FileSymbolCollector</span>;</span>
-<span class="src-line" id="L28"><a class="ln" href="#L28">28</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols</span>;</span>
-<span class="src-line" id="L29"><a class="ln" href="#L29">29</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\FunctionBuilder</span>;</span>
-<span class="src-line" id="L30"><a class="ln" href="#L30">30</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\MethodBuilder</span>;</span>
-<span class="src-line" id="L31"><a class="ln" href="#L31">31</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter</span>;</span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\ParameterBuilder</span>;</span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers</span>;</span>
-<span class="src-line" id="L34"><a class="ln" href="#L34">34</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge</span>;</span>
-<span class="src-line" id="L35"><a class="ln" href="#L35">35</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\ProjectSymbolCollector</span>;</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\PropertyBuilder</span>;</span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder</span>;</span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder</span>;</span>
+<span class="src-line" id="L25"><a class="ln" href="#L25">25</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder</span>;</span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder</span>;</span>
+<span class="src-line" id="L27"><a class="ln" href="#L27">27</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\MethodBuilder</span>;</span>
+<span class="src-line" id="L28"><a class="ln" href="#L28">28</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder</span>;</span>
+<span class="src-line" id="L29"><a class="ln" href="#L29">29</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder</span>;</span>
+<span class="src-line" id="L30"><a class="ln" href="#L30">30</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter</span>;</span>
+<span class="src-line" id="L31"><a class="ln" href="#L31">31</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\FileSymbolCollector</span>;</span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols</span>;</span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter</span>;</span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers</span>;</span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge</span>;</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\ProjectSymbolCollector</span>;</span>
 <span class="src-line" id="L37"><a class="ln" href="#L37">37</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext</span>;</span>
 <span class="src-line" id="L38"><a class="ln" href="#L38">38</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector</span>;</span>
 <span class="src-line" id="L39"><a class="ln" href="#L39">39</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\ProjectAnalyzer</span>;</span>
@@ -108,425 +108,491 @@
 <span class="src-line" id="L72"><a class="ln" href="#L72">72</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\UsesClass</span>;</span>
 <span class="src-line" id="L73"><a class="ln" href="#L73">73</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;</span>
 <span class="src-line" id="L74"><a class="ln" href="#L74">74</a></span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">ProjectAnalyzer</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AstParser</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ClassLikeBuilder</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ClassLikeDoc</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ComposerLockReader</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ComposerManifest</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ComposerManifestReader</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ConstantBuilder</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">CoverageIndex</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">CoverageReader</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">CpuCoreCounter</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DeptracConfigReader</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DevPackageResolver</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DiscoveredPackage</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DocBlockReader</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DocGenConfig</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DocGenException</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L92"><a class="ln" href="#L92">92</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DocGenPathResolver</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L93"><a class="ln" href="#L93">93</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DocumentCollector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">EnumCaseBuilder</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ExprTextPrinter</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">FileSymbolCollector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">FileSymbols</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">FunctionBuilder</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">HierarchyIndex</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">LayerAssigner</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L101"><a class="ln" href="#L101">101</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">LayerCollector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">LayerDefinition</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L103"><a class="ln" href="#L103">103</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">LayerModel</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L104"><a class="ln" href="#L104">104</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">LocalTypeMap</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L105"><a class="ln" href="#L105">105</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">MarkdownFileFinder</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L106"><a class="ln" href="#L106">106</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">MethodBuilder</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L107"><a class="ln" href="#L107">107</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">MethodCoverage</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L108"><a class="ln" href="#L108">108</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">MethodDoc</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L109"><a class="ln" href="#L109">109</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">NativeTypePrinter</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L110"><a class="ln" href="#L110">110</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PackageDiscovery</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L111"><a class="ln" href="#L111">111</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PackageGraph</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L112"><a class="ln" href="#L112">112</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PackageGraphBuilder</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L113"><a class="ln" href="#L113">113</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ParameterBuilder</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L114"><a class="ln" href="#L114">114</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ParameterDoc</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L115"><a class="ln" href="#L115">115</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ParameterModifiers</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L116"><a class="ln" href="#L116">116</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PhpDocParserBridge</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L117"><a class="ln" href="#L117">117</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PhpParserBridge</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L118"><a class="ln" href="#L118">118</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ProjectModel</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L119"><a class="ln" href="#L119">119</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ProjectSymbolCollector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L120"><a class="ln" href="#L120">120</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PropertyBuilder</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L121"><a class="ln" href="#L121">121</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PropertyTypeScanner</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L122"><a class="ln" href="#L122">122</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ReferenceTestCase</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L123"><a class="ln" href="#L123">123</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">RepositoryUrl</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L124"><a class="ln" href="#L124">124</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">SourceFileFinder</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L125"><a class="ln" href="#L125">125</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">SourceFileKey</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L126"><a class="ln" href="#L126">126</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">SymbolContext</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L127"><a class="ln" href="#L127">127</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">SymbolTable</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L128"><a class="ln" href="#L128">128</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TestCaseIndex</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L129"><a class="ln" href="#L129">129</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ToolkitFingerprint</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L130"><a class="ln" href="#L130">130</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TypeSignature</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L131"><a class="ln" href="#L131">131</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">Usage</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L132"><a class="ln" href="#L132">132</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">UsageCollector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L133"><a class="ln" href="#L133">133</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">UsageIndex</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L134"><a class="ln" href="#L134">134</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">UseMapCollector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L135"><a class="ln" href="#L135">135</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">VendorPackageLocator</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L136"><a class="ln" href="#L136">136</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">WorkScheduler</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L137"><a class="ln" href="#L137">137</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">WorkerCount</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L138"><a class="ln" href="#L138">138</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">WorkerPool</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L139"><a class="ln" href="#L139">139</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">ProjectAnalyzerTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span></span>
-<span class="src-line" id="L140"><a class="ln" href="#L140">140</a>{</span>
-<span class="src-line" id="L141"><a class="ln" href="#L141">141</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testAnalyzeBuildsModelFromTinyComposerProject</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L142"><a class="ln" href="#L142">142</a>    {</span>
-<span class="src-line" id="L143"><a class="ln" href="#L143">143</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
-<span class="src-line" id="L144"><a class="ln" href="#L144">144</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L145"><a class="ln" href="#L145">145</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/tests&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L146"><a class="ln" href="#L146">146</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/composer.json&#039;</span>, &lt;&lt;&lt;&#039;JSON&#039;</span>
-<span class="src-line" id="L147"><a class="ln" href="#L147">147</a><span class="tok-str">{</span></span>
-<span class="src-line" id="L148"><a class="ln" href="#L148">148</a><span class="tok-str">    &quot;name&quot;: &quot;demo/app&quot;,</span></span>
-<span class="src-line" id="L149"><a class="ln" href="#L149">149</a><span class="tok-str">    &quot;autoload&quot;: {&quot;psr-4&quot;: {&quot;Demo\\&quot;: &quot;src/&quot;}},</span></span>
-<span class="src-line" id="L150"><a class="ln" href="#L150">150</a><span class="tok-str">    &quot;autoload-dev&quot;: {&quot;psr-4&quot;: {&quot;DemoTests\\&quot;: &quot;tests/&quot;}}</span></span>
-<span class="src-line" id="L151"><a class="ln" href="#L151">151</a><span class="tok-str">}</span></span>
-<span class="src-line" id="L152"><a class="ln" href="#L152">152</a><span class="tok-kw">JSON</span>);</span>
-<span class="src-line" id="L153"><a class="ln" href="#L153">153</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/GreeterContract.php&#039;</span>, &lt;&lt;&lt;&#039;PHP&#039;</span>
-<span class="src-line" id="L154"><a class="ln" href="#L154">154</a><span class="tok-str">&lt;?php</span></span>
-<span class="src-line" id="L155"><a class="ln" href="#L155">155</a></span>
-<span class="src-line" id="L156"><a class="ln" href="#L156">156</a><span class="tok-str">namespace Demo;</span></span>
-<span class="src-line" id="L157"><a class="ln" href="#L157">157</a></span>
-<span class="src-line" id="L158"><a class="ln" href="#L158">158</a><span class="tok-str">interface GreeterContract</span></span>
-<span class="src-line" id="L159"><a class="ln" href="#L159">159</a><span class="tok-str">{</span></span>
-<span class="src-line" id="L160"><a class="ln" href="#L160">160</a><span class="tok-str">    public function greet(string $name): string;</span></span>
-<span class="src-line" id="L161"><a class="ln" href="#L161">161</a><span class="tok-str">}</span></span>
-<span class="src-line" id="L162"><a class="ln" href="#L162">162</a><span class="tok-kw">PHP</span>);</span>
-<span class="src-line" id="L163"><a class="ln" href="#L163">163</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/Greeter.php&#039;</span>, &lt;&lt;&lt;&#039;PHP&#039;</span>
-<span class="src-line" id="L164"><a class="ln" href="#L164">164</a><span class="tok-str">&lt;?php</span></span>
-<span class="src-line" id="L165"><a class="ln" href="#L165">165</a></span>
-<span class="src-line" id="L166"><a class="ln" href="#L166">166</a><span class="tok-str">namespace Demo;</span></span>
-<span class="src-line" id="L167"><a class="ln" href="#L167">167</a></span>
-<span class="src-line" id="L168"><a class="ln" href="#L168">168</a><span class="tok-str">class Greeter implements GreeterContract</span></span>
-<span class="src-line" id="L169"><a class="ln" href="#L169">169</a><span class="tok-str">{</span></span>
-<span class="src-line" id="L170"><a class="ln" href="#L170">170</a><span class="tok-str">    public function greet(string $name): string</span></span>
-<span class="src-line" id="L171"><a class="ln" href="#L171">171</a><span class="tok-str">    {</span></span>
-<span class="src-line" id="L172"><a class="ln" href="#L172">172</a><span class="tok-str">        return &#039;Hello &#039; . $name;</span></span>
-<span class="src-line" id="L173"><a class="ln" href="#L173">173</a><span class="tok-str">    }</span></span>
-<span class="src-line" id="L174"><a class="ln" href="#L174">174</a><span class="tok-str">}</span></span>
-<span class="src-line" id="L175"><a class="ln" href="#L175">175</a><span class="tok-kw">PHP</span>);</span>
-<span class="src-line" id="L176"><a class="ln" href="#L176">176</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/tests/GreeterTest.php&#039;</span>, &lt;&lt;&lt;&#039;PHP&#039;</span>
-<span class="src-line" id="L177"><a class="ln" href="#L177">177</a><span class="tok-str">&lt;?php</span></span>
-<span class="src-line" id="L178"><a class="ln" href="#L178">178</a></span>
-<span class="src-line" id="L179"><a class="ln" href="#L179">179</a><span class="tok-str">namespace DemoTests;</span></span>
-<span class="src-line" id="L180"><a class="ln" href="#L180">180</a></span>
-<span class="src-line" id="L181"><a class="ln" href="#L181">181</a><span class="tok-str">use Demo\Greeter;</span></span>
-<span class="src-line" id="L182"><a class="ln" href="#L182">182</a></span>
-<span class="src-line" id="L183"><a class="ln" href="#L183">183</a><span class="tok-str">class GreeterTest</span></span>
-<span class="src-line" id="L184"><a class="ln" href="#L184">184</a><span class="tok-str">{</span></span>
-<span class="src-line" id="L185"><a class="ln" href="#L185">185</a><span class="tok-str">    public function check(): string</span></span>
-<span class="src-line" id="L186"><a class="ln" href="#L186">186</a><span class="tok-str">    {</span></span>
-<span class="src-line" id="L187"><a class="ln" href="#L187">187</a><span class="tok-str">        $greeter = new Greeter();</span></span>
-<span class="src-line" id="L188"><a class="ln" href="#L188">188</a></span>
-<span class="src-line" id="L189"><a class="ln" href="#L189">189</a><span class="tok-str">        return $greeter-&gt;greet(&#039;AI&#039;);</span></span>
-<span class="src-line" id="L190"><a class="ln" href="#L190">190</a><span class="tok-str">    }</span></span>
-<span class="src-line" id="L191"><a class="ln" href="#L191">191</a><span class="tok-str">}</span></span>
-<span class="src-line" id="L192"><a class="ln" href="#L192">192</a><span class="tok-kw">PHP</span>);</span>
-<span class="src-line" id="L193"><a class="ln" href="#L193">193</a>        <span class="tok-var">$root</span> = (string) <span class="tok-id">realpath</span>(<span class="tok-var">$dir</span>);</span>
-<span class="src-line" id="L194"><a class="ln" href="#L194">194</a></span>
-<span class="src-line" id="L195"><a class="ln" href="#L195">195</a>        <span class="tok-var">$model</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">analyze</span>(<span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$root</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>));</span>
-<span class="src-line" id="L196"><a class="ln" href="#L196">196</a></span>
-<span class="src-line" id="L197"><a class="ln" href="#L197">197</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">title</span>);</span>
-<span class="src-line" id="L198"><a class="ln" href="#L198">198</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">1</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">packages</span>);</span>
-<span class="src-line" id="L199"><a class="ln" href="#L199">199</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">3</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>);</span>
-<span class="src-line" id="L200"><a class="ln" href="#L200">200</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;Demo\Greeter&#039;</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">0</span>]-&gt;<span class="tok-id">fqcn</span>);</span>
-<span class="src-line" id="L201"><a class="ln" href="#L201">201</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">0</span>]-&gt;<span class="tok-id">isDev</span>);</span>
-<span class="src-line" id="L202"><a class="ln" href="#L202">202</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;Demo\GreeterContract&#039;</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">1</span>]-&gt;<span class="tok-id">fqcn</span>);</span>
-<span class="src-line" id="L203"><a class="ln" href="#L203">203</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">1</span>]-&gt;<span class="tok-id">isDev</span>);</span>
-<span class="src-line" id="L204"><a class="ln" href="#L204">204</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;DemoTests\GreeterTest&#039;</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">2</span>]-&gt;<span class="tok-id">fqcn</span>);</span>
-<span class="src-line" id="L205"><a class="ln" href="#L205">205</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>(<span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">2</span>]-&gt;<span class="tok-id">isDev</span>);</span>
-<span class="src-line" id="L206"><a class="ln" href="#L206">206</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNotNull</span>(<span class="tok-var">$model</span>-&gt;<span class="tok-id">symbolTable</span>-&gt;<span class="tok-id">classLike</span>(<span class="tok-str">&#039;\DEMO\GreeterContract&#039;</span>));</span>
-<span class="src-line" id="L207"><a class="ln" href="#L207">207</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;Demo\Greeter&#039;</span>], <span class="tok-var">$model</span>-&gt;<span class="tok-id">hierarchy</span>-&gt;<span class="tok-id">implementorsOf</span>(<span class="tok-str">&#039;Demo\GreeterContract&#039;</span>));</span>
-<span class="src-line" id="L208"><a class="ln" href="#L208">208</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">2</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">usages</span>-&gt;<span class="tok-id">forType</span>(<span class="tok-str">&#039;Demo\Greeter&#039;</span>));</span>
-<span class="src-line" id="L209"><a class="ln" href="#L209">209</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>(<span class="tok-var">$model</span>-&gt;<span class="tok-id">layers</span>);</span>
-<span class="src-line" id="L210"><a class="ln" href="#L210">210</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([], <span class="tok-var">$model</span>-&gt;<span class="tok-id">layerAssignments</span>);</span>
-<span class="src-line" id="L211"><a class="ln" href="#L211">211</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>(<span class="tok-var">$model</span>-&gt;<span class="tok-id">coverage</span>);</span>
-<span class="src-line" id="L212"><a class="ln" href="#L212">212</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([], <span class="tok-var">$model</span>-&gt;<span class="tok-id">warnings</span>);</span>
-<span class="src-line" id="L213"><a class="ln" href="#L213">213</a>    }</span>
-<span class="src-line" id="L214"><a class="ln" href="#L214">214</a></span>
-<span class="src-line" id="L215"><a class="ln" href="#L215">215</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testAnalyzeCollectsWarningForUnparsableSource</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L216"><a class="ln" href="#L216">216</a>    {</span>
-<span class="src-line" id="L217"><a class="ln" href="#L217">217</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
-<span class="src-line" id="L218"><a class="ln" href="#L218">218</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L219"><a class="ln" href="#L219">219</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/composer.json&#039;</span>, &lt;&lt;&lt;&#039;JSON&#039;</span>
-<span class="src-line" id="L220"><a class="ln" href="#L220">220</a><span class="tok-str">{</span></span>
-<span class="src-line" id="L221"><a class="ln" href="#L221">221</a><span class="tok-str">    &quot;name&quot;: &quot;demo/app&quot;,</span></span>
-<span class="src-line" id="L222"><a class="ln" href="#L222">222</a><span class="tok-str">    &quot;autoload&quot;: {&quot;psr-4&quot;: {&quot;Demo\\&quot;: &quot;src/&quot;}}</span></span>
-<span class="src-line" id="L223"><a class="ln" href="#L223">223</a><span class="tok-str">}</span></span>
-<span class="src-line" id="L224"><a class="ln" href="#L224">224</a><span class="tok-kw">JSON</span>);</span>
-<span class="src-line" id="L225"><a class="ln" href="#L225">225</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/Valid.php&#039;</span>, &lt;&lt;&lt;&#039;PHP&#039;</span>
-<span class="src-line" id="L226"><a class="ln" href="#L226">226</a><span class="tok-str">&lt;?php</span></span>
-<span class="src-line" id="L227"><a class="ln" href="#L227">227</a></span>
-<span class="src-line" id="L228"><a class="ln" href="#L228">228</a><span class="tok-str">namespace Demo;</span></span>
-<span class="src-line" id="L229"><a class="ln" href="#L229">229</a></span>
-<span class="src-line" id="L230"><a class="ln" href="#L230">230</a><span class="tok-str">class Valid</span></span>
-<span class="src-line" id="L231"><a class="ln" href="#L231">231</a><span class="tok-str">{</span></span>
-<span class="src-line" id="L232"><a class="ln" href="#L232">232</a><span class="tok-str">}</span></span>
-<span class="src-line" id="L233"><a class="ln" href="#L233">233</a><span class="tok-kw">PHP</span>);</span>
-<span class="src-line" id="L234"><a class="ln" href="#L234">234</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/Broken.php&#039;</span>, <span class="tok-str">&#039;&lt;?php class {&#039;</span>);</span>
-<span class="src-line" id="L235"><a class="ln" href="#L235">235</a>        <span class="tok-var">$root</span> = (string) <span class="tok-id">realpath</span>(<span class="tok-var">$dir</span>);</span>
-<span class="src-line" id="L236"><a class="ln" href="#L236">236</a></span>
-<span class="src-line" id="L237"><a class="ln" href="#L237">237</a>        <span class="tok-var">$model</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">analyze</span>(<span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$root</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>));</span>
-<span class="src-line" id="L238"><a class="ln" href="#L238">238</a></span>
-<span class="src-line" id="L239"><a class="ln" href="#L239">239</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">1</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">warnings</span>);</span>
-<span class="src-line" id="L240"><a class="ln" href="#L240">240</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;Failed to parse src/Broken.php&#039;</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">warnings</span>[<span class="tok-num">0</span>]);</span>
-<span class="src-line" id="L241"><a class="ln" href="#L241">241</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">1</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>);</span>
-<span class="src-line" id="L242"><a class="ln" href="#L242">242</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;Demo\Valid&#039;</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">0</span>]-&gt;<span class="tok-id">fqcn</span>);</span>
-<span class="src-line" id="L243"><a class="ln" href="#L243">243</a>    }</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a><span class="tok-com">/**</span></span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a><span class="tok-com"> * @covers \PhpAiToolkit\DocGen\Analysis\ProjectAnalyzer</span></span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\AstParser</span></span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder</span></span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc</span></span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\ComposerLockReader</span></span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest</span></span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\ComposerManifestReader</span></span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder</span></span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex</span></span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageReader</span></span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Parallel\CpuCoreCounter</span></span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Layer\DeptracConfigReader</span></span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\DevPackageResolver</span></span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\DiscoveredPackage</span></span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader</span></span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Config\DocGenConfig</span></span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\DocGenException</span></span>
+<span class="src-line" id="L93"><a class="ln" href="#L93">93</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver</span></span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Document\DocumentCollector</span></span>
+<span class="src-line" id="L95"><a class="ln" href="#L95">95</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder</span></span>
+<span class="src-line" id="L96"><a class="ln" href="#L96">96</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter</span></span>
+<span class="src-line" id="L97"><a class="ln" href="#L97">97</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbolCollector</span></span>
+<span class="src-line" id="L98"><a class="ln" href="#L98">98</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols</span></span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder</span></span>
+<span class="src-line" id="L100"><a class="ln" href="#L100">100</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex</span></span>
+<span class="src-line" id="L101"><a class="ln" href="#L101">101</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerAssigner</span></span>
+<span class="src-line" id="L102"><a class="ln" href="#L102">102</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerCollector</span></span>
+<span class="src-line" id="L103"><a class="ln" href="#L103">103</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerDefinition</span></span>
+<span class="src-line" id="L104"><a class="ln" href="#L104">104</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerModel</span></span>
+<span class="src-line" id="L105"><a class="ln" href="#L105">105</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\LocalTypeMap</span></span>
+<span class="src-line" id="L106"><a class="ln" href="#L106">106</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Filesystem\MarkdownFileFinder</span></span>
+<span class="src-line" id="L107"><a class="ln" href="#L107">107</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\MethodBuilder</span></span>
+<span class="src-line" id="L108"><a class="ln" href="#L108">108</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\MethodCoverage</span></span>
+<span class="src-line" id="L109"><a class="ln" href="#L109">109</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Model\MethodDoc</span></span>
+<span class="src-line" id="L110"><a class="ln" href="#L110">110</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter</span></span>
+<span class="src-line" id="L111"><a class="ln" href="#L111">111</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\PackageDiscovery</span></span>
+<span class="src-line" id="L112"><a class="ln" href="#L112">112</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\PackageGraph</span></span>
+<span class="src-line" id="L113"><a class="ln" href="#L113">113</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\PackageGraphBuilder</span></span>
+<span class="src-line" id="L114"><a class="ln" href="#L114">114</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder</span></span>
+<span class="src-line" id="L115"><a class="ln" href="#L115">115</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc</span></span>
+<span class="src-line" id="L116"><a class="ln" href="#L116">116</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers</span></span>
+<span class="src-line" id="L117"><a class="ln" href="#L117">117</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge</span></span>
+<span class="src-line" id="L118"><a class="ln" href="#L118">118</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge</span></span>
+<span class="src-line" id="L119"><a class="ln" href="#L119">119</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\ProjectModel</span></span>
+<span class="src-line" id="L120"><a class="ln" href="#L120">120</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ProjectSymbolCollector</span></span>
+<span class="src-line" id="L121"><a class="ln" href="#L121">121</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder</span></span>
+<span class="src-line" id="L122"><a class="ln" href="#L122">122</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\PropertyTypeScanner</span></span>
+<span class="src-line" id="L123"><a class="ln" href="#L123">123</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCase</span></span>
+<span class="src-line" id="L124"><a class="ln" href="#L124">124</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Config\RepositoryUrl</span></span>
+<span class="src-line" id="L125"><a class="ln" href="#L125">125</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Filesystem\SourceFileFinder</span></span>
+<span class="src-line" id="L126"><a class="ln" href="#L126">126</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cache\SourceFileKey</span></span>
+<span class="src-line" id="L127"><a class="ln" href="#L127">127</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext</span></span>
+<span class="src-line" id="L128"><a class="ln" href="#L128">128</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable</span></span>
+<span class="src-line" id="L129"><a class="ln" href="#L129">129</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex</span></span>
+<span class="src-line" id="L130"><a class="ln" href="#L130">130</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cache\ToolkitFingerprint</span></span>
+<span class="src-line" id="L131"><a class="ln" href="#L131">131</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature</span></span>
+<span class="src-line" id="L132"><a class="ln" href="#L132">132</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\Usage</span></span>
+<span class="src-line" id="L133"><a class="ln" href="#L133">133</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageCollector</span></span>
+<span class="src-line" id="L134"><a class="ln" href="#L134">134</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex</span></span>
+<span class="src-line" id="L135"><a class="ln" href="#L135">135</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector</span></span>
+<span class="src-line" id="L136"><a class="ln" href="#L136">136</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\VendorPackageLocator</span></span>
+<span class="src-line" id="L137"><a class="ln" href="#L137">137</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Parallel\WorkScheduler</span></span>
+<span class="src-line" id="L138"><a class="ln" href="#L138">138</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Parallel\WorkerCount</span></span>
+<span class="src-line" id="L139"><a class="ln" href="#L139">139</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Parallel\WorkerPool</span></span>
+<span class="src-line" id="L140"><a class="ln" href="#L140">140</a><span class="tok-com"> */</span></span>
+<span class="src-line" id="L141"><a class="ln" href="#L141">141</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">ProjectAnalyzer</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L142"><a class="ln" href="#L142">142</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AstParser</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L143"><a class="ln" href="#L143">143</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ClassLikeBuilder</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L144"><a class="ln" href="#L144">144</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ClassLikeDoc</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L145"><a class="ln" href="#L145">145</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ComposerLockReader</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L146"><a class="ln" href="#L146">146</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ComposerManifest</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L147"><a class="ln" href="#L147">147</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ComposerManifestReader</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L148"><a class="ln" href="#L148">148</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ConstantBuilder</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L149"><a class="ln" href="#L149">149</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">CoverageIndex</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L150"><a class="ln" href="#L150">150</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">CoverageReader</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L151"><a class="ln" href="#L151">151</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">CpuCoreCounter</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L152"><a class="ln" href="#L152">152</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DeptracConfigReader</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L153"><a class="ln" href="#L153">153</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DevPackageResolver</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L154"><a class="ln" href="#L154">154</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DiscoveredPackage</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L155"><a class="ln" href="#L155">155</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DocBlockReader</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L156"><a class="ln" href="#L156">156</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DocGenConfig</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L157"><a class="ln" href="#L157">157</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DocGenException</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L158"><a class="ln" href="#L158">158</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DocGenPathResolver</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L159"><a class="ln" href="#L159">159</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DocumentCollector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L160"><a class="ln" href="#L160">160</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">EnumCaseBuilder</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L161"><a class="ln" href="#L161">161</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ExprTextPrinter</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L162"><a class="ln" href="#L162">162</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">FileSymbolCollector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L163"><a class="ln" href="#L163">163</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">FileSymbols</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L164"><a class="ln" href="#L164">164</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">FunctionBuilder</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L165"><a class="ln" href="#L165">165</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">HierarchyIndex</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L166"><a class="ln" href="#L166">166</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">LayerAssigner</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L167"><a class="ln" href="#L167">167</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">LayerCollector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L168"><a class="ln" href="#L168">168</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">LayerDefinition</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L169"><a class="ln" href="#L169">169</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">LayerModel</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L170"><a class="ln" href="#L170">170</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">LocalTypeMap</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L171"><a class="ln" href="#L171">171</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">MarkdownFileFinder</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L172"><a class="ln" href="#L172">172</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">MethodBuilder</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L173"><a class="ln" href="#L173">173</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">MethodCoverage</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L174"><a class="ln" href="#L174">174</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">MethodDoc</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L175"><a class="ln" href="#L175">175</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">NativeTypePrinter</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L176"><a class="ln" href="#L176">176</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PackageDiscovery</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L177"><a class="ln" href="#L177">177</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PackageGraph</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L178"><a class="ln" href="#L178">178</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PackageGraphBuilder</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L179"><a class="ln" href="#L179">179</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ParameterBuilder</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L180"><a class="ln" href="#L180">180</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ParameterDoc</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L181"><a class="ln" href="#L181">181</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ParameterModifiers</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L182"><a class="ln" href="#L182">182</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PhpDocParserBridge</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L183"><a class="ln" href="#L183">183</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PhpParserBridge</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L184"><a class="ln" href="#L184">184</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ProjectModel</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L185"><a class="ln" href="#L185">185</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ProjectSymbolCollector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L186"><a class="ln" href="#L186">186</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PropertyBuilder</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L187"><a class="ln" href="#L187">187</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">PropertyTypeScanner</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L188"><a class="ln" href="#L188">188</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ReferenceTestCase</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L189"><a class="ln" href="#L189">189</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">RepositoryUrl</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L190"><a class="ln" href="#L190">190</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">SourceFileFinder</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L191"><a class="ln" href="#L191">191</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">SourceFileKey</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L192"><a class="ln" href="#L192">192</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">SymbolContext</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L193"><a class="ln" href="#L193">193</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">SymbolTable</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L194"><a class="ln" href="#L194">194</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TestCaseIndex</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L195"><a class="ln" href="#L195">195</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">ToolkitFingerprint</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L196"><a class="ln" href="#L196">196</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">TypeSignature</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L197"><a class="ln" href="#L197">197</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">Usage</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L198"><a class="ln" href="#L198">198</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">UsageCollector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L199"><a class="ln" href="#L199">199</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">UsageIndex</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L200"><a class="ln" href="#L200">200</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">UseMapCollector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L201"><a class="ln" href="#L201">201</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">VendorPackageLocator</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L202"><a class="ln" href="#L202">202</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">WorkScheduler</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L203"><a class="ln" href="#L203">203</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">WorkerCount</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L204"><a class="ln" href="#L204">204</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">WorkerPool</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L205"><a class="ln" href="#L205">205</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">ProjectAnalyzerTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span></span>
+<span class="src-line" id="L206"><a class="ln" href="#L206">206</a>{</span>
+<span class="src-line" id="L207"><a class="ln" href="#L207">207</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testAnalyzeBuildsModelFromTinyComposerProject</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L208"><a class="ln" href="#L208">208</a>    {</span>
+<span class="src-line" id="L209"><a class="ln" href="#L209">209</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
+<span class="src-line" id="L210"><a class="ln" href="#L210">210</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L211"><a class="ln" href="#L211">211</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/tests&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L212"><a class="ln" href="#L212">212</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/composer.json&#039;</span>, &lt;&lt;&lt;&#039;JSON&#039;</span>
+<span class="src-line" id="L213"><a class="ln" href="#L213">213</a><span class="tok-str">{</span></span>
+<span class="src-line" id="L214"><a class="ln" href="#L214">214</a><span class="tok-str">    &quot;name&quot;: &quot;demo/app&quot;,</span></span>
+<span class="src-line" id="L215"><a class="ln" href="#L215">215</a><span class="tok-str">    &quot;autoload&quot;: {&quot;psr-4&quot;: {&quot;Demo\\&quot;: &quot;src/&quot;}},</span></span>
+<span class="src-line" id="L216"><a class="ln" href="#L216">216</a><span class="tok-str">    &quot;autoload-dev&quot;: {&quot;psr-4&quot;: {&quot;DemoTests\\&quot;: &quot;tests/&quot;}}</span></span>
+<span class="src-line" id="L217"><a class="ln" href="#L217">217</a><span class="tok-str">}</span></span>
+<span class="src-line" id="L218"><a class="ln" href="#L218">218</a><span class="tok-kw">JSON</span>);</span>
+<span class="src-line" id="L219"><a class="ln" href="#L219">219</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/GreeterContract.php&#039;</span>, &lt;&lt;&lt;&#039;PHP&#039;</span>
+<span class="src-line" id="L220"><a class="ln" href="#L220">220</a><span class="tok-str">&lt;?php</span></span>
+<span class="src-line" id="L221"><a class="ln" href="#L221">221</a></span>
+<span class="src-line" id="L222"><a class="ln" href="#L222">222</a><span class="tok-str">namespace Demo;</span></span>
+<span class="src-line" id="L223"><a class="ln" href="#L223">223</a></span>
+<span class="src-line" id="L224"><a class="ln" href="#L224">224</a><span class="tok-str">interface GreeterContract</span></span>
+<span class="src-line" id="L225"><a class="ln" href="#L225">225</a><span class="tok-str">{</span></span>
+<span class="src-line" id="L226"><a class="ln" href="#L226">226</a><span class="tok-str">    public function greet(string $name): string;</span></span>
+<span class="src-line" id="L227"><a class="ln" href="#L227">227</a><span class="tok-str">}</span></span>
+<span class="src-line" id="L228"><a class="ln" href="#L228">228</a><span class="tok-kw">PHP</span>);</span>
+<span class="src-line" id="L229"><a class="ln" href="#L229">229</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/Greeter.php&#039;</span>, &lt;&lt;&lt;&#039;PHP&#039;</span>
+<span class="src-line" id="L230"><a class="ln" href="#L230">230</a><span class="tok-str">&lt;?php</span></span>
+<span class="src-line" id="L231"><a class="ln" href="#L231">231</a></span>
+<span class="src-line" id="L232"><a class="ln" href="#L232">232</a><span class="tok-str">namespace Demo;</span></span>
+<span class="src-line" id="L233"><a class="ln" href="#L233">233</a></span>
+<span class="src-line" id="L234"><a class="ln" href="#L234">234</a><span class="tok-str">class Greeter implements GreeterContract</span></span>
+<span class="src-line" id="L235"><a class="ln" href="#L235">235</a><span class="tok-str">{</span></span>
+<span class="src-line" id="L236"><a class="ln" href="#L236">236</a><span class="tok-str">    public function greet(string $name): string</span></span>
+<span class="src-line" id="L237"><a class="ln" href="#L237">237</a><span class="tok-str">    {</span></span>
+<span class="src-line" id="L238"><a class="ln" href="#L238">238</a><span class="tok-str">        return &#039;Hello &#039; . $name;</span></span>
+<span class="src-line" id="L239"><a class="ln" href="#L239">239</a><span class="tok-str">    }</span></span>
+<span class="src-line" id="L240"><a class="ln" href="#L240">240</a><span class="tok-str">}</span></span>
+<span class="src-line" id="L241"><a class="ln" href="#L241">241</a><span class="tok-kw">PHP</span>);</span>
+<span class="src-line" id="L242"><a class="ln" href="#L242">242</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/tests/GreeterTest.php&#039;</span>, &lt;&lt;&lt;&#039;PHP&#039;</span>
+<span class="src-line" id="L243"><a class="ln" href="#L243">243</a><span class="tok-str">&lt;?php</span></span>
 <span class="src-line" id="L244"><a class="ln" href="#L244">244</a></span>
-<span class="src-line" id="L245"><a class="ln" href="#L245">245</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testAnalyzeLoadsLayersFromRootDeptracConfig</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L246"><a class="ln" href="#L246">246</a>    {</span>
-<span class="src-line" id="L247"><a class="ln" href="#L247">247</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
-<span class="src-line" id="L248"><a class="ln" href="#L248">248</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L249"><a class="ln" href="#L249">249</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/composer.json&#039;</span>, &lt;&lt;&lt;&#039;JSON&#039;</span>
+<span class="src-line" id="L245"><a class="ln" href="#L245">245</a><span class="tok-str">namespace DemoTests;</span></span>
+<span class="src-line" id="L246"><a class="ln" href="#L246">246</a></span>
+<span class="src-line" id="L247"><a class="ln" href="#L247">247</a><span class="tok-str">use Demo\Greeter;</span></span>
+<span class="src-line" id="L248"><a class="ln" href="#L248">248</a></span>
+<span class="src-line" id="L249"><a class="ln" href="#L249">249</a><span class="tok-str">class GreeterTest</span></span>
 <span class="src-line" id="L250"><a class="ln" href="#L250">250</a><span class="tok-str">{</span></span>
-<span class="src-line" id="L251"><a class="ln" href="#L251">251</a><span class="tok-str">    &quot;name&quot;: &quot;demo/app&quot;,</span></span>
-<span class="src-line" id="L252"><a class="ln" href="#L252">252</a><span class="tok-str">    &quot;autoload&quot;: {&quot;psr-4&quot;: {&quot;Demo\\&quot;: &quot;src/&quot;}}</span></span>
-<span class="src-line" id="L253"><a class="ln" href="#L253">253</a><span class="tok-str">}</span></span>
-<span class="src-line" id="L254"><a class="ln" href="#L254">254</a><span class="tok-kw">JSON</span>);</span>
-<span class="src-line" id="L255"><a class="ln" href="#L255">255</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/Greeter.php&#039;</span>, &lt;&lt;&lt;&#039;PHP&#039;</span>
-<span class="src-line" id="L256"><a class="ln" href="#L256">256</a><span class="tok-str">&lt;?php</span></span>
-<span class="src-line" id="L257"><a class="ln" href="#L257">257</a></span>
-<span class="src-line" id="L258"><a class="ln" href="#L258">258</a><span class="tok-str">namespace Demo;</span></span>
-<span class="src-line" id="L259"><a class="ln" href="#L259">259</a></span>
-<span class="src-line" id="L260"><a class="ln" href="#L260">260</a><span class="tok-str">class Greeter</span></span>
-<span class="src-line" id="L261"><a class="ln" href="#L261">261</a><span class="tok-str">{</span></span>
-<span class="src-line" id="L262"><a class="ln" href="#L262">262</a><span class="tok-str">}</span></span>
-<span class="src-line" id="L263"><a class="ln" href="#L263">263</a><span class="tok-kw">PHP</span>);</span>
-<span class="src-line" id="L264"><a class="ln" href="#L264">264</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/deptrac.yaml&#039;</span>, &lt;&lt;&lt;&#039;YAML&#039;</span>
-<span class="src-line" id="L265"><a class="ln" href="#L265">265</a><span class="tok-str">deptrac:</span></span>
-<span class="src-line" id="L266"><a class="ln" href="#L266">266</a><span class="tok-str">  layers:</span></span>
-<span class="src-line" id="L267"><a class="ln" href="#L267">267</a><span class="tok-str">    - name: Domain</span></span>
-<span class="src-line" id="L268"><a class="ln" href="#L268">268</a><span class="tok-str">      collectors:</span></span>
-<span class="src-line" id="L269"><a class="ln" href="#L269">269</a><span class="tok-str">        - type: className</span></span>
-<span class="src-line" id="L270"><a class="ln" href="#L270">270</a><span class="tok-str">          value: Greeter</span></span>
-<span class="src-line" id="L271"><a class="ln" href="#L271">271</a><span class="tok-str">  ruleset:</span></span>
-<span class="src-line" id="L272"><a class="ln" href="#L272">272</a><span class="tok-str">    Domain: []</span></span>
-<span class="src-line" id="L273"><a class="ln" href="#L273">273</a><span class="tok-kw">YAML</span>);</span>
-<span class="src-line" id="L274"><a class="ln" href="#L274">274</a>        <span class="tok-var">$root</span> = (string) <span class="tok-id">realpath</span>(<span class="tok-var">$dir</span>);</span>
-<span class="src-line" id="L275"><a class="ln" href="#L275">275</a></span>
-<span class="src-line" id="L276"><a class="ln" href="#L276">276</a>        <span class="tok-var">$model</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">analyze</span>(<span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$root</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>));</span>
-<span class="src-line" id="L277"><a class="ln" href="#L277">277</a></span>
-<span class="src-line" id="L278"><a class="ln" href="#L278">278</a>        <span class="tok-var">$layers</span> = <span class="tok-var">$model</span>-&gt;<span class="tok-id">layers</span>;</span>
-<span class="src-line" id="L279"><a class="ln" href="#L279">279</a></span>
-<span class="src-line" id="L280"><a class="ln" href="#L280">280</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNotNull</span>(<span class="tok-var">$layers</span>);</span>
-<span class="src-line" id="L281"><a class="ln" href="#L281">281</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">1</span>, <span class="tok-var">$layers</span>-&gt;<span class="tok-id">layers</span>);</span>
-<span class="src-line" id="L282"><a class="ln" href="#L282">282</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;Domain&#039;</span>, <span class="tok-var">$layers</span>-&gt;<span class="tok-id">layers</span>[<span class="tok-num">0</span>]-&gt;<span class="tok-id">name</span>);</span>
-<span class="src-line" id="L283"><a class="ln" href="#L283">283</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;demo\greeter&#039;</span> =&gt; [<span class="tok-str">&#039;Domain&#039;</span>]], <span class="tok-var">$model</span>-&gt;<span class="tok-id">layerAssignments</span>);</span>
-<span class="src-line" id="L284"><a class="ln" href="#L284">284</a>    }</span>
-<span class="src-line" id="L285"><a class="ln" href="#L285">285</a></span>
-<span class="src-line" id="L286"><a class="ln" href="#L286">286</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testAnalyzeReadsCoverageReportWhenConfigured</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L287"><a class="ln" href="#L287">287</a>    {</span>
-<span class="src-line" id="L288"><a class="ln" href="#L288">288</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
-<span class="src-line" id="L289"><a class="ln" href="#L289">289</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L290"><a class="ln" href="#L290">290</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/coverage-xml&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L291"><a class="ln" href="#L291">291</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/composer.json&#039;</span>, &lt;&lt;&lt;&#039;JSON&#039;</span>
-<span class="src-line" id="L292"><a class="ln" href="#L292">292</a><span class="tok-str">{</span></span>
-<span class="src-line" id="L293"><a class="ln" href="#L293">293</a><span class="tok-str">    &quot;name&quot;: &quot;demo/app&quot;,</span></span>
-<span class="src-line" id="L294"><a class="ln" href="#L294">294</a><span class="tok-str">    &quot;autoload&quot;: {&quot;psr-4&quot;: {&quot;Demo\\&quot;: &quot;src/&quot;}}</span></span>
-<span class="src-line" id="L295"><a class="ln" href="#L295">295</a><span class="tok-str">}</span></span>
-<span class="src-line" id="L296"><a class="ln" href="#L296">296</a><span class="tok-kw">JSON</span>);</span>
-<span class="src-line" id="L297"><a class="ln" href="#L297">297</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/Greeter.php&#039;</span>, &lt;&lt;&lt;&#039;PHP&#039;</span>
-<span class="src-line" id="L298"><a class="ln" href="#L298">298</a><span class="tok-str">&lt;?php</span></span>
-<span class="src-line" id="L299"><a class="ln" href="#L299">299</a></span>
-<span class="src-line" id="L300"><a class="ln" href="#L300">300</a><span class="tok-str">namespace Demo;</span></span>
-<span class="src-line" id="L301"><a class="ln" href="#L301">301</a></span>
-<span class="src-line" id="L302"><a class="ln" href="#L302">302</a><span class="tok-str">class Greeter</span></span>
-<span class="src-line" id="L303"><a class="ln" href="#L303">303</a><span class="tok-str">{</span></span>
-<span class="src-line" id="L304"><a class="ln" href="#L304">304</a><span class="tok-str">    public function greet(): string</span></span>
-<span class="src-line" id="L305"><a class="ln" href="#L305">305</a><span class="tok-str">    {</span></span>
-<span class="src-line" id="L306"><a class="ln" href="#L306">306</a><span class="tok-str">        return &#039;Hello&#039;;</span></span>
-<span class="src-line" id="L307"><a class="ln" href="#L307">307</a><span class="tok-str">    }</span></span>
-<span class="src-line" id="L308"><a class="ln" href="#L308">308</a><span class="tok-str">}</span></span>
-<span class="src-line" id="L309"><a class="ln" href="#L309">309</a><span class="tok-kw">PHP</span>);</span>
-<span class="src-line" id="L310"><a class="ln" href="#L310">310</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/coverage-xml/Greeter.php.xml&#039;</span>, &lt;&lt;&lt;&#039;XML&#039;</span>
-<span class="src-line" id="L311"><a class="ln" href="#L311">311</a><span class="tok-str">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span>
-<span class="src-line" id="L312"><a class="ln" href="#L312">312</a><span class="tok-str">&lt;phpunit&gt;</span></span>
-<span class="src-line" id="L313"><a class="ln" href="#L313">313</a><span class="tok-str">  &lt;file name=&quot;Greeter.php&quot; path=&quot;src&quot;&gt;</span></span>
-<span class="src-line" id="L314"><a class="ln" href="#L314">314</a><span class="tok-str">    &lt;method name=&quot;greet&quot; start=&quot;7&quot; executable=&quot;1&quot; executed=&quot;1&quot; coverage=&quot;100&quot;/&gt;</span></span>
-<span class="src-line" id="L315"><a class="ln" href="#L315">315</a><span class="tok-str">    &lt;coverage&gt;</span></span>
-<span class="src-line" id="L316"><a class="ln" href="#L316">316</a><span class="tok-str">      &lt;line nr=&quot;9&quot;&gt;</span></span>
-<span class="src-line" id="L317"><a class="ln" href="#L317">317</a><span class="tok-str">        &lt;covered by=&quot;DemoTests\GreeterTest::testGreet&quot;/&gt;</span></span>
-<span class="src-line" id="L318"><a class="ln" href="#L318">318</a><span class="tok-str">      &lt;/line&gt;</span></span>
-<span class="src-line" id="L319"><a class="ln" href="#L319">319</a><span class="tok-str">    &lt;/coverage&gt;</span></span>
-<span class="src-line" id="L320"><a class="ln" href="#L320">320</a><span class="tok-str">  &lt;/file&gt;</span></span>
-<span class="src-line" id="L321"><a class="ln" href="#L321">321</a><span class="tok-str">&lt;/phpunit&gt;</span></span>
-<span class="src-line" id="L322"><a class="ln" href="#L322">322</a><span class="tok-kw">XML</span>);</span>
-<span class="src-line" id="L323"><a class="ln" href="#L323">323</a>        <span class="tok-var">$root</span> = (string) <span class="tok-id">realpath</span>(<span class="tok-var">$dir</span>);</span>
-<span class="src-line" id="L324"><a class="ln" href="#L324">324</a></span>
-<span class="src-line" id="L325"><a class="ln" href="#L325">325</a>        <span class="tok-var">$model</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">analyze</span>(<span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$root</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;coverage-xml&#039;</span>));</span>
-<span class="src-line" id="L326"><a class="ln" href="#L326">326</a></span>
-<span class="src-line" id="L327"><a class="ln" href="#L327">327</a>        <span class="tok-var">$coverage</span> = <span class="tok-var">$model</span>-&gt;<span class="tok-id">coverage</span>;</span>
-<span class="src-line" id="L328"><a class="ln" href="#L328">328</a></span>
-<span class="src-line" id="L329"><a class="ln" href="#L329">329</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNotNull</span>(<span class="tok-var">$coverage</span>);</span>
-<span class="src-line" id="L330"><a class="ln" href="#L330">330</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;DemoTests\GreeterTest::testGreet&#039;</span>], <span class="tok-var">$coverage</span>-&gt;<span class="tok-id">testsForRange</span>(<span class="tok-str">&#039;src/Greeter.php&#039;</span>, <span class="tok-num">1</span>, <span class="tok-num">100</span>));</span>
-<span class="src-line" id="L331"><a class="ln" href="#L331">331</a>        <span class="tok-var">$method</span> = <span class="tok-var">$coverage</span>-&gt;<span class="tok-id">methodAt</span>(<span class="tok-str">&#039;src/Greeter.php&#039;</span>, <span class="tok-num">1</span>, <span class="tok-num">100</span>);</span>
-<span class="src-line" id="L332"><a class="ln" href="#L332">332</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNotNull</span>(<span class="tok-var">$method</span>);</span>
-<span class="src-line" id="L333"><a class="ln" href="#L333">333</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">1</span>, <span class="tok-var">$method</span>-&gt;<span class="tok-id">executable</span>);</span>
-<span class="src-line" id="L334"><a class="ln" href="#L334">334</a>    }</span>
-<span class="src-line" id="L335"><a class="ln" href="#L335">335</a></span>
-<span class="src-line" id="L336"><a class="ln" href="#L336">336</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLayerAssignmentsReturnsEmptyMapWithoutLayers</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L337"><a class="ln" href="#L337">337</a>    {</span>
-<span class="src-line" id="L338"><a class="ln" href="#L338">338</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([], (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">layerAssignments</span>(<span class="tok-id">null</span>, []));</span>
-<span class="src-line" id="L339"><a class="ln" href="#L339">339</a>    }</span>
-<span class="src-line" id="L340"><a class="ln" href="#L340">340</a></span>
-<span class="src-line" id="L341"><a class="ln" href="#L341">341</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLayerAssignmentsMapsMatchingClassesToLayerNames</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L342"><a class="ln" href="#L342">342</a>    {</span>
-<span class="src-line" id="L343"><a class="ln" href="#L343">343</a>        <span class="tok-var">$layers</span> = <span class="tok-kw">new</span> <span class="tok-id">LayerModel</span>([<span class="tok-kw">new</span> <span class="tok-id">LayerDefinition</span>(<span class="tok-str">&#039;Domain&#039;</span>, [<span class="tok-kw">new</span> <span class="tok-id">LayerCollector</span>(<span class="tok-str">&#039;className&#039;</span>, <span class="tok-str">&#039;Greeter&#039;</span>)])], []);</span>
-<span class="src-line" id="L344"><a class="ln" href="#L344">344</a>        <span class="tok-var">$greeter</span> = <span class="tok-kw">new</span> <span class="tok-id">ClassLikeDoc</span>(<span class="tok-str">&#039;Demo\Greeter&#039;</span>, <span class="tok-str">&#039;Greeter&#039;</span>, <span class="tok-str">&#039;Demo&#039;</span>, <span class="tok-str">&#039;class&#039;</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;src/Greeter.php&#039;</span>, <span class="tok-num">1</span>, <span class="tok-num">5</span>, <span class="tok-id">false</span>, <span class="tok-id">false</span>, [], [], [], [], [], [], [], <span class="tok-id">null</span>, <span class="tok-id">null</span>, [], <span class="tok-id">false</span>);</span>
-<span class="src-line" id="L345"><a class="ln" href="#L345">345</a>        <span class="tok-var">$mailer</span> = <span class="tok-kw">new</span> <span class="tok-id">ClassLikeDoc</span>(<span class="tok-str">&#039;Demo\Mailer&#039;</span>, <span class="tok-str">&#039;Mailer&#039;</span>, <span class="tok-str">&#039;Demo&#039;</span>, <span class="tok-str">&#039;class&#039;</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;src/Mailer.php&#039;</span>, <span class="tok-num">1</span>, <span class="tok-num">5</span>, <span class="tok-id">false</span>, <span class="tok-id">false</span>, [], [], [], [], [], [], [], <span class="tok-id">null</span>, <span class="tok-id">null</span>, [], <span class="tok-id">false</span>);</span>
-<span class="src-line" id="L346"><a class="ln" href="#L346">346</a></span>
-<span class="src-line" id="L347"><a class="ln" href="#L347">347</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;demo\greeter&#039;</span> =&gt; [<span class="tok-str">&#039;Domain&#039;</span>]], (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">layerAssignments</span>(<span class="tok-var">$layers</span>, [<span class="tok-var">$greeter</span>, <span class="tok-var">$mailer</span>]));</span>
-<span class="src-line" id="L348"><a class="ln" href="#L348">348</a>    }</span>
-<span class="src-line" id="L349"><a class="ln" href="#L349">349</a></span>
-<span class="src-line" id="L350"><a class="ln" href="#L350">350</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLayerModelThrowsWhenConfiguredDeptracFileIsMissing</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L351"><a class="ln" href="#L351">351</a>    {</span>
-<span class="src-line" id="L352"><a class="ln" href="#L352">352</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
-<span class="src-line" id="L353"><a class="ln" href="#L353">353</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$dir</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;missing/deptrac.yaml&#039;</span>, <span class="tok-id">null</span>);</span>
-<span class="src-line" id="L354"><a class="ln" href="#L354">354</a></span>
-<span class="src-line" id="L355"><a class="ln" href="#L355">355</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectException</span>(<span class="tok-id">DocGenException</span>::<span class="tok-kw">class</span>);</span>
-<span class="src-line" id="L356"><a class="ln" href="#L356">356</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectExceptionMessage</span>(<span class="tok-str">&#039;Deptrac config not found: &#039;</span> . <span class="tok-var">$dir</span> . <span class="tok-str">&#039;/missing/deptrac.yaml&#039;</span>);</span>
-<span class="src-line" id="L357"><a class="ln" href="#L357">357</a></span>
-<span class="src-line" id="L358"><a class="ln" href="#L358">358</a>        (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">layerModel</span>(<span class="tok-var">$config</span>);</span>
-<span class="src-line" id="L359"><a class="ln" href="#L359">359</a>    }</span>
-<span class="src-line" id="L360"><a class="ln" href="#L360">360</a></span>
-<span class="src-line" id="L361"><a class="ln" href="#L361">361</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLayerModelReturnsNullWithoutDeptracConfiguration</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L362"><a class="ln" href="#L362">362</a>    {</span>
-<span class="src-line" id="L363"><a class="ln" href="#L363">363</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
-<span class="src-line" id="L364"><a class="ln" href="#L364">364</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$dir</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
+<span class="src-line" id="L251"><a class="ln" href="#L251">251</a><span class="tok-str">    public function check(): string</span></span>
+<span class="src-line" id="L252"><a class="ln" href="#L252">252</a><span class="tok-str">    {</span></span>
+<span class="src-line" id="L253"><a class="ln" href="#L253">253</a><span class="tok-str">        $greeter = new Greeter();</span></span>
+<span class="src-line" id="L254"><a class="ln" href="#L254">254</a></span>
+<span class="src-line" id="L255"><a class="ln" href="#L255">255</a><span class="tok-str">        return $greeter-&gt;greet(&#039;AI&#039;);</span></span>
+<span class="src-line" id="L256"><a class="ln" href="#L256">256</a><span class="tok-str">    }</span></span>
+<span class="src-line" id="L257"><a class="ln" href="#L257">257</a><span class="tok-str">}</span></span>
+<span class="src-line" id="L258"><a class="ln" href="#L258">258</a><span class="tok-kw">PHP</span>);</span>
+<span class="src-line" id="L259"><a class="ln" href="#L259">259</a>        <span class="tok-var">$root</span> = (string) <span class="tok-id">realpath</span>(<span class="tok-var">$dir</span>);</span>
+<span class="src-line" id="L260"><a class="ln" href="#L260">260</a></span>
+<span class="src-line" id="L261"><a class="ln" href="#L261">261</a>        <span class="tok-var">$model</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">analyze</span>(<span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$root</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>));</span>
+<span class="src-line" id="L262"><a class="ln" href="#L262">262</a></span>
+<span class="src-line" id="L263"><a class="ln" href="#L263">263</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">title</span>);</span>
+<span class="src-line" id="L264"><a class="ln" href="#L264">264</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">1</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">packages</span>);</span>
+<span class="src-line" id="L265"><a class="ln" href="#L265">265</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">3</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>);</span>
+<span class="src-line" id="L266"><a class="ln" href="#L266">266</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;Demo\Greeter&#039;</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">0</span>]-&gt;<span class="tok-id">fqcn</span>);</span>
+<span class="src-line" id="L267"><a class="ln" href="#L267">267</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">0</span>]-&gt;<span class="tok-id">isDev</span>);</span>
+<span class="src-line" id="L268"><a class="ln" href="#L268">268</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;Demo\GreeterContract&#039;</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">1</span>]-&gt;<span class="tok-id">fqcn</span>);</span>
+<span class="src-line" id="L269"><a class="ln" href="#L269">269</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">1</span>]-&gt;<span class="tok-id">isDev</span>);</span>
+<span class="src-line" id="L270"><a class="ln" href="#L270">270</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;DemoTests\GreeterTest&#039;</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">2</span>]-&gt;<span class="tok-id">fqcn</span>);</span>
+<span class="src-line" id="L271"><a class="ln" href="#L271">271</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>(<span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">2</span>]-&gt;<span class="tok-id">isDev</span>);</span>
+<span class="src-line" id="L272"><a class="ln" href="#L272">272</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNotNull</span>(<span class="tok-var">$model</span>-&gt;<span class="tok-id">symbolTable</span>-&gt;<span class="tok-id">classLike</span>(<span class="tok-str">&#039;\DEMO\GreeterContract&#039;</span>));</span>
+<span class="src-line" id="L273"><a class="ln" href="#L273">273</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;Demo\Greeter&#039;</span>], <span class="tok-var">$model</span>-&gt;<span class="tok-id">hierarchy</span>-&gt;<span class="tok-id">implementorsOf</span>(<span class="tok-str">&#039;Demo\GreeterContract&#039;</span>));</span>
+<span class="src-line" id="L274"><a class="ln" href="#L274">274</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">2</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">usages</span>-&gt;<span class="tok-id">forType</span>(<span class="tok-str">&#039;Demo\Greeter&#039;</span>));</span>
+<span class="src-line" id="L275"><a class="ln" href="#L275">275</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>(<span class="tok-var">$model</span>-&gt;<span class="tok-id">layers</span>);</span>
+<span class="src-line" id="L276"><a class="ln" href="#L276">276</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([], <span class="tok-var">$model</span>-&gt;<span class="tok-id">layerAssignments</span>);</span>
+<span class="src-line" id="L277"><a class="ln" href="#L277">277</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>(<span class="tok-var">$model</span>-&gt;<span class="tok-id">coverage</span>);</span>
+<span class="src-line" id="L278"><a class="ln" href="#L278">278</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([], <span class="tok-var">$model</span>-&gt;<span class="tok-id">warnings</span>);</span>
+<span class="src-line" id="L279"><a class="ln" href="#L279">279</a>    }</span>
+<span class="src-line" id="L280"><a class="ln" href="#L280">280</a></span>
+<span class="src-line" id="L281"><a class="ln" href="#L281">281</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testAnalyzeCollectsWarningForUnparsableSource</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L282"><a class="ln" href="#L282">282</a>    {</span>
+<span class="src-line" id="L283"><a class="ln" href="#L283">283</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
+<span class="src-line" id="L284"><a class="ln" href="#L284">284</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L285"><a class="ln" href="#L285">285</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/composer.json&#039;</span>, &lt;&lt;&lt;&#039;JSON&#039;</span>
+<span class="src-line" id="L286"><a class="ln" href="#L286">286</a><span class="tok-str">{</span></span>
+<span class="src-line" id="L287"><a class="ln" href="#L287">287</a><span class="tok-str">    &quot;name&quot;: &quot;demo/app&quot;,</span></span>
+<span class="src-line" id="L288"><a class="ln" href="#L288">288</a><span class="tok-str">    &quot;autoload&quot;: {&quot;psr-4&quot;: {&quot;Demo\\&quot;: &quot;src/&quot;}}</span></span>
+<span class="src-line" id="L289"><a class="ln" href="#L289">289</a><span class="tok-str">}</span></span>
+<span class="src-line" id="L290"><a class="ln" href="#L290">290</a><span class="tok-kw">JSON</span>);</span>
+<span class="src-line" id="L291"><a class="ln" href="#L291">291</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/Valid.php&#039;</span>, &lt;&lt;&lt;&#039;PHP&#039;</span>
+<span class="src-line" id="L292"><a class="ln" href="#L292">292</a><span class="tok-str">&lt;?php</span></span>
+<span class="src-line" id="L293"><a class="ln" href="#L293">293</a></span>
+<span class="src-line" id="L294"><a class="ln" href="#L294">294</a><span class="tok-str">namespace Demo;</span></span>
+<span class="src-line" id="L295"><a class="ln" href="#L295">295</a></span>
+<span class="src-line" id="L296"><a class="ln" href="#L296">296</a><span class="tok-str">class Valid</span></span>
+<span class="src-line" id="L297"><a class="ln" href="#L297">297</a><span class="tok-str">{</span></span>
+<span class="src-line" id="L298"><a class="ln" href="#L298">298</a><span class="tok-str">}</span></span>
+<span class="src-line" id="L299"><a class="ln" href="#L299">299</a><span class="tok-kw">PHP</span>);</span>
+<span class="src-line" id="L300"><a class="ln" href="#L300">300</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/Broken.php&#039;</span>, <span class="tok-str">&#039;&lt;?php class {&#039;</span>);</span>
+<span class="src-line" id="L301"><a class="ln" href="#L301">301</a>        <span class="tok-var">$root</span> = (string) <span class="tok-id">realpath</span>(<span class="tok-var">$dir</span>);</span>
+<span class="src-line" id="L302"><a class="ln" href="#L302">302</a></span>
+<span class="src-line" id="L303"><a class="ln" href="#L303">303</a>        <span class="tok-var">$model</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">analyze</span>(<span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$root</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>));</span>
+<span class="src-line" id="L304"><a class="ln" href="#L304">304</a></span>
+<span class="src-line" id="L305"><a class="ln" href="#L305">305</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">1</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">warnings</span>);</span>
+<span class="src-line" id="L306"><a class="ln" href="#L306">306</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;Failed to parse src/Broken.php&#039;</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">warnings</span>[<span class="tok-num">0</span>]);</span>
+<span class="src-line" id="L307"><a class="ln" href="#L307">307</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">1</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>);</span>
+<span class="src-line" id="L308"><a class="ln" href="#L308">308</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;Demo\Valid&#039;</span>, <span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span>[<span class="tok-num">0</span>]-&gt;<span class="tok-id">fqcn</span>);</span>
+<span class="src-line" id="L309"><a class="ln" href="#L309">309</a>    }</span>
+<span class="src-line" id="L310"><a class="ln" href="#L310">310</a></span>
+<span class="src-line" id="L311"><a class="ln" href="#L311">311</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testAnalyzeLoadsLayersFromRootDeptracConfig</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L312"><a class="ln" href="#L312">312</a>    {</span>
+<span class="src-line" id="L313"><a class="ln" href="#L313">313</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
+<span class="src-line" id="L314"><a class="ln" href="#L314">314</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L315"><a class="ln" href="#L315">315</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/composer.json&#039;</span>, &lt;&lt;&lt;&#039;JSON&#039;</span>
+<span class="src-line" id="L316"><a class="ln" href="#L316">316</a><span class="tok-str">{</span></span>
+<span class="src-line" id="L317"><a class="ln" href="#L317">317</a><span class="tok-str">    &quot;name&quot;: &quot;demo/app&quot;,</span></span>
+<span class="src-line" id="L318"><a class="ln" href="#L318">318</a><span class="tok-str">    &quot;autoload&quot;: {&quot;psr-4&quot;: {&quot;Demo\\&quot;: &quot;src/&quot;}}</span></span>
+<span class="src-line" id="L319"><a class="ln" href="#L319">319</a><span class="tok-str">}</span></span>
+<span class="src-line" id="L320"><a class="ln" href="#L320">320</a><span class="tok-kw">JSON</span>);</span>
+<span class="src-line" id="L321"><a class="ln" href="#L321">321</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/Greeter.php&#039;</span>, &lt;&lt;&lt;&#039;PHP&#039;</span>
+<span class="src-line" id="L322"><a class="ln" href="#L322">322</a><span class="tok-str">&lt;?php</span></span>
+<span class="src-line" id="L323"><a class="ln" href="#L323">323</a></span>
+<span class="src-line" id="L324"><a class="ln" href="#L324">324</a><span class="tok-str">namespace Demo;</span></span>
+<span class="src-line" id="L325"><a class="ln" href="#L325">325</a></span>
+<span class="src-line" id="L326"><a class="ln" href="#L326">326</a><span class="tok-str">class Greeter</span></span>
+<span class="src-line" id="L327"><a class="ln" href="#L327">327</a><span class="tok-str">{</span></span>
+<span class="src-line" id="L328"><a class="ln" href="#L328">328</a><span class="tok-str">}</span></span>
+<span class="src-line" id="L329"><a class="ln" href="#L329">329</a><span class="tok-kw">PHP</span>);</span>
+<span class="src-line" id="L330"><a class="ln" href="#L330">330</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/deptrac.yaml&#039;</span>, &lt;&lt;&lt;&#039;YAML&#039;</span>
+<span class="src-line" id="L331"><a class="ln" href="#L331">331</a><span class="tok-str">deptrac:</span></span>
+<span class="src-line" id="L332"><a class="ln" href="#L332">332</a><span class="tok-str">  layers:</span></span>
+<span class="src-line" id="L333"><a class="ln" href="#L333">333</a><span class="tok-str">    - name: Domain</span></span>
+<span class="src-line" id="L334"><a class="ln" href="#L334">334</a><span class="tok-str">      collectors:</span></span>
+<span class="src-line" id="L335"><a class="ln" href="#L335">335</a><span class="tok-str">        - type: className</span></span>
+<span class="src-line" id="L336"><a class="ln" href="#L336">336</a><span class="tok-str">          value: Greeter</span></span>
+<span class="src-line" id="L337"><a class="ln" href="#L337">337</a><span class="tok-str">  ruleset:</span></span>
+<span class="src-line" id="L338"><a class="ln" href="#L338">338</a><span class="tok-str">    Domain: []</span></span>
+<span class="src-line" id="L339"><a class="ln" href="#L339">339</a><span class="tok-kw">YAML</span>);</span>
+<span class="src-line" id="L340"><a class="ln" href="#L340">340</a>        <span class="tok-var">$root</span> = (string) <span class="tok-id">realpath</span>(<span class="tok-var">$dir</span>);</span>
+<span class="src-line" id="L341"><a class="ln" href="#L341">341</a></span>
+<span class="src-line" id="L342"><a class="ln" href="#L342">342</a>        <span class="tok-var">$model</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">analyze</span>(<span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$root</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>));</span>
+<span class="src-line" id="L343"><a class="ln" href="#L343">343</a></span>
+<span class="src-line" id="L344"><a class="ln" href="#L344">344</a>        <span class="tok-var">$layers</span> = <span class="tok-var">$model</span>-&gt;<span class="tok-id">layers</span>;</span>
+<span class="src-line" id="L345"><a class="ln" href="#L345">345</a></span>
+<span class="src-line" id="L346"><a class="ln" href="#L346">346</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNotNull</span>(<span class="tok-var">$layers</span>);</span>
+<span class="src-line" id="L347"><a class="ln" href="#L347">347</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">1</span>, <span class="tok-var">$layers</span>-&gt;<span class="tok-id">layers</span>);</span>
+<span class="src-line" id="L348"><a class="ln" href="#L348">348</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;Domain&#039;</span>, <span class="tok-var">$layers</span>-&gt;<span class="tok-id">layers</span>[<span class="tok-num">0</span>]-&gt;<span class="tok-id">name</span>);</span>
+<span class="src-line" id="L349"><a class="ln" href="#L349">349</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;demo\greeter&#039;</span> =&gt; [<span class="tok-str">&#039;Domain&#039;</span>]], <span class="tok-var">$model</span>-&gt;<span class="tok-id">layerAssignments</span>);</span>
+<span class="src-line" id="L350"><a class="ln" href="#L350">350</a>    }</span>
+<span class="src-line" id="L351"><a class="ln" href="#L351">351</a></span>
+<span class="src-line" id="L352"><a class="ln" href="#L352">352</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testAnalyzeReadsCoverageReportWhenConfigured</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L353"><a class="ln" href="#L353">353</a>    {</span>
+<span class="src-line" id="L354"><a class="ln" href="#L354">354</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
+<span class="src-line" id="L355"><a class="ln" href="#L355">355</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L356"><a class="ln" href="#L356">356</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/coverage-xml&#039;</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L357"><a class="ln" href="#L357">357</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/composer.json&#039;</span>, &lt;&lt;&lt;&#039;JSON&#039;</span>
+<span class="src-line" id="L358"><a class="ln" href="#L358">358</a><span class="tok-str">{</span></span>
+<span class="src-line" id="L359"><a class="ln" href="#L359">359</a><span class="tok-str">    &quot;name&quot;: &quot;demo/app&quot;,</span></span>
+<span class="src-line" id="L360"><a class="ln" href="#L360">360</a><span class="tok-str">    &quot;autoload&quot;: {&quot;psr-4&quot;: {&quot;Demo\\&quot;: &quot;src/&quot;}}</span></span>
+<span class="src-line" id="L361"><a class="ln" href="#L361">361</a><span class="tok-str">}</span></span>
+<span class="src-line" id="L362"><a class="ln" href="#L362">362</a><span class="tok-kw">JSON</span>);</span>
+<span class="src-line" id="L363"><a class="ln" href="#L363">363</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/src/Greeter.php&#039;</span>, &lt;&lt;&lt;&#039;PHP&#039;</span>
+<span class="src-line" id="L364"><a class="ln" href="#L364">364</a><span class="tok-str">&lt;?php</span></span>
 <span class="src-line" id="L365"><a class="ln" href="#L365">365</a></span>
-<span class="src-line" id="L366"><a class="ln" href="#L366">366</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>((<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">layerModel</span>(<span class="tok-var">$config</span>));</span>
-<span class="src-line" id="L367"><a class="ln" href="#L367">367</a>    }</span>
-<span class="src-line" id="L368"><a class="ln" href="#L368">368</a></span>
-<span class="src-line" id="L369"><a class="ln" href="#L369">369</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCoverageIndexReturnsNullWithoutConfiguredReport</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L370"><a class="ln" href="#L370">370</a>    {</span>
-<span class="src-line" id="L371"><a class="ln" href="#L371">371</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
-<span class="src-line" id="L372"><a class="ln" href="#L372">372</a></span>
-<span class="src-line" id="L373"><a class="ln" href="#L373">373</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>((<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">coverageIndex</span>(<span class="tok-var">$config</span>));</span>
-<span class="src-line" id="L374"><a class="ln" href="#L374">374</a>    }</span>
-<span class="src-line" id="L375"><a class="ln" href="#L375">375</a></span>
-<span class="src-line" id="L376"><a class="ln" href="#L376">376</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCoverageIndexThrowsWhenReportDirectoryIsMissing</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L377"><a class="ln" href="#L377">377</a>    {</span>
-<span class="src-line" id="L378"><a class="ln" href="#L378">378</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
-<span class="src-line" id="L379"><a class="ln" href="#L379">379</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$dir</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;coverage-xml&#039;</span>);</span>
-<span class="src-line" id="L380"><a class="ln" href="#L380">380</a></span>
-<span class="src-line" id="L381"><a class="ln" href="#L381">381</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectException</span>(<span class="tok-id">DocGenException</span>::<span class="tok-kw">class</span>);</span>
-<span class="src-line" id="L382"><a class="ln" href="#L382">382</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectExceptionMessage</span>(<span class="tok-str">&#039;Coverage report directory not found: &#039;</span> . <span class="tok-var">$dir</span> . <span class="tok-str">&#039;/coverage-xml&#039;</span>);</span>
-<span class="src-line" id="L383"><a class="ln" href="#L383">383</a></span>
-<span class="src-line" id="L384"><a class="ln" href="#L384">384</a>        (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">coverageIndex</span>(<span class="tok-var">$config</span>);</span>
-<span class="src-line" id="L385"><a class="ln" href="#L385">385</a>    }</span>
-<span class="src-line" id="L386"><a class="ln" href="#L386">386</a></span>
-<span class="src-line" id="L387"><a class="ln" href="#L387">387</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testVendorWarningsReportsGlobThatMatchedNoPackage</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L388"><a class="ln" href="#L388">388</a>    {</span>
-<span class="src-line" id="L389"><a class="ln" href="#L389">389</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [<span class="tok-str">&#039;vendor&#039;</span>], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, [<span class="tok-str">&#039;dev-vendor&#039;</span>]);</span>
-<span class="src-line" id="L390"><a class="ln" href="#L390">390</a>        <span class="tok-var">$package</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], []), <span class="tok-id">false</span>);</span>
-<span class="src-line" id="L391"><a class="ln" href="#L391">391</a></span>
-<span class="src-line" id="L392"><a class="ln" href="#L392">392</a>        <span class="tok-var">$warnings</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">vendorWarnings</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$package</span>]);</span>
-<span class="src-line" id="L393"><a class="ln" href="#L393">393</a></span>
-<span class="src-line" id="L394"><a class="ln" href="#L394">394</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">2</span>, <span class="tok-var">$warnings</span>);</span>
-<span class="src-line" id="L395"><a class="ln" href="#L395">395</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(</span>
-<span class="src-line" id="L396"><a class="ln" href="#L396">396</a>            <span class="tok-str">&#039;Vendor glob &quot;vendor&quot; documented no installed runtime vendor package. Vendor globs match composer package names such as &quot;acme/lib&quot; or &quot;acme/*&quot;, not directory names.&#039;</span>,</span>
-<span class="src-line" id="L397"><a class="ln" href="#L397">397</a>            <span class="tok-var">$warnings</span>[<span class="tok-num">0</span>],</span>
-<span class="src-line" id="L398"><a class="ln" href="#L398">398</a>        );</span>
-<span class="src-line" id="L399"><a class="ln" href="#L399">399</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(</span>
-<span class="src-line" id="L400"><a class="ln" href="#L400">400</a>            <span class="tok-str">&#039;Vendor glob &quot;dev-vendor&quot; documented no installed dev vendor package. Vendor globs match composer package names such as &quot;acme/lib&quot; or &quot;acme/*&quot;, not directory names.&#039;</span>,</span>
-<span class="src-line" id="L401"><a class="ln" href="#L401">401</a>            <span class="tok-var">$warnings</span>[<span class="tok-num">1</span>],</span>
-<span class="src-line" id="L402"><a class="ln" href="#L402">402</a>        );</span>
-<span class="src-line" id="L403"><a class="ln" href="#L403">403</a>    }</span>
-<span class="src-line" id="L404"><a class="ln" href="#L404">404</a></span>
-<span class="src-line" id="L405"><a class="ln" href="#L405">405</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testVendorWarningsStaysSilentForMatchingGlob</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L406"><a class="ln" href="#L406">406</a>    {</span>
-<span class="src-line" id="L407"><a class="ln" href="#L407">407</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [<span class="tok-str">&#039;acme/*&#039;</span>], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, [<span class="tok-str">&#039;phpunit/*&#039;</span>]);</span>
-<span class="src-line" id="L408"><a class="ln" href="#L408">408</a>        <span class="tok-var">$runtime</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo/vendor/acme/lib&#039;</span>, <span class="tok-str">&#039;acme/lib&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [<span class="tok-str">&#039;Acme\\&#039;</span> =&gt; [<span class="tok-str">&#039;src&#039;</span>]], [], [], [], []), <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L409"><a class="ln" href="#L409">409</a>        <span class="tok-var">$dev</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo/vendor/phpunit/phpunit&#039;</span>, <span class="tok-str">&#039;phpunit/phpunit&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [<span class="tok-str">&#039;PHPUnit\\&#039;</span> =&gt; [<span class="tok-str">&#039;src&#039;</span>]], [], [], [], []), <span class="tok-id">true</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L410"><a class="ln" href="#L410">410</a></span>
-<span class="src-line" id="L411"><a class="ln" href="#L411">411</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([], (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">vendorWarnings</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$runtime</span>, <span class="tok-var">$dev</span>]));</span>
-<span class="src-line" id="L412"><a class="ln" href="#L412">412</a>    }</span>
-<span class="src-line" id="L413"><a class="ln" href="#L413">413</a></span>
-<span class="src-line" id="L414"><a class="ln" href="#L414">414</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testVendorWarningsReportsVendorPackageWithoutSources</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L415"><a class="ln" href="#L415">415</a>    {</span>
-<span class="src-line" id="L416"><a class="ln" href="#L416">416</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [<span class="tok-str">&#039;phpstan/*&#039;</span>], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
-<span class="src-line" id="L417"><a class="ln" href="#L417">417</a>        <span class="tok-var">$package</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo/vendor/phpstan/phpstan&#039;</span>, <span class="tok-str">&#039;phpstan/phpstan&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], []), <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L418"><a class="ln" href="#L418">418</a></span>
-<span class="src-line" id="L419"><a class="ln" href="#L419">419</a>        <span class="tok-var">$warnings</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">vendorWarnings</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$package</span>]);</span>
+<span class="src-line" id="L366"><a class="ln" href="#L366">366</a><span class="tok-str">namespace Demo;</span></span>
+<span class="src-line" id="L367"><a class="ln" href="#L367">367</a></span>
+<span class="src-line" id="L368"><a class="ln" href="#L368">368</a><span class="tok-str">class Greeter</span></span>
+<span class="src-line" id="L369"><a class="ln" href="#L369">369</a><span class="tok-str">{</span></span>
+<span class="src-line" id="L370"><a class="ln" href="#L370">370</a><span class="tok-str">    public function greet(): string</span></span>
+<span class="src-line" id="L371"><a class="ln" href="#L371">371</a><span class="tok-str">    {</span></span>
+<span class="src-line" id="L372"><a class="ln" href="#L372">372</a><span class="tok-str">        return &#039;Hello&#039;;</span></span>
+<span class="src-line" id="L373"><a class="ln" href="#L373">373</a><span class="tok-str">    }</span></span>
+<span class="src-line" id="L374"><a class="ln" href="#L374">374</a><span class="tok-str">}</span></span>
+<span class="src-line" id="L375"><a class="ln" href="#L375">375</a><span class="tok-kw">PHP</span>);</span>
+<span class="src-line" id="L376"><a class="ln" href="#L376">376</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/coverage-xml/Greeter.php.xml&#039;</span>, &lt;&lt;&lt;&#039;XML&#039;</span>
+<span class="src-line" id="L377"><a class="ln" href="#L377">377</a><span class="tok-str">&lt;?xml version=&quot;1.0&quot;?&gt;</span></span>
+<span class="src-line" id="L378"><a class="ln" href="#L378">378</a><span class="tok-str">&lt;phpunit&gt;</span></span>
+<span class="src-line" id="L379"><a class="ln" href="#L379">379</a><span class="tok-str">  &lt;file name=&quot;Greeter.php&quot; path=&quot;src&quot;&gt;</span></span>
+<span class="src-line" id="L380"><a class="ln" href="#L380">380</a><span class="tok-str">    &lt;method name=&quot;greet&quot; start=&quot;7&quot; executable=&quot;1&quot; executed=&quot;1&quot; coverage=&quot;100&quot;/&gt;</span></span>
+<span class="src-line" id="L381"><a class="ln" href="#L381">381</a><span class="tok-str">    &lt;coverage&gt;</span></span>
+<span class="src-line" id="L382"><a class="ln" href="#L382">382</a><span class="tok-str">      &lt;line nr=&quot;9&quot;&gt;</span></span>
+<span class="src-line" id="L383"><a class="ln" href="#L383">383</a><span class="tok-str">        &lt;covered by=&quot;DemoTests\GreeterTest::testGreet&quot;/&gt;</span></span>
+<span class="src-line" id="L384"><a class="ln" href="#L384">384</a><span class="tok-str">      &lt;/line&gt;</span></span>
+<span class="src-line" id="L385"><a class="ln" href="#L385">385</a><span class="tok-str">    &lt;/coverage&gt;</span></span>
+<span class="src-line" id="L386"><a class="ln" href="#L386">386</a><span class="tok-str">  &lt;/file&gt;</span></span>
+<span class="src-line" id="L387"><a class="ln" href="#L387">387</a><span class="tok-str">&lt;/phpunit&gt;</span></span>
+<span class="src-line" id="L388"><a class="ln" href="#L388">388</a><span class="tok-kw">XML</span>);</span>
+<span class="src-line" id="L389"><a class="ln" href="#L389">389</a>        <span class="tok-var">$root</span> = (string) <span class="tok-id">realpath</span>(<span class="tok-var">$dir</span>);</span>
+<span class="src-line" id="L390"><a class="ln" href="#L390">390</a></span>
+<span class="src-line" id="L391"><a class="ln" href="#L391">391</a>        <span class="tok-var">$model</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">analyze</span>(<span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$root</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;coverage-xml&#039;</span>));</span>
+<span class="src-line" id="L392"><a class="ln" href="#L392">392</a></span>
+<span class="src-line" id="L393"><a class="ln" href="#L393">393</a>        <span class="tok-var">$coverage</span> = <span class="tok-var">$model</span>-&gt;<span class="tok-id">coverage</span>;</span>
+<span class="src-line" id="L394"><a class="ln" href="#L394">394</a></span>
+<span class="src-line" id="L395"><a class="ln" href="#L395">395</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNotNull</span>(<span class="tok-var">$coverage</span>);</span>
+<span class="src-line" id="L396"><a class="ln" href="#L396">396</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;DemoTests\GreeterTest::testGreet&#039;</span>], <span class="tok-var">$coverage</span>-&gt;<span class="tok-id">testsForRange</span>(<span class="tok-str">&#039;src/Greeter.php&#039;</span>, <span class="tok-num">1</span>, <span class="tok-num">100</span>));</span>
+<span class="src-line" id="L397"><a class="ln" href="#L397">397</a>        <span class="tok-var">$method</span> = <span class="tok-var">$coverage</span>-&gt;<span class="tok-id">methodAt</span>(<span class="tok-str">&#039;src/Greeter.php&#039;</span>, <span class="tok-num">1</span>, <span class="tok-num">100</span>);</span>
+<span class="src-line" id="L398"><a class="ln" href="#L398">398</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNotNull</span>(<span class="tok-var">$method</span>);</span>
+<span class="src-line" id="L399"><a class="ln" href="#L399">399</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">1</span>, <span class="tok-var">$method</span>-&gt;<span class="tok-id">executable</span>);</span>
+<span class="src-line" id="L400"><a class="ln" href="#L400">400</a>    }</span>
+<span class="src-line" id="L401"><a class="ln" href="#L401">401</a></span>
+<span class="src-line" id="L402"><a class="ln" href="#L402">402</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLayerAssignmentsReturnsEmptyMapWithoutLayers</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L403"><a class="ln" href="#L403">403</a>    {</span>
+<span class="src-line" id="L404"><a class="ln" href="#L404">404</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([], (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">layerAssignments</span>(<span class="tok-id">null</span>, []));</span>
+<span class="src-line" id="L405"><a class="ln" href="#L405">405</a>    }</span>
+<span class="src-line" id="L406"><a class="ln" href="#L406">406</a></span>
+<span class="src-line" id="L407"><a class="ln" href="#L407">407</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLayerAssignmentsMapsMatchingClassesToLayerNames</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L408"><a class="ln" href="#L408">408</a>    {</span>
+<span class="src-line" id="L409"><a class="ln" href="#L409">409</a>        <span class="tok-var">$layers</span> = <span class="tok-kw">new</span> <span class="tok-id">LayerModel</span>([<span class="tok-kw">new</span> <span class="tok-id">LayerDefinition</span>(<span class="tok-str">&#039;Domain&#039;</span>, [<span class="tok-kw">new</span> <span class="tok-id">LayerCollector</span>(<span class="tok-str">&#039;className&#039;</span>, <span class="tok-str">&#039;Greeter&#039;</span>)])], []);</span>
+<span class="src-line" id="L410"><a class="ln" href="#L410">410</a>        <span class="tok-var">$greeter</span> = <span class="tok-kw">new</span> <span class="tok-id">ClassLikeDoc</span>(<span class="tok-str">&#039;Demo\Greeter&#039;</span>, <span class="tok-str">&#039;Greeter&#039;</span>, <span class="tok-str">&#039;Demo&#039;</span>, <span class="tok-str">&#039;class&#039;</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;src/Greeter.php&#039;</span>, <span class="tok-num">1</span>, <span class="tok-num">5</span>, <span class="tok-id">false</span>, <span class="tok-id">false</span>, [], [], [], [], [], [], [], <span class="tok-id">null</span>, <span class="tok-id">null</span>, [], <span class="tok-id">false</span>);</span>
+<span class="src-line" id="L411"><a class="ln" href="#L411">411</a>        <span class="tok-var">$mailer</span> = <span class="tok-kw">new</span> <span class="tok-id">ClassLikeDoc</span>(<span class="tok-str">&#039;Demo\Mailer&#039;</span>, <span class="tok-str">&#039;Mailer&#039;</span>, <span class="tok-str">&#039;Demo&#039;</span>, <span class="tok-str">&#039;class&#039;</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;src/Mailer.php&#039;</span>, <span class="tok-num">1</span>, <span class="tok-num">5</span>, <span class="tok-id">false</span>, <span class="tok-id">false</span>, [], [], [], [], [], [], [], <span class="tok-id">null</span>, <span class="tok-id">null</span>, [], <span class="tok-id">false</span>);</span>
+<span class="src-line" id="L412"><a class="ln" href="#L412">412</a></span>
+<span class="src-line" id="L413"><a class="ln" href="#L413">413</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;demo\greeter&#039;</span> =&gt; [<span class="tok-str">&#039;Domain&#039;</span>]], (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">layerAssignments</span>(<span class="tok-var">$layers</span>, [<span class="tok-var">$greeter</span>, <span class="tok-var">$mailer</span>]));</span>
+<span class="src-line" id="L414"><a class="ln" href="#L414">414</a>    }</span>
+<span class="src-line" id="L415"><a class="ln" href="#L415">415</a></span>
+<span class="src-line" id="L416"><a class="ln" href="#L416">416</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLayerModelThrowsWhenConfiguredDeptracFileIsMissing</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L417"><a class="ln" href="#L417">417</a>    {</span>
+<span class="src-line" id="L418"><a class="ln" href="#L418">418</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
+<span class="src-line" id="L419"><a class="ln" href="#L419">419</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$dir</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;missing/deptrac.yaml&#039;</span>, <span class="tok-id">null</span>);</span>
 <span class="src-line" id="L420"><a class="ln" href="#L420">420</a></span>
-<span class="src-line" id="L421"><a class="ln" href="#L421">421</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">1</span>, <span class="tok-var">$warnings</span>);</span>
-<span class="src-line" id="L422"><a class="ln" href="#L422">422</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(</span>
-<span class="src-line" id="L423"><a class="ln" href="#L423">423</a>            <span class="tok-str">&#039;Vendor package &quot;phpstan/phpstan&quot; declares no PSR-4 or classmap autoload source, so its classes cannot be documented or linked. Packages that autoload only &quot;files&quot; entries, such as a phar bootstrap, cannot be documented: drop &quot;phpstan/phpstan&quot; from the vendor globs.&#039;</span>,</span>
-<span class="src-line" id="L424"><a class="ln" href="#L424">424</a>            <span class="tok-var">$warnings</span>[<span class="tok-num">0</span>],</span>
-<span class="src-line" id="L425"><a class="ln" href="#L425">425</a>        );</span>
-<span class="src-line" id="L426"><a class="ln" href="#L426">426</a>    }</span>
-<span class="src-line" id="L427"><a class="ln" href="#L427">427</a></span>
-<span class="src-line" id="L428"><a class="ln" href="#L428">428</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testVendorGlobWarningsIgnoresPackagesOfTheOtherDependencyKind</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L429"><a class="ln" href="#L429">429</a>    {</span>
-<span class="src-line" id="L430"><a class="ln" href="#L430">430</a>        <span class="tok-var">$devPackage</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo/vendor/phpunit/phpunit&#039;</span>, <span class="tok-str">&#039;phpunit/phpunit&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [<span class="tok-str">&#039;PHPUnit\\&#039;</span> =&gt; [<span class="tok-str">&#039;src&#039;</span>]], [], [], [], []), <span class="tok-id">true</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L421"><a class="ln" href="#L421">421</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectException</span>(<span class="tok-id">DocGenException</span>::<span class="tok-kw">class</span>);</span>
+<span class="src-line" id="L422"><a class="ln" href="#L422">422</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectExceptionMessage</span>(<span class="tok-str">&#039;Deptrac config not found: &#039;</span> . <span class="tok-var">$dir</span> . <span class="tok-str">&#039;/missing/deptrac.yaml&#039;</span>);</span>
+<span class="src-line" id="L423"><a class="ln" href="#L423">423</a></span>
+<span class="src-line" id="L424"><a class="ln" href="#L424">424</a>        (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">layerModel</span>(<span class="tok-var">$config</span>);</span>
+<span class="src-line" id="L425"><a class="ln" href="#L425">425</a>    }</span>
+<span class="src-line" id="L426"><a class="ln" href="#L426">426</a></span>
+<span class="src-line" id="L427"><a class="ln" href="#L427">427</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLayerModelReturnsNullWithoutDeptracConfiguration</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L428"><a class="ln" href="#L428">428</a>    {</span>
+<span class="src-line" id="L429"><a class="ln" href="#L429">429</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
+<span class="src-line" id="L430"><a class="ln" href="#L430">430</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$dir</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
 <span class="src-line" id="L431"><a class="ln" href="#L431">431</a></span>
-<span class="src-line" id="L432"><a class="ln" href="#L432">432</a>        <span class="tok-var">$warnings</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">vendorGlobWarnings</span>([<span class="tok-str">&#039;phpunit/*&#039;</span>], [<span class="tok-var">$devPackage</span>], <span class="tok-id">false</span>);</span>
-<span class="src-line" id="L433"><a class="ln" href="#L433">433</a></span>
-<span class="src-line" id="L434"><a class="ln" href="#L434">434</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">1</span>, <span class="tok-var">$warnings</span>);</span>
-<span class="src-line" id="L435"><a class="ln" href="#L435">435</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;documented no installed runtime vendor package&#039;</span>, <span class="tok-var">$warnings</span>[<span class="tok-num">0</span>]);</span>
-<span class="src-line" id="L436"><a class="ln" href="#L436">436</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([], (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">vendorGlobWarnings</span>([<span class="tok-str">&#039;phpunit/*&#039;</span>], [<span class="tok-var">$devPackage</span>], <span class="tok-id">true</span>));</span>
-<span class="src-line" id="L437"><a class="ln" href="#L437">437</a>    }</span>
+<span class="src-line" id="L432"><a class="ln" href="#L432">432</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>((<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">layerModel</span>(<span class="tok-var">$config</span>));</span>
+<span class="src-line" id="L433"><a class="ln" href="#L433">433</a>    }</span>
+<span class="src-line" id="L434"><a class="ln" href="#L434">434</a></span>
+<span class="src-line" id="L435"><a class="ln" href="#L435">435</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCoverageIndexReturnsNullWithoutConfiguredReport</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L436"><a class="ln" href="#L436">436</a>    {</span>
+<span class="src-line" id="L437"><a class="ln" href="#L437">437</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
 <span class="src-line" id="L438"><a class="ln" href="#L438">438</a></span>
-<span class="src-line" id="L439"><a class="ln" href="#L439">439</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testVendorSourceWarningsIgnoresProjectPackagesAndDocumentedVendors</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L440"><a class="ln" href="#L440">440</a>    {</span>
-<span class="src-line" id="L441"><a class="ln" href="#L441">441</a>        <span class="tok-var">$project</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], []), <span class="tok-id">false</span>);</span>
-<span class="src-line" id="L442"><a class="ln" href="#L442">442</a>        <span class="tok-var">$vendor</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo/vendor/acme/lib&#039;</span>, <span class="tok-str">&#039;acme/lib&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [<span class="tok-str">&#039;Acme\\&#039;</span> =&gt; [<span class="tok-str">&#039;src&#039;</span>]], [], [], [], []), <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L443"><a class="ln" href="#L443">443</a></span>
-<span class="src-line" id="L444"><a class="ln" href="#L444">444</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([], (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">vendorSourceWarnings</span>([<span class="tok-var">$project</span>, <span class="tok-var">$vendor</span>]));</span>
-<span class="src-line" id="L445"><a class="ln" href="#L445">445</a>    }</span>
+<span class="src-line" id="L439"><a class="ln" href="#L439">439</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>((<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">coverageIndex</span>(<span class="tok-var">$config</span>));</span>
+<span class="src-line" id="L440"><a class="ln" href="#L440">440</a>    }</span>
+<span class="src-line" id="L441"><a class="ln" href="#L441">441</a></span>
+<span class="src-line" id="L442"><a class="ln" href="#L442">442</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCoverageIndexThrowsWhenReportDirectoryIsMissing</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L443"><a class="ln" href="#L443">443</a>    {</span>
+<span class="src-line" id="L444"><a class="ln" href="#L444">444</a>        <span class="tok-var">$dir</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-analyzer-&#039;</span> . <span class="tok-id">bin2hex</span>(<span class="tok-id">random_bytes</span>(<span class="tok-num">4</span>));</span>
+<span class="src-line" id="L445"><a class="ln" href="#L445">445</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$dir</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;coverage-xml&#039;</span>);</span>
 <span class="src-line" id="L446"><a class="ln" href="#L446">446</a></span>
-<span class="src-line" id="L447"><a class="ln" href="#L447">447</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testTitleForPrefersConfiguredTitle</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L448"><a class="ln" href="#L448">448</a>    {</span>
-<span class="src-line" id="L449"><a class="ln" href="#L449">449</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-str">&#039;Custom Title&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
-<span class="src-line" id="L450"><a class="ln" href="#L450">450</a></span>
-<span class="src-line" id="L451"><a class="ln" href="#L451">451</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;Custom Title&#039;</span>, (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">titleFor</span>(<span class="tok-var">$config</span>, []));</span>
-<span class="src-line" id="L452"><a class="ln" href="#L452">452</a>    }</span>
-<span class="src-line" id="L453"><a class="ln" href="#L453">453</a></span>
-<span class="src-line" id="L454"><a class="ln" href="#L454">454</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testTitleForFallsBackToRootBasenameWithoutRootPackage</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L455"><a class="ln" href="#L455">455</a>    {</span>
-<span class="src-line" id="L456"><a class="ln" href="#L456">456</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo-docs&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
-<span class="src-line" id="L457"><a class="ln" href="#L457">457</a>        <span class="tok-var">$vendorPackage</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/other&#039;</span>, <span class="tok-str">&#039;vendor/lib&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], []), <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L458"><a class="ln" href="#L458">458</a></span>
-<span class="src-line" id="L459"><a class="ln" href="#L459">459</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;demo-docs&#039;</span>, (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">titleFor</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$vendorPackage</span>]));</span>
-<span class="src-line" id="L460"><a class="ln" href="#L460">460</a>    }</span>
-<span class="src-line" id="L461"><a class="ln" href="#L461">461</a></span>
-<span class="src-line" id="L462"><a class="ln" href="#L462">462</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRepositoryForPrefersTheConfiguredAddress</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L463"><a class="ln" href="#L463">463</a>    {</span>
-<span class="src-line" id="L464"><a class="ln" href="#L464">464</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, [], <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;https://github.com/example/configured&#039;</span>);</span>
-<span class="src-line" id="L465"><a class="ln" href="#L465">465</a>        <span class="tok-var">$root</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], [], [], [], <span class="tok-str">&#039;https://github.com/example/declared&#039;</span>), <span class="tok-id">false</span>);</span>
-<span class="src-line" id="L466"><a class="ln" href="#L466">466</a></span>
-<span class="src-line" id="L467"><a class="ln" href="#L467">467</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;https://github.com/example/configured&#039;</span>, (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">repositoryFor</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$root</span>]));</span>
-<span class="src-line" id="L468"><a class="ln" href="#L468">468</a>    }</span>
-<span class="src-line" id="L469"><a class="ln" href="#L469">469</a></span>
-<span class="src-line" id="L470"><a class="ln" href="#L470">470</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRepositoryForReadsTheRootPackageWhenNothingIsConfigured</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L471"><a class="ln" href="#L471">471</a>    {</span>
-<span class="src-line" id="L472"><a class="ln" href="#L472">472</a>        <span class="tok-var">$directory</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-repository-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L473"><a class="ln" href="#L473">473</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$directory</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L474"><a class="ln" href="#L474">474</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$directory</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
-<span class="src-line" id="L475"><a class="ln" href="#L475">475</a>        <span class="tok-var">$vendor</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-var">$directory</span>, <span class="tok-str">&#039;acme/lib&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], [], [], [], <span class="tok-str">&#039;https://github.com/acme/lib&#039;</span>), <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L476"><a class="ln" href="#L476">476</a>        <span class="tok-var">$root</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-var">$directory</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], [], [], [], <span class="tok-str">&#039;https://github.com/example/declared&#039;</span>), <span class="tok-id">false</span>);</span>
-<span class="src-line" id="L477"><a class="ln" href="#L477">477</a></span>
-<span class="src-line" id="L478"><a class="ln" href="#L478">478</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;https://github.com/example/declared&#039;</span>, (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">repositoryFor</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$vendor</span>, <span class="tok-var">$root</span>]));</span>
-<span class="src-line" id="L479"><a class="ln" href="#L479">479</a>    }</span>
-<span class="src-line" id="L480"><a class="ln" href="#L480">480</a></span>
-<span class="src-line" id="L481"><a class="ln" href="#L481">481</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRepositoryForNamesNothingWhereNeitherSaysWhereTheCodeLives</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L482"><a class="ln" href="#L482">482</a>    {</span>
-<span class="src-line" id="L483"><a class="ln" href="#L483">483</a>        <span class="tok-var">$directory</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-repository-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L484"><a class="ln" href="#L484">484</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$directory</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
-<span class="src-line" id="L485"><a class="ln" href="#L485">485</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$directory</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
-<span class="src-line" id="L486"><a class="ln" href="#L486">486</a>        <span class="tok-var">$root</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-var">$directory</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], []), <span class="tok-id">false</span>);</span>
-<span class="src-line" id="L487"><a class="ln" href="#L487">487</a>        <span class="tok-var">$elsewhere</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/other&#039;</span>, <span class="tok-str">&#039;demo/other&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], [], [], [], <span class="tok-str">&#039;https://github.com/example/other&#039;</span>), <span class="tok-id">false</span>);</span>
-<span class="src-line" id="L488"><a class="ln" href="#L488">488</a></span>
-<span class="src-line" id="L489"><a class="ln" href="#L489">489</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>((<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">repositoryFor</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$root</span>]));</span>
-<span class="src-line" id="L490"><a class="ln" href="#L490">490</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>((<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">repositoryFor</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$elsewhere</span>]));</span>
-<span class="src-line" id="L491"><a class="ln" href="#L491">491</a>    }</span>
-<span class="src-line" id="L492"><a class="ln" href="#L492">492</a>}</span>
+<span class="src-line" id="L447"><a class="ln" href="#L447">447</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectException</span>(<span class="tok-id">DocGenException</span>::<span class="tok-kw">class</span>);</span>
+<span class="src-line" id="L448"><a class="ln" href="#L448">448</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectExceptionMessage</span>(<span class="tok-str">&#039;Coverage report directory not found: &#039;</span> . <span class="tok-var">$dir</span> . <span class="tok-str">&#039;/coverage-xml&#039;</span>);</span>
+<span class="src-line" id="L449"><a class="ln" href="#L449">449</a></span>
+<span class="src-line" id="L450"><a class="ln" href="#L450">450</a>        (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">coverageIndex</span>(<span class="tok-var">$config</span>);</span>
+<span class="src-line" id="L451"><a class="ln" href="#L451">451</a>    }</span>
+<span class="src-line" id="L452"><a class="ln" href="#L452">452</a></span>
+<span class="src-line" id="L453"><a class="ln" href="#L453">453</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testVendorWarningsReportsGlobThatMatchedNoPackage</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L454"><a class="ln" href="#L454">454</a>    {</span>
+<span class="src-line" id="L455"><a class="ln" href="#L455">455</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [<span class="tok-str">&#039;vendor&#039;</span>], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, [<span class="tok-str">&#039;dev-vendor&#039;</span>]);</span>
+<span class="src-line" id="L456"><a class="ln" href="#L456">456</a>        <span class="tok-var">$package</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], []), <span class="tok-id">false</span>);</span>
+<span class="src-line" id="L457"><a class="ln" href="#L457">457</a></span>
+<span class="src-line" id="L458"><a class="ln" href="#L458">458</a>        <span class="tok-var">$warnings</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">vendorWarnings</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$package</span>]);</span>
+<span class="src-line" id="L459"><a class="ln" href="#L459">459</a></span>
+<span class="src-line" id="L460"><a class="ln" href="#L460">460</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">2</span>, <span class="tok-var">$warnings</span>);</span>
+<span class="src-line" id="L461"><a class="ln" href="#L461">461</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(</span>
+<span class="src-line" id="L462"><a class="ln" href="#L462">462</a>            <span class="tok-str">&#039;Vendor glob &quot;vendor&quot; documented no installed runtime vendor package. Vendor globs match composer package names such as &quot;acme/lib&quot; or &quot;acme/*&quot;, not directory names.&#039;</span>,</span>
+<span class="src-line" id="L463"><a class="ln" href="#L463">463</a>            <span class="tok-var">$warnings</span>[<span class="tok-num">0</span>],</span>
+<span class="src-line" id="L464"><a class="ln" href="#L464">464</a>        );</span>
+<span class="src-line" id="L465"><a class="ln" href="#L465">465</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(</span>
+<span class="src-line" id="L466"><a class="ln" href="#L466">466</a>            <span class="tok-str">&#039;Vendor glob &quot;dev-vendor&quot; documented no installed dev vendor package. Vendor globs match composer package names such as &quot;acme/lib&quot; or &quot;acme/*&quot;, not directory names.&#039;</span>,</span>
+<span class="src-line" id="L467"><a class="ln" href="#L467">467</a>            <span class="tok-var">$warnings</span>[<span class="tok-num">1</span>],</span>
+<span class="src-line" id="L468"><a class="ln" href="#L468">468</a>        );</span>
+<span class="src-line" id="L469"><a class="ln" href="#L469">469</a>    }</span>
+<span class="src-line" id="L470"><a class="ln" href="#L470">470</a></span>
+<span class="src-line" id="L471"><a class="ln" href="#L471">471</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testVendorWarningsStaysSilentForMatchingGlob</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L472"><a class="ln" href="#L472">472</a>    {</span>
+<span class="src-line" id="L473"><a class="ln" href="#L473">473</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [<span class="tok-str">&#039;acme/*&#039;</span>], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, [<span class="tok-str">&#039;phpunit/*&#039;</span>]);</span>
+<span class="src-line" id="L474"><a class="ln" href="#L474">474</a>        <span class="tok-var">$runtime</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo/vendor/acme/lib&#039;</span>, <span class="tok-str">&#039;acme/lib&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [<span class="tok-str">&#039;Acme\\&#039;</span> =&gt; [<span class="tok-str">&#039;src&#039;</span>]], [], [], [], []), <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L475"><a class="ln" href="#L475">475</a>        <span class="tok-var">$dev</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo/vendor/phpunit/phpunit&#039;</span>, <span class="tok-str">&#039;phpunit/phpunit&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [<span class="tok-str">&#039;PHPUnit\\&#039;</span> =&gt; [<span class="tok-str">&#039;src&#039;</span>]], [], [], [], []), <span class="tok-id">true</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L476"><a class="ln" href="#L476">476</a></span>
+<span class="src-line" id="L477"><a class="ln" href="#L477">477</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([], (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">vendorWarnings</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$runtime</span>, <span class="tok-var">$dev</span>]));</span>
+<span class="src-line" id="L478"><a class="ln" href="#L478">478</a>    }</span>
+<span class="src-line" id="L479"><a class="ln" href="#L479">479</a></span>
+<span class="src-line" id="L480"><a class="ln" href="#L480">480</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testVendorWarningsReportsVendorPackageWithoutSources</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L481"><a class="ln" href="#L481">481</a>    {</span>
+<span class="src-line" id="L482"><a class="ln" href="#L482">482</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [<span class="tok-str">&#039;phpstan/*&#039;</span>], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
+<span class="src-line" id="L483"><a class="ln" href="#L483">483</a>        <span class="tok-var">$package</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo/vendor/phpstan/phpstan&#039;</span>, <span class="tok-str">&#039;phpstan/phpstan&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], []), <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L484"><a class="ln" href="#L484">484</a></span>
+<span class="src-line" id="L485"><a class="ln" href="#L485">485</a>        <span class="tok-var">$warnings</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">vendorWarnings</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$package</span>]);</span>
+<span class="src-line" id="L486"><a class="ln" href="#L486">486</a></span>
+<span class="src-line" id="L487"><a class="ln" href="#L487">487</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">1</span>, <span class="tok-var">$warnings</span>);</span>
+<span class="src-line" id="L488"><a class="ln" href="#L488">488</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(</span>
+<span class="src-line" id="L489"><a class="ln" href="#L489">489</a>            <span class="tok-str">&#039;Vendor package &quot;phpstan/phpstan&quot; declares no PSR-4 or classmap autoload source, so its classes cannot be documented or linked. Packages that autoload only &quot;files&quot; entries, such as a phar bootstrap, cannot be documented: drop &quot;phpstan/phpstan&quot; from the vendor globs.&#039;</span>,</span>
+<span class="src-line" id="L490"><a class="ln" href="#L490">490</a>            <span class="tok-var">$warnings</span>[<span class="tok-num">0</span>],</span>
+<span class="src-line" id="L491"><a class="ln" href="#L491">491</a>        );</span>
+<span class="src-line" id="L492"><a class="ln" href="#L492">492</a>    }</span>
 <span class="src-line" id="L493"><a class="ln" href="#L493">493</a></span>
+<span class="src-line" id="L494"><a class="ln" href="#L494">494</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testVendorGlobWarningsIgnoresPackagesOfTheOtherDependencyKind</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L495"><a class="ln" href="#L495">495</a>    {</span>
+<span class="src-line" id="L496"><a class="ln" href="#L496">496</a>        <span class="tok-var">$devPackage</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo/vendor/phpunit/phpunit&#039;</span>, <span class="tok-str">&#039;phpunit/phpunit&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [<span class="tok-str">&#039;PHPUnit\\&#039;</span> =&gt; [<span class="tok-str">&#039;src&#039;</span>]], [], [], [], []), <span class="tok-id">true</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L497"><a class="ln" href="#L497">497</a></span>
+<span class="src-line" id="L498"><a class="ln" href="#L498">498</a>        <span class="tok-var">$warnings</span> = (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">vendorGlobWarnings</span>([<span class="tok-str">&#039;phpunit/*&#039;</span>], [<span class="tok-var">$devPackage</span>], <span class="tok-id">false</span>);</span>
+<span class="src-line" id="L499"><a class="ln" href="#L499">499</a></span>
+<span class="src-line" id="L500"><a class="ln" href="#L500">500</a>        <span class="tok-id">self</span>::<span class="tok-id">assertCount</span>(<span class="tok-num">1</span>, <span class="tok-var">$warnings</span>);</span>
+<span class="src-line" id="L501"><a class="ln" href="#L501">501</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;documented no installed runtime vendor package&#039;</span>, <span class="tok-var">$warnings</span>[<span class="tok-num">0</span>]);</span>
+<span class="src-line" id="L502"><a class="ln" href="#L502">502</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([], (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">vendorGlobWarnings</span>([<span class="tok-str">&#039;phpunit/*&#039;</span>], [<span class="tok-var">$devPackage</span>], <span class="tok-id">true</span>));</span>
+<span class="src-line" id="L503"><a class="ln" href="#L503">503</a>    }</span>
+<span class="src-line" id="L504"><a class="ln" href="#L504">504</a></span>
+<span class="src-line" id="L505"><a class="ln" href="#L505">505</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testVendorSourceWarningsIgnoresProjectPackagesAndDocumentedVendors</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L506"><a class="ln" href="#L506">506</a>    {</span>
+<span class="src-line" id="L507"><a class="ln" href="#L507">507</a>        <span class="tok-var">$project</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], []), <span class="tok-id">false</span>);</span>
+<span class="src-line" id="L508"><a class="ln" href="#L508">508</a>        <span class="tok-var">$vendor</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo/vendor/acme/lib&#039;</span>, <span class="tok-str">&#039;acme/lib&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [<span class="tok-str">&#039;Acme\\&#039;</span> =&gt; [<span class="tok-str">&#039;src&#039;</span>]], [], [], [], []), <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L509"><a class="ln" href="#L509">509</a></span>
+<span class="src-line" id="L510"><a class="ln" href="#L510">510</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([], (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">vendorSourceWarnings</span>([<span class="tok-var">$project</span>, <span class="tok-var">$vendor</span>]));</span>
+<span class="src-line" id="L511"><a class="ln" href="#L511">511</a>    }</span>
+<span class="src-line" id="L512"><a class="ln" href="#L512">512</a></span>
+<span class="src-line" id="L513"><a class="ln" href="#L513">513</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testTitleForPrefersConfiguredTitle</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L514"><a class="ln" href="#L514">514</a>    {</span>
+<span class="src-line" id="L515"><a class="ln" href="#L515">515</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-str">&#039;Custom Title&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
+<span class="src-line" id="L516"><a class="ln" href="#L516">516</a></span>
+<span class="src-line" id="L517"><a class="ln" href="#L517">517</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;Custom Title&#039;</span>, (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">titleFor</span>(<span class="tok-var">$config</span>, []));</span>
+<span class="src-line" id="L518"><a class="ln" href="#L518">518</a>    }</span>
+<span class="src-line" id="L519"><a class="ln" href="#L519">519</a></span>
+<span class="src-line" id="L520"><a class="ln" href="#L520">520</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testTitleForFallsBackToRootBasenameWithoutRootPackage</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L521"><a class="ln" href="#L521">521</a>    {</span>
+<span class="src-line" id="L522"><a class="ln" href="#L522">522</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo-docs&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
+<span class="src-line" id="L523"><a class="ln" href="#L523">523</a>        <span class="tok-var">$vendorPackage</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/other&#039;</span>, <span class="tok-str">&#039;vendor/lib&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], []), <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L524"><a class="ln" href="#L524">524</a></span>
+<span class="src-line" id="L525"><a class="ln" href="#L525">525</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;demo-docs&#039;</span>, (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">titleFor</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$vendorPackage</span>]));</span>
+<span class="src-line" id="L526"><a class="ln" href="#L526">526</a>    }</span>
+<span class="src-line" id="L527"><a class="ln" href="#L527">527</a></span>
+<span class="src-line" id="L528"><a class="ln" href="#L528">528</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRepositoryForPrefersTheConfiguredAddress</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L529"><a class="ln" href="#L529">529</a>    {</span>
+<span class="src-line" id="L530"><a class="ln" href="#L530">530</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, [], <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;https://github.com/example/configured&#039;</span>);</span>
+<span class="src-line" id="L531"><a class="ln" href="#L531">531</a>        <span class="tok-var">$root</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/demo&#039;</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], [], [], [], <span class="tok-str">&#039;https://github.com/example/declared&#039;</span>), <span class="tok-id">false</span>);</span>
+<span class="src-line" id="L532"><a class="ln" href="#L532">532</a></span>
+<span class="src-line" id="L533"><a class="ln" href="#L533">533</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;https://github.com/example/configured&#039;</span>, (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">repositoryFor</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$root</span>]));</span>
+<span class="src-line" id="L534"><a class="ln" href="#L534">534</a>    }</span>
+<span class="src-line" id="L535"><a class="ln" href="#L535">535</a></span>
+<span class="src-line" id="L536"><a class="ln" href="#L536">536</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRepositoryForReadsTheRootPackageWhenNothingIsConfigured</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L537"><a class="ln" href="#L537">537</a>    {</span>
+<span class="src-line" id="L538"><a class="ln" href="#L538">538</a>        <span class="tok-var">$directory</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-repository-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L539"><a class="ln" href="#L539">539</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$directory</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L540"><a class="ln" href="#L540">540</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$directory</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
+<span class="src-line" id="L541"><a class="ln" href="#L541">541</a>        <span class="tok-var">$vendor</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-var">$directory</span>, <span class="tok-str">&#039;acme/lib&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], [], [], [], <span class="tok-str">&#039;https://github.com/acme/lib&#039;</span>), <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L542"><a class="ln" href="#L542">542</a>        <span class="tok-var">$root</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-var">$directory</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], [], [], [], <span class="tok-str">&#039;https://github.com/example/declared&#039;</span>), <span class="tok-id">false</span>);</span>
+<span class="src-line" id="L543"><a class="ln" href="#L543">543</a></span>
+<span class="src-line" id="L544"><a class="ln" href="#L544">544</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;https://github.com/example/declared&#039;</span>, (<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">repositoryFor</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$vendor</span>, <span class="tok-var">$root</span>]));</span>
+<span class="src-line" id="L545"><a class="ln" href="#L545">545</a>    }</span>
+<span class="src-line" id="L546"><a class="ln" href="#L546">546</a></span>
+<span class="src-line" id="L547"><a class="ln" href="#L547">547</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRepositoryForNamesNothingWhereNeitherSaysWhereTheCodeLives</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L548"><a class="ln" href="#L548">548</a>    {</span>
+<span class="src-line" id="L549"><a class="ln" href="#L549">549</a>        <span class="tok-var">$directory</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/docgen-repository-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L550"><a class="ln" href="#L550">550</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$directory</span>, <span class="tok-num">0777</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L551"><a class="ln" href="#L551">551</a>        <span class="tok-var">$config</span> = <span class="tok-kw">new</span> <span class="tok-id">DocGenConfig</span>(<span class="tok-var">$directory</span>, [<span class="tok-str">&#039;.&#039;</span>], [], [], <span class="tok-str">&#039;build/docs&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>);</span>
+<span class="src-line" id="L552"><a class="ln" href="#L552">552</a>        <span class="tok-var">$root</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-var">$directory</span>, <span class="tok-str">&#039;demo/app&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], []), <span class="tok-id">false</span>);</span>
+<span class="src-line" id="L553"><a class="ln" href="#L553">553</a>        <span class="tok-var">$elsewhere</span> = <span class="tok-kw">new</span> <span class="tok-id">DiscoveredPackage</span>(<span class="tok-kw">new</span> <span class="tok-id">ComposerManifest</span>(<span class="tok-str">&#039;/tmp/other&#039;</span>, <span class="tok-str">&#039;demo/other&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], [], [], [], [], [], [], <span class="tok-str">&#039;https://github.com/example/other&#039;</span>), <span class="tok-id">false</span>);</span>
+<span class="src-line" id="L554"><a class="ln" href="#L554">554</a></span>
+<span class="src-line" id="L555"><a class="ln" href="#L555">555</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>((<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">repositoryFor</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$root</span>]));</span>
+<span class="src-line" id="L556"><a class="ln" href="#L556">556</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>((<span class="tok-kw">new</span> <span class="tok-id">ProjectAnalyzer</span>())-&gt;<span class="tok-id">repositoryFor</span>(<span class="tok-var">$config</span>, [<span class="tok-var">$elsewhere</span>]));</span>
+<span class="src-line" id="L557"><a class="ln" href="#L557">557</a>    }</span>
+<span class="src-line" id="L558"><a class="ln" href="#L558">558</a>}</span>
+<span class="src-line" id="L559"><a class="ln" href="#L559">559</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

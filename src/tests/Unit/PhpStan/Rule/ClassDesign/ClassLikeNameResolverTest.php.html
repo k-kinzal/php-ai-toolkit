@@ -45,18 +45,21 @@
 <span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\CoversClass</span>;</span>
 <span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;</span>
 <span class="src-line" id="L11"><a class="ln" href="#L11">11</a></span>
-<span class="src-line" id="L12"><a class="ln" href="#L12">12</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">ClassLikeNameResolver</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">ClassLikeNameResolverTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span></span>
-<span class="src-line" id="L14"><a class="ln" href="#L14">14</a>{</span>
-<span class="src-line" id="L15"><a class="ln" href="#L15">15</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testResolveReturnsNamespaceQualifiedName</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L16"><a class="ln" href="#L16">16</a>    {</span>
-<span class="src-line" id="L17"><a class="ln" href="#L17">17</a>        <span class="tok-var">$scope</span> = <span class="tok-id">self</span>::<span class="tok-id">createStub</span>(<span class="tok-id">Scope</span>::<span class="tok-kw">class</span>);</span>
-<span class="src-line" id="L18"><a class="ln" href="#L18">18</a>        <span class="tok-var">$scope</span>-&gt;<span class="tok-id">method</span>(<span class="tok-str">&#039;getNamespace&#039;</span>)-&gt;<span class="tok-id">willReturn</span>(<span class="tok-str">&#039;App\\Domain&#039;</span>);</span>
-<span class="src-line" id="L19"><a class="ln" href="#L19">19</a></span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;App\\Domain\\User&#039;</span>, (<span class="tok-kw">new</span> <span class="tok-id">ClassLikeNameResolver</span>())-&gt;<span class="tok-id">resolve</span>(<span class="tok-kw">new</span> <span class="tok-id">\PhpParser\Node\Stmt\Class_</span>(<span class="tok-str">&#039;User&#039;</span>), <span class="tok-var">$scope</span>));</span>
-<span class="src-line" id="L21"><a class="ln" href="#L21">21</a>    }</span>
-<span class="src-line" id="L22"><a class="ln" href="#L22">22</a>}</span>
-<span class="src-line" id="L23"><a class="ln" href="#L23">23</a></span>
+<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-com">/**</span></span>
+<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-com"> * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\ClassLikeNameResolver</span></span>
+<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-com"> */</span></span>
+<span class="src-line" id="L15"><a class="ln" href="#L15">15</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">ClassLikeNameResolver</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">ClassLikeNameResolverTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span></span>
+<span class="src-line" id="L17"><a class="ln" href="#L17">17</a>{</span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testResolveReturnsNamespaceQualifiedName</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a>    {</span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a>        <span class="tok-var">$scope</span> = <span class="tok-id">self</span>::<span class="tok-id">createStub</span>(<span class="tok-id">Scope</span>::<span class="tok-kw">class</span>);</span>
+<span class="src-line" id="L21"><a class="ln" href="#L21">21</a>        <span class="tok-var">$scope</span>-&gt;<span class="tok-id">method</span>(<span class="tok-str">&#039;getNamespace&#039;</span>)-&gt;<span class="tok-id">willReturn</span>(<span class="tok-str">&#039;App\\Domain&#039;</span>);</span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a></span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;App\\Domain\\User&#039;</span>, (<span class="tok-kw">new</span> <span class="tok-id">ClassLikeNameResolver</span>())-&gt;<span class="tok-id">resolve</span>(<span class="tok-kw">new</span> <span class="tok-id">\PhpParser\Node\Stmt\Class_</span>(<span class="tok-str">&#039;User&#039;</span>), <span class="tok-var">$scope</span>));</span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>    }</span>
+<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>}</span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

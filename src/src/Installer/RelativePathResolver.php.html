@@ -73,19 +73,23 @@
 <span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        <span class="tok-var">$commonLength</span> = <span class="tok-num">0</span>;</span>
 <span class="src-line" id="L38"><a class="ln" href="#L38">38</a>        <span class="tok-var">$maxCommon</span> = <span class="tok-id">min</span>(<span class="tok-id">count</span>(<span class="tok-var">$fromParts</span>), <span class="tok-id">count</span>(<span class="tok-var">$toParts</span>));</span>
 <span class="src-line" id="L39"><a class="ln" href="#L39">39</a></span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        <span class="tok-kw">while</span> (<span class="tok-var">$commonLength</span> &lt; <span class="tok-var">$maxCommon</span> &amp;&amp; <span class="tok-var">$fromParts</span>[<span class="tok-var">$commonLength</span>] === <span class="tok-var">$toParts</span>[<span class="tok-var">$commonLength</span>]) {</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>            <span class="tok-var">$commonLength</span>++;</span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        }</span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a></span>
-<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>        <span class="tok-var">$upCount</span> = <span class="tok-id">count</span>(<span class="tok-var">$fromParts</span>) - <span class="tok-var">$commonLength</span>;</span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        <span class="tok-var">$remaining</span> = <span class="tok-id">array_slice</span>(<span class="tok-var">$toParts</span>, <span class="tok-var">$commonLength</span>);</span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a></span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>        <span class="tok-var">$relative</span> = <span class="tok-id">str_repeat</span>(<span class="tok-str">&#039;../&#039;</span>, <span class="tok-var">$upCount</span>) . <span class="tok-id">implode</span>(<span class="tok-str">&#039;/&#039;</span>, <span class="tok-var">$remaining</span>);</span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a></span>
-<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>        <span class="tok-kw">return</span> <span class="tok-id">rtrim</span>(<span class="tok-var">$relative</span>, <span class="tok-str">&#039;/&#039;</span>);</span>
-<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>    }</span>
-<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>}</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        <span class="tok-kw">foreach</span> (<span class="tok-id">array_slice</span>(<span class="tok-var">$fromParts</span>, <span class="tok-num">0</span>, <span class="tok-var">$maxCommon</span>) <span class="tok-kw">as</span> <span class="tok-var">$index</span> =&gt; <span class="tok-var">$fromPart</span>) {</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>            <span class="tok-kw">if</span> (<span class="tok-var">$fromPart</span> !== <span class="tok-var">$toParts</span>[<span class="tok-var">$index</span>]) {</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>                <span class="tok-kw">break</span>;</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>            }</span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a></span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>            <span class="tok-var">$commonLength</span>++;</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        }</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a></span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>        <span class="tok-var">$upCount</span> = <span class="tok-id">count</span>(<span class="tok-var">$fromParts</span>) - <span class="tok-var">$commonLength</span>;</span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>        <span class="tok-var">$remaining</span> = <span class="tok-id">array_slice</span>(<span class="tok-var">$toParts</span>, <span class="tok-var">$commonLength</span>);</span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a></span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>        <span class="tok-var">$relative</span> = <span class="tok-id">str_repeat</span>(<span class="tok-str">&#039;../&#039;</span>, <span class="tok-var">$upCount</span>) . <span class="tok-id">implode</span>(<span class="tok-str">&#039;/&#039;</span>, <span class="tok-var">$remaining</span>);</span>
 <span class="src-line" id="L52"><a class="ln" href="#L52">52</a></span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-kw">return</span> <span class="tok-id">rtrim</span>(<span class="tok-var">$relative</span>, <span class="tok-str">&#039;/&#039;</span>);</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>    }</span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>}</span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>

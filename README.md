@@ -59,18 +59,18 @@ Run the end-to-end adoption skill:
 
 The component skills are also available for focused setup or maintenance:
 
-- `/setup-toolkit-phpstan` — PHPStan at level max with strict rules and AI error formatter
-- `/setup-toolkit-phpunit` — PHPUnit with strict configuration and AI test reporter
-- `/setup-toolkit-infection` — Infection mutation testing with a whole-tree threshold and a stricter one for pull requests
-- `/setup-toolkit-php-cs-fixer` — PHP-CS-Fixer configuration
-- `/setup-toolkit-php-compatibility` — PHPCompatibility gate that keeps the code runnable on the declared minimum PHP
-- `/setup-toolkit-loc-guard` — LocGuard metrics checks for production source complexity and length limits
-- `/setup-toolkit-tree-guard` — TreeGuard directory and file structure constraints
+- `/setup-toolkit-agents-md` — AGENTS.md with project conventions and AI agent guidelines
+- `/setup-toolkit-deptrac` — Deptrac architecture dependency rules for web apps, CLI apps, libraries, and modular projects
 - `/setup-toolkit-doctest` — Doctest, the port of k-kinzal/doctest-php that runs PHPDoc examples as PHPUnit test cases
 - `/setup-toolkit-docgen` — DocGen static documentation site with full types, relations, layers, doctest examples, and a two-revision diff mode
-- `/setup-toolkit-deptrac` — Deptrac architecture dependency rules for web apps, CLI apps, libraries, and modular projects
 - `/setup-toolkit-github-actions` — GitHub Actions CI for tests, lint gates, PHP compatibility, and pinned actions
-- `/setup-toolkit-agents-md` — AGENTS.md with project conventions and AI agent guidelines
+- `/setup-toolkit-infection` — Infection mutation testing with a whole-tree threshold and a stricter one for pull requests
+- `/setup-toolkit-loc-guard` — LocGuard metrics checks for production source complexity and length limits
+- `/setup-toolkit-php-compatibility` — PHPCompatibility gate that keeps the code runnable on the declared minimum PHP
+- `/setup-toolkit-php-cs-fixer` — PHP-CS-Fixer configuration
+- `/setup-toolkit-phpstan` — PHPStan at level max with strict rules and AI error formatter
+- `/setup-toolkit-phpunit` — PHPUnit with strict configuration and AI test reporter
+- `/setup-toolkit-tree-guard` — TreeGuard directory and file structure constraints
 
 Component skills share fixed toolkit defaults. They adapt project facts such as
 autoload roots and supported PHP versions, but do not calibrate quality limits to
@@ -81,14 +81,13 @@ the first measured result.
 The [API documentation site](https://k-kinzal.github.io/php-ai-toolkit/) is generated from the source by `docgen`
 and published on every push to `main`.
 
-- [PHPStan Rules](docs/phpstan-rules.md) — Custom rules and their error identifiers
-- [PHPStan AI Formatter](docs/phpstan-ai-formatter.md) — Dual human/agent output for PHPStan findings
-- [PHPUnit AI Reporter](docs/phpunit-ai-reporter.md) — Location-first failure reports for PHPUnit 9.6 and 10.5 or later
-- [LocGuard](docs/loc-guard.md) — Production source metrics and reporters
-- [TreeGuard](docs/tree-guard.md) — Directory and file structure constraints
-- [EnforceVisibilityScopeRule](docs/rules/EnforceVisibilityScopeRule.md) — Namespace visibility scopes declared with `@visibility`, enforced during PHPStan analysis
-- [Doctest](docs/doctest.md) — Running PHPDoc examples as PHPUnit test cases, and how the port differs from upstream
-- [DocGen](docs/docgen.md) — Static documentation generation, analysis, and output
+- [DocGen](docs/docgen.md): DocGen documentation scope, caching, and generated site behavior
+- [Doctest](docs/doctest.md): Running the examples written in PHPDoc blocks as PHPUnit tests, the assertion notation, and how the port differs from upstream
+- [LocGuard](docs/loc-guard.md): LocGuard source metric limits and reporting
+- [PHPStan AI Formatter](docs/phpstan-ai-formatter.md): The `ai` error formatter, its mode detection, and its output
+- [PHPStan Rules](docs/phpstan-rules.md): Custom rules and their error identifiers
+- [PHPUnit AI Reporter](docs/phpunit-ai-reporter.md): The failure reporter for PHPUnit 9.6 and 10.5 or later
+- [TreeGuard](docs/tree-guard.md): TreeGuard directory and file structure constraints
 
 ## License
 

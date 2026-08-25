@@ -1,0 +1,34 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M0XMV8WW15FM001C2FPJ2T2P",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".github/workflows/docs.yml",
+    "README.md",
+    "docs/doc-gen.md",
+    "docs/doctest.md",
+    "skills/setup-php-ai-toolkit/SKILL.md",
+    "skills/setup-toolkit-doc-gen/SKILL.md",
+    "skills/setup-toolkit-doc-gen/docs-preview.yml",
+    "skills/setup-toolkit-doc-gen/docs.yml",
+    "skills/setup-toolkit-github-actions/SKILL.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 114,
+    "cache_creation_tokens": 164071,
+    "cache_read_tokens": 6056897,
+    "output_tokens": 56323,
+    "api_call_count": 57
+  }
+}

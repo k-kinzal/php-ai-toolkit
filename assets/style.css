@@ -250,6 +250,8 @@ a.chip:hover { text-decoration: none; filter: brightness(0.97); }
 .chip-layer { color: var(--kind-layer); background: var(--kind-layer-tint); }
 .chip-test { color: var(--state-test); background: var(--state-test-tint); }
 .chip-doctest { color: var(--state-ok); background: var(--state-ok-tint); }
+.chip-public { color: var(--state-ok); background: var(--state-ok-tint); }
+.chip-visibility { color: var(--state-warn); background: var(--state-warn-tint); }
 .chip-cov-high { color: var(--state-ok); background: var(--state-ok-tint); font-variant-numeric: tabular-nums; }
 .chip-cov-mid { color: var(--state-warn); background: var(--state-warn-tint); font-variant-numeric: tabular-nums; }
 .chip-cov-low { color: var(--state-danger); background: var(--state-danger-tint); font-variant-numeric: tabular-nums; }
@@ -698,6 +700,7 @@ svg.graph .edge-tip.edge-suggest { fill: var(--kind-enum); }
 
 .notice-deprecated { border-left-color: var(--state-danger); background: var(--state-danger-tint); }
 .notice-visibility { border-left-color: var(--state-warn); background: var(--state-warn-tint); }
+.notice-public { border-left-color: var(--state-ok); background: var(--state-ok-tint); }
 
 .notice-warn { border-left-color: var(--state-warn); }
 

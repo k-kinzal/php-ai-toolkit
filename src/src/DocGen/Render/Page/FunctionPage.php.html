@@ -38,23 +38,23 @@
 <span class="src-line" id="L2"><a class="ln" href="#L2">2</a></span>
 <span class="src-line" id="L3"><a class="ln" href="#L3">3</a><span class="tok-kw">declare</span>(<span class="tok-id">strict_types</span>=<span class="tok-num">1</span>);</span>
 <span class="src-line" id="L4"><a class="ln" href="#L4">4</a></span>
-<span class="src-line" id="L5"><a class="ln" href="#L5">5</a><span class="tok-kw">namespace</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page</span>;</span>
+<span class="src-line" id="L5"><a class="ln" href="#L5">5</a><span class="tok-kw">namespace</span> <span class="tok-id">Toolkit\DocGen\Render\Page</span>;</span>
 <span class="src-line" id="L6"><a class="ln" href="#L6">6</a></span>
-<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc</span>;</span>
-<span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Diff\DiffBanner</span>;</span>
-<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml</span>;</span>
-<span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\DocTextHtml</span>;</span>
-<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\MemberHtml</span>;</span>
-<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml</span>;</span>
-<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\SignatureHtml</span>;</span>
-<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\SymbolDescription</span>;</span>
-<span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\TestCaseHtml</span>;</span>
-<span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\UsageListHtml</span>;</span>
-<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\PageChrome</span>;</span>
-<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\RenderKit</span>;</span>
-<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\TypeRenderContext</span>;</span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a></span>
-<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">sprintf</span>;</span>
+<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">sprintf</span>;</span>
+<span class="src-line" id="L8"><a class="ln" href="#L8">8</a></span>
+<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\FunctionDoc</span>;</span>
+<span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Diff\DiffBanner</span>;</span>
+<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml</span>;</span>
+<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\DocTextHtml</span>;</span>
+<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\MemberHtml</span>;</span>
+<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\SidebarHtml</span>;</span>
+<span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\SignatureHtml</span>;</span>
+<span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\SymbolDescription</span>;</span>
+<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\TestCaseHtml</span>;</span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\UsageListHtml</span>;</span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\PageChrome</span>;</span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\RenderKit</span>;</span>
+<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\TypeRenderContext</span>;</span>
 <span class="src-line" id="L22"><a class="ln" href="#L22">22</a></span>
 <span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-com">/**</span></span>
 <span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-com"> * Renders the documentation page of one top-level function.</span></span>
@@ -170,15 +170,18 @@
 <span class="src-line" id="L134"><a class="ln" href="#L134">134</a>        <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">docText</span>-&gt;<span class="tok-id">render</span>(<span class="tok-var">$services</span>, <span class="tok-var">$function</span>-&gt;<span class="tok-id">docBlock</span>, <span class="tok-var">$context</span>, <span class="tok-var">$function</span>-&gt;<span class="tok-id">shortName</span> . <span class="tok-str">&#039;()&#039;</span>);</span>
 <span class="src-line" id="L135"><a class="ln" href="#L135">135</a>        <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">member</span>-&gt;<span class="tok-id">signatureTable</span>(<span class="tok-var">$services</span>, <span class="tok-var">$function</span>-&gt;<span class="tok-id">parameters</span>, <span class="tok-var">$function</span>-&gt;<span class="tok-id">returnType</span>, <span class="tok-var">$function</span>-&gt;<span class="tok-id">docBlock</span>, <span class="tok-var">$context</span>, <span class="tok-var">$key</span>);</span>
 <span class="src-line" id="L136"><a class="ln" href="#L136">136</a>        <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">member</span>-&gt;<span class="tok-id">tagExamples</span>(<span class="tok-var">$services</span>, <span class="tok-var">$function</span>-&gt;<span class="tok-id">docBlock</span>, <span class="tok-var">$function</span>-&gt;<span class="tok-id">shortName</span> . <span class="tok-str">&#039;()&#039;</span>);</span>
-<span class="src-line" id="L137"><a class="ln" href="#L137">137</a>        <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">testCaseHtml</span>-&gt;<span class="tok-id">section</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$services</span>-&gt;<span class="tok-id">model</span>-&gt;<span class="tok-id">testCases</span>-&gt;<span class="tok-id">forType</span>(<span class="tok-var">$function</span>-&gt;<span class="tok-id">fqn</span>));</span>
-<span class="src-line" id="L138"><a class="ln" href="#L138">138</a></span>
-<span class="src-line" id="L139"><a class="ln" href="#L139">139</a>        <span class="tok-kw">return</span> <span class="tok-var">$html</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">usageList</span>-&gt;<span class="tok-id">section</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-str">&#039;Called from&#039;</span>, <span class="tok-var">$services</span>-&gt;<span class="tok-id">model</span>-&gt;<span class="tok-id">usages</span>-&gt;<span class="tok-id">forType</span>(<span class="tok-var">$function</span>-&gt;<span class="tok-id">fqn</span>, <span class="tok-id">false</span>), <span class="tok-id">false</span>);</span>
-<span class="src-line" id="L140"><a class="ln" href="#L140">140</a>    }</span>
-<span class="src-line" id="L141"><a class="ln" href="#L141">141</a>}</span>
-<span class="src-line" id="L142"><a class="ln" href="#L142">142</a></span>
+<span class="src-line" id="L137"><a class="ln" href="#L137">137</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$services</span>-&gt;<span class="tok-id">model</span>-&gt;<span class="tok-id">publicApi</span>) {</span>
+<span class="src-line" id="L138"><a class="ln" href="#L138">138</a>            <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">testCaseHtml</span>-&gt;<span class="tok-id">section</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-var">$services</span>-&gt;<span class="tok-id">model</span>-&gt;<span class="tok-id">testCases</span>-&gt;<span class="tok-id">forType</span>(<span class="tok-var">$function</span>-&gt;<span class="tok-id">fqn</span>));</span>
+<span class="src-line" id="L139"><a class="ln" href="#L139">139</a>            <span class="tok-var">$html</span> .= <span class="tok-var">$this</span>-&gt;<span class="tok-id">usageList</span>-&gt;<span class="tok-id">section</span>(<span class="tok-var">$services</span>, <span class="tok-var">$pagePath</span>, <span class="tok-str">&#039;Called from&#039;</span>, <span class="tok-var">$services</span>-&gt;<span class="tok-id">model</span>-&gt;<span class="tok-id">usages</span>-&gt;<span class="tok-id">forType</span>(<span class="tok-var">$function</span>-&gt;<span class="tok-id">fqn</span>, <span class="tok-id">false</span>), <span class="tok-id">false</span>);</span>
+<span class="src-line" id="L140"><a class="ln" href="#L140">140</a>        }</span>
+<span class="src-line" id="L141"><a class="ln" href="#L141">141</a></span>
+<span class="src-line" id="L142"><a class="ln" href="#L142">142</a>        <span class="tok-kw">return</span> <span class="tok-var">$html</span>;</span>
+<span class="src-line" id="L143"><a class="ln" href="#L143">143</a>    }</span>
+<span class="src-line" id="L144"><a class="ln" href="#L144">144</a>}</span>
+<span class="src-line" id="L145"><a class="ln" href="#L145">145</a></span>
 </code></pre>
 </main>
-<footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>
+<footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
 </div>
 <script src="../../../../../assets/search-index.js" defer></script>
 <script src="../../../../../assets/app.js" defer></script>

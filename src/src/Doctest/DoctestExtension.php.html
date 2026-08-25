@@ -42,21 +42,21 @@
 <span class="src-line" id="L6"><a class="ln" href="#L6">6</a><span class="tok-com"> * PHPUnit extension entry point for doctest.</span></span>
 <span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-com"> *</span></span>
 <span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-com"> * @example File-level example: checking extension class</span></span>
-<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-com"> *     class_exists(\PhpAiToolkit\Doctest\DoctestExtension::class) // =&gt; true</span></span>
+<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-com"> *     class_exists(\Toolkit\Doctest\DoctestExtension::class) // =&gt; true</span></span>
 <span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-com"> */</span></span>
 <span class="src-line" id="L11"><a class="ln" href="#L11">11</a></span>
-<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">namespace</span> <span class="tok-id">PhpAiToolkit\Doctest</span>;</span>
+<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">namespace</span> <span class="tok-id">Toolkit\Doctest</span>;</span>
 <span class="src-line" id="L13"><a class="ln" href="#L13">13</a></span>
 <span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">dirname</span>;</span>
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">getcwd</span>;</span>
 <span class="src-line" id="L16"><a class="ln" href="#L16">16</a></span>
-<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\Doctest\Configuration\Configuration</span>;</span>
-<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\Doctest\Configuration\ConfigurationLoader</span>;</span>
-<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Runner\Extension\Extension</span>;</span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Runner\Extension\Facade</span>;</span>
-<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Runner\Extension\ParameterCollection</span>;</span>
-<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\TextUI\Configuration\Configuration</span> <span class="tok-kw">as</span> <span class="tok-id">PhpUnitConfiguration</span>;</span>
-<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\TextUI\Configuration\Registry</span>;</span>
+<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Runner\Extension\Extension</span>;</span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Runner\Extension\Facade</span>;</span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Runner\Extension\ParameterCollection</span>;</span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\TextUI\Configuration\Configuration</span> <span class="tok-kw">as</span> <span class="tok-id">PhpUnitConfiguration</span>;</span>
+<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\TextUI\Configuration\Registry</span>;</span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\Doctest\Configuration\Configuration</span>;</span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\Doctest\Configuration\ConfigurationLoader</span>;</span>
 <span class="src-line" id="L24"><a class="ln" href="#L24">24</a></span>
 <span class="src-line" id="L25"><a class="ln" href="#L25">25</a><span class="tok-com">/**</span></span>
 <span class="src-line" id="L26"><a class="ln" href="#L26">26</a><span class="tok-com"> * PHPUnit Extension for doctest.</span></span>
@@ -65,7 +65,7 @@
 <span class="src-line" id="L29"><a class="ln" href="#L29">29</a><span class="tok-com"> * and makes it available to DoctestSuite.</span></span>
 <span class="src-line" id="L30"><a class="ln" href="#L30">30</a><span class="tok-com"> *</span></span>
 <span class="src-line" id="L31"><a class="ln" href="#L31">31</a><span class="tok-com"> * @example Checking extension interface</span></span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a><span class="tok-com"> *     $implements = class_implements(\PhpAiToolkit\Doctest\DoctestExtension::class);</span></span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a><span class="tok-com"> *     $implements = class_implements(\Toolkit\Doctest\DoctestExtension::class);</span></span>
 <span class="src-line" id="L33"><a class="ln" href="#L33">33</a><span class="tok-com"> *     in_array(\PHPUnit\Runner\Extension\Extension::class, $implements, true) // =&gt; true</span></span>
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a><span class="tok-com"> */</span></span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">DoctestExtension</span> <span class="tok-kw">implements</span> <span class="tok-id">Extension</span></span>
@@ -162,7 +162,7 @@
 <span class="src-line" id="L126"><a class="ln" href="#L126">126</a></span>
 </code></pre>
 </main>
-<footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>
+<footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
 </div>
 <script src="../../../assets/search-index.js" defer></script>
 <script src="../../../assets/app.js" defer></script>

@@ -40,20 +40,20 @@
 <span class="src-line" id="L4"><a class="ln" href="#L4">4</a></span>
 <span class="src-line" id="L5"><a class="ln" href="#L5">5</a><span class="tok-kw">namespace</span> <span class="tok-id">Tests\Unit\DocGen\Analysis\Model</span>;</span>
 <span class="src-line" id="L6"><a class="ln" href="#L6">6</a></span>
-<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Model\DocBlock</span>;</span>
-<span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Model\DocTag</span>;</span>
-<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Model\TemplateDoc</span>;</span>
-<span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Model\TypeAliasDoc</span>;</span>
-<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode</span>;</span>
-<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\CoversClass</span>;</span>
-<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\UsesClass</span>;</span>
-<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;</span>
+<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode</span>;</span>
+<span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\CoversClass</span>;</span>
+<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\UsesClass</span>;</span>
+<span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;</span>
+<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\DocBlock</span>;</span>
+<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\DocTag</span>;</span>
+<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\TemplateDoc</span>;</span>
+<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\TypeAliasDoc</span>;</span>
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a></span>
 <span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-com">/**</span></span>
-<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-com"> * @covers \PhpAiToolkit\DocGen\Analysis\Model\DocBlock</span></span>
-<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocTag</span></span>
-<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Model\TemplateDoc</span></span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeAliasDoc</span></span>
+<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-com"> * @covers \Toolkit\DocGen\Analysis\Model\DocBlock</span></span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Model\DocTag</span></span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Model\TemplateDoc</span></span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Model\TypeAliasDoc</span></span>
 <span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-com"> */</span></span>
 <span class="src-line" id="L22"><a class="ln" href="#L22">22</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">DocBlock</span>::<span class="tok-kw">class</span>)]</span>
 <span class="src-line" id="L23"><a class="ln" href="#L23">23</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">DocTag</span>::<span class="tok-kw">class</span>)]</span>
@@ -110,11 +110,34 @@
 <span class="src-line" id="L74"><a class="ln" href="#L74">74</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$docBlock</span>-&gt;<span class="tok-id">internal</span>);</span>
 <span class="src-line" id="L75"><a class="ln" href="#L75">75</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;/** Summary. */&#039;</span>, <span class="tok-var">$docBlock</span>-&gt;<span class="tok-id">raw</span>);</span>
 <span class="src-line" id="L76"><a class="ln" href="#L76">76</a>    }</span>
-<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>}</span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a></span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a></span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testIsPublicApiRecognizesTheKeywordCaseInsensitively</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>    {</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>        <span class="tok-var">$public</span> = <span class="tok-kw">new</span> <span class="tok-id">DocBlock</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], <span class="tok-id">null</span>, <span class="tok-id">null</span>, [], [], [], [], [], [], <span class="tok-id">null</span>, <span class="tok-id">false</span>, <span class="tok-str">&#039;&#039;</span>, [<span class="tok-str">&#039;PUBLIC&#039;</span>]);</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>        <span class="tok-var">$restricted</span> = <span class="tok-kw">new</span> <span class="tok-id">DocBlock</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], <span class="tok-id">null</span>, <span class="tok-id">null</span>, [], [], [], [], [], [], <span class="tok-id">null</span>, <span class="tok-id">false</span>, <span class="tok-str">&#039;&#039;</span>, [<span class="tok-str">&#039;namespace&#039;</span>, <span class="tok-str">&#039;Demo\Console&#039;</span>]);</span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>        <span class="tok-var">$untagged</span> = <span class="tok-kw">new</span> <span class="tok-id">DocBlock</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], <span class="tok-id">null</span>, <span class="tok-id">null</span>, [], [], [], [], [], [], <span class="tok-id">null</span>, <span class="tok-id">false</span>, <span class="tok-str">&#039;&#039;</span>);</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a></span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>(<span class="tok-var">$public</span>-&gt;<span class="tok-id">isPublicApi</span>());</span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$public</span>-&gt;<span class="tok-id">isRestricted</span>());</span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$restricted</span>-&gt;<span class="tok-id">isPublicApi</span>());</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>(<span class="tok-var">$restricted</span>-&gt;<span class="tok-id">isRestricted</span>());</span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$untagged</span>-&gt;<span class="tok-id">isPublicApi</span>());</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$untagged</span>-&gt;<span class="tok-id">isRestricted</span>());</span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>    }</span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a></span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testIsRestrictedRecognizesEveryNarrowerScope</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L93"><a class="ln" href="#L93">93</a>    {</span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>        <span class="tok-var">$restricted</span> = <span class="tok-kw">new</span> <span class="tok-id">DocBlock</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], <span class="tok-id">null</span>, <span class="tok-id">null</span>, [], [], [], [], [], [], <span class="tok-id">null</span>, <span class="tok-id">false</span>, <span class="tok-str">&#039;&#039;</span>, [<span class="tok-str">&#039;namespace&#039;</span>, <span class="tok-str">&#039;Demo\Console&#039;</span>]);</span>
+<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>        <span class="tok-var">$public</span> = <span class="tok-kw">new</span> <span class="tok-id">DocBlock</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-str">&#039;&#039;</span>, [], <span class="tok-id">null</span>, <span class="tok-id">null</span>, [], [], [], [], [], [], <span class="tok-id">null</span>, <span class="tok-id">false</span>, <span class="tok-str">&#039;&#039;</span>, [<span class="tok-str">&#039;public&#039;</span>]);</span>
+<span class="src-line" id="L96"><a class="ln" href="#L96">96</a></span>
+<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>(<span class="tok-var">$restricted</span>-&gt;<span class="tok-id">isRestricted</span>());</span>
+<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$public</span>-&gt;<span class="tok-id">isRestricted</span>());</span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>    }</span>
+<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>}</span>
+<span class="src-line" id="L101"><a class="ln" href="#L101">101</a></span>
 </code></pre>
 </main>
-<footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>
+<footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
 </div>
 <script src="../../../../../../assets/search-index.js" defer></script>
 <script src="../../../../../../assets/app.js" defer></script>

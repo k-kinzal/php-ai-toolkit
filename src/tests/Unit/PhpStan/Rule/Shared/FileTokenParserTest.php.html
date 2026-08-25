@@ -40,12 +40,12 @@
 <span class="src-line" id="L4"><a class="ln" href="#L4">4</a></span>
 <span class="src-line" id="L5"><a class="ln" href="#L5">5</a><span class="tok-kw">namespace</span> <span class="tok-id">Tests\Unit\PhpStan\Rule\Shared</span>;</span>
 <span class="src-line" id="L6"><a class="ln" href="#L6">6</a></span>
-<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser</span>;</span>
-<span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\CoversClass</span>;</span>
-<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;</span>
+<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\CoversClass</span>;</span>
+<span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;</span>
+<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\PhpStan\Rule\Shared\FileTokenParser</span>;</span>
 <span class="src-line" id="L10"><a class="ln" href="#L10">10</a></span>
 <span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-com">/**</span></span>
-<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-com"> * @covers \PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser</span></span>
+<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-com"> * @covers \Toolkit\PhpStan\Rule\Shared\FileTokenParser</span></span>
 <span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-com"> */</span></span>
 <span class="src-line" id="L14"><a class="ln" href="#L14">14</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">FileTokenParser</span>::<span class="tok-kw">class</span>)]</span>
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">FileTokenParserTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span></span>
@@ -62,15 +62,30 @@
 <span class="src-line" id="L26"><a class="ln" href="#L26">26</a>        }</span>
 <span class="src-line" id="L27"><a class="ln" href="#L27">27</a>    }</span>
 <span class="src-line" id="L28"><a class="ln" href="#L28">28</a></span>
-<span class="src-line" id="L29"><a class="ln" href="#L29">29</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testParseReturnsNullForMissingFile</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L29"><a class="ln" href="#L29">29</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testParseTokenizesInvalidPhpWithoutParsingIt</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L30"><a class="ln" href="#L30">30</a>    {</span>
-<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>((<span class="tok-kw">new</span> <span class="tok-id">FileTokenParser</span>())-&gt;<span class="tok-id">parse</span>(<span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/missing-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>) . <span class="tok-str">&#039;.php&#039;</span>));</span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    }</span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>}</span>
-<span class="src-line" id="L34"><a class="ln" href="#L34">34</a></span>
+<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>        <span class="tok-var">$file</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/file-token-parser-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>) . <span class="tok-str">&#039;.php&#039;</span>;</span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$file</span>, <span class="tok-str">&#039;&lt;?php function { // still tokenized&#039;</span>);</span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a></span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-kw">try</span> {</span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>            <span class="tok-var">$tokens</span> = (<span class="tok-kw">new</span> <span class="tok-id">FileTokenParser</span>())-&gt;<span class="tok-id">parse</span>(<span class="tok-var">$file</span>);</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a></span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>            <span class="tok-id">self</span>::<span class="tok-id">assertNotNull</span>(<span class="tok-var">$tokens</span>);</span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>            <span class="tok-id">self</span>::<span class="tok-id">assertContains</span>([<span class="tok-id">T_COMMENT</span>, <span class="tok-str">&#039;// still tokenized&#039;</span>, <span class="tok-num">1</span>], <span class="tok-var">$tokens</span>);</span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>        } <span class="tok-kw">finally</span> {</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>            <span class="tok-id">unlink</span>(<span class="tok-var">$file</span>);</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>        }</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>    }</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a></span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testParseReturnsNullForMissingFile</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>    {</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNull</span>((<span class="tok-kw">new</span> <span class="tok-id">FileTokenParser</span>())-&gt;<span class="tok-id">parse</span>(<span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/missing-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>) . <span class="tok-str">&#039;.php&#039;</span>));</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>    }</span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>}</span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a></span>
 </code></pre>
 </main>
-<footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>
+<footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
 </div>
 <script src="../../../../../../assets/search-index.js" defer></script>
 <script src="../../../../../../assets/app.js" defer></script>

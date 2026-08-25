@@ -40,283 +40,283 @@
 <span class="src-line" id="L4"><a class="ln" href="#L4">4</a></span>
 <span class="src-line" id="L5"><a class="ln" href="#L5">5</a><span class="tok-kw">namespace</span> <span class="tok-id">Tests\Unit\DocGen\Cli</span>;</span>
 <span class="src-line" id="L6"><a class="ln" href="#L6">6</a></span>
-<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Coverage\CoverageReader</span>;</span>
-<span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Diff\ClassLikeMerger</span>;</span>
-<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Diff\DiffKey</span>;</span>
-<span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus</span>;</span>
-<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Diff\DiffWorkspace</span>;</span>
-<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Diff\FunctionMerger</span>;</span>
-<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer</span>;</span>
-<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Diff\ParameterMerger</span>;</span>
-<span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Diff\ProjectDiffer</span>;</span>
-<span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader</span>;</span>
-<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge</span>;</span>
-<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner</span>;</span>
-<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor</span>;</span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Document\DocumentCollector</span>;</span>
-<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Layer\DeptracConfigReader</span>;</span>
-<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Layer\LayerAssigner</span>;</span>
-<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc</span>;</span>
-<span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind</span>;</span>
-<span class="src-line" id="L25"><a class="ln" href="#L25">25</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Model\MethodDoc</span>;</span>
-<span class="src-line" id="L26"><a class="ln" href="#L26">26</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc</span>;</span>
-<span class="src-line" id="L27"><a class="ln" href="#L27">27</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Model\TypeSignature</span>;</span>
-<span class="src-line" id="L28"><a class="ln" href="#L28">28</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\AstParser</span>;</span>
-<span class="src-line" id="L29"><a class="ln" href="#L29">29</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder</span>;</span>
-<span class="src-line" id="L30"><a class="ln" href="#L30">30</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder</span>;</span>
-<span class="src-line" id="L31"><a class="ln" href="#L31">31</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder</span>;</span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder</span>;</span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\MethodBuilder</span>;</span>
-<span class="src-line" id="L34"><a class="ln" href="#L34">34</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder</span>;</span>
-<span class="src-line" id="L35"><a class="ln" href="#L35">35</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder</span>;</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter</span>;</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\FileSymbolCollector</span>;</span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols</span>;</span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter</span>;</span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers</span>;</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge</span>;</span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\ProjectSymbolCollector</span>;</span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext</span>;</span>
-<span class="src-line" id="L44"><a class="ln" href="#L44">44</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector</span>;</span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\ProjectAnalyzer</span>;</span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\ProjectModel</span>;</span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex</span>;</span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Reference\LocalTypeMap</span>;</span>
-<span class="src-line" id="L49"><a class="ln" href="#L49">49</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Reference\PropertyTypeScanner</span>;</span>
-<span class="src-line" id="L50"><a class="ln" href="#L50">50</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable</span>;</span>
-<span class="src-line" id="L51"><a class="ln" href="#L51">51</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex</span>;</span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Reference\UsageCollector</span>;</span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex</span>;</span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cache\CachedPageWriter</span>;</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cache\CacheStore</span>;</span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cache\GenerationCache</span>;</span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cache\PageRecord</span>;</span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cache\ParseCache</span>;</span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cache\RenderCache</span>;</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cache\SourceFileKey</span>;</span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cache\ToolkitFingerprint</span>;</span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cli\Application</span>;</span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cli\DocGenCliArgumentParser</span>;</span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cli\DocGenConfigFactory</span>;</span>
-<span class="src-line" id="L65"><a class="ln" href="#L65">65</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cli\DocGenGenerationRunner</span>;</span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cli\DocGenHelpText</span>;</span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cli\DocGenMemoryLimit</span>;</span>
-<span class="src-line" id="L68"><a class="ln" href="#L68">68</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cli\DocGenOutputWriter</span>;</span>
-<span class="src-line" id="L69"><a class="ln" href="#L69">69</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Cli\DocGenPreviewServer</span>;</span>
-<span class="src-line" id="L70"><a class="ln" href="#L70">70</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Config\DocGenConfig</span>;</span>
-<span class="src-line" id="L71"><a class="ln" href="#L71">71</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Config\RepositoryUrl</span>;</span>
-<span class="src-line" id="L72"><a class="ln" href="#L72">72</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\DocGenException</span>;</span>
-<span class="src-line" id="L73"><a class="ln" href="#L73">73</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver</span>;</span>
-<span class="src-line" id="L74"><a class="ln" href="#L74">74</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Filesystem\MarkdownFileFinder</span>;</span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Filesystem\SiteFileWriter</span>;</span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Filesystem\SourceFileFinder</span>;</span>
-<span class="src-line" id="L77"><a class="ln" href="#L77">77</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Git\GitCommandRunner</span>;</span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Git\GitRepository</span>;</span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Git\GitWorktree</span>;</span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Package\ComposerManifest</span>;</span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Package\ComposerManifestReader</span>;</span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Package\DevPackageResolver</span>;</span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Package\DiscoveredPackage</span>;</span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Package\PackageDiscovery</span>;</span>
-<span class="src-line" id="L85"><a class="ln" href="#L85">85</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Package\PackageGraph</span>;</span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Package\PackageGraphBuilder</span>;</span>
-<span class="src-line" id="L87"><a class="ln" href="#L87">87</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Package\VendorPackageLocator</span>;</span>
-<span class="src-line" id="L88"><a class="ln" href="#L88">88</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Parallel\CpuCoreCounter</span>;</span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Parallel\WorkerCount</span>;</span>
-<span class="src-line" id="L90"><a class="ln" href="#L90">90</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Parallel\WorkerPool</span>;</span>
-<span class="src-line" id="L91"><a class="ln" href="#L91">91</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Parallel\WorkScheduler</span>;</span>
-<span class="src-line" id="L92"><a class="ln" href="#L92">92</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\AssetPublisher</span>;</span>
-<span class="src-line" id="L93"><a class="ln" href="#L93">93</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Diff\DiffBanner</span>;</span>
-<span class="src-line" id="L94"><a class="ln" href="#L94">94</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Diff\DiffHtml</span>;</span>
-<span class="src-line" id="L95"><a class="ln" href="#L95">95</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Diff\DiffModeControl</span>;</span>
-<span class="src-line" id="L96"><a class="ln" href="#L96">96</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml</span>;</span>
-<span class="src-line" id="L97"><a class="ln" href="#L97">97</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml</span>;</span>
-<span class="src-line" id="L98"><a class="ln" href="#L98">98</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\HtmlText</span>;</span>
-<span class="src-line" id="L99"><a class="ln" href="#L99">99</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\MarkdownInline</span>;</span>
-<span class="src-line" id="L100"><a class="ln" href="#L100">100</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\MarkdownRenderer</span>;</span>
-<span class="src-line" id="L101"><a class="ln" href="#L101">101</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\AllItemsPage</span>;</span>
-<span class="src-line" id="L102"><a class="ln" href="#L102">102</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\ClassLikePage</span>;</span>
-<span class="src-line" id="L103"><a class="ln" href="#L103">103</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml</span>;</span>
-<span class="src-line" id="L104"><a class="ln" href="#L104">104</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\DocTextHtml</span>;</span>
-<span class="src-line" id="L105"><a class="ln" href="#L105">105</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\DocumentListHtml</span>;</span>
-<span class="src-line" id="L106"><a class="ln" href="#L106">106</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\ExampleHtml</span>;</span>
-<span class="src-line" id="L107"><a class="ln" href="#L107">107</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\GraphSvg</span>;</span>
-<span class="src-line" id="L108"><a class="ln" href="#L108">108</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\MemberHtml</span>;</span>
-<span class="src-line" id="L109"><a class="ln" href="#L109">109</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml</span>;</span>
-<span class="src-line" id="L110"><a class="ln" href="#L110">110</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\RelationsHtml</span>;</span>
-<span class="src-line" id="L111"><a class="ln" href="#L111">111</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml</span>;</span>
-<span class="src-line" id="L112"><a class="ln" href="#L112">112</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\SignatureHtml</span>;</span>
-<span class="src-line" id="L113"><a class="ln" href="#L113">113</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\SymbolDescription</span>;</span>
-<span class="src-line" id="L114"><a class="ln" href="#L114">114</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\SymbolListHtml</span>;</span>
-<span class="src-line" id="L115"><a class="ln" href="#L115">115</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\SymbolRow</span>;</span>
-<span class="src-line" id="L116"><a class="ln" href="#L116">116</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\TestCaseHtml</span>;</span>
-<span class="src-line" id="L117"><a class="ln" href="#L117">117</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\Component\UsageListHtml</span>;</span>
-<span class="src-line" id="L118"><a class="ln" href="#L118">118</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\DocumentPage</span>;</span>
-<span class="src-line" id="L119"><a class="ln" href="#L119">119</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\FunctionPage</span>;</span>
-<span class="src-line" id="L120"><a class="ln" href="#L120">120</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\IndexPage</span>;</span>
-<span class="src-line" id="L121"><a class="ln" href="#L121">121</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\LayerPage</span>;</span>
-<span class="src-line" id="L122"><a class="ln" href="#L122">122</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\NamespacePage</span>;</span>
-<span class="src-line" id="L123"><a class="ln" href="#L123">123</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\PackagePage</span>;</span>
-<span class="src-line" id="L124"><a class="ln" href="#L124">124</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\SidebarScope</span>;</span>
-<span class="src-line" id="L125"><a class="ln" href="#L125">125</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\SourcePage</span>;</span>
-<span class="src-line" id="L126"><a class="ln" href="#L126">126</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Page\SymbolIndex</span>;</span>
-<span class="src-line" id="L127"><a class="ln" href="#L127">127</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\PageChrome</span>;</span>
-<span class="src-line" id="L128"><a class="ln" href="#L128">128</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\PhpHighlighter</span>;</span>
-<span class="src-line" id="L129"><a class="ln" href="#L129">129</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\RenderKit</span>;</span>
-<span class="src-line" id="L130"><a class="ln" href="#L130">130</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\RepositoryLink</span>;</span>
-<span class="src-line" id="L131"><a class="ln" href="#L131">131</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\SearchIndexBuilder</span>;</span>
-<span class="src-line" id="L132"><a class="ln" href="#L132">132</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Signature\PageSignature</span>;</span>
-<span class="src-line" id="L133"><a class="ln" href="#L133">133</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Signature\SidebarDigest</span>;</span>
-<span class="src-line" id="L134"><a class="ln" href="#L134">134</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Signature\SourceDigestIndex</span>;</span>
-<span class="src-line" id="L135"><a class="ln" href="#L135">135</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Signature\SymbolReferenceScanner</span>;</span>
-<span class="src-line" id="L136"><a class="ln" href="#L136">136</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\SitePages</span>;</span>
-<span class="src-line" id="L137"><a class="ln" href="#L137">137</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\SiteRenderer</span>;</span>
-<span class="src-line" id="L138"><a class="ln" href="#L138">138</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\SiteUrl</span>;</span>
-<span class="src-line" id="L139"><a class="ln" href="#L139">139</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Social\SocialCard</span>;</span>
-<span class="src-line" id="L140"><a class="ln" href="#L140">140</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\Social\SocialMeta</span>;</span>
-<span class="src-line" id="L141"><a class="ln" href="#L141">141</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\TypeHtml</span>;</span>
-<span class="src-line" id="L142"><a class="ln" href="#L142">142</a><span class="tok-kw">use</span> <span class="tok-id">PhpAiToolkit\DocGen\Render\TypeRenderContext</span>;</span>
-<span class="src-line" id="L143"><a class="ln" href="#L143">143</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\CoversClass</span>;</span>
-<span class="src-line" id="L144"><a class="ln" href="#L144">144</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\UsesClass</span>;</span>
-<span class="src-line" id="L145"><a class="ln" href="#L145">145</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;</span>
+<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\CoversClass</span>;</span>
+<span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\UsesClass</span>;</span>
+<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;</span>
+<span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Coverage\CoverageReader</span>;</span>
+<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Diff\ClassLikeMerger</span>;</span>
+<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Diff\DiffKey</span>;</span>
+<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Diff\DiffStatus</span>;</span>
+<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Diff\DiffWorkspace</span>;</span>
+<span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Diff\FunctionMerger</span>;</span>
+<span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Diff\LineDiffer</span>;</span>
+<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Diff\ParameterMerger</span>;</span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Diff\ProjectDiffer</span>;</span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Doc\DocBlockReader</span>;</span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge</span>;</span>
+<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Doctest\AssertionScanner</span>;</span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Doctest\DoctestExtractor</span>;</span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Document\DocumentCollector</span>;</span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Layer\DeptracConfigReader</span>;</span>
+<span class="src-line" id="L25"><a class="ln" href="#L25">25</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Layer\LayerAssigner</span>;</span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\ClassLikeDoc</span>;</span>
+<span class="src-line" id="L27"><a class="ln" href="#L27">27</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\ClassLikeKind</span>;</span>
+<span class="src-line" id="L28"><a class="ln" href="#L28">28</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\MethodDoc</span>;</span>
+<span class="src-line" id="L29"><a class="ln" href="#L29">29</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\ParameterDoc</span>;</span>
+<span class="src-line" id="L30"><a class="ln" href="#L30">30</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\TypeSignature</span>;</span>
+<span class="src-line" id="L31"><a class="ln" href="#L31">31</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\AstParser</span>;</span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder</span>;</span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder</span>;</span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder</span>;</span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder</span>;</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder</span>;</span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder</span>;</span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder</span>;</span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\ExprTextPrinter</span>;</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\FileSymbolCollector</span>;</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\FileSymbols</span>;</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\NativeTypePrinter</span>;</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\ParameterModifiers</span>;</span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\PhpParserBridge</span>;</span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector</span>;</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\SymbolContext</span>;</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\UseMapCollector</span>;</span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\ProjectAnalyzer</span>;</span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\ProjectModel</span>;</span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Reference\HierarchyIndex</span>;</span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Reference\LocalTypeMap</span>;</span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner</span>;</span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Reference\SymbolTable</span>;</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Reference\TestCaseIndex</span>;</span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Reference\UsageCollector</span>;</span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Reference\UsageIndex</span>;</span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cache\CachedPageWriter</span>;</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cache\CacheStore</span>;</span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cache\GenerationCache</span>;</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cache\PageRecord</span>;</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cache\ParseCache</span>;</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cache\RenderCache</span>;</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cache\SourceFileKey</span>;</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cache\ToolkitFingerprint</span>;</span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cli\Application</span>;</span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cli\DocGenCliArgumentParser</span>;</span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cli\DocGenConfigFactory</span>;</span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cli\DocGenGenerationRunner</span>;</span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cli\DocGenHelpText</span>;</span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cli\DocGenMemoryLimit</span>;</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cli\DocGenOutputWriter</span>;</span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Cli\DocGenPreviewServer</span>;</span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Config\DocGenConfig</span>;</span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Config\RepositoryUrl</span>;</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\DocGenException</span>;</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Filesystem\DocGenPathResolver</span>;</span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Filesystem\MarkdownFileFinder</span>;</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Filesystem\SiteFileWriter</span>;</span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Filesystem\SourceFileFinder</span>;</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Git\GitCommandRunner</span>;</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Git\GitRepository</span>;</span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Git\GitWorktree</span>;</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Package\ComposerManifest</span>;</span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Package\ComposerManifestReader</span>;</span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Package\DevPackageResolver</span>;</span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Package\DiscoveredPackage</span>;</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Package\PackageDiscovery</span>;</span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Package\PackageGraph</span>;</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Package\PackageGraphBuilder</span>;</span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Package\VendorPackageLocator</span>;</span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Parallel\CpuCoreCounter</span>;</span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Parallel\WorkerCount</span>;</span>
+<span class="src-line" id="L93"><a class="ln" href="#L93">93</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Parallel\WorkerPool</span>;</span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Parallel\WorkScheduler</span>;</span>
+<span class="src-line" id="L95"><a class="ln" href="#L95">95</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\AssetPublisher</span>;</span>
+<span class="src-line" id="L96"><a class="ln" href="#L96">96</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Diff\DiffBanner</span>;</span>
+<span class="src-line" id="L97"><a class="ln" href="#L97">97</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Diff\DiffHtml</span>;</span>
+<span class="src-line" id="L98"><a class="ln" href="#L98">98</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Diff\DiffModeControl</span>;</span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Diff\MarkdownDiffHtml</span>;</span>
+<span class="src-line" id="L100"><a class="ln" href="#L100">100</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Diff\SourceDiffHtml</span>;</span>
+<span class="src-line" id="L101"><a class="ln" href="#L101">101</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\HtmlText</span>;</span>
+<span class="src-line" id="L102"><a class="ln" href="#L102">102</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\MarkdownInline</span>;</span>
+<span class="src-line" id="L103"><a class="ln" href="#L103">103</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\MarkdownRenderer</span>;</span>
+<span class="src-line" id="L104"><a class="ln" href="#L104">104</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\AllItemsPage</span>;</span>
+<span class="src-line" id="L105"><a class="ln" href="#L105">105</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\ClassLikePage</span>;</span>
+<span class="src-line" id="L106"><a class="ln" href="#L106">106</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml</span>;</span>
+<span class="src-line" id="L107"><a class="ln" href="#L107">107</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\DocTextHtml</span>;</span>
+<span class="src-line" id="L108"><a class="ln" href="#L108">108</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\DocumentListHtml</span>;</span>
+<span class="src-line" id="L109"><a class="ln" href="#L109">109</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\ExampleHtml</span>;</span>
+<span class="src-line" id="L110"><a class="ln" href="#L110">110</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\GraphSvg</span>;</span>
+<span class="src-line" id="L111"><a class="ln" href="#L111">111</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\MemberHtml</span>;</span>
+<span class="src-line" id="L112"><a class="ln" href="#L112">112</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml</span>;</span>
+<span class="src-line" id="L113"><a class="ln" href="#L113">113</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\RelationsHtml</span>;</span>
+<span class="src-line" id="L114"><a class="ln" href="#L114">114</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\SidebarHtml</span>;</span>
+<span class="src-line" id="L115"><a class="ln" href="#L115">115</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\SignatureHtml</span>;</span>
+<span class="src-line" id="L116"><a class="ln" href="#L116">116</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\SymbolDescription</span>;</span>
+<span class="src-line" id="L117"><a class="ln" href="#L117">117</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\SymbolListHtml</span>;</span>
+<span class="src-line" id="L118"><a class="ln" href="#L118">118</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\SymbolRow</span>;</span>
+<span class="src-line" id="L119"><a class="ln" href="#L119">119</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\TestCaseHtml</span>;</span>
+<span class="src-line" id="L120"><a class="ln" href="#L120">120</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\UsageListHtml</span>;</span>
+<span class="src-line" id="L121"><a class="ln" href="#L121">121</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\DocumentPage</span>;</span>
+<span class="src-line" id="L122"><a class="ln" href="#L122">122</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\FunctionPage</span>;</span>
+<span class="src-line" id="L123"><a class="ln" href="#L123">123</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\IndexPage</span>;</span>
+<span class="src-line" id="L124"><a class="ln" href="#L124">124</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\LayerPage</span>;</span>
+<span class="src-line" id="L125"><a class="ln" href="#L125">125</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\NamespacePage</span>;</span>
+<span class="src-line" id="L126"><a class="ln" href="#L126">126</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\PackagePage</span>;</span>
+<span class="src-line" id="L127"><a class="ln" href="#L127">127</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\SidebarScope</span>;</span>
+<span class="src-line" id="L128"><a class="ln" href="#L128">128</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\SourcePage</span>;</span>
+<span class="src-line" id="L129"><a class="ln" href="#L129">129</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\SymbolIndex</span>;</span>
+<span class="src-line" id="L130"><a class="ln" href="#L130">130</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\PageChrome</span>;</span>
+<span class="src-line" id="L131"><a class="ln" href="#L131">131</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\PhpHighlighter</span>;</span>
+<span class="src-line" id="L132"><a class="ln" href="#L132">132</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\RenderKit</span>;</span>
+<span class="src-line" id="L133"><a class="ln" href="#L133">133</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\RepositoryLink</span>;</span>
+<span class="src-line" id="L134"><a class="ln" href="#L134">134</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\SearchIndexBuilder</span>;</span>
+<span class="src-line" id="L135"><a class="ln" href="#L135">135</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Signature\PageSignature</span>;</span>
+<span class="src-line" id="L136"><a class="ln" href="#L136">136</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Signature\SidebarDigest</span>;</span>
+<span class="src-line" id="L137"><a class="ln" href="#L137">137</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Signature\SourceDigestIndex</span>;</span>
+<span class="src-line" id="L138"><a class="ln" href="#L138">138</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Signature\SymbolReferenceScanner</span>;</span>
+<span class="src-line" id="L139"><a class="ln" href="#L139">139</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\SitePages</span>;</span>
+<span class="src-line" id="L140"><a class="ln" href="#L140">140</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\SiteRenderer</span>;</span>
+<span class="src-line" id="L141"><a class="ln" href="#L141">141</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\SiteUrl</span>;</span>
+<span class="src-line" id="L142"><a class="ln" href="#L142">142</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Social\SocialCard</span>;</span>
+<span class="src-line" id="L143"><a class="ln" href="#L143">143</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Social\SocialMeta</span>;</span>
+<span class="src-line" id="L144"><a class="ln" href="#L144">144</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\TypeHtml</span>;</span>
+<span class="src-line" id="L145"><a class="ln" href="#L145">145</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\TypeRenderContext</span>;</span>
 <span class="src-line" id="L146"><a class="ln" href="#L146">146</a></span>
 <span class="src-line" id="L147"><a class="ln" href="#L147">147</a><span class="tok-com">/**</span></span>
-<span class="src-line" id="L148"><a class="ln" href="#L148">148</a><span class="tok-com"> * @covers \PhpAiToolkit\DocGen\Cli\Application</span></span>
-<span class="src-line" id="L149"><a class="ln" href="#L149">149</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\AllItemsPage</span></span>
-<span class="src-line" id="L150"><a class="ln" href="#L150">150</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner</span></span>
-<span class="src-line" id="L151"><a class="ln" href="#L151">151</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\AssetPublisher</span></span>
-<span class="src-line" id="L152"><a class="ln" href="#L152">152</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\AstParser</span></span>
-<span class="src-line" id="L153"><a class="ln" href="#L153">153</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml</span></span>
-<span class="src-line" id="L154"><a class="ln" href="#L154">154</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cache\CacheStore</span></span>
-<span class="src-line" id="L155"><a class="ln" href="#L155">155</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cache\CachedPageWriter</span></span>
-<span class="src-line" id="L156"><a class="ln" href="#L156">156</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder</span></span>
-<span class="src-line" id="L157"><a class="ln" href="#L157">157</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc</span></span>
-<span class="src-line" id="L158"><a class="ln" href="#L158">158</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind</span></span>
-<span class="src-line" id="L159"><a class="ln" href="#L159">159</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Diff\ClassLikeMerger</span></span>
-<span class="src-line" id="L160"><a class="ln" href="#L160">160</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\ClassLikePage</span></span>
-<span class="src-line" id="L161"><a class="ln" href="#L161">161</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest</span></span>
-<span class="src-line" id="L162"><a class="ln" href="#L162">162</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\ComposerManifestReader</span></span>
-<span class="src-line" id="L163"><a class="ln" href="#L163">163</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder</span></span>
-<span class="src-line" id="L164"><a class="ln" href="#L164">164</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageReader</span></span>
-<span class="src-line" id="L165"><a class="ln" href="#L165">165</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Parallel\CpuCoreCounter</span></span>
-<span class="src-line" id="L166"><a class="ln" href="#L166">166</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Layer\DeptracConfigReader</span></span>
-<span class="src-line" id="L167"><a class="ln" href="#L167">167</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\DevPackageResolver</span></span>
-<span class="src-line" id="L168"><a class="ln" href="#L168">168</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffBanner</span></span>
-<span class="src-line" id="L169"><a class="ln" href="#L169">169</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffHtml</span></span>
-<span class="src-line" id="L170"><a class="ln" href="#L170">170</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey</span></span>
-<span class="src-line" id="L171"><a class="ln" href="#L171">171</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffModeControl</span></span>
-<span class="src-line" id="L172"><a class="ln" href="#L172">172</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus</span></span>
-<span class="src-line" id="L173"><a class="ln" href="#L173">173</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffWorkspace</span></span>
-<span class="src-line" id="L174"><a class="ln" href="#L174">174</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\DiscoveredPackage</span></span>
-<span class="src-line" id="L175"><a class="ln" href="#L175">175</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader</span></span>
-<span class="src-line" id="L176"><a class="ln" href="#L176">176</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cli\DocGenCliArgumentParser</span></span>
-<span class="src-line" id="L177"><a class="ln" href="#L177">177</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Config\DocGenConfig</span></span>
-<span class="src-line" id="L178"><a class="ln" href="#L178">178</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cli\DocGenConfigFactory</span></span>
-<span class="src-line" id="L179"><a class="ln" href="#L179">179</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\DocGenException</span></span>
-<span class="src-line" id="L180"><a class="ln" href="#L180">180</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cli\DocGenGenerationRunner</span></span>
-<span class="src-line" id="L181"><a class="ln" href="#L181">181</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cli\DocGenHelpText</span></span>
-<span class="src-line" id="L182"><a class="ln" href="#L182">182</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cli\DocGenMemoryLimit</span></span>
-<span class="src-line" id="L183"><a class="ln" href="#L183">183</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cli\DocGenOutputWriter</span></span>
-<span class="src-line" id="L184"><a class="ln" href="#L184">184</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver</span></span>
-<span class="src-line" id="L185"><a class="ln" href="#L185">185</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cli\DocGenPreviewServer</span></span>
-<span class="src-line" id="L186"><a class="ln" href="#L186">186</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\DocTextHtml</span></span>
-<span class="src-line" id="L187"><a class="ln" href="#L187">187</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor</span></span>
-<span class="src-line" id="L188"><a class="ln" href="#L188">188</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Document\DocumentCollector</span></span>
-<span class="src-line" id="L189"><a class="ln" href="#L189">189</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\DocumentListHtml</span></span>
-<span class="src-line" id="L190"><a class="ln" href="#L190">190</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\DocumentPage</span></span>
-<span class="src-line" id="L191"><a class="ln" href="#L191">191</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder</span></span>
-<span class="src-line" id="L192"><a class="ln" href="#L192">192</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\ExampleHtml</span></span>
-<span class="src-line" id="L193"><a class="ln" href="#L193">193</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter</span></span>
-<span class="src-line" id="L194"><a class="ln" href="#L194">194</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbolCollector</span></span>
-<span class="src-line" id="L195"><a class="ln" href="#L195">195</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols</span></span>
-<span class="src-line" id="L196"><a class="ln" href="#L196">196</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder</span></span>
-<span class="src-line" id="L197"><a class="ln" href="#L197">197</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Diff\FunctionMerger</span></span>
-<span class="src-line" id="L198"><a class="ln" href="#L198">198</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\FunctionPage</span></span>
-<span class="src-line" id="L199"><a class="ln" href="#L199">199</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cache\GenerationCache</span></span>
-<span class="src-line" id="L200"><a class="ln" href="#L200">200</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Git\GitCommandRunner</span></span>
-<span class="src-line" id="L201"><a class="ln" href="#L201">201</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Git\GitRepository</span></span>
-<span class="src-line" id="L202"><a class="ln" href="#L202">202</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Git\GitWorktree</span></span>
-<span class="src-line" id="L203"><a class="ln" href="#L203">203</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\GraphSvg</span></span>
-<span class="src-line" id="L204"><a class="ln" href="#L204">204</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex</span></span>
-<span class="src-line" id="L205"><a class="ln" href="#L205">205</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\HtmlText</span></span>
-<span class="src-line" id="L206"><a class="ln" href="#L206">206</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\IndexPage</span></span>
-<span class="src-line" id="L207"><a class="ln" href="#L207">207</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerAssigner</span></span>
-<span class="src-line" id="L208"><a class="ln" href="#L208">208</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\LayerPage</span></span>
-<span class="src-line" id="L209"><a class="ln" href="#L209">209</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer</span></span>
-<span class="src-line" id="L210"><a class="ln" href="#L210">210</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\LocalTypeMap</span></span>
-<span class="src-line" id="L211"><a class="ln" href="#L211">211</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml</span></span>
-<span class="src-line" id="L212"><a class="ln" href="#L212">212</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Filesystem\MarkdownFileFinder</span></span>
-<span class="src-line" id="L213"><a class="ln" href="#L213">213</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\MarkdownInline</span></span>
-<span class="src-line" id="L214"><a class="ln" href="#L214">214</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\MarkdownRenderer</span></span>
-<span class="src-line" id="L215"><a class="ln" href="#L215">215</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\MemberHtml</span></span>
-<span class="src-line" id="L216"><a class="ln" href="#L216">216</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\MethodBuilder</span></span>
-<span class="src-line" id="L217"><a class="ln" href="#L217">217</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Model\MethodDoc</span></span>
-<span class="src-line" id="L218"><a class="ln" href="#L218">218</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\NamespacePage</span></span>
-<span class="src-line" id="L219"><a class="ln" href="#L219">219</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter</span></span>
-<span class="src-line" id="L220"><a class="ln" href="#L220">220</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\PackageDiscovery</span></span>
-<span class="src-line" id="L221"><a class="ln" href="#L221">221</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\PackageGraph</span></span>
-<span class="src-line" id="L222"><a class="ln" href="#L222">222</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\PackageGraphBuilder</span></span>
-<span class="src-line" id="L223"><a class="ln" href="#L223">223</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\PackagePage</span></span>
-<span class="src-line" id="L224"><a class="ln" href="#L224">224</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\PageChrome</span></span>
-<span class="src-line" id="L225"><a class="ln" href="#L225">225</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cache\PageRecord</span></span>
-<span class="src-line" id="L226"><a class="ln" href="#L226">226</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Signature\PageSignature</span></span>
-<span class="src-line" id="L227"><a class="ln" href="#L227">227</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder</span></span>
-<span class="src-line" id="L228"><a class="ln" href="#L228">228</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc</span></span>
-<span class="src-line" id="L229"><a class="ln" href="#L229">229</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Diff\ParameterMerger</span></span>
-<span class="src-line" id="L230"><a class="ln" href="#L230">230</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers</span></span>
-<span class="src-line" id="L231"><a class="ln" href="#L231">231</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cache\ParseCache</span></span>
-<span class="src-line" id="L232"><a class="ln" href="#L232">232</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge</span></span>
-<span class="src-line" id="L233"><a class="ln" href="#L233">233</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\PhpHighlighter</span></span>
-<span class="src-line" id="L234"><a class="ln" href="#L234">234</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge</span></span>
-<span class="src-line" id="L235"><a class="ln" href="#L235">235</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml</span></span>
-<span class="src-line" id="L236"><a class="ln" href="#L236">236</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\ProjectAnalyzer</span></span>
-<span class="src-line" id="L237"><a class="ln" href="#L237">237</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Diff\ProjectDiffer</span></span>
-<span class="src-line" id="L238"><a class="ln" href="#L238">238</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\ProjectModel</span></span>
-<span class="src-line" id="L239"><a class="ln" href="#L239">239</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ProjectSymbolCollector</span></span>
-<span class="src-line" id="L240"><a class="ln" href="#L240">240</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder</span></span>
-<span class="src-line" id="L241"><a class="ln" href="#L241">241</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\PropertyTypeScanner</span></span>
-<span class="src-line" id="L242"><a class="ln" href="#L242">242</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\RelationsHtml</span></span>
-<span class="src-line" id="L243"><a class="ln" href="#L243">243</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cache\RenderCache</span></span>
-<span class="src-line" id="L244"><a class="ln" href="#L244">244</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\RenderKit</span></span>
-<span class="src-line" id="L245"><a class="ln" href="#L245">245</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\RepositoryLink</span></span>
-<span class="src-line" id="L246"><a class="ln" href="#L246">246</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Config\RepositoryUrl</span></span>
-<span class="src-line" id="L247"><a class="ln" href="#L247">247</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\SearchIndexBuilder</span></span>
-<span class="src-line" id="L248"><a class="ln" href="#L248">248</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Signature\SidebarDigest</span></span>
-<span class="src-line" id="L249"><a class="ln" href="#L249">249</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml</span></span>
-<span class="src-line" id="L250"><a class="ln" href="#L250">250</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\SidebarScope</span></span>
-<span class="src-line" id="L251"><a class="ln" href="#L251">251</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SignatureHtml</span></span>
-<span class="src-line" id="L252"><a class="ln" href="#L252">252</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Filesystem\SiteFileWriter</span></span>
-<span class="src-line" id="L253"><a class="ln" href="#L253">253</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\SitePages</span></span>
-<span class="src-line" id="L254"><a class="ln" href="#L254">254</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\SiteRenderer</span></span>
-<span class="src-line" id="L255"><a class="ln" href="#L255">255</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\SiteUrl</span></span>
-<span class="src-line" id="L256"><a class="ln" href="#L256">256</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Social\SocialCard</span></span>
-<span class="src-line" id="L257"><a class="ln" href="#L257">257</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Social\SocialMeta</span></span>
-<span class="src-line" id="L258"><a class="ln" href="#L258">258</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml</span></span>
-<span class="src-line" id="L259"><a class="ln" href="#L259">259</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Signature\SourceDigestIndex</span></span>
-<span class="src-line" id="L260"><a class="ln" href="#L260">260</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Filesystem\SourceFileFinder</span></span>
-<span class="src-line" id="L261"><a class="ln" href="#L261">261</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cache\SourceFileKey</span></span>
-<span class="src-line" id="L262"><a class="ln" href="#L262">262</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\SourcePage</span></span>
-<span class="src-line" id="L263"><a class="ln" href="#L263">263</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext</span></span>
-<span class="src-line" id="L264"><a class="ln" href="#L264">264</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SymbolDescription</span></span>
-<span class="src-line" id="L265"><a class="ln" href="#L265">265</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\SymbolIndex</span></span>
-<span class="src-line" id="L266"><a class="ln" href="#L266">266</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SymbolListHtml</span></span>
-<span class="src-line" id="L267"><a class="ln" href="#L267">267</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Signature\SymbolReferenceScanner</span></span>
-<span class="src-line" id="L268"><a class="ln" href="#L268">268</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SymbolRow</span></span>
-<span class="src-line" id="L269"><a class="ln" href="#L269">269</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable</span></span>
-<span class="src-line" id="L270"><a class="ln" href="#L270">270</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\TestCaseHtml</span></span>
-<span class="src-line" id="L271"><a class="ln" href="#L271">271</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex</span></span>
-<span class="src-line" id="L272"><a class="ln" href="#L272">272</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Cache\ToolkitFingerprint</span></span>
-<span class="src-line" id="L273"><a class="ln" href="#L273">273</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\TypeHtml</span></span>
-<span class="src-line" id="L274"><a class="ln" href="#L274">274</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\TypeRenderContext</span></span>
-<span class="src-line" id="L275"><a class="ln" href="#L275">275</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature</span></span>
-<span class="src-line" id="L276"><a class="ln" href="#L276">276</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageCollector</span></span>
-<span class="src-line" id="L277"><a class="ln" href="#L277">277</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex</span></span>
-<span class="src-line" id="L278"><a class="ln" href="#L278">278</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Render\Page\Component\UsageListHtml</span></span>
-<span class="src-line" id="L279"><a class="ln" href="#L279">279</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector</span></span>
-<span class="src-line" id="L280"><a class="ln" href="#L280">280</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Package\VendorPackageLocator</span></span>
-<span class="src-line" id="L281"><a class="ln" href="#L281">281</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Parallel\WorkScheduler</span></span>
-<span class="src-line" id="L282"><a class="ln" href="#L282">282</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Parallel\WorkerCount</span></span>
-<span class="src-line" id="L283"><a class="ln" href="#L283">283</a><span class="tok-com"> * @uses \PhpAiToolkit\DocGen\Parallel\WorkerPool</span></span>
+<span class="src-line" id="L148"><a class="ln" href="#L148">148</a><span class="tok-com"> * @covers \Toolkit\DocGen\Cli\Application</span></span>
+<span class="src-line" id="L149"><a class="ln" href="#L149">149</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\AllItemsPage</span></span>
+<span class="src-line" id="L150"><a class="ln" href="#L150">150</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Doctest\AssertionScanner</span></span>
+<span class="src-line" id="L151"><a class="ln" href="#L151">151</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\AssetPublisher</span></span>
+<span class="src-line" id="L152"><a class="ln" href="#L152">152</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\AstParser</span></span>
+<span class="src-line" id="L153"><a class="ln" href="#L153">153</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml</span></span>
+<span class="src-line" id="L154"><a class="ln" href="#L154">154</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cache\CacheStore</span></span>
+<span class="src-line" id="L155"><a class="ln" href="#L155">155</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cache\CachedPageWriter</span></span>
+<span class="src-line" id="L156"><a class="ln" href="#L156">156</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder</span></span>
+<span class="src-line" id="L157"><a class="ln" href="#L157">157</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc</span></span>
+<span class="src-line" id="L158"><a class="ln" href="#L158">158</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeKind</span></span>
+<span class="src-line" id="L159"><a class="ln" href="#L159">159</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Diff\ClassLikeMerger</span></span>
+<span class="src-line" id="L160"><a class="ln" href="#L160">160</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\ClassLikePage</span></span>
+<span class="src-line" id="L161"><a class="ln" href="#L161">161</a><span class="tok-com"> * @uses \Toolkit\DocGen\Package\ComposerManifest</span></span>
+<span class="src-line" id="L162"><a class="ln" href="#L162">162</a><span class="tok-com"> * @uses \Toolkit\DocGen\Package\ComposerManifestReader</span></span>
+<span class="src-line" id="L163"><a class="ln" href="#L163">163</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder</span></span>
+<span class="src-line" id="L164"><a class="ln" href="#L164">164</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageReader</span></span>
+<span class="src-line" id="L165"><a class="ln" href="#L165">165</a><span class="tok-com"> * @uses \Toolkit\DocGen\Parallel\CpuCoreCounter</span></span>
+<span class="src-line" id="L166"><a class="ln" href="#L166">166</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Layer\DeptracConfigReader</span></span>
+<span class="src-line" id="L167"><a class="ln" href="#L167">167</a><span class="tok-com"> * @uses \Toolkit\DocGen\Package\DevPackageResolver</span></span>
+<span class="src-line" id="L168"><a class="ln" href="#L168">168</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Diff\DiffBanner</span></span>
+<span class="src-line" id="L169"><a class="ln" href="#L169">169</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Diff\DiffHtml</span></span>
+<span class="src-line" id="L170"><a class="ln" href="#L170">170</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey</span></span>
+<span class="src-line" id="L171"><a class="ln" href="#L171">171</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Diff\DiffModeControl</span></span>
+<span class="src-line" id="L172"><a class="ln" href="#L172">172</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus</span></span>
+<span class="src-line" id="L173"><a class="ln" href="#L173">173</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Diff\DiffWorkspace</span></span>
+<span class="src-line" id="L174"><a class="ln" href="#L174">174</a><span class="tok-com"> * @uses \Toolkit\DocGen\Package\DiscoveredPackage</span></span>
+<span class="src-line" id="L175"><a class="ln" href="#L175">175</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader</span></span>
+<span class="src-line" id="L176"><a class="ln" href="#L176">176</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cli\DocGenCliArgumentParser</span></span>
+<span class="src-line" id="L177"><a class="ln" href="#L177">177</a><span class="tok-com"> * @uses \Toolkit\DocGen\Config\DocGenConfig</span></span>
+<span class="src-line" id="L178"><a class="ln" href="#L178">178</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cli\DocGenConfigFactory</span></span>
+<span class="src-line" id="L179"><a class="ln" href="#L179">179</a><span class="tok-com"> * @uses \Toolkit\DocGen\DocGenException</span></span>
+<span class="src-line" id="L180"><a class="ln" href="#L180">180</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cli\DocGenGenerationRunner</span></span>
+<span class="src-line" id="L181"><a class="ln" href="#L181">181</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cli\DocGenHelpText</span></span>
+<span class="src-line" id="L182"><a class="ln" href="#L182">182</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cli\DocGenMemoryLimit</span></span>
+<span class="src-line" id="L183"><a class="ln" href="#L183">183</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cli\DocGenOutputWriter</span></span>
+<span class="src-line" id="L184"><a class="ln" href="#L184">184</a><span class="tok-com"> * @uses \Toolkit\DocGen\Filesystem\DocGenPathResolver</span></span>
+<span class="src-line" id="L185"><a class="ln" href="#L185">185</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cli\DocGenPreviewServer</span></span>
+<span class="src-line" id="L186"><a class="ln" href="#L186">186</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\DocTextHtml</span></span>
+<span class="src-line" id="L187"><a class="ln" href="#L187">187</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Doctest\DoctestExtractor</span></span>
+<span class="src-line" id="L188"><a class="ln" href="#L188">188</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Document\DocumentCollector</span></span>
+<span class="src-line" id="L189"><a class="ln" href="#L189">189</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\DocumentListHtml</span></span>
+<span class="src-line" id="L190"><a class="ln" href="#L190">190</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\DocumentPage</span></span>
+<span class="src-line" id="L191"><a class="ln" href="#L191">191</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder</span></span>
+<span class="src-line" id="L192"><a class="ln" href="#L192">192</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\ExampleHtml</span></span>
+<span class="src-line" id="L193"><a class="ln" href="#L193">193</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter</span></span>
+<span class="src-line" id="L194"><a class="ln" href="#L194">194</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector</span></span>
+<span class="src-line" id="L195"><a class="ln" href="#L195">195</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbols</span></span>
+<span class="src-line" id="L196"><a class="ln" href="#L196">196</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder</span></span>
+<span class="src-line" id="L197"><a class="ln" href="#L197">197</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Diff\FunctionMerger</span></span>
+<span class="src-line" id="L198"><a class="ln" href="#L198">198</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\FunctionPage</span></span>
+<span class="src-line" id="L199"><a class="ln" href="#L199">199</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cache\GenerationCache</span></span>
+<span class="src-line" id="L200"><a class="ln" href="#L200">200</a><span class="tok-com"> * @uses \Toolkit\DocGen\Git\GitCommandRunner</span></span>
+<span class="src-line" id="L201"><a class="ln" href="#L201">201</a><span class="tok-com"> * @uses \Toolkit\DocGen\Git\GitRepository</span></span>
+<span class="src-line" id="L202"><a class="ln" href="#L202">202</a><span class="tok-com"> * @uses \Toolkit\DocGen\Git\GitWorktree</span></span>
+<span class="src-line" id="L203"><a class="ln" href="#L203">203</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\GraphSvg</span></span>
+<span class="src-line" id="L204"><a class="ln" href="#L204">204</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex</span></span>
+<span class="src-line" id="L205"><a class="ln" href="#L205">205</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\HtmlText</span></span>
+<span class="src-line" id="L206"><a class="ln" href="#L206">206</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\IndexPage</span></span>
+<span class="src-line" id="L207"><a class="ln" href="#L207">207</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Layer\LayerAssigner</span></span>
+<span class="src-line" id="L208"><a class="ln" href="#L208">208</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\LayerPage</span></span>
+<span class="src-line" id="L209"><a class="ln" href="#L209">209</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Diff\LineDiffer</span></span>
+<span class="src-line" id="L210"><a class="ln" href="#L210">210</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Reference\LocalTypeMap</span></span>
+<span class="src-line" id="L211"><a class="ln" href="#L211">211</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Diff\MarkdownDiffHtml</span></span>
+<span class="src-line" id="L212"><a class="ln" href="#L212">212</a><span class="tok-com"> * @uses \Toolkit\DocGen\Filesystem\MarkdownFileFinder</span></span>
+<span class="src-line" id="L213"><a class="ln" href="#L213">213</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\MarkdownInline</span></span>
+<span class="src-line" id="L214"><a class="ln" href="#L214">214</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\MarkdownRenderer</span></span>
+<span class="src-line" id="L215"><a class="ln" href="#L215">215</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\MemberHtml</span></span>
+<span class="src-line" id="L216"><a class="ln" href="#L216">216</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder</span></span>
+<span class="src-line" id="L217"><a class="ln" href="#L217">217</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Model\MethodDoc</span></span>
+<span class="src-line" id="L218"><a class="ln" href="#L218">218</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\NamespacePage</span></span>
+<span class="src-line" id="L219"><a class="ln" href="#L219">219</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter</span></span>
+<span class="src-line" id="L220"><a class="ln" href="#L220">220</a><span class="tok-com"> * @uses \Toolkit\DocGen\Package\PackageDiscovery</span></span>
+<span class="src-line" id="L221"><a class="ln" href="#L221">221</a><span class="tok-com"> * @uses \Toolkit\DocGen\Package\PackageGraph</span></span>
+<span class="src-line" id="L222"><a class="ln" href="#L222">222</a><span class="tok-com"> * @uses \Toolkit\DocGen\Package\PackageGraphBuilder</span></span>
+<span class="src-line" id="L223"><a class="ln" href="#L223">223</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\PackagePage</span></span>
+<span class="src-line" id="L224"><a class="ln" href="#L224">224</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\PageChrome</span></span>
+<span class="src-line" id="L225"><a class="ln" href="#L225">225</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cache\PageRecord</span></span>
+<span class="src-line" id="L226"><a class="ln" href="#L226">226</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Signature\PageSignature</span></span>
+<span class="src-line" id="L227"><a class="ln" href="#L227">227</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder</span></span>
+<span class="src-line" id="L228"><a class="ln" href="#L228">228</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Model\ParameterDoc</span></span>
+<span class="src-line" id="L229"><a class="ln" href="#L229">229</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Diff\ParameterMerger</span></span>
+<span class="src-line" id="L230"><a class="ln" href="#L230">230</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\ParameterModifiers</span></span>
+<span class="src-line" id="L231"><a class="ln" href="#L231">231</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cache\ParseCache</span></span>
+<span class="src-line" id="L232"><a class="ln" href="#L232">232</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge</span></span>
+<span class="src-line" id="L233"><a class="ln" href="#L233">233</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\PhpHighlighter</span></span>
+<span class="src-line" id="L234"><a class="ln" href="#L234">234</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge</span></span>
+<span class="src-line" id="L235"><a class="ln" href="#L235">235</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml</span></span>
+<span class="src-line" id="L236"><a class="ln" href="#L236">236</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\ProjectAnalyzer</span></span>
+<span class="src-line" id="L237"><a class="ln" href="#L237">237</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Diff\ProjectDiffer</span></span>
+<span class="src-line" id="L238"><a class="ln" href="#L238">238</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\ProjectModel</span></span>
+<span class="src-line" id="L239"><a class="ln" href="#L239">239</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector</span></span>
+<span class="src-line" id="L240"><a class="ln" href="#L240">240</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder</span></span>
+<span class="src-line" id="L241"><a class="ln" href="#L241">241</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner</span></span>
+<span class="src-line" id="L242"><a class="ln" href="#L242">242</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\RelationsHtml</span></span>
+<span class="src-line" id="L243"><a class="ln" href="#L243">243</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cache\RenderCache</span></span>
+<span class="src-line" id="L244"><a class="ln" href="#L244">244</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\RenderKit</span></span>
+<span class="src-line" id="L245"><a class="ln" href="#L245">245</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\RepositoryLink</span></span>
+<span class="src-line" id="L246"><a class="ln" href="#L246">246</a><span class="tok-com"> * @uses \Toolkit\DocGen\Config\RepositoryUrl</span></span>
+<span class="src-line" id="L247"><a class="ln" href="#L247">247</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\SearchIndexBuilder</span></span>
+<span class="src-line" id="L248"><a class="ln" href="#L248">248</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Signature\SidebarDigest</span></span>
+<span class="src-line" id="L249"><a class="ln" href="#L249">249</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\SidebarHtml</span></span>
+<span class="src-line" id="L250"><a class="ln" href="#L250">250</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\SidebarScope</span></span>
+<span class="src-line" id="L251"><a class="ln" href="#L251">251</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\SignatureHtml</span></span>
+<span class="src-line" id="L252"><a class="ln" href="#L252">252</a><span class="tok-com"> * @uses \Toolkit\DocGen\Filesystem\SiteFileWriter</span></span>
+<span class="src-line" id="L253"><a class="ln" href="#L253">253</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\SitePages</span></span>
+<span class="src-line" id="L254"><a class="ln" href="#L254">254</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\SiteRenderer</span></span>
+<span class="src-line" id="L255"><a class="ln" href="#L255">255</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\SiteUrl</span></span>
+<span class="src-line" id="L256"><a class="ln" href="#L256">256</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Social\SocialCard</span></span>
+<span class="src-line" id="L257"><a class="ln" href="#L257">257</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Social\SocialMeta</span></span>
+<span class="src-line" id="L258"><a class="ln" href="#L258">258</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Diff\SourceDiffHtml</span></span>
+<span class="src-line" id="L259"><a class="ln" href="#L259">259</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Signature\SourceDigestIndex</span></span>
+<span class="src-line" id="L260"><a class="ln" href="#L260">260</a><span class="tok-com"> * @uses \Toolkit\DocGen\Filesystem\SourceFileFinder</span></span>
+<span class="src-line" id="L261"><a class="ln" href="#L261">261</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cache\SourceFileKey</span></span>
+<span class="src-line" id="L262"><a class="ln" href="#L262">262</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\SourcePage</span></span>
+<span class="src-line" id="L263"><a class="ln" href="#L263">263</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext</span></span>
+<span class="src-line" id="L264"><a class="ln" href="#L264">264</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\SymbolDescription</span></span>
+<span class="src-line" id="L265"><a class="ln" href="#L265">265</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\SymbolIndex</span></span>
+<span class="src-line" id="L266"><a class="ln" href="#L266">266</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\SymbolListHtml</span></span>
+<span class="src-line" id="L267"><a class="ln" href="#L267">267</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Signature\SymbolReferenceScanner</span></span>
+<span class="src-line" id="L268"><a class="ln" href="#L268">268</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\SymbolRow</span></span>
+<span class="src-line" id="L269"><a class="ln" href="#L269">269</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable</span></span>
+<span class="src-line" id="L270"><a class="ln" href="#L270">270</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\TestCaseHtml</span></span>
+<span class="src-line" id="L271"><a class="ln" href="#L271">271</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex</span></span>
+<span class="src-line" id="L272"><a class="ln" href="#L272">272</a><span class="tok-com"> * @uses \Toolkit\DocGen\Cache\ToolkitFingerprint</span></span>
+<span class="src-line" id="L273"><a class="ln" href="#L273">273</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\TypeHtml</span></span>
+<span class="src-line" id="L274"><a class="ln" href="#L274">274</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\TypeRenderContext</span></span>
+<span class="src-line" id="L275"><a class="ln" href="#L275">275</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Model\TypeSignature</span></span>
+<span class="src-line" id="L276"><a class="ln" href="#L276">276</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Reference\UsageCollector</span></span>
+<span class="src-line" id="L277"><a class="ln" href="#L277">277</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex</span></span>
+<span class="src-line" id="L278"><a class="ln" href="#L278">278</a><span class="tok-com"> * @uses \Toolkit\DocGen\Render\Page\Component\UsageListHtml</span></span>
+<span class="src-line" id="L279"><a class="ln" href="#L279">279</a><span class="tok-com"> * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector</span></span>
+<span class="src-line" id="L280"><a class="ln" href="#L280">280</a><span class="tok-com"> * @uses \Toolkit\DocGen\Package\VendorPackageLocator</span></span>
+<span class="src-line" id="L281"><a class="ln" href="#L281">281</a><span class="tok-com"> * @uses \Toolkit\DocGen\Parallel\WorkScheduler</span></span>
+<span class="src-line" id="L282"><a class="ln" href="#L282">282</a><span class="tok-com"> * @uses \Toolkit\DocGen\Parallel\WorkerCount</span></span>
+<span class="src-line" id="L283"><a class="ln" href="#L283">283</a><span class="tok-com"> * @uses \Toolkit\DocGen\Parallel\WorkerPool</span></span>
 <span class="src-line" id="L284"><a class="ln" href="#L284">284</a><span class="tok-com"> */</span></span>
 <span class="src-line" id="L285"><a class="ln" href="#L285">285</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">Application</span>::<span class="tok-kw">class</span>)]</span>
 <span class="src-line" id="L286"><a class="ln" href="#L286">286</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">AllItemsPage</span>::<span class="tok-kw">class</span>)]</span>
@@ -466,13 +466,13 @@
 <span class="src-line" id="L430"><a class="ln" href="#L430">430</a>            <span class="tok-var">$output</span> .= <span class="tok-var">$message</span>;</span>
 <span class="src-line" id="L431"><a class="ln" href="#L431">431</a>        });</span>
 <span class="src-line" id="L432"><a class="ln" href="#L432">432</a></span>
-<span class="src-line" id="L433"><a class="ln" href="#L433">433</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">0</span>, <span class="tok-var">$app</span>-&gt;<span class="tok-id">run</span>([<span class="tok-str">&#039;doc-gen&#039;</span>, <span class="tok-str">&#039;--help&#039;</span>]));</span>
-<span class="src-line" id="L434"><a class="ln" href="#L434">434</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;Usage: doc-gen&#039;</span>, <span class="tok-var">$output</span>);</span>
+<span class="src-line" id="L433"><a class="ln" href="#L433">433</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">0</span>, <span class="tok-var">$app</span>-&gt;<span class="tok-id">run</span>([<span class="tok-str">&#039;docgen&#039;</span>, <span class="tok-str">&#039;--help&#039;</span>]));</span>
+<span class="src-line" id="L434"><a class="ln" href="#L434">434</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;Usage: docgen&#039;</span>, <span class="tok-var">$output</span>);</span>
 <span class="src-line" id="L435"><a class="ln" href="#L435">435</a></span>
 <span class="src-line" id="L436"><a class="ln" href="#L436">436</a>        <span class="tok-var">$output</span> = <span class="tok-str">&#039;&#039;</span>;</span>
 <span class="src-line" id="L437"><a class="ln" href="#L437">437</a></span>
-<span class="src-line" id="L438"><a class="ln" href="#L438">438</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">0</span>, <span class="tok-var">$app</span>-&gt;<span class="tok-id">run</span>([<span class="tok-str">&#039;doc-gen&#039;</span>, <span class="tok-str">&#039;-V&#039;</span>]));</span>
-<span class="src-line" id="L439"><a class="ln" href="#L439">439</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;doc-gen 1.0.0&#039;</span>, <span class="tok-var">$output</span>);</span>
+<span class="src-line" id="L438"><a class="ln" href="#L438">438</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">0</span>, <span class="tok-var">$app</span>-&gt;<span class="tok-id">run</span>([<span class="tok-str">&#039;docgen&#039;</span>, <span class="tok-str">&#039;-V&#039;</span>]));</span>
+<span class="src-line" id="L439"><a class="ln" href="#L439">439</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;docgen 1.0.0&#039;</span>, <span class="tok-var">$output</span>);</span>
 <span class="src-line" id="L440"><a class="ln" href="#L440">440</a>    }</span>
 <span class="src-line" id="L441"><a class="ln" href="#L441">441</a></span>
 <span class="src-line" id="L442"><a class="ln" href="#L442">442</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunRejectsUnknownOption</span>(): <span class="tok-id">void</span></span>
@@ -485,7 +485,7 @@
 <span class="src-line" id="L449"><a class="ln" href="#L449">449</a>            <span class="tok-var">$errors</span> .= <span class="tok-var">$message</span>;</span>
 <span class="src-line" id="L450"><a class="ln" href="#L450">450</a>        });</span>
 <span class="src-line" id="L451"><a class="ln" href="#L451">451</a></span>
-<span class="src-line" id="L452"><a class="ln" href="#L452">452</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">2</span>, <span class="tok-var">$app</span>-&gt;<span class="tok-id">run</span>([<span class="tok-str">&#039;doc-gen&#039;</span>, <span class="tok-str">&#039;--bogus&#039;</span>]));</span>
+<span class="src-line" id="L452"><a class="ln" href="#L452">452</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">2</span>, <span class="tok-var">$app</span>-&gt;<span class="tok-id">run</span>([<span class="tok-str">&#039;docgen&#039;</span>, <span class="tok-str">&#039;--bogus&#039;</span>]));</span>
 <span class="src-line" id="L453"><a class="ln" href="#L453">453</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;Unknown option: --bogus&#039;</span>, <span class="tok-var">$errors</span>);</span>
 <span class="src-line" id="L454"><a class="ln" href="#L454">454</a>    }</span>
 <span class="src-line" id="L455"><a class="ln" href="#L455">455</a></span>
@@ -525,7 +525,7 @@
 <span class="src-line" id="L489"><a class="ln" href="#L489">489</a>            },</span>
 <span class="src-line" id="L490"><a class="ln" href="#L490">490</a>        );</span>
 <span class="src-line" id="L491"><a class="ln" href="#L491">491</a></span>
-<span class="src-line" id="L492"><a class="ln" href="#L492">492</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">0</span>, <span class="tok-var">$app</span>-&gt;<span class="tok-id">run</span>([<span class="tok-str">&#039;doc-gen&#039;</span>]));</span>
+<span class="src-line" id="L492"><a class="ln" href="#L492">492</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">0</span>, <span class="tok-var">$app</span>-&gt;<span class="tok-id">run</span>([<span class="tok-str">&#039;docgen&#039;</span>]));</span>
 <span class="src-line" id="L493"><a class="ln" href="#L493">493</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;Generated&#039;</span>, <span class="tok-var">$output</span>);</span>
 <span class="src-line" id="L494"><a class="ln" href="#L494">494</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-var">$errors</span>);</span>
 <span class="src-line" id="L495"><a class="ln" href="#L495">495</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFileExists</span>(<span class="tok-var">$dir</span> . <span class="tok-str">&#039;/build/docs/index.html&#039;</span>);</span>
@@ -541,14 +541,14 @@
 <span class="src-line" id="L505"><a class="ln" href="#L505">505</a>            <span class="tok-var">$errors</span> .= <span class="tok-var">$message</span>;</span>
 <span class="src-line" id="L506"><a class="ln" href="#L506">506</a>        });</span>
 <span class="src-line" id="L507"><a class="ln" href="#L507">507</a></span>
-<span class="src-line" id="L508"><a class="ln" href="#L508">508</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">2</span>, <span class="tok-var">$app</span>-&gt;<span class="tok-id">run</span>([<span class="tok-str">&#039;doc-gen&#039;</span>]));</span>
+<span class="src-line" id="L508"><a class="ln" href="#L508">508</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">2</span>, <span class="tok-var">$app</span>-&gt;<span class="tok-id">run</span>([<span class="tok-str">&#039;docgen&#039;</span>]));</span>
 <span class="src-line" id="L509"><a class="ln" href="#L509">509</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;DocGen error: No composer packages found.&#039;</span>, <span class="tok-var">$errors</span>);</span>
 <span class="src-line" id="L510"><a class="ln" href="#L510">510</a>    }</span>
 <span class="src-line" id="L511"><a class="ln" href="#L511">511</a>}</span>
 <span class="src-line" id="L512"><a class="ln" href="#L512">512</a></span>
 </code></pre>
 </main>
-<footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> doc-gen</footer>
+<footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
 </div>
 <script src="../../../../../assets/search-index.js" defer></script>
 <script src="../../../../../assets/app.js" defer></script>

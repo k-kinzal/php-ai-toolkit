@@ -5,8 +5,7 @@ description: >-
   create or update .github/workflows/ci.yml, run toolkit checks in CI, pin
   GitHub Actions to full commit SHAs, align CI with supported PHP versions, or
   harden workflow permissions and concurrency for Composer, PHPUnit, ParaTest,
-  PHPStan, PHP-CS-Fixer, PHPCompatibility, LocGuard, TreeGuard, ScopeGuard, and
-  Deptrac.
+  PHPStan, PHP-CS-Fixer, PHPCompatibility, LocGuard, TreeGuard, and Deptrac.
 ---
 
 # Setup GitHub Actions CI
@@ -21,8 +20,8 @@ Read these files before editing CI:
 - `composer.json`: `require.php`, `config.platform.php`, and Composer scripts.
 - Existing `.github/workflows/*.yml` or `.yaml`.
 - Toolkit configs that imply CI gates: `.php-cs-fixer.dist.php`,
-  `phpstan.neon`, `phpcs.xml.dist`, `loc.yaml`, `tree.yaml`, `scope.yaml`,
-  `deptrac.yaml`, `phpunit.xml.dist`.
+  `phpstan.neon`, `phpcs.xml.dist`, `loc.yaml`, `tree.yaml`, `deptrac.yaml`,
+  `phpunit.xml.dist`.
 - Project docs that declare supported PHP versions.
 - Composer lock policy: one normal `composer.lock`, no committed lock, or
   PHP-versioned locks such as `composer.lock.php-8.0`.
@@ -54,7 +53,6 @@ Required gates when the corresponding script/config exists:
 - `composer compat` for PHPCompatibility.
 - `composer loc-guard` for LocGuard.
 - `composer tree-guard` for TreeGuard.
-- `composer scope-guard` for ScopeGuard.
 - `composer deptrac` for Deptrac.
 - `composer test:unit`, `composer test:unit:legacy`, or `composer test` for PHPUnit.
 
@@ -65,9 +63,10 @@ and drifts from then on. When a config file exists and its Composer script does
 not run anywhere in CI, that is the finding to report, not a detail to leave.
 
 Keep `compat` inside the `lint` job alongside formatting, PHPStan, LocGuard,
-TreeGuard, ScopeGuard, and Deptrac. It may be a separate step for visibility,
-but it should not be a separate CI job unless the project has an explicit
-reason.
+TreeGuard, and Deptrac. It may be a separate step for visibility, but it should
+not be a separate CI job unless the project has an explicit reason. Namespace
+visibility is enforced by the toolkit's PHPStan rules and needs no separate CI
+step.
 
 If a script is missing but the config exists, add the Composer script using the
 corresponding setup skill before wiring CI. If neither script nor config exists,
@@ -240,7 +239,6 @@ composer phpstan
 composer compat
 composer loc-guard
 composer tree-guard
-composer scope-guard
 composer deptrac
 composer test:unit
 composer test:unit:legacy # when the project keeps a PHPUnit 9 config for old PHP support

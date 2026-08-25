@@ -70,7 +70,7 @@ Use `debug:unassigned` to check collector coverage and `debug:unused` to find st
 ## CI
 
 `composer deptrac` runs as a named step of the `lint` job on every supported PHP
-minor, alongside formatting, PHPStan, PHPCompatibility, LocGuard, TreeGuard, and
-ScopeGuard. Running it on every minor is what proves the `deptrac.php` launcher
+minor, alongside formatting, PHPStan, PHPCompatibility, LocGuard, and
+TreeGuard. Running it on every minor is what proves the `deptrac.php` launcher
 still resolves a usable Deptrac on each one. See
 [GitHub Actions Configuration](github-actions.md).

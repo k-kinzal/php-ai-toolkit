@@ -7,7 +7,7 @@ skill.
 
 The CI workflow makes every php-ai-toolkit gate visible in GitHub Actions while
 preserving the project's command model: unit tests run in a `tests` job, and
-formatting, PHPStan, PHPCompatibility, LocGuard, TreeGuard, ScopeGuard, Deptrac,
+formatting, PHPStan, PHPCompatibility, LocGuard, TreeGuard, and Deptrac,
 and runtime/package checks run in a `lint` job. Each lint check should appear as
 a named step so failures are actionable without reading a long aggregate
 `composer lint` log.
@@ -48,7 +48,7 @@ bundles php-parser 4 — resolves it, which in turn means requiring
 `phpstan/phpstan-strict-rules` as `^1.6 || ^2.0` so both lines install.
 
 `composer compat` remains a named step inside the `lint` job alongside
-formatting, PHPStan, LocGuard, TreeGuard, ScopeGuard, and Deptrac. See
+formatting, PHPStan, LocGuard, TreeGuard, and Deptrac. See
 [PHPCompatibility Configuration](php-compatibility.md).
 
 ## Parallel Test Job

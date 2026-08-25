@@ -161,7 +161,7 @@ The generated documentation site prints that command for every example.
 
 ## Requiring Examples on Public API
 
-`RequireExampleOnPublicApiRule` is registered by the toolkit's PHPStan extension and reports a declaration marked `@visibility public` that has no runnable example. It reports nothing until declarations carry that tag, so it is adopted one boundary at a time alongside `/setup-toolkit-scope-guard`.
+`RequireExampleOnPublicApiRule` is registered by the toolkit's PHPStan extension and reports a declaration marked `@visibility public` that has no runnable example. It reports nothing until declarations carry that tag, so it is adopted one boundary at a time alongside the toolkit's visibility-scope PHPStan rule.
 
 Tag a declaration `@visibility public` when the project means "this is the surface other code is invited to use", then give it an example. Do not tag in bulk to make the rule look adopted, and do not remove a tag to silence it.
 
@@ -207,4 +207,4 @@ Deleting an example, or dropping its marker so the line becomes a bare smoke tes
 
 - [Doctest Configuration](vendor/k-kinzal/php-ai-toolkit/docs/doctest.md) — Notation, configuration, execution model, and how the port differs from upstream.
 - [RequireExampleOnPublicApiRule](vendor/k-kinzal/php-ai-toolkit/docs/rules/RequireExampleOnPublicApiRule.md) — The rule that requires examples on declared public API.
-- [ScopeGuard Configuration](vendor/k-kinzal/php-ai-toolkit/docs/scope-guard.md) — The `@visibility` tag the rule keys off.
+- [EnforceVisibilityScopeRule](vendor/k-kinzal/php-ai-toolkit/docs/rules/EnforceVisibilityScopeRule.md) — The `@visibility` tag the rule keys off.

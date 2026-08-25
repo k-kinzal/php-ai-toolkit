@@ -110,7 +110,16 @@ parameters:
             - 'App\Tests\Integration'
         srcMarker: '/app/'
         unitTestMarker: '/tests/Unit/'
+        visibilityExemptNamespacePrefixes:
+            - 'App\\Tests'
 ```
+
+The toolkit's visibility rule enforces `@visibility` declarations during the
+same analysis. PHPStan must analyse every production root that declares or
+references those symbols. Add only namespace prefixes that genuinely sit
+outside the ownership contract, normally test namespaces. Declarations marked
+`@visibility public` are also treated as public API by PHPStan's unused-symbol
+extensions, so do not add separate `ignoreErrors` entries for them.
 
 Only list a `broadCatchAllowedPaths` entry for a real process or protocol
 boundary that must translate every failure. Only list pairing exclusions for

@@ -69,7 +69,7 @@ Read and use the component skills relevant to each step:
 2. `/setup-toolkit-phpunit` and `/setup-toolkit-doctest`
 3. `/setup-toolkit-php-cs-fixer` and `/setup-toolkit-php-compatibility`
 4. `/setup-toolkit-loc-guard` and `/setup-toolkit-tree-guard`
-5. `/setup-toolkit-deptrac` and `/setup-toolkit-scope-guard`
+5. `/setup-toolkit-deptrac`
 6. `/setup-toolkit-infection`
 7. `/setup-toolkit-doc-gen`
 8. `/setup-toolkit-github-actions`
@@ -101,8 +101,9 @@ zero-target green run is an omission, not a successful setup.
 - Deptrac: model intended responsibility boundaries, prefer directory collectors,
   assign every production token, and fix cycles. Do not enumerate today's flat
   class list in regex collectors merely to obtain green output.
-- ScopeGuard: declare real ownership boundaries. A configuration that scans files
-  but has no visibility contract is not a completed adoption.
+- PHPStan visibility rule: declare real ownership boundaries with `@visibility`
+  tags. An analysis that finds no visibility contract is not a completed
+  adoption.
 - DocGen: configure generation, then ask whether publishing is local only, default
   branch, or default branch plus pull-request diff previews. Never silently omit
   that decision.
@@ -155,8 +156,8 @@ Before reporting completion:
   mutation, and DocGen commands in proportion to the project's supported setup;
 - validate workflows and confirm every configured command appears in CI;
 - confirm PHPStan actually loads a toolkit rule and uses the AI formatter;
-- confirm Deptrac has no unassigned production tokens and ScopeGuard has meaningful
-  declarations;
+- confirm Deptrac has no unassigned production tokens and the PHPStan visibility
+  rule has meaningful declarations to inspect;
 - audit every added configuration value against the ledger above; no copied value
   may remain uncategorized, and every difference from the vendor template needs a
   project fact, measured operational reason, or recorded human decision;

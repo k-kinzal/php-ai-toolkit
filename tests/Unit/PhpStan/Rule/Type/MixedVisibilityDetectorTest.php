@@ -11,7 +11,7 @@ use Toolkit\PhpStan\Rule\Type\MixedVisibilityDetector;
 #[CoversClass(MixedVisibilityDetector::class)]
 final class MixedVisibilityDetectorTest extends TestCase
 {
-    public function testIsRestrictedMatchesEffectiveScopeGuardSemantics(): void
+    public function testIsRestrictedMatchesEffectiveVisibilityScopeSemantics(): void
     {
         $detector = new MixedVisibilityDetector();
 

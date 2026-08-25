@@ -43,7 +43,7 @@ An omitted type remains PHPStan's implicit `mixed` and is handled by PHPStan's o
 
 ## Public Boundary
 
-Arbitrary values are valid at an unrestricted public boundary. The rule therefore permits `mixed` automatically when both the PHP API visibility and the effective ScopeGuard visibility expose the declaration:
+Arbitrary values are valid at an unrestricted public boundary. The rule therefore permits `mixed` automatically when both the PHP API visibility and the effective `@visibility` scope expose the declaration:
 
 ```php
 final class Input

@@ -27,7 +27,7 @@ final class MixedVisibilityDetector
     private const TAG = '@visibility';
 
     /**
-     * Reports whether a class has an effective restricted ScopeGuard scope.
+     * Reports whether a class has an effective restricted @visibility scope.
      */
     public function classIsRestricted(ClassReflection $class): bool
     {

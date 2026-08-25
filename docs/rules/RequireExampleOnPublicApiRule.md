@@ -78,14 +78,14 @@ final class Ledger  // ERROR: still reported; nothing here can be executed.
 ## Why the tag decides
 
 The rule keys off `@visibility public` rather than off "everything public in PHP", because those are
-different statements. PHP's `public` keyword says a symbol is *reachable*; ScopeGuard's
+different statements. PHP's `public` keyword says a symbol is *reachable*; the toolkit's
 `@visibility public` says it is *intended for use by other code* — the tag exists to state that
 intent. Requiring an example on the first would put a demonstration on every internal collaborator a
 package happens to expose; requiring it on the second puts one on exactly the surface a project has
 declared it supports.
 
 That also makes the requirement adoptable: a project turns the rule on, reports nothing, and then
-tags one boundary at a time. See [ScopeGuard Configuration](../scope-guard.md) for the tag itself.
+tags one boundary at a time. See [EnforceVisibilityScopeRule](EnforceVisibilityScopeRule.md) for the tag itself.
 
 ## How to Fix
 
@@ -144,7 +144,7 @@ weaker one. Write class names fully qualified: evaluated example code inherits n
 ### Not fixes
 
 - Removing the `@visibility public` tag. That drops the declaration of intent instead of documenting
-  it, and it also drops the ScopeGuard statement the tag was written to make.
+  it, and it also drops the visibility-boundary statement the tag was written to make.
 - Narrowing the scope to `namespace` to silence the rule. If the symbol really is internal, narrowing
   is correct and the reference sites will say so; if it is not, this hides a design decision behind a
   lint fix.

@@ -227,8 +227,8 @@ declarations, and so on — with every group rendered the same way.
 
 A declaration that carries a `@visibility` tag opens its page with a **Restricted visibility** notice naming the scopes
 exactly as written, so a reader sees what is public API and what is an implementation detail before reaching for it.
-The notice only reports the declaration; [ScopeGuard](scope-guard.md) is what enforces the scope, and documentation
-that resolved scopes itself would be a second implementation of the same rules.
+The notice only reports the declaration; [EnforceVisibilityScopeRule](rules/EnforceVisibilityScopeRule.md) is what
+enforces the scope, and documentation that resolved scopes itself would be a second implementation of the same rules.
 
 ## Output
 

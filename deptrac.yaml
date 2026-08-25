@@ -25,14 +25,14 @@ deptrac:
       collectors:
         - type: directory
           value: src/TreeGuard/.*
-    - name: ScopeGuard
-      collectors:
-        - type: directory
-          value: src/ScopeGuard/.*
     - name: PhpStanRule
       collectors:
         - type: directory
           value: src/PhpStan/Rule/.*
+    - name: PhpStanExtension
+      collectors:
+        - type: directory
+          value: src/PhpStan/Extension/.*
     - name: PhpStanSupport
       collectors:
         - type: directory
@@ -59,10 +59,11 @@ deptrac:
     Doctest: ~
     LocGuard: ~
     TreeGuard: ~
-    ScopeGuard: ~
     PhpStanRule:
       - PhpStanSupport
       - Doctest
+    PhpStanExtension:
+      - PhpStanRule
     PhpStanSupport: ~
     PhpStanThrowType: ~
     PhpStanErrorFormatter:

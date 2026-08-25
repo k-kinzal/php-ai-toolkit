@@ -32,8 +32,10 @@ parametersSchema:
         forbidInternalMixedType: structure([enabled: bool()])
         requireListForArrayLiteral: structure([enabled: bool()])
         requireExhaustiveDispatch: structure([enabled: bool()])
+        visibilityScope: structure([enabled: bool()])
         testNamespacePrefixes: listOf(string())
         restrictedTestNamespacePrefixes: listOf(string())
+        visibilityExemptNamespacePrefixes: listOf(string())
         srcUnitTestPairExcludePatterns: listOf(string())
         srcMarker: string()
         unitTestMarker: string()
@@ -118,11 +120,15 @@ parameters:
             enabled: %toolkit.allRules%
         requireExhaustiveDispatch:
             enabled: %toolkit.allRules%
+        visibilityScope:
+            enabled: %toolkit.allRules%
         testNamespacePrefixes:
             - 'Tests'
         restrictedTestNamespacePrefixes:
             - 'Tests\Unit'
             - 'Tests\Integration'
+        visibilityExemptNamespacePrefixes:
+            - 'Tests'
         srcUnitTestPairExcludePatterns: []
         srcMarker: '/src/'
         unitTestMarker: '/tests/Unit/'
@@ -201,6 +207,9 @@ services:
         arguments:
             testNamespacePrefixes: %toolkit.testNamespacePrefixes%
             restrictedTestNamespacePrefixes: %toolkit.restrictedTestNamespacePrefixes%
+
+    toolkit.visibility.publicApiDetector:
+        class: Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiVisibilityDetector
 
     toolkit.rule.forbiddenComment:
         class: Toolkit\PhpStan\Rule\ForbiddenCommentRule
@@ -364,6 +373,43 @@ services:
     toolkit.collector.classNameDispatch:
         class: Toolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector
 
+    toolkit.rule.enforceVisibilityScope:
+        class: Toolkit\PhpStan\Rule\Visibility\EnforceVisibilityScopeRule
+        arguments:
+            exemptNamespacePrefixes: %toolkit.visibilityExemptNamespacePrefixes%
+
+    toolkit.collector.visibilityDeclaration:
+        class: Toolkit\PhpStan\Rule\Visibility\VisibilityDeclarationCollector
+
+    toolkit.collector.visibilityReference:
+        class: Toolkit\PhpStan\Rule\Visibility\VisibilityReferenceCollector
+
+    toolkit.extension.visibilityPublicUnusedError:
+        class: Toolkit\PhpStan\Extension\Visibility\VisibilityPublicUnusedErrorExtension
+        tags:
+            - phpstan.ignoreErrorExtension
+
+    toolkit.extension.visibilityPublicMethod:
+        class: Toolkit\PhpStan\Extension\Visibility\VisibilityPublicMethodExtension
+        arguments:
+            visibilityDetector: @toolkit.visibility.publicApiDetector
+        tags:
+            - phpstan.methods.alwaysUsedMethodExtension
+
+    toolkit.extension.visibilityPublicProperty:
+        class: Toolkit\PhpStan\Extension\Visibility\VisibilityPublicPropertyExtension
+        arguments:
+            visibilityDetector: @toolkit.visibility.publicApiDetector
+        tags:
+            - phpstan.properties.readWriteExtension
+
+    toolkit.extension.visibilityPublicConstant:
+        class: Toolkit\PhpStan\Extension\Visibility\VisibilityPublicConstantExtension
+        arguments:
+            visibilityDetector: @toolkit.visibility.publicApiDetector
+        tags:
+            - phpstan.constants.alwaysUsedClassConstantsExtension
+
 conditionalTags:
     Toolkit\PhpStan\Rule\ForbiddenCommentRule:
         phpstan.rules.rule: %toolkit.forbiddenComment.enabled%
@@ -445,3 +491,9 @@ conditionalTags:
         phpstan.collector: %toolkit.requireExhaustiveDispatch.enabled%
     Toolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector:
         phpstan.collector: %toolkit.requireExhaustiveDispatch.enabled%
+    Toolkit\PhpStan\Rule\Visibility\EnforceVisibilityScopeRule:
+        phpstan.rules.rule: %toolkit.visibilityScope.enabled%
+    Toolkit\PhpStan\Rule\Visibility\VisibilityDeclarationCollector:
+        phpstan.collector: %toolkit.visibilityScope.enabled%
+    Toolkit\PhpStan\Rule\Visibility\VisibilityReferenceCollector:
+        phpstan.collector: %toolkit.visibilityScope.enabled%

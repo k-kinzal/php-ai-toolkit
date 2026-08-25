@@ -151,9 +151,6 @@ jobs:
       - name: Check the directory structure
         run: composer tree-guard
 
-      - name: Check the namespace visibility
-        run: composer scope-guard
-
       - name: Check the architecture layers
         run: composer deptrac
 

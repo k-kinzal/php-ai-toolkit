@@ -133,8 +133,8 @@ floor or the declared floor goes up.
 ## CI
 
 `composer compat` runs as a named step of the `lint` job, on every PHP minor in
-the matrix, alongside formatting, PHPStan, LocGuard, TreeGuard, ScopeGuard, and
-Deptrac. See [GitHub Actions Configuration](github-actions.md).
+the matrix, alongside formatting, PHPStan, LocGuard, TreeGuard, and Deptrac.
+See [GitHub Actions Configuration](github-actions.md).
 
 Running it on every minor rather than once is deliberate but cheap: `phpcs`
 reads `testVersion` from the ruleset, so each leg reports the same floor

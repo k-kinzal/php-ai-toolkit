@@ -66,7 +66,6 @@ The component skills are also available for focused setup or maintenance:
 - `/setup-toolkit-php-compatibility` — PHPCompatibility gate that keeps the code runnable on the declared minimum PHP
 - `/setup-toolkit-loc-guard` — LocGuard metrics checks for production source complexity and length limits
 - `/setup-toolkit-tree-guard` — TreeGuard directory and file structure constraints
-- `/setup-toolkit-scope-guard` — ScopeGuard namespace visibility scopes, the PHP counterpart of Rust's `pub(crate)`
 - `/setup-toolkit-doctest` — Doctest, the port of k-kinzal/doctest-php that runs PHPDoc examples as PHPUnit test cases
 - `/setup-toolkit-doc-gen` — DocGen static documentation site with full types, relations, layers, doctest examples, and a two-revision diff mode
 - `/setup-toolkit-deptrac` — Deptrac architecture dependency rules for web apps, CLI apps, libraries, and modular projects
@@ -90,7 +89,7 @@ and published on every push to `main`.
 - [PHPCompatibility Configuration](docs/php-compatibility.md) — The PHP version floor gate and why it runs on `phpcs`
 - [LocGuard Configuration](docs/loc-guard.md) — Production source metrics checks and thresholds
 - [TreeGuard Configuration](docs/tree-guard.md) — Directory and file structure constraints
-- [ScopeGuard Configuration](docs/scope-guard.md) — Namespace visibility scopes declared with `@visibility`
+- [EnforceVisibilityScopeRule](docs/rules/EnforceVisibilityScopeRule.md) — Namespace visibility scopes declared with `@visibility`, enforced during PHPStan analysis
 - [Doctest Configuration](docs/doctest.md) — Running PHPDoc examples as PHPUnit test cases, and how the port differs from upstream
 - [DocGen Configuration](docs/doc-gen.md) — Static documentation site generation and scope control
 - [Deptrac Configuration](docs/deptrac.md) — Architecture dependency rules and adaptation guidance

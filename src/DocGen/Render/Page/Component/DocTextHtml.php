@@ -122,7 +122,7 @@ final class DocTextHtml
     /**
      * Renders the visibility notice of a declaration that is not public API.
      *
-     * The declared scopes are shown as written; scope-guard is what enforces them,
+     * The declared scopes are shown as written; PHPStan is what enforces them,
      * so the page states the boundary instead of restating its rules.
      */
     public function visibilityBox(RenderKit $services, DocBlock $docBlock): string

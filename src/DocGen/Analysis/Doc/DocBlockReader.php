@@ -86,7 +86,7 @@ final class DocBlockReader
      * Reads the namespace visibility scopes declared on the element.
      *
      * The scopes are kept verbatim. Resolving what a scope covers belongs to
-     * scope-guard, which enforces them; documentation only states what was declared.
+     * the PHPStan visibility rule, which enforces them; documentation only states what was declared.
      *
      * @return list<string>
      */

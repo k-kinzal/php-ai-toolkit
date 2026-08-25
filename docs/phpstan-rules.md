@@ -15,6 +15,7 @@ Rules applied to all code.
 | [SrcUnitTestPairRule](rules/SrcUnitTestPairRule.md) | Enforces 1:1 pairing between `src/` classes and `tests/Unit/` test classes | `customRules.srcUnitTestPair` |
 | [RequirePhpDocOnPublicApiRule](rules/RequirePhpDocOnPublicApiRule.md) | Requires PHPDoc on all public API elements | `customRules.requirePhpDocOnPublicApi` |
 | [RequireExampleOnPublicApiRule](rules/RequireExampleOnPublicApiRule.md) | Requires a runnable `@example` on declarations marked `@visibility public` | `customRules.requireExampleOnClass`, `customRules.requireExampleOnMethod`, `customRules.requireExampleOnProperty`, `customRules.requireExampleOnConstant`, `customRules.requireExampleOnEnumCase` |
+| [EnforceVisibilityScopeRule](rules/EnforceVisibilityScopeRule.md) | Enforces namespace visibility scopes declared with `@visibility` and treats explicitly public API as externally used | `customRules.visibilityInvalidScope`, `customRules.visibilityOutOfScope` |
 | [ForbidNonDocCommentRule](rules/ForbidNonDocCommentRule.md) | Forbids `/* */` and `#` comments everywhere, and `//` comments outside `catch` blocks and array literals; `/** */` PHPDoc is allowed | `customRules.forbidNonDocComment` |
 | [ForbidSingleLinePhpDocRule](rules/ForbidSingleLinePhpDocRule.md) | Forbids single-line PHPDoc on public elements; requires multi-line format | `customRules.forbidSingleLinePhpDoc` |
 | [ForbidClassLikeNameSuffixRule](rules/ForbidClassLikeNameSuffixRule.md) | Forbids configured suffixes on class, interface, trait, and enum names | `customRules.forbiddenClassLikeNameSuffix` |
@@ -71,6 +72,7 @@ The following values can be customized under `parameters.toolkit` in a project's
 |-----------|---------|-------------|
 | `testNamespacePrefixes` | `['Tests']` | Test namespace prefixes |
 | `restrictedTestNamespacePrefixes` | `['Tests\Unit', 'Tests\Integration']` | Test namespaces where strict rules apply |
+| `visibilityExemptNamespacePrefixes` | `['Tests']` | Namespace subtrees allowed to reference declarations across `@visibility` boundaries |
 | `srcUnitTestPairExcludePatterns` | `[]` | Patterns to exclude from test pair checks |
 | `srcMarker` | `'/src/'` | Source code path marker |
 | `unitTestMarker` | `'/tests/Unit/'` | Unit test path marker |

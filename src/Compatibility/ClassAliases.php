@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+if (!interface_exists(PHPStan\Analyser\IgnoreErrorExtension::class)) {
+    class_alias(Toolkit\Compatibility\IgnoreErrorExtension::class, PHPStan\Analyser\IgnoreErrorExtension::class);
+}
+
 /**
  * Backward-compatible names for classes moved into responsibility namespaces.
  *

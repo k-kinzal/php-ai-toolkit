@@ -165,5 +165,5 @@ Configure violation ordering with `report.order_by`. Supported fields are `path`
 ## CI
 
 `composer tree-guard` runs as a named step of the `lint` job on every supported
-PHP minor, alongside formatting, PHPStan, PHPCompatibility, LocGuard,
-ScopeGuard, and Deptrac. See [GitHub Actions Configuration](github-actions.md).
+PHP minor, alongside formatting, PHPStan, PHPCompatibility, LocGuard, and
+Deptrac. See [GitHub Actions Configuration](github-actions.md).

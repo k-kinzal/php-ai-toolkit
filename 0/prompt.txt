@@ -1,0 +1,75 @@
+質問させてください。deptract.phpってなんですか？
+
+---
+
+ありがとうございます。次にtoolkit.neonってなんですか？
+
+---
+
+こういったいろいろなルールの提供って一般的にどうやられているのですか？ちょっと肌感としっくり来ないなと思ってまして。
+
+---
+
+私の感触としてはextensions.neonとphpstan.neonにしてlevel maxやstrict ruleの有効化はphpstan.neonでやるべきという感覚なのですがどうでしょうか。もちろんextensions.neonとしては公開ルールとしての推奨設定をデフォルトで入れておくとして。どう思います？またちょっとaiRulesがよくわかってないです。aiRulesって何なのですかね？
+
+---
+
+extension.neonとrule.neonの違いってなんですか？またstrict rule以外でrule.neonって見たことないのですがこれはRule系はrule.neon、phpstanの拡張はextension.neonを使うみたいな共通認識なんです？
+
+---
+
+exceptions.neon がわかってないですが、これは何ですか？
+
+---
+
+いや、聞きたいのは一般的にあるのか、あるなら何に使っているのかです。
+
+---
+
+error-formater.neonは一般的なのですか？
+
+---
+
+こういったreporterって一般的にどう提供されているのですか？
+
+---
+
+いや、PHPStanのreporterの話をしており、error-formater.neonが一般的でないのならどう提供するのですか？という話をしています。PHPUnitの話は一切していないです。一言も言ってないです。
+
+---
+
+[]
+
+---
+
+「aiRules.support.agentDetector」、「errorFormatter.aiRules」が気になってるのですがサービス名分ける理由ってなんですか？
+
+---
+
+じゃあ付けた名前が使われるという感じですね。ちなみにPHPStanはErrorFormatterなんですか？Reporterなんですか？名前があってんのかなと思いまして。
+
+---
+
+他のerrorFormatterだとどういう名前で登録されているんです？errorFormatter.aiRulesはformatterの名前じゃないなと思いまして。
+
+---
+
+次にrules.neonの話に戻りますが、一般的にルールのoptoutってサポートしているのですか？どうやっているのか知りたいなと思っていまして。
+
+---
+
+parameters.aiToolkitを切る理由はあります？strict-rulesを見ていると直下の設定とstrictRuleの設定がありそうだなと思いまして。
+
+---
+
+ありがとうございます。理解できました。次に「  services:
+      aiRules.rule.forbidEmptyCatch:
+          class: PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ForbidEmptyCatchRule
+
+  conditionalTags:
+      PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ForbidEmptyCatchRule:
+          phpstan.rules.rule: %aiToolkit.forbidEmptyCatch.enabled%」で一件ずつ追加されてますがこれは何です？
+
+---
+
+あ、確認したかったのは一件しかないことに意味があるのではなく、参考に一件だけ指定してあるという認識でいいでしょうか？

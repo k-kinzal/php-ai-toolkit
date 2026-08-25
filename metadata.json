@@ -1,0 +1,60 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M0WGRE8ZCAX3CXN69HJF6J65",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 17,
+  "files_touched": [
+    "docs/phpstan-rules.md",
+    "docs/rules/ForbidInternalMixedTypeRule.md",
+    "docs/rules/ForbidMixedArrayReturnTypeRule.md",
+    "phpstan.neon",
+    "src/DocGen/Analysis/Model/ClassLikeDoc.php",
+    "src/Doctest/Assertion/AssertionResult.php",
+    "src/Doctest/Executor/Evaluation.php",
+    "src/Doctest/Executor/ExecutionContext.php",
+    "src/Doctest/Executor/ExpressionEvaluator.php",
+    "src/PhpStan/Rule/Type/ConcreteMixedTypeInspector.php",
+    "src/PhpStan/Rule/Type/ForbidInternalMixedTypeRule.php",
+    "src/PhpStan/Rule/Type/InheritedMixedContractInspector.php",
+    "src/PhpStan/Rule/Type/MixedClassPhpDocErrorCollector.php",
+    "src/PhpStan/Rule/Type/MixedLocalPhpDocErrorCollector.php",
+    "src/PhpStan/Rule/Type/MixedTypeErrorBuilder.php",
+    "src/PhpStan/Rule/Type/MixedVisibilityDetector.php",
+    "src/ScopeGuard/Analysis/Parse/NodeWalker.php",
+    "src/ScopeGuard/Config/ConfigScalarReader.php",
+    "src/ScopeGuard/Config/ConfigStringListReader.php",
+    "src/ScopeGuard/Config/ReportConfigReader.php",
+    "tests/Fixture/ForbidInternalMixedType/AllowedMixedTypes.php",
+    "tests/Fixture/ForbidInternalMixedType/ForbiddenMixedTypes.php",
+    "tests/Fixture/ForbidInternalMixedType/InheritedMixedTypes.php",
+    "tests/Unit/Doctest/Executor/EvaluationTest.php",
+    "tests/Unit/PhpStan/Rule/Type/ForbidInternalMixedTypeRuleTest.php",
+    "tests/Unit/PhpStan/Rule/Type/InheritedMixedContractInspectorTest.php",
+    "tests/Unit/PhpStan/Rule/Type/MixedCallableErrorCollectorTest.php",
+    "tests/Unit/PhpStan/Rule/Type/MixedClassPhpDocErrorCollectorTest.php",
+    "tests/Unit/PhpStan/Rule/Type/MixedLocalPhpDocErrorCollectorTest.php",
+    "tests/Unit/PhpStan/Rule/Type/MixedPropertyErrorCollectorTest.php",
+    "tests/Unit/PhpStan/Rule/Type/Rule/ForbidInternalMixedClassPhpDocRuleTest.php",
+    "tests/Unit/PhpStan/Rule/Type/Rule/ForbidInternalMixedLocalVarRuleTest.php",
+    "tests/Unit/PhpStan/Rule/Type/Rule/ForbidInternalMixedPropertyRuleTest.php",
+    "tests/Unit/ScopeGuard/Analysis/Parse/NodeWalkerTest.php",
+    "toolkit.neon"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 164,
+    "cache_creation_tokens": 117838,
+    "cache_read_tokens": 8080569,
+    "output_tokens": 67317,
+    "api_call_count": 82
+  }
+}

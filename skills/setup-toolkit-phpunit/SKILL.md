@@ -11,30 +11,72 @@ This skill configures PHPUnit with maximum strictness and enables the AI test re
 
 ## Prerequisites
 
-Derive the PHPUnit constraint before installing it. A single-runtime application
-may resolve one compatible major. A project supporting multiple PHP minors must use
-a union that resolves for all of them and verify every maintained lock. For this
-toolkit's PHP 8.0+ matrix the union is shown below; derive a different one when the
-target's matrix differs:
+Choose PHPUnit from the target's PHP support range, existing test extensions,
+Composer graph, and CI topology. Inspect current Composer metadata and PHPUnit's
+support documentation at application time, then select the newest compatible
+release. Do not copy this toolkit repository's multi-major constraint.
+
+A single-runtime application normally needs one current major. A project that
+installs development dependencies on several PHP minors may need a minimal union,
+but include an older major only for an actual matrix leg that cannot install the
+newest compatible line. Verify every maintained lock or CI leg and diagnose an
+unexpected older resolution with `composer why-not`:
 
 ```bash
-composer require --dev "phpunit/phpunit:^9.6 || ^10.5 || ^11 || ^12 || ^13" k-kinzal/php-ai-toolkit
+composer require --dev "phpunit/phpunit:<target-derived-constraint>" k-kinzal/php-ai-toolkit --dry-run
+composer why-not phpunit/phpunit <newest-compatible-version>
 ```
+
+Run the confirmed requirement without `--dry-run`. Preserve an existing deliberate
+pin unless changing it is in scope, but update the lock to the newest version that
+the target constraint admits.
+
+The toolkit requirement is unversioned only for a new install so Composer can select
+its newest stable release compatible with the target graph. Preserve an intentional
+existing toolkit pin and update its lock within that constraint.
 
 ## Template
 
-For PHPUnit 10.5 or later, read the template from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-phpunit/phpunit.xml.dist` and apply it to the project root as `phpunit.xml.dist`.
+Use the template for the installed PHPUnit major. The modern event API is shared,
+but its XML schema is not: a lowest-common-denominator "10+" file omits stricter
+settings added by later majors, while a PHPUnit 13 file is invalid on older ones.
 
-For PHPUnit 9.6, read the template from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-phpunit/phpunit9.xml.dist` and apply it to the project root as `phpunit.xml.dist`.
+| Installed PHPUnit | Template |
+|-------------------|----------|
+| 9.6 | `phpunit9.xml.dist` |
+| 10.5 current maintenance release | `phpunit10.xml.dist` |
+| 11.5 current maintenance release | `phpunit11.xml.dist` |
+| 12.5 current maintenance release | `phpunit12.xml.dist` |
+| 13.x | `phpunit.xml.dist` |
+
+Read the selected file from
+`vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-phpunit/` and apply it to the
+project root as `phpunit.xml.dist`. A project that genuinely installs multiple
+PHPUnit majors must retain one configuration per major and select the matching
+file in each CI leg.
+
+The 10–12 templates track their maintained minor's current schema. Some strict
+attributes were added in patch releases, so an older locked patch may reject the
+template even within the same minor. Update it to the newest compatible patch as
+required above, or derive a configuration from that exact installed XSD.
+
+Validate every file with the PHPUnit version that consumes it. If a future schema
+differs from the shipped PHPUnit 13 template, migrate the template to that
+installed schema; do not downgrade PHPUnit merely to match an example file.
+
+For a new configuration, replace `REPLACE_WITH_VENDOR_DIR` from `composer config
+vendor-dir`, and replace `REPLACE_WITH_UNIT_TEST_PATH` and
+`REPLACE_WITH_PRODUCTION_PATH` from the target's test layout and production
+autoload roots. A remaining sentinel or a zero-test suite is a failed setup.
 
 ## Merging with Existing Configuration
 
 If the project already has `phpunit.xml.dist`, merge as follows rather than overwriting.
 
-### PHPUnit 10.5+ `<phpunit>` attributes — strict flags
+### PHPUnit 10.5–13 `<phpunit>` attributes — common strict flags
 
-All modern strict flags must be `true`. If the existing PHPUnit 10.5+ config has
-any of these set to `false` or missing, override to `true`:
+All common modern strict flags must have these values. Override a weaker existing
+value:
 
 | Attribute | Required value | If existing is weaker |
 |-----------|---------------|----------------------|
@@ -43,14 +85,49 @@ any of these set to `false` or missing, override to `true`:
 | `beStrictAboutCoverageMetadata` | `true` | Override. |
 | `beStrictAboutChangesToGlobalState` | `true` | Override. |
 | `beStrictAboutOutputDuringTests` | `true` | Override. |
+| `beStrictAboutTestsThatDoNotTestAnything` | `true` | Override. Useless tests must be risky. |
 | `failOnAllIssues` | `true` | Override. Without it, warnings pass silently. |
-| `failOnEmptyTestSuite` | `true` | Override. |
-| `failOnRisky` | `true` | Override. |
-| `failOnWarning` | `true` | Override. |
+| `displayDetailsOnAllIssues` | `true` | Override. Every issue needs actionable diagnostics. |
 | `enforceTimeLimit` | `true` | Override. |
 
-Do not copy these names into a PHPUnit 9 configuration: that schema uses
-different coverage-metadata names and does not support `failOnAllIssues`.
+`failOnAllIssues="true"` already includes the fine-grained `failOn*` settings and
+intentionally opts into issue types added by later PHPUnit releases. Do not add
+redundant `failOnEmptyTestSuite`, `failOnRisky`, or `failOnWarning` attributes.
+
+Do not copy these names into PHPUnit 9: that schema uses different
+coverage-metadata names and does not support `failOnAllIssues` or modern issue
+detail attributes.
+
+### Major-specific modern settings
+
+Apply only the row for the installed major:
+
+| PHPUnit | Required setting | Reason |
+|---------|------------------|--------|
+| 10.5 | `<source restrictDeprecations="true">` | PHPUnit 10's supported way to exclude third-party-only deprecations; removed in PHPUnit 11. |
+| 11–13 | `<source ignoreIndirectDeprecations="true">` | Keeps self and direct deprecations actionable while ignoring deprecations triggered only inside third-party code. |
+| 11–13 | `shortenArraysForExportThreshold="0"` | Keeps complete arrays in failure output instead of hiding elements. |
+| 13 | `requireSealedMockObjects="true"` | Marks mock objects that can still accept unplanned calls as risky. |
+
+When enabling sealed mocks in a suite also executed on PHPUnit 9–12, prefer a
+stub or a small fake where possible. PHPUnit 13's `seal()` API does not exist on
+older majors, so unconditional calls to it make otherwise cross-version test code
+invalid.
+
+Do not carry `cacheResult` into PHPUnit 13: it is deprecated there. Omitting it
+keeps the enabled-by-default test-run history without making the configuration
+invalid on early PHPUnit 13 releases; use `recordTestRunHistory` only when the
+installed schema supports it and the default must be overridden.
+
+Do not force `requireCoverageContribution="true"`. It is useful for a homogeneous
+suite, but interface, enum, subprocess, and contract tests can legitimately have
+no executable target line. PHPUnit 12 deprecates method-level `#[CoversNothing]`,
+so such exceptions must be split into their own `#[CoversNothing]` test classes
+before enabling this setting without introducing deprecated metadata.
+
+Do not force `warnWhenPhpIsNotConfiguredForDevelopment="true"`. PHPUnit's
+development profile requires `memory_limit=-1`; a deliberate finite test-process
+limit is safer for CI and should not become a failing runner warning.
 
 ### PHPUnit 9.6 strict equivalents
 
@@ -62,7 +139,11 @@ PHPUnit, its fixed baseline uses:
 | `forceCoversAnnotation` | `true` | `requireCoverageMetadata` |
 | `beStrictAboutCoversAnnotation` | `true` | `beStrictAboutCoverageMetadata` |
 | `convertDeprecationsToExceptions` | `true` | covered by `failOnAllIssues` and modern issue handling |
+| `convertErrorsToExceptions` | `true` | covered by modern error handling |
+| `convertNoticesToExceptions` | `true` | covered by modern issue handling |
+| `convertWarningsToExceptions` | `true` | covered by modern issue handling |
 | `beStrictAboutResourceUsageDuringSmallTests` | `true` | covered by modern strict issue handling |
+| `beStrictAboutTestsThatDoNotTestAnything` | `true` | same |
 | `failOnIncomplete` | `true` | covered by `failOnAllIssues` |
 | `failOnSkipped` | `true` | covered by `failOnAllIssues` |
 | `beStrictAboutTodoAnnotatedTests` | `true` | covered by modern strict issue handling |
@@ -76,7 +157,10 @@ PHPUnit 10+ coverage attributes. A suite exercised under both generations must
 carry the PHPDoc metadata for PHPUnit 9 and the attributes for modern PHPUnit;
 neither configuration should silently run without intentional coverage scope.
 
-### PHPUnit 10.5+ `<phpunit>` attributes — timeouts
+The PHPUnit 9 template also uses `cacheResultFile=".phpunit.result.cache"` and
+`verbose="true"`; neither attribute belongs in a modern configuration.
+
+### PHPUnit 9.6–13 `<phpunit>` attributes — timeouts
 
 | Attribute | Toolkit value | If existing is stricter (lower) | If existing is weaker (higher) |
 |-----------|--------------|-------------------------------|-------------------------------|
@@ -90,7 +174,11 @@ Keep existing. The project may have a custom bootstrap file. Only set to `vendor
 
 ### `<testsuites>`
 
-Keep existing testsuites. If the existing config already defines test directories, preserve them. Only add `tests/Unit` if no testsuite is configured. Example merge:
+Keep existing testsuites. If the existing config already defines test directories,
+preserve them. When no testsuite exists, derive its paths from the target's
+autoload-dev mapping and test layout; do not assume `tests/Unit`. Example merge of
+an existing layout:
+
 ```xml
 <testsuites>
     <testsuite name="unit">
@@ -126,13 +214,18 @@ Add the legacy listener alongside existing listeners:
 </listeners>
 ```
 
-### `<source>` — `ignoreSuppression*` and `restrict*` attributes
+### `<source>` — issue scope and suppression
 
-All `ignoreSuppression*` attributes must be `true`. All `restrict*` attributes must be `true`. If any existing value is `false`, override to `true`. There is no case where error suppression should be honored.
+All supported `ignoreSuppression*` attributes must be `true`. Set
+`restrictNotices="true"` and `restrictWarnings="true"`. For deprecations, use
+`restrictDeprecations="true"` only on PHPUnit 10 and
+`ignoreIndirectDeprecations="true"` only on PHPUnit 11–13. There is no case where
+the PHP error-suppression operator should hide an issue in first-party code.
 
 ### `<source> > <include>`
 
-Keep existing source directories. Only set to `src` if no include is configured.
+Keep existing source directories. When no include exists, derive all production
+paths from Composer autoload roots; do not assume `src`.
 
 ### Coverage metadata
 
@@ -140,6 +233,11 @@ After merging, every modern unit-test class needs the appropriate
 `#[CoversClass]`, `#[CoversFunction]`, or `#[CoversNothing]` attribute. A project
 that runs PHPUnit 9.6 also needs the equivalent `@covers`, `@uses`, or
 `@coversNothing` tags. Run both configuration files to find missing metadata.
+
+Set `includeUncoveredFiles="true"` and `disableCodeCoverageIgnore="true"` on
+`<coverage>` for every major. The first prevents untouched source files from
+disappearing from coverage reports; the second prevents ignore metadata from
+silently inflating coverage.
 
 ## Recommended Composer Scripts
 
@@ -150,6 +248,21 @@ Add to the target project's `composer.json`:
     "scripts": {
         "test": "phpunit",
         "test:unit": "phpunit --testsuite unit"
+    }
+}
+```
+
+For a real multi-major matrix, keep explicit scripts so every leg selects its own
+schema instead of relying on whichever file happens to be named `phpunit.xml.dist`:
+
+```json
+{
+    "scripts": {
+        "test:unit:9": "phpunit --configuration phpunit9.xml.dist",
+        "test:unit:10": "phpunit --configuration phpunit10.xml.dist",
+        "test:unit:11": "phpunit --configuration phpunit11.xml.dist",
+        "test:unit:12": "phpunit --configuration phpunit12.xml.dist",
+        "test:unit:13": "phpunit --configuration phpunit.xml.dist"
     }
 }
 ```
@@ -170,8 +283,14 @@ which no PHPUnit setting reaches. This matters most for AI-written tests, where
 shared temporary paths and static caches are a routine shortcut.
 
 ```bash
-composer require --dev "brianium/paratest:^6.11 || ^7"
+composer require --dev "brianium/paratest:<target-derived-constraint>" --dry-run
 ```
+
+Select that constraint with the same target-first process as PHPUnit: use the
+newest ParaTest release compatible with the resolved PHPUnit version and the PHP
+runtime of the parallel job. Run the command without `--dry-run` after confirming
+the resolution. Add an older ParaTest line only when a real supported graph needs
+it; do not copy this repository's union.
 
 ```json
 {
@@ -210,4 +329,4 @@ hiding. Fix the coupling rather than reverting to one process.
 
 ## References
 
-- [PHPUnit Configuration](vendor/k-kinzal/php-ai-toolkit/docs/phpunit.md) — Settings and why each is needed
+- [PHPUnit AI Reporter](vendor/k-kinzal/php-ai-toolkit/docs/phpunit-ai-reporter.md) — Reporter behavior and output contract

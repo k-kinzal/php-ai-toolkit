@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Compatibility;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Toolkit\Compatibility\IgnoreErrorExtension as CompatibilityIgnoreErrorExtension;
 
 /**
- * @covers \Toolkit\Compatibility\IgnoreErrorExtension
+ * @coversNothing
  */
-#[CoversClass(CompatibilityIgnoreErrorExtension::class)]
+#[CoversNothing]
 final class IgnoreErrorExtensionTest extends TestCase
 {
     public function testPhpStanContractIsAvailableOnEverySupportedVersion(): void

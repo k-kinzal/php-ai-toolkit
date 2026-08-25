@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\LocGuard\Cli;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Toolkit\LocGuard\Cli\LocGuardHelpText;
 
 /**
- * @covers \Toolkit\LocGuard\Cli\LocGuardHelpText
+ * @coversNothing
  */
-#[CoversClass(LocGuardHelpText::class)]
+#[CoversNothing]
 final class LocGuardHelpTextTest extends TestCase
 {
     public function testTextReturnsUsageText(): void

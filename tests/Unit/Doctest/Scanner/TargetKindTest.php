@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Scanner;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Toolkit\Doctest\Scanner\TargetKind;
 
 /**
- * @covers \Toolkit\Doctest\Scanner\TargetKind
+ * @coversNothing
  */
-#[CoversClass(TargetKind::class)]
+#[CoversNothing]
 final class TargetKindTest extends TestCase
 {
     public function testKeepsTheValuesTheDoctestPhpEnumCarried(): void

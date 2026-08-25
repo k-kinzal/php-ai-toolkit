@@ -6,10 +6,17 @@ namespace Tests\Unit\PhpStan\Rule\Type;
 
 use PhpParser\Comment\Doc;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 use Toolkit\PhpStan\Rule\Type\MixedLocalPhpDocErrorCollector;
+use Toolkit\PhpStan\Rule\Type\MixedTypeErrorBuilder;
+use Toolkit\PhpStan\Rule\Type\PhpDocMixedTypeInspector;
 
 #[CoversClass(MixedLocalPhpDocErrorCollector::class)]
+#[UsesClass(RulePhpDocParser::class)]
+#[UsesClass(MixedTypeErrorBuilder::class)]
+#[UsesClass(PhpDocMixedTypeInspector::class)]
 final class MixedLocalPhpDocErrorCollectorTest extends TestCase
 {
     public function testErrorsUsesTheHighestPrecedenceVarTag(): void

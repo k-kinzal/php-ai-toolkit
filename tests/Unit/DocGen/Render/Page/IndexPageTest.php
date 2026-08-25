@@ -16,6 +16,7 @@ use Toolkit\DocGen\Analysis\Doctest\AssertionScanner;
 use Toolkit\DocGen\Analysis\Doctest\DoctestExtractor;
 use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
 use Toolkit\DocGen\Analysis\Model\ClassLikeKind;
+use Toolkit\DocGen\Analysis\Model\DocBlock;
 use Toolkit\DocGen\Analysis\Parse\AstParser;
 use Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
 use Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder;
@@ -65,6 +66,7 @@ use Toolkit\DocGen\Render\Page\Component\RelationsHtml;
 use Toolkit\DocGen\Render\Page\Component\SidebarHtml;
 use Toolkit\DocGen\Render\Page\Component\SignatureHtml;
 use Toolkit\DocGen\Render\Page\Component\SymbolListHtml;
+use Toolkit\DocGen\Render\Page\Component\SymbolRow;
 use Toolkit\DocGen\Render\Page\Component\UsageListHtml;
 use Toolkit\DocGen\Render\Page\DocumentPage;
 use Toolkit\DocGen\Render\Page\FunctionPage;
@@ -98,6 +100,7 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
  * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
  * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeKind
+ * @uses \Toolkit\DocGen\Analysis\Model\DocBlock
  * @uses \Toolkit\DocGen\Render\Page\ClassLikePage
  * @uses \Toolkit\DocGen\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
@@ -159,6 +162,7 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\Page\SourcePage
  * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
  * @uses \Toolkit\DocGen\Render\Page\Component\SymbolListHtml
+ * @uses \Toolkit\DocGen\Render\Page\Component\SymbolRow
  * @uses \Toolkit\DocGen\Render\Page\SymbolIndex
  * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
  * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
@@ -179,6 +183,7 @@ use Toolkit\DocGen\Render\TypeHtml;
 #[UsesClass(ClassLikeBuilder::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(ClassLikeKind::class)]
+#[UsesClass(DocBlock::class)]
 #[UsesClass(ClassLikePage::class)]
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(ConstantBuilder::class)]
@@ -240,6 +245,7 @@ use Toolkit\DocGen\Render\TypeHtml;
 #[UsesClass(SourcePage::class)]
 #[UsesClass(SymbolContext::class)]
 #[UsesClass(SymbolListHtml::class)]
+#[UsesClass(SymbolRow::class)]
 #[UsesClass(SymbolIndex::class)]
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TestCaseIndex::class)]

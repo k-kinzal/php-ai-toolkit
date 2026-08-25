@@ -51,8 +51,13 @@
     },
     "scripts": {
         "test": "paratest --processes=auto",
-        "test:unit": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist",
-        "test:unit:legacy": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit9.xml.dist",
+        "test:unit": "@test:unit:13",
+        "test:unit:9": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit9.xml.dist",
+        "test:unit:10": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit10.xml.dist",
+        "test:unit:11": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit11.xml.dist",
+        "test:unit:12": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit12.xml.dist",
+        "test:unit:13": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist",
+        "test:unit:legacy": "@test:unit:9",
         "test:coverage": "@php -d memory_limit=1G -d xdebug.mode=coverage vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-xml build/coverage-xml",
         "lint": [
             "@format:check",

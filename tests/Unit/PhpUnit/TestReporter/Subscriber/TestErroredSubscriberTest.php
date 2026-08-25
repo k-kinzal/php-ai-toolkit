@@ -16,7 +16,7 @@ use Override;
 use const PHP_BINARY;
 
 use PHPUnit\Event\Test\ErroredSubscriber;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
 
@@ -27,9 +27,9 @@ use function stream_get_contents;
 use Toolkit\PhpUnit\TestReporter\Subscriber\TestErroredSubscriber;
 
 /**
- * @covers \Toolkit\PhpUnit\TestReporter\Subscriber\TestErroredSubscriber
+ * @coversNothing
  */
-#[CoversClass(TestErroredSubscriber::class)]
+#[CoversNothing]
 #[Large]
 final class TestErroredSubscriberTest extends TestCase
 {

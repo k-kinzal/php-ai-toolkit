@@ -16,7 +16,7 @@ use Override;
 use const PHP_BINARY;
 
 use PHPUnit\Event\TestRunner\ExecutionFinishedSubscriber as ExecutionFinishedSubscriberInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
 
@@ -27,9 +27,9 @@ use function stream_get_contents;
 use Toolkit\PhpUnit\TestReporter\Subscriber\ExecutionFinishedSubscriber;
 
 /**
- * @covers \Toolkit\PhpUnit\TestReporter\Subscriber\ExecutionFinishedSubscriber
+ * @coversNothing
  */
-#[CoversClass(ExecutionFinishedSubscriber::class)]
+#[CoversNothing]
 #[Large]
 final class ExecutionFinishedSubscriberTest extends TestCase
 {

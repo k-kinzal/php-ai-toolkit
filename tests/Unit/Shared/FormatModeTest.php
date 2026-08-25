@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Shared;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Toolkit\Shared\FormatMode;
 
 /**
- * @covers \Toolkit\Shared\FormatMode
+ * @coversNothing
  */
-#[CoversClass(FormatMode::class)]
+#[CoversNothing]
 final class FormatModeTest extends TestCase
 {
     public function testConstantValues(): void

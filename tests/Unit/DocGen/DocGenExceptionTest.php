@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\DocGenException;
 
 /**
- * @covers \Toolkit\DocGen\DocGenException
+ * @coversNothing
  */
-#[CoversClass(DocGenException::class)]
+#[CoversNothing]
 final class DocGenExceptionTest extends TestCase
 {
     public function testCarriesMessage(): void

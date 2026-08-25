@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="REPLACE_WITH_VENDOR_DIR/phpunit/phpunit/phpunit.xsd"
-         bootstrap="REPLACE_WITH_VENDOR_DIR/autoload.php"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
          colors="true"
          cacheDirectory=".phpunit.cache"
          executionOrder="depends,random"
          requireCoverageMetadata="true"
-         requireSealedMockObjects="true"
          beStrictAboutCoverageMetadata="true"
          beStrictAboutChangesToGlobalState="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          failOnAllIssues="true"
          displayDetailsOnAllIssues="true"
-         shortenArraysForExportThreshold="0"
          enforceTimeLimit="true"
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
          timeoutForLargeTests="60">
     <testsuites>
         <testsuite name="unit">
-            <directory>REPLACE_WITH_UNIT_TEST_PATH</directory>
+            <directory>tests/Unit</directory>
+            <exclude>tests/Unit/PhpUnit/TestReporter/Legacy</exclude>
+        </testsuite>
+        <testsuite name="doctest">
+            <file>src/Doctest/DoctestSuite.php</file>
         </testsuite>
     </testsuites>
     <extensions>
         <bootstrap class="Toolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>
+        <bootstrap class="Toolkit\Doctest\DoctestExtension">
+            <parameter name="directories" value="src"/>
+        </bootstrap>
     </extensions>
-    <source ignoreIndirectDeprecations="true"
+    <source restrictDeprecations="true"
             restrictNotices="true"
             restrictWarnings="true"
             ignoreSuppressionOfDeprecations="true"
@@ -37,8 +42,11 @@
             ignoreSuppressionOfWarnings="true"
             ignoreSuppressionOfPhpWarnings="true">
         <include>
-            <directory>REPLACE_WITH_PRODUCTION_PATH</directory>
+            <directory>src</directory>
         </include>
+        <exclude>
+            <file>src/Compatibility/ClassAliases.php</file>
+        </exclude>
     </source>
     <coverage includeUncoveredFiles="true"
               disableCodeCoverageIgnore="true"/>

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TreeGuard;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Toolkit\TreeGuard\TreeGuardException;
 
 /**
- * @covers \Toolkit\TreeGuard\TreeGuardException
+ * @coversNothing
  */
-#[CoversClass(TreeGuardException::class)]
+#[CoversNothing]
 final class TreeGuardExceptionTest extends TestCase
 {
     /**

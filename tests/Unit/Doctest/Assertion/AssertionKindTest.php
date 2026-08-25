@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Assertion;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Toolkit\Doctest\Assertion\AssertionKind;
 
 /**
- * @covers \Toolkit\Doctest\Assertion\AssertionKind
+ * @coversNothing
  */
-#[CoversClass(AssertionKind::class)]
+#[CoversNothing]
 final class AssertionKindTest extends TestCase
 {
     public function testKeepsTheValuesTheDoctestPhpEnumCarried(): void

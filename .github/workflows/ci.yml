@@ -26,17 +26,17 @@ jobs:
       matrix:
         include:
           - php: '8.0'
-            test-script: test:unit:legacy
+            test-script: test:unit:9
           - php: '8.1'
-            test-script: test:unit
+            test-script: test:unit:10
           - php: '8.2'
-            test-script: test:unit
+            test-script: test:unit:11
           - php: '8.3'
-            test-script: test:unit
+            test-script: test:unit:12
           - php: '8.4'
-            test-script: test:unit
+            test-script: test:unit:12
           - php: '8.5'
-            test-script: test:unit
+            test-script: test:unit:13
     steps:
       - name: Check out the repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0

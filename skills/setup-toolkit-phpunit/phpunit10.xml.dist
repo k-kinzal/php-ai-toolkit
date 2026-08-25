@@ -6,14 +6,12 @@
          cacheDirectory=".phpunit.cache"
          executionOrder="depends,random"
          requireCoverageMetadata="true"
-         requireSealedMockObjects="true"
          beStrictAboutCoverageMetadata="true"
          beStrictAboutChangesToGlobalState="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          failOnAllIssues="true"
          displayDetailsOnAllIssues="true"
-         shortenArraysForExportThreshold="0"
          enforceTimeLimit="true"
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
@@ -26,7 +24,7 @@
     <extensions>
         <bootstrap class="Toolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>
     </extensions>
-    <source ignoreIndirectDeprecations="true"
+    <source restrictDeprecations="true"
             restrictNotices="true"
             restrictWarnings="true"
             ignoreSuppressionOfDeprecations="true"

@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
+         xsi:noNamespaceSchemaLocation="REPLACE_WITH_VENDOR_DIR/phpunit/phpunit/phpunit.xsd"
+         bootstrap="REPLACE_WITH_VENDOR_DIR/autoload.php"
          colors="true"
+         cacheResultFile=".phpunit.result.cache"
          executionOrder="depends,random"
+         verbose="true"
          forceCoversAnnotation="true"
          beStrictAboutCoversAnnotation="true"
          convertDeprecationsToExceptions="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
          beStrictAboutChangesToGlobalState="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutResourceUsageDuringSmallTests="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
          failOnEmptyTestSuite="true"
          failOnIncomplete="true"
          failOnRisky="true"
@@ -22,15 +28,16 @@
          timeoutForLargeTests="60">
     <testsuites>
         <testsuite name="unit">
-            <directory>tests/Unit</directory>
+            <directory>REPLACE_WITH_UNIT_TEST_PATH</directory>
         </testsuite>
     </testsuites>
     <listeners>
         <listener class="Toolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener"/>
     </listeners>
-    <coverage>
+    <coverage includeUncoveredFiles="true"
+              disableCodeCoverageIgnore="true">
         <include>
-            <directory>src</directory>
+            <directory>REPLACE_WITH_PRODUCTION_PATH</directory>
         </include>
     </coverage>
 </phpunit>

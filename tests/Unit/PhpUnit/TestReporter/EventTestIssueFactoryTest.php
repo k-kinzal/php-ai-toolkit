@@ -14,7 +14,7 @@ use Override;
 
 use const PHP_BINARY;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
 
@@ -22,12 +22,10 @@ use function proc_close;
 use function proc_open;
 use function stream_get_contents;
 
-use Toolkit\PhpUnit\TestReporter\EventTestIssueFactory;
-
 /**
- * @covers \Toolkit\PhpUnit\TestReporter\EventTestIssueFactory
+ * @coversNothing
  */
-#[CoversClass(EventTestIssueFactory::class)]
+#[CoversNothing]
 #[Large]
 final class EventTestIssueFactoryTest extends TestCase
 {

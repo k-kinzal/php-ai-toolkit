@@ -16,7 +16,7 @@ use Override;
 use const PHP_BINARY;
 
 use PHPUnit\Event\Test\ConsideredRiskySubscriber;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
 
@@ -27,9 +27,9 @@ use function stream_get_contents;
 use Toolkit\PhpUnit\TestReporter\Subscriber\TestConsideredRiskySubscriber;
 
 /**
- * @covers \Toolkit\PhpUnit\TestReporter\Subscriber\TestConsideredRiskySubscriber
+ * @coversNothing
  */
-#[CoversClass(TestConsideredRiskySubscriber::class)]
+#[CoversNothing]
 #[Large]
 final class TestConsideredRiskySubscriberTest extends TestCase
 {

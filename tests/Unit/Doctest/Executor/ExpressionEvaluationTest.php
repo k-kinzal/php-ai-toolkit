@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Doctest\Executor;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(\Toolkit\Doctest\Executor\ExpressionEvaluation::class)]
+/**
+ * @coversNothing
+ */
+#[CoversNothing]
 final class ExpressionEvaluationTest extends TestCase
 {
     public function testEvaluateIsExercisedByExpressionEvaluatorTest(): void

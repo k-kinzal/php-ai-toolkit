@@ -6,10 +6,15 @@ namespace Tests\Unit\PhpStan\Rule\Type;
 
 use PhpParser\Comment\Doc;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry;
+use Toolkit\PhpStan\Rule\Type\InheritedMixedContractInspector;
 use Toolkit\PhpStan\Rule\Type\MixedCallableErrorCollector;
 
 #[CoversClass(MixedCallableErrorCollector::class)]
+#[UsesClass(MagicMethodRegistry::class)]
+#[UsesClass(InheritedMixedContractInspector::class)]
 final class MixedCallableErrorCollectorTest extends TestCase
 {
     public function testHasReturnDeclarationReadsNativeAndPhpDocTypes(): void

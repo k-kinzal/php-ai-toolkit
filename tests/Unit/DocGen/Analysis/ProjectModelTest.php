@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
 use Toolkit\DocGen\Analysis\Layer\LayerModel;
 use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Model\DocBlock;
 use Toolkit\DocGen\Analysis\ProjectModel;
 use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use Toolkit\DocGen\Analysis\Reference\SymbolTable;
@@ -22,6 +23,7 @@ use Toolkit\DocGen\Package\PackageGraph;
 /**
  * @covers \Toolkit\DocGen\Analysis\ProjectModel
  * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Model\DocBlock
  * @uses \Toolkit\DocGen\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageIndex
  * @uses \Toolkit\DocGen\Package\DiscoveredPackage
@@ -34,6 +36,7 @@ use Toolkit\DocGen\Package\PackageGraph;
  */
 #[CoversClass(ProjectModel::class)]
 #[UsesClass(ClassLikeDoc::class)]
+#[UsesClass(DocBlock::class)]
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(CoverageIndex::class)]
 #[UsesClass(DiscoveredPackage::class)]
@@ -82,7 +85,7 @@ final class ProjectModelTest extends TestCase
 
     public function testIsPublicApiClassLikeIndexesExplicitAndHistoricalNamesCaseInsensitively(): void
     {
-        $docBlock = new \Toolkit\DocGen\Analysis\Model\DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '', ['PUBLIC']);
+        $docBlock = new DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '', ['PUBLIC']);
         $classLike = new ClassLikeDoc('Demo\Client', 'Client', 'Demo', 'class', 'demo/app', 'src/Client.php', 1, 5, false, true, [], [], [], [], [], [], [], null, $docBlock, [], false);
         $model = new ProjectModel('Docs', '/tmp/demo', [], new PackageGraph([]), [$classLike], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, true, ['Demo\Removed'], ['Demo\removedFunction']);
 

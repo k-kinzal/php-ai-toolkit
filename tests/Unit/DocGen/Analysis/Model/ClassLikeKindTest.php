@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\DocGen\Analysis\Model;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Model\ClassLikeKind;
 
 /**
- * @covers \Toolkit\DocGen\Analysis\Model\ClassLikeKind
+ * @coversNothing
  */
-#[CoversClass(ClassLikeKind::class)]
+#[CoversNothing]
 final class ClassLikeKindTest extends TestCase
 {
     public function testConstantValues(): void

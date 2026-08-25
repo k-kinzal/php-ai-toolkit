@@ -28,9 +28,21 @@ Install the toolkit if missing:
 composer require --dev k-kinzal/php-ai-toolkit
 ```
 
+The unversioned requirement is intentional for a new install: Composer should
+select the newest stable toolkit release compatible with the target project. Check
+current package metadata and the target's PHP/dependency graph first. If the toolkit
+is already constrained, update its lock to the newest admitted release and preserve
+an intentional pin unless changing that policy is in scope. Never copy this
+repository's root constraint or lock resolution.
+
 ## Template
 
 Read the template from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-tree-guard/tree.yaml` and apply it to the project root as `tree.yaml`.
+
+Replace `REPLACE_WITH_PRODUCTION_ROOT` and `REPLACE_WITH_UNIT_TEST_ROOT` with every
+maintained target-project root to which the corresponding policy applies. Remove a
+rule only when that category truly does not exist; never leave a sentinel or point
+it at an incidental example directory.
 
 The starter template scans the project root (`paths: ['.']`) so the global
 forbidden-directory rule reaches the whole repository. The file and directory
@@ -45,7 +57,8 @@ The starter template forbids everywhere:
 |---------|---------|---------|
 | `deny_dirs` | `['scripts', 'Scripts']` | No directory named `scripts` anywhere, including the project root and `.github/`. Put automation in Composer scripts, a Makefile, or a workflow step instead of a loose script directory that AI agents fill with one-off files. |
 
-The starter template enforces on `src/` and `tests/Unit/`:
+After its path sentinels are replaced, the starter template enforces on every
+selected production and unit-test root:
 
 | Setting | Default | Meaning |
 |---------|---------|---------|
@@ -59,7 +72,11 @@ The limit value itself is allowed. A directory with exactly 15 files passes.
 
 ## Pattern Semantics
 
-`rules[].path` patterns match whole relative directory paths segment by segment. A `**` segment matches zero or more segments, so `src/**` also matches `src` itself. Other segments match exactly one path segment with fnmatch, so `*` never crosses `/`. The project root is the path `.` and carries no segment, so only `.` and `**` match it. See the reference documentation for details.
+`rules[].path` patterns match whole relative directory paths segment by segment. A
+`**` segment matches zero or more segments, so `<root>/**` also matches `<root>`
+itself. Other segments match exactly one path segment with fnmatch, so `*` never
+crosses `/`. The project root is the path `.` and carries no segment, so only `.`
+and `**` match it. See the reference documentation for details.
 
 ## Adapting to the Project
 

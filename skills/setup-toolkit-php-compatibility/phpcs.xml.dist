@@ -10,18 +10,13 @@
         overlap with and fight the formatter.
     </description>
 
-    <!-- Production code. Add more autoload roots (app, packages/*/src) as needed. -->
-    <file>src</file>
-    <file>tests</file>
+    <!-- Replace every sentinel before use. Repeat <file> for every shipped or
+         runtime autoload root the target project's compatibility policy covers. -->
+    <file>REPLACE_WITH_PRODUCTION_AUTOLOAD_ROOT</file>
 
-    <!-- Fixtures / snapshots are deliberate syntax samples fed to tests and are
-         not production code, so they must not be gated. Adjust to the project. -->
-    <exclude-pattern>tests/Fixture/*</exclude-pattern>
-
-    <!-- REPLACE 8.0 with the project's actual floor (lowest version allowed by
-         composer.json "require": {"php": ...}). Trailing "-" means "and up",
-         i.e. flag everything introduced after the floor. -->
-    <config name="testVersion" value="8.0-"/>
+    <!-- PHP_VERSION_RANGE is the target's declared single minor, bounded range,
+         or open range, not this toolkit repository's PHP matrix. -->
+    <config name="testVersion" value="PHP_VERSION_RANGE"/>
 
     <rule ref="PHPCompatibility"/>
 </ruleset>

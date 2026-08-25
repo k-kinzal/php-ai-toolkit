@@ -27,18 +27,35 @@ weaken them during adoption.
 
 ## Installation
 
-Derive the PHPStan constraint before installation. A single-runtime application
-may select one compatible major. A library or tool with a PHP support matrix must
-use a union that resolves on every supported minor and verify every maintained
-lock. For this toolkit's PHP 8.0+ matrix that is:
+Choose PHPStan from the target project, not from this toolkit repository's
+development constraint. Read the target's PHP range, existing PHPStan/extensions,
+Composer locks, and the runtimes where analysis is installed and executed. Then
+inspect current Composer metadata and release notes and select the newest PHPStan
+release compatible with that complete graph.
+
+A single-runtime application will normally need one current release line. For a
+multi-version library or tool, prefer the newest line that installs throughout the
+matrix. Use a minimal union only when different supported runtimes genuinely need
+different lines, and verify every maintained lock or CI leg. Check the intended
+candidate with a dry run and explain an unexpected older resolution with
+`composer why-not`:
 
 ```bash
-composer require --dev "phpstan/phpstan:^1.12 || ^2.0" k-kinzal/php-ai-toolkit
+composer require --dev "phpstan/phpstan:<target-derived-constraint>" k-kinzal/php-ai-toolkit --dry-run
+composer why-not phpstan/phpstan <newest-compatible-version>
 ```
 
-Do not copy that union into a target with a different support range; derive its
-constraint. Read `composer config vendor-dir` as well. Every include below is
-rooted at that project-derived directory (`vendor` is only Composer's default).
+Run the confirmed `composer require` without `--dry-run`. Do not copy the toolkit's
+root constraint or lock resolution. If PHPStan already has an intentional direct
+constraint, preserve it and update to the newest release it admits unless changing
+that policy is in scope.
+
+The toolkit requirement is unversioned only for a new install so Composer can select
+its newest stable release compatible with the target graph. Preserve an intentional
+existing toolkit pin and update its lock within that constraint.
+
+Read `composer config vendor-dir` as well. Every include below is rooted at that
+project-derived directory (`vendor` is only Composer's default).
 
 `phpstan/phpstan-strict-rules` is a runtime dependency of the toolkit; do not add
 a separately chosen version constraint to the target project.
@@ -58,13 +75,16 @@ Copy the shipped template to the configuration name the project already uses
 
 ```neon
 includes:
-    - vendor/phpstan/phpstan-strict-rules/rules.neon
-    - vendor/k-kinzal/php-ai-toolkit/extension.neon
-    - vendor/k-kinzal/php-ai-toolkit/rules.neon
+    - REPLACE_WITH_VENDOR_DIR/phpstan/phpstan-strict-rules/rules.neon
+    - REPLACE_WITH_VENDOR_DIR/k-kinzal/php-ai-toolkit/extension.neon
+    - REPLACE_WITH_VENDOR_DIR/k-kinzal/php-ai-toolkit/rules.neon
 
 parameters:
     level: max
 ```
+
+Replace `REPLACE_WITH_VENDOR_DIR` with `composer config vendor-dir` before use. A
+remaining sentinel is a configuration error, not a literal directory name.
 
 That is the complete standard configuration. Put analysis paths on the Composer
 command so the configuration remains only the toolkit contract:
@@ -72,7 +92,7 @@ command so the configuration remains only the toolkit contract:
 ```json
 {
     "scripts": {
-        "phpstan": "phpstan analyse src tests --memory-limit=512M",
+        "phpstan": "phpstan analyse REPLACE_WITH_ANALYSIS_PATHS --memory-limit=512M",
         "lint": [
             "@format:check",
             "@phpstan"
@@ -81,8 +101,8 @@ command so the configuration remains only the toolkit contract:
 }
 ```
 
-Derive `src tests` from the production and test autoload roots in
-`composer.json`; do not assume those literal directory names.
+Replace `REPLACE_WITH_ANALYSIS_PATHS` with the production and test autoload roots
+from `composer.json`.
 
 ## Existing Configuration
 
@@ -147,5 +167,5 @@ the extension loaded. Remove the probe immediately after verification.
 
 ## References
 
-- [PHPStan Configuration](vendor/k-kinzal/php-ai-toolkit/docs/phpstan.md)
+- [PHPStan AI Formatter](vendor/k-kinzal/php-ai-toolkit/docs/phpstan-ai-formatter.md)
 - [PHPStan Rules](vendor/k-kinzal/php-ai-toolkit/docs/phpstan-rules.md)

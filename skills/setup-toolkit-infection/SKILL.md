@@ -31,22 +31,30 @@ Inspect the project before configuring:
   with a `.dist` suffix.
 - Check that a coverage driver is available. Infection needs pcov or Xdebug.
 
-Derive the dependency constraint before installing Infection. A single-runtime
-application may let Composer select the line supported by that runtime. A library
-or tool with a PHP support matrix must use a union that resolves on every supported
-minor and verify every maintained lock. For this toolkit's PHP 8.0+ matrix that is:
+Determine Infection's installation topology before choosing its version. Inspect
+the target's PHP range, PHPUnit version, Composer locks, and the PHP runtime of the
+mutation job. Then inspect current Composer metadata and Infection's release/schema
+documentation and select the newest compatible release. Do not copy this toolkit
+repository's historical multi-line constraint.
+
+If root development dependencies install on every supported PHP minor, derive the
+smallest constraint that lets each real graph resolve its newest compatible
+Infection release. Prefer one current line; add an older line only for a supported
+leg that proves it is necessary. If Infection runs from an isolated tool manifest,
+container, or job, constrain it for that runtime instead of burdening every product
+runtime. Verify every relevant lock or CI leg and diagnose an unexpected resolution
+with `composer why-not`:
 
 ```bash
-composer require --dev "infection/infection:^0.26.19 || ^0.27 || ^0.28 || ^0.29 || ^0.30 || ^0.31 || ^0.32 || ^0.33 || ^0.34 || ^0.35"
+composer require --dev "infection/infection:<target-derived-constraint>" --dry-run
+composer why-not infection/infection <newest-compatible-version>
 composer config allow-plugins.infection/extension-installer true
 ```
 
-Infection needs PHP 8.1 or later, and each Infection line supports a narrower PHP
-range than this toolkit does. In a project that supports older PHP versions, pin the
-mutation gate to one modern PHP version rather than narrowing the Composer
-constraint. The union above keeps every supported PHP version installable while CI
-scores mutants on the newest one. Do not copy that union when the target's PHP
-range differs; derive its own resolvable constraint.
+Run the confirmed requirement without `--dry-run`, then enable the plugin only if
+the resolved package requires it. Do not assume the minimum PHP version or supported
+Infection line from this repository; those are release properties to verify at
+application time.
 
 ## Templates
 
@@ -71,18 +79,26 @@ finds from `infection.json5`, `infection.json`, `infection.json5.dist`,
 `infection.json.dist`, so an unrelated file dropped into the project root can
 silently take over the gate.
 
+`mutation-job.yml` contains `REPLACE_WITH_*` sentinels for the target's selected
+tool runtime, extensions, and lock policy. Replace all of them before merging the
+job; none is a default supplied by this repository.
+
+Replace `REPLACE_WITH_PRODUCTION_SOURCE_ROOT` in `infection.json5` with all target
+production roots that should be mutated. Confirm the run generates mutants from
+each root.
+
 Put the whole-tree baseline in the file and the changed-lines bar on the command
 line. Pass `--ignore-msi-with-no-mutations` with the changed-lines flags rather than
 setting `ignoreMsiWithNoMutations` in the file: a change that mutates nothing must
 not score 0%, but a whole-tree run that generates nothing is a misconfiguration and
 should fail rather than pass silently.
 
-Check `vendor/bin/infection --version` before copying version-specific keys. The
-shipped configuration targets the current isolated mutation job (0.32.3 or later)
-and includes `timeoutsAsEscaped`, `maxTimeouts`, and the 0.34+
-`testFrameworkExtraArgs`. When a target genuinely runs an older line, apply the
-documented spelling/limitation deliberately; a schema-invalid file is not a
-cross-version configuration.
+Check `vendor/bin/infection --version` and validate the shipped configuration
+against that installed release before copying version-specific keys. Configure the
+newest resolved line first. When a target genuinely resolves an older line, consult
+that line's schema and apply its documented spelling or limitation deliberately; a
+schema-invalid file is not a cross-version configuration, and the template's own
+lock resolution is not evidence about the target.
 
 ## Why Two Thresholds
 
@@ -156,12 +172,12 @@ Mutate production source only:
 
 ```json5
 "source": {
-    "directories": ["src"]
+    "directories": ["REPLACE_WITH_PRODUCTION_SOURCE_ROOT"]
 }
 ```
 
 `source.excludes` entries are relative to each source directory, not to the project
-root: `"excludes": ["Generated"]` excludes `src/Generated`.
+root. Resolve every path from the target's selected source directories.
 
 Exclude a directory only when its tests cannot run in the same job as the gate — for
 example code exercised exclusively by a legacy PHPUnit configuration on an older PHP
@@ -282,6 +298,5 @@ write the test that objects.
 
 ## References
 
-- [Infection Configuration](vendor/k-kinzal/php-ai-toolkit/docs/infection.md) — Settings, thresholds, and CI behavior.
 - [Infection documentation](https://infection.github.io/guide/) — Mutators, loggers, and CLI options.
 - [ForbiddenCommentRule](vendor/k-kinzal/php-ai-toolkit/docs/rules/ForbiddenCommentRule.md) — Why `@infection-ignore-all` is rejected.

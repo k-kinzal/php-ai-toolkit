@@ -27,9 +27,20 @@ Install the toolkit if missing:
 composer require --dev k-kinzal/php-ai-toolkit
 ```
 
+The unversioned requirement is intentional for a new install: Composer should
+select the newest stable toolkit release compatible with the target project. Check
+current package metadata and the target's PHP/dependency graph first. If the toolkit
+is already constrained, update its lock to the newest admitted release and preserve
+an intentional pin unless changing that policy is in scope. Never copy this
+repository's root constraint or lock resolution.
+
 ## Template
 
 Read the template from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-loc-guard/loc.yaml` and apply it to the project root as `loc.yaml`.
+
+Replace `REPLACE_WITH_PRODUCTION_AUTOLOAD_ROOT` with every production autoload root
+the target actually ships. A remaining sentinel or a zero-file scan is a failed
+setup.
 
 The default toolkit metrics are:
 

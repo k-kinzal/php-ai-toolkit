@@ -34,6 +34,13 @@ Install the toolkit if missing:
 composer require --dev k-kinzal/php-ai-toolkit
 ```
 
+The unversioned requirement is intentional for a new install: Composer should
+select the newest stable toolkit release compatible with the target project. Check
+current package metadata and the target's PHP/dependency graph first. If the toolkit
+is already constrained, update its lock to the newest admitted release and preserve
+an intentional pin unless changing that policy is in scope. Never copy this
+repository's root constraint or lock resolution.
+
 The target repository's `docs/` and README are product surfaces. DocGen consumes
 their existing product documentation; setup does not add developer-tooling pages
 there. Apart from an explicitly approved public docs badge, configure the generator
@@ -92,8 +99,8 @@ Page content and design are fixed by the generator on purpose — only the scope
   over, and `--cache-dir=DIR` to keep the cache elsewhere. Add the cache directory to `.gitignore`.
 - In CI, restore the cache directory between runs (for example with `actions/cache` keyed on `composer.lock` and the
   toolkit version) so a documentation job costs the size of the change rather than the size of the project.
-- To review what a branch changed, generate the site in diff mode: `--diff=main` compares the working tree against
-  `main`, `--diff=v1.0.0..HEAD` compares two revisions. The site then marks additions and removals down to the single
+- To review what a branch changed, generate the site in diff mode: `--diff=<default-branch>` compares the working tree against
+  the target's default branch, and `--diff=v1.0.0..HEAD` compares two revisions. The site then marks additions and removals down to the single
   argument of a declaration and offers three display modes — the plain documentation, the marked documentation, and
   the changes alone. Diff mode needs a git working tree and analyzes both revisions, so it takes about twice as long.
 
@@ -107,7 +114,7 @@ Write the settings once in `docgen`, and let the other scripts add to it:
     "scripts": {
         "docgen": "docgen --exclude='tests/Fixture/*' --coverage=build/coverage-xml",
         "docgen:serve": "@docgen --serve",
-        "docgen:diff": "@docgen --diff=main --serve",
+        "docgen:diff": "@docgen --diff=REPLACE_WITH_DEFAULT_BRANCH --serve",
         "docgen:fresh": "@docgen --no-cache"
     }
 }
@@ -137,6 +144,11 @@ expects the site workflow to own the root of the branch.
 Read the templates from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-docgen/docs.yml` and
 `docs-preview.yml` and apply them as `.github/workflows/docs.yml` and `.github/workflows/docs-preview.yml`.
 
+Both contain `REPLACE_WITH_*` sentinels for project-derived PHP, extensions, lock
+policy, and branch values. Replace every sentinel before installing either
+workflow; do not substitute values from this repository merely to make the YAML
+complete.
+
 - `docs.yml` runs on pushes to the default branch: it generates the site and syncs it to the root of the `gh-pages`
   branch, keeping `pr/` and `CNAME`.
 - `docs-preview.yml` runs on pull requests: it generates the site in diff mode against the base commit, publishes it
@@ -146,9 +158,10 @@ Read the templates from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-doc
 Adapt both to the project before applying:
 
 - Use the highest PHP version in the project's support matrix unless DocGen cannot
-  run there, and add the lock-file step the project's CI uses (for example
-  `cp composer.lock.php-8.5 composer.lock` for a PHP 8.5 highest minor). Require a
-  selected lock file to exist and run `composer check-platform-reqs` after install.
+  run there, and add the lock-file step the project's CI uses. For versioned locks,
+  select `composer.lock.php-<chosen-minor>`; for a normal lock, add no copy step.
+  Require the selected lock file to exist and run `composer check-platform-reqs`
+  after installation.
 - Derive extensions from Composer platform requirements plus the workflow itself:
   coverage needs pcov or Xdebug, social images need GD with FreeType, and a
   parallel coverage script needs pcntl. Do not copy the template list blindly.
@@ -188,7 +201,7 @@ Tell the user about the one-time repository setup the workflows do not do:
 git switch --orphan gh-pages
 git commit --allow-empty -m 'docs: create the documentation branch'
 git push -u origin gh-pages
-git switch main
+git switch <default-branch>
 ```
 
 Then set Settings > Pages > Build and deployment > Source to "Deploy from a branch", branch `gh-pages`, folder
@@ -219,5 +232,4 @@ go run github.com/rhysd/actionlint/cmd/actionlint@latest .github/workflows/docs.
 
 ## References
 
-- [DocGen Configuration](vendor/k-kinzal/php-ai-toolkit/docs/docgen.md) — Settings, scope semantics, caching, publishing, and CLI behavior.
-- [GitHub Actions Configuration](vendor/k-kinzal/php-ai-toolkit/docs/github-actions.md) — Workflow hardening rules the documentation workflows follow.
+- [DocGen](vendor/k-kinzal/php-ai-toolkit/docs/docgen.md) — CLI behavior, scope semantics, caching, analysis, and output.

@@ -24,7 +24,7 @@ Read these files before editing CI:
   `phpunit.xml.dist`.
 - Project docs that declare supported PHP versions.
 - Composer lock policy: one normal `composer.lock`, no committed lock, or
-  PHP-versioned locks such as `composer.lock.php-8.0`.
+  PHP-versioned locks such as `composer.lock.php-<minor>`.
 - Composer platform requirements and each command's runtime needs. Derive the
   `setup-php` extension list from these; do not rely on what `ubuntu-latest`
   happens to preinstall. ParaTest needs `pcntl`, coverage needs `pcov` or Xdebug,
@@ -38,6 +38,10 @@ surface the conflict and make CI match the declared support policy.
 Read the template from
 `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-github-actions/ci.yml`
 and apply it to the project root as `.github/workflows/ci.yml`.
+
+The template contains `REPLACE_WITH_*` sentinels instead of this repository's PHP
+matrix and lock policy. Replace every sentinel from target-project evidence before
+installing the workflow; a remaining sentinel is a failed setup, not a default.
 
 If a workflow already exists, merge rather than blindly replacing it.
 
@@ -123,15 +127,15 @@ bad Composer constraint by narrowing the workflow matrix.
    has a supply-chain requirement to pin those graphs, which is common for
    libraries and developer tools.
 4. If the project uses PHP-versioned lock files, make sure every matrix minor
-   has a matching file such as `composer.lock.php-8.0`.
+   has a matching `composer.lock.php-<minor>` file.
 5. Check whether dev dependencies can install on each minor:
    ```bash
-   cp composer.lock.php-8.0 composer.lock
+   cp "composer.lock.php-<minor>" composer.lock
    composer validate --strict --no-check-publish
    ```
 6. If dependencies do not install on a supported PHP minor, fix the Composer
-   constraints first. For example, a PHP 8.0 project that tests with PHPUnit
-   must allow a PHPUnit 9.6 / ParaTest 6 line in addition to newer PHPUnit lines.
+   constraints first. Select the newest compatible tool line for that leg and add
+   an older line only when Composer proves the target matrix needs it.
 7. Run the lint gates as named steps inside the `lint` job on the supported
    PHP matrix.
 8. Use the highest matrix minor for one-off parallel, mutation, and documentation
@@ -141,28 +145,25 @@ bad Composer constraint by narrowing the workflow matrix.
 Never use `--ignore-platform-reqs` to make a lower PHP job pass. That hides a
 real compatibility problem.
 
-For this package, `composer.json` supports PHP `^8.0`, so both the `tests` and
-`lint` jobs include PHP 8.0 through 8.5. Because the developer-tool dependency
-graph differs substantially between PHP 8.0 and newer PHP versions, and the
-project wants supply-chain pinning, this repository keeps one lock file per PHP
-minor (`composer.lock.php-8.0`, `composer.lock.php-8.1`, etc.). Each matrix job
-must copy the matching versioned lock to `composer.lock` before running
-Composer install.
+The workflow template is deliberately incomplete until its PHP values, test scripts,
+extensions, branches, and lock steps are derived from the target. Never retain a
+literal merely because it matches php-ai-toolkit's own CI. In particular, do not
+copy this repository's full matrix or versioned-lock topology into a single-runtime
+application.
 
 When generating PHP-versioned lock files, do not write `config.platform.php`
-into the root `composer.json`. Generate each lock in a temporary directory with
-a temporary Composer home:
+into the root `composer.json`. Repeat this process for each minor in the target's
+actual support matrix, using a temporary directory and Composer home:
 
 ```bash
-for php in 8.0 8.1 8.2 8.3 8.4 8.5; do
-  tmpdir="$(mktemp -d)"
-  home="$tmpdir/composer-home"
-  mkdir -p "$home"
-  cp composer.json "$tmpdir/composer.json"
-  COMPOSER_HOME="$home" composer --working-dir="$tmpdir" config -g platform.php "$php.0"
-  COMPOSER_HOME="$home" composer --working-dir="$tmpdir" update --no-install --no-audit --no-interaction --no-progress
-  cp "$tmpdir/composer.lock" "composer.lock.php-$php"
-done
+target_php='<supported-minor>'
+lock_tmp_dir="$(mktemp -d)"
+composer_home_dir="$lock_tmp_dir/composer-home"
+mkdir -p "$composer_home_dir"
+cp composer.json "$lock_tmp_dir/composer.json"
+COMPOSER_HOME="$composer_home_dir" composer --working-dir="$lock_tmp_dir" config -g platform.php "$target_php.0"
+COMPOSER_HOME="$composer_home_dir" composer --working-dir="$lock_tmp_dir" update --no-install --no-audit --no-interaction --no-progress
+cp "$lock_tmp_dir/composer.lock" "composer.lock.php-$target_php"
 ```
 
 ## Actions Best Practices
@@ -174,7 +175,7 @@ Apply these rules to every workflow created by this skill:
 - Verify each SHA from the action's original repository:
   ```bash
   gh release view --repo actions/checkout --json tagName,publishedAt,url
-  git ls-remote --tags https://github.com/actions/checkout.git 'refs/tags/v7.0.0'
+  git ls-remote --tags https://github.com/actions/checkout.git 'refs/tags/<tag>'
   ```
 - Use top-level `permissions: contents: read` and only grant additional
   permissions for a step that truly needs them.
@@ -230,10 +231,7 @@ Run local Composer checks that are reasonably available:
 
 ```bash
 composer validate --strict --no-check-publish
-for php in 8.0 8.1 8.2 8.3 8.4 8.5; do
-  cp "composer.lock.php-${php}" composer.lock
-  composer validate --strict --no-check-publish
-done
+# Repeat validation with each target-project lock when versioned locks exist.
 composer format:check
 composer phpstan
 composer compat
@@ -241,7 +239,7 @@ composer loc-guard
 composer tree-guard
 composer deptrac
 composer test:unit
-composer test:unit:legacy # when the project keeps a PHPUnit 9 config for old PHP support
+composer test:unit:legacy # only when the resolved target graph uses the legacy config
 composer test             # when the project has a parallel runner script
 ```
 

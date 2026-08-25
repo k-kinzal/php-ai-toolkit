@@ -57,6 +57,40 @@ constraint that resolves on every supported minor; a bare `composer require`
 performed on the agent's current PHP version is not that derivation. Verify the
 result against every supported dependency graph or maintained version lock.
 
+## Target-First Version and Configuration Policy
+
+The target project is the source of truth. This repository demonstrates one
+supported setup; its PHP matrix, dependency unions, lock-file layout, paths,
+extensions, schemas, and workflow runtimes are not defaults for another project.
+
+For every dependency added or changed:
+
+1. Derive the environments where it must install and where it actually runs from
+   the target's Composer constraint, documented support policy, CI matrix, lock
+   policy, and tool-job topology.
+2. Inspect current Composer package metadata and authoritative release/support
+   notes at application time. Do not choose from a version table remembered by
+   this skill or copied from this repository's `composer.json`.
+3. Select the newest released version at the highest stability level that provides
+   the required capability and is compatible with those environments and the
+   existing dependency graph. Prefer stable releases; use a tagged pre-release
+   only when no stable release provides required support, and never choose a moving
+   development branch by default.
+4. Prefer one current release line. Add an older line to a union only when a real
+   supported environment must install the same root development graph and needs
+   it. Keep such unions minimal and derive them from the target matrix rather than
+   package history.
+5. Confirm the candidate with a Composer dry run and each maintained lock or CI
+   leg. Use `composer why-not`/`prohibits` to explain an unexpected downgrade; do
+   not use `--ignore-platform-reqs`.
+
+An existing exact pin or deliberately narrow constraint is project policy, not
+permission to widen it silently. Update the lock to the newest version it admits;
+when the pin prevents the required compatible release, surface the conflict and
+obtain the decision. If a tool can run in an isolated job or toolchain, evaluate
+that runtime separately instead of forcing its requirements onto every product
+runtime.
+
 Write the intended internal responsibility and dependency model before adding
 TreeGuard or Deptrac configuration. Existing folders and dependency cycles are
 findings, not architecture decisions.
@@ -122,7 +156,7 @@ classes before it is written:
 | Class | How it is chosen | Examples |
 |-------|------------------|----------|
 | Fixed toolkit policy | Copy the shipped value. A target may not weaken it. | TreeGuard 15 files/20 directories, shipped LocGuard limits, Infection 80/80 and 85/85, PHPUnit strictness flags, PHP-CS-Fixer rule policy |
-| Project-derived fact | Inspect the project and calculate it; never copy the template's example value. | PHP matrix and highest supported PHP, dependency constraint, code/test roots, namespaces, CI extensions, lock-file mode, architecture layers, justified generated-code exclusions |
+| Project-derived fact | Inspect the project and calculate it; never copy the template's example value. | PHP matrix and highest supported PHP, newest compatible dependency release/constraint, code/test roots, namespaces, CI extensions, lock-file mode, architecture layers, justified generated-code exclusions |
 | Operational starting point | Start with the template, measure the real run, and adjust for reliability without changing what is measured. | Process and job timeouts, memory limits, worker/thread counts, cache paths |
 | Explicit human policy | Stop and obtain the decision when it is not already recorded. | Stricter mutation thresholds, public API/ownership boundaries, exceptional exclusions, DocGen publication and preview mode |
 
@@ -161,12 +195,15 @@ Before reporting completion:
 - audit every added configuration value against the ledger above; no copied value
   may remain uncategorized, and every difference from the vendor template needs a
   project fact, measured operational reason, or recorded human decision;
+- confirm no `REPLACE_WITH_*`, `PHP_VERSION_RANGE`, or other template sentinel
+  remains in an installed target file;
 - confirm a locked Composer install has an existing lock file and fails when it is
   missing, the one-off parallel/mutation/documentation runtime is the highest PHP
   version in the matrix, and configured PHP extensions cover Composer platform
   requirements plus the commands each job actually runs;
-- compare the target configuration with this package's own configuration and do
-  not leave the package itself weaker than the defaults it publishes;
+- compare the target configuration with the toolkit's fixed policy only; do not
+  copy this package's project-derived PHP versions, dependency unions, paths,
+  extensions, locks, or workflow topology into the target;
 - count the targets selected by every scanner and suite; a successful command with
   zero production tokens, visibility declarations, mutants, tests, examples, or
   generated API pages is not verification;

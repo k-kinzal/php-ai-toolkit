@@ -5,19 +5,21 @@
 #        git switch --orphan gh-pages
 #        git commit --allow-empty -m 'docs: create the documentation branch'
 #        git push -u origin gh-pages
-#        git switch main
+#        git switch REPLACE_WITH_DEFAULT_BRANCH
 #   2. Settings > Pages > Build and deployment > Source: "Deploy from a branch",
 #      branch "gh-pages", folder "/ (root)".
 #
 # The site owns the root of that branch: everything else there is replaced on
 # every run, except `pr/` (previews written by docs-preview.yml) and `CNAME`
 # (a custom Pages domain).
+# Replace every REPLACE_WITH sentinel from the target project's support matrix,
+# lock policy, extensions, and branch choices before installing this workflow.
 name: Docs
 
 on:
   push:
     branches:
-      - main
+      - REPLACE_WITH_DEFAULT_BRANCH
   workflow_dispatch:
 
 permissions:
@@ -29,7 +31,7 @@ concurrency:
 
 env:
   COMPOSER_NO_INTERACTION: '1'
-  DOCS_BRANCH: gh-pages
+  DOCS_BRANCH: REPLACE_WITH_DOCS_BRANCH
 
 jobs:
   publish:
@@ -40,14 +42,13 @@ jobs:
       contents: write
     steps:
       - name: Check out the repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
-          # Replace with the highest PHP minor in the target project's matrix.
-          php-version: '8.5'
-          extensions: mbstring, pcntl, gd
+          php-version: 'REPLACE_WITH_DOCGEN_JOB_PHP'
+          extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
           # pcov, not none, when the site should link every method to the test
           # cases covering it — that needs a --coverage-xml report, and pcov is
           # several times faster than Xdebug at producing one. Leave this at
@@ -57,9 +58,9 @@ jobs:
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
         with:
-          dependency-versions: locked
+          dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
           composer-options: --prefer-dist
-          require-lock-file: true
+          require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
 
       - name: Check installed platform requirements
         run: composer check-platform-reqs
@@ -68,9 +69,9 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: build/docgen-cache
-          key: docgen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-${{ github.sha }}
+          key: docgen-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_SELECTED_LOCK_FILE') }}-${{ github.sha }}
           restore-keys: |
-            docgen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-
+            docgen-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_SELECTED_LOCK_FILE') }}-
             docgen-${{ runner.os }}-
 
       # The report --coverage points at below. A strict PHPUnit configuration
@@ -95,7 +96,7 @@ jobs:
             --base-url="https://${repository%%/*}.github.io/${repository#*/}"
 
       - name: Check out the documentation branch
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ env.DOCS_BRANCH }}
           path: .docs-branch

@@ -43,16 +43,20 @@ Write in prose, not bullet points. Example (from a dependency analysis CLI tool)
 > A CLI tool that analyzes PHP code dependencies and visualizes the blast radius of changes. Its primary goal is impact analysis — automatically identifying what breaks when a class, method, or function changes. The tool builds a bidirectional graph model where nodes represent code elements (classes, methods, functions) and edges represent relationships (calls, extends, implements). Inverse edges are generated automatically, enabling traversal in both directions: what the target depends on, and what depends on the target. Output is available in two formats: a tree display for humans and structured data for AI agents.
 
 ### Tradeoff Sliders
-These calibrate AI behavior. The defaults are set to HIGH scope/quality, LOW time/cost — meaning the agent should prioritize correctness over speed. Adjust if the project has different priorities:
+These calibrate AI behavior. Treat the template positions as placeholders, not as
+facts inherited from php-ai-toolkit. Derive them from the target project's existing
+instructions and the user's stated priorities; when neither records the policy, ask
+before writing it. Typical interpretations include:
 - For prototypes/MVPs: reduce Quality to MEDIUM, increase Time to HIGH
-- For production services: keep defaults (HIGH quality, LOW time)
+- For production services: quality is commonly prioritized over delivery speed
 
 ### Supported Versions
 Replace `{{SUPPORTED_VERSIONS}}` with the versions that the project guarantees to work on. Determine what to list from the project's own requirements — `composer.json`, CI matrix, documentation, etc. Only list what the project explicitly supports.
 
-Example:
+Write the target's real constraint or enumerated CI-supported minors. Do not copy a
+version list from this repository. Shape example:
 ```markdown
-- **PHP**: 8.1 / 8.2 / 8.3 / 8.4 / 8.5
+- **PHP**: <versions guaranteed by this project>
 ```
 
 ### Architecture

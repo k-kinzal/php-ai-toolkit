@@ -22,16 +22,27 @@ Inspect `composer.json` before installing:
 - PHPStan version constraints, because current Deptrac releases may constrain PHPStan
 - Autoload roots, package type, framework dependencies, `bin` entries, and existing scripts
 
-Derive the constraint before invoking Composer. A single-runtime application may
-select one compatible line. A library or tool with a PHP support range must use a
-union that resolves on every supported minor and verify every maintained lock. For
-this toolkit's PHP 8.0+ matrix that is:
+Inspect current Composer metadata and Deptrac's release requirements at application
+time. Select the newest release compatible with the target's PHP support range,
+PHPStan graph, configuration format, and the runtime where Deptrac actually runs.
+Do not copy this toolkit repository's Deptrac constraint.
+
+A single-runtime application normally needs one current release line. A library or
+tool that installs development dependencies throughout a PHP matrix may need a
+minimal union, but add an older line only for a supported leg that cannot install
+the newest compatible line. Verify every maintained lock or CI leg and use
+`composer why-not` to explain an unexpected resolution:
 
 ```bash
-composer require --dev "deptrac/deptrac:^0.24 || ^1.0 || ^2.0 || ^3.0 || ^4.6"
+composer require --dev "deptrac/deptrac:<target-derived-constraint>" --dry-run
+composer why-not deptrac/deptrac <newest-compatible-version>
 ```
 
-Do not use `--ignore-platform-reqs` to force Deptrac into an incompatible project. If the project is a library or developer tool that supports old PHP minors, allow Composer constraints to choose different Deptrac versions per PHP runtime instead of forcing one version for every PHP version. A normal single `composer.lock` is fine when it can represent the supported dependency graph. Use PHP-versioned lock files only when old PHP support requires a different graph and the project needs supply-chain pinning. The union above is an example derived for this toolkit, not a literal to copy into projects with a different matrix.
+Run the confirmed requirement without `--dry-run`. Do not use
+`--ignore-platform-reqs` to force Deptrac into an incompatible project. A normal
+single `composer.lock` is fine when it represents the intended dependency graph.
+Use PHP-versioned lock files only when supported runtimes need different graphs and
+the target requires those graphs to be pinned.
 
 Do not add `config.platform.php` just to make all environments use the oldest PHP dependency set unless the target project intentionally locks one dependency graph. Use platform overrides only for temporary compatibility checks.
 
@@ -143,7 +154,9 @@ If `deptrac.yaml` already exists, merge rather than overwrite:
 
 Add scripts that match the installed Deptrac entry point.
 
-Some old Composer-installable Deptrac versions, including the line used for PHP 8.0 compatibility, do not expose `vendor/bin/deptrac`. For packages that publish their own `bin` entries, prefer a project-root launcher such as `deptrac.php` instead of adding a new file under `bin/`:
+Use the entry point provided by the resolved Deptrac release. Only when that actual
+release does not expose `vendor/bin/deptrac`, add a project-root launcher such as
+`deptrac.php` instead of assuming a legacy layout or adding a new file under `bin/`:
 
 ```php
 <?php

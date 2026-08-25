@@ -35,8 +35,8 @@ PHPUnit 9.6, because the only deptrac line that installs on PHP 8.0 pins php-par
 php-parser 5 under the same class names; the PHP 8.1 and later locks resolve PHPStan 2 with php-parser 5,
 phpdoc-parser 2, and PHPUnit 10.5 or newer. Code that reads a parser node or prints a documented type therefore has to
 work under either major of both parsers: a class only one of them ships is never named, and what a rule reports is
-ordered by the rule rather than by the analyzer. See [GitHub Actions Configuration](docs/github-actions.md) for how
-the locks are refreshed.
+ordered by the rule rather than by the analyzer. The locks are refreshed by the procedure the
+`/setup-toolkit-github-actions` skill documents.
 
 ## Tech Stack
 
@@ -52,7 +52,7 @@ the locks are refreshed.
 - **Documentation**: DocGen, publishing the API site to GitHub Pages on every push to `main`
 - **Package Type**: Composer phpstan-extension (auto-registered via `extra.phpstan.includes`)
 
-Every tool named here is wired into `composer lint` or a CI job and has a page under `docs/`. Adding a tool to this project means doing all three: a gate that is configured but never runs on `main` is one the project only believes it has.
+Every tool named here is wired into `composer lint` or a CI job, and the setup it was configured by is the matching `/setup-toolkit-*` skill under `skills/`. Adding a tool to this project means doing both: a gate that is configured but never runs on `main` is one the project only believes it has.
 
 ## Rule Design Principles
 
@@ -62,18 +62,13 @@ Every tool named here is wired into `composer lint` or a CI job and has a page u
 ## Document References
 
 - [PHPStan Rules](docs/phpstan-rules.md): Custom rules and their error identifiers
-- [PHPStan Configuration](docs/phpstan.md): PHPStan settings and why each is needed
-- [PHPUnit Configuration](docs/phpunit.md): PHPUnit settings and why each is needed
-- [Infection Configuration](docs/infection.md): Mutation testing thresholds for the whole source tree and for pull requests
-- [PHP-CS-Fixer Configuration](docs/php-cs-fixer.md): PHP-CS-Fixer settings and why each is needed
-- [PHPCompatibility Configuration](docs/php-compatibility.md): The PHP version floor gate and why it runs on `phpcs`
-- [LocGuard Configuration](docs/loc-guard.md): LocGuard source metric limits and reporting
-- [TreeGuard Configuration](docs/tree-guard.md): TreeGuard directory and file structure constraints
-- [ScopeGuard Configuration](docs/scope-guard.md): Namespace visibility scopes declared with `@visibility`
-- [Doctest Configuration](docs/doctest.md): Running the examples written in PHPDoc blocks as PHPUnit tests, the assertion notation, and how the port differs from upstream
-- [DocGen Configuration](docs/doc-gen.md): DocGen documentation scope, caching, and generated site behavior
-- [Deptrac Configuration](docs/deptrac.md): Architectural layer discovery and dependency rules
-- [GitHub Actions Configuration](docs/github-actions.md): CI coverage, quality gates, and workflow hardening
+- [PHPStan AI Formatter](docs/phpstan-ai-formatter.md): The `ai` error formatter, its mode detection, and its output
+- [PHPUnit AI Reporter](docs/phpunit-ai-reporter.md): The failure reporter for PHPUnit 9.6 and 10.5 or later
+- [LocGuard](docs/loc-guard.md): LocGuard source metric limits and reporting
+- [TreeGuard](docs/tree-guard.md): TreeGuard directory and file structure constraints
+- [EnforceVisibilityScopeRule](docs/rules/EnforceVisibilityScopeRule.md): Namespace visibility scopes declared with `@visibility`
+- [Doctest](docs/doctest.md): Running the examples written in PHPDoc blocks as PHPUnit tests, the assertion notation, and how the port differs from upstream
+- [DocGen](docs/docgen.md): DocGen documentation scope, caching, and generated site behavior
 
 **Rule Documentation**
 - [ForbidBroadCatchRule](docs/rules/ForbidBroadCatchRule.md): Forbids catching Throwable, Exception, and the LogicException/Error families outside configured boundary paths

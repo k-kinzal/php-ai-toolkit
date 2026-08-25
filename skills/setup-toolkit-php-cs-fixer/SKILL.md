@@ -11,15 +11,22 @@ This skill configures PHP-CS-Fixer with strict coding standards optimized for AI
 
 ## Prerequisites
 
-Run in the target project:
+Inspect the target's PHP constraint, existing formatter constraint and lock, and
+the runtimes where formatting is installed and executed. Query current Composer
+metadata and PHP-CS-Fixer's support documentation, then select the newest compatible
+release. Do not copy this toolkit repository's deliberately broad constraint.
+
+Confirm the target-derived constraint before changing files:
 
 ```bash
-composer require --dev "friendsofphp/php-cs-fixer:^3.4"
+composer require --dev "friendsofphp/php-cs-fixer:<target-derived-constraint>" --dry-run
+composer why-not friendsofphp/php-cs-fixer <newest-compatible-version>
 ```
 
-That range spans this toolkit's PHP 8.0+ support. A target with a different PHP
-matrix must derive and verify its own constraint rather than relying on the
-agent's current runtime to choose one.
+Run the confirmed requirement without `--dry-run`. Prefer one current stable line;
+use a minimal union only when separate supported environments that install the same
+development graph require it. Verify every maintained lock or CI leg and preserve
+an intentional existing pin unless changing that policy is in scope.
 
 ## Template
 
@@ -116,7 +123,3 @@ To auto-fix all violations:
 ```bash
 vendor/bin/php-cs-fixer fix --allow-risky=yes
 ```
-
-## References
-
-- [PHP-CS-Fixer Configuration](vendor/k-kinzal/php-ai-toolkit/docs/php-cs-fixer.md) — Settings and why each is needed

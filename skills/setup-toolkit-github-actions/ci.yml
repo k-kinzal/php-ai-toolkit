@@ -1,18 +1,17 @@
 # The workflow name is what the README status badge renders as its label, so it
 # is not optional: an unnamed workflow badges as its own file path.
 #
-# Drop the `cp` step from every job when the project keeps a single
-# composer.lock, and drop a lint step whose Composer script the project does not
-# have. Do not keep a step for a gate that was never set up.
-# Derive every PHP version and extensions list from the target project. The
-# literals below describe php-ai-toolkit's own PHP 8.0-8.5 matrix; they are not
-# defaults for a different support range.
+# Replace every REPLACE_WITH sentinel before use. Derive the PHP matrix, test
+# scripts, extensions, branches, and Composer lock mode from the target project.
+# Add a per-version `cp composer.lock.php-${{ matrix.php }} composer.lock` step
+# only when that target actually maintains PHP-versioned locks. Drop a lint step
+# whose Composer script does not exist; do not keep a gate that was never set up.
 name: CI
 
 on:
   push:
     branches:
-      - main
+      - REPLACE_WITH_DEFAULT_BRANCH
   pull_request:
 
 permissions:
@@ -34,40 +33,27 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php: '8.0'
-            test-script: test:unit:legacy
-          - php: '8.1'
-            test-script: test:unit
-          - php: '8.2'
-            test-script: test:unit
-          - php: '8.3'
-            test-script: test:unit
-          - php: '8.4'
-            test-script: test:unit
-          - php: '8.5'
-            test-script: test:unit
+          # Repeat for every supported minor and select the test script that
+          # matches the dependency graph resolved on that minor.
+          - php: 'REPLACE_WITH_SUPPORTED_PHP'
+            test-script: REPLACE_WITH_TEST_SCRIPT
     steps:
       - name: Check out the repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: ${{ matrix.php }}
-          # pcntl is what a parallel test runner forks with; drop it when the
-          # project has no such runner.
-          extensions: mbstring, pcntl
+          extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
           coverage: none
-
-      - name: Select the matching lock file
-        run: cp "composer.lock.php-${{ matrix.php }}" composer.lock
 
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
         with:
-          dependency-versions: locked
+          dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
           composer-options: --prefer-dist
-          require-lock-file: true
+          require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
 
       - name: Check installed platform requirements
         run: composer check-platform-reqs
@@ -87,24 +73,21 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Check out the repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
-          php-version: '8.5'
-          extensions: mbstring, pcntl
+          php-version: 'REPLACE_WITH_HIGHEST_SUPPORTED_PHP'
+          extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
           coverage: none
-
-      - name: Select the matching lock file
-        run: cp composer.lock.php-8.5 composer.lock
 
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
         with:
-          dependency-versions: locked
+          dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
           composer-options: --prefer-dist
-          require-lock-file: true
+          require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
 
       - name: Check installed platform requirements
         run: composer check-platform-reqs
@@ -120,25 +103,17 @@ jobs:
       fail-fast: false
       matrix:
         php:
-          - '8.0'
-          - '8.1'
-          - '8.2'
-          - '8.3'
-          - '8.4'
-          - '8.5'
+          - 'REPLACE_WITH_SUPPORTED_PHP'
     steps:
       - name: Check out the repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring
+          extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
           coverage: none
-
-      - name: Select the matching lock file
-        run: cp "composer.lock.php-${{ matrix.php }}" composer.lock
 
       - name: Validate the Composer manifest against the lock file
         run: composer validate --strict --no-check-publish
@@ -146,9 +121,9 @@ jobs:
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
         with:
-          dependency-versions: locked
+          dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
           composer-options: --prefer-dist
-          require-lock-file: true
+          require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
 
       - name: Check installed platform requirements
         run: composer check-platform-reqs

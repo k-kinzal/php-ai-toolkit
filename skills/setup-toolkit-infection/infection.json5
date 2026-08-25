@@ -18,11 +18,11 @@
     "$schema": "vendor/infection/infection/resources/schema.json",
     "source": {
         "directories": [
-            "src"
+            "REPLACE_WITH_PRODUCTION_SOURCE_ROOT"
         ],
         // Add "excludes" only for code whose tests cannot run in the same job as the
         // gate, and write the reason next to it. Entries are relative to each source
-        // directory, not to the project root: "Generated" excludes src/Generated.
+        // directory, not to the project root.
     },
     "mutators": {
         "@default": true
@@ -33,8 +33,8 @@
     // raise this above that duration with runner headroom.
     "timeout": 30,
     // A hung or excessively slow mutant is not evidence that the test suite detected
-    // the behavioral change. These options require Infection 0.32.3 or later; see the
-    // skill for the explicit limitation on older supported lines.
+    // the behavioral change. Validate these keys against the schema shipped by the
+    // target project's resolved Infection release.
     "timeoutsAsEscaped": true,
     "maxTimeouts": 0,
     // Infection wipes its temporary directory when the run finishes, so it must not

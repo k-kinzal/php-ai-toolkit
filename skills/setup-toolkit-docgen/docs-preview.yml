@@ -11,6 +11,8 @@
 # artifact, then publish it from a workflow that runs on the default branch.
 # Never switch this workflow to `pull_request_target`; that would run
 # untrusted code with a write token.
+# Replace every REPLACE_WITH sentinel with the same target-project values used
+# by the default-branch documentation workflow.
 name: Docs Preview
 
 on:
@@ -30,7 +32,7 @@ concurrency:
 
 env:
   COMPOSER_NO_INTERACTION: '1'
-  DOCS_BRANCH: gh-pages
+  DOCS_BRANCH: REPLACE_WITH_DOCS_BRANCH
 
 jobs:
   preview:
@@ -45,24 +47,23 @@ jobs:
       # Diff mode checks the base revision out into a temporary worktree, so
       # the history of both revisions has to be present.
       - name: Check out the pull request
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
       - name: Set up PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
-          # Replace with the highest PHP minor in the target project's matrix.
-          php-version: '8.5'
-          extensions: mbstring, pcntl, gd
+          php-version: 'REPLACE_WITH_DOCGEN_JOB_PHP'
+          extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
           coverage: pcov
 
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
         with:
-          dependency-versions: locked
+          dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
           composer-options: --prefer-dist
-          require-lock-file: true
+          require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
 
       - name: Check installed platform requirements
         run: composer check-platform-reqs
@@ -71,9 +72,9 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: build/docgen-cache
-          key: docgen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-${{ github.sha }}
+          key: docgen-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_SELECTED_LOCK_FILE') }}-${{ github.sha }}
           restore-keys: |
-            docgen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-
+            docgen-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_SELECTED_LOCK_FILE') }}-
             docgen-${{ runner.os }}-
 
       # Keep the preview product-equivalent to the default-branch site. Adapt
@@ -95,7 +96,7 @@ jobs:
             --base-url="https://${repository%%/*}.github.io/${repository#*/}/pr/${PR_NUMBER}"
 
       - name: Check out the documentation branch
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ env.DOCS_BRANCH }}
           path: .docs-branch
@@ -158,7 +159,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Check out the documentation branch
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ env.DOCS_BRANCH }}
 

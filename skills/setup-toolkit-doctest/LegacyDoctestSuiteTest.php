@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Doctest;
+namespace REPLACE_WITH_TEST_NAMESPACE;
 
 use Override;
 use Toolkit\Doctest\Configuration\Configuration;
@@ -22,7 +22,7 @@ final class LegacyDoctestSuiteTest extends LegacyDoctestRunner
     public static function configure(): Configuration
     {
         return new Configuration(
-            directories: [dirname(__DIR__, 2) . '/src'],
+            directories: [dirname(__DIR__, 2) . '/REPLACE_WITH_PRODUCTION_ROOT'],
         );
     }
 }

@@ -1,7 +1,4 @@
-# DocGen Configuration
-
-The DocGen setup written by the `/setup-toolkit-docgen` skill. DocGen has no configuration file: the setup is the
-Composer scripts and workflows that call the CLI with the options a project wants.
+# DocGen
 
 ## Purpose
 
@@ -31,16 +28,6 @@ to), `--diff=RANGE` / `--base=REVISION` / `--head=REVISION` (compare two git rev
 `--serve[=HOST:PORT]` (preview the generated site locally), `--memory-limit=VALUE`, `--jobs=N`,
 `--cache-dir=DIR`, `--no-cache`, and `--clear-cache`.
 
-A project keeps the options it always passes in a Composer script, and a caller adds to them:
-
-```bash
-composer docgen -- --base-url=https://example.github.io/project
-```
-
-That split is the point of having no file. What a project documents is the same wherever the command runs, while the
-address the site is published at, the revision a preview compares against, and the worker count a job can spare are
-known by the run rather than by the repository, and a continuous integration job is what can pass them.
-
 Documenting a large dependency tree needs more memory than the common 128M default, so the limit is raised to 512M
 when the environment allows less. A higher environment limit is kept as is, and `--memory-limit=1G` or
 `--memory-limit=-1` overrides both.
@@ -52,8 +39,8 @@ are rendered in parallel. The workers are forked after the project has been anal
 model instead of being handed a copy of it.
 
 The worker count comes from the machine unless a run says otherwise: one worker per logical CPU core, minus one for
-the process that waits for them, and never more than 16. `--jobs=N` sets the count directly, which is what a CI job
-sharing its cores with other jobs wants, and `--jobs=1` keeps everything in one process.
+the process that waits for them, and never more than 16. `--jobs=N` sets the count directly for a constrained runner,
+and `--jobs=1` keeps everything in one process.
 
 ```bash
 vendor/bin/docgen --jobs=4    # four workers
@@ -111,10 +98,8 @@ Both halves survive branch switching: entries are keyed by content, not by path,
 week is dropped. In a comparison run (`--diff`) the sources of both revisions are cached the same way, and the pages
 are reused when the same two revisions are compared again.
 
-The cache directory is a build artifact: ignore it in git, and restore it in CI (for example with `actions/cache`
-keyed on `composer.lock`) to keep documentation jobs to the size of the change. It holds one entry per source file,
-of the same order of size as the symbols that file declares, so a project of a thousand files keeps a few tens of
-megabytes.
+The cache directory is a build artifact. It holds one entry per source file, of the same order of size as the symbols
+that file declares, so a project of a thousand files keeps a few tens of megabytes.
 
 ## Options
 
@@ -219,7 +204,7 @@ notation: `@example` blocks and ` ```php ` fences are rendered as runnable docte
 `// Output:`, and `// throws` assertions styled; single-line `@example expr // note` tags render as display-only
 examples. A runnable figure carries a **doctest** badge titled with the example's identifier, a **copy** button for
 the example itself, and a **run** button carrying the `vendor/bin/phpunit --filter` command for that one example. See
-[Doctest Configuration](doctest.md).
+[Doctest](doctest.md).
 
 ## Navigation
 
@@ -305,50 +290,6 @@ vendor/bin/docgen --base-url=https://example.github.io/project/pr/42
 ```
 
 names the address of one run, which is what a pull request preview published under its own directory wants.
-
-## Publishing
-
-The site is published by committing the output directory to a branch GitHub Pages serves. Two workflow templates
-ship with the `/setup-toolkit-docgen` skill, in
-`vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-docgen/`:
-
-| Template | Trigger | What it does |
-|----------|---------|--------------|
-| `docs.yml` | push to the default branch | Generates the site and syncs it to the root of `gh-pages`, keeping `pr/` and `CNAME` |
-| `docs-preview.yml` | pull request opened, updated, reopened, or closed | Generates the site in diff mode against the base commit into `pr/<number>/`, comments the link on the pull request, and removes the directory when the pull request closes |
-
-Both check the documentation branch out with a second `actions/checkout`, sync into it with one `rsync --checksum
---delete`, and commit only when the sync changed something. `docs.yml` owns the root of the branch and
-`docs-preview.yml` owns `pr/<number>/`, so the two never overwrite each other; installing the preview workflow alone
-would leave the root of the branch empty.
-
-The branch and the Pages source are one-time manual setup, because a workflow cannot enable Pages for a repository:
-
-```bash
-git switch --orphan gh-pages
-git commit --allow-empty -m 'docs: create the documentation branch'
-git push -u origin gh-pages
-git switch main
-```
-
-Then set Settings > Pages > Build and deployment > Source to "Deploy from a branch", branch `gh-pages`, folder
-`/ (root)`. The site is served at `https://<owner>.github.io/<repository>/` and previews at
-`https://<owner>.github.io/<repository>/pr/<number>/`.
-
-Pull requests from forks are skipped by the preview workflow: their token is read-only, so it can neither write to
-the branch nor comment. Publishing those safely needs the `workflow_run` pattern — build on `pull_request` and
-upload an artifact, publish it from a workflow that runs on the default branch — and never `pull_request_target`,
-which would run the pull request's code with a write token.
-
-A project that does not review through pull requests installs `docs.yml` alone; `docs-preview.yml` has nothing to
-publish without them.
-
-Point the `composer docgen` script at a coverage report with `--coverage=build/coverage-xml` and run
-`composer test:coverage` under pcov before it, and every method on the published site names the test cases covering
-it. That step earns its minutes twice over: it is usually the only place on the default branch where PHPUnit's
-`beStrictAboutCoverageMetadata` is exercised, so it is what keeps `#[CoversClass]` and `#[UsesClass]` declarations
-from drifting. The workflow itself passes only `--base-url`, derived from `GITHUB_REPOSITORY`, because that is the
-one value the repository cannot state for itself. See [GitHub Actions Configuration](github-actions.md).
 
 ## Local Preview
 

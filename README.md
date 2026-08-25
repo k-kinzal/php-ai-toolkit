@@ -82,18 +82,13 @@ The [API documentation site](https://k-kinzal.github.io/php-ai-toolkit/) is gene
 and published on every push to `main`.
 
 - [PHPStan Rules](docs/phpstan-rules.md) — Custom rules and their error identifiers
-- [PHPStan Configuration](docs/phpstan.md) — PHPStan settings and why each is needed
-- [PHPUnit Configuration](docs/phpunit.md) — PHPUnit settings and why each is needed
-- [Infection Configuration](docs/infection.md) — Mutation testing thresholds, and why they differ between the whole tree and a pull request
-- [PHP-CS-Fixer Configuration](docs/php-cs-fixer.md) — PHP-CS-Fixer settings and why each is needed
-- [PHPCompatibility Configuration](docs/php-compatibility.md) — The PHP version floor gate and why it runs on `phpcs`
-- [LocGuard Configuration](docs/loc-guard.md) — Production source metrics checks and thresholds
-- [TreeGuard Configuration](docs/tree-guard.md) — Directory and file structure constraints
+- [PHPStan AI Formatter](docs/phpstan-ai-formatter.md) — Dual human/agent output for PHPStan findings
+- [PHPUnit AI Reporter](docs/phpunit-ai-reporter.md) — Location-first failure reports for PHPUnit 9.6 and 10.5 or later
+- [LocGuard](docs/loc-guard.md) — Production source metrics and reporters
+- [TreeGuard](docs/tree-guard.md) — Directory and file structure constraints
 - [EnforceVisibilityScopeRule](docs/rules/EnforceVisibilityScopeRule.md) — Namespace visibility scopes declared with `@visibility`, enforced during PHPStan analysis
-- [Doctest Configuration](docs/doctest.md) — Running PHPDoc examples as PHPUnit test cases, and how the port differs from upstream
-- [DocGen Configuration](docs/docgen.md) — Static documentation site generation and scope control
-- [Deptrac Configuration](docs/deptrac.md) — Architecture dependency rules and adaptation guidance
-- [GitHub Actions Configuration](docs/github-actions.md) — CI jobs, PHP version coverage, and workflow hardening
+- [Doctest](docs/doctest.md) — Running PHPDoc examples as PHPUnit test cases, and how the port differs from upstream
+- [DocGen](docs/docgen.md) — Static documentation generation, analysis, and output
 
 ## License
 

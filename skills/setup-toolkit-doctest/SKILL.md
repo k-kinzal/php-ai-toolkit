@@ -35,6 +35,13 @@ Install the toolkit if missing:
 composer require --dev k-kinzal/php-ai-toolkit
 ```
 
+The unversioned requirement is intentional for a new install: Composer should
+select the newest stable toolkit release compatible with the target project. Check
+current package metadata and the target's PHP/PHPUnit graph first. If the toolkit is
+already constrained, update its lock to the newest admitted release and preserve an
+intentional pin unless changing that policy is in scope. Never copy this repository's
+root constraint or lock resolution.
+
 ## Apply
 
 For PHPUnit 10 or later, register the extension and add the suite. This is a
@@ -43,7 +50,7 @@ configuration-only integration: no test file is written.
 ```xml
 <testsuites>
     <testsuite name="unit">
-        <directory>tests/Unit</directory>
+        <directory>REPLACE_WITH_UNIT_TEST_PATH</directory>
     </testsuite>
     <testsuite name="doctest">
         <file>vendor/k-kinzal/php-ai-toolkit/src/Doctest/DoctestSuite.php</file>
@@ -52,7 +59,7 @@ configuration-only integration: no test file is written.
 
 <extensions>
     <bootstrap class="Toolkit\Doctest\DoctestExtension">
-        <parameter name="directories" value="src"/>
+        <parameter name="directories" value="REPLACE_WITH_PRODUCTION_ROOTS"/>
     </bootstrap>
 </extensions>
 ```
@@ -87,6 +94,10 @@ configuration:
 </testsuite>
 ```
 
+Replace both `REPLACE_WITH_TEST_NAMESPACE` and
+`REPLACE_WITH_PRODUCTION_ROOT` in the copied class. They are deliberate sentinels;
+do not infer either from this repository's `Tests` namespace or `src` layout.
+
 The template extends
 `Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner` and returns the exact
 `Configuration` from `configure()`. Do not merely add the suite name: a PHPUnit 9
@@ -97,7 +108,10 @@ PHPDoc data-provider metadata is deliberately for PHPUnit 9; the modern suite us
 
 ### Runs that disable extensions
 
-`--no-extensions` bootstraps nothing, and PHPUnit 10.5 builds the test suite before it bootstraps anything. The suite covers both by reading the parameters the `<bootstrap>` element declares when the extension has not handed it a configuration, so the examples run either way — nothing to configure.
+`--no-extensions` bootstraps nothing, and modern PHPUnit can build the test suite
+before extensions are bootstrapped. The suite covers both cases by reading the
+parameters the `<bootstrap>` element declares when the extension has not handed it
+a configuration, so the examples run either way — nothing to configure.
 
 Leaving them out of such a run is `enabled="false"`, or selecting the other suites:
 

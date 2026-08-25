@@ -12,14 +12,14 @@ exclude:
 rules:
   - path: '**'
     deny_dirs: ['scripts', 'Scripts']
-  - path: 'src/**'
+  - path: 'REPLACE_WITH_PRODUCTION_ROOT/**'
     forbid_empty: true
     allow: ['*.php']
     file_case: pascal
     dir_case: pascal
     max_files: 15
     max_dirs: 20
-  - path: 'tests/Unit/**'
+  - path: 'REPLACE_WITH_UNIT_TEST_ROOT/**'
     forbid_empty: true
     allow: ['*Test.php']
     file_case: pascal

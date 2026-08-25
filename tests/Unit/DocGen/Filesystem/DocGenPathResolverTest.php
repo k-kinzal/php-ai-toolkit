@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver
+ */
 #[CoversClass(DocGenPathResolver::class)]
 final class DocGenPathResolverTest extends TestCase
 {

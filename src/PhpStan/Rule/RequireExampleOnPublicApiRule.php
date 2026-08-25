@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApiExampleErrorCollector;
+use PhpAiToolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiExampleErrorCollector;
 use PhpAiToolkit\PhpStan\Rule\Shared\AnonymousClassDetector;
 use PhpAiToolkit\PhpStan\Rule\Shared\ClassLikeKindLabel;
-use PhpAiToolkit\PhpStan\Rule\Shared\RestrictedTestNamespaceMatcher;
+use PhpAiToolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;

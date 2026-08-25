@@ -3,8 +3,7 @@ paths:
 
 exclude: []
 
-exempt_namespaces:
-  - 'Tests'
+exempt_namespaces: []
 
 report:
   reporter: ai

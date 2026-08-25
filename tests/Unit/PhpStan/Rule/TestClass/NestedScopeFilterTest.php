@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\TestClass\NestedScopeFilter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\NestedScopeFilter
+ */
 #[CoversClass(NestedScopeFilter::class)]
 final class NestedScopeFilterTest extends TestCase
 {

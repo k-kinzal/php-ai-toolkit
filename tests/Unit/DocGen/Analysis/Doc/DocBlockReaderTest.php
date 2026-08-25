@@ -14,6 +14,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocTag
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TemplateDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeAliasDoc
+ */
 #[CoversClass(DocBlockReader::class)]
 #[UsesClass(DocBlock::class)]
 #[UsesClass(DocTag::class)]

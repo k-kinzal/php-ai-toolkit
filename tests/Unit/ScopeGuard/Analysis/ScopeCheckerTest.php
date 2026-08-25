@@ -22,6 +22,21 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\ScopeChecker
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\ProjectScan
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\ScopeProblemReader
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\ScopeViolationBuilder
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Violation
+ */
 #[CoversClass(ScopeChecker::class)]
 #[UsesClass(Declaration::class)]
 #[UsesClass(DeclarationIndex::class)]

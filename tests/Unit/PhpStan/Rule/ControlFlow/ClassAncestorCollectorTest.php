@@ -12,6 +12,9 @@ use PHPUnit\Framework\Attributes\Medium;
 use Tests\Fixture\RequireExhaustiveDispatch\MasterCard;
 use Tests\Fixture\RequireExhaustiveDispatch\Payment;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector
+ */
 #[CoversClass(ClassAncestorCollector::class)]
 #[Medium]
 final class ClassAncestorCollectorTest extends PHPStanTestCase

@@ -24,6 +24,23 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricComplexityAssigner
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowFunctionMetricReader
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\BlockFunctionMetricReader
+ * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityCalculator
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticDecisionWeight
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionBodyLocator
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricLineCollector
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionNameReader
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionScanState
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\NestedFunctionMetricRange
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator
+ */
 #[CoversClass(FunctionMetricComplexityAssigner::class)]
 #[UsesClass(ArrowFunctionMetricReader::class)]
 #[UsesClass(BlockFunctionMetricReader::class)]

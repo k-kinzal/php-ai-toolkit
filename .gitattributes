@@ -9,9 +9,17 @@
 /.gitignore       export-ignore
 /.php-cs-fixer.dist.php export-ignore
 /infection.json5  export-ignore
+/loc.yaml         export-ignore
+/tree.yaml        export-ignore
+/scope.yaml       export-ignore
+/deptrac.yaml     export-ignore
+/deptrac.php      export-ignore
+/phpcs.xml.dist   export-ignore
 /tests/           export-ignore
 /phpstan.neon     export-ignore
+/extension-src.neon export-ignore
 /phpunit.xml.dist export-ignore
+/phpunit9.xml.dist export-ignore
 AGENTS.md         export-ignore
 
 # docs/ ships with the package on purpose. Every setup skill closes with a

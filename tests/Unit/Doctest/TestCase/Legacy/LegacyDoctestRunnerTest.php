@@ -14,6 +14,9 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
 use Tests\Fixture\Doctest\LegacyFixtureDoctestSuite;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner
+ */
 #[CoversClass(LegacyDoctestRunner::class)]
 #[Medium]
 final class LegacyDoctestRunnerTest extends TestCase

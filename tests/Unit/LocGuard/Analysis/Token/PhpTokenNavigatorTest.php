@@ -14,6 +14,9 @@ use const T_DOC_COMMENT;
 use const T_STRING;
 use const T_WHITESPACE;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator
+ */
 #[CoversClass(PhpTokenNavigator::class)]
 final class PhpTokenNavigatorTest extends TestCase
 {

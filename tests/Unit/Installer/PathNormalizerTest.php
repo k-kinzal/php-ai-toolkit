@@ -8,6 +8,9 @@ use PhpAiToolkit\Installer\PathNormalizer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Installer\PathNormalizer
+ */
 #[CoversClass(PathNormalizer::class)]
 final class PathNormalizerTest extends TestCase
 {

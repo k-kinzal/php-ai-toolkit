@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<NoReflectionInTestClassRule>
+ * @covers \PhpAiToolkit\PhpStan\Rule\NoReflectionInTestClassRule
  */
 #[CoversClass(NoReflectionInTestClassRule::class)]
 #[Medium]

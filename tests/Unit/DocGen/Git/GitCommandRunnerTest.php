@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Git\GitCommandRunner
+ * @uses \PhpAiToolkit\DocGen\DocGenException
+ */
 #[CoversClass(GitCommandRunner::class)]
 #[UsesClass(DocGenException::class)]
 final class GitCommandRunnerTest extends TestCase

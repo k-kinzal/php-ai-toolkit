@@ -10,6 +10,9 @@ use PHPStan\Testing\PHPStanTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Support\TestClassScope
+ */
 #[CoversClass(TestClassScope::class)]
 #[Medium]
 final class TestClassScopeTest extends PHPStanTestCase

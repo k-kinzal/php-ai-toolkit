@@ -15,6 +15,15 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\MethodDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCase
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\Usage
+ */
 #[CoversClass(TestCaseIndex::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(CoverageIndex::class)]

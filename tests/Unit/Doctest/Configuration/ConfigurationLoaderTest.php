@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Extension\ParameterCollection;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Configuration\ConfigurationLoader
+ * @uses \PhpAiToolkit\Doctest\Configuration\Configuration
+ */
 #[CoversClass(ConfigurationLoader::class)]
 #[UsesClass(Configuration::class)]
 final class ConfigurationLoaderTest extends TestCase

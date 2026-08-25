@@ -15,6 +15,15 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Reporting\TextReporter
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\AnalysisResult
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing
+ * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\Violation
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\ViolationFieldComparator
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\ViolationSorter
+ */
 #[CoversClass(TextReporter::class)]
 #[UsesClass(AnalysisResult::class)]
 #[UsesClass(DirectoryListing::class)]

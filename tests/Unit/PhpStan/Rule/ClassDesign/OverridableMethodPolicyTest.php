@@ -9,6 +9,9 @@ use PHPStan\Reflection\MethodReflection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\OverridableMethodPolicy
+ */
 #[CoversClass(OverridableMethodPolicy::class)]
 final class OverridableMethodPolicyTest extends TestCase
 {

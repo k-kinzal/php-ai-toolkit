@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\MethodCoverage
+ */
 #[CoversClass(CoverageIndex::class)]
 #[UsesClass(MethodCoverage::class)]
 final class CoverageIndexTest extends TestCase

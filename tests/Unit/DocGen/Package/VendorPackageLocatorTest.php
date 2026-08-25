@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Package\VendorPackageLocator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Package\VendorPackageLocator
+ */
 #[CoversClass(VendorPackageLocator::class)]
 final class VendorPackageLocatorTest extends TestCase
 {

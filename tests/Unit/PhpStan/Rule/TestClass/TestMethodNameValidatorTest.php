@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodNameValidator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodNameValidator
+ */
 #[CoversClass(TestMethodNameValidator::class)]
 final class TestMethodNameValidatorTest extends TestCase
 {

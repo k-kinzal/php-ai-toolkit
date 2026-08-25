@@ -14,6 +14,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowsDeclarationInspector
+ * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite
+ */
 #[CoversClass(ThrowsDeclarationInspector::class)]
 #[UsesClass(ThrowSite::class)]
 #[Medium]

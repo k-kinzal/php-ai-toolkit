@@ -35,6 +35,17 @@ use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
 
+/**
+ * @covers \PhpAiToolkit\Installer\Cli\Command\InstallCommand
+ * @uses \PhpAiToolkit\Installer\Cli\Command\AgentSkillDirectoryDetector
+ * @uses \PhpAiToolkit\Installer\Cli\Command\PackageSkillDirectoryScanner
+ * @uses \PhpAiToolkit\Installer\PathNormalizer
+ * @uses \PhpAiToolkit\Installer\RelativePathResolver
+ * @uses \PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator
+ * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstallationRunner
+ * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter
+ * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstaller
+ */
 #[CoversClass(InstallCommand::class)]
 #[UsesClass(AgentSkillDirectoryDetector::class)]
 #[UsesClass(PackageSkillDirectoryScanner::class)]

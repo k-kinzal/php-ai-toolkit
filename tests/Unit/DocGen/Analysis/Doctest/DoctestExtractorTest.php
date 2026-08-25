@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\DocExample
+ */
 #[CoversClass(DoctestExtractor::class)]
 #[UsesClass(DocExample::class)]
 final class DoctestExtractorTest extends TestCase

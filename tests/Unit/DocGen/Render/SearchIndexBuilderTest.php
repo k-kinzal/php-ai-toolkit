@@ -25,6 +25,25 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Render\SearchIndexBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\MethodDoc
+ * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
+ * @uses \PhpAiToolkit\DocGen\Analysis\ProjectModel
+ * @uses \PhpAiToolkit\DocGen\Render\SiteUrl
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
+ */
 #[CoversClass(SearchIndexBuilder::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(ConstantDoc::class)]

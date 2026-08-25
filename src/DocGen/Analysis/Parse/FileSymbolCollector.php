@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\DocGen\Analysis\Parse;
 
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\Function_;

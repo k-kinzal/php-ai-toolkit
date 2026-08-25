@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\ListTypeDeclarationInspector
+ * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
+ */
 #[CoversClass(ListTypeDeclarationInspector::class)]
 #[UsesClass(RulePhpDocParser::class)]
 final class ListTypeDeclarationInspectorTest extends TestCase

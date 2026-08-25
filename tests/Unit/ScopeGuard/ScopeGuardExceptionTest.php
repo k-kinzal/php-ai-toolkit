@@ -9,6 +9,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ */
 #[CoversClass(ScopeGuardException::class)]
 final class ScopeGuardExceptionTest extends TestCase
 {

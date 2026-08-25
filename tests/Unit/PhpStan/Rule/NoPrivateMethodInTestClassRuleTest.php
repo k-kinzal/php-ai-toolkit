@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<NoPrivateMethodInTestClassRule>
+ * @covers \PhpAiToolkit\PhpStan\Rule\NoPrivateMethodInTestClassRule
  */
 #[CoversClass(NoPrivateMethodInTestClassRule::class)]
 #[Medium]

@@ -13,6 +13,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Assertion\ParsedExample
+ * @uses \PhpAiToolkit\Doctest\Parser\Example
+ * @uses \PhpAiToolkit\Doctest\Scanner\Target
+ * @uses \PhpAiToolkit\Doctest\Assertion\Statement
+ */
 #[CoversClass(ParsedExample::class)]
 #[UsesClass(Example::class)]
 #[UsesClass(Target::class)]

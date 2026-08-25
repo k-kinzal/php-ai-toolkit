@@ -69,6 +69,6 @@ The following parameters can be customized in your project's `phpstan.neon`:
 | `srcMarker` | `'/src/'` | Source code path marker |
 | `unitTestMarker` | `'/tests/Unit/'` | Unit test path marker |
 | `forbiddenNamespacePrefixes` | `['Tests\Support', 'Tests\Supports', 'Tests\Helper', 'Tests\Helpers', 'Tests\Util', 'Tests\Utils', 'Tests\Utility', 'Tests\Utilities']` | Namespace prefixes to forbid |
-| `forbiddenClassLikeNameSuffixes` | See [`extension.neon`](../extension.neon) | Class-like declaration name suffixes to forbid |
+| `forbiddenClassLikeNameSuffixes` | See [`toolkit.neon`](../toolkit.neon) | Class-like declaration name suffixes to forbid |
 | `broadCatchAllowedPaths` | `[]` | fnmatch patterns of boundary files allowed to catch `Throwable`, `Exception`, and the `LogicException`/`Error` families |
 | `mixedArrayReturnAllowedPaths` | `[]` | fnmatch patterns of genuine untyped output boundary files allowed to declare `array<K, mixed>` returns |

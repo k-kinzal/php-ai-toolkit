@@ -13,6 +13,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\RunnableExampleDetector
+ * @uses \PhpAiToolkit\Doctest\Parser\Example
+ * @uses \PhpAiToolkit\Doctest\Parser\ExampleExtractor
+ * @uses \PhpAiToolkit\Doctest\Scanner\Target
+ * @uses \PhpAiToolkit\Doctest\Scanner\TargetKind
+ */
 #[CoversClass(RunnableExampleDetector::class)]
 #[UsesClass(Example::class)]
 #[UsesClass(ExampleExtractor::class)]

@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Git\TempDirectory
+ * @uses \PhpAiToolkit\DocGen\DocGenException
+ */
 #[CoversClass(TempDirectory::class)]
 #[UsesClass(DocGenException::class)]
 final class TempDirectoryTest extends TestCase

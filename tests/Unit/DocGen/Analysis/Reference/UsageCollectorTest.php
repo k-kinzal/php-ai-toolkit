@@ -15,6 +15,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Reference\UsageCollector
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\AstParser
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\LocalTypeMap
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\PropertyTypeScanner
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\Usage
+ */
 #[CoversClass(UsageCollector::class)]
 #[UsesClass(AstParser::class)]
 #[UsesClass(LocalTypeMap::class)]

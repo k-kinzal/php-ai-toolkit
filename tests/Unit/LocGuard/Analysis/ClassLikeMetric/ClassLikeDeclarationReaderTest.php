@@ -21,6 +21,11 @@ use const T_STRING;
 use const T_TRAIT;
 use const T_WHITESPACE;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator
+ */
 #[CoversClass(ClassLikeDeclarationReader::class)]
 #[UsesClass(ClassLikeTokenMatcher::class)]
 #[UsesClass(PhpTokenNavigator::class)]

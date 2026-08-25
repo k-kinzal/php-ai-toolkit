@@ -17,6 +17,15 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfRedundancyInspector
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CallArgumentResolver
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfTypeMatcher
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfErrorBuilder
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
+ */
 #[CoversClass(AssertInstanceOfRedundancyInspector::class)]
 #[UsesClass(CallArgumentResolver::class)]
 #[UsesClass(CallMethodNameResolver::class)]

@@ -12,6 +12,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Config\LimitConfigReader
+ * @uses \PhpAiToolkit\LocGuard\Config\ConfigScalarReader
+ * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
+ */
 #[CoversClass(LimitConfigReader::class)]
 #[UsesClass(ConfigScalarReader::class)]
 #[UsesClass(LimitConfig::class)]

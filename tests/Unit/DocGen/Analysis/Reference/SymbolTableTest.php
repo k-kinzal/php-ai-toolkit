@@ -12,6 +12,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ */
 #[CoversClass(SymbolTable::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(FunctionDoc::class)]

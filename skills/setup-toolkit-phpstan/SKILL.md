@@ -1,121 +1,75 @@
 ---
 name: setup-toolkit-phpstan
 description: >-
-  Set up PHPStan with strict configuration and AI error formatter for a PHP project.
-  Use when asked to configure PHPStan, set up static analysis, or enable the AI error formatter.
+  Set up PHPStan with php-ai-toolkit's opinionated defaults and AI error
+  formatter. Use when asked to configure PHPStan, static analysis, toolkit
+  PHPStan rules, or the AI error formatter in a PHP project.
 ---
 
-# Setup PHPStan (Strict + AI Error Formatter)
+# Set Up PHPStan
 
-This skill configures PHPStan at maximum strictness with the AI error formatter from php-ai-toolkit.
+The toolkit extension owns the baseline. A target project loads that one file;
+it does not copy the baseline into its own `phpstan.neon` and tune it until the
+current code passes.
 
-## Prerequisites
+## Baseline Supplied by the Extension
 
-Run in the target project:
+`vendor/k-kinzal/php-ai-toolkit/extension.neon` enables:
+
+- PHPStan level `max`;
+- `phpstan/phpstan-strict-rules` with every rule enabled;
+- every php-ai-toolkit PHPStan rule;
+- checked-exception analysis with the toolkit's unchecked families; and
+- the `aiRules` error formatter.
+
+These are one baseline. Do not repeat them in the target configuration and do
+not disable or weaken them during adoption.
+
+## Installation
+
+Derive the PHPStan constraint before installation. A single-runtime application
+may select one compatible major. A library or tool with a PHP support matrix must
+use a union that resolves on every supported minor and verify every maintained
+lock. For this toolkit's PHP 8.0+ matrix that is:
 
 ```bash
-composer require --dev phpstan/phpstan phpstan/phpstan-strict-rules k-kinzal/php-ai-toolkit
+composer require --dev "phpstan/phpstan:^1.12 || ^2.0" k-kinzal/php-ai-toolkit
 ```
 
-## Template
+Do not copy that union into a target with a different support range; derive its
+constraint. Read `composer config vendor-dir` as well. The include below is rooted
+at that project-derived directory (`vendor` is only Composer's default), while the
+toolkit extension resolves its strict-rules dependency relative to its own package
+and therefore also supports a custom vendor directory.
 
-Read the template from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-phpstan/phpstan.neon` and apply it to the project root as `phpstan.neon`.
+`phpstan/phpstan-strict-rules` is a runtime dependency of the toolkit; do not add
+a separately chosen version constraint to the target project.
 
-## Merging with Existing Configuration
+The default setup loads the toolkit explicitly and does not need
+`phpstan/extension-installer`. If that Composer plugin is present solely for the
+toolkit or strict-rules, remove it and its `allow-plugins` entry. If another
+PHPStan extension genuinely needs the plugin, keep it but add both
+`k-kinzal/php-ai-toolkit` and `phpstan/phpstan-strict-rules` to
+`extra.phpstan/extension-installer.ignore`; the toolkit extension loads both and
+PHPStan rejects a configuration file included twice.
 
-If the project already has `phpstan.neon`, merge as follows rather than overwriting.
+## Target Configuration
 
-### `includes`
+Copy the shipped template to the configuration name the project already uses
+(`phpstan.neon` or `phpstan.neon.dist`):
 
-Union both lists. Never remove existing includes. Add the toolkit's three includes:
 ```neon
 includes:
-    - existing/extension.neon          # keep
-    - vendor/phpstan/phpstan-strict-rules/rules.neon  # add
-    - vendor/k-kinzal/php-ai-toolkit/extension.neon   # add
-    - vendor/k-kinzal/php-ai-toolkit/error-formatter.neon  # add
+    - vendor/k-kinzal/php-ai-toolkit/extension.neon
 ```
 
-### `level`
-
-Always set to `max`. If the existing level is lower, override it. There is no case where a lower level is acceptable — raising the level mid-project is harder than starting at max.
-
-### `paths`
-
-Keep the existing paths. If the existing config already lists `src` and `tests` (or equivalent), leave them. Only adjust if the project uses different directory names.
-
-### `excludePaths`
-
-Keep existing excludes as-is. These are project-specific (fixture directories, generated code, etc.) and the toolkit has no opinion on them.
-
-### `ignoreErrors`
-
-Keep existing ignores as-is. These are project-specific suppressions for unavoidable violations. Do not add new ignores unless the violation is genuinely unfixable and well-documented:
-```neon
-parameters:
-    ignoreErrors:
-        -
-            identifier: some.specific.identifier
-            path: path/to/specific/file.php
-```
-
-### `exceptions`
-
-Apply the template's `exceptions` block as-is unless the project already configures it. It enables checked-exception analysis: every exception outside the unchecked families must be caught or declared with `@throws`, `@throws` tags that are never thrown are reported, and absent `@throws` means "throws nothing" (`implicitThrows: false`).
-
-- If the project already has `exceptions` settings, union the `uncheckedExceptionClasses` lists and keep the stricter `check` flags.
-- The unchecked families are: `LogicException` (programmer errors — fix, don't catch), `RuntimeException` (environment failures — propagation is optional), `Error` (engine failures), plus `Random\RandomException` and PHPUnit's mock exception, which are practically unrecoverable.
-- Project exceptions that extend `RuntimeException` but represent conditions callers should handle (like `PDOException`) can be re-checked by declaring `@throws` at their throw sites — the toolkit's `RequireThrowsTagOnDirectThrowRule` enforces exactly this.
-
-### `parameters.customRules`
-
-Only add if the project uses non-standard conventions:
-
-- **Test namespace prefixes**: If the project uses `App\Tests` instead of `Tests`:
-  ```neon
-  parameters:
-      customRules:
-          testNamespacePrefixes:
-              - 'App\Tests'
-          restrictedTestNamespacePrefixes:
-              - 'App\Tests\Unit'
-              - 'App\Tests\Integration'
-  ```
-
-- **Src/test markers**: If the project has a non-standard directory layout:
-  ```neon
-  parameters:
-      customRules:
-          srcMarker: '/app/'
-          unitTestMarker: '/tests/Unit/'
-  ```
-
-- **Exclude patterns**: To exclude certain classes from src/test pairing:
-  ```neon
-  parameters:
-      customRules:
-          srcUnitTestPairExcludePatterns:
-              - '#/Migration/#'
-              - '#/DataFixtures/#'
-  ```
-
-- **Boundary handlers**: Files that legitimately catch `Throwable` (CLI entry points, HTTP error middleware, worker loops) must be listed so `ForbidBroadCatchRule` allows them:
-  ```neon
-  parameters:
-      customRules:
-          broadCatchAllowedPaths:
-              - 'src/*/Cli/Application.php'
-              - 'src/Http/Middleware/ErrorHandler.php'
-  ```
-
-## Recommended Composer Scripts
-
-Add to the target project's `composer.json`:
+That is the complete standard configuration. Put analysis paths on the Composer
+command so the configuration remains only the toolkit contract:
 
 ```json
 {
     "scripts": {
-        "phpstan": "phpstan analyse --memory-limit=512M",
+        "phpstan": "phpstan analyse src tests --memory-limit=512M",
         "lint": [
             "@format:check",
             "@phpstan"
@@ -124,19 +78,63 @@ Add to the target project's `composer.json`:
 }
 ```
 
-The `error-formatter.neon` include sets `aiRules` as the default error format. When run by an AI agent, output is optimized for token efficiency; when run by a human, output includes code context and colors.
+Derive `src tests` from the production and test autoload roots in
+`composer.json`; do not assume those literal directory names.
+
+## Existing Configuration
+
+Reduce an existing configuration to the extension include unless a setting is
+both project-specific and necessary. Remove copied baseline settings such as
+`level`, strict-rules includes, the error-formatter include, and the standard
+`exceptions` block.
+
+The following additions can be legitimate:
+
+- `bootstrapFiles` for runtime symbols PHPStan cannot otherwise discover;
+- narrow `excludePaths` for generated or deliberately invalid fixtures;
+- PHP version bounds derived from the declared support range; and
+- `parameters.customRules` when the project uses non-standard namespace or path
+  conventions.
+
+Custom rule parameters describe facts; they are not escape hatches. Examples:
+
+```neon
+parameters:
+    customRules:
+        testNamespacePrefixes:
+            - 'App\Tests'
+        restrictedTestNamespacePrefixes:
+            - 'App\Tests\Unit'
+            - 'App\Tests\Integration'
+        srcMarker: '/app/'
+        unitTestMarker: '/tests/Unit/'
+```
+
+Only list a `broadCatchAllowedPaths` entry for a real process or protocol
+boundary that must translate every failure. Only list pairing exclusions for
+generated declarations or another evidenced non-source artifact.
+
+Do not add `ignoreErrors` to make adoption green. Fix the code. A narrow ignore
+for a demonstrated upstream type error needs the exact identifier and path and
+human approval.
+
+Introducing the toolkit is not permission to change a released public API,
+product documentation, or `AGENTS.md`. Preserve public facades and refactor
+their internals when a rule exposes a design problem.
 
 ## Verification
 
-After applying:
+Run the exact Composer script that CI will run:
 
 ```bash
-vendor/bin/phpstan analyse --memory-limit=512M
+composer phpstan
 ```
 
-Fix all reported errors before committing. Every error message includes specific fix instructions.
+Confirm the output uses the `aiRules` formatter and intentionally introduce one
+known toolkit violation in a disposable local probe if there is any doubt that
+the extension loaded. Remove the probe immediately after verification.
 
 ## References
 
-- [PHPStan Configuration](vendor/k-kinzal/php-ai-toolkit/docs/phpstan.md) — Settings and why each is needed
-- [PHPStan Rules](vendor/k-kinzal/php-ai-toolkit/docs/phpstan-rules.md) — Custom rules and their error identifiers
+- [PHPStan Configuration](vendor/k-kinzal/php-ai-toolkit/docs/phpstan.md)
+- [PHPStan Rules](vendor/k-kinzal/php-ai-toolkit/docs/phpstan-rules.md)

@@ -13,6 +13,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocTag
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TemplateDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeAliasDoc
+ */
 #[CoversClass(DocBlock::class)]
 #[UsesClass(DocTag::class)]
 #[UsesClass(TemplateDoc::class)]

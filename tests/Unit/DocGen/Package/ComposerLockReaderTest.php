@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Package\ComposerLockReader;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Package\ComposerLockReader
+ */
 #[CoversClass(ComposerLockReader::class)]
 final class ComposerLockReaderTest extends TestCase
 {

@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiErrorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiErrorBuilder
+ */
 #[CoversClass(PhpUnitMockApiErrorBuilder::class)]
 final class PhpUnitMockApiErrorBuilderTest extends TestCase
 {

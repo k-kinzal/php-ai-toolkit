@@ -19,6 +19,15 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\ExpectExceptionCallInspector
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CallArgumentResolver
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
+ */
 #[CoversClass(ExpectExceptionCallInspector::class)]
 #[UsesClass(BrokenCodeExceptionClassifier::class)]
 #[UsesClass(CallArgumentResolver::class)]

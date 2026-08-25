@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge
+ */
 #[CoversClass(PhpDocParserBridge::class)]
 final class PhpDocParserBridgeTest extends TestCase
 {

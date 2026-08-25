@@ -11,10 +11,14 @@ This skill configures PHPUnit with maximum strictness and enables the AI test re
 
 ## Prerequisites
 
-Run in the target project:
+Derive the PHPUnit constraint before installing it. A single-runtime application
+may resolve one compatible major. A project supporting multiple PHP minors must use
+a union that resolves for all of them and verify every maintained lock. For this
+toolkit's PHP 8.0+ matrix the union is shown below; derive a different one when the
+target's matrix differs:
 
 ```bash
-composer require --dev phpunit/phpunit k-kinzal/php-ai-toolkit
+composer require --dev "phpunit/phpunit:^9.6 || ^10.5 || ^11 || ^12 || ^13" k-kinzal/php-ai-toolkit
 ```
 
 ## Template
@@ -27,9 +31,10 @@ For PHPUnit 9.6, read the template from `vendor/k-kinzal/php-ai-toolkit/skills/s
 
 If the project already has `phpunit.xml.dist`, merge as follows rather than overwriting.
 
-### `<phpunit>` attributes — strict flags
+### PHPUnit 10.5+ `<phpunit>` attributes — strict flags
 
-All strict flags must be `true`. If the existing config has any of these set to `false` or missing, override to `true`:
+All modern strict flags must be `true`. If the existing PHPUnit 10.5+ config has
+any of these set to `false` or missing, override to `true`:
 
 | Attribute | Required value | If existing is weaker |
 |-----------|---------------|----------------------|
@@ -44,9 +49,34 @@ All strict flags must be `true`. If the existing config has any of these set to 
 | `failOnWarning` | `true` | Override. |
 | `enforceTimeLimit` | `true` | Override. |
 
-There is no case where any of these should be `false`. The toolkit is stricter than the default and always wins.
+Do not copy these names into a PHPUnit 9 configuration: that schema uses
+different coverage-metadata names and does not support `failOnAllIssues`.
 
-### `<phpunit>` attributes — timeouts
+### PHPUnit 9.6 strict equivalents
+
+Start from `phpunit9.xml.dist`. In addition to the flags shared with modern
+PHPUnit, its fixed baseline uses:
+
+| Attribute | Required value | Modern equivalent |
+|-----------|----------------|-------------------|
+| `forceCoversAnnotation` | `true` | `requireCoverageMetadata` |
+| `beStrictAboutCoversAnnotation` | `true` | `beStrictAboutCoverageMetadata` |
+| `convertDeprecationsToExceptions` | `true` | covered by `failOnAllIssues` and modern issue handling |
+| `beStrictAboutResourceUsageDuringSmallTests` | `true` | covered by modern strict issue handling |
+| `failOnIncomplete` | `true` | covered by `failOnAllIssues` |
+| `failOnSkipped` | `true` | covered by `failOnAllIssues` |
+| `beStrictAboutTodoAnnotatedTests` | `true` | covered by modern strict issue handling |
+| `enforceTimeLimit` | `true` | same |
+| `timeoutForSmallTests` | `1` | same |
+| `timeoutForMediumTests` | `10` | same |
+| `timeoutForLargeTests` | `60` | same |
+
+PHPUnit 9.6 requires `@covers`/`@uses` metadata. It does not understand the
+PHPUnit 10+ coverage attributes. A suite exercised under both generations must
+carry the PHPDoc metadata for PHPUnit 9 and the attributes for modern PHPUnit;
+neither configuration should silently run without intentional coverage scope.
+
+### PHPUnit 10.5+ `<phpunit>` attributes — timeouts
 
 | Attribute | Toolkit value | If existing is stricter (lower) | If existing is weaker (higher) |
 |-----------|--------------|-------------------------------|-------------------------------|
@@ -106,7 +136,10 @@ Keep existing source directories. Only set to `src` if no include is configured.
 
 ### Coverage metadata
 
-After merging, every test class needs `#[CoversClass(TargetClass::class)]`. Run tests to find missing attributes.
+After merging, every modern unit-test class needs the appropriate
+`#[CoversClass]`, `#[CoversFunction]`, or `#[CoversNothing]` attribute. A project
+that runs PHPUnit 9.6 also needs the equivalent `@covers`, `@uses`, or
+`@coversNothing` tags. Run both configuration files to find missing metadata.
 
 ## Recommended Composer Scripts
 

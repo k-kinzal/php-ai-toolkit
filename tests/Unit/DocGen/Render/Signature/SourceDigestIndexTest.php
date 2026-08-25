@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Render\Signature\SourceDigestIndex;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Render\Signature\SourceDigestIndex
+ */
 #[CoversClass(SourceDigestIndex::class)]
 final class SourceDigestIndexTest extends TestCase
 {

@@ -9,6 +9,9 @@ use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionScanState
+ */
 #[CoversClass(FunctionScanState::class)]
 final class FunctionScanStateTest extends TestCase
 {

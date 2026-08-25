@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule\PhpDoc;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\RulePathMatcher;
+use PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathMatcher;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;

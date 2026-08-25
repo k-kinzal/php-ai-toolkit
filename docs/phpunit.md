@@ -68,6 +68,16 @@ Keep the rest of the strict configuration as close as PHPUnit 9.6 supports.
 Do not register `AiTestReporterExtension` in PHPUnit 9.6; it depends on
 PHPUnit 10+ event classes.
 
+The shipped legacy configuration uses PHPUnit 9's names for the same coverage
+contract: `forceCoversAnnotation="true"` and
+`beStrictAboutCoversAnnotation="true"`. It also converts deprecations to
+exceptions, rejects incomplete and skipped tests, enables strict TODO and small
+test resource checks, and enforces the 1/10/60-second time limits. These are the
+PHPUnit 9 equivalents of the modern configuration's fail-on-all-issues policy; do
+not omit them merely because their attribute names differ. A cross-version suite
+carries both PHPUnit 9 `@covers`/`@uses` PHPDoc metadata and modern
+`#[Covers*]`/`#[Uses*]` attributes; each runner reads the form it supports.
+
 ### `executionOrder="depends,random"`
 
 Randomizes test execution order while respecting dependency declarations.

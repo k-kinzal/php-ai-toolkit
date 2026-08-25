@@ -12,6 +12,9 @@ use PhpParser\ParserFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\FixedListExpressionInspector
+ */
 #[CoversClass(FixedListExpressionInspector::class)]
 final class FixedListExpressionInspectorTest extends TestCase
 {

@@ -9,6 +9,9 @@ use PHPStan\Analyser\Error;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\ErrorCollectionSummary
+ */
 #[CoversClass(ErrorCollectionSummary::class)]
 final class ErrorCollectionSummaryTest extends TestCase
 {

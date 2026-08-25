@@ -49,9 +49,15 @@ vendor/bin/php-ai-toolkit install
 
 Auto-detects AI agent directories (`.claude`, `.agents`, `.continue`, etc.) in your project root and installs skills. Use `--force` to overwrite, `--copy` to copy instead of symlinking.
 
-### 3. Run setup skills
+### 3. Apply the toolkit
 
-Run the following skills in your AI agent:
+Run the end-to-end adoption skill:
+
+- `/setup-php-ai-toolkit` — applies the complete opinionated baseline, repairs
+  design and tests instead of weakening configuration, preserves public API and
+  product-owned docs/AGENTS.md, and asks how DocGen should publish
+
+The component skills are also available for focused setup or maintenance:
 
 - `/setup-toolkit-phpstan` — PHPStan at level max with strict rules and AI error formatter
 - `/setup-toolkit-phpunit` — PHPUnit with strict configuration and AI test reporter
@@ -67,7 +73,9 @@ Run the following skills in your AI agent:
 - `/setup-toolkit-github-actions` — GitHub Actions CI for tests, lint gates, PHP compatibility, and pinned actions
 - `/setup-toolkit-agents-md` — AGENTS.md with project conventions and AI agent guidelines
 
-Each skill reads your project structure and generates appropriate configuration.
+Component skills share fixed toolkit defaults. They adapt project facts such as
+autoload roots and supported PHP versions, but do not calibrate quality limits to
+the first measured result.
 
 ## Documentation
 

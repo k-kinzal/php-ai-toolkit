@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Config\LocGuardConfig
+ * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
+ * @uses \PhpAiToolkit\LocGuard\Config\ReportConfig
+ */
 #[CoversClass(LocGuardConfig::class)]
 #[UsesClass(LimitConfig::class)]
 #[UsesClass(ReportConfig::class)]

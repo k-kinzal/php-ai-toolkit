@@ -64,7 +64,25 @@ Register the extension and add the suite. No test file is written:
 
 Set `directories` from the discovered autoload roots. Leave `bootstrap` unset unless the project has code an autoloader cannot resolve.
 
-On PHPUnit 9, extend `PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner` and return a `Configuration` from `configure()` instead; there is no extension to read parameters from.
+On PHPUnit 9 there is no extension API to read those parameters. Copy
+`LegacyDoctestSuiteTest.php` from this skill to
+`tests/Doctest/LegacyDoctestSuiteTest.php`, adapt its namespace and production
+autoload roots, and register that directory as the doctest suite in the PHPUnit 9
+configuration:
+
+```xml
+<testsuite name="doctest">
+    <directory>tests/Doctest</directory>
+</testsuite>
+```
+
+The template extends
+`PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner` and returns the exact
+`Configuration` from `configure()`. Do not merely add the suite name: a PHPUnit 9
+matrix leg with no concrete legacy runner discovers zero doctests and is not a
+completed setup. Keep this directory out of the modern configuration because its
+PHPDoc data-provider metadata is deliberately for PHPUnit 9; the modern suite uses
+`DoctestSuite.php` and the extension parameters above.
 
 ### Runs that disable extensions
 
@@ -156,9 +174,13 @@ After applying:
 
 ```bash
 vendor/bin/phpunit --testsuite doctest
+vendor/bin/phpunit --configuration phpunit9.xml.dist --testsuite doctest
 ```
 
-Confirm the run reports the expected number of test cases, then write one example, confirm it passes, break it on purpose, and confirm the failure names the example.
+Run the second command when PHPUnit 9 is in the support matrix. Confirm both runs
+report the same expected examples (apart from explicitly documented version-only
+sources), then write one example, confirm it passes, break it on purpose, and
+confirm the failure names the example.
 
 If the suite reports no tests, the configuration reached it empty: check the `<bootstrap>` class name, the `directories` parameter, and that `enabled` is not `false`.
 

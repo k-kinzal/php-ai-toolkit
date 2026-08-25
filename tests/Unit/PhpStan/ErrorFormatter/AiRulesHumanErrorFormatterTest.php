@@ -18,6 +18,9 @@ use PHPStan\Testing\ErrorFormatterTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\AiRulesHumanErrorFormatter
+ */
 #[CoversClass(AiRulesHumanErrorFormatter::class)]
 #[Medium]
 final class AiRulesHumanErrorFormatterTest extends ErrorFormatterTestCase

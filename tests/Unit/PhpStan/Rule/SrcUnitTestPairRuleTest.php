@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<SrcUnitTestPairRule>
+ * @covers \PhpAiToolkit\PhpStan\Rule\SrcUnitTestPairRule
  */
 #[CoversClass(SrcUnitTestPairRule::class)]
 #[Medium]

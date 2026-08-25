@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodCallErrorBuilder
+ * @uses \PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry
+ */
 #[CoversClass(MagicMethodCallErrorBuilder::class)]
 #[UsesClass(MagicMethodRegistry::class)]
 final class MagicMethodCallErrorBuilderTest extends TestCase

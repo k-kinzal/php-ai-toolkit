@@ -12,6 +12,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentErrorBuilder
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern
+ */
 #[CoversClass(ForbiddenCommentErrorBuilder::class)]
 #[UsesClass(CommentTextFormatter::class)]
 #[UsesClass(ForbiddenCommentPattern::class)]

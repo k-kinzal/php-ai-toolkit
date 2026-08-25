@@ -9,6 +9,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Executor\Evaluation
+ */
 #[CoversClass(Evaluation::class)]
 final class EvaluationTest extends TestCase
 {

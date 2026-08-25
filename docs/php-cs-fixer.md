@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 $finder = (new PhpCsFixer\Finder())
     ->in(__DIR__)
+    ->exclude('build')
+    ->exclude('cache')
+    ->exclude('node_modules')
+    ->exclude('var')
     ->exclude('vendor');
 
 return (new PhpCsFixer\Config())
@@ -40,6 +44,12 @@ return (new PhpCsFixer\Config())
     ])
     ->setFinder($finder);
 ```
+
+The generated and vendored directory exclusions are part of the baseline. Mutation
+testing, coverage, documentation generation, framework caches, and JavaScript
+tooling all write PHP or PHP-like artifacts that the project neither owns nor
+formats. Maintained source and tests remain in scope; add only other generated
+directories the target project actually has.
 
 ## Explanation
 

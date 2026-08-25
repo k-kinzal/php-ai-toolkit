@@ -16,11 +16,9 @@ rules:
     deny_dirs: ['scripts', 'Scripts']
   - path: 'src'
     allow: []
-    max_dirs: 9
-    max_depth: 3
+    max_dirs: 20
   - path: 'tests/Unit'
     allow: []
-    max_depth: 3
   - path: 'src/**'
     forbid_empty: true
     allow: ['*.php']
@@ -39,16 +37,14 @@ rules:
       - '*Probes.php'
     file_case: pascal
     dir_case: pascal
-    max_files: 30
+    max_files: 15
     max_dirs: 20
-  - path: 'src/*'
-    max_total_files: 250
   - path: 'tests/Unit/**'
     forbid_empty: true
     allow: ['*Test.php']
     file_case: pascal
     dir_case: pascal
-    max_files: 30
+    max_files: 15
     max_dirs: 20
   - path: 'skills/*'
     require: ['SKILL.md']

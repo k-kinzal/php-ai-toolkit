@@ -16,6 +16,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowChainEvaluator
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression
+ */
 #[CoversClass(ThrowChainEvaluator::class)]
 #[UsesClass(ThrownExpression::class)]
 final class ThrowChainEvaluatorTest extends TestCase

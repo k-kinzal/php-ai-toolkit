@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ */
 #[CoversClass(ParameterDoc::class)]
 #[UsesClass(TypeSignature::class)]
 final class ParameterDocTest extends TestCase

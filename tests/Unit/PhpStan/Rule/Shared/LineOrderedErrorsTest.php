@@ -9,6 +9,9 @@ use PHPStan\Rules\RuleErrorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors
+ */
 #[CoversClass(LineOrderedErrors::class)]
 final class LineOrderedErrorsTest extends TestCase
 {

@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Parser\Example
+ * @uses \PhpAiToolkit\Doctest\Scanner\Target
+ */
 #[CoversClass(Example::class)]
 #[UsesClass(Target::class)]
 final class ExampleTest extends TestCase

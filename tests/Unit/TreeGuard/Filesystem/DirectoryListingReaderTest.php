@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListingReader
+ * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ */
 #[CoversClass(DirectoryListingReader::class)]
 #[UsesClass(TreeGuardException::class)]
 final class DirectoryListingReaderTest extends TestCase

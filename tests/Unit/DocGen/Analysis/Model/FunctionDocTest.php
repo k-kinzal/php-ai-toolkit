@@ -12,6 +12,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ */
 #[CoversClass(FunctionDoc::class)]
 #[UsesClass(DocBlock::class)]
 #[UsesClass(ParameterDoc::class)]

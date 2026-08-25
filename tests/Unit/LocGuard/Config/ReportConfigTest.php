@@ -8,6 +8,9 @@ use PhpAiToolkit\LocGuard\Config\ReportConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Config\ReportConfig
+ */
 #[CoversClass(ReportConfig::class)]
 final class ReportConfigTest extends TestCase
 {

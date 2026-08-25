@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Config\ConfigStringListReader
+ * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ */
 #[CoversClass(ConfigStringListReader::class)]
 #[UsesClass(TreeGuardException::class)]
 final class ConfigStringListReaderTest extends TestCase

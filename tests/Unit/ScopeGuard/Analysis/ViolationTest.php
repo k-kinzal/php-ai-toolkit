@@ -9,6 +9,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\Violation
+ */
 #[CoversClass(Violation::class)]
 final class ViolationTest extends TestCase
 {

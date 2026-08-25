@@ -13,6 +13,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Cache\ParseCache
+ * @uses \PhpAiToolkit\DocGen\Cache\CacheStore
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\Usage
+ */
 #[CoversClass(ParseCache::class)]
 #[UsesClass(CacheStore::class)]
 #[UsesClass(ClassLikeDoc::class)]

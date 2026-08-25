@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\Large;
 
 /**
  * @extends RuleTestCase<NoPropertyInTestClassRule>
+ * @covers \PhpAiToolkit\PhpStan\Rule\NoPropertyInTestClassRule
  */
 #[CoversClass(NoPropertyInTestClassRule::class)]
 #[Large]

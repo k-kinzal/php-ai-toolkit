@@ -14,6 +14,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Reporting\TextReporter
+ * @uses \PhpAiToolkit\LocGuard\Analysis\AnalysisResult
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric
+ * @uses \PhpAiToolkit\LocGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ * @uses \PhpAiToolkit\LocGuard\Reporting\ViolationSorter
+ */
 #[CoversClass(TextReporter::class)]
 #[UsesClass(AnalysisResult::class)]
 #[UsesClass(FileMetric::class)]

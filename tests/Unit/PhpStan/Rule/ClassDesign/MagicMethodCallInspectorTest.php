@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodCallInspector
+ * @uses \PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodCallErrorBuilder
+ * @uses \PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry
+ */
 #[CoversClass(MagicMethodCallInspector::class)]
 #[UsesClass(MagicMethodCallErrorBuilder::class)]
 #[UsesClass(MagicMethodRegistry::class)]

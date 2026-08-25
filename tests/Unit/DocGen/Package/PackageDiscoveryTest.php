@@ -18,6 +18,18 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Package\PackageDiscovery
+ * @uses \PhpAiToolkit\DocGen\Package\ComposerLockReader
+ * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
+ * @uses \PhpAiToolkit\DocGen\Package\ComposerManifestReader
+ * @uses \PhpAiToolkit\DocGen\Package\DevPackageResolver
+ * @uses \PhpAiToolkit\DocGen\Package\DiscoveredPackage
+ * @uses \PhpAiToolkit\DocGen\Config\DocGenConfig
+ * @uses \PhpAiToolkit\DocGen\DocGenException
+ * @uses \PhpAiToolkit\DocGen\Config\RepositoryUrl
+ * @uses \PhpAiToolkit\DocGen\Package\VendorPackageLocator
+ */
 #[CoversClass(PackageDiscovery::class)]
 #[UsesClass(ComposerLockReader::class)]
 #[UsesClass(ComposerManifest::class)]

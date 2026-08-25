@@ -19,6 +19,12 @@ use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * @extends RuleTestCase<ForbidSingleLinePhpDocRule>
+ * @covers \PhpAiToolkit\PhpStan\Rule\ForbidSingleLinePhpDocRule
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\AnonymousClassDetector
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter
+ * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector
+ * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorBuilder
+ * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorCollector
  */
 #[CoversClass(ForbidSingleLinePhpDocRule::class)]
 #[UsesClass(AnonymousClassDetector::class)]

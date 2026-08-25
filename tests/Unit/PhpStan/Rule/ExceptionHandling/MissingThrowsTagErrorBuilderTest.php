@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\ExceptionHandling\MissingThrowsTagErrorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\MissingThrowsTagErrorBuilder
+ */
 #[CoversClass(MissingThrowsTagErrorBuilder::class)]
 final class MissingThrowsTagErrorBuilderTest extends TestCase
 {

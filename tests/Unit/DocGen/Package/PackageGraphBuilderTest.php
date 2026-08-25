@@ -13,6 +13,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Package\PackageGraphBuilder
+ * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
+ * @uses \PhpAiToolkit\DocGen\Package\DiscoveredPackage
+ * @uses \PhpAiToolkit\DocGen\Package\PackageDependency
+ * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
+ */
 #[CoversClass(PackageGraphBuilder::class)]
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(DiscoveredPackage::class)]

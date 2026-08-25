@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocTag
+ */
 #[CoversClass(TypeSignature::class)]
 #[UsesClass(DocTag::class)]
 final class TypeSignatureTest extends TestCase

@@ -15,6 +15,14 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\ScopeViolationBuilder
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Violation
+ */
 #[CoversClass(ScopeViolationBuilder::class)]
 #[UsesClass(Declaration::class)]
 #[UsesClass(NamespaceLineage::class)]

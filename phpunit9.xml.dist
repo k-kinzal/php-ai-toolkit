@@ -4,18 +4,32 @@
          bootstrap="vendor/autoload.php"
          colors="true"
          executionOrder="depends,random"
+         forceCoversAnnotation="true"
+         beStrictAboutCoversAnnotation="true"
+         convertDeprecationsToExceptions="true"
          beStrictAboutChangesToGlobalState="true"
          beStrictAboutOutputDuringTests="true"
+         beStrictAboutResourceUsageDuringSmallTests="true"
          failOnEmptyTestSuite="true"
+         failOnIncomplete="true"
          failOnRisky="true"
+         failOnSkipped="true"
          failOnWarning="true"
-         enforceTimeLimit="false">
+         beStrictAboutTodoAnnotatedTests="true"
+         enforceTimeLimit="true"
+         timeoutForSmallTests="1"
+         timeoutForMediumTests="10"
+         timeoutForLargeTests="60">
     <testsuites>
         <testsuite name="unit">
             <directory>tests/Unit</directory>
             <exclude>tests/Unit/Doctest/DoctestExtensionTest.php</exclude>
             <exclude>tests/Unit/Doctest/DoctestSuiteTest.php</exclude>
             <exclude>tests/Unit/Doctest/Configuration/ConfigurationLoaderTest.php</exclude>
+            <exclude>tests/Unit/PhpUnit/TestReporter/AiTestReporterExtensionTest.php</exclude>
+            <exclude>tests/Unit/PhpUnit/TestReporter/EventTestIssueFactoryTest.php</exclude>
+            <exclude>tests/Unit/PhpUnit/TestReporter/EventTestNameResolverTest.php</exclude>
+            <exclude>tests/Unit/PhpUnit/TestReporter/Subscriber</exclude>
         </testsuite>
         <testsuite name="doctest">
             <directory>tests/Doctest</directory>
@@ -28,5 +42,8 @@
         <include>
             <directory>src</directory>
         </include>
+        <exclude>
+            <file>src/Compatibility/ClassAliases.php</file>
+        </exclude>
     </coverage>
 </phpunit>

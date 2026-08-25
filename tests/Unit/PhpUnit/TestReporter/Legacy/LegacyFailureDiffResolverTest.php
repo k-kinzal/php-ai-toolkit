@@ -11,6 +11,9 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\Legacy\LegacyFailureDiffResolver
+ */
 #[CoversClass(LegacyFailureDiffResolver::class)]
 final class LegacyFailureDiffResolverTest extends TestCase
 {

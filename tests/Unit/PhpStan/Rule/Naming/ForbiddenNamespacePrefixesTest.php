@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Naming\ForbiddenNamespacePrefixes
+ * @uses \PhpAiToolkit\PhpStan\Rule\Naming\NamespacePrefixNormalizer
+ */
 #[CoversClass(ForbiddenNamespacePrefixes::class)]
 #[UsesClass(NamespacePrefixNormalizer::class)]
 final class ForbiddenNamespacePrefixesTest extends TestCase

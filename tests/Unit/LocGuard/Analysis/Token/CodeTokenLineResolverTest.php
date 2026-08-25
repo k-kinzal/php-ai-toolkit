@@ -14,6 +14,9 @@ use const T_OPEN_TAG;
 use const T_STRING;
 use const T_WHITESPACE;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\Token\CodeTokenLineResolver
+ */
 #[CoversClass(CodeTokenLineResolver::class)]
 final class CodeTokenLineResolverTest extends TestCase
 {

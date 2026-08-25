@@ -14,6 +14,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricViolationBuilder
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionComplexityViolationBuilder
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionLineViolationBuilder
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric
+ * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ */
 #[CoversClass(FunctionMetricViolationBuilder::class)]
 #[UsesClass(FunctionComplexityViolationBuilder::class)]
 #[UsesClass(FunctionLineViolationBuilder::class)]

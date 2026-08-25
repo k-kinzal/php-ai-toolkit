@@ -9,6 +9,8 @@ use function explode;
 use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
 use PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 

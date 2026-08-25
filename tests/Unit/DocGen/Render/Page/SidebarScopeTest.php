@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Render\Page\SidebarScope
+ */
 #[CoversClass(SidebarScope::class)]
 final class SidebarScopeTest extends TestCase
 {

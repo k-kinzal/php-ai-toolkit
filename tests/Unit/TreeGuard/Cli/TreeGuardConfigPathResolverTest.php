@@ -8,6 +8,9 @@ use PhpAiToolkit\TreeGuard\Cli\TreeGuardConfigPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Cli\TreeGuardConfigPathResolver
+ */
 #[CoversClass(TreeGuardConfigPathResolver::class)]
 final class TreeGuardConfigPathResolverTest extends TestCase
 {

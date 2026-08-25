@@ -10,6 +10,9 @@ use PHPStan\Type\ObjectType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfTypeMatcher
+ */
 #[CoversClass(AssertInstanceOfTypeMatcher::class)]
 #[Medium]
 final class AssertInstanceOfTypeMatcherTest extends PHPStanTestCase

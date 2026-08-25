@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Reporting\AiViolationFormatter
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\AiViolationAction
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\Violation
+ */
 #[CoversClass(AiViolationFormatter::class)]
 #[UsesClass(AiViolationAction::class)]
 #[UsesClass(Violation::class)]

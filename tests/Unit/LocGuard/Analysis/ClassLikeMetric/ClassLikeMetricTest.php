@@ -8,6 +8,9 @@ use PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric
+ */
 #[CoversClass(ClassLikeMetric::class)]
 final class ClassLikeMetricTest extends TestCase
 {

@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ */
 #[CoversClass(DiffStatus::class)]
 final class DiffStatusTest extends TestCase
 {

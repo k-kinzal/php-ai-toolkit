@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
+ */
 #[CoversClass(RulePhpDocParser::class)]
 final class RulePhpDocParserTest extends TestCase
 {

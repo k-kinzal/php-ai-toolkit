@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\NestedScopeFilter
+ */
 #[CoversClass(TestMethodControlFlowErrorCollector::class)]
 #[UsesClass(ControlFlowTypeResolver::class)]
 #[UsesClass(NestedScopeFilter::class)]

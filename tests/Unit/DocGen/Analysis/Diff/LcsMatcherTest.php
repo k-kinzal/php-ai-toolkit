@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher
+ */
 #[CoversClass(LcsMatcher::class)]
 final class LcsMatcherTest extends TestCase
 {

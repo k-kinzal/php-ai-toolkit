@@ -52,6 +52,52 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Cli\Application
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReportGuidance
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReportSummary
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReporter
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\AiViolationAction
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\AiViolationFormatter
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\AnalysisResult
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\CaseConventionMatcher
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\ChildCountInspector
+ * @uses \PhpAiToolkit\TreeGuard\Config\ConfigLoader
+ * @uses \PhpAiToolkit\TreeGuard\Config\ConfigScalarReader
+ * @uses \PhpAiToolkit\TreeGuard\Config\ConfigStringListReader
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\DepthInspector
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\DirNameInspector
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListingReader
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\DirectoryPatternMatcher
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\DirectoryRuleInspector
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryTreeScanner
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\EmptyDirectoryInspector
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\FileNameInspector
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\JsonReporter
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\PathInclusionPolicy
+ * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfigReader
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\ReporterFactory
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\RequiredFileInspector
+ * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig
+ * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfigReader
+ * @uses \PhpAiToolkit\TreeGuard\Config\RuleListConfigReader
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\TextReporter
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\TotalFileCountInspector
+ * @uses \PhpAiToolkit\TreeGuard\Cli\TreeGuardAnalysisRunner
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\TreeGuardAnalyzer
+ * @uses \PhpAiToolkit\TreeGuard\Cli\TreeGuardCliArgumentParser
+ * @uses \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig
+ * @uses \PhpAiToolkit\TreeGuard\Cli\TreeGuardConfigPathResolver
+ * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ * @uses \PhpAiToolkit\TreeGuard\Cli\TreeGuardHelpText
+ * @uses \PhpAiToolkit\TreeGuard\Cli\TreeGuardOutputWriter
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver
+ * @uses \PhpAiToolkit\TreeGuard\Cli\TreeGuardReporterOverride
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\Violation
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\ViolationSorter
+ */
 #[CoversClass(Application::class)]
 #[UsesClass(AiReportGuidance::class)]
 #[UsesClass(AiReportSummary::class)]

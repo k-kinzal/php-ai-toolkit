@@ -20,6 +20,12 @@ use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * @extends RuleTestCase<ForbiddenCommentRule>
+ * @covers \PhpAiToolkit\PhpStan\Rule\ForbiddenCommentRule
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentErrorBuilder
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentTokenAnalyzer
  */
 #[CoversClass(ForbiddenCommentRule::class)]
 #[UsesClass(CommentTextFormatter::class)]

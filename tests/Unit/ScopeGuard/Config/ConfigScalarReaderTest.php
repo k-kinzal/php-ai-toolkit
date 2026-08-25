@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Config\ConfigScalarReader
+ * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ */
 #[CoversClass(ConfigScalarReader::class)]
 #[UsesClass(ScopeGuardException::class)]
 final class ConfigScalarReaderTest extends TestCase

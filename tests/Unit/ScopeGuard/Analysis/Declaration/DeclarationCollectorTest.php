@@ -21,6 +21,17 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationCollector
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\PhpParserBridge
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
+ */
 #[CoversClass(DeclarationCollector::class)]
 #[UsesClass(ClassLikeKind::class)]
 #[UsesClass(Declaration::class)]

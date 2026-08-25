@@ -12,10 +12,10 @@ use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc;
 use PhpAiToolkit\DocGen\Cache\ToolkitFingerprint;
 use PhpAiToolkit\DocGen\Package\DiscoveredPackage;
-use PhpAiToolkit\DocGen\Render\Page\DocumentListHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\DocumentListHtml;
 use PhpAiToolkit\DocGen\Render\Page\SymbolIndex;
 use PhpAiToolkit\DocGen\Render\RenderKit;
-use PhpAiToolkit\DocGen\Render\SocialCard;
+use PhpAiToolkit\DocGen\Render\Social\SocialCard;
 
 use function serialize;
 use function strtolower;

@@ -8,6 +8,9 @@ use PhpAiToolkit\LocGuard\Cli\LocGuardOutputWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Cli\LocGuardOutputWriter
+ */
 #[CoversClass(LocGuardOutputWriter::class)]
 final class LocGuardOutputWriterTest extends TestCase
 {

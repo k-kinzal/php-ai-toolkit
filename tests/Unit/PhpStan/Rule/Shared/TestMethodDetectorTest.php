@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\Shared\TestMethodDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Shared\TestMethodDetector
+ */
 #[CoversClass(TestMethodDetector::class)]
 final class TestMethodDetectorTest extends TestCase
 {

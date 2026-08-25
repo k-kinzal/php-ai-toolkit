@@ -4,17 +4,25 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\PathMarkerSplitter;
-use PhpAiToolkit\PhpStan\Rule\Shared\SrcUnitTestRelativePathMapper;
+use PhpAiToolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter;
+use PhpAiToolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper;
+use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver;
 use PhpAiToolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageErrorBuilder;
 use PhpAiToolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageValidator;
-use PhpAiToolkit\PhpStan\Rule\TestClass\SourceUnitTestFileResolver;
 use PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodFileReader;
 use PhpParser\Node\Stmt\Class_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageValidator
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\PathMarkerSplitter
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageErrorBuilder
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodFileReader
+ */
 #[CoversClass(PublicMethodTestCoverageValidator::class)]
 #[UsesClass(PathMarkerSplitter::class)]
 #[UsesClass(PublicMethodTestCoverageErrorBuilder::class)]

@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\Naming\ForbiddenClassLikeSuffixes;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Naming\ForbiddenClassLikeSuffixes
+ */
 #[CoversClass(ForbiddenClassLikeSuffixes::class)]
 final class ForbiddenClassLikeSuffixesTest extends TestCase
 {

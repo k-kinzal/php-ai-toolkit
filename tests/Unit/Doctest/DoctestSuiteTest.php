@@ -12,6 +12,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\DoctestSuite
+ * @uses \PhpAiToolkit\Doctest\Configuration\Configuration
+ * @uses \PhpAiToolkit\Doctest\Configuration\ConfigurationLoader
+ * @uses \PhpAiToolkit\Doctest\DoctestExtension
+ */
 #[CoversClass(DoctestSuite::class)]
 #[UsesClass(Configuration::class)]
 #[UsesClass(ConfigurationLoader::class)]

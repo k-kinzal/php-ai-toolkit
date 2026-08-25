@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Layer\LayerCollector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Layer\LayerCollector
+ */
 #[CoversClass(LayerCollector::class)]
 final class LayerCollectorTest extends TestCase
 {

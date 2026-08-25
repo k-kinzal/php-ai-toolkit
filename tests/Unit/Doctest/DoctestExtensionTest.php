@@ -14,6 +14,11 @@ use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Registry;
 use Tests\Fixture\Doctest\PhpUnitExtensionFacade;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\DoctestExtension
+ * @uses \PhpAiToolkit\Doctest\Configuration\Configuration
+ * @uses \PhpAiToolkit\Doctest\Configuration\ConfigurationLoader
+ */
 #[CoversClass(DoctestExtension::class)]
 #[UsesClass(Configuration::class)]
 #[UsesClass(ConfigurationLoader::class)]

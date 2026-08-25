@@ -8,6 +8,9 @@ use PhpAiToolkit\Installer\Cli\CliArgumentParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Installer\Cli\CliArgumentParser
+ */
 #[CoversClass(CliArgumentParser::class)]
 final class CliArgumentParserTest extends TestCase
 {

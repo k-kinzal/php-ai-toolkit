@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpUnit\TestReporter;
 
+use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter;
+use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter;
+use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueGutter;
+use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueHumanFormatter;
+use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter;
+use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary;
+use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation;
 use PhpAiToolkit\PhpUnit\TestReporter\TestFailureLineResolver;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueAiFormatter;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueFormatter;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueGutter;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueHumanFormatter;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueInput;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssuePathFormatter;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver;
 use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSummary;
-use PhpAiToolkit\PhpUnit\TestReporter\TestIssueTypePresentation;
 use PhpAiToolkit\PhpUnit\TestReporter\TestReporterRuntime;
 use PhpAiToolkit\Shared\AgentDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -25,6 +25,23 @@ use PHPUnit\Framework\TestCase;
 
 use function putenv;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestReporterRuntime
+ * @uses \PhpAiToolkit\Shared\AgentDetector
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestFailureLineResolver
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssue
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueGutter
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueHumanFormatter
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssueInput
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssuePathFormatter
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueSummary
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueTypePresentation
+ */
 #[CoversClass(TestReporterRuntime::class)]
 #[UsesClass(AgentDetector::class)]
 #[UsesClass(TestFailureLineResolver::class)]

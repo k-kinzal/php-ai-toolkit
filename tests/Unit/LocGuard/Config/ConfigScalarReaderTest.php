@@ -9,6 +9,9 @@ use PhpAiToolkit\LocGuard\LocGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Config\ConfigScalarReader
+ */
 #[CoversClass(ConfigScalarReader::class)]
 final class ConfigScalarReaderTest extends TestCase
 {

@@ -12,6 +12,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Scanner\FileScanner
+ * @uses \PhpAiToolkit\Doctest\Configuration\Configuration
+ */
 #[CoversClass(FileScanner::class)]
 #[UsesClass(Configuration::class)]
 final class FileScannerTest extends TestCase

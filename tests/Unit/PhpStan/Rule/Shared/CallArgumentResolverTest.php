@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\Shared\CallArgumentResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Shared\CallArgumentResolver
+ */
 #[CoversClass(CallArgumentResolver::class)]
 final class CallArgumentResolverTest extends TestCase
 {

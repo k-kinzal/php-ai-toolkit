@@ -41,7 +41,7 @@ rules:
     deny: ['*Helper.php']
     file_case: pascal
     dir_case: pascal
-    max_files: 25
+    max_files: 15
     max_dirs: 20
   - path: 'src/*'
     max_total_files: 250
@@ -105,7 +105,13 @@ To express "this directory must contain exactly this file", combine `require` wi
     allow: ['SKILL.md']
 ```
 
-The limit value itself is allowed. A directory with exactly 25 files passes when `max_files` is `25`; a directory with 26 files fails.
+The shipped policy applies `max_files: 15` and `max_dirs: 20` to every
+maintained production and unit-test directory selected by its source rules. It
+does not count conventional manifests and unrelated tool configuration together
+at the repository root. The limit value itself is allowed: 15 files pass and 16
+fail. These are design limits, not measurements of the tree at installation
+time; split responsibilities instead of raising them to make an existing layout
+green.
 
 Case conventions are matched with these patterns: pascal `^[A-Z][A-Za-z0-9]*$`, camel `^[a-z][A-Za-z0-9]*$`, snake `^[a-z0-9]+(_[a-z0-9]+)*$`, kebab `^[a-z0-9]+(-[a-z0-9]+)*$`. For files, only the stem before the first dot is checked (`AiReporter.php` → `AiReporter`).
 

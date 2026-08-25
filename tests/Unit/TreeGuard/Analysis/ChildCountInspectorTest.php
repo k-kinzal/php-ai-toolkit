@@ -12,6 +12,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Analysis\ChildCountInspector
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing
+ * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\Violation
+ */
 #[CoversClass(ChildCountInspector::class)]
 #[UsesClass(DirectoryListing::class)]
 #[UsesClass(RuleConfig::class)]

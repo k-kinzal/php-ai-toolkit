@@ -18,6 +18,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor
+ * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression
+ */
 #[CoversClass(ThrowSiteVisitor::class)]
 #[UsesClass(\PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite::class)]
 #[UsesClass(ThrownExpression::class)]

@@ -4,6 +4,9 @@
 # Drop the `cp` step from every job when the project keeps a single
 # composer.lock, and drop a lint step whose Composer script the project does not
 # have. Do not keep a step for a gate that was never set up.
+# Derive every PHP version and extensions list from the target project. The
+# literals below describe php-ai-toolkit's own PHP 8.0-8.5 matrix; they are not
+# defaults for a different support range.
 name: CI
 
 on:
@@ -64,6 +67,10 @@ jobs:
         with:
           dependency-versions: locked
           composer-options: --prefer-dist
+          require-lock-file: true
+
+      - name: Check installed platform requirements
+        run: composer check-platform-reqs
 
       - name: Run the unit tests
         run: composer ${{ matrix.test-script }}
@@ -97,6 +104,10 @@ jobs:
         with:
           dependency-versions: locked
           composer-options: --prefer-dist
+          require-lock-file: true
+
+      - name: Check installed platform requirements
+        run: composer check-platform-reqs
 
       - name: Run the suite under the parallel runner
         run: composer test
@@ -137,6 +148,10 @@ jobs:
         with:
           dependency-versions: locked
           composer-options: --prefer-dist
+          require-lock-file: true
+
+      - name: Check installed platform requirements
+        run: composer check-platform-reqs
 
       - name: Check the formatting
         run: composer format:check

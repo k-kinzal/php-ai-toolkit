@@ -18,6 +18,9 @@ use PHPUnit\Framework\Attributes\Medium;
 
 use function putenv;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\AiRulesErrorFormatter
+ */
 #[CoversClass(AiRulesErrorFormatter::class)]
 #[Medium]
 final class AiRulesErrorFormatterTest extends ErrorFormatterTestCase

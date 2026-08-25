@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver
+ */
 #[CoversClass(ControlFlowTypeResolver::class)]
 final class ControlFlowTypeResolverTest extends TestCase
 {

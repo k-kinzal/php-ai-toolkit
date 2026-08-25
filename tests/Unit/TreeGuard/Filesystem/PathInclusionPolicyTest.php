@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Filesystem\PathInclusionPolicy
+ * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig
+ */
 #[CoversClass(PathInclusionPolicy::class)]
 #[UsesClass(ReportConfig::class)]
 #[UsesClass(TreeGuardConfig::class)]

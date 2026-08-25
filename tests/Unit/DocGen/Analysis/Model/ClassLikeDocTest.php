@@ -15,6 +15,15 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\MethodDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\PropertyDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ */
 #[CoversClass(ClassLikeDoc::class)]
 #[UsesClass(ConstantDoc::class)]
 #[UsesClass(DocBlock::class)]

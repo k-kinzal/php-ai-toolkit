@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpUnit\TestReporter\TestFailureLineResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestFailureLineResolver
+ */
 #[CoversClass(TestFailureLineResolver::class)]
 final class TestFailureLineResolverTest extends TestCase
 {

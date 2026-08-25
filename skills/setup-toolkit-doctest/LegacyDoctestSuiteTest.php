@@ -1,0 +1,28 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Doctest;
+
+use Override;
+use PhpAiToolkit\Doctest\Configuration\Configuration;
+use PhpAiToolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner;
+
+/**
+ * Runs the project's documented examples on PHPUnit 9.
+ *
+ * @medium
+ */
+final class LegacyDoctestSuiteTest extends LegacyDoctestRunner
+{
+    /**
+     * Selects the production autoload roots whose PHPDoc examples are executable.
+     */
+    #[Override]
+    public static function configure(): Configuration
+    {
+        return new Configuration(
+            directories: [dirname(__DIR__, 2) . '/src'],
+        );
+    }
+}

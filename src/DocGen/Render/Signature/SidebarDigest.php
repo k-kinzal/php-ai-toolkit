@@ -6,7 +6,7 @@ namespace PhpAiToolkit\DocGen\Render\Signature;
 
 use function hash;
 
-use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 use PhpAiToolkit\DocGen\Render\SiteUrl;

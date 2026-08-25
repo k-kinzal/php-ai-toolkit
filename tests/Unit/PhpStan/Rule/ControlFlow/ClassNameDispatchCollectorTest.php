@@ -15,6 +15,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\ClassNameDispatchCollector
+ * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
+ */
 #[CoversClass(ClassNameDispatchCollector::class)]
 #[UsesClass(DispatchSubjectResolver::class)]
 final class ClassNameDispatchCollectorTest extends TestCase

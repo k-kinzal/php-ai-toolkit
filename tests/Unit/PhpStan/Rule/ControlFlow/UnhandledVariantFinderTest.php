@@ -16,6 +16,9 @@ use PHPStan\Type\VerbosityLevel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder
+ */
 #[CoversClass(UnhandledVariantFinder::class)]
 final class UnhandledVariantFinderTest extends TestCase
 {

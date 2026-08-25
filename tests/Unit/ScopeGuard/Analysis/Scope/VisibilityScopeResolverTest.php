@@ -12,6 +12,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
+ */
 #[CoversClass(VisibilityScopeResolver::class)]
 #[UsesClass(NamespaceLineage::class)]
 #[UsesClass(VisibilityScope::class)]

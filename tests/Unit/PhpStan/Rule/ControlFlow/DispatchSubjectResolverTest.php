@@ -11,6 +11,9 @@ use PHPStan\Type\StringType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
+ */
 #[CoversClass(DispatchSubjectResolver::class)]
 final class DispatchSubjectResolverTest extends TestCase
 {

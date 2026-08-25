@@ -71,10 +71,10 @@ answers whether the suite passes on each supported PHP minor; what the parallel
 runner adds is whether the suite still passes when it is split across processes
 — no two test classes writing the same fixture path, no ordering assumed between
 classes, no state carried from one to the next. That property does not depend on
-the PHP version, so it is checked once on PHP 8.4, the same way the mutation
-score is.
+the PHP version, so it is checked once on PHP 8.5, the highest supported minor,
+the same way the mutation score is.
 
-It runs on PHP 8.4 rather than 8.0 because `composer test` passes no
+It runs on PHP 8.5 rather than 8.0 because `composer test` passes no
 `--configuration` and so reads `phpunit.xml.dist`, the PHPUnit 10+ configuration.
 PHP 8.0 resolves PHPUnit 9.6, which needs `phpunit9.xml.dist` — that leg is
 covered by `test:unit:legacy` in the matrix.
@@ -84,7 +84,7 @@ covered by `test:unit:legacy` in the matrix.
 `ci.yml` runs mutation testing in a `mutation` job rather than as a step of `lint`,
 because it needs a coverage driver, a full-depth checkout, and minutes rather than
 seconds. It is not a matrix: the mutation score does not depend on the PHP version,
-so it is scored once on PHP 8.4 while the `tests` matrix covers the rest. The job
+so it is scored once on PHP 8.5 while the `tests` matrix covers the rest. The job
 picks its gate from the event — one step scores the lines a pull request changed
 against stricter thresholds, the other scores the whole source tree on the default
 branch. Its commands are written into the workflow rather than Composer scripts: the
@@ -134,6 +134,14 @@ Actions must be pinned to full 40-character commit SHAs, with the release tag
 kept as a comment. The workflow should use least-privilege permissions,
 concurrency cancellation, job timeouts, named jobs and steps, and `fail-fast:
 false` on matrices.
+
+Every locked install sets `require-lock-file: true` and is followed by
+`composer check-platform-reqs`, so a missing versioned lock or extension fails
+explicitly instead of being repaired from the network or inherited accidentally
+from the hosted runner. One-off parallel, mutation, and documentation jobs use
+PHP 8.5 because it is the maximum entry in this repository's matrix. Job timeout,
+memory, and worker values are operational settings measured separately from the
+quality thresholds they run.
 
 Validate changes with:
 

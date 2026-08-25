@@ -9,6 +9,9 @@ use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\ClassLikeNameResolver
+ */
 #[CoversClass(ClassLikeNameResolver::class)]
 final class ClassLikeNameResolverTest extends TestCase
 {

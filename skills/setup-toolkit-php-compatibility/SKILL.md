@@ -51,8 +51,10 @@ Version choice matters more than it looks. PHPCompatibility ships two lines:
   is useless as a gate for an 8.0+ floor — a project full of 8.1 syntax scans
   clean. Do **not** use the 9.x line (`^9`, `dev-master`) for this.
 - **10.x** (`dev-develop` → `10.x-dev`; tagged pre-releases `10.0.0-alpha1/alpha2`,
-  2025) is the line that carries the PHP 8.0–8.5 sniffs and requires
-  PHP_CodeSniffer 4. Only this line detects the 8.1+ syntax you want to reject.
+  2025) is the line that carries the PHP 8.0–8.5 sniffs. Its current constraint
+  accepts PHP_CodeSniffer `^3.13.3 || ^4.0`; this toolkit deliberately chooses 4.x
+  as its default policy. Only the 10.x line detects the 8.1+ syntax you want to
+  reject.
 
 10.x has no stable tag yet, so you must take a pre-release. Prefer pinning the
 tagged alpha over the moving branch for reproducibility, and set `minimum-stability`
@@ -81,8 +83,9 @@ Confirm the standard is registered:
 vendor/bin/phpcs -i   # expect "PHPCompatibility" in the list
 ```
 
-If the project is pinned to PHP_CodeSniffer 3.x and cannot move to 4.x, register
-the standard path manually instead of using the plugin:
+If the project is pinned to PHP_CodeSniffer 3.x, use at least 3.13.3. Keep automatic
+plugin registration when it works for that graph; otherwise register the standard
+path manually:
 
 ```bash
 vendor/bin/phpcs --config-set installed_paths vendor/phpcompatibility/php-compatibility

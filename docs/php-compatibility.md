@@ -103,8 +103,9 @@ passes silently:
 - **9.x** tops out at PHP 7.4 feature detection. It does not know about
   `readonly`, enums, `never`, first-class callables, or `new` in initializers,
   so a codebase full of 8.1 syntax scans clean under it.
-- **10.x** carries the PHP 8.0–8.5 sniffs and requires PHP_CodeSniffer 4. It is
-  the only line that can gate an 8.0 floor.
+- **10.x** carries the PHP 8.0–8.5 sniffs and currently accepts
+  PHP_CodeSniffer `^3.13.3 || ^4.0`. It is the only line that can gate an 8.0
+  floor; this toolkit chooses PHP_CodeSniffer 4 as its own default policy.
 
 `composer.json` therefore requires `phpcompatibility/php-compatibility:
 ^10.0@alpha` with `squizlabs/php_codesniffer: ^4.0`. 10.x has no stable tag yet,

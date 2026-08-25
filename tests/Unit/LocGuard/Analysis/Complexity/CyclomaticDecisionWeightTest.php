@@ -15,6 +15,10 @@ use const T_DOUBLE_ARROW;
 use const T_IF;
 use const T_MATCH;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticDecisionWeight
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState
+ */
 #[CoversClass(CyclomaticDecisionWeight::class)]
 #[UsesClass(CyclomaticComplexityState::class)]
 final class CyclomaticDecisionWeightTest extends TestCase

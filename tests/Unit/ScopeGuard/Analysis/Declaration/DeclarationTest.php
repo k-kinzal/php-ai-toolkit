@@ -12,6 +12,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope
+ */
 #[CoversClass(Declaration::class)]
 #[UsesClass(NamespaceLineage::class)]
 #[UsesClass(VisibilityScope::class)]

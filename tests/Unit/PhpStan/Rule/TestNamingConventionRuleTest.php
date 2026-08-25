@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<TestNamingConventionRule>
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestNamingConventionRule
  */
 #[CoversClass(TestNamingConventionRule::class)]
 #[Medium]

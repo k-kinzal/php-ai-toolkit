@@ -8,6 +8,9 @@ use PhpAiToolkit\LocGuard\Filesystem\LocGuardPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Filesystem\LocGuardPathResolver
+ */
 #[CoversClass(LocGuardPathResolver::class)]
 final class LocGuardPathResolverTest extends TestCase
 {

@@ -14,6 +14,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Cache\CachedPageWriter
+ * @uses \PhpAiToolkit\DocGen\Cache\CacheStore
+ * @uses \PhpAiToolkit\DocGen\DocGenException
+ * @uses \PhpAiToolkit\DocGen\Cache\PageRecord
+ * @uses \PhpAiToolkit\DocGen\Cache\RenderCache
+ * @uses \PhpAiToolkit\DocGen\Filesystem\SiteFileWriter
+ */
 #[CoversClass(CachedPageWriter::class)]
 #[UsesClass(CacheStore::class)]
 #[UsesClass(DocGenException::class)]

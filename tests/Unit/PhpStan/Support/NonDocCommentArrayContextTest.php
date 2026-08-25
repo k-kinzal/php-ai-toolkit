@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Support\NonDocCommentArrayContext
+ * @uses \PhpAiToolkit\PhpStan\Support\NonDocCommentTokenClassifier
+ * @uses \PhpAiToolkit\PhpStan\Support\ShortArrayOpeningPolicy
+ */
 #[CoversClass(NonDocCommentArrayContext::class)]
 #[UsesClass(NonDocCommentTokenClassifier::class)]
 #[UsesClass(ShortArrayOpeningPolicy::class)]

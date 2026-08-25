@@ -18,6 +18,18 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Reporting\AiReporter
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiReportGuidance
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiReportSummary
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiViolationAction
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiViolationFormatter
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\AnalysisResult
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Violation
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationFieldComparator
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationSorter
+ */
 #[CoversClass(AiReporter::class)]
 #[UsesClass(AiReportGuidance::class)]
 #[UsesClass(AiReportSummary::class)]

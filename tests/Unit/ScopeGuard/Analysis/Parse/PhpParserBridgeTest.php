@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\Parse\PhpParserBridge
+ * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ */
 #[CoversClass(PhpParserBridge::class)]
 #[UsesClass(ScopeGuardException::class)]
 final class PhpParserBridgeTest extends TestCase

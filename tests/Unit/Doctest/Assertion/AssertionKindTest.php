@@ -8,6 +8,9 @@ use PhpAiToolkit\Doctest\Assertion\AssertionKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Assertion\AssertionKind
+ */
 #[CoversClass(AssertionKind::class)]
 final class AssertionKindTest extends TestCase
 {

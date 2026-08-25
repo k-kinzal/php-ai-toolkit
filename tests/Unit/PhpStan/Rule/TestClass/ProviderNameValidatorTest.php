@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\TestClass\ProviderNameValidator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\ProviderNameValidator
+ */
 #[CoversClass(ProviderNameValidator::class)]
 final class ProviderNameValidatorTest extends TestCase
 {

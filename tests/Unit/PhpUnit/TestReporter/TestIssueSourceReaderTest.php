@@ -10,6 +10,9 @@ use PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceReader
+ */
 #[CoversClass(TestIssueSourceReader::class)]
 final class TestIssueSourceReaderTest extends TestCase
 {

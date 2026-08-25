@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers
+ */
 #[CoversClass(ParameterModifiers::class)]
 final class ParameterModifiersTest extends TestCase
 {

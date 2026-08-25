@@ -14,6 +14,13 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Layer\LayerAssigner
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerCollector
+ * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerDefinition
+ * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerModel
+ */
 #[CoversClass(LayerAssigner::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(LayerCollector::class)]

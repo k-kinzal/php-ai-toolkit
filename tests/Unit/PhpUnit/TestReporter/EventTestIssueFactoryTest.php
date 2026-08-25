@@ -23,6 +23,9 @@ use function proc_close;
 use function proc_open;
 use function stream_get_contents;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\EventTestIssueFactory
+ */
 #[CoversClass(EventTestIssueFactory::class)]
 #[Large]
 final class EventTestIssueFactoryTest extends TestCase

@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Git\GitRepository
+ * @uses \PhpAiToolkit\DocGen\DocGenException
+ * @uses \PhpAiToolkit\DocGen\Git\GitCommandRunner
+ */
 #[CoversClass(GitRepository::class)]
 #[UsesClass(DocGenException::class)]
 #[UsesClass(GitCommandRunner::class)]

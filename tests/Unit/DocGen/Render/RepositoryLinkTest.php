@@ -25,6 +25,21 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Render\RepositoryLink
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \PhpAiToolkit\DocGen\Render\HtmlText
+ * @uses \PhpAiToolkit\DocGen\Render\MarkdownInline
+ * @uses \PhpAiToolkit\DocGen\Render\MarkdownRenderer
+ * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
+ * @uses \PhpAiToolkit\DocGen\Analysis\ProjectModel
+ * @uses \PhpAiToolkit\DocGen\Render\RenderKit
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \PhpAiToolkit\DocGen\Render\TypeHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
+ */
 #[CoversClass(RepositoryLink::class)]
 #[UsesClass(DiffHtml::class)]
 #[UsesClass(HierarchyIndex::class)]

@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Cache\ToolkitFingerprint;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Cache\ToolkitFingerprint
+ */
 #[CoversClass(ToolkitFingerprint::class)]
 final class ToolkitFingerprintTest extends TestCase
 {

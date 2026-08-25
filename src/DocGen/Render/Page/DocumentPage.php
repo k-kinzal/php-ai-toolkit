@@ -11,6 +11,9 @@ use function dirname;
 use PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc;
 use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
 use PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\DocumentListHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 

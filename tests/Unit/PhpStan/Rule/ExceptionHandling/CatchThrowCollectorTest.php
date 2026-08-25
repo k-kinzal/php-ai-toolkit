@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowCollector
+ * @uses \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression
+ */
 #[CoversClass(CatchThrowCollector::class)]
 #[UsesClass(\PhpAiToolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor::class)]
 #[UsesClass(ThrownExpression::class)]

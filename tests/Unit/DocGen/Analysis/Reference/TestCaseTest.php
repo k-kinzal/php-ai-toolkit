@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Reference\TestCase as ReferenceTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Reference\TestCase
+ */
 #[CoversClass(ReferenceTestCase::class)]
 final class TestCaseTest extends TestCase
 {

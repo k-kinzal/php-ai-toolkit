@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Cache\RenderCache
+ * @uses \PhpAiToolkit\DocGen\Cache\CacheStore
+ * @uses \PhpAiToolkit\DocGen\Cache\PageRecord
+ */
 #[CoversClass(RenderCache::class)]
 #[UsesClass(CacheStore::class)]
 #[UsesClass(PageRecord::class)]

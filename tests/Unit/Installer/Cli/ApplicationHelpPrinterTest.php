@@ -12,6 +12,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Installer\Cli\ApplicationHelpPrinter
+ * @uses \PhpAiToolkit\Installer\Cli\CliOutputWriter
+ */
 #[CoversClass(ApplicationHelpPrinter::class)]
 #[UsesClass(CliOutputWriter::class)]
 final class ApplicationHelpPrinterTest extends TestCase

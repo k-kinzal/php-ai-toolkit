@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols
+ */
 #[CoversClass(FileSymbols::class)]
 final class FileSymbolsTest extends TestCase
 {

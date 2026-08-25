@@ -22,13 +22,13 @@ use PhpAiToolkit\DocGen\Parallel\WorkScheduler;
 use PhpAiToolkit\DocGen\Render\Diff\DiffHtml;
 use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
 use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
+use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
 use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
 use PhpAiToolkit\DocGen\Render\Page\IndexPage;
 use PhpAiToolkit\DocGen\Render\Page\LayerPage;
 use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
 use PhpAiToolkit\DocGen\Render\Page\PackagePage;
-use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SourcePage;
 use PhpAiToolkit\DocGen\Render\Signature\PageSignature;
 

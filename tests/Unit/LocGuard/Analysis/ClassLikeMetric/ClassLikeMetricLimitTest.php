@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricLimit
+ * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric
+ * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
+ */
 #[CoversClass(ClassLikeMetricLimit::class)]
 #[UsesClass(ClassLikeMetric::class)]
 #[UsesClass(LimitConfig::class)]

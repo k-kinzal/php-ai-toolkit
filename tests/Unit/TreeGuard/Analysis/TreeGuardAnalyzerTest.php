@@ -29,6 +29,29 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Analysis\TreeGuardAnalyzer
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\AnalysisResult
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\CaseConventionMatcher
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\ChildCountInspector
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\DepthInspector
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\DirNameInspector
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListingReader
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\DirectoryPatternMatcher
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\DirectoryRuleInspector
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryTreeScanner
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\EmptyDirectoryInspector
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\FileNameInspector
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\PathInclusionPolicy
+ * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\RequiredFileInspector
+ * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\TotalFileCountInspector
+ * @uses \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver
+ * @uses \PhpAiToolkit\TreeGuard\Analysis\Violation
+ */
 #[CoversClass(TreeGuardAnalyzer::class)]
 #[UsesClass(AnalysisResult::class)]
 #[UsesClass(CaseConventionMatcher::class)]

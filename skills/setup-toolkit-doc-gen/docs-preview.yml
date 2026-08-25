@@ -52,15 +52,20 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
-          php-version: '8.4'
+          # Replace with the highest PHP minor in the target project's matrix.
+          php-version: '8.5'
           extensions: mbstring, pcntl, gd
-          coverage: none
+          coverage: pcov
 
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
         with:
           dependency-versions: locked
           composer-options: --prefer-dist
+          require-lock-file: true
+
+      - name: Check installed platform requirements
+        run: composer check-platform-reqs
 
       - name: Restore the DocGen cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -70,6 +75,11 @@ jobs:
           restore-keys: |
             doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-
             doc-gen-${{ runner.os }}-
+
+      # Keep the preview product-equivalent to the default-branch site. Adapt
+      # this command and the main workflow to the same project coverage script.
+      - name: Generate the coverage report the preview reads
+        run: vendor/bin/phpunit --coverage-xml build/coverage-xml
 
       # The checkout is the merge of the pull request into its base, so
       # comparing it against the base commit is what the pull request changes.
@@ -81,7 +91,7 @@ jobs:
           set -euo pipefail
 
           repository="$(printf '%s' "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')"
-          vendor/bin/doc-gen --diff="${BASE_SHA}" \
+          vendor/bin/doc-gen --coverage=build/coverage-xml --diff="${BASE_SHA}" \
             --base-url="https://${repository%%/*}.github.io/${repository#*/}/pr/${PR_NUMBER}"
 
       - name: Check out the documentation branch

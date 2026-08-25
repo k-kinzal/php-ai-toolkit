@@ -37,7 +37,11 @@ final class RelativePathResolver
         $commonLength = 0;
         $maxCommon = min(count($fromParts), count($toParts));
 
-        while ($commonLength < $maxCommon && $fromParts[$commonLength] === $toParts[$commonLength]) {
+        foreach (array_slice($fromParts, 0, $maxCommon) as $index => $fromPart) {
+            if ($fromPart !== $toParts[$index]) {
+                break;
+            }
+
             $commonLength++;
         }
 

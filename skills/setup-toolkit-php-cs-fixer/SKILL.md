@@ -14,8 +14,12 @@ This skill configures PHP-CS-Fixer with strict coding standards optimized for AI
 Run in the target project:
 
 ```bash
-composer require --dev friendsofphp/php-cs-fixer
+composer require --dev "friendsofphp/php-cs-fixer:^3.4"
 ```
+
+That range spans this toolkit's PHP 8.0+ support. A target with a different PHP
+matrix must derive and verify its own constraint rather than relying on the
+agent's current runtime to choose one.
 
 ## Template
 
@@ -60,7 +64,12 @@ return (new PhpCsFixer\Config())
 
 ### Finder
 
-Keep existing Finder configuration. The project may have specific `->in()` paths and `->exclude()` directories. Only use the toolkit's default Finder if no existing config exists. If needed, add additional excludes:
+Keep existing maintained source and test paths, but never scan vendored or generated
+trees. The toolkit default excludes `vendor`, `build`, `cache`, `var`, and
+`node_modules`; preserve those exclusions and add project-specific generated paths
+when needed. Do not exclude maintained PHP merely to make formatting pass.
+
+Example:
 ```php
 ->exclude(['vendor', 'var', 'cache', 'build'])
 ```

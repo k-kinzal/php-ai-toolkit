@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Filesystem\SiteFileWriter
+ * @uses \PhpAiToolkit\DocGen\DocGenException
+ */
 #[CoversClass(SiteFileWriter::class)]
 #[UsesClass(DocGenException::class)]
 final class SiteFileWriterTest extends TestCase

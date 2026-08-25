@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Reference\Usage;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Reference\Usage
+ */
 #[CoversClass(Usage::class)]
 final class UsageTest extends TestCase
 {

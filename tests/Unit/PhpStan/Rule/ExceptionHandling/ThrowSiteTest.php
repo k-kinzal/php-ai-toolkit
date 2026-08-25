@@ -9,6 +9,9 @@ use PhpParser\Node\Name;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ExceptionHandling\ThrowSite
+ */
 #[CoversClass(ThrowSite::class)]
 final class ThrowSiteTest extends TestCase
 {

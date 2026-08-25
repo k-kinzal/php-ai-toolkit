@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\Shared\ClassLikeKindLabel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Shared\ClassLikeKindLabel
+ */
 #[CoversClass(ClassLikeKindLabel::class)]
 final class ClassLikeKindLabelTest extends TestCase
 {

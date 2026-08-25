@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule\TestClass;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\RestrictedTestNamespaceMatcher;
+use PhpAiToolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 

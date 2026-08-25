@@ -1,10 +1,7 @@
 includes:
-    - vendor/phpstan/phpstan-strict-rules/rules.neon
-    - extension.neon
-    - error-formatter.neon
+    - extension-src.neon
 
 parameters:
-    level: max
     paths:
         - src
         - tests
@@ -12,17 +9,6 @@ parameters:
         - tests/Fixture
     bootstrapFiles:
         - phpstan-stubs/bootstrap.php
-    exceptions:
-        implicitThrows: false
-        check:
-            missingCheckedExceptionInThrows: true
-            tooWideThrowType: true
-        uncheckedExceptionClasses:
-            - LogicException
-            - RuntimeException
-            - Error
-            - Random\RandomException
-            - PHPUnit\Framework\MockObject\Exception
     customRules:
         broadCatchAllowedPaths:
             - 'src/PhpStan/Rule/Shared/FileTokenParser.php'

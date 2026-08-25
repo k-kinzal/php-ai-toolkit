@@ -60,6 +60,59 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Cli\Application
+ * @uses \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardAnalysisRunner
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiReporter
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiReportGuidance
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiReportSummary
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiViolationAction
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\AiViolationFormatter
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\AnalysisResult
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ConfigLoader
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ConfigScalarReader
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ConfigStringListReader
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationCollector
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\FileNamespaces
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\NodeWalker
+ * @uses \PhpAiToolkit\ScopeGuard\Filesystem\PhpFileFinder
+ * @uses \PhpAiToolkit\ScopeGuard\Filesystem\PhpFileInclusionPolicy
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\PhpParserBridge
+ * @uses \PhpAiToolkit\ScopeGuard\Filesystem\PhpPathFileCollector
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\ProjectScan
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\ProjectScanner
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\ReferenceCollector
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfigReader
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\ReporterFactory
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\ScopeChecker
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\ScopeGuardAnalyzer
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig
+ * @uses \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardCliArgumentParser
+ * @uses \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardConfigPathResolver
+ * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ * @uses \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardHelpText
+ * @uses \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardOutputWriter
+ * @uses \PhpAiToolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver
+ * @uses \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardReporterOverride
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\ScopeProblemReader
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\ScopeViolationBuilder
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\SourceFileParser
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\TextReporter
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\TypeNameReader
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Violation
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationFieldComparator
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationSorter
+ */
 #[CoversClass(Application::class)]
 #[UsesClass(ScopeGuardAnalysisRunner::class)]
 #[UsesClass(AiReporter::class)]

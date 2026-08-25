@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodFileReader;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodFileReader
+ */
 #[CoversClass(TestMethodFileReader::class)]
 final class TestMethodFileReaderTest extends TestCase
 {

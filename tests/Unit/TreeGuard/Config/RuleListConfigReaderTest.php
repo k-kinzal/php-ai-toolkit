@@ -14,6 +14,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Config\RuleListConfigReader
+ * @uses \PhpAiToolkit\TreeGuard\Config\ConfigScalarReader
+ * @uses \PhpAiToolkit\TreeGuard\Config\ConfigStringListReader
+ * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig
+ * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfigReader
+ * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ */
 #[CoversClass(RuleListConfigReader::class)]
 #[UsesClass(ConfigScalarReader::class)]
 #[UsesClass(ConfigStringListReader::class)]

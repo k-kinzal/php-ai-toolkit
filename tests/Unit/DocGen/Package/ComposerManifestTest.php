@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Package\ComposerManifest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Package\ComposerManifest
+ */
 #[CoversClass(ComposerManifest::class)]
 final class ComposerManifestTest extends TestCase
 {

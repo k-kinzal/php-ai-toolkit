@@ -9,6 +9,9 @@ use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Model\DocTag
+ */
 #[CoversClass(DocTag::class)]
 final class DocTagTest extends TestCase
 {

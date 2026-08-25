@@ -23,6 +23,9 @@ use function proc_close;
 use function proc_open;
 use function stream_get_contents;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\EventTestNameResolver
+ */
 #[CoversClass(EventTestNameResolver::class)]
 #[Large]
 final class EventTestNameResolverTest extends TestCase

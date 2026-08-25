@@ -16,6 +16,10 @@ use PHPUnit\Framework\TestCase;
 use function sys_get_temp_dir;
 use function uniqid;
 
+/**
+ * @covers \PhpAiToolkit\Installer\Cli\Command\PackageSkillDirectoryScanner
+ * @uses \PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator
+ */
 #[CoversClass(PackageSkillDirectoryScanner::class)]
 #[UsesClass(SkillFilesystemOperator::class)]
 final class PackageSkillDirectoryScannerTest extends TestCase

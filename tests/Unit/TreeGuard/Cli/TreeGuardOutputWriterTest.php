@@ -8,6 +8,9 @@ use PhpAiToolkit\TreeGuard\Cli\TreeGuardOutputWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Cli\TreeGuardOutputWriter
+ */
 #[CoversClass(TreeGuardOutputWriter::class)]
 final class TreeGuardOutputWriterTest extends TestCase
 {

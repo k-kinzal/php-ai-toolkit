@@ -34,6 +34,31 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\ProjectScanner
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\ClassLikeKind
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\Declaration
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationCollector
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\FileNamespaces
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\NodeWalker
+ * @uses \PhpAiToolkit\ScopeGuard\Filesystem\PhpFileFinder
+ * @uses \PhpAiToolkit\ScopeGuard\Filesystem\PhpFileInclusionPolicy
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\PhpParserBridge
+ * @uses \PhpAiToolkit\ScopeGuard\Filesystem\PhpPathFileCollector
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\ProjectScan
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\ReferenceCollector
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig
+ * @uses \PhpAiToolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\SourceFileParser
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\TypeNameReader
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScope
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityScopeResolver
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
+ */
 #[CoversClass(ProjectScanner::class)]
 #[UsesClass(ClassLikeKind::class)]
 #[UsesClass(Declaration::class)]

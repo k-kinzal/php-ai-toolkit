@@ -14,6 +14,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector
+ * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader
+ * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetric
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator
+ */
 #[CoversClass(ClassLikeMetricCollector::class)]
 #[UsesClass(ClassLikeDeclarationReader::class)]
 #[UsesClass(ClassLikeMetric::class)]

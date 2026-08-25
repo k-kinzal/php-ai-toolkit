@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpAiToolkit\DocGen\Render;
 
 use PhpAiToolkit\DocGen\Render\Diff\DiffModeControl;
+use PhpAiToolkit\DocGen\Render\Social\SocialMeta;
 
 use function sprintf;
 

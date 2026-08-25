@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Package\PackageGraph
+ * @uses \PhpAiToolkit\DocGen\Package\PackageDependency
+ */
 #[CoversClass(PackageGraph::class)]
 #[UsesClass(PackageDependency::class)]
 final class PackageGraphTest extends TestCase

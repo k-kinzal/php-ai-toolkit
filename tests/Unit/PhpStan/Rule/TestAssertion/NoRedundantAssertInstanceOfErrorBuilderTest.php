@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfErrorBuil
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfErrorBuilder
+ */
 #[CoversClass(NoRedundantAssertInstanceOfErrorBuilder::class)]
 final class NoRedundantAssertInstanceOfErrorBuilderTest extends TestCase
 {

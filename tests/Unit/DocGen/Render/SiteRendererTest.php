@@ -49,31 +49,31 @@ use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownLinks;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
 use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
-use PhpAiToolkit\DocGen\Render\Page\BreadcrumbHtml;
 use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
-use PhpAiToolkit\DocGen\Render\Page\DocTextHtml;
-use PhpAiToolkit\DocGen\Render\Page\DocumentListHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\DocTextHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\DocumentListHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\ExampleHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\GraphSvg;
+use PhpAiToolkit\DocGen\Render\Page\Component\MemberHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\RelationsHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SignatureHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SymbolDescription;
+use PhpAiToolkit\DocGen\Render\Page\Component\SymbolListHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SymbolRow;
+use PhpAiToolkit\DocGen\Render\Page\Component\TestCaseHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\UsageListHtml;
 use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
-use PhpAiToolkit\DocGen\Render\Page\ExampleHtml;
 use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
-use PhpAiToolkit\DocGen\Render\Page\GraphSvg;
 use PhpAiToolkit\DocGen\Render\Page\IndexPage;
 use PhpAiToolkit\DocGen\Render\Page\LayerPage;
-use PhpAiToolkit\DocGen\Render\Page\MemberHtml;
 use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
 use PhpAiToolkit\DocGen\Render\Page\PackagePage;
-use PhpAiToolkit\DocGen\Render\Page\PrivateSurfaceHtml;
-use PhpAiToolkit\DocGen\Render\Page\RelationsHtml;
-use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
-use PhpAiToolkit\DocGen\Render\Page\SignatureHtml;
 use PhpAiToolkit\DocGen\Render\Page\SourcePage;
-use PhpAiToolkit\DocGen\Render\Page\SymbolDescription;
 use PhpAiToolkit\DocGen\Render\Page\SymbolIndex;
-use PhpAiToolkit\DocGen\Render\Page\SymbolListHtml;
-use PhpAiToolkit\DocGen\Render\Page\SymbolRow;
-use PhpAiToolkit\DocGen\Render\Page\TestCaseHtml;
-use PhpAiToolkit\DocGen\Render\Page\UsageListHtml;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
@@ -86,14 +86,102 @@ use PhpAiToolkit\DocGen\Render\Signature\SymbolReferenceScanner;
 use PhpAiToolkit\DocGen\Render\SitePages;
 use PhpAiToolkit\DocGen\Render\SiteRenderer;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
-use PhpAiToolkit\DocGen\Render\SocialCard;
-use PhpAiToolkit\DocGen\Render\SocialMeta;
+use PhpAiToolkit\DocGen\Render\Social\SocialCard;
+use PhpAiToolkit\DocGen\Render\Social\SocialMeta;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PhpAiToolkit\DocGen\Render\TypeRenderContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Render\SiteRenderer
+ * @uses \PhpAiToolkit\DocGen\Render\Page\AllItemsPage
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner
+ * @uses \PhpAiToolkit\DocGen\Render\AssetPublisher
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml
+ * @uses \PhpAiToolkit\DocGen\Cache\CacheStore
+ * @uses \PhpAiToolkit\DocGen\Cache\CachedPageWriter
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind
+ * @uses \PhpAiToolkit\DocGen\Render\Page\ClassLikePage
+ * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc
+ * @uses \PhpAiToolkit\DocGen\Parallel\CpuCoreCounter
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffBanner
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffLine
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffModeControl
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ * @uses \PhpAiToolkit\DocGen\Package\DiscoveredPackage
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\DocTextHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\DocumentListHtml
+ * @uses \PhpAiToolkit\DocGen\Render\Page\DocumentPage
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\ExampleHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc
+ * @uses \PhpAiToolkit\DocGen\Render\Page\FunctionPage
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\GraphSvg
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \PhpAiToolkit\DocGen\Render\HtmlText
+ * @uses \PhpAiToolkit\DocGen\Render\Page\IndexPage
+ * @uses \PhpAiToolkit\DocGen\Render\Page\LayerPage
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc
+ * @uses \PhpAiToolkit\DocGen\Render\MarkdownInline
+ * @uses \PhpAiToolkit\DocGen\Render\MarkdownLinks
+ * @uses \PhpAiToolkit\DocGen\Render\MarkdownRenderer
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\MemberHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\MethodDoc
+ * @uses \PhpAiToolkit\DocGen\Render\Page\NamespacePage
+ * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
+ * @uses \PhpAiToolkit\DocGen\Render\Page\PackagePage
+ * @uses \PhpAiToolkit\DocGen\Render\PageChrome
+ * @uses \PhpAiToolkit\DocGen\Cache\PageRecord
+ * @uses \PhpAiToolkit\DocGen\Render\Signature\PageSignature
+ * @uses \PhpAiToolkit\DocGen\Render\PhpHighlighter
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\ProjectModel
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\RelationsHtml
+ * @uses \PhpAiToolkit\DocGen\Cache\RenderCache
+ * @uses \PhpAiToolkit\DocGen\Render\RenderKit
+ * @uses \PhpAiToolkit\DocGen\Render\RepositoryLink
+ * @uses \PhpAiToolkit\DocGen\Render\SearchIndexBuilder
+ * @uses \PhpAiToolkit\DocGen\Render\Signature\SidebarDigest
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml
+ * @uses \PhpAiToolkit\DocGen\Render\Page\SidebarScope
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SignatureHtml
+ * @uses \PhpAiToolkit\DocGen\Filesystem\SiteFileWriter
+ * @uses \PhpAiToolkit\DocGen\Render\SitePages
+ * @uses \PhpAiToolkit\DocGen\Render\SiteUrl
+ * @uses \PhpAiToolkit\DocGen\Render\Social\SocialCard
+ * @uses \PhpAiToolkit\DocGen\Render\Social\SocialMeta
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml
+ * @uses \PhpAiToolkit\DocGen\Render\Signature\SourceDigestIndex
+ * @uses \PhpAiToolkit\DocGen\Render\Page\SourcePage
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SymbolDescription
+ * @uses \PhpAiToolkit\DocGen\Render\Page\SymbolIndex
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SymbolListHtml
+ * @uses \PhpAiToolkit\DocGen\Render\Signature\SymbolReferenceScanner
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SymbolRow
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\TestCaseHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \PhpAiToolkit\DocGen\Cache\ToolkitFingerprint
+ * @uses \PhpAiToolkit\DocGen\Render\TypeHtml
+ * @uses \PhpAiToolkit\DocGen\Render\TypeRenderContext
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\UsageListHtml
+ * @uses \PhpAiToolkit\DocGen\Parallel\WorkScheduler
+ * @uses \PhpAiToolkit\DocGen\Parallel\WorkerCount
+ * @uses \PhpAiToolkit\DocGen\Parallel\WorkerPool
+ */
 #[CoversClass(SiteRenderer::class)]
 #[UsesClass(AllItemsPage::class)]
 #[UsesClass(AssertionScanner::class)]

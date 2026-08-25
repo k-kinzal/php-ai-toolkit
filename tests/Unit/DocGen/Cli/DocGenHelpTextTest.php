@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Cli\DocGenHelpText;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Cli\DocGenHelpText
+ */
 #[CoversClass(DocGenHelpText::class)]
 final class DocGenHelpTextTest extends TestCase
 {

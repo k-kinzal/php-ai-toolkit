@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Model\EnumCaseDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
+ */
 #[CoversClass(EnumCaseDoc::class)]
 #[UsesClass(DocBlock::class)]
 final class EnumCaseDocTest extends TestCase

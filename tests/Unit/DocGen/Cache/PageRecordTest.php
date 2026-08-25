@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Cache\PageRecord;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Cache\PageRecord
+ */
 #[CoversClass(PageRecord::class)]
 final class PageRecordTest extends TestCase
 {

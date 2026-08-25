@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Package\DiscoveredPackage
+ * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
+ */
 #[CoversClass(DiscoveredPackage::class)]
 #[UsesClass(ComposerManifest::class)]
 final class DiscoveredPackageTest extends TestCase

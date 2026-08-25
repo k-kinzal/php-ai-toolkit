@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Support\NonDocCommentTokenClassifier;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Support\NonDocCommentTokenClassifier
+ */
 #[CoversClass(NonDocCommentTokenClassifier::class)]
 final class NonDocCommentTokenClassifierTest extends TestCase
 {

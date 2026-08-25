@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\RulePathNormalizer;
+use PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
+use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SourceFileRuleMatcher;
+use PhpAiToolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver;
 use PhpAiToolkit\PhpStan\Rule\TestClass\ProviderNameValidator;
 use PhpAiToolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageValidator;
-use PhpAiToolkit\PhpStan\Rule\TestClass\SourceFileRuleMatcher;
-use PhpAiToolkit\PhpStan\Rule\TestClass\SourceUnitTestFileResolver;
 use PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodNameValidator;
 use PhpAiToolkit\PhpStan\Support\TestClassScope;
 use PHPStan\Analyser\Scope;

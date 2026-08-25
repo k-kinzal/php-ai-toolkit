@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Render\MarkdownInline
+ * @uses \PhpAiToolkit\DocGen\Render\HtmlText
+ */
 #[CoversClass(MarkdownInline::class)]
 #[UsesClass(HtmlText::class)]
 final class MarkdownInlineTest extends TestCase

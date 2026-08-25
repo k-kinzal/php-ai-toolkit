@@ -8,6 +8,9 @@ use PhpAiToolkit\Doctest\Scanner\TargetKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Scanner\TargetKind
+ */
 #[CoversClass(TargetKind::class)]
 final class TargetKindTest extends TestCase
 {

@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig
+ * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig
+ */
 #[CoversClass(TreeGuardConfig::class)]
 #[UsesClass(ReportConfig::class)]
 #[UsesClass(RuleConfig::class)]

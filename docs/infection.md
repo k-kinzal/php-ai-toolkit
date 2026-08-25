@@ -57,18 +57,18 @@ step before every run.
 
 `infection.json5` is the only configuration file. What differs between the two gates
 is a pair of command-line thresholds, which is how Infection is meant to be driven:
-the file carries the scope, the mutators, and the whole-tree ratchet, and the
-changed-lines step overrides the ratchet for the lines a diff touches.
+the file carries the scope, the mutators, and the whole-tree baseline, and the
+changed-lines step overrides it for the lines a diff touches.
 
 | Gate | Scope | Runs on | `minMsi` | `minCoveredMsi` |
 |------|-------|---------|----------|-----------------|
-| whole source tree | all of `src` | pushes to the default branch | the project's ratchet (file) | the project's ratchet (file) |
+| whole source tree | all of `src` | pushes to the default branch | 80 minimum (file) | 80 minimum (file) |
 | changed lines | what the diff touches | pull requests | 85 (flag) | 85 (flag) |
 
 Keeping one file means the two gates cannot drift apart: a mutator disabled for one
 would otherwise leave the two measuring different things. The cost is that the
 changed-lines numbers live in the workflow, where anything that may edit CI may
-edit them, while the ratchet that guards the whole tree sits in a file that can be
+edit them, while the baseline that guards the whole tree sits in a file that can be
 put out of reach.
 
 The changed-lines step also passes `--ignore-msi-with-no-mutations`, so a change
@@ -90,13 +90,16 @@ Infection reports two scores, and both are enforced:
 - **Covered MSI** — killed mutants over the mutants in covered code only. It falls
   when tests execute code without asserting anything about it.
 
-The whole-tree numbers are a ratchet rather than an aspiration. Measure the project
-first, set both to the score the default branch already reaches, rounded down, and
-raise them when the score rises. A threshold resting exactly on the measured score
-turns red on a single mutant that a different runtime classifies differently, so
-leave a further point of headroom when CI scores on a different PHP version than
-the measurement used. A suite that actually stops verifying loses mutants by the
-dozen, so the ratchet still catches the thing it is for.
+The shipped 80/80 whole-tree and 85/85 changed-lines values are minimum quality
+bars. They are not placeholders to replace with whatever score the repository
+already reaches. A project below 80 improves its tests and production design as
+part of adoption; lowering the file to 73 because the first run scored 73 merely
+records the weakness instead of fixing it.
+
+When a project already exceeds a floor, keep the fixed threshold and record the
+measured score as verification. A measurement is an observation, not a quality
+policy: rounding it down must not silently rewrite the gate. Tightening either
+threshold requires an explicit human decision.
 
 Mutation code coverage is reported next to the score. At 100% MSI and Covered MSI
 are the same number, because every mutant is reachable by some test; below it, the
@@ -106,18 +109,12 @@ The changed-lines number is higher because new code has no backlog to pay off: c
 being written now can be held to a bar the whole tree cannot reach yet, and that is
 the only moment when enforcing it is cheap.
 
-85 rather than 90, because a codebase written to these rules has a ceiling under
-100. The largest single source of surviving mutants is `Coalesce` over optional
-constructor injection — `$this->x = $x ?? new X()`, where the mutant reorders the
-operands into `new X() ?? $x`. When every collaborator injected that way is a
-stateless `final` class, the injected instance and a fresh one behave identically,
-and no test can tell them apart: killing such a mutant would need reflection, which
-`NoReflectionInTestClassRule` forbids, or a getter written for no other purpose.
-They are equivalent mutants, and `ForbiddenCommentRule` rejects the
-`@infection-ignore-all` that would otherwise silence them. A small diff feels that
-hardest, where two unkillable mutants in twenty cost ten points on their own, and a
-bar that fails honest work gets met by shrinking pull requests rather than by
-testing them.
+85 rather than 100 leaves room for the equivalent mutants mutation testing can
+produce. That room is not permission to preserve a design that manufactures them.
+When survivors cluster around optional constructor injection such as
+`$this->x = $x ?? new X()`, prefer explicit construction or required dependencies
+when the fallback exists only for test convenience. A design improvement is more
+valuable than calibrating the gate to the old idiom.
 
 Lowering a threshold, disabling a mutator, widening `source.excludes`, or narrowing
 `source.directories` all turn a red build green by measuring less. None of them is
@@ -141,6 +138,20 @@ uncovered, which is a fact about the runtime rather than about the tests. Write 
 reason next to the entry, because an exclusion nobody can justify later is how a
 gate quietly stops measuring. Entries are relative to each source directory rather
 than to the project root, so excluding `src/Generated` reads `Generated`.
+
+## Timeout Classification
+
+The `timeout` value is an operational setting. It is measured above the slowest
+relevant mutant test with runner headroom; it is not tuned to improve MSI. On
+Infection 0.32.3 or later, `timeoutsAsEscaped: true` and `maxTimeouts: 0` make any
+timeout fail the run instead of counting the mutant as killed. Older Infection
+lines cannot express this policy, so a project pinned there must report that
+limitation and use a timeout safely above its measured test duration.
+
+This repository uses 30 seconds. A representative PHPStan-rule mutant completed
+in about 4.7 seconds alone, while the same group exceeded 10 seconds with all seven
+workers saturated; 30 seconds leaves more than three times the observed parallel
+duration without changing the score or timeout classification.
 
 ## Why Coverage Is Generated Separately
 
@@ -191,7 +202,7 @@ disappear with it. Neither directory is tracked by Git.
 ## CI
 
 `.github/workflows/ci.yml` runs mutation testing in its own `mutation` job on PHP
-8.4, with `coverage: pcov` — Infection needs a coverage driver, and pcov is several
+8.5, the highest supported minor, with `coverage: pcov` — Infection needs a coverage driver, and pcov is several
 times faster than Xdebug for this purpose. The job checks out with `fetch-depth: 0`
 because scoring a pull request means diffing it against its base branch.
 
@@ -217,11 +228,13 @@ below that the resolved Infection rejects the key, and the equivalent is the old
 
 ## Changing the Thresholds
 
-Raising the ratchet after the score improves is the routine edit, and it is one
-line in `infection.json5`. Putting that file out of an agent's reach — Claude
-Code's `permissions.deny`, or whatever the equivalent is — is what makes the raise
-a decision someone takes rather than a way out of a red build.
+The whole-tree 80/80 and changed-lines 85/85 values are fixed toolkit policy, not
+a ratchet calculated from the most recent run. A higher measured score verifies
+the policy and does not authorize an edit. Tightening either gate requires an
+explicit human quality-policy decision. Agent permission controls can protect the
+file, but applying the toolkit does not itself authorize editing an existing
+`.claude/settings.json`, `AGENTS.md`, or other human-owned policy file.
 
-The changed-lines thresholds are the exception: they are `--min-msi` and
-`--min-covered-msi` in the workflow, which has to stay editable for CI work. Review
-them the way any other number in a workflow gets reviewed.
+The changed-lines thresholds live as `--min-msi` and `--min-covered-msi` in the
+workflow, so review changes there as quality-policy changes rather than ordinary
+workflow tuning.

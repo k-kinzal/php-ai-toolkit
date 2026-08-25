@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Parallel\CpuCoreCounter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Parallel\CpuCoreCounter
+ */
 #[CoversClass(CpuCoreCounter::class)]
 final class CpuCoreCounterTest extends TestCase
 {

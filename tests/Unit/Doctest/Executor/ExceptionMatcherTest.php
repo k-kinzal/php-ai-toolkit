@@ -12,6 +12,9 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Tests\Fixture\Doctest\RuntimeException as CollidingRuntimeException;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Executor\ExceptionMatcher
+ */
 #[CoversClass(ExceptionMatcher::class)]
 final class ExceptionMatcherTest extends TestCase
 {

@@ -13,6 +13,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Render\MarkdownRenderer
+ * @uses \PhpAiToolkit\DocGen\Render\HtmlText
+ * @uses \PhpAiToolkit\DocGen\Render\MarkdownInline
+ * @uses \PhpAiToolkit\DocGen\Render\MarkdownLinks
+ * @uses \PhpAiToolkit\DocGen\Render\SiteUrl
+ */
 #[CoversClass(MarkdownRenderer::class)]
 #[UsesClass(HtmlText::class)]
 #[UsesClass(MarkdownInline::class)]

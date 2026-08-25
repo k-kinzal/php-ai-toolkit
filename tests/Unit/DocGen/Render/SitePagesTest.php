@@ -20,6 +20,20 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Render\SitePages
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
+ * @uses \PhpAiToolkit\DocGen\Package\DiscoveredPackage
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
+ * @uses \PhpAiToolkit\DocGen\Analysis\ProjectModel
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
+ */
 #[CoversClass(SitePages::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(ComposerManifest::class)]

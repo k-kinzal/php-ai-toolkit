@@ -6,6 +6,8 @@ namespace PhpAiToolkit\DocGen\Render\Page;
 
 use function count;
 
+use PhpAiToolkit\DocGen\Render\Page\Component\GraphSvg;
+use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 

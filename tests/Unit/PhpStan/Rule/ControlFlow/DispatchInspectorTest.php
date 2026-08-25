@@ -24,6 +24,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchInspector
+ * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors
+ * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
+ * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder
+ * @uses \PhpAiToolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder
+ */
 #[CoversClass(DispatchInspector::class)]
 #[UsesClass(ClosedTypeVariants::class)]
 #[UsesClass(LineOrderedErrors::class)]

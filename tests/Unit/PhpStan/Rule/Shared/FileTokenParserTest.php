@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Shared\FileTokenParser
+ */
 #[CoversClass(FileTokenParser::class)]
 final class FileTokenParserTest extends TestCase
 {

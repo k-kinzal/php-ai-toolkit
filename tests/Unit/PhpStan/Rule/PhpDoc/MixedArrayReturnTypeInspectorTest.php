@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\MixedArrayReturnTypeInspector
+ * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
+ */
 #[CoversClass(MixedArrayReturnTypeInspector::class)]
 #[UsesClass(RulePhpDocParser::class)]
 final class MixedArrayReturnTypeInspectorTest extends TestCase

@@ -4,12 +4,22 @@
          bootstrap="vendor/autoload.php"
          colors="true"
          executionOrder="depends,random"
+         forceCoversAnnotation="true"
+         beStrictAboutCoversAnnotation="true"
+         convertDeprecationsToExceptions="true"
          beStrictAboutChangesToGlobalState="true"
          beStrictAboutOutputDuringTests="true"
+         beStrictAboutResourceUsageDuringSmallTests="true"
          failOnEmptyTestSuite="true"
+         failOnIncomplete="true"
          failOnRisky="true"
+         failOnSkipped="true"
          failOnWarning="true"
-         enforceTimeLimit="false">
+         beStrictAboutTodoAnnotatedTests="true"
+         enforceTimeLimit="true"
+         timeoutForSmallTests="1"
+         timeoutForMediumTests="10"
+         timeoutForLargeTests="60">
     <testsuites>
         <testsuite name="unit">
             <directory>tests/Unit</directory>

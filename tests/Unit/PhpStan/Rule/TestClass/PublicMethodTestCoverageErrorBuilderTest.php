@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageErrorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\PublicMethodTestCoverageErrorBuilder
+ */
 #[CoversClass(PublicMethodTestCoverageErrorBuilder::class)]
 final class PublicMethodTestCoverageErrorBuilderTest extends TestCase
 {

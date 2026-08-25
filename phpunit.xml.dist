@@ -44,5 +44,8 @@
         <include>
             <directory>src</directory>
         </include>
+        <exclude>
+            <file>src/Compatibility/ClassAliases.php</file>
+        </exclude>
     </source>
 </phpunit>

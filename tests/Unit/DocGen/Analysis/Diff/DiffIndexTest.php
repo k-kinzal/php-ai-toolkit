@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ */
 #[CoversClass(DiffIndex::class)]
 #[UsesClass(DiffKey::class)]
 #[UsesClass(DiffStatus::class)]

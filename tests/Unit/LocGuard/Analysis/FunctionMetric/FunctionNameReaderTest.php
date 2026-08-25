@@ -9,6 +9,9 @@ use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionNameReader
+ */
 #[CoversClass(FunctionNameReader::class)]
 final class FunctionNameReaderTest extends TestCase
 {

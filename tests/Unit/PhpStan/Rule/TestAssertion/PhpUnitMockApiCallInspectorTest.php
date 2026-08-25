@@ -17,6 +17,15 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiCallInspector
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CallArgumentResolver
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiErrorBuilder
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiMethodPolicy
+ */
 #[CoversClass(PhpUnitMockApiCallInspector::class)]
 #[UsesClass(CallArgumentResolver::class)]
 #[UsesClass(CallMethodNameResolver::class)]

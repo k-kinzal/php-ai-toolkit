@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Reference\LocalTypeMap;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Reference\LocalTypeMap
+ */
 #[CoversClass(LocalTypeMap::class)]
 final class LocalTypeMapTest extends TestCase
 {

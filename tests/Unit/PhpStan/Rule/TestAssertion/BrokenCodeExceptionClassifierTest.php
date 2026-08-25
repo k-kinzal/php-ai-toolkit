@@ -9,6 +9,9 @@ use PHPStan\Testing\PHPStanTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier
+ */
 #[CoversClass(BrokenCodeExceptionClassifier::class)]
 #[Medium]
 final class BrokenCodeExceptionClassifierTest extends PHPStanTestCase

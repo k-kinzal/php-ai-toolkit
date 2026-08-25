@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
+ */
 #[CoversClass(HierarchyIndex::class)]
 #[UsesClass(ClassLikeDoc::class)]
 final class HierarchyIndexTest extends TestCase

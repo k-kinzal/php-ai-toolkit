@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext
+ */
 #[CoversClass(SymbolContext::class)]
 final class SymbolContextTest extends TestCase
 {

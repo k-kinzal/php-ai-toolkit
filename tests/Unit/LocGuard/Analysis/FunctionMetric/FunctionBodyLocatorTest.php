@@ -12,6 +12,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionBodyLocator
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowExpressionBoundary
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator
+ */
 #[CoversClass(FunctionBodyLocator::class)]
 #[UsesClass(ArrowExpressionBoundary::class)]
 #[UsesClass(PhpTokenNavigator::class)]

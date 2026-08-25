@@ -12,6 +12,10 @@ use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Parallel\WorkerPool
+ * @uses \PhpAiToolkit\DocGen\Parallel\ForkSupport
+ */
 #[CoversClass(WorkerPool::class)]
 #[UsesClass(ForkSupport::class)]
 final class WorkerPoolTest extends TestCase

@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpUnit\TestReporter\Legacy\LegacyTestDescriptor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\Legacy\LegacyTestDescriptor
+ */
 #[CoversClass(LegacyTestDescriptor::class)]
 final class LegacyTestDescriptorTest extends TestCase
 {

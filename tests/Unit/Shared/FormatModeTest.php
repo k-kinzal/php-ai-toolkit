@@ -8,6 +8,9 @@ use PhpAiToolkit\Shared\FormatMode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Shared\FormatMode
+ */
 #[CoversClass(FormatMode::class)]
 final class FormatModeTest extends TestCase
 {

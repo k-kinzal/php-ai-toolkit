@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Config\ConfigStringListReader
+ * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ */
 #[CoversClass(ConfigStringListReader::class)]
 #[UsesClass(ScopeGuardException::class)]
 final class ConfigStringListReaderTest extends TestCase

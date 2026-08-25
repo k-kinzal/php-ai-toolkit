@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Support\NonDocCommentCatchContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Support\NonDocCommentCatchContext
+ */
 #[CoversClass(NonDocCommentCatchContext::class)]
 final class NonDocCommentCatchContextTest extends TestCase
 {

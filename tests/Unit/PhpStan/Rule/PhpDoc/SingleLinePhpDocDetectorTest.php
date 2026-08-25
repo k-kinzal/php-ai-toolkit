@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector
+ */
 #[CoversClass(SingleLinePhpDocDetector::class)]
 final class SingleLinePhpDocDetectorTest extends TestCase
 {

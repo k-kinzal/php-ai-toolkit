@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Diff\DiffLine
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ */
 #[CoversClass(DiffLine::class)]
 #[UsesClass(DiffStatus::class)]
 final class DiffLineTest extends TestCase

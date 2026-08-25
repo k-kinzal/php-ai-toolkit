@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockInstantiationInspector
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiErrorBuilder
+ */
 #[CoversClass(PhpUnitMockInstantiationInspector::class)]
 #[UsesClass(PhpUnitMockApiErrorBuilder::class)]
 final class PhpUnitMockInstantiationInspectorTest extends TestCase

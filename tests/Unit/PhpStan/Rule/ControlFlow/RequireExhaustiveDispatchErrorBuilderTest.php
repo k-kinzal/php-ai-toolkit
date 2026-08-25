@@ -13,6 +13,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors
+ */
 #[CoversClass(RequireExhaustiveDispatchErrorBuilder::class)]
 #[UsesClass(LineOrderedErrors::class)]
 final class RequireExhaustiveDispatchErrorBuilderTest extends TestCase

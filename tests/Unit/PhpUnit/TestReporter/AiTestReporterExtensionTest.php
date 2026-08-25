@@ -23,6 +23,9 @@ use function proc_close;
 use function proc_open;
 use function stream_get_contents;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\AiTestReporterExtension
+ */
 #[CoversClass(AiTestReporterExtension::class)]
 #[Large]
 final class AiTestReporterExtensionTest extends TestCase

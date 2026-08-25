@@ -37,11 +37,14 @@ Read the template from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-scop
 |---------|---------|---------|
 | `paths` | `['src']` | Files and directories to scan. Both declarations and references are read from here. |
 | `exclude` | `[]` | fnmatch globs of project-relative paths to skip, for generated sources. |
-| `exempt_namespaces` | `['Tests']` | Namespace prefixes whose code may name any declaration regardless of its scope. |
+| `exempt_namespaces` | `[]` | Namespace prefixes whose scanned code may name any declaration regardless of its scope. |
 | `report.reporter` | `ai` | `ai`, `text`, or `json`. |
 | `report.order_by` | `['path', 'line']` | Violation ordering: `path`, `line`, `rule`, `symbol`. |
 
-Set `paths` from the discovered autoload roots. Leave `exempt_namespaces` empty when `paths` covers production code only; a namespace that is never scanned needs no exemption.
+Set `paths` from the discovered autoload roots. The template scans production code
+only, so its exemption list is empty: a namespace that is never scanned needs no
+exemption. Add a test namespace only when test roots are intentionally present in
+`paths`, and record that project-derived reason.
 
 ## Adapting to the Project
 

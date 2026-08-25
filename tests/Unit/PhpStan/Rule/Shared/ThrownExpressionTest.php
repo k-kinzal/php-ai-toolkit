@@ -18,6 +18,10 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Shared\ThrownExpression
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
+ */
 #[CoversClass(ThrownExpression::class)]
 #[UsesClass(PhpParserBridge::class)]
 final class ThrownExpressionTest extends TestCase

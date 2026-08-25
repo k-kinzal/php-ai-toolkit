@@ -8,6 +8,9 @@ use PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter
+ */
 #[CoversClass(SkillInstallationWriter::class)]
 final class SkillInstallationWriterTest extends TestCase
 {

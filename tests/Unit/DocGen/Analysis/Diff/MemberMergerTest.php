@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Diff\MemberMerger
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ConstantDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ */
 #[CoversClass(MemberMerger::class)]
 #[UsesClass(ConstantDoc::class)]
 #[UsesClass(DiffStatus::class)]

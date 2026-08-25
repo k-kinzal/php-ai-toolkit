@@ -16,6 +16,15 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Filesystem\PhpFileFinder
+ * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
+ * @uses \PhpAiToolkit\LocGuard\Config\LocGuardConfig
+ * @uses \PhpAiToolkit\LocGuard\Filesystem\LocGuardPathResolver
+ * @uses \PhpAiToolkit\LocGuard\Filesystem\PhpFileInclusionPolicy
+ * @uses \PhpAiToolkit\LocGuard\Filesystem\PhpPathFileCollector
+ * @uses \PhpAiToolkit\LocGuard\Config\ReportConfig
+ */
 #[CoversClass(PhpFileFinder::class)]
 #[UsesClass(LimitConfig::class)]
 #[UsesClass(LocGuardConfig::class)]

@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern
+ */
 #[CoversClass(ForbiddenCommentPattern::class)]
 final class ForbiddenCommentPatternTest extends TestCase
 {

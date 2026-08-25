@@ -26,6 +26,10 @@ Read these files before editing CI:
 - Project docs that declare supported PHP versions.
 - Composer lock policy: one normal `composer.lock`, no committed lock, or
   PHP-versioned locks such as `composer.lock.php-8.0`.
+- Composer platform requirements and each command's runtime needs. Derive the
+  `setup-php` extension list from these; do not rely on what `ubuntu-latest`
+  happens to preinstall. ParaTest needs `pcntl`, coverage needs `pcov` or Xdebug,
+  and DocGen social images need GD with FreeType.
 
 If the declared PHP floor, Composer constraint, docs, and CI matrix disagree,
 surface the conflict and make CI match the declared support policy.
@@ -87,12 +91,17 @@ Note that `composer test` usually carries no `--configuration`, so it picks up
 older PHP floor, that makes the parallel job implicitly a modern-PHP job; pin it
 to a version the default config supports.
 
-## Out of Scope: Documentation Publishing
+## Separate Decision: Documentation Publishing
 
 Do not add documentation generation or GitHub Pages publishing to `ci.yml`.
 Those live in their own workflows, and their templates and the questions to ask
-before installing them belong to the `/setup-toolkit-doc-gen` skill. Point the
-user there when they ask for a docs job.
+before installing them belong to the `/setup-toolkit-doc-gen` skill.
+
+Do not silently finish when the project has a `doc-gen` script but no DocGen
+workflow. Ask the user to choose one of the three supported outcomes: local only,
+publish the default branch, or publish the default branch plus pull-request diff
+previews. Then use `/setup-toolkit-doc-gen` for the chosen workflows. The workflows
+remain separate from `ci.yml` so publishing permissions do not leak into CI.
 
 ## Out of Scope: Mutation Testing
 
@@ -126,6 +135,9 @@ bad Composer constraint by narrowing the workflow matrix.
    must allow a PHPUnit 9.6 / ParaTest 6 line in addition to newer PHPUnit lines.
 7. Run the lint gates as named steps inside the `lint` job on the supported
    PHP matrix.
+8. Use the highest matrix minor for one-off parallel, mutation, and documentation
+   jobs unless the tool cannot run there. Record that limitation rather than
+   copying the template's PHP literal.
 
 Never use `--ignore-platform-reqs` to make a lower PHP job pass. That hides a
 real compatibility problem.
@@ -174,9 +186,19 @@ Apply these rules to every workflow created by this skill:
 - Give every job and every step a clear `name`.
 - Do not use `continue-on-error` for required lint or test gates.
 - When versioned lock files are used, copy the matching lock to `composer.lock`
-  before validation and installation, then install with locked dependencies.
+  before validation and installation, then install with locked dependencies and
+  `require-lock-file: true`. Run `composer check-platform-reqs` after installation.
+- When no lock file is committed, do not claim `dependency-versions: locked` and
+  do not set `require-lock-file: true`; deliberately install the dependency mode
+  the project chose.
 - Let `ramsey/composer-install` handle Composer caching; do not add a second
   Composer cache step unless the project has a measured reason.
+
+Job timeouts, PHP memory limits, and worker counts are operational starting
+points. Measure sustained runtime, peak memory, and runner capacity, then adjust
+them with headroom. Never use those settings to narrow a gate, skip targets, or
+turn a quality failure into a pass. The template's values are not target-project
+facts.
 
 ## Updating Action Pins
 

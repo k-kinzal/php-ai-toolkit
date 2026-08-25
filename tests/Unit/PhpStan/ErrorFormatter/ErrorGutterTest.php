@@ -9,6 +9,9 @@ use PHPStan\Analyser\Error;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\ErrorGutter
+ */
 #[CoversClass(ErrorGutter::class)]
 final class ErrorGutterTest extends TestCase
 {

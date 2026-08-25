@@ -15,6 +15,14 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Filesystem\PhpPathFileCollector
+ * @uses \PhpAiToolkit\ScopeGuard\Filesystem\PhpFileInclusionPolicy
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig
+ * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ * @uses \PhpAiToolkit\ScopeGuard\Filesystem\ScopeGuardPathResolver
+ */
 #[CoversClass(PhpPathFileCollector::class)]
 #[UsesClass(PhpFileInclusionPolicy::class)]
 #[UsesClass(ReportConfig::class)]

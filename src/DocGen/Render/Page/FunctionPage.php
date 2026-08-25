@@ -6,6 +6,14 @@ namespace PhpAiToolkit\DocGen\Render\Page;
 
 use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
 use PhpAiToolkit\DocGen\Render\Diff\DiffBanner;
+use PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\DocTextHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\MemberHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SignatureHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SymbolDescription;
+use PhpAiToolkit\DocGen\Render\Page\Component\TestCaseHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\UsageListHtml;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 use PhpAiToolkit\DocGen\Render\TypeRenderContext;

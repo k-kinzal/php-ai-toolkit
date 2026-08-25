@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Parallel\ForkSupport;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Parallel\ForkSupport
+ */
 #[CoversClass(ForkSupport::class)]
 final class ForkSupportTest extends TestCase
 {

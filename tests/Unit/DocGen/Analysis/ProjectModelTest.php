@@ -19,6 +19,19 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\ProjectModel
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
+ * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex
+ * @uses \PhpAiToolkit\DocGen\Package\DiscoveredPackage
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerModel
+ * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
+ */
 #[CoversClass(ProjectModel::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(ComposerManifest::class)]

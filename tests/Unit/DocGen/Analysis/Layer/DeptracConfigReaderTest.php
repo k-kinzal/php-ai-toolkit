@@ -13,6 +13,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Layer\DeptracConfigReader
+ * @uses \PhpAiToolkit\DocGen\DocGenException
+ * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerCollector
+ * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerDefinition
+ * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerModel
+ */
 #[CoversClass(DeptracConfigReader::class)]
 #[UsesClass(DocGenException::class)]
 #[UsesClass(LayerCollector::class)]

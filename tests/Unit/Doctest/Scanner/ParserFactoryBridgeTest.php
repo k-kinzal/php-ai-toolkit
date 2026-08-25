@@ -8,6 +8,9 @@ use PhpAiToolkit\Doctest\Scanner\ParserFactoryBridge;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Scanner\ParserFactoryBridge
+ */
 #[CoversClass(ParserFactoryBridge::class)]
 final class ParserFactoryBridgeTest extends TestCase
 {

@@ -13,6 +13,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Config\ReportConfigReader
+ * @uses \PhpAiToolkit\LocGuard\Config\ConfigScalarReader
+ * @uses \PhpAiToolkit\LocGuard\Config\ConfigStringListReader
+ * @uses \PhpAiToolkit\LocGuard\Config\ReportConfig
+ */
 #[CoversClass(ReportConfigReader::class)]
 #[UsesClass(ConfigScalarReader::class)]
 #[UsesClass(ConfigStringListReader::class)]

@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\Parse\FileNamespaces
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\NodeWalker
+ */
 #[CoversClass(FileNamespaces::class)]
 #[UsesClass(NodeWalker::class)]
 final class FileNamespacesTest extends TestCase

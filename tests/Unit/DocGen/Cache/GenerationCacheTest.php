@@ -14,6 +14,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Cache\GenerationCache
+ * @uses \PhpAiToolkit\DocGen\Cache\CacheStore
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols
+ * @uses \PhpAiToolkit\DocGen\Cache\PageRecord
+ * @uses \PhpAiToolkit\DocGen\Cache\ParseCache
+ * @uses \PhpAiToolkit\DocGen\Cache\RenderCache
+ */
 #[CoversClass(GenerationCache::class)]
 #[UsesClass(CacheStore::class)]
 #[UsesClass(FileSymbols::class)]

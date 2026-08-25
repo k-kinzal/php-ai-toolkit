@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Reporting\AiViolationFormatter
+ * @uses \PhpAiToolkit\LocGuard\Reporting\AiViolationAction
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ */
 #[CoversClass(AiViolationFormatter::class)]
 #[UsesClass(AiViolationAction::class)]
 #[UsesClass(Violation::class)]

@@ -8,6 +8,9 @@ use PhpAiToolkit\ScopeGuard\Analysis\Reference\TypeNameReader;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\Reference\TypeNameReader
+ */
 #[CoversClass(TypeNameReader::class)]
 final class TypeNameReaderTest extends TestCase
 {

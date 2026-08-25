@@ -15,6 +15,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Reporting\ReporterFactory
+ * @uses \PhpAiToolkit\LocGuard\Reporting\AiReporter
+ * @uses \PhpAiToolkit\LocGuard\Reporting\AiViolationFormatter
+ * @uses \PhpAiToolkit\LocGuard\Reporting\JsonReporter
+ * @uses \PhpAiToolkit\LocGuard\Reporting\TextReporter
+ * @uses \PhpAiToolkit\LocGuard\Reporting\ViolationSorter
+ */
 #[CoversClass(ReporterFactory::class)]
 #[UsesClass(AiReporter::class)]
 #[UsesClass(AiViolationFormatter::class)]

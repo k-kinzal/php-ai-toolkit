@@ -8,6 +8,9 @@ use PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric
+ */
 #[CoversClass(FileMetric::class)]
 final class FileMetricTest extends TestCase
 {

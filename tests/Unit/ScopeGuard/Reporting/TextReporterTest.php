@@ -14,6 +14,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Reporting\TextReporter
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\AnalysisResult
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Violation
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationFieldComparator
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationSorter
+ */
 #[CoversClass(TextReporter::class)]
 #[UsesClass(AnalysisResult::class)]
 #[UsesClass(ReportConfig::class)]

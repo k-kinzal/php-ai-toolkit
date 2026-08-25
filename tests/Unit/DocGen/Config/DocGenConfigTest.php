@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Config\DocGenConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Config\DocGenConfig
+ */
 #[CoversClass(DocGenConfig::class)]
 final class DocGenConfigTest extends TestCase
 {

@@ -16,6 +16,13 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageReader
+ * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageIndex
+ * @uses \PhpAiToolkit\DocGen\DocGenException
+ * @uses \PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver
+ * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\MethodCoverage
+ */
 #[CoversClass(CoverageReader::class)]
 #[UsesClass(CoverageIndex::class)]
 #[UsesClass(DocGenException::class)]

@@ -9,6 +9,9 @@ use PhpAiToolkit\LocGuard\LocGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Cli\LocGuardCliArgumentParser
+ */
 #[CoversClass(LocGuardCliArgumentParser::class)]
 final class LocGuardCliArgumentParserTest extends TestCase
 {

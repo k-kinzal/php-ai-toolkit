@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Render\PhpHighlighter
+ * @uses \PhpAiToolkit\DocGen\Render\HtmlText
+ */
 #[CoversClass(PhpHighlighter::class)]
 #[UsesClass(HtmlText::class)]
 final class PhpHighlighterTest extends TestCase

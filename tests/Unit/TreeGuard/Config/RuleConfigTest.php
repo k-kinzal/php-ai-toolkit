@@ -8,6 +8,9 @@ use PhpAiToolkit\TreeGuard\Config\RuleConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Config\RuleConfig
+ */
 #[CoversClass(RuleConfig::class)]
 final class RuleConfigTest extends TestCase
 {

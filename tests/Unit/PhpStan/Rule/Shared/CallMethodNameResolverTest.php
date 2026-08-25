@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Shared\CallMethodNameResolver
+ */
 #[CoversClass(CallMethodNameResolver::class)]
 final class CallMethodNameResolverTest extends TestCase
 {

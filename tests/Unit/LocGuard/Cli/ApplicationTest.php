@@ -68,6 +68,68 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Cli\Application
+ * @uses \PhpAiToolkit\LocGuard\Reporting\AiReportGuidance
+ * @uses \PhpAiToolkit\LocGuard\Reporting\AiReportSummary
+ * @uses \PhpAiToolkit\LocGuard\Reporting\AiReporter
+ * @uses \PhpAiToolkit\LocGuard\Reporting\AiViolationAction
+ * @uses \PhpAiToolkit\LocGuard\Reporting\AiViolationFormatter
+ * @uses \PhpAiToolkit\LocGuard\Analysis\AnalysisResult
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowExpressionBoundary
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\ArrowFunctionMetricReader
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\BlockFunctionMetricReader
+ * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader
+ * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector
+ * @uses \PhpAiToolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Token\CodeTokenLineResolver
+ * @uses \PhpAiToolkit\LocGuard\Config\ConfigLoader
+ * @uses \PhpAiToolkit\LocGuard\Config\ConfigScalarReader
+ * @uses \PhpAiToolkit\LocGuard\Config\ConfigStringListReader
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityCalculator
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticDecisionWeight
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FileAnalysis
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionBodyLocator
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionComplexityViolationBuilder
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionLineViolationBuilder
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricCollector
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricComplexityAssigner
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricLineCollector
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetricViolationBuilder
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionNameReader
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionScanState
+ * @uses \PhpAiToolkit\LocGuard\Reporting\JsonReporter
+ * @uses \PhpAiToolkit\LocGuard\Config\LimitConfig
+ * @uses \PhpAiToolkit\LocGuard\Config\LimitConfigReader
+ * @uses \PhpAiToolkit\LocGuard\Cli\LocGuardAnalysisRunner
+ * @uses \PhpAiToolkit\LocGuard\Analysis\LocGuardAnalyzer
+ * @uses \PhpAiToolkit\LocGuard\Cli\LocGuardCliArgumentParser
+ * @uses \PhpAiToolkit\LocGuard\Config\LocGuardConfig
+ * @uses \PhpAiToolkit\LocGuard\Cli\LocGuardConfigPathResolver
+ * @uses \PhpAiToolkit\LocGuard\LocGuardException
+ * @uses \PhpAiToolkit\LocGuard\Cli\LocGuardHelpText
+ * @uses \PhpAiToolkit\LocGuard\Cli\LocGuardOutputWriter
+ * @uses \PhpAiToolkit\LocGuard\Filesystem\LocGuardPathResolver
+ * @uses \PhpAiToolkit\LocGuard\Cli\LocGuardReporterOverride
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\NestedFunctionMetricRange
+ * @uses \PhpAiToolkit\LocGuard\Analysis\PhpFileAnalyzer
+ * @uses \PhpAiToolkit\LocGuard\Filesystem\PhpFileFinder
+ * @uses \PhpAiToolkit\LocGuard\Filesystem\PhpFileInclusionPolicy
+ * @uses \PhpAiToolkit\LocGuard\Filesystem\PhpPathFileCollector
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator
+ * @uses \PhpAiToolkit\LocGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\LocGuard\Config\ReportConfigReader
+ * @uses \PhpAiToolkit\LocGuard\Reporting\ReporterFactory
+ * @uses \PhpAiToolkit\LocGuard\Reporting\TextReporter
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Token\TokenLineCounter
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ * @uses \PhpAiToolkit\LocGuard\Reporting\ViolationSorter
+ */
 #[CoversClass(Application::class)]
 #[UsesClass(AiReportGuidance::class)]
 #[UsesClass(AiReportSummary::class)]

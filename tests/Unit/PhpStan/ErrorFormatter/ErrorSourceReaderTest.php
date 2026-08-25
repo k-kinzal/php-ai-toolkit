@@ -10,6 +10,9 @@ use PhpAiToolkit\PhpStan\ErrorFormatter\ErrorSourceReader;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\ErrorSourceReader
+ */
 #[CoversClass(ErrorSourceReader::class)]
 final class ErrorSourceReaderTest extends TestCase
 {

@@ -8,6 +8,9 @@ use PhpAiToolkit\ScopeGuard\Cli\ScopeGuardHelpText;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardHelpText
+ */
 #[CoversClass(ScopeGuardHelpText::class)]
 final class ScopeGuardHelpTextTest extends TestCase
 {

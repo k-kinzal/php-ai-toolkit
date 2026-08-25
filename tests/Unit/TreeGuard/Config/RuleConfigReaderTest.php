@@ -13,6 +13,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Config\RuleConfigReader
+ * @uses \PhpAiToolkit\TreeGuard\Config\ConfigScalarReader
+ * @uses \PhpAiToolkit\TreeGuard\Config\ConfigStringListReader
+ * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig
+ * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ */
 #[CoversClass(RuleConfigReader::class)]
 #[UsesClass(ConfigScalarReader::class)]
 #[UsesClass(ConfigStringListReader::class)]

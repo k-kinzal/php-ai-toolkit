@@ -25,13 +25,39 @@ use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 use PhpAiToolkit\DocGen\Render\RepositoryLink;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
-use PhpAiToolkit\DocGen\Render\SocialCard;
-use PhpAiToolkit\DocGen\Render\SocialMeta;
+use PhpAiToolkit\DocGen\Render\Social\SocialCard;
+use PhpAiToolkit\DocGen\Render\Social\SocialMeta;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Render\PageChrome
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffModeControl
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \PhpAiToolkit\DocGen\Render\HtmlText
+ * @uses \PhpAiToolkit\DocGen\Render\MarkdownInline
+ * @uses \PhpAiToolkit\DocGen\Render\MarkdownRenderer
+ * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
+ * @uses \PhpAiToolkit\DocGen\Render\PhpHighlighter
+ * @uses \PhpAiToolkit\DocGen\Analysis\ProjectModel
+ * @uses \PhpAiToolkit\DocGen\Render\RenderKit
+ * @uses \PhpAiToolkit\DocGen\Render\RepositoryLink
+ * @uses \PhpAiToolkit\DocGen\Render\SiteUrl
+ * @uses \PhpAiToolkit\DocGen\Render\Social\SocialCard
+ * @uses \PhpAiToolkit\DocGen\Render\Social\SocialMeta
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \PhpAiToolkit\DocGen\Render\TypeHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
+ */
 #[CoversClass(PageChrome::class)]
 #[UsesClass(AssertionScanner::class)]
 #[UsesClass(DiffHtml::class)]

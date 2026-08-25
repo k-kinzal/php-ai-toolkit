@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Coverage\MethodCoverage;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Coverage\MethodCoverage
+ */
 #[CoversClass(MethodCoverage::class)]
 final class MethodCoverageTest extends TestCase
 {

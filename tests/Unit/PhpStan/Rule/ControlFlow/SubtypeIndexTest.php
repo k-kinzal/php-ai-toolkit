@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\ControlFlow\SubtypeIndex;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\SubtypeIndex
+ */
 #[CoversClass(SubtypeIndex::class)]
 final class SubtypeIndexTest extends TestCase
 {

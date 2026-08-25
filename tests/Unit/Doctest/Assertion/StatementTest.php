@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Assertion\Statement
+ * @uses \PhpAiToolkit\Doctest\Assertion\Assertion
+ */
 #[CoversClass(Statement::class)]
 #[UsesClass(Assertion::class)]
 final class StatementTest extends TestCase

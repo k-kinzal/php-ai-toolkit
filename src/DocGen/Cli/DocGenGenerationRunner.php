@@ -18,7 +18,7 @@ use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver;
 use PhpAiToolkit\DocGen\Git\RevisionRange;
 use PhpAiToolkit\DocGen\Render\SiteRenderer;
-use PhpAiToolkit\DocGen\Render\SocialCard;
+use PhpAiToolkit\DocGen\Render\Social\SocialCard;
 
 use function sprintf;
 

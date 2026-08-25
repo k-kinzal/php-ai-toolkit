@@ -9,6 +9,7 @@ use function is_file;
 
 use PhpAiToolkit\DocGen\DocGenException;
 use PhpAiToolkit\DocGen\Filesystem\SiteFileWriter;
+use PhpAiToolkit\DocGen\Render\Social\SocialCard;
 
 use function sprintf;
 

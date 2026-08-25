@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind
+ */
 #[CoversClass(ClassLikeKind::class)]
 final class ClassLikeKindTest extends TestCase
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\PhpStan\Rule\ExceptionHandling;
 
-use PhpAiToolkit\PhpStan\Rule\Shared\RulePathMatcher;
-use PhpAiToolkit\PhpStan\Rule\Shared\RulePathNormalizer;
+use PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathMatcher;
+use PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
 
 /**
  * Matches analyzed file paths against configured boundary path patterns.

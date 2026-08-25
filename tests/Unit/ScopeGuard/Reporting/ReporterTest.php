@@ -8,6 +8,9 @@ use PhpAiToolkit\ScopeGuard\Reporting\Reporter;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @coversNothing
+ */
 #[CoversNothing]
 final class ReporterTest extends TestCase
 {

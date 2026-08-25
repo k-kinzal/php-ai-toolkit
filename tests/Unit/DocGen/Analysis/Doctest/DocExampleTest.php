@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Doctest\DocExample;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Doctest\DocExample
+ */
 #[CoversClass(DocExample::class)]
 final class DocExampleTest extends TestCase
 {

@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\AnalysisResult
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ */
 #[CoversClass(AnalysisResult::class)]
 #[UsesClass(FileMetric::class)]
 #[UsesClass(Violation::class)]

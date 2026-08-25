@@ -13,6 +13,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Reference\PropertyTypeScanner
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\AstParser
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
+ */
 #[CoversClass(PropertyTypeScanner::class)]
 #[UsesClass(AstParser::class)]
 #[UsesClass(PhpParserBridge::class)]

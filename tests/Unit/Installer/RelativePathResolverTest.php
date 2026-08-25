@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Installer\RelativePathResolver
+ * @uses \PhpAiToolkit\Installer\PathNormalizer
+ */
 #[CoversClass(RelativePathResolver::class)]
 #[UsesClass(PathNormalizer::class)]
 final class RelativePathResolverTest extends TestCase

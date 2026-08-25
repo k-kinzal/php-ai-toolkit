@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\ProtectedMethodPolicy
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector
+ */
 #[CoversClass(ProtectedMethodPolicy::class)]
 #[UsesClass(OverrideAttributeDetector::class)]
 final class ProtectedMethodPolicyTest extends TestCase

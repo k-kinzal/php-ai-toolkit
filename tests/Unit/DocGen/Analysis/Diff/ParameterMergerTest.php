@@ -16,6 +16,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Diff\ParameterMerger
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\SymbolFingerprint
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ */
 #[CoversClass(ParameterMerger::class)]
 #[UsesClass(DiffIndex::class)]
 #[UsesClass(DiffKey::class)]

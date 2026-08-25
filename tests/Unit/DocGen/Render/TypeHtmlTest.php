@@ -28,6 +28,18 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Render\TypeHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocTag
+ * @uses \PhpAiToolkit\DocGen\Render\HtmlText
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge
+ * @uses \PhpAiToolkit\DocGen\Render\SiteUrl
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \PhpAiToolkit\DocGen\Render\TypeRenderContext
+ */
 #[CoversClass(TypeHtml::class)]
 #[UsesClass(ClassLikeDoc::class)]
 #[UsesClass(DocBlock::class)]

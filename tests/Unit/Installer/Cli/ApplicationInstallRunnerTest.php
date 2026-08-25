@@ -25,6 +25,18 @@ use PHPUnit\Framework\TestCase;
 use function sys_get_temp_dir;
 use function uniqid;
 
+/**
+ * @covers \PhpAiToolkit\Installer\Cli\ApplicationInstallRunner
+ * @uses \PhpAiToolkit\Installer\Cli\Command\AgentSkillDirectoryDetector
+ * @uses \PhpAiToolkit\Installer\Cli\CliOutputWriter
+ * @uses \PhpAiToolkit\Installer\Cli\Command\InstallCommand
+ * @uses \PhpAiToolkit\Installer\Cli\Command\PackageSkillDirectoryScanner
+ * @uses \PhpAiToolkit\Installer\RelativePathResolver
+ * @uses \PhpAiToolkit\Installer\Cli\Command\SkillFilesystemOperator
+ * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstallationRunner
+ * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstallationWriter
+ * @uses \PhpAiToolkit\Installer\Cli\Command\SkillInstaller
+ */
 #[CoversClass(ApplicationInstallRunner::class)]
 #[UsesClass(AgentSkillDirectoryDetector::class)]
 #[UsesClass(CliOutputWriter::class)]

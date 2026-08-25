@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\Reference\ReferenceCollector
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\Reference
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Reference\TypeNameReader
+ */
 #[CoversClass(ReferenceCollector::class)]
 #[UsesClass(Reference::class)]
 #[UsesClass(TypeNameReader::class)]

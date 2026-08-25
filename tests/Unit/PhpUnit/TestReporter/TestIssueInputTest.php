@@ -9,6 +9,9 @@ use PhpAiToolkit\PhpUnit\TestReporter\TestIssueInput;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestIssueInput
+ */
 #[CoversClass(TestIssueInput::class)]
 final class TestIssueInputTest extends TestCase
 {

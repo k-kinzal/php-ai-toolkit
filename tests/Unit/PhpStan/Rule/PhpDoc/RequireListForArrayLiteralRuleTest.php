@@ -21,6 +21,10 @@ use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * @extends RuleTestCase<RequireListForArrayLiteralRule>
+ * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\RequireListForArrayLiteralRule
+ * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\FixedListExpressionInspector
+ * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\ListTypeDeclarationInspector
+ * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
  */
 #[CoversClass(RequireListForArrayLiteralRule::class)]
 #[UsesClass(FixedListExpressionInspector::class)]

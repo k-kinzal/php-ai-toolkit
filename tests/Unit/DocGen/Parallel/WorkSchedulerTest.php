@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Parallel\WorkScheduler
+ * @uses \PhpAiToolkit\DocGen\Parallel\CpuCoreCounter
+ * @uses \PhpAiToolkit\DocGen\Parallel\WorkerCount
+ */
 #[CoversClass(WorkScheduler::class)]
 #[UsesClass(CpuCoreCounter::class)]
 #[UsesClass(WorkerCount::class)]

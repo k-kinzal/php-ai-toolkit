@@ -8,6 +8,9 @@ use PhpAiToolkit\ScopeGuard\Analysis\Parse\NodeWalker;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\Parse\NodeWalker
+ */
 #[CoversClass(NodeWalker::class)]
 final class NodeWalkerTest extends TestCase
 {

@@ -8,6 +8,9 @@ use PhpAiToolkit\TreeGuard\Analysis\CaseConventionMatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Analysis\CaseConventionMatcher
+ */
 #[CoversClass(CaseConventionMatcher::class)]
 final class CaseConventionMatcherTest extends TestCase
 {

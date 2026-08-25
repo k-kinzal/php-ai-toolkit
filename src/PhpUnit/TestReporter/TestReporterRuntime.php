@@ -9,6 +9,7 @@ use Closure;
 use function fwrite;
 use function getcwd;
 
+use PhpAiToolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter;
 use PhpAiToolkit\Shared\AgentDetector;
 use PhpAiToolkit\Shared\FormatMode;
 

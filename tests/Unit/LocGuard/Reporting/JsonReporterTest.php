@@ -15,6 +15,15 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Reporting\JsonReporter
+ * @uses \PhpAiToolkit\LocGuard\Analysis\AnalysisResult
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric
+ * @uses \PhpAiToolkit\LocGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ * @uses \PhpAiToolkit\LocGuard\Reporting\ViolationFieldComparator
+ * @uses \PhpAiToolkit\LocGuard\Reporting\ViolationSorter
+ */
 #[CoversClass(JsonReporter::class)]
 #[UsesClass(AnalysisResult::class)]
 #[UsesClass(FileMetric::class)]

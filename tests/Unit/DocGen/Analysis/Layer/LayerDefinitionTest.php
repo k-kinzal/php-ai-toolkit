@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Layer\LayerDefinition
+ * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerCollector
+ */
 #[CoversClass(LayerDefinition::class)]
 #[UsesClass(LayerCollector::class)]
 final class LayerDefinitionTest extends TestCase

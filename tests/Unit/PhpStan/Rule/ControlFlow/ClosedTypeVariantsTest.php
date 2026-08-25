@@ -17,6 +17,9 @@ use PHPStan\Type\VerbosityLevel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants
+ */
 #[CoversClass(ClosedTypeVariants::class)]
 #[Medium]
 final class ClosedTypeVariantsTest extends PHPStanTestCase

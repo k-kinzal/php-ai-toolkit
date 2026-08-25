@@ -16,6 +16,15 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Config\ConfigLoader
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ConfigScalarReader
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ConfigStringListReader
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfigReader
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig
+ * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ */
 #[CoversClass(ConfigLoader::class)]
 #[UsesClass(ConfigScalarReader::class)]
 #[UsesClass(ConfigStringListReader::class)]

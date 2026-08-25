@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpUnit\TestReporter\TestIssue;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestIssue
+ */
 #[CoversClass(TestIssue::class)]
 final class TestIssueTest extends TestCase
 {

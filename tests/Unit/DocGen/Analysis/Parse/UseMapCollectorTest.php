@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\AstParser
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
+ */
 #[CoversClass(UseMapCollector::class)]
 #[UsesClass(AstParser::class)]
 #[UsesClass(PhpParserBridge::class)]

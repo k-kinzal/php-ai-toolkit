@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Reporting\AiReportSummary
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\AnalysisResult
+ */
 #[CoversClass(AiReportSummary::class)]
 #[UsesClass(AnalysisResult::class)]
 final class AiReportSummaryTest extends TestCase

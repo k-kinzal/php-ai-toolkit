@@ -8,6 +8,9 @@ use PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric
+ */
 #[CoversClass(FunctionMetric::class)]
 final class FunctionMetricTest extends TestCase
 {

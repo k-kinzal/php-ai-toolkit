@@ -8,6 +8,9 @@ use PhpAiToolkit\LocGuard\Cli\LocGuardHelpText;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Cli\LocGuardHelpText
+ */
 #[CoversClass(LocGuardHelpText::class)]
 final class LocGuardHelpTextTest extends TestCase
 {

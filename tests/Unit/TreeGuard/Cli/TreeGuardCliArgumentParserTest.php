@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Cli\TreeGuardCliArgumentParser
+ * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ */
 #[CoversClass(TreeGuardCliArgumentParser::class)]
 #[UsesClass(TreeGuardException::class)]
 final class TreeGuardCliArgumentParserTest extends TestCase

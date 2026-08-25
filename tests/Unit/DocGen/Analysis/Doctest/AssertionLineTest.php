@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine
+ */
 #[CoversClass(AssertionLine::class)]
 final class AssertionLineTest extends TestCase
 {

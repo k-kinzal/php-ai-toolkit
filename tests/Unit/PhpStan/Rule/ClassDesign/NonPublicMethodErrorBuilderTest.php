@@ -12,6 +12,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\NonPublicMethodErrorBuilder
+ * @uses \PhpAiToolkit\PhpStan\Rule\ClassDesign\ClassLikeNameResolver
+ */
 #[CoversClass(NonPublicMethodErrorBuilder::class)]
 #[UsesClass(ClassLikeNameResolver::class)]
 final class NonPublicMethodErrorBuilderTest extends TestCase

@@ -8,6 +8,9 @@ use PhpAiToolkit\LocGuard\Analysis\Violation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\Violation
+ */
 #[CoversClass(Violation::class)]
 final class ViolationTest extends TestCase
 {

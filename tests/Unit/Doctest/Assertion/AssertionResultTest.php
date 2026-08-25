@@ -13,6 +13,11 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Assertion\AssertionResult
+ * @uses \PhpAiToolkit\Doctest\Assertion\Statement
+ * @uses \PhpAiToolkit\Doctest\Assertion\Assertion
+ */
 #[CoversClass(AssertionResult::class)]
 #[UsesClass(Statement::class)]
 #[UsesClass(Assertion::class)]

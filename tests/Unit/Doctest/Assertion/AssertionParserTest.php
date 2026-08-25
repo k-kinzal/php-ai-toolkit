@@ -17,6 +17,14 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Assertion\AssertionParser
+ * @uses \PhpAiToolkit\Doctest\Assertion\Statement
+ * @uses \PhpAiToolkit\Doctest\Assertion\Assertion
+ * @uses \PhpAiToolkit\Doctest\Assertion\ParsedExample
+ * @uses \PhpAiToolkit\Doctest\Parser\Example
+ * @uses \PhpAiToolkit\Doctest\Scanner\Target
+ */
 #[CoversClass(AssertionParser::class)]
 #[UsesClass(Statement::class)]
 #[UsesClass(Assertion::class)]

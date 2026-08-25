@@ -12,6 +12,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffLine
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher
+ */
 #[CoversClass(LineDiffer::class)]
 #[UsesClass(DiffLine::class)]
 #[UsesClass(DiffStatus::class)]

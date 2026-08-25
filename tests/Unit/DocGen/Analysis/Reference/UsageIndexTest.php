@@ -12,6 +12,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\Usage
+ */
 #[CoversClass(UsageIndex::class)]
 #[UsesClass(Usage::class)]
 final class UsageIndexTest extends TestCase

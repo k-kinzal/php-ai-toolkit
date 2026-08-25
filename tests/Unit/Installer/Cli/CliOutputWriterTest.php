@@ -8,6 +8,9 @@ use PhpAiToolkit\Installer\Cli\CliOutputWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Installer\Cli\CliOutputWriter
+ */
 #[CoversClass(CliOutputWriter::class)]
 final class CliOutputWriterTest extends TestCase
 {

@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<RequirePhpDocOnPublicApiRule>
+ * @covers \PhpAiToolkit\PhpStan\Rule\RequirePhpDocOnPublicApiRule
  */
 #[CoversClass(RequirePhpDocOnPublicApiRule::class)]
 #[Medium]

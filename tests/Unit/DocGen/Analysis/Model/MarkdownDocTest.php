@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc
+ */
 #[CoversClass(MarkdownDoc::class)]
 final class MarkdownDocTest extends TestCase
 {

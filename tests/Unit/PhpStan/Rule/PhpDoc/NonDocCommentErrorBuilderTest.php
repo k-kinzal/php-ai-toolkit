@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\NonDocCommentErrorBuilder
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter
+ */
 #[CoversClass(NonDocCommentErrorBuilder::class)]
 #[UsesClass(CommentTextFormatter::class)]
 final class NonDocCommentErrorBuilderTest extends TestCase

@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Cli\DocGenMemoryLimit;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Cli\DocGenMemoryLimit
+ */
 #[CoversClass(DocGenMemoryLimit::class)]
 final class DocGenMemoryLimitTest extends TestCase
 {

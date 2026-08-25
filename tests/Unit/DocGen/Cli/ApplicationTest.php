@@ -26,20 +26,20 @@ use PhpAiToolkit\DocGen\Analysis\Model\MethodDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
 use PhpAiToolkit\DocGen\Analysis\Parse\AstParser;
-use PhpAiToolkit\DocGen\Analysis\Parse\ClassLikeBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\ConstantBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\EnumCaseBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\MethodBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 use PhpAiToolkit\DocGen\Analysis\Parse\FileSymbolCollector;
 use PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols;
-use PhpAiToolkit\DocGen\Analysis\Parse\FunctionBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\MethodBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter;
-use PhpAiToolkit\DocGen\Analysis\Parse\ParameterBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use PhpAiToolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
-use PhpAiToolkit\DocGen\Analysis\Parse\PropertyBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext;
 use PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector;
 use PhpAiToolkit\DocGen\Analysis\ProjectAnalyzer;
@@ -99,31 +99,31 @@ use PhpAiToolkit\DocGen\Render\HtmlText;
 use PhpAiToolkit\DocGen\Render\MarkdownInline;
 use PhpAiToolkit\DocGen\Render\MarkdownRenderer;
 use PhpAiToolkit\DocGen\Render\Page\AllItemsPage;
-use PhpAiToolkit\DocGen\Render\Page\BreadcrumbHtml;
 use PhpAiToolkit\DocGen\Render\Page\ClassLikePage;
-use PhpAiToolkit\DocGen\Render\Page\DocTextHtml;
-use PhpAiToolkit\DocGen\Render\Page\DocumentListHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\DocTextHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\DocumentListHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\ExampleHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\GraphSvg;
+use PhpAiToolkit\DocGen\Render\Page\Component\MemberHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\RelationsHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SignatureHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SymbolDescription;
+use PhpAiToolkit\DocGen\Render\Page\Component\SymbolListHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SymbolRow;
+use PhpAiToolkit\DocGen\Render\Page\Component\TestCaseHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\UsageListHtml;
 use PhpAiToolkit\DocGen\Render\Page\DocumentPage;
-use PhpAiToolkit\DocGen\Render\Page\ExampleHtml;
 use PhpAiToolkit\DocGen\Render\Page\FunctionPage;
-use PhpAiToolkit\DocGen\Render\Page\GraphSvg;
 use PhpAiToolkit\DocGen\Render\Page\IndexPage;
 use PhpAiToolkit\DocGen\Render\Page\LayerPage;
-use PhpAiToolkit\DocGen\Render\Page\MemberHtml;
 use PhpAiToolkit\DocGen\Render\Page\NamespacePage;
 use PhpAiToolkit\DocGen\Render\Page\PackagePage;
-use PhpAiToolkit\DocGen\Render\Page\PrivateSurfaceHtml;
-use PhpAiToolkit\DocGen\Render\Page\RelationsHtml;
-use PhpAiToolkit\DocGen\Render\Page\SidebarHtml;
 use PhpAiToolkit\DocGen\Render\Page\SidebarScope;
-use PhpAiToolkit\DocGen\Render\Page\SignatureHtml;
 use PhpAiToolkit\DocGen\Render\Page\SourcePage;
-use PhpAiToolkit\DocGen\Render\Page\SymbolDescription;
 use PhpAiToolkit\DocGen\Render\Page\SymbolIndex;
-use PhpAiToolkit\DocGen\Render\Page\SymbolListHtml;
-use PhpAiToolkit\DocGen\Render\Page\SymbolRow;
-use PhpAiToolkit\DocGen\Render\Page\TestCaseHtml;
-use PhpAiToolkit\DocGen\Render\Page\UsageListHtml;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\PhpHighlighter;
 use PhpAiToolkit\DocGen\Render\RenderKit;
@@ -136,14 +136,152 @@ use PhpAiToolkit\DocGen\Render\Signature\SymbolReferenceScanner;
 use PhpAiToolkit\DocGen\Render\SitePages;
 use PhpAiToolkit\DocGen\Render\SiteRenderer;
 use PhpAiToolkit\DocGen\Render\SiteUrl;
-use PhpAiToolkit\DocGen\Render\SocialCard;
-use PhpAiToolkit\DocGen\Render\SocialMeta;
+use PhpAiToolkit\DocGen\Render\Social\SocialCard;
+use PhpAiToolkit\DocGen\Render\Social\SocialMeta;
 use PhpAiToolkit\DocGen\Render\TypeHtml;
 use PhpAiToolkit\DocGen\Render\TypeRenderContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Cli\Application
+ * @uses \PhpAiToolkit\DocGen\Render\Page\AllItemsPage
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner
+ * @uses \PhpAiToolkit\DocGen\Render\AssetPublisher
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\AstParser
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml
+ * @uses \PhpAiToolkit\DocGen\Cache\CacheStore
+ * @uses \PhpAiToolkit\DocGen\Cache\CachedPageWriter
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeKind
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\ClassLikeMerger
+ * @uses \PhpAiToolkit\DocGen\Render\Page\ClassLikePage
+ * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
+ * @uses \PhpAiToolkit\DocGen\Package\ComposerManifestReader
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Coverage\CoverageReader
+ * @uses \PhpAiToolkit\DocGen\Parallel\CpuCoreCounter
+ * @uses \PhpAiToolkit\DocGen\Analysis\Layer\DeptracConfigReader
+ * @uses \PhpAiToolkit\DocGen\Package\DevPackageResolver
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffBanner
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\DiffModeControl
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffWorkspace
+ * @uses \PhpAiToolkit\DocGen\Package\DiscoveredPackage
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader
+ * @uses \PhpAiToolkit\DocGen\Cli\DocGenCliArgumentParser
+ * @uses \PhpAiToolkit\DocGen\Config\DocGenConfig
+ * @uses \PhpAiToolkit\DocGen\Cli\DocGenConfigFactory
+ * @uses \PhpAiToolkit\DocGen\DocGenException
+ * @uses \PhpAiToolkit\DocGen\Cli\DocGenGenerationRunner
+ * @uses \PhpAiToolkit\DocGen\Cli\DocGenHelpText
+ * @uses \PhpAiToolkit\DocGen\Cli\DocGenMemoryLimit
+ * @uses \PhpAiToolkit\DocGen\Cli\DocGenOutputWriter
+ * @uses \PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver
+ * @uses \PhpAiToolkit\DocGen\Cli\DocGenPreviewServer
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\DocTextHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\DoctestExtractor
+ * @uses \PhpAiToolkit\DocGen\Analysis\Document\DocumentCollector
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\DocumentListHtml
+ * @uses \PhpAiToolkit\DocGen\Render\Page\DocumentPage
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\ExampleHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbolCollector
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\FunctionMerger
+ * @uses \PhpAiToolkit\DocGen\Render\Page\FunctionPage
+ * @uses \PhpAiToolkit\DocGen\Cache\GenerationCache
+ * @uses \PhpAiToolkit\DocGen\Git\GitCommandRunner
+ * @uses \PhpAiToolkit\DocGen\Git\GitRepository
+ * @uses \PhpAiToolkit\DocGen\Git\GitWorktree
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\GraphSvg
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \PhpAiToolkit\DocGen\Render\HtmlText
+ * @uses \PhpAiToolkit\DocGen\Render\Page\IndexPage
+ * @uses \PhpAiToolkit\DocGen\Analysis\Layer\LayerAssigner
+ * @uses \PhpAiToolkit\DocGen\Render\Page\LayerPage
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\LineDiffer
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\LocalTypeMap
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\MarkdownDiffHtml
+ * @uses \PhpAiToolkit\DocGen\Filesystem\MarkdownFileFinder
+ * @uses \PhpAiToolkit\DocGen\Render\MarkdownInline
+ * @uses \PhpAiToolkit\DocGen\Render\MarkdownRenderer
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\MemberHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\MethodDoc
+ * @uses \PhpAiToolkit\DocGen\Render\Page\NamespacePage
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter
+ * @uses \PhpAiToolkit\DocGen\Package\PackageDiscovery
+ * @uses \PhpAiToolkit\DocGen\Package\PackageGraph
+ * @uses \PhpAiToolkit\DocGen\Package\PackageGraphBuilder
+ * @uses \PhpAiToolkit\DocGen\Render\Page\PackagePage
+ * @uses \PhpAiToolkit\DocGen\Render\PageChrome
+ * @uses \PhpAiToolkit\DocGen\Cache\PageRecord
+ * @uses \PhpAiToolkit\DocGen\Render\Signature\PageSignature
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\ParameterMerger
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers
+ * @uses \PhpAiToolkit\DocGen\Cache\ParseCache
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge
+ * @uses \PhpAiToolkit\DocGen\Render\PhpHighlighter
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\ProjectAnalyzer
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\ProjectDiffer
+ * @uses \PhpAiToolkit\DocGen\Analysis\ProjectModel
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ProjectSymbolCollector
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\PropertyTypeScanner
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\RelationsHtml
+ * @uses \PhpAiToolkit\DocGen\Cache\RenderCache
+ * @uses \PhpAiToolkit\DocGen\Render\RenderKit
+ * @uses \PhpAiToolkit\DocGen\Render\RepositoryLink
+ * @uses \PhpAiToolkit\DocGen\Config\RepositoryUrl
+ * @uses \PhpAiToolkit\DocGen\Render\SearchIndexBuilder
+ * @uses \PhpAiToolkit\DocGen\Render\Signature\SidebarDigest
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml
+ * @uses \PhpAiToolkit\DocGen\Render\Page\SidebarScope
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SignatureHtml
+ * @uses \PhpAiToolkit\DocGen\Filesystem\SiteFileWriter
+ * @uses \PhpAiToolkit\DocGen\Render\SitePages
+ * @uses \PhpAiToolkit\DocGen\Render\SiteRenderer
+ * @uses \PhpAiToolkit\DocGen\Render\SiteUrl
+ * @uses \PhpAiToolkit\DocGen\Render\Social\SocialCard
+ * @uses \PhpAiToolkit\DocGen\Render\Social\SocialMeta
+ * @uses \PhpAiToolkit\DocGen\Render\Diff\SourceDiffHtml
+ * @uses \PhpAiToolkit\DocGen\Render\Signature\SourceDigestIndex
+ * @uses \PhpAiToolkit\DocGen\Filesystem\SourceFileFinder
+ * @uses \PhpAiToolkit\DocGen\Cache\SourceFileKey
+ * @uses \PhpAiToolkit\DocGen\Render\Page\SourcePage
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SymbolDescription
+ * @uses \PhpAiToolkit\DocGen\Render\Page\SymbolIndex
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SymbolListHtml
+ * @uses \PhpAiToolkit\DocGen\Render\Signature\SymbolReferenceScanner
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\SymbolRow
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\TestCaseHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \PhpAiToolkit\DocGen\Cache\ToolkitFingerprint
+ * @uses \PhpAiToolkit\DocGen\Render\TypeHtml
+ * @uses \PhpAiToolkit\DocGen\Render\TypeRenderContext
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageCollector
+ * @uses \PhpAiToolkit\DocGen\Analysis\Reference\UsageIndex
+ * @uses \PhpAiToolkit\DocGen\Render\Page\Component\UsageListHtml
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector
+ * @uses \PhpAiToolkit\DocGen\Package\VendorPackageLocator
+ * @uses \PhpAiToolkit\DocGen\Parallel\WorkScheduler
+ * @uses \PhpAiToolkit\DocGen\Parallel\WorkerCount
+ * @uses \PhpAiToolkit\DocGen\Parallel\WorkerPool
+ */
 #[CoversClass(Application::class)]
 #[UsesClass(AllItemsPage::class)]
 #[UsesClass(AssertionScanner::class)]

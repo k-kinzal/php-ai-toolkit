@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Filesystem\SourceFileFinder
+ * @uses \PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver
+ */
 #[CoversClass(SourceFileFinder::class)]
 #[UsesClass(DocGenPathResolver::class)]
 final class SourceFileFinderTest extends TestCase

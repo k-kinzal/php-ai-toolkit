@@ -13,6 +13,9 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
+/**
+ * @coversNothing
+ */
 #[CoversNothing]
 final class LegacyTestIssueFactoryTest extends TestCase
 {

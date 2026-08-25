@@ -9,6 +9,9 @@ use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver
+ */
 #[CoversClass(ClassStringExpressionResolver::class)]
 final class ClassStringExpressionResolverTest extends TestCase
 {

@@ -1,0 +1,5 @@
+includes:
+    # The repository itself is not installed below vendor/, so its self-analysis
+    # has a separate wrapper around the exact same toolkit configuration.
+    - %currentWorkingDirectory%/vendor/phpstan/phpstan-strict-rules/rules.neon
+    - toolkit.neon

@@ -8,6 +8,9 @@ use PhpAiToolkit\ScopeGuard\Cli\ScopeGuardOutputWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardOutputWriter
+ */
 #[CoversClass(ScopeGuardOutputWriter::class)]
 final class ScopeGuardOutputWriterTest extends TestCase
 {

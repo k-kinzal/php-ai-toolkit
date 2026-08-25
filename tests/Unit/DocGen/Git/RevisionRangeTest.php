@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Git\RevisionRange;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Git\RevisionRange
+ */
 #[CoversClass(RevisionRange::class)]
 final class RevisionRangeTest extends TestCase
 {

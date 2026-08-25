@@ -13,6 +13,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Cli\DocGenConfigFactory
+ * @uses \PhpAiToolkit\DocGen\Config\BaseUrl
+ * @uses \PhpAiToolkit\DocGen\Cli\DocGenCliArgumentParser
+ * @uses \PhpAiToolkit\DocGen\Config\DocGenConfig
+ * @uses \PhpAiToolkit\DocGen\Config\RepositoryUrl
+ */
 #[CoversClass(DocGenConfigFactory::class)]
 #[UsesClass(BaseUrl::class)]
 #[UsesClass(DocGenCliArgumentParser::class)]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\TreeGuard\Analysis;
 
+use function array_keys;
 use function count;
 use function explode;
 use function fnmatch;
@@ -31,34 +32,37 @@ final class DirectoryPatternMatcher
         $path = trim($path, '/');
         $patternSegments = $pattern === '' || $pattern === '.' ? [] : explode('/', $pattern);
         $pathSegments = $path === '' || $path === '.' ? [] : explode('/', $path);
-        $patternCount = count($patternSegments);
-        $pathCount = count($pathSegments);
-        $patternIndex = 0;
-        $pathIndex = 0;
-        $starPatternIndex = -1;
-        $starPathIndex = 0;
+        $reachable = [0 => true];
 
-        while ($pathIndex < $pathCount) {
-            if ($patternIndex < $patternCount && $patternSegments[$patternIndex] === '**') {
-                $starPatternIndex = $patternIndex;
-                $starPathIndex = $pathIndex;
-                $patternIndex++;
-            } elseif ($patternIndex < $patternCount && fnmatch($patternSegments[$patternIndex], $pathSegments[$pathIndex])) {
-                $patternIndex++;
-                $pathIndex++;
-            } elseif ($starPatternIndex >= 0) {
-                $patternIndex = $starPatternIndex + 1;
-                $starPathIndex++;
-                $pathIndex = $starPathIndex;
-            } else {
-                return false;
+        foreach ($pathSegments as $pathSegment) {
+            foreach (array_keys($patternSegments) as $patternIndex) {
+                if (isset($reachable[$patternIndex]) && $patternSegments[$patternIndex] === '**') {
+                    $reachable[$patternIndex + 1] = true;
+                }
+            }
+
+            $next = [];
+            foreach ($patternSegments as $patternIndex => $patternSegment) {
+                if (!isset($reachable[$patternIndex])) {
+                    continue;
+                }
+
+                if ($patternSegment === '**') {
+                    $next[$patternIndex] = true;
+                } elseif (fnmatch($patternSegment, $pathSegment)) {
+                    $next[$patternIndex + 1] = true;
+                }
+            }
+
+            $reachable = $next;
+        }
+
+        foreach (array_keys($patternSegments) as $patternIndex) {
+            if (isset($reachable[$patternIndex]) && $patternSegments[$patternIndex] === '**') {
+                $reachable[$patternIndex + 1] = true;
             }
         }
 
-        while ($patternIndex < $patternCount && $patternSegments[$patternIndex] === '**') {
-            $patternIndex++;
-        }
-
-        return $patternIndex === $patternCount;
+        return isset($reachable[count($patternSegments)]);
     }
 }

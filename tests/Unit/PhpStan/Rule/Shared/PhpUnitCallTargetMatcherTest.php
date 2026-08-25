@@ -9,6 +9,9 @@ use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
+ */
 #[CoversClass(PhpUnitCallTargetMatcher::class)]
 final class PhpUnitCallTargetMatcherTest extends TestCase
 {

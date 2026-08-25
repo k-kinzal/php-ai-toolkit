@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser
+ */
 #[CoversClass(TestIssueSourceLocationResolver::class)]
 #[UsesClass(StackTraceFrameLocationParser::class)]
 final class TestIssueSourceLocationResolverTest extends TestCase

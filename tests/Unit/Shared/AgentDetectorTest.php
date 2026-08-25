@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 use function putenv;
 use function sprintf;
 
+/**
+ * @covers \PhpAiToolkit\Shared\AgentDetector
+ */
 #[CoversClass(AgentDetector::class)]
 final class AgentDetectorTest extends TestCase
 {

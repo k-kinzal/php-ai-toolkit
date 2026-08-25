@@ -19,6 +19,11 @@ use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * @extends RuleTestCase<NoControlFlowInTestMethodRule>
+ * @covers \PhpAiToolkit\PhpStan\Rule\NoControlFlowInTestMethodRule
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\ControlFlowTypeResolver
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\NestedScopeFilter
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\TestMethodDetector
  */
 #[CoversClass(NoControlFlowInTestMethodRule::class)]
 #[UsesClass(ControlFlowTypeResolver::class)]

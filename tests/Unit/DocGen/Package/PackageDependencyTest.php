@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Package\PackageDependency;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Package\PackageDependency
+ */
 #[CoversClass(PackageDependency::class)]
 final class PackageDependencyTest extends TestCase
 {

@@ -14,6 +14,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestIssueCollector
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\TestIssueInput
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\StackTraceFrameLocationParser
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestFailureLineResolver
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssue
+ * @uses \PhpAiToolkit\PhpUnit\TestReporter\TestIssueSourceLocationResolver
+ */
 #[CoversClass(TestIssueCollector::class)]
 #[CoversClass(TestIssueInput::class)]
 #[UsesClass(StackTraceFrameLocationParser::class)]

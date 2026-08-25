@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardCliArgumentParser
+ * @uses \PhpAiToolkit\ScopeGuard\ScopeGuardException
+ */
 #[CoversClass(ScopeGuardCliArgumentParser::class)]
 #[UsesClass(ScopeGuardException::class)]
 final class ScopeGuardCliArgumentParserTest extends TestCase

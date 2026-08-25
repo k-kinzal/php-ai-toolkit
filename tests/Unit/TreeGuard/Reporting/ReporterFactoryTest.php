@@ -19,6 +19,19 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Reporting\ReporterFactory
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReporter
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReportGuidance
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\AiReportSummary
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\AiViolationAction
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\AiViolationFormatter
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\JsonReporter
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\TextReporter
+ * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\ViolationFieldComparator
+ * @uses \PhpAiToolkit\TreeGuard\Reporting\ViolationSorter
+ */
 #[CoversClass(ReporterFactory::class)]
 #[UsesClass(AiReporter::class)]
 #[UsesClass(AiReportGuidance::class)]

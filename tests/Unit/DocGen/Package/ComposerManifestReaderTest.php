@@ -13,6 +13,12 @@ use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Package\ComposerManifestReader
+ * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
+ * @uses \PhpAiToolkit\DocGen\DocGenException
+ * @uses \PhpAiToolkit\DocGen\Config\RepositoryUrl
+ */
 #[CoversClass(ComposerManifestReader::class)]
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(DocGenException::class)]

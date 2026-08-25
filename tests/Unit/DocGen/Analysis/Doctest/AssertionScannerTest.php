@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Doctest\AssertionScanner
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doctest\AssertionLine
+ */
 #[CoversClass(AssertionScanner::class)]
 #[UsesClass(AssertionLine::class)]
 final class AssertionScannerTest extends TestCase

@@ -9,6 +9,12 @@ description: >-
 
 This skill creates an AGENTS.md file that provides context and rules for AI agents working on the project.
 
+Use this skill only when the user explicitly asks to create or change
+`AGENTS.md`. Applying php-ai-toolkit, adding quality gates, or repairing project
+architecture is not permission to edit agent instructions. If `AGENTS.md`
+already exists, treat it as human-owned: inspect it for constraints, then ask
+before changing even an outdated section.
+
 ## What is AGENTS.md?
 
 AGENTS.md is a convention for providing AI coding agents (Claude Code, Cursor, Codex, etc.) with project-specific context. It tells agents:
@@ -100,11 +106,12 @@ When applying this template to a project, follow these steps:
 3. **Look for existing documentation** in `docs/`, `README.md`, etc.
 4. **Fill in all `{{PLACEHOLDER}}` values** with real project information
 5. **Remove unused placeholders** (e.g., `{{ADDITIONAL_CODING_RULES}}` if no extra rules)
-6. **Place as `AGENTS.md`** in the project root
+6. **Place as `AGENTS.md`** in the project root only after confirming that no
+   existing file will be overwritten
 
 ## Protecting AGENTS.md
 
-After creating AGENTS.md, recommend setting up `.claude/settings.json` to prevent AI agents from modifying it:
+After creating AGENTS.md, recommend setting up `.claude/settings.json` to prevent AI agents from modifying it. Do not edit an existing settings file unless the user explicitly asks:
 
 ```json
 {
@@ -118,7 +125,7 @@ After creating AGENTS.md, recommend setting up `.claude/settings.json` to preven
 }
 ```
 
-Also create `CLAUDE.md` in the project root that references AGENTS.md:
+Create `CLAUDE.md` only when the user explicitly asks for Claude-specific setup:
 
 ```markdown
 <!-- NOTE: You do not have permission to overwrite this file. Please ask a human operator to perform the changes for you. -->

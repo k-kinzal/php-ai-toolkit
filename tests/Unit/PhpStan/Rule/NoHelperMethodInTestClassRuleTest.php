@@ -18,6 +18,10 @@ use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * @extends RuleTestCase<NoHelperMethodInTestClassRule>
+ * @covers \PhpAiToolkit\PhpStan\Rule\NoHelperMethodInTestClassRule
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\OverrideAttributeDetector
+ * @uses \PhpAiToolkit\PhpStan\Rule\TestClass\OverrideMethodDetector
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\TestMethodDetector
  */
 #[CoversClass(NoHelperMethodInTestClassRule::class)]
 #[UsesClass(OverrideAttributeDetector::class)]

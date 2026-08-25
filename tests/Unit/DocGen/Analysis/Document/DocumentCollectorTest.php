@@ -16,6 +16,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Document\DocumentCollector
+ * @uses \PhpAiToolkit\DocGen\Package\ComposerManifest
+ * @uses \PhpAiToolkit\DocGen\Package\DiscoveredPackage
+ * @uses \PhpAiToolkit\DocGen\Config\DocGenConfig
+ * @uses \PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\MarkdownDoc
+ * @uses \PhpAiToolkit\DocGen\Filesystem\MarkdownFileFinder
+ * @uses \PhpAiToolkit\DocGen\Filesystem\SourceFileFinder
+ */
 #[CoversClass(DocumentCollector::class)]
 #[UsesClass(ComposerManifest::class)]
 #[UsesClass(DiscoveredPackage::class)]

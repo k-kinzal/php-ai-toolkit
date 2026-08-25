@@ -5,11 +5,11 @@
     // bar is passed as --min-msi and --min-covered-msi by the workflow step, which is
     // how Infection is meant to be driven in CI.
     //
-    // The thresholds below are the whole-tree ratchet. Measure the project first and
-    // set them to the score the default branch already reaches, rounded down, so that
-    // a change which weakens the suite fails the build. Leave a further point of
-    // headroom when CI scores mutants on a different PHP version than the measurement
-    // used. Raise them when the score rises.
+    // These thresholds are the toolkit's minimum whole-tree baseline, not values to
+    // replace with a lower measured score. If the project starts below them, improve
+    // its tests and design until it passes. A higher measured score is verification,
+    // not permission to invent a stricter policy; changing these numbers requires an
+    // explicit human quality-policy decision.
     //
     // Lowering a threshold, disabling a mutator, or widening `source.excludes` to
     // make a red build green removes the safety net this file exists to provide —
@@ -29,7 +29,14 @@
     },
     "minMsi": 80,
     "minCoveredMsi": 80,
-    "timeout": 10,
+    // Operational starting point only. Measure the slowest relevant mutant test and
+    // raise this above that duration with runner headroom.
+    "timeout": 30,
+    // A hung or excessively slow mutant is not evidence that the test suite detected
+    // the behavioral change. These options require Infection 0.32.3 or later; see the
+    // skill for the explicit limitation on older supported lines.
+    "timeoutsAsEscaped": true,
+    "maxTimeouts": 0,
     // Infection wipes its temporary directory when the run finishes, so it must not
     // be the directory the reports are written to.
     "tmpDir": "build/infection-tmp",

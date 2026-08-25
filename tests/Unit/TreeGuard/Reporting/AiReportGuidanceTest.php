@@ -8,6 +8,9 @@ use PhpAiToolkit\TreeGuard\Reporting\AiReportGuidance;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Reporting\AiReportGuidance
+ */
 #[CoversClass(AiReportGuidance::class)]
 final class AiReportGuidanceTest extends TestCase
 {

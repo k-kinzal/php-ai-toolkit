@@ -8,6 +8,9 @@ use PhpAiToolkit\ScopeGuard\Config\ReportConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Config\ReportConfig
+ */
 #[CoversClass(ReportConfig::class)]
 final class ReportConfigTest extends TestCase
 {

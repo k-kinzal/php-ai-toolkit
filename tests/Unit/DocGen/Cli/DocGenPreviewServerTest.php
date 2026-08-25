@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Cli\DocGenPreviewServer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Cli\DocGenPreviewServer
+ */
 #[CoversClass(DocGenPreviewServer::class)]
 final class DocGenPreviewServerTest extends TestCase
 {

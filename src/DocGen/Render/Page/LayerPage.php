@@ -8,6 +8,9 @@ use function array_unshift;
 use function count;
 use function implode;
 
+use PhpAiToolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SidebarHtml;
+use PhpAiToolkit\DocGen\Render\Page\Component\SymbolListHtml;
 use PhpAiToolkit\DocGen\Render\PageChrome;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 

@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter
+ */
 #[CoversClass(CommentTextFormatter::class)]
 final class CommentTextFormatterTest extends TestCase
 {

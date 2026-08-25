@@ -9,6 +9,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Executor\ExecutionContext
+ */
 #[CoversClass(ExecutionContext::class)]
 final class ExecutionContextTest extends TestCase
 {

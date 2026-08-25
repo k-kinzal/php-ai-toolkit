@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Support\ShortArrayOpeningPolicy
+ * @uses \PhpAiToolkit\PhpStan\Support\NonDocCommentTokenClassifier
+ */
 #[CoversClass(ShortArrayOpeningPolicy::class)]
 #[UsesClass(NonDocCommentTokenClassifier::class)]
 final class ShortArrayOpeningPolicyTest extends TestCase

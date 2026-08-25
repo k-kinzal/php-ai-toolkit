@@ -22,25 +22,60 @@ use PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc;
 use PhpAiToolkit\DocGen\Analysis\Model\TypeSignature;
 use PhpAiToolkit\DocGen\Analysis\Parse\AstParser;
-use PhpAiToolkit\DocGen\Analysis\Parse\ClassLikeBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\ConstantBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\EnumCaseBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\MethodBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder;
+use PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 use PhpAiToolkit\DocGen\Analysis\Parse\FileSymbolCollector;
 use PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols;
-use PhpAiToolkit\DocGen\Analysis\Parse\FunctionBuilder;
-use PhpAiToolkit\DocGen\Analysis\Parse\MethodBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter;
-use PhpAiToolkit\DocGen\Analysis\Parse\ParameterBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge;
-use PhpAiToolkit\DocGen\Analysis\Parse\PropertyBuilder;
 use PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext;
 use PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Diff\FunctionMerger
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\AstParser
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\ClassLikeMerger
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffIndex
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\DiffStatus
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocBlock
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doc\DocBlockReader
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\DocTag
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbolCollector
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\FileSymbols
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\FunctionDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\LcsMatcher
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\MemberMerger
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\NativeTypePrinter
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\ParameterDoc
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\ParameterMerger
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\ParameterModifiers
+ * @uses \PhpAiToolkit\DocGen\Analysis\Doc\PhpDocParserBridge
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\SymbolContext
+ * @uses \PhpAiToolkit\DocGen\Analysis\Diff\SymbolFingerprint
+ * @uses \PhpAiToolkit\DocGen\Analysis\Model\TypeSignature
+ * @uses \PhpAiToolkit\DocGen\Analysis\Parse\UseMapCollector
+ */
 #[CoversClass(FunctionMerger::class)]
 #[UsesClass(AstParser::class)]
 #[UsesClass(ClassLikeBuilder::class)]

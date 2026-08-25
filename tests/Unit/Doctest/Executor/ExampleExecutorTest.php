@@ -26,6 +26,21 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Executor\ExampleExecutor
+ * @uses \PhpAiToolkit\Doctest\Parser\Example
+ * @uses \PhpAiToolkit\Doctest\Scanner\Target
+ * @uses \PhpAiToolkit\Doctest\Assertion\Statement
+ * @uses \PhpAiToolkit\Doctest\Assertion\Assertion
+ * @uses \PhpAiToolkit\Doctest\Assertion\AssertionParser
+ * @uses \PhpAiToolkit\Doctest\Assertion\AssertionResult
+ * @uses \PhpAiToolkit\Doctest\Assertion\ParsedExample
+ * @uses \PhpAiToolkit\Doctest\Executor\ExecutionResult
+ * @uses \PhpAiToolkit\Doctest\Executor\ExecutionContext
+ * @uses \PhpAiToolkit\Doctest\Executor\ExpressionEvaluator
+ * @uses \PhpAiToolkit\Doctest\Executor\Evaluation
+ * @uses \PhpAiToolkit\Doctest\Executor\ExceptionMatcher
+ */
 #[CoversClass(ExampleExecutor::class)]
 #[UsesClass(Example::class)]
 #[UsesClass(Target::class)]

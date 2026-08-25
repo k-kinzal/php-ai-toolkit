@@ -16,6 +16,10 @@ use const T_FUNCTION;
 use const T_STRING;
 use const T_WHITESPACE;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\Token\ClassLikeTokenMatcher
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Token\PhpTokenNavigator
+ */
 #[CoversClass(ClassLikeTokenMatcher::class)]
 #[UsesClass(PhpTokenNavigator::class)]
 final class ClassLikeTokenMatcherTest extends TestCase

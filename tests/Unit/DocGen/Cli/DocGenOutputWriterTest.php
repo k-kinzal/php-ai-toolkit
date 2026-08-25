@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Cli\DocGenOutputWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Cli\DocGenOutputWriter
+ */
 #[CoversClass(DocGenOutputWriter::class)]
 final class DocGenOutputWriterTest extends TestCase
 {

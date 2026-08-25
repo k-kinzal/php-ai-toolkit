@@ -15,6 +15,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\ErrorFormatter\HumanFileErrorPrinter
+ * @uses \PhpAiToolkit\PhpStan\ErrorFormatter\ErrorGutter
+ * @uses \PhpAiToolkit\PhpStan\ErrorFormatter\ErrorSourceReader
+ * @uses \PhpAiToolkit\PhpStan\ErrorFormatter\HumanErrorPrinter
+ */
 #[CoversClass(HumanFileErrorPrinter::class)]
 #[UsesClass(ErrorGutter::class)]
 #[UsesClass(ErrorSourceReader::class)]

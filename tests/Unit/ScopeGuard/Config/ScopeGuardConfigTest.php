@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Config\ScopeGuardConfig
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
+ */
 #[CoversClass(ScopeGuardConfig::class)]
 #[UsesClass(ReportConfig::class)]
 final class ScopeGuardConfigTest extends TestCase

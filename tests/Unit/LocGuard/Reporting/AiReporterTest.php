@@ -19,6 +19,19 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Reporting\AiReporter
+ * @uses \PhpAiToolkit\LocGuard\Analysis\AnalysisResult
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FileMetric\FileMetric
+ * @uses \PhpAiToolkit\LocGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\LocGuard\Reporting\AiReportGuidance
+ * @uses \PhpAiToolkit\LocGuard\Reporting\AiReportSummary
+ * @uses \PhpAiToolkit\LocGuard\Reporting\AiViolationAction
+ * @uses \PhpAiToolkit\LocGuard\Reporting\AiViolationFormatter
+ * @uses \PhpAiToolkit\LocGuard\Analysis\Violation
+ * @uses \PhpAiToolkit\LocGuard\Reporting\ViolationFieldComparator
+ * @uses \PhpAiToolkit\LocGuard\Reporting\ViolationSorter
+ */
 #[CoversClass(AiReporter::class)]
 #[UsesClass(AnalysisResult::class)]
 #[UsesClass(FileMetric::class)]

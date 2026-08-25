@@ -35,7 +35,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
-          php-version: '8.4'
+          php-version: '8.5'
           extensions: mbstring, pcntl, gd
           # The site links every method to the test cases covering it, which
           # needs a coverage report. pcov is several times faster than Xdebug
@@ -43,21 +43,25 @@ jobs:
           coverage: pcov
 
       - name: Select the matching lock file
-        run: cp composer.lock.php-8.4 composer.lock
+        run: cp composer.lock.php-8.5 composer.lock
 
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
         with:
           dependency-versions: locked
           composer-options: --prefer-dist
+          require-lock-file: true
+
+      - name: Check installed platform requirements
+        run: composer check-platform-reqs
 
       - name: Restore the DocGen cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: build/doc-gen-cache
-          key: doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock.php-8.4') }}-${{ github.sha }}
+          key: doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock.php-8.5') }}-${{ github.sha }}
           restore-keys: |
-            doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock.php-8.4') }}-
+            doc-gen-${{ runner.os }}-${{ hashFiles('composer.lock.php-8.5') }}-
             doc-gen-${{ runner.os }}-
 
       - name: Generate the coverage report the site reads

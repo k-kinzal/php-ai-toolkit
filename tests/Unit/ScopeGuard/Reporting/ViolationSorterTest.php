@@ -12,6 +12,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Reporting\ViolationSorter
+ * @uses \PhpAiToolkit\ScopeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Violation
+ * @uses \PhpAiToolkit\ScopeGuard\Reporting\ViolationFieldComparator
+ */
 #[CoversClass(ViolationSorter::class)]
 #[UsesClass(ReportConfig::class)]
 #[UsesClass(Violation::class)]

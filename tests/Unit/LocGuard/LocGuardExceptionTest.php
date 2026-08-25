@@ -9,6 +9,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\LocGuardException
+ */
 #[CoversClass(LocGuardException::class)]
 final class LocGuardExceptionTest extends TestCase
 {

@@ -18,6 +18,18 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Config\ConfigLoader
+ * @uses \PhpAiToolkit\TreeGuard\Config\ConfigScalarReader
+ * @uses \PhpAiToolkit\TreeGuard\Config\ConfigStringListReader
+ * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfigReader
+ * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfig
+ * @uses \PhpAiToolkit\TreeGuard\Config\RuleConfigReader
+ * @uses \PhpAiToolkit\TreeGuard\Config\RuleListConfigReader
+ * @uses \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig
+ * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ */
 #[CoversClass(ConfigLoader::class)]
 #[UsesClass(ConfigScalarReader::class)]
 #[UsesClass(ConfigStringListReader::class)]

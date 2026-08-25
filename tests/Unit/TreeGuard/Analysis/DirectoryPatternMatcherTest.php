@@ -8,6 +8,9 @@ use PhpAiToolkit\TreeGuard\Analysis\DirectoryPatternMatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Analysis\DirectoryPatternMatcher
+ */
 #[CoversClass(DirectoryPatternMatcher::class)]
 final class DirectoryPatternMatcherTest extends TestCase
 {

@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiMethodPolicy;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiMethodPolicy
+ */
 #[CoversClass(PhpUnitMockApiMethodPolicy::class)]
 final class PhpUnitMockApiMethodPolicyTest extends TestCase
 {

@@ -16,6 +16,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Filesystem\DirectoryTreeScanner
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListingReader
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\PathInclusionPolicy
+ * @uses \PhpAiToolkit\TreeGuard\Config\ReportConfig
+ * @uses \PhpAiToolkit\TreeGuard\Config\TreeGuardConfig
+ * @uses \PhpAiToolkit\TreeGuard\TreeGuardException
+ * @uses \PhpAiToolkit\TreeGuard\Filesystem\TreeGuardPathResolver
+ */
 #[CoversClass(DirectoryTreeScanner::class)]
 #[UsesClass(DirectoryListing::class)]
 #[UsesClass(DirectoryListingReader::class)]

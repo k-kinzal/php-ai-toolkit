@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\Scope\ExemptNamespaces
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ */
 #[CoversClass(ExemptNamespaces::class)]
 #[UsesClass(NamespaceLineage::class)]
 final class ExemptNamespacesTest extends TestCase

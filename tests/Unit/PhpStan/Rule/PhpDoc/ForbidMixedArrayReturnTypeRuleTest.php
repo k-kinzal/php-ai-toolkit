@@ -8,8 +8,8 @@ use Override;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\ForbidMixedArrayReturnTypeRule;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\MixedArrayReturnTypeInspector;
 use PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
-use PhpAiToolkit\PhpStan\Rule\Shared\RulePathMatcher;
-use PhpAiToolkit\PhpStan\Rule\Shared\RulePathNormalizer;
+use PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathMatcher;
+use PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -18,6 +18,11 @@ use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * @extends RuleTestCase<ForbidMixedArrayReturnTypeRule>
+ * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\ForbidMixedArrayReturnTypeRule
+ * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\MixedArrayReturnTypeInspector
+ * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathMatcher
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer
  */
 #[CoversClass(ForbidMixedArrayReturnTypeRule::class)]
 #[UsesClass(MixedArrayReturnTypeInspector::class)]

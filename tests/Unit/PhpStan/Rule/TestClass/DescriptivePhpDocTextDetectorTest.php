@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector
+ */
 #[CoversClass(DescriptivePhpDocTextDetector::class)]
 final class DescriptivePhpDocTextDetectorTest extends TestCase
 {

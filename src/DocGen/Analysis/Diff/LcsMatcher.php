@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace PhpAiToolkit\DocGen\Analysis\Diff;
 
 use function array_fill;
+use function array_keys;
+use function array_reverse;
 use function array_slice;
 use function count;
 use function max;
+use function min;
 
 /**
  * Matches two sequences by their longest common subsequence.
@@ -40,20 +43,25 @@ final class LcsMatcher
         $baseCount = count($base);
         $headCount = count($head);
         $prefix = 0;
-        while ($prefix < $baseCount && $prefix < $headCount && $base[$prefix] === $head[$prefix]) {
+        foreach ($base as $index => $line) {
+            if ($index >= $headCount || $line !== $head[$index]) {
+                break;
+            }
+
             $prefix++;
         }
 
         $suffix = 0;
-        while (
-            $suffix < $baseCount - $prefix && $suffix < $headCount - $prefix
-            && $base[$baseCount - 1 - $suffix] === $head[$headCount - 1 - $suffix]
-        ) {
+        foreach (array_fill(0, min($baseCount - $prefix, $headCount - $prefix), null) as $offset => $_) {
+            if ($base[$baseCount - 1 - $offset] !== $head[$headCount - 1 - $offset]) {
+                break;
+            }
+
             $suffix++;
         }
 
         $operations = [];
-        for ($index = 0; $index < $prefix; $index++) {
+        foreach (array_fill(0, $prefix, null) as $index => $_) {
             $operations[] = ['base' => $index, 'head' => $index];
         }
 
@@ -68,7 +76,7 @@ final class LcsMatcher
             ];
         }
 
-        for ($index = 0; $index < $suffix; $index++) {
+        foreach (array_fill(0, $suffix, null) as $index => $_) {
             $operations[] = ['base' => $baseCount - $suffix + $index, 'head' => $headCount - $suffix + $index];
         }
 
@@ -106,13 +114,10 @@ final class LcsMatcher
     {
         $baseCount = count($base);
         $headCount = count($head);
-        $table = [];
-        for ($row = 0; $row <= $baseCount; $row++) {
-            $table[$row] = array_fill(0, $headCount + 1, 0);
-        }
+        $table = array_fill(0, $baseCount + 1, array_fill(0, $headCount + 1, 0));
 
-        for ($row = $baseCount - 1; $row >= 0; $row--) {
-            for ($column = $headCount - 1; $column >= 0; $column--) {
+        foreach (array_reverse(array_keys($base)) as $row) {
+            foreach (array_reverse(array_keys($head)) as $column) {
                 $table[$row][$column] = $base[$row] === $head[$column]
                     ? $table[$row + 1][$column + 1] + 1
                     : max($table[$row + 1][$column], $table[$row][$column + 1]);
@@ -141,7 +146,11 @@ final class LcsMatcher
         $headCount = count($head);
         $row = 0;
         $column = 0;
-        while ($row < $baseCount && $column < $headCount) {
+        foreach (array_fill(0, $baseCount + $headCount, null) as $_) {
+            if ($row >= $baseCount || $column >= $headCount) {
+                break;
+            }
+
             if ($base[$row] === $head[$column]) {
                 $operations[] = ['base' => $row, 'head' => $column];
                 $row++;
@@ -171,12 +180,12 @@ final class LcsMatcher
      */
     public function tail(array $operations, int $baseCount, int $headCount, int $row, int $column): array
     {
-        for ($index = $row; $index < $baseCount; $index++) {
-            $operations[] = ['base' => $index, 'head' => null];
+        foreach (array_fill(0, max(0, $baseCount - $row), null) as $offset => $_) {
+            $operations[] = ['base' => $row + $offset, 'head' => null];
         }
 
-        for ($index = $column; $index < $headCount; $index++) {
-            $operations[] = ['base' => null, 'head' => $index];
+        foreach (array_fill(0, max(0, $headCount - $column), null) as $offset => $_) {
+            $operations[] = ['base' => null, 'head' => $column + $offset];
         }
 
         return $operations;

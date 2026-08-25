@@ -12,6 +12,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Executor\ExpressionEvaluator
+ * @uses \PhpAiToolkit\Doctest\Executor\ExecutionContext
+ * @uses \PhpAiToolkit\Doctest\Executor\Evaluation
+ */
 #[CoversClass(ExpressionEvaluator::class)]
 #[UsesClass(ExecutionContext::class)]
 #[UsesClass(Evaluation::class)]

@@ -32,7 +32,12 @@ composer require --dev k-kinzal/php-ai-toolkit
 
 Read the template from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-tree-guard/tree.yaml` and apply it to the project root as `tree.yaml`.
 
-The starter template scans the project root (`paths: ['.']`) so that structure rules reach every directory of the repository, including the root itself and dotted directories such as `.github`. Keep `exclude` limited to generated and vendored directories, and add the ones the project actually has.
+The starter template scans the project root (`paths: ['.']`) so the global
+forbidden-directory rule reaches the whole repository. The file and directory
+count limits apply to maintained production and unit-test roots, not to the
+repository root where conventional package manifests and tool configuration
+coexist. Keep `exclude` limited to generated and vendored directories, and add
+the ones the project actually has.
 
 The starter template forbids everywhere:
 
@@ -40,7 +45,7 @@ The starter template forbids everywhere:
 |---------|---------|---------|
 | `deny_dirs` | `['scripts', 'Scripts']` | No directory named `scripts` anywhere, including the project root and `.github/`. Put automation in Composer scripts, a Makefile, or a workflow step instead of a loose script directory that AI agents fill with one-off files. |
 
-The starter template enforces on `src/`:
+The starter template enforces on `src/` and `tests/Unit/`:
 
 | Setting | Default | Meaning |
 |---------|---------|---------|
@@ -48,10 +53,9 @@ The starter template enforces on `src/`:
 | `allow` | `['*.php']` | Only PHP files are allowed in source directories. |
 | `file_case` | `pascal` | File stems must be PascalCase (PSR-4 class-per-file naming). |
 | `dir_case` | `pascal` | Directory names must be PascalCase (PSR-4 namespace segments). |
-| `max_files` | `25` | Directories with more than 25 direct files fail. |
-| `max_dirs` | `20` | Directories with more than 20 direct subdirectories fail. |
-
-The limit value itself is allowed. For example, a directory with exactly 25 files passes when `max_files` is `25`.
+| `max_files` | `15` | A maintained code or unit-test directory may contain at most 15 direct files. Split responsibilities before adding a sixteenth. |
+| `max_dirs` | `20` | A maintained code or unit-test directory may contain at most 20 direct subdirectories. Introduce a meaningful grouping before adding a twenty-first. |
+The limit value itself is allowed. A directory with exactly 15 files passes.
 
 ## Pattern Semantics
 
@@ -59,13 +63,32 @@ The limit value itself is allowed. For example, a directory with exactly 25 file
 
 ## Adapting to the Project
 
-Adapt rules to the discovered layout instead of copying blindly:
+Adapt paths and naming rules to the discovered layout; keep the limits on every
+maintained production and unit-test root:
 
-- Scan production roots discovered from Composer autoload. Add `tests/Unit` with `allow: ['*Test.php']` when the project pairs tests with sources.
+- Scan production roots discovered from Composer autoload and the maintained
+  unit-test roots that exercise them. Replace the template's `src/**` and
+  `tests/Unit/**` patterns when the project uses different roots; do not merely
+  leave real code outside the limited paths.
 - Add `max_depth` (for example `3`) on the root rule when the project keeps namespaces shallow.
 - Add `deny` globs for forbidden name patterns such as `'*Helper.php'` when the project bans them, and `deny_dirs` globs on `path: '**'` for directory names the project bans everywhere.
 - Add `require: ['README.md']` style rules for directories that must carry a specific file.
 - Use `exclude` for generated directories only. Do not add broad excludes just to make violations pass; fix the structure or report the exact directories that need a project-level decision.
+
+Do not apply the count limits to the repository root simply to claim broader
+coverage: package manifests and independent tool configs do not form one source
+responsibility. Conversely, do not narrow the scan to a hand-picked subset of
+maintained code.
+
+Do not raise `max_files` above 15 or `max_dirs` above 20 to fit the existing
+production or unit-test tree. The existing tree is evidence to redesign, not the
+policy. Group files by responsibility, move internal implementation behind
+meaningful namespaces, and keep released public facades at their existing names.
+Introducing TreeGuard does not authorize a public API change.
+
+Do not invent incidental buckets such as `Common`, `Shared`, `Helpers`, or a
+numbered split. The new directories must express stable ownership or dependency
+boundaries that Deptrac can enforce.
 
 ## Reporter
 

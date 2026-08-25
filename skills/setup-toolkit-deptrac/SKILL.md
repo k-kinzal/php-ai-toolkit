@@ -10,7 +10,9 @@ description: >-
 
 # Setup Deptrac (Discovered Architecture Boundaries)
 
-This skill configures Deptrac by discovering the project's actual boundaries first, then defining dependency direction between those boundaries. Do not start from a preferred architecture model.
+This skill configures Deptrac around the architecture the project should have.
+Current directories and dependencies are evidence, not the model: a configuration
+that merely permits the existing graph makes a poor design permanently green.
 
 ## Prerequisites
 
@@ -20,13 +22,16 @@ Inspect `composer.json` before installing:
 - PHPStan version constraints, because current Deptrac releases may constrain PHPStan
 - Autoload roots, package type, framework dependencies, `bin` entries, and existing scripts
 
-Prefer Composer when it resolves cleanly:
+Derive the constraint before invoking Composer. A single-runtime application may
+select one compatible line. A library or tool with a PHP support range must use a
+union that resolves on every supported minor and verify every maintained lock. For
+this toolkit's PHP 8.0+ matrix that is:
 
 ```bash
-composer require --dev deptrac/deptrac
+composer require --dev "deptrac/deptrac:^0.24 || ^1.0 || ^2.0 || ^3.0 || ^4.6"
 ```
 
-Do not use `--ignore-platform-reqs` to force Deptrac into an incompatible project. If the project is a library or developer tool that supports old PHP minors, allow Composer constraints to choose different Deptrac versions per PHP runtime instead of forcing one version for every PHP version. A normal single `composer.lock` is fine when it can represent the supported dependency graph. Use PHP-versioned lock files only when old PHP support requires a different graph and the project needs supply-chain pinning. For example, a PHP 8.0+ library may need a constraint like `^0.24 || ^1.0 || ^2.0 || ^3.0 || ^4.0` so PHP 8.0 can resolve an older Deptrac while newer PHP versions resolve a newer one.
+Do not use `--ignore-platform-reqs` to force Deptrac into an incompatible project. If the project is a library or developer tool that supports old PHP minors, allow Composer constraints to choose different Deptrac versions per PHP runtime instead of forcing one version for every PHP version. A normal single `composer.lock` is fine when it can represent the supported dependency graph. Use PHP-versioned lock files only when old PHP support requires a different graph and the project needs supply-chain pinning. The union above is an example derived for this toolkit, not a literal to copy into projects with a different matrix.
 
 Do not add `config.platform.php` just to make all environments use the oldest PHP dependency set unless the target project intentionally locks one dependency graph. Use platform overrides only for temporary compatibility checks.
 
@@ -54,18 +59,34 @@ rg -n '^namespace |^use ' src app lib packages modules 2>/dev/null
 Work in this order:
 
 1. Identify production analysis paths from Composer autoload roots. Usually this is `src/` or `app/`, not `tests/`.
-2. List candidate layers from real directory or namespace groups. Prefer names already present in code: `Rule`, `Support`, `Cli`, `Command`, `Analyzer`, `Reporter`, `Domain`, `UseCase`, `Http`, `Infrastructure`, module names, package names.
+2. Identify responsibilities and trust boundaries from behavior, entry points,
+   public contracts, and external IO. Then compare them with the real directories
+   and namespaces.
 3. For each candidate, write why it is a boundary. A directory is not automatically a layer; it needs a responsibility boundary or dependency rule worth enforcing.
 4. Drop candidates that are too small, purely incidental, generated, or only exist to hold exceptions/types with no useful dependency policy.
-5. Define dependency direction from project docs, naming, entry points, and current dependency evidence. Current dependencies are evidence, not automatic permission.
-6. Create `deptrac.yaml` only after the layer list and intended direction are clear.
+5. Define the dependency direction that keeps policy and core behavior independent
+   of entry points and infrastructure. Current dependencies are never automatic
+   permission.
+6. Refactor internal code until the physical structure expresses those boundaries.
+   Preserve released public facades and signatures; introducing Deptrac does not
+   authorize a public API change.
+7. Create `deptrac.yaml` only after the intended layer table and the internal moves
+   agree.
 
 Before writing the config, form a small table for yourself:
 
 | Layer | Collector basis | Responsibility | May depend on |
 |-------|-----------------|----------------|---------------|
 
-If this table cannot be filled without guessing, do not invent a strict architecture. Report that Deptrac is not useful yet or that a human architecture decision is needed.
+If this table cannot be filled without guessing, ask for the missing architecture
+decision before writing the config. Do not skip Deptrac and do not create a
+zero-value ruleset just to finish adoption.
+
+For a flat library, keep the stable public entry points at their existing namespace
+and move implementation behind responsibility-based internal namespaces. A long
+`classLike` regular expression that enumerates today's classes is not layering; it
+is an allowlist of the current accident. Prefer directory collectors after the
+structure has been repaired.
 
 ## Examples
 
@@ -89,7 +110,9 @@ Prefer collectors in this order:
 4. `bool` plus `layer` when a broad layer needs exclusions.
 5. `private: true` on collectors for implementation classes that must only be used inside the same layer.
 
-Every production class-like token should belong to at least one intentional layer, unless the project intentionally leaves a thin public surface unlayered. If many tokens are unassigned, fix collectors before accepting violations.
+Every production class-like token should belong to one intentional layer. A thin
+public facade can have its own layer; leaving it unassigned hides dependencies.
+Fix the structure or collectors until `debug:unassigned` is empty.
 
 ## Ruleset Strategy
 
@@ -110,10 +133,11 @@ Use these heuristics:
 If `deptrac.yaml` already exists, merge rather than overwrite:
 
 - Keep existing `paths`, `exclude_files`, `imports`, and custom `services` unless they are wrong.
-- Preserve existing layers that match real architecture.
+- Preserve existing layers that match the intended architecture.
 - Replace vague catch-all layers with precise collectors.
 - Do not add broad mutual access just to make analysis pass.
-- Do not suppress violations during setup. Fix them or leave a clear report of what needs a project-level architecture decision.
+- Do not suppress violations or add reciprocal dependencies during setup. Fix the
+  internal design or stop for a project-level architecture decision.
 
 ## Recommended Composer Scripts
 

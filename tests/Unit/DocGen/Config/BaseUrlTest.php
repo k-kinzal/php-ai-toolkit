@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Config\BaseUrl
+ * @uses \PhpAiToolkit\DocGen\DocGenException
+ */
 #[CoversClass(BaseUrl::class)]
 #[UsesClass(DocGenException::class)]
 final class BaseUrlTest extends TestCase

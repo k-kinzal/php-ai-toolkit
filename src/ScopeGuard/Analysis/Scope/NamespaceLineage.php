@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\ScopeGuard\Analysis\Scope;
 
-use function array_slice;
-use function count;
 use function explode;
 use function implode;
 use function ltrim;
-use function min;
 use function str_starts_with;
 use function strrpos;
 use function substr;
@@ -78,13 +75,16 @@ final class NamespaceLineage
     {
         $firstSegments = $first === '' ? [] : explode('\\', $first);
         $secondSegments = $second === '' ? [] : explode('\\', $second);
-        $shared = 0;
-        $limit = min(count($firstSegments), count($secondSegments));
+        $sharedSegments = [];
 
-        while ($shared < $limit && $firstSegments[$shared] === $secondSegments[$shared]) {
-            $shared++;
+        foreach ($firstSegments as $index => $segment) {
+            if (($secondSegments[$index] ?? null) !== $segment) {
+                break;
+            }
+
+            $sharedSegments[] = $segment;
         }
 
-        return implode('\\', array_slice($firstSegments, 0, $shared));
+        return implode('\\', $sharedSegments);
     }
 }

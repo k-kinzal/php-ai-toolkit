@@ -8,6 +8,9 @@ use PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Filesystem\DirectoryListing
+ */
 #[CoversClass(DirectoryListing::class)]
 final class DirectoryListingTest extends TestCase
 {

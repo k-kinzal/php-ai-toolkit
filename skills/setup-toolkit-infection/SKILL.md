@@ -31,19 +31,22 @@ Inspect the project before configuring:
   with a `.dist` suffix.
 - Check that a coverage driver is available. Infection needs pcov or Xdebug.
 
-Install Infection:
+Derive the dependency constraint before installing Infection. A single-runtime
+application may let Composer select the line supported by that runtime. A library
+or tool with a PHP support matrix must use a union that resolves on every supported
+minor and verify every maintained lock. For this toolkit's PHP 8.0+ matrix that is:
 
 ```bash
-composer require --dev infection/infection
+composer require --dev "infection/infection:^0.26.19 || ^0.27 || ^0.28 || ^0.29 || ^0.30 || ^0.31 || ^0.32 || ^0.33 || ^0.34 || ^0.35"
 composer config allow-plugins.infection/extension-installer true
 ```
 
 Infection needs PHP 8.1 or later, and each Infection line supports a narrower PHP
 range than this toolkit does. In a project that supports older PHP versions, pin the
 mutation gate to one modern PHP version rather than narrowing the Composer
-constraint: `composer require --dev "infection/infection:^0.26.19 || ^0.27 || ^0.28
-|| ^0.29 || ^0.30 || ^0.31 || ^0.32 || ^0.33 || ^0.34 || ^0.35"` keeps every
-supported PHP version installable while CI scores mutants on the newest one.
+constraint. The union above keeps every supported PHP version installable while CI
+scores mutants on the newest one. Do not copy that union when the target's PHP
+range differs; derive its own resolvable constraint.
 
 ## Templates
 
@@ -68,11 +71,18 @@ finds from `infection.json5`, `infection.json`, `infection.json5.dist`,
 `infection.json.dist`, so an unrelated file dropped into the project root can
 silently take over the gate.
 
-Put the whole-tree ratchet in the file and the changed-lines bar on the command
+Put the whole-tree baseline in the file and the changed-lines bar on the command
 line. Pass `--ignore-msi-with-no-mutations` with the changed-lines flags rather than
 setting `ignoreMsiWithNoMutations` in the file: a change that mutates nothing must
 not score 0%, but a whole-tree run that generates nothing is a misconfiguration and
 should fail rather than pass silently.
+
+Check `vendor/bin/infection --version` before copying version-specific keys. The
+shipped configuration targets the current isolated mutation job (0.32.3 or later)
+and includes `timeoutsAsEscaped`, `maxTimeouts`, and the 0.34+
+`testFrameworkExtraArgs`. When a target genuinely runs an older line, apply the
+documented spelling/limitation deliberately; a schema-invalid file is not a
+cross-version configuration.
 
 ## Why Two Thresholds
 
@@ -83,19 +93,20 @@ Infection reports two scores:
 - **Covered MSI** — killed mutants over the mutants in covered code only. It answers
   "where tests do run, do they assert anything".
 
-A whole-tree threshold has to sit at whatever the project already reaches, or every
-build fails until the entire backlog is paid off. Changed lines carry no such
-backlog: code being written right now can be held to the bar the project wants, and
-that is the only moment where enforcing it is cheap.
+A measured score describes the current suite; it does not define an acceptable
+suite. The toolkit therefore supplies fixed minimums. Adoption includes paying
+down enough weak tests and design debt to reach them rather than lowering the gate
+to the score that happened to be measured.
 
 | Scope | Where the numbers live | `minMsi` | `minCoveredMsi` | Why |
 |-------|------------------------|----------|-----------------|-----|
-| Whole source tree | `infection.json5` | measured score, rounded down | measured score, rounded down | Ratchet: no regression against what the branch already achieves |
-| Changed lines | `--min-msi` / `--min-covered-msi` in the Composer script | the project's equivalent-mutant ceiling | the same | New code is expected to be verified, not merely executed |
+| Whole source tree | `infection.json5` | 80 | 80 | Fixed toolkit policy for the complete production tree |
+| Changed lines | `--min-msi` / `--min-covered-msi` in CI | 85 | 85 | Fixed toolkit policy for new code |
 
 ## Setting the Thresholds
 
-Measure before choosing numbers. Never copy the values from another project.
+The shipped 80/80 whole-tree and 85/85 changed-lines values are fixed policy, not
+placeholders or measurements.
 
 1. Run the gate with the thresholds neutralised:
 
@@ -103,35 +114,25 @@ Measure before choosing numbers. Never copy the values from another project.
    vendor/bin/infection --configuration=infection.json5 --threads=max --min-msi=0 --min-covered-msi=0
    ```
 
-2. Read the `Mutation Score Indicator (MSI)` and `Covered Code MSI` lines from the
-   summary and round each down to a whole number. Those are the whole-tree
-   thresholds. Leave a further point of headroom when CI scores mutants on a
-   different PHP or PHPUnit version than the measurement did: a threshold that sits
-   exactly on the measured score turns red on a mutant that a different runtime
-   classifies differently, and the ratchet still catches the real thing, because a
-   suite that stops verifying loses mutants by the dozen, not by the one.
-3. Set the changed-lines threshold from the project's equivalent-mutant ceiling,
-   not from a round number. Read `build/infection/per-mutator.md`, find the mutators
-   with the worst kill rates, and open `build/infection/escaped.log` on a few of
-   them. Some escapes are missing tests; some are mutants no test can kill, which in
-   PHP most often means a reordered `??` in optional constructor injection
-   (`$this->x = $x ?? new X()` becoming `new X() ?? $x`) where the collaborator is
-   stateless. Subtract the unkillable ones from the whole and set the bar just under
-   what remains. Note that this toolkit's `ForbiddenCommentRule` rejects
-   `@infection-ignore-all`, so there is no annotation escape hatch: a bar set above
-   what the code can reach fails honest work, and a gate that fails honest work gets
-   weakened rather than met.
-4. Check the number against real changes before settling on it. Score the last few
-   commits with `--git-diff-lines --git-diff-base=origin/<default branch>` and see
-   what they land at. A large diff averages out; a small one is noisy, because two
-   unkillable mutants in a twenty-mutant diff cost ten points on their own. Pick a
-   bar the small diffs survive, or the gate will be met by shrinking pull requests
-   rather than by testing them.
+2. If either whole-tree score is below 80, keep the template unchanged and fix the
+   suite and production design until both pass. The adoption is incomplete while
+   the default branch cannot meet the baseline.
+3. Read `build/infection/per-mutator.md` and
+   `build/infection/escaped.log`. Add assertions for observable behavior first.
+   When equivalent mutants cluster around an implementation idiom, improve that
+   design instead of treating every survivor as permanent. Optional constructor
+   injection such as `$this->x = $x ?? new X()` is a common example: prefer explicit
+   construction or required dependencies when the fallback exists only for test
+   convenience.
+4. If the project already exceeds a floor, keep the shipped threshold. Record the
+   measured result as evidence that the gate is feasible, not as a new policy.
+   Tighten a threshold only when a human explicitly chooses that quality policy;
+   do not derive it by rounding a single run.
 5. Pass `--ignore-msi-with-no-mutations` on the changed-lines run. A pull request
    that touches only documentation, tests, or configuration produces no mutants, and
    a scoreless run must not be reported as 0%.
-6. Raise the whole-tree thresholds whenever the score rises. That is the whole point
-   of the ratchet, and it is the only edit to the file that should be routine.
+6. Re-measure after changes, but never rewrite policy from the measurement. A
+   later threshold change remains an explicit human decision.
 
 Lowering a threshold to make a red build green defeats the gate. So does disabling a
 mutator, widening `source.excludes`, or pointing the gate at fewer directories. Fix
@@ -144,12 +145,10 @@ of other projects mean, and a trimmed profile makes the number incomparable and
 usually flatters the suite.
 
 Resist disabling a mutator that produces equivalent mutants when it also kills real
-ones. `Coalesce` is the usual temptation in a codebase built on optional constructor
-injection: it survives on every stateless collaborator, yet it still catches genuine
-missing tests on `??` over data. Set the changed-lines bar under the ceiling those
-survivors impose instead, and disable a mutator only when it produces nothing but
-equivalent mutants for the project — with the reason recorded next to the setting
-and the thresholds raised to cover what it no longer generates.
+ones. `Coalesce` still catches genuine missing tests on `??` over data even when a
+particular construction idiom produces equivalent survivors. Improve that idiom;
+disable a mutator only when it produces nothing but equivalent mutants for the
+project, with human approval and the reason recorded next to the setting.
 
 ## Analysis Scope
 
@@ -168,6 +167,20 @@ Exclude a directory only when its tests cannot run in the same job as the gate �
 example code exercised exclusively by a legacy PHPUnit configuration on an older PHP
 version. Write the reason in the file. Do not exclude code because its mutants
 survive.
+
+## Timeouts
+
+`timeout` is an operational starting point, not a quality threshold. Measure the
+slowest relevant mutant test and set it above that duration with enough runner
+headroom; do not keep `10` merely because the first run was green. A timeout must
+not count as a killed mutant:
+
+- Infection 0.32.3 and later must set `timeoutsAsEscaped: true` and
+  `maxTimeouts: 0`.
+- Older supported Infection lines cannot express that policy. Prefer running the
+  isolated mutation job on a current Infection line. If the target is genuinely
+  pinned older, report the limitation and choose a timeout above the measured test
+  duration; do not pretend timeout classification is enforced.
 
 ## Running Against a Pre-generated Coverage Report
 
@@ -212,27 +225,9 @@ Composer scripts earn their place when a command is run by hand on every save, l
 `composer lint`. Mutation testing is not that command, and it does not belong inside
 `composer lint` either: those gates are seconds, this one is minutes.
 
-Say so in the project's documentation, next to the local commands. Otherwise the
-absence reads as an oversight, and the next reader — human or agent — adds
-`composer infection` back the first time it answers "Command infection is not
-defined".
-
-Document the two local commands in the project's own docs instead:
-
-```bash
-php -d memory_limit=1G -d xdebug.mode=coverage vendor/bin/phpunit \
-  --no-extensions --do-not-fail-on-risky \
-  --coverage-xml build/infection-coverage/coverage-xml \
-  --log-junit build/infection-coverage/junit.xml
-
-php -d memory_limit=1G vendor/bin/infection --configuration=infection.json5 \
-  --threads=max --coverage=build/infection-coverage --skip-initial-tests
-```
-
-`--do-not-fail-on-risky` belongs to the coverage run only: it relaxes the exit code
-of a run whose purpose is to produce a coverage report, while `composer test` keeps
-enforcing the strict PHPUnit settings. Drop the flag if the project's suite is green
-with coverage enabled.
+Do not explain this tooling in the target project's product `docs/` or rewrite its
+README or `AGENTS.md`. The workflow and this vendor skill are the development
+documentation unless the user explicitly names another developer-owned location.
 
 ## CI Wiring
 
@@ -246,6 +241,13 @@ four things the other jobs do not:
   `if: github.event_name == 'pull_request'`, a whole-tree step guarded by the
   negation.
 
+Use the highest PHP version in the target's supported matrix for this one-off job,
+not the template's literal version. Derive its extensions from Composer platform
+requirements and the commands in the job, require the selected lock file to exist,
+and run `composer check-platform-reqs` after installation. Treat job timeout,
+memory limits, and `--threads` as measured operational values: size them from the
+observed run and runner capacity without altering mutation scope or thresholds.
+
 Take the base branch from `origin/${GITHUB_BASE_REF}` rather than hardcoding the
 default branch. GitHub sets that variable on pull request events, so a pull request
 against a release branch is scored against that branch. Read it as a shell
@@ -258,10 +260,9 @@ injection waiting to happen.
 Mutation thresholds are the first thing an agent lowers when a build goes red, so
 treat these files the way the project treats its other non-negotiable configuration:
 
-- Add `infection.json5` to the `permissions.deny` list of `.claude/settings.json`,
-  alongside the PHPUnit and PHPStan configuration. The changed-lines thresholds
-  cannot be protected that way — they are flags in `composer.json`, which has to
-  stay editable for dependency work — so say so rather than implying otherwise.
+- Recommend protecting `infection.json5` in the agent permission system. Do not
+  edit `.claude/settings.json`, `AGENTS.md`, or another agent-owned policy file
+  unless the user explicitly asks for that change.
 - Add the file to `.gitattributes` with `export-ignore` if the project excludes dev
   configuration from its distributed archive.
 - Keep `ForbiddenCommentRule` enabled. It rejects `@infection-ignore-all`, which is

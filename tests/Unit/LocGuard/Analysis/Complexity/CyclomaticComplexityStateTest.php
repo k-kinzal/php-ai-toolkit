@@ -11,6 +11,9 @@ use PHPUnit\Framework\TestCase;
 
 use const T_MATCH;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityState
+ */
 #[CoversClass(CyclomaticComplexityState::class)]
 final class CyclomaticComplexityStateTest extends TestCase
 {

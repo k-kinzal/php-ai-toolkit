@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpAiToolkit\DocGen\Render;
 
 use function array_map;
+use function array_slice;
 
 use Closure;
 
@@ -99,9 +100,14 @@ final class MarkdownRenderer
         $language = $match[1];
         $code = [];
         $index++;
-        while ($index < count($lines) && trim($lines[$index]) !== '```') {
-            $code[] = $lines[$index];
-            $index++;
+        foreach (array_slice($lines, $index, count($lines) - $index, true) as $lineIndex => $line) {
+            if (trim($line) === '```') {
+                $index = $lineIndex;
+                break;
+            }
+
+            $code[] = $line;
+            $index = $lineIndex + 1;
         }
 
         $codeText = implode("\n", $code);

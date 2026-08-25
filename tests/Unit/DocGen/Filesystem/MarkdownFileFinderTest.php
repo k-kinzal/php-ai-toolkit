@@ -11,6 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Filesystem\MarkdownFileFinder
+ * @uses \PhpAiToolkit\DocGen\Filesystem\DocGenPathResolver
+ * @uses \PhpAiToolkit\DocGen\Filesystem\SourceFileFinder
+ */
 #[CoversClass(MarkdownFileFinder::class)]
 #[UsesClass(DocGenPathResolver::class)]
 #[UsesClass(SourceFileFinder::class)]

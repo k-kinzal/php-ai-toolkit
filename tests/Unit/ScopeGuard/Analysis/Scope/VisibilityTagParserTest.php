@@ -8,6 +8,9 @@ use PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\Scope\VisibilityTagParser
+ */
 #[CoversClass(VisibilityTagParser::class)]
 final class VisibilityTagParserTest extends TestCase
 {

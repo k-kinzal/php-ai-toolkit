@@ -8,6 +8,9 @@ use PhpAiToolkit\TreeGuard\Cli\TreeGuardHelpText;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\TreeGuard\Cli\TreeGuardHelpText
+ */
 #[CoversClass(TreeGuardHelpText::class)]
 final class TreeGuardHelpTextTest extends TestCase
 {

@@ -11,6 +11,9 @@ use PHPUnit\Framework\TestCase;
 
 use function str_repeat;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Parse\ExprTextPrinter
+ */
 #[CoversClass(ExprTextPrinter::class)]
 final class ExprTextPrinterTest extends TestCase
 {

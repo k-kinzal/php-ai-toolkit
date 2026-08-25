@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Render\HtmlText;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Render\HtmlText
+ */
 #[CoversClass(HtmlText::class)]
 final class HtmlTextTest extends TestCase
 {

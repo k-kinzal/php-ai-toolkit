@@ -8,6 +8,9 @@ use PhpAiToolkit\Doctest\Configuration\Configuration;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Configuration\Configuration
+ */
 #[CoversClass(Configuration::class)]
 final class ConfigurationTest extends TestCase
 {

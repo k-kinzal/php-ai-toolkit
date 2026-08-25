@@ -15,6 +15,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorCollector
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\AnonymousClassDetector
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\CommentTextFormatter
+ * @uses \PhpAiToolkit\PhpStan\Rule\Shared\LineOrderedErrors
+ * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector
+ * @uses \PhpAiToolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorBuilder
+ */
 #[CoversClass(SingleLinePhpDocErrorCollector::class)]
 #[UsesClass(AnonymousClassDetector::class)]
 #[UsesClass(CommentTextFormatter::class)]

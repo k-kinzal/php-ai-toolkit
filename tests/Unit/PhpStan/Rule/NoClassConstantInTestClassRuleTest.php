@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\Medium;
 
 /**
  * @extends RuleTestCase<NoClassConstantInTestClassRule>
+ * @covers \PhpAiToolkit\PhpStan\Rule\NoClassConstantInTestClassRule
  */
 #[CoversClass(NoClassConstantInTestClassRule::class)]
 #[Medium]

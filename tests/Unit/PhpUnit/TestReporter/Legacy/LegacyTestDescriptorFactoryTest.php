@@ -9,6 +9,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\Legacy\LegacyTestDescriptorFactory
+ */
 #[CoversClass(LegacyTestDescriptorFactory::class)]
 final class LegacyTestDescriptorFactoryTest extends TestCase
 {

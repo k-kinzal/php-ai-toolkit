@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry
+ */
 #[CoversClass(MagicMethodRegistry::class)]
 final class MagicMethodRegistryTest extends TestCase
 {

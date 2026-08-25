@@ -8,6 +8,9 @@ use PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\Scope\NamespaceLineage
+ */
 #[CoversClass(NamespaceLineage::class)]
 final class NamespaceLineageTest extends TestCase
 {
@@ -76,6 +79,11 @@ final class NamespaceLineageTest extends TestCase
         self::assertSame('App', (new NamespaceLineage())->commonAncestorOf('App\\Domain\\Order', 'App\\Http'));
     }
 
+    public function testCommonAncestorOfStopsWhenTheSecondNamespaceEnds(): void
+    {
+        self::assertSame('App', (new NamespaceLineage())->commonAncestorOf('App\\Domain', 'App'));
+    }
+
     public function testCommonAncestorOfStopsAtSegmentBoundary(): void
     {
         self::assertSame('', (new NamespaceLineage())->commonAncestorOf('App', 'Application'));
@@ -84,5 +92,10 @@ final class NamespaceLineageTest extends TestCase
     public function testCommonAncestorOfReturnsGlobalNamespaceWithoutSharedSegment(): void
     {
         self::assertSame('', (new NamespaceLineage())->commonAncestorOf('App\\Domain', ''));
+    }
+
+    public function testCommonAncestorOfReturnsGlobalNamespaceWhenTheFirstNamespaceIsGlobal(): void
+    {
+        self::assertSame('', (new NamespaceLineage())->commonAncestorOf('', 'App\\Domain'));
     }
 }

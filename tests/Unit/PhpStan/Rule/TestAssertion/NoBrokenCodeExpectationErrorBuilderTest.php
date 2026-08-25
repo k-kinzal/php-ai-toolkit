@@ -8,6 +8,9 @@ use PhpAiToolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder
+ */
 #[CoversClass(NoBrokenCodeExpectationErrorBuilder::class)]
 final class NoBrokenCodeExpectationErrorBuilderTest extends TestCase
 {

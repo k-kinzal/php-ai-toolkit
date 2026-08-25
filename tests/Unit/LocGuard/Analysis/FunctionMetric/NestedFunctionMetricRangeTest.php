@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\NestedFunctionMetricRange
+ * @uses \PhpAiToolkit\LocGuard\Analysis\FunctionMetric\FunctionMetric
+ */
 #[CoversClass(NestedFunctionMetricRange::class)]
 #[UsesClass(FunctionMetric::class)]
 final class NestedFunctionMetricRangeTest extends TestCase

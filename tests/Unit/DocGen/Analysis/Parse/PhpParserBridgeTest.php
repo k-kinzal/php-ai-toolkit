@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Analysis\Parse\PhpParserBridge
+ */
 #[CoversClass(PhpParserBridge::class)]
 final class PhpParserBridgeTest extends TestCase
 {

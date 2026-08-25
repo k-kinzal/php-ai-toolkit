@@ -34,6 +34,11 @@ Install the toolkit if missing:
 composer require --dev k-kinzal/php-ai-toolkit
 ```
 
+The target repository's `docs/` and README are product surfaces. DocGen consumes
+their existing product documentation; setup does not add developer-tooling pages
+there. Apart from an explicitly approved public docs badge, configure the generator
+through Composer and workflows only.
+
 ## Configuration
 
 **DocGen has no configuration file.** A run is configured by its options alone, so the command that generated a site
@@ -140,19 +145,33 @@ Read the templates from `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-doc
 
 Adapt both to the project before applying:
 
-- Match the workflow PHP version to a version the project supports, and add the lock-file step the project's CI uses
-  (for example `cp composer.lock.php-8.4 composer.lock` when the repository keeps one lock file per PHP minor).
+- Use the highest PHP version in the project's support matrix unless DocGen cannot
+  run there, and add the lock-file step the project's CI uses (for example
+  `cp composer.lock.php-8.5 composer.lock` for a PHP 8.5 highest minor). Require a
+  selected lock file to exist and run `composer check-platform-reqs` after install.
+- Derive extensions from Composer platform requirements plus the workflow itself:
+  coverage needs pcov or Xdebug, social images need GD with FreeType, and a
+  parallel coverage script needs pcntl. Do not copy the template list blindly.
 - Match the generation command to the project: the Composer script, or `vendor/bin/doc-gen` with the project's own
   options spelled out.
 - Match the `on.push.branches` entry to the default branch, and `DOCS_BRANCH` to the branch Pages serves.
 - Keep the action pins as full commit SHAs with the release tag in a comment, the per-job `contents: write`
   permission, and `pull_request` (never `pull_request_target`) as the preview trigger.
 
+The default-branch and pull-request workflows must generate the same product site.
+Use the same project Composer coverage and DocGen scripts in both, adding only the
+event-derived base URL and `--diff` value for a preview. Omitting coverage, packages,
+exclusions, architecture input, or other content from previews is a separate human
+speed-versus-parity decision; do not infer it from the template or a slow first run.
+Job timeouts, memory, and cache retention are operational values to measure, not
+quality policy.
+
 Pass `--base-url` with the published address at the same time, because that is what makes a shared link render as a
 card: every page then carries its canonical link, its own description, and the Open Graph tags, and the run draws
 `assets/og-image.png` from the site title and the project description (needs `ext-gd`; without it the pages simply
 carry no image). Both workflow templates derive that address from `GITHUB_REPOSITORY`, so a fork or a rename needs
-no edit. Add a docs badge to the README that links to the site, the way docs.rs does:
+no edit. If the user explicitly approves changing the product README, add a docs
+badge that links to the site, the way docs.rs does:
 
 ```markdown
 [![docs](https://img.shields.io/badge/docs-<package>-0969da?logo=php&logoColor=white)](https://<owner>.github.io/<repository>/)

@@ -8,7 +8,7 @@
 
 ## Configuration
 
-The default suffix list is defined in [`extension.neon`](../../extension.neon). You can override the list under `customRules.forbiddenClassLikeNameSuffixes`:
+The default suffix list is defined in [`toolkit.neon`](../../toolkit.neon). You can override the list under `customRules.forbiddenClassLikeNameSuffixes`:
 
 ```neon
 parameters:

@@ -25,6 +25,9 @@ use function proc_close;
 use function proc_open;
 use function stream_get_contents;
 
+/**
+ * @covers \PhpAiToolkit\PhpUnit\TestReporter\Subscriber\TestErroredSubscriber
+ */
 #[CoversClass(TestErroredSubscriber::class)]
 #[Large]
 final class TestErroredSubscriberTest extends TestCase

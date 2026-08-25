@@ -12,6 +12,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Git\GitWorktree
+ * @uses \PhpAiToolkit\DocGen\DocGenException
+ * @uses \PhpAiToolkit\DocGen\Git\GitCommandRunner
+ * @uses \PhpAiToolkit\DocGen\Git\TempDirectory
+ */
 #[CoversClass(GitWorktree::class)]
 #[UsesClass(DocGenException::class)]
 #[UsesClass(GitCommandRunner::class)]

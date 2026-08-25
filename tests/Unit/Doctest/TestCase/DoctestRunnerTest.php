@@ -16,6 +16,9 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Tests\Fixture\Doctest\FixtureDoctestSuite;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\TestCase\DoctestRunner
+ */
 #[CoversClass(DoctestRunner::class)]
 #[Medium]
 final class DoctestRunnerTest extends TestCase

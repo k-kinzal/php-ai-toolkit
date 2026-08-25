@@ -8,6 +8,9 @@ use PhpAiToolkit\ScopeGuard\Cli\ScopeGuardConfigPathResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Cli\ScopeGuardConfigPathResolver
+ */
 #[CoversClass(ScopeGuardConfigPathResolver::class)]
 final class ScopeGuardConfigPathResolverTest extends TestCase
 {

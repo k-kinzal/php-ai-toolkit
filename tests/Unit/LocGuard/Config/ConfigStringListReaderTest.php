@@ -9,6 +9,9 @@ use PhpAiToolkit\LocGuard\LocGuardException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Config\ConfigStringListReader
+ */
 #[CoversClass(ConfigStringListReader::class)]
 final class ConfigStringListReaderTest extends TestCase
 {

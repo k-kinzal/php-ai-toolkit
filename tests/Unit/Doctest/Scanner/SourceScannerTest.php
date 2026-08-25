@@ -15,6 +15,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\Doctest\Scanner\SourceScanner
+ * @uses \PhpAiToolkit\Doctest\Scanner\Target
+ * @uses \PhpAiToolkit\Doctest\Scanner\ParserFactoryBridge
+ */
 #[CoversClass(SourceScanner::class)]
 #[UsesClass(Target::class)]
 #[UsesClass(ParserFactoryBridge::class)]

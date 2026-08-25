@@ -11,6 +11,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\Parse\SourceFileParser
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Parse\PhpParserBridge
+ */
 #[CoversClass(SourceFileParser::class)]
 #[UsesClass(PhpParserBridge::class)]
 final class SourceFileParserTest extends TestCase

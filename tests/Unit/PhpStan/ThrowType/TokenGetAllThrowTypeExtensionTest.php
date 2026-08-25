@@ -13,6 +13,9 @@ use PHPStan\Type\ObjectType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\ThrowType\TokenGetAllThrowTypeExtension
+ */
 #[CoversClass(TokenGetAllThrowTypeExtension::class)]
 final class TokenGetAllThrowTypeExtensionTest extends TestCase
 {

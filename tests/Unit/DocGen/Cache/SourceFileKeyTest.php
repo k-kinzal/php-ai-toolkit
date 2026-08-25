@@ -8,6 +8,9 @@ use PhpAiToolkit\DocGen\Cache\SourceFileKey;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\DocGen\Cache\SourceFileKey
+ */
 #[CoversClass(SourceFileKey::class)]
 final class SourceFileKeyTest extends TestCase
 {

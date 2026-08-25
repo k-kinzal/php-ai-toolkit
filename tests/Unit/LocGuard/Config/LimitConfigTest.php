@@ -8,6 +8,9 @@ use PhpAiToolkit\LocGuard\Config\LimitConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\LocGuard\Config\LimitConfig
+ */
 #[CoversClass(LimitConfig::class)]
 final class LimitConfigTest extends TestCase
 {

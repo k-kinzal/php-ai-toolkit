@@ -14,6 +14,13 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\PhpStan\Support\NonDocCommentContext
+ * @uses \PhpAiToolkit\PhpStan\Support\NonDocCommentArrayContext
+ * @uses \PhpAiToolkit\PhpStan\Support\NonDocCommentCatchContext
+ * @uses \PhpAiToolkit\PhpStan\Support\NonDocCommentTokenClassifier
+ * @uses \PhpAiToolkit\PhpStan\Support\ShortArrayOpeningPolicy
+ */
 #[CoversClass(NonDocCommentContext::class)]
 #[UsesClass(NonDocCommentArrayContext::class)]
 #[UsesClass(NonDocCommentCatchContext::class)]

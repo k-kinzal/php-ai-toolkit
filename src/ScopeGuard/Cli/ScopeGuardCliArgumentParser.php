@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpAiToolkit\ScopeGuard\Cli;
 
-use function count;
-
 use PhpAiToolkit\ScopeGuard\ScopeGuardException;
 
 use function sprintf;
@@ -30,9 +28,14 @@ final class ScopeGuardCliArgumentParser
     public function parse(array $argv): array
     {
         $arguments = ['config' => 'scope.yaml', 'help' => false, 'reporter' => null, 'version' => false];
+        $skipNext = false;
 
-        for ($index = 0; $index < count($argv); $index++) {
-            $arg = $argv[$index];
+        foreach ($argv as $index => $arg) {
+            if ($skipNext) {
+                $skipNext = false;
+                continue;
+            }
+
             if ($arg === '--help' || $arg === '-h') {
                 $arguments['help'] = true;
             } elseif ($arg === '--version' || $arg === '-V') {
@@ -41,14 +44,16 @@ final class ScopeGuardCliArgumentParser
                 if (!isset($argv[$index + 1]) || str_starts_with($argv[$index + 1], '-')) {
                     throw new ScopeGuardException(sprintf('Missing value for %s.', '--config'));
                 }
-                $arguments['config'] = $argv[++$index];
+                $arguments['config'] = $argv[$index + 1];
+                $skipNext = true;
             } elseif (str_starts_with($arg, '--config=')) {
                 $arguments['config'] = substr($arg, 9);
             } elseif ($arg === '--reporter' || $arg === '--format') {
                 if (!isset($argv[$index + 1]) || str_starts_with($argv[$index + 1], '-')) {
                     throw new ScopeGuardException(sprintf('Missing value for %s.', $arg));
                 }
-                $arguments['reporter'] = $argv[++$index];
+                $arguments['reporter'] = $argv[$index + 1];
+                $skipNext = true;
             } elseif (str_starts_with($arg, '--reporter=')) {
                 $arguments['reporter'] = substr($arg, 11);
             } elseif (str_starts_with($arg, '--format=')) {

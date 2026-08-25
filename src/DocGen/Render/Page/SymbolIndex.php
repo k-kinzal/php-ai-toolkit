@@ -10,6 +10,7 @@ use function explode;
 use function in_array;
 use function ksort;
 
+use PhpAiToolkit\DocGen\Render\Page\Component\SymbolRow;
 use PhpAiToolkit\DocGen\Render\RenderKit;
 
 use function str_starts_with;

@@ -10,6 +10,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PhpAiToolkit\ScopeGuard\Analysis\ProjectScan
+ * @uses \PhpAiToolkit\ScopeGuard\Analysis\Declaration\DeclarationIndex
+ */
 #[CoversClass(ProjectScan::class)]
 #[UsesClass(DeclarationIndex::class)]
 final class ProjectScanTest extends TestCase

@@ -63,6 +63,27 @@ parameters:
 Set `allRules: false` to make every rule opt-in. Toolkit adoption keeps the
 default; changing a switch is an explicit project policy decision.
 
+## Redundant PHPStan Diagnostics
+
+The toolkit suppresses a PHPStan or Strict Rules diagnostic only when an enabled
+toolkit rule makes that diagnostic non-actionable. The toolkit error remains as
+the single instruction for fixing the prohibited construct:
+
+| Enabled toolkit rule | Suppressed diagnostic | Scope |
+|----------------------|-----------------------|-------|
+| `noNonPublicMethod` | `method.unused`, `method.finalPrivate`, `consistentConstructor.private` | Private method declarations |
+| `noPrivateMethodInTestClass` | The same private-method diagnostics | Restricted test classes |
+| `noPropertyInTestClass` | `property.unused`, `property.neverRead`, `property.neverWritten`, `property.onlyRead`, `property.onlyWritten` | Restricted test classes |
+| `noClassConstantInTestClass` | `classConstant.unused` | Restricted test classes |
+| `noControlFlowInTestMethod` | PHPStan and Strict Rules diagnostics emitted for the prohibited `if`, loop, `switch`, or `match` node | Test methods in restricted test classes |
+| `requireThrowsTagOnDirectThrow` | `missingType.checkedException` | Direct escaping throws in methods; propagated checked exceptions remain reported |
+
+This is semantic suppression through PHPStan's extension API, not a global
+`ignoreErrors` entry. Disabling the dominating toolkit rule automatically
+restores the corresponding PHPStan diagnostics. Independent findings remain
+visible; for example, an unused private property in production code and a dead
+broad catch are still reported.
+
 ## Parameters
 
 The following values can be customized under `parameters.toolkit` in a project's

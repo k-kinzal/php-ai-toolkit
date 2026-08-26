@@ -390,6 +390,20 @@ services:
         tags:
             - phpstan.ignoreErrorExtension
 
+    toolkit.extension.redundantDiagnostic:
+        class: Toolkit\PhpStan\Extension\RedundantDiagnostic\RedundantDiagnosticErrorExtension
+        arguments:
+            testNamespacePrefixes: %toolkit.testNamespacePrefixes%
+            restrictedTestNamespacePrefixes: %toolkit.restrictedTestNamespacePrefixes%
+            noNonPublicMethod: %toolkit.noNonPublicMethod.enabled%
+            noPrivateMethodInTestClass: %toolkit.noPrivateMethodInTestClass.enabled%
+            noPropertyInTestClass: %toolkit.noPropertyInTestClass.enabled%
+            noClassConstantInTestClass: %toolkit.noClassConstantInTestClass.enabled%
+            noControlFlowInTestMethod: %toolkit.noControlFlowInTestMethod.enabled%
+            requireThrowsTagOnDirectThrow: %toolkit.requireThrowsTagOnDirectThrow.enabled%
+        tags:
+            - phpstan.ignoreErrorExtension
+
     toolkit.extension.visibilityPublicMethod:
         class: Toolkit\PhpStan\Extension\Visibility\VisibilityPublicMethodExtension
         arguments:

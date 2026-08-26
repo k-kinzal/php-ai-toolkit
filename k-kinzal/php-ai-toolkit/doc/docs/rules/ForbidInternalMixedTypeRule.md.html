@@ -73,7 +73,7 @@
 <p>No <code>@visibility</code> tag and <code>@visibility public</code> both mean unrestricted for this rule. Public and protected members are contract surfaces. A private member remains internal, and a member can never be wider than a scope-restricted class containing it.</p>
 <p>The public boundary is allowed to accept or return any deliberate <code>mixed</code> contract. The architectural expectation is that arbitrary input is validated there and that the internal declarations receiving the result use the narrowed type.</p>
 <h3>Inherited Contracts</h3>
-<p>An implementation is allowed to repeat <code>mixed</code> when the corresponding position is imposed by:</p>
+<p>An implementation is allowed to declare <code>mixed</code> when the corresponding position is imposed by:</p>
 <ul><li>A parent method.</li><li>An implemented interface method.</li><li>An abstract method imported from a trait.</li></ul>
 <p>The exception is position-specific. An interface parameter declared as <code>mixed</code> permits that implementation parameter; it does not permit an unrelated return type or another method owned by the implementation.</p>
 <pre class="code-block"><code><span class="tok-kw">interface</span> <span class="tok-id">Decoder</span>
@@ -96,6 +96,8 @@
     }
 }</code></pre>
 <p>This applies equally to vendor, built-in, and same-project public contracts.</p>
+<p>An ancestor parameter with no declared type is implicit <code>mixed</code>. Parameter contravariance therefore requires an override to continue accepting every value, so an explicit <code>mixed</code> in that child parameter is also allowed. This includes implicit <code>mixed</code> nested in an inherited type such as an unparameterized <code>array</code>.</p>
+<p>An omitted ancestor return type does not grant the same exception. Return types are covariant, so the child can and should declare the narrower type it actually returns unless the ancestor explicitly requires <code>mixed</code>.</p>
 <h3>PHP Magic Protocols</h3>
 <p>Recognized PHP magic methods are language-defined protocol methods and their signatures are permitted on restricted classes. Arbitrary names beginning with <code>__</code> are not magic protocols. <code>__construct</code>, <code>__destruct</code>, and <code>__clone</code> continue through the ordinary visibility and inherited-contract checks because they do not impose an arbitrary-value signature by themselves.</p>
 <h3>Templates Are Not Mixed</h3>

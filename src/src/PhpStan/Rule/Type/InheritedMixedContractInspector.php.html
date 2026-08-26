@@ -69,74 +69,77 @@
 <span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">contracts</span>(<span class="tok-var">$class</span>, <span class="tok-var">$methodName</span>) <span class="tok-kw">as</span> <span class="tok-var">$contract</span>) {</span>
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$contract</span>-&gt;<span class="tok-id">getVariants</span>() <span class="tok-kw">as</span> <span class="tok-var">$variant</span>) {</span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a>                <span class="tok-var">$parameters</span> = <span class="tok-var">$variant</span>-&gt;<span class="tok-id">getParameters</span>();</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>                <span class="tok-kw">if</span> (<span class="tok-kw">isset</span>(<span class="tok-var">$parameters</span>[<span class="tok-var">$position</span>]) &amp;&amp; <span class="tok-var">$this</span>-&gt;<span class="tok-id">typeInspector</span>-&gt;<span class="tok-id">contains</span>(<span class="tok-var">$parameters</span>[<span class="tok-var">$position</span>]-&gt;<span class="tok-id">getType</span>())) {</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>                    <span class="tok-kw">return</span> <span class="tok-id">true</span>;</span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>                }</span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>            }</span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        }</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a></span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        <span class="tok-kw">return</span> <span class="tok-id">false</span>;</span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>    }</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>                <span class="tok-kw">if</span> (</span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>                    <span class="tok-kw">isset</span>(<span class="tok-var">$parameters</span>[<span class="tok-var">$position</span>])</span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>                    &amp;&amp; <span class="tok-var">$this</span>-&gt;<span class="tok-id">typeInspector</span>-&gt;<span class="tok-id">containsIncludingImplicit</span>(<span class="tok-var">$parameters</span>[<span class="tok-var">$position</span>]-&gt;<span class="tok-id">getType</span>())</span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>                ) {</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>                    <span class="tok-kw">return</span> <span class="tok-id">true</span>;</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>                }</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>            }</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        }</span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a></span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a><span class="tok-com">     * Reports whether an inherited contract requires a mixed return.</span></span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">allowsReturn</span>(<span class="tok-id">ClassReflection</span> <span class="tok-var">$class</span>, <span class="tok-id">string</span> <span class="tok-var">$methodName</span>): <span class="tok-id">bool</span></span>
-<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>    {</span>
-<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">contracts</span>(<span class="tok-var">$class</span>, <span class="tok-var">$methodName</span>) <span class="tok-kw">as</span> <span class="tok-var">$contract</span>) {</span>
-<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$contract</span>-&gt;<span class="tok-id">getVariants</span>() <span class="tok-kw">as</span> <span class="tok-var">$variant</span>) {</span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>                <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">typeInspector</span>-&gt;<span class="tok-id">contains</span>(<span class="tok-var">$variant</span>-&gt;<span class="tok-id">getReturnType</span>())) {</span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>                    <span class="tok-kw">return</span> <span class="tok-id">true</span>;</span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>                }</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>            }</span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>        }</span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a></span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>        <span class="tok-kw">return</span> <span class="tok-id">false</span>;</span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>    }</span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        <span class="tok-kw">return</span> <span class="tok-id">false</span>;</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>    }</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a></span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a><span class="tok-com">     * Reports whether an inherited contract requires a mixed return.</span></span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">allowsReturn</span>(<span class="tok-id">ClassReflection</span> <span class="tok-var">$class</span>, <span class="tok-id">string</span> <span class="tok-var">$methodName</span>): <span class="tok-id">bool</span></span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>    {</span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">contracts</span>(<span class="tok-var">$class</span>, <span class="tok-var">$methodName</span>) <span class="tok-kw">as</span> <span class="tok-var">$contract</span>) {</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$contract</span>-&gt;<span class="tok-id">getVariants</span>() <span class="tok-kw">as</span> <span class="tok-var">$variant</span>) {</span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>                <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">typeInspector</span>-&gt;<span class="tok-id">contains</span>(<span class="tok-var">$variant</span>-&gt;<span class="tok-id">getReturnType</span>())) {</span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>                    <span class="tok-kw">return</span> <span class="tok-id">true</span>;</span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>                }</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>            }</span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>        }</span>
 <span class="src-line" id="L60"><a class="ln" href="#L60">60</a></span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a><span class="tok-com">     * Returns parent, interface, and abstract-trait method contracts.</span></span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a><span class="tok-com">     * @return list&lt;ExtendedMethodReflection&gt;</span></span>
-<span class="src-line" id="L65"><a class="ln" href="#L65">65</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">contracts</span>(<span class="tok-id">ClassReflection</span> <span class="tok-var">$class</span>, <span class="tok-id">string</span> <span class="tok-var">$methodName</span>): <span class="tok-kw">array</span></span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>    {</span>
-<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>        <span class="tok-var">$contracts</span> = [];</span>
-<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        <span class="tok-kw">for</span> (<span class="tok-var">$parent</span> = <span class="tok-var">$class</span>-&gt;<span class="tok-id">getParentClass</span>(); <span class="tok-var">$parent</span> !== <span class="tok-id">null</span>; <span class="tok-var">$parent</span> = <span class="tok-var">$parent</span>-&gt;<span class="tok-id">getParentClass</span>()) {</span>
-<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">appendContract</span>(<span class="tok-var">$contracts</span>, <span class="tok-var">$parent</span>, <span class="tok-var">$methodName</span>, <span class="tok-id">false</span>);</span>
-<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>        }</span>
-<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$class</span>-&gt;<span class="tok-id">getInterfaces</span>() <span class="tok-kw">as</span> <span class="tok-var">$interface</span>) {</span>
-<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">appendContract</span>(<span class="tok-var">$contracts</span>, <span class="tok-var">$interface</span>, <span class="tok-var">$methodName</span>, <span class="tok-id">false</span>);</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>        <span class="tok-kw">return</span> <span class="tok-id">false</span>;</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>    }</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a></span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a><span class="tok-com">     * Returns parent, interface, and abstract-trait method contracts.</span></span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a><span class="tok-com">     * @return list&lt;ExtendedMethodReflection&gt;</span></span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">contracts</span>(<span class="tok-id">ClassReflection</span> <span class="tok-var">$class</span>, <span class="tok-id">string</span> <span class="tok-var">$methodName</span>): <span class="tok-kw">array</span></span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>    {</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>        <span class="tok-var">$contracts</span> = [];</span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>        <span class="tok-kw">for</span> (<span class="tok-var">$parent</span> = <span class="tok-var">$class</span>-&gt;<span class="tok-id">getParentClass</span>(); <span class="tok-var">$parent</span> !== <span class="tok-id">null</span>; <span class="tok-var">$parent</span> = <span class="tok-var">$parent</span>-&gt;<span class="tok-id">getParentClass</span>()) {</span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">appendContract</span>(<span class="tok-var">$contracts</span>, <span class="tok-var">$parent</span>, <span class="tok-var">$methodName</span>, <span class="tok-id">false</span>);</span>
 <span class="src-line" id="L74"><a class="ln" href="#L74">74</a>        }</span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$class</span>-&gt;<span class="tok-id">getTraits</span>(<span class="tok-id">true</span>) <span class="tok-kw">as</span> <span class="tok-var">$trait</span>) {</span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">appendContract</span>(<span class="tok-var">$contracts</span>, <span class="tok-var">$trait</span>, <span class="tok-var">$methodName</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$class</span>-&gt;<span class="tok-id">getInterfaces</span>() <span class="tok-kw">as</span> <span class="tok-var">$interface</span>) {</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">appendContract</span>(<span class="tok-var">$contracts</span>, <span class="tok-var">$interface</span>, <span class="tok-var">$methodName</span>, <span class="tok-id">false</span>);</span>
 <span class="src-line" id="L77"><a class="ln" href="#L77">77</a>        }</span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a></span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>        <span class="tok-kw">return</span> <span class="tok-var">$contracts</span>;</span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>    }</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$class</span>-&gt;<span class="tok-id">getTraits</span>(<span class="tok-id">true</span>) <span class="tok-kw">as</span> <span class="tok-var">$trait</span>) {</span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">appendContract</span>(<span class="tok-var">$contracts</span>, <span class="tok-var">$trait</span>, <span class="tok-var">$methodName</span>, <span class="tok-id">true</span>);</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>        }</span>
 <span class="src-line" id="L81"><a class="ln" href="#L81">81</a></span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a><span class="tok-com">     * Adds one usable method declared by an ancestor.</span></span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L85"><a class="ln" href="#L85">85</a><span class="tok-com">     * @param list&lt;ExtendedMethodReflection&gt; $contracts</span></span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">appendContract</span>(<span class="tok-kw">array</span> &amp;<span class="tok-var">$contracts</span>, <span class="tok-id">ClassReflection</span> <span class="tok-var">$ancestor</span>, <span class="tok-id">string</span> <span class="tok-var">$methodName</span>, <span class="tok-id">bool</span> <span class="tok-var">$abstractOnly</span>): <span class="tok-id">void</span></span>
-<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>    {</span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$ancestor</span>-&gt;<span class="tok-id">hasNativeMethod</span>(<span class="tok-var">$methodName</span>)) {</span>
-<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>            <span class="tok-kw">return</span>;</span>
-<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>        }</span>
-<span class="src-line" id="L92"><a class="ln" href="#L92">92</a></span>
-<span class="src-line" id="L93"><a class="ln" href="#L93">93</a>        <span class="tok-var">$method</span> = <span class="tok-var">$ancestor</span>-&gt;<span class="tok-id">getNativeMethod</span>(<span class="tok-var">$methodName</span>);</span>
-<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>        <span class="tok-var">$abstract</span> = <span class="tok-var">$method</span>-&gt;<span class="tok-id">isAbstract</span>();</span>
-<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>        <span class="tok-var">$isAbstract</span> = <span class="tok-id">is_bool</span>(<span class="tok-var">$abstract</span>) ? <span class="tok-var">$abstract</span> : <span class="tok-var">$abstract</span>-&gt;<span class="tok-id">yes</span>();</span>
-<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>        <span class="tok-kw">if</span> (<span class="tok-var">$method</span>-&gt;<span class="tok-id">isPrivate</span>() || (<span class="tok-var">$abstractOnly</span> &amp;&amp; !<span class="tok-var">$isAbstract</span>)) {</span>
-<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>            <span class="tok-kw">return</span>;</span>
-<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>        }</span>
-<span class="src-line" id="L99"><a class="ln" href="#L99">99</a></span>
-<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>        <span class="tok-var">$contracts</span>[] = <span class="tok-var">$method</span>;</span>
-<span class="src-line" id="L101"><a class="ln" href="#L101">101</a>    }</span>
-<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>}</span>
-<span class="src-line" id="L103"><a class="ln" href="#L103">103</a></span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>        <span class="tok-kw">return</span> <span class="tok-var">$contracts</span>;</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>    }</span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a></span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a><span class="tok-com">     * Adds one usable method declared by an ancestor.</span></span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a><span class="tok-com">     * @param list&lt;ExtendedMethodReflection&gt; $contracts</span></span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">appendContract</span>(<span class="tok-kw">array</span> &amp;<span class="tok-var">$contracts</span>, <span class="tok-id">ClassReflection</span> <span class="tok-var">$ancestor</span>, <span class="tok-id">string</span> <span class="tok-var">$methodName</span>, <span class="tok-id">bool</span> <span class="tok-var">$abstractOnly</span>): <span class="tok-id">void</span></span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>    {</span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$ancestor</span>-&gt;<span class="tok-id">hasNativeMethod</span>(<span class="tok-var">$methodName</span>)) {</span>
+<span class="src-line" id="L93"><a class="ln" href="#L93">93</a>            <span class="tok-kw">return</span>;</span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>        }</span>
+<span class="src-line" id="L95"><a class="ln" href="#L95">95</a></span>
+<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>        <span class="tok-var">$method</span> = <span class="tok-var">$ancestor</span>-&gt;<span class="tok-id">getNativeMethod</span>(<span class="tok-var">$methodName</span>);</span>
+<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>        <span class="tok-var">$abstract</span> = <span class="tok-var">$method</span>-&gt;<span class="tok-id">isAbstract</span>();</span>
+<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>        <span class="tok-var">$isAbstract</span> = <span class="tok-id">is_bool</span>(<span class="tok-var">$abstract</span>) ? <span class="tok-var">$abstract</span> : <span class="tok-var">$abstract</span>-&gt;<span class="tok-id">yes</span>();</span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>        <span class="tok-kw">if</span> (<span class="tok-var">$method</span>-&gt;<span class="tok-id">isPrivate</span>() || (<span class="tok-var">$abstractOnly</span> &amp;&amp; !<span class="tok-var">$isAbstract</span>)) {</span>
+<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>            <span class="tok-kw">return</span>;</span>
+<span class="src-line" id="L101"><a class="ln" href="#L101">101</a>        }</span>
+<span class="src-line" id="L102"><a class="ln" href="#L102">102</a></span>
+<span class="src-line" id="L103"><a class="ln" href="#L103">103</a>        <span class="tok-var">$contracts</span>[] = <span class="tok-var">$method</span>;</span>
+<span class="src-line" id="L104"><a class="ln" href="#L104">104</a>    }</span>
+<span class="src-line" id="L105"><a class="ln" href="#L105">105</a>}</span>
+<span class="src-line" id="L106"><a class="ln" href="#L106">106</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

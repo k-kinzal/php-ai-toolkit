@@ -1,0 +1,17 @@
+ztd-php-queryで適用したところ「One thing you may want to raise with the toolkit author
+sql-faker's last 20 errors are all the same shape, and I don't believe there's a legal fix. The tests subclass Faker\Generator to force a deterministic numberBetween. Faker declares it untyped:
+
+php
+public function numberBetween($int1 = 0, $int2 = 2147483647): int
+Every spelling of the override is rejected by something:
+
+@param mixed → customRules.internalMixedType
+@param int → method.childParameterType (and PHP itself fatals — contravariance)
+no @param → missingType.parameter at level max
+The rule doc says mixed is permitted when "imposed by a parent method", but ConcreteMixedTypeInspector::contains() requires $inner->isExplicitMixed(), so an untyped vendor parent doesn't count as imposing it. That closes the escape for any override of untyped third-party code.
+
+The design answer on our side is to stop depending on Faker\Generator for choices tests need to pin — introduce a narrow interface the way RandomCharacters already does — and I'd rather do that deliberately than bolt it on now. Say the word if you'd prefer I go straight at it.」と報告がありました。事実確認を行なってください。
+
+---
+
+はい、その方向で修正を行なってください。修正したらmainにコミットをお願いします。

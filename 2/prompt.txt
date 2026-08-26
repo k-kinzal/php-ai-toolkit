@@ -1,0 +1,1 @@
+@visiblity publicのさいにdoctestを強制するPHPStanのカスタムルールありましたっけ？もしなければ作成ください。これはmainで修正しコミットください。

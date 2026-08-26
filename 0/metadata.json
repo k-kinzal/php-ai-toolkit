@@ -1,0 +1,48 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M0Z7S9JQXXZQ48SJ8BKN3D08",
+  "session_id": "01a03e38-62f7-76d0-af47-76b13c8d2cf0",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-26T14:32:45.971136Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 1,
+  "files_touched": [
+    "docs/phpstan-rules.md"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.6-sol",
+  "turn_id": "1ab20906b9ee",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 53580,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1613568,
+    "output_tokens": 17707,
+    "api_call_count": 29
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-26T14:32:45.720753Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 721,
+    "human_modified": 2,
+    "human_removed": 0,
+    "total_committed": 723,
+    "total_lines_changed": 723,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

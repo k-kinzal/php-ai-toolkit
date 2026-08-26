@@ -1,0 +1,50 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M0Z49YZXWB64HATE1TQ6TN9V",
+  "session_id": "01a03e38-53a9-7353-8cfb-c8118aae87fc",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-26T13:31:45.346529Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "README.md",
+    "skills/setup-php-ai-toolkit/SKILL.md",
+    "skills/setup-toolkit-fuzzing/SKILL.md",
+    "skills/setup-toolkit-fuzzing/fuzz.yml",
+    "skills/setup-toolkit-github-actions/SKILL.md",
+    "skills/setup-toolkit-pbt/SKILL.md",
+    "skills/setup-toolkit-pbt/pbt.yml"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.6-sol",
+  "turn_id": "a3f4713aa022",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 318408,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 5389824,
+    "output_tokens": 30873,
+    "api_call_count": 46
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-26T13:31:45.256639Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 753,
+    "human_modified": 6,
+    "human_removed": 0,
+    "total_committed": 753,
+    "total_lines_changed": 759,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

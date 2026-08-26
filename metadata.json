@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M0Z49YZXWB64HATE1TQ6TN9V",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "README.md",
+    "skills/setup-php-ai-toolkit/SKILL.md",
+    "skills/setup-toolkit-fuzzing/SKILL.md",
+    "skills/setup-toolkit-fuzzing/fuzz.yml",
+    "skills/setup-toolkit-github-actions/SKILL.md",
+    "skills/setup-toolkit-pbt/SKILL.md",
+    "skills/setup-toolkit-pbt/pbt.yml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 318408,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 5389824,
+    "output_tokens": 30873,
+    "api_call_count": 46
+  }
+}

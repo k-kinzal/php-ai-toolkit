@@ -608,6 +608,11 @@ final class Greeter
 }
 PHP);
 
+        $portGuard = stream_socket_server('tcp://127.0.0.1:0');
+        self::assertIsResource($portGuard);
+        $previewAddress = stream_socket_get_name($portGuard, false);
+        self::assertIsString($previewAddress);
+
         $output = '';
         $command = '';
         $runner = new DocGenGenerationRunner(
@@ -624,11 +629,15 @@ PHP);
             }),
         );
 
-        self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => '127.0.0.1:8123', 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
-        self::assertStringContainsString('Serving documentation at http://127.0.0.1:8123', $output);
-        self::assertStringContainsString(' -S ', $command);
-        self::assertStringContainsString('127.0.0.1:8123', $command);
-        self::assertStringContainsString($dir . '/build/docs', $command);
+        try {
+            self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => $previewAddress, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+            self::assertStringContainsString('Serving documentation at http://' . $previewAddress, $output);
+            self::assertStringContainsString(' -S ', $command);
+            self::assertStringContainsString($previewAddress, $command);
+            self::assertStringContainsString($dir . '/build/docs', $command);
+        } finally {
+            fclose($portGuard);
+        }
     }
 
     public function testRunReportsMissingComposerPackages(): void

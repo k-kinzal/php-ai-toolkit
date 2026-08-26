@@ -13,6 +13,12 @@ use Toolkit\PhpStan\Rule\Type\MixedLocalPhpDocErrorCollector;
 use Toolkit\PhpStan\Rule\Type\MixedTypeErrorBuilder;
 use Toolkit\PhpStan\Rule\Type\PhpDocMixedTypeInspector;
 
+/**
+ * @covers \Toolkit\PhpStan\Rule\Type\MixedLocalPhpDocErrorCollector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
+ * @uses \Toolkit\PhpStan\Rule\Type\MixedTypeErrorBuilder
+ * @uses \Toolkit\PhpStan\Rule\Type\PhpDocMixedTypeInspector
+ */
 #[CoversClass(MixedLocalPhpDocErrorCollector::class)]
 #[UsesClass(RulePhpDocParser::class)]
 #[UsesClass(MixedTypeErrorBuilder::class)]

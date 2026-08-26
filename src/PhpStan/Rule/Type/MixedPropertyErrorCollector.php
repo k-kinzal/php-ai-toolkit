@@ -56,8 +56,16 @@ final class MixedPropertyErrorCollector
             return [];
         }
 
-        $type = $node->getPhpDocType() ?? $node->getNativeType();
-        if ($type === null || !$this->typeInspector->contains($type)) {
+        $type = $node->getPhpDocType();
+        if ($type === null) {
+            if ($node->getNativeType() === null) {
+                return [];
+            }
+
+            $type = $class->getNativeProperty($node->getName())->getNativeType();
+        }
+
+        if (!$this->typeInspector->contains($type)) {
             return [];
         }
 
@@ -65,7 +73,7 @@ final class MixedPropertyErrorCollector
             $this->typeInspector->describe($type),
             'property type',
             sprintf('%s::$%s', $class->getDisplayName(), $node->getName()),
-            $node->getOriginalNode()->getStartLine()
+            $node->getStartLine()
         )];
     }
 }

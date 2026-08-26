@@ -16,6 +16,9 @@ use Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedLocalVarRule;
 
 /**
  * @extends RuleTestCase<ForbidInternalMixedLocalVarRule>
+ * @covers \Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedLocalVarRule
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
+ * @uses \Toolkit\PhpStan\Rule\Type\MixedLocalPhpDocErrorCollector
  */
 #[CoversClass(ForbidInternalMixedLocalVarRule::class)]
 #[UsesClass(MixedLocalPhpDocErrorCollector::class)]

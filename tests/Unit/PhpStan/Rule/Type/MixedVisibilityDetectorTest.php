@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\PhpStan\Rule\Type\MixedVisibilityDetector;
 
+/**
+ * @covers \Toolkit\PhpStan\Rule\Type\MixedVisibilityDetector
+ */
 #[CoversClass(MixedVisibilityDetector::class)]
 final class MixedVisibilityDetectorTest extends TestCase
 {

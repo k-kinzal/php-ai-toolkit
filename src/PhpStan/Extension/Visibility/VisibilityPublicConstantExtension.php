@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Toolkit\PhpStan\Extension\Visibility;
 
 use PHPStan\Reflection\ClassMemberReflection;
-use PHPStan\Reflection\ConstantReflection;
 use PHPStan\Rules\Constants\AlwaysUsedClassConstantsExtension;
 use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiVisibilityDetector;
 
@@ -26,12 +25,8 @@ final class VisibilityPublicConstantExtension implements AlwaysUsedClassConstant
     /**
      * Reports whether the constant is an explicitly public API declaration.
      */
-    public function isAlwaysUsed(ConstantReflection $constant): bool
+    public function isAlwaysUsed(ClassMemberReflection $constant): bool
     {
-        if (!$constant instanceof ClassMemberReflection) {
-            return false;
-        }
-
         return $this->visibilityDetector->declaresPublic($constant->getDocComment());
     }
 }

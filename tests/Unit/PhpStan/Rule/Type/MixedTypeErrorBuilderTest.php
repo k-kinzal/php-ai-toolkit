@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\PhpStan\Rule\Type\MixedTypeErrorBuilder;
 
+/**
+ * @covers \Toolkit\PhpStan\Rule\Type\MixedTypeErrorBuilder
+ */
 #[CoversClass(MixedTypeErrorBuilder::class)]
 final class MixedTypeErrorBuilderTest extends TestCase
 {

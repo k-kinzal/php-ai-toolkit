@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Extension\Visibility;
 
-use PHPStan\Reflection\ClassConstantReflection;
+use PHPStan\Reflection\ClassMemberReflection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +21,7 @@ final class VisibilityPublicConstantExtensionTest extends TestCase
 {
     public function testIsAlwaysUsedMarksPublicConstant(): void
     {
-        $constant = self::createStub(ClassConstantReflection::class);
+        $constant = self::createStub(ClassMemberReflection::class);
         $constant->method('getDocComment')->willReturn('/** @visibility public */');
 
         self::assertTrue((new VisibilityPublicConstantExtension(new PublicApiVisibilityDetector()))->isAlwaysUsed($constant));

@@ -15,6 +15,8 @@ use Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClosureRule;
 
 /**
  * @extends RuleTestCase<ForbidInternalMixedClosureRule>
+ * @covers \Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClosureRule
+ * @uses \Toolkit\PhpStan\Rule\Type\MixedCallableErrorCollector
  */
 #[CoversClass(ForbidInternalMixedClosureRule::class)]
 #[UsesClass(MixedCallableErrorCollector::class)]

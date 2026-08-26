@@ -15,6 +15,8 @@ use Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedArrowFunctionRule;
 
 /**
  * @extends RuleTestCase<ForbidInternalMixedArrowFunctionRule>
+ * @covers \Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedArrowFunctionRule
+ * @uses \Toolkit\PhpStan\Rule\Type\MixedCallableErrorCollector
  */
 #[CoversClass(ForbidInternalMixedArrowFunctionRule::class)]
 #[UsesClass(MixedCallableErrorCollector::class)]

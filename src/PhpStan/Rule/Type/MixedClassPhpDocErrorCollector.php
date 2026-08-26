@@ -11,6 +11,7 @@ use PHPStan\Rules\IdentifierRuleError;
 use function sprintf;
 
 use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
+use Toolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 
 /**
  * Collects mixed from restricted virtual members and local type aliases.
@@ -34,6 +35,9 @@ final class MixedClassPhpDocErrorCollector
     /** @readonly */
     private RulePhpDocParser $parser;
 
+    /** @readonly */
+    private LineOrderedErrors $order;
+
     /**
      * Creates the collector from resolved and syntactic type inspection.
      */
@@ -43,12 +47,14 @@ final class MixedClassPhpDocErrorCollector
         ?MixedVisibilityDetector $visibilityDetector = null,
         ?MixedTypeErrorBuilder $errorBuilder = null,
         ?RulePhpDocParser $parser = null,
+        ?LineOrderedErrors $order = null,
     ) {
         $this->typeInspector = $typeInspector ?? new ConcreteMixedTypeInspector();
         $this->phpDocTypeInspector = $phpDocTypeInspector ?? new PhpDocMixedTypeInspector();
         $this->visibilityDetector = $visibilityDetector ?? new MixedVisibilityDetector();
         $this->errorBuilder = $errorBuilder ?? new MixedTypeErrorBuilder();
         $this->parser = $parser ?? new RulePhpDocParser();
+        $this->order = $order ?? new LineOrderedErrors();
     }
 
     /**
@@ -72,7 +78,7 @@ final class MixedClassPhpDocErrorCollector
             $errors[] = $error;
         }
 
-        return $errors;
+        return $this->order->sorted($errors);
     }
 
     /**

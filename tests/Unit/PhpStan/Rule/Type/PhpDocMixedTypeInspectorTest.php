@@ -11,6 +11,10 @@ use PHPUnit\Framework\TestCase;
 use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 use Toolkit\PhpStan\Rule\Type\PhpDocMixedTypeInspector;
 
+/**
+ * @covers \Toolkit\PhpStan\Rule\Type\PhpDocMixedTypeInspector
+ * @uses \Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
+ */
 #[CoversClass(PhpDocMixedTypeInspector::class)]
 #[UsesClass(RulePhpDocParser::class)]
 final class PhpDocMixedTypeInspectorTest extends TestCase

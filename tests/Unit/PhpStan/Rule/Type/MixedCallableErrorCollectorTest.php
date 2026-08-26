@@ -12,6 +12,11 @@ use Toolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry;
 use Toolkit\PhpStan\Rule\Type\InheritedMixedContractInspector;
 use Toolkit\PhpStan\Rule\Type\MixedCallableErrorCollector;
 
+/**
+ * @covers \Toolkit\PhpStan\Rule\Type\MixedCallableErrorCollector
+ * @uses \Toolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry
+ * @uses \Toolkit\PhpStan\Rule\Type\InheritedMixedContractInspector
+ */
 #[CoversClass(MixedCallableErrorCollector::class)]
 #[UsesClass(MagicMethodRegistry::class)]
 #[UsesClass(InheritedMixedContractInspector::class)]

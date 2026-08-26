@@ -29,6 +29,14 @@ final class LineOrderedErrorsTest extends TestCase
         self::assertSame([], (new LineOrderedErrors())->sorted([]));
     }
 
+    public function testSortedUsesTheMessageToOrderErrorsOnTheSameLine(): void
+    {
+        $return = RuleErrorBuilder::message('return')->identifier('customRules.demo')->line(12)->build();
+        $parameter = RuleErrorBuilder::message('parameter')->identifier('customRules.demo')->line(12)->build();
+
+        self::assertSame([$parameter, $return], (new LineOrderedErrors())->sorted([$return, $parameter]));
+    }
+
     public function testLineOfReadsTheLineOfAnError(): void
     {
         $error = RuleErrorBuilder::message('demo')->identifier('customRules.demo')->line(42)->build();

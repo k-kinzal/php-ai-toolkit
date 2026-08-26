@@ -65,21 +65,29 @@
 <span class="src-line" id="L29"><a class="ln" href="#L29">29</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([], (<span class="tok-kw">new</span> <span class="tok-id">LineOrderedErrors</span>())-&gt;<span class="tok-id">sorted</span>([]));</span>
 <span class="src-line" id="L30"><a class="ln" href="#L30">30</a>    }</span>
 <span class="src-line" id="L31"><a class="ln" href="#L31">31</a></span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLineOfReadsTheLineOfAnError</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testSortedUsesTheMessageToOrderErrorsOnTheSameLine</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L33"><a class="ln" href="#L33">33</a>    {</span>
-<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-var">$error</span> = <span class="tok-id">RuleErrorBuilder</span>::<span class="tok-id">message</span>(<span class="tok-str">&#039;demo&#039;</span>)-&gt;<span class="tok-id">identifier</span>(<span class="tok-str">&#039;customRules.demo&#039;</span>)-&gt;<span class="tok-id">line</span>(<span class="tok-num">42</span>)-&gt;<span class="tok-id">build</span>();</span>
-<span class="src-line" id="L35"><a class="ln" href="#L35">35</a></span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">42</span>, (<span class="tok-kw">new</span> <span class="tok-id">LineOrderedErrors</span>())-&gt;<span class="tok-id">lineOf</span>(<span class="tok-var">$error</span>));</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>    }</span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a></span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLineOfReadsZeroForAnErrorWithoutALine</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>    {</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>        <span class="tok-var">$error</span> = <span class="tok-id">RuleErrorBuilder</span>::<span class="tok-id">message</span>(<span class="tok-str">&#039;demo&#039;</span>)-&gt;<span class="tok-id">identifier</span>(<span class="tok-str">&#039;customRules.demo&#039;</span>)-&gt;<span class="tok-id">build</span>();</span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a></span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-id">LineOrderedErrors</span>::<span class="tok-id">NO_LINE</span>, (<span class="tok-kw">new</span> <span class="tok-id">LineOrderedErrors</span>())-&gt;<span class="tok-id">lineOf</span>(<span class="tok-var">$error</span>));</span>
-<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>    }</span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>}</span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-var">$return</span> = <span class="tok-id">RuleErrorBuilder</span>::<span class="tok-id">message</span>(<span class="tok-str">&#039;return&#039;</span>)-&gt;<span class="tok-id">identifier</span>(<span class="tok-str">&#039;customRules.demo&#039;</span>)-&gt;<span class="tok-id">line</span>(<span class="tok-num">12</span>)-&gt;<span class="tok-id">build</span>();</span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>        <span class="tok-var">$parameter</span> = <span class="tok-id">RuleErrorBuilder</span>::<span class="tok-id">message</span>(<span class="tok-str">&#039;parameter&#039;</span>)-&gt;<span class="tok-id">identifier</span>(<span class="tok-str">&#039;customRules.demo&#039;</span>)-&gt;<span class="tok-id">line</span>(<span class="tok-num">12</span>)-&gt;<span class="tok-id">build</span>();</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a></span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-var">$parameter</span>, <span class="tok-var">$return</span>], (<span class="tok-kw">new</span> <span class="tok-id">LineOrderedErrors</span>())-&gt;<span class="tok-id">sorted</span>([<span class="tok-var">$return</span>, <span class="tok-var">$parameter</span>]));</span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>    }</span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a></span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLineOfReadsTheLineOfAnError</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>    {</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        <span class="tok-var">$error</span> = <span class="tok-id">RuleErrorBuilder</span>::<span class="tok-id">message</span>(<span class="tok-str">&#039;demo&#039;</span>)-&gt;<span class="tok-id">identifier</span>(<span class="tok-str">&#039;customRules.demo&#039;</span>)-&gt;<span class="tok-id">line</span>(<span class="tok-num">42</span>)-&gt;<span class="tok-id">build</span>();</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a></span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">42</span>, (<span class="tok-kw">new</span> <span class="tok-id">LineOrderedErrors</span>())-&gt;<span class="tok-id">lineOf</span>(<span class="tok-var">$error</span>));</span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>    }</span>
 <span class="src-line" id="L46"><a class="ln" href="#L46">46</a></span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLineOfReadsZeroForAnErrorWithoutALine</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>    {</span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>        <span class="tok-var">$error</span> = <span class="tok-id">RuleErrorBuilder</span>::<span class="tok-id">message</span>(<span class="tok-str">&#039;demo&#039;</span>)-&gt;<span class="tok-id">identifier</span>(<span class="tok-str">&#039;customRules.demo&#039;</span>)-&gt;<span class="tok-id">build</span>();</span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a></span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-id">LineOrderedErrors</span>::<span class="tok-id">NO_LINE</span>, (<span class="tok-kw">new</span> <span class="tok-id">LineOrderedErrors</span>())-&gt;<span class="tok-id">lineOf</span>(<span class="tok-var">$error</span>));</span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>    }</span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>}</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

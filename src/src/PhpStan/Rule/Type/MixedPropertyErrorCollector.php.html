@@ -92,20 +92,28 @@
 <span class="src-line" id="L56"><a class="ln" href="#L56">56</a>            <span class="tok-kw">return</span> [];</span>
 <span class="src-line" id="L57"><a class="ln" href="#L57">57</a>        }</span>
 <span class="src-line" id="L58"><a class="ln" href="#L58">58</a></span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>        <span class="tok-var">$type</span> = <span class="tok-var">$node</span>-&gt;<span class="tok-id">getPhpDocType</span>() ?? <span class="tok-var">$node</span>-&gt;<span class="tok-id">getNativeType</span>();</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-kw">if</span> (<span class="tok-var">$type</span> === <span class="tok-id">null</span> || !<span class="tok-var">$this</span>-&gt;<span class="tok-id">typeInspector</span>-&gt;<span class="tok-id">contains</span>(<span class="tok-var">$type</span>)) {</span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>            <span class="tok-kw">return</span> [];</span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>        }</span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a></span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        <span class="tok-kw">return</span> [<span class="tok-var">$this</span>-&gt;<span class="tok-id">errorBuilder</span>-&gt;<span class="tok-id">build</span>(</span>
-<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">typeInspector</span>-&gt;<span class="tok-id">describe</span>(<span class="tok-var">$type</span>),</span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>            <span class="tok-str">&#039;property type&#039;</span>,</span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>            <span class="tok-id">sprintf</span>(<span class="tok-str">&#039;%s::$%s&#039;</span>, <span class="tok-var">$class</span>-&gt;<span class="tok-id">getDisplayName</span>(), <span class="tok-var">$node</span>-&gt;<span class="tok-id">getName</span>()),</span>
-<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>            <span class="tok-var">$node</span>-&gt;<span class="tok-id">getOriginalNode</span>()-&gt;<span class="tok-id">getStartLine</span>()</span>
-<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        )];</span>
-<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>    }</span>
-<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>}</span>
-<span class="src-line" id="L72"><a class="ln" href="#L72">72</a></span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>        <span class="tok-var">$type</span> = <span class="tok-var">$node</span>-&gt;<span class="tok-id">getPhpDocType</span>();</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-kw">if</span> (<span class="tok-var">$type</span> === <span class="tok-id">null</span>) {</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>            <span class="tok-kw">if</span> (<span class="tok-var">$node</span>-&gt;<span class="tok-id">getNativeType</span>() === <span class="tok-id">null</span>) {</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>                <span class="tok-kw">return</span> [];</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>            }</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a></span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>            <span class="tok-var">$type</span> = <span class="tok-var">$class</span>-&gt;<span class="tok-id">getNativeProperty</span>(<span class="tok-var">$node</span>-&gt;<span class="tok-id">getName</span>())-&gt;<span class="tok-id">getNativeType</span>();</span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>        }</span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a></span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$this</span>-&gt;<span class="tok-id">typeInspector</span>-&gt;<span class="tok-id">contains</span>(<span class="tok-var">$type</span>)) {</span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>            <span class="tok-kw">return</span> [];</span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>        }</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a></span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>        <span class="tok-kw">return</span> [<span class="tok-var">$this</span>-&gt;<span class="tok-id">errorBuilder</span>-&gt;<span class="tok-id">build</span>(</span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">typeInspector</span>-&gt;<span class="tok-id">describe</span>(<span class="tok-var">$type</span>),</span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>            <span class="tok-str">&#039;property type&#039;</span>,</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>            <span class="tok-id">sprintf</span>(<span class="tok-str">&#039;%s::$%s&#039;</span>, <span class="tok-var">$class</span>-&gt;<span class="tok-id">getDisplayName</span>(), <span class="tok-var">$node</span>-&gt;<span class="tok-id">getName</span>()),</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>            <span class="tok-var">$node</span>-&gt;<span class="tok-id">getStartLine</span>()</span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>        )];</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>    }</span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>}</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

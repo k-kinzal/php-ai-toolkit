@@ -40,7 +40,7 @@
 <span class="src-line" id="L4"><a class="ln" href="#L4">4</a></span>
 <span class="src-line" id="L5"><a class="ln" href="#L5">5</a><span class="tok-kw">namespace</span> <span class="tok-id">Tests\Unit\PhpStan\Extension\Visibility</span>;</span>
 <span class="src-line" id="L6"><a class="ln" href="#L6">6</a></span>
-<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">PHPStan\Reflection\ClassConstantReflection</span>;</span>
+<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">PHPStan\Reflection\ClassMemberReflection</span>;</span>
 <span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\CoversClass</span>;</span>
 <span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\UsesClass</span>;</span>
 <span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;</span>
@@ -57,7 +57,7 @@
 <span class="src-line" id="L21"><a class="ln" href="#L21">21</a>{</span>
 <span class="src-line" id="L22"><a class="ln" href="#L22">22</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testIsAlwaysUsedMarksPublicConstant</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L23"><a class="ln" href="#L23">23</a>    {</span>
-<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>        <span class="tok-var">$constant</span> = <span class="tok-id">self</span>::<span class="tok-id">createStub</span>(<span class="tok-id">ClassConstantReflection</span>::<span class="tok-kw">class</span>);</span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>        <span class="tok-var">$constant</span> = <span class="tok-id">self</span>::<span class="tok-id">createStub</span>(<span class="tok-id">ClassMemberReflection</span>::<span class="tok-kw">class</span>);</span>
 <span class="src-line" id="L25"><a class="ln" href="#L25">25</a>        <span class="tok-var">$constant</span>-&gt;<span class="tok-id">method</span>(<span class="tok-str">&#039;getDocComment&#039;</span>)-&gt;<span class="tok-id">willReturn</span>(<span class="tok-str">&#039;/** @visibility public */&#039;</span>);</span>
 <span class="src-line" id="L26"><a class="ln" href="#L26">26</a></span>
 <span class="src-line" id="L27"><a class="ln" href="#L27">27</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>((<span class="tok-kw">new</span> <span class="tok-id">VisibilityPublicConstantExtension</span>(<span class="tok-kw">new</span> <span class="tok-id">PublicApiVisibilityDetector</span>()))-&gt;<span class="tok-id">isAlwaysUsed</span>(<span class="tok-var">$constant</span>));</span>

@@ -51,34 +51,36 @@
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a></span>
 <span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-com">/**</span></span>
 <span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-com"> * @extends RuleTestCase&lt;ForbidInternalMixedFunctionRule&gt;</span></span>
-<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-com"> */</span></span>
-<span class="src-line" id="L19"><a class="ln" href="#L19">19</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">ForbidInternalMixedFunctionRule</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">MixedCallableErrorCollector</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L21"><a class="ln" href="#L21">21</a>#[<span class="tok-id">Medium</span>]</span>
-<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">ForbidInternalMixedFunctionRuleTest</span> <span class="tok-kw">extends</span> <span class="tok-id">RuleTestCase</span></span>
-<span class="src-line" id="L23"><a class="ln" href="#L23">23</a>{</span>
-<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>    #[<span class="tok-id">Override</span>]</span>
-<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">getRule</span>(): <span class="tok-id">Rule</span></span>
-<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>    {</span>
-<span class="src-line" id="L27"><a class="ln" href="#L27">27</a>        <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">ForbidInternalMixedFunctionRule</span>();</span>
-<span class="src-line" id="L28"><a class="ln" href="#L28">28</a>    }</span>
-<span class="src-line" id="L29"><a class="ln" href="#L29">29</a></span>
-<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testGetNodeTypeReturnsFunctionNode</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>    {</span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-id">\PHPStan\Node\InFunctionNode</span>::<span class="tok-kw">class</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">getRule</span>()-&gt;<span class="tok-id">getNodeType</span>());</span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>    }</span>
-<span class="src-line" id="L34"><a class="ln" href="#L34">34</a></span>
-<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeHonorsFunctionVisibility</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>    {</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        <span class="tok-var">$guidance</span> = <span class="tok-str">&#039;: this declaration is internal or scope-restricted, so it must state a deterministic PHPStan type. Validate arbitrary input at an unrestricted public boundary, then pass the narrowed type inward.&#039;</span>;</span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../Fixture/ForbidInternalMixedType/ForbiddenMixedTypes.php&#039;</span>], [</span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>            [<span class="tok-str">&#039;Replace concrete mixed type &quot;mixed&quot; in parameter $input of Tests\Fixture\ForbidInternalMixedType\restrictedFunction()&#039;</span> . <span class="tok-var">$guidance</span>, <span class="tok-num">48</span>],</span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>            [<span class="tok-str">&#039;Replace concrete mixed type &quot;mixed&quot; in return type of Tests\Fixture\ForbidInternalMixedType\restrictedFunction()&#039;</span> . <span class="tok-var">$guidance</span>, <span class="tok-num">48</span>],</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>        ]);</span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../Fixture/ForbidInternalMixedType/AllowedMixedTypes.php&#039;</span>], []);</span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>    }</span>
-<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>}</span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a></span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-com"> * @covers \Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedFunctionRule</span></span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-com"> * @uses \Toolkit\PhpStan\Rule\Type\MixedCallableErrorCollector</span></span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-com"> */</span></span>
+<span class="src-line" id="L21"><a class="ln" href="#L21">21</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">ForbidInternalMixedFunctionRule</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a>#[<span class="tok-id">UsesClass</span>(<span class="tok-id">MixedCallableErrorCollector</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a>#[<span class="tok-id">Medium</span>]</span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">ForbidInternalMixedFunctionRuleTest</span> <span class="tok-kw">extends</span> <span class="tok-id">RuleTestCase</span></span>
+<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>{</span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>    #[<span class="tok-id">Override</span>]</span>
+<span class="src-line" id="L27"><a class="ln" href="#L27">27</a>    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">getRule</span>(): <span class="tok-id">Rule</span></span>
+<span class="src-line" id="L28"><a class="ln" href="#L28">28</a>    {</span>
+<span class="src-line" id="L29"><a class="ln" href="#L29">29</a>        <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">ForbidInternalMixedFunctionRule</span>();</span>
+<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>    }</span>
+<span class="src-line" id="L31"><a class="ln" href="#L31">31</a></span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testGetNodeTypeReturnsFunctionNode</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>    {</span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-id">\PHPStan\Node\InFunctionNode</span>::<span class="tok-kw">class</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">getRule</span>()-&gt;<span class="tok-id">getNodeType</span>());</span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>    }</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a></span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeHonorsFunctionVisibility</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>    {</span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>        <span class="tok-var">$guidance</span> = <span class="tok-str">&#039;: this declaration is internal or scope-restricted, so it must state a deterministic PHPStan type. Validate arbitrary input at an unrestricted public boundary, then pass the narrowed type inward.&#039;</span>;</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../Fixture/ForbidInternalMixedType/ForbiddenMixedTypes.php&#039;</span>], [</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>            [<span class="tok-str">&#039;Replace concrete mixed type &quot;mixed&quot; in parameter $input of Tests\Fixture\ForbidInternalMixedType\restrictedFunction()&#039;</span> . <span class="tok-var">$guidance</span>, <span class="tok-num">48</span>],</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>            [<span class="tok-str">&#039;Replace concrete mixed type &quot;mixed&quot; in return type of Tests\Fixture\ForbidInternalMixedType\restrictedFunction()&#039;</span> . <span class="tok-var">$guidance</span>, <span class="tok-num">48</span>],</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        ]);</span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../Fixture/ForbidInternalMixedType/AllowedMixedTypes.php&#039;</span>], []);</span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>    }</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>}</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

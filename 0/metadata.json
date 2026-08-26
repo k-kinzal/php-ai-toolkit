@@ -1,0 +1,74 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M0XZE4YNEZFK1TND10DJWESH",
+  "session_id": "01a03b96-663d-7a01-8782-7ec42c186d80",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-26T02:47:30.030657Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "src/PhpStan/Extension/Visibility/VisibilityPublicConstantExtension.php",
+    "src/PhpStan/Rule/Shared/LineOrderedErrors.php",
+    "src/PhpStan/Rule/Type/MixedClassPhpDocErrorCollector.php",
+    "src/PhpStan/Rule/Type/MixedPropertyErrorCollector.php",
+    "tests/Unit/DocGen/Cli/DocGenGenerationRunnerTest.php",
+    "tests/Unit/PhpStan/Extension/Visibility/VisibilityPublicConstantExtensionTest.php",
+    "tests/Unit/PhpStan/Rule/Shared/LineOrderedErrorsTest.php",
+    "tests/Unit/PhpStan/Rule/Type/ConcreteMixedTypeInspectorTest.php",
+    "tests/Unit/PhpStan/Rule/Type/ForbidInternalMixedTypeRuleTest.php",
+    "tests/Unit/PhpStan/Rule/Type/MixedCallableErrorCollectorTest.php",
+    "tests/Unit/PhpStan/Rule/Type/MixedLocalPhpDocErrorCollectorTest.php",
+    "tests/Unit/PhpStan/Rule/Type/MixedTypeErrorBuilderTest.php",
+    "tests/Unit/PhpStan/Rule/Type/MixedVisibilityDetectorTest.php",
+    "tests/Unit/PhpStan/Rule/Type/PhpDocMixedTypeInspectorTest.php",
+    "tests/Unit/PhpStan/Rule/Type/Rule/ForbidInternalMixedArrowFunctionRuleTest.php",
+    "tests/Unit/PhpStan/Rule/Type/Rule/ForbidInternalMixedClassPhpDocRuleTest.php",
+    "tests/Unit/PhpStan/Rule/Type/Rule/ForbidInternalMixedClosureRuleTest.php",
+    "tests/Unit/PhpStan/Rule/Type/Rule/ForbidInternalMixedFunctionRuleTest.php",
+    "tests/Unit/PhpStan/Rule/Type/Rule/ForbidInternalMixedLocalVarRuleTest.php",
+    "tests/Unit/PhpStan/Rule/Type/Rule/ForbidInternalMixedPropertyRuleTest.php"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.6-sol",
+  "turn_id": "4d8ce3d67c59",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 10218,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 245248,
+    "output_tokens": 628,
+    "api_call_count": 289
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-26T02:47:29.730567Z",
+    "agent_lines": 112,
+    "agent_removed": 25,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 112,
+    "total_lines_changed": 137,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 112,
+      "agent_lines_removed": 25
+    }
+  ]
+}

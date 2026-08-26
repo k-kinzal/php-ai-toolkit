@@ -33,7 +33,10 @@ final class InheritedMixedContractInspector
         foreach ($this->contracts($class, $methodName) as $contract) {
             foreach ($contract->getVariants() as $variant) {
                 $parameters = $variant->getParameters();
-                if (isset($parameters[$position]) && $this->typeInspector->contains($parameters[$position]->getType())) {
+                if (
+                    isset($parameters[$position])
+                    && $this->typeInspector->containsIncludingImplicit($parameters[$position]->getType())
+                ) {
                     return true;
                 }
             }

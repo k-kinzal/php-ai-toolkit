@@ -71,3 +71,53 @@ final class MixedImplementation extends MixedParent implements MixedContract, St
         return $value;
     }
 }
+
+class UntypedParent
+{
+    public function value($value)
+    {
+        return $value;
+    }
+
+    public function values(array $values): void
+    {
+    }
+}
+
+/**
+ * @visibility namespace
+ */
+final class UntypedImplementation extends UntypedParent
+{
+    /**
+     * @param mixed $value
+     */
+    public function value($value): mixed
+    {
+        return $value;
+    }
+
+    /**
+     * @param array<mixed> $values
+     */
+    public function values(array $values): void
+    {
+    }
+}
+
+new class () extends UntypedParent {
+    /**
+     * @param mixed $value
+     */
+    public function value($value): string
+    {
+        return is_string($value) ? $value : '';
+    }
+
+    /**
+     * @param array<mixed> $values
+     */
+    public function values(array $values): void
+    {
+    }
+};

@@ -65,7 +65,7 @@ The public boundary is allowed to accept or return any deliberate `mixed` contra
 
 ## Inherited Contracts
 
-An implementation is allowed to repeat `mixed` when the corresponding position is imposed by:
+An implementation is allowed to declare `mixed` when the corresponding position is imposed by:
 
 - A parent method.
 - An implemented interface method.
@@ -96,6 +96,16 @@ final class JsonDecoder implements Decoder
 ```
 
 This applies equally to vendor, built-in, and same-project public contracts.
+
+An ancestor parameter with no declared type is implicit `mixed`. Parameter
+contravariance therefore requires an override to continue accepting every
+value, so an explicit `mixed` in that child parameter is also allowed. This
+includes implicit `mixed` nested in an inherited type such as an unparameterized
+`array`.
+
+An omitted ancestor return type does not grant the same exception. Return types
+are covariant, so the child can and should declare the narrower type it actually
+returns unless the ancestor explicitly requires `mixed`.
 
 ## PHP Magic Protocols
 

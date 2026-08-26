@@ -27,6 +27,16 @@ final class ConcreteMixedTypeInspectorTest extends TestCase
         self::assertFalse($inspector->contains(new IntegerType()));
     }
 
+    public function testContainsIncludingImplicitFindsBothKindsOfConcreteMixed(): void
+    {
+        $inspector = new ConcreteMixedTypeInspector();
+
+        self::assertTrue($inspector->containsIncludingImplicit(new MixedType(true)));
+        self::assertTrue($inspector->containsIncludingImplicit(new MixedType(false)));
+        self::assertTrue($inspector->containsIncludingImplicit(new ArrayType(new IntegerType(), new MixedType(false))));
+        self::assertFalse($inspector->containsIncludingImplicit(new IntegerType()));
+    }
+
     public function testDescribeNamesTheCompleteContainingType(): void
     {
         $type = new ArrayType(new IntegerType(), new MixedType(true));

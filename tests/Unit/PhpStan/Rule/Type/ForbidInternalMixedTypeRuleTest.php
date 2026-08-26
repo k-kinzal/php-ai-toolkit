@@ -59,7 +59,7 @@ final class ForbidInternalMixedTypeRuleTest extends RuleTestCase
         $this->analyse([__DIR__ . '/../../../../Fixture/ForbidInternalMixedType/AllowedMixedTypes.php'], []);
     }
 
-    public function testProcessNodeAllowsInheritedMixedOnlyAtMatchingContractPositions(): void
+    public function testProcessNodeAllowsExplicitAndImplicitInheritedMixedOnlyAtMatchingContractPositions(): void
     {
         $guidance = ': this declaration is internal or scope-restricted, so it must state a deterministic PHPStan type. Validate arbitrary input at an unrestricted public boundary, then pass the narrowed type inward.';
         $this->analyse([__DIR__ . '/../../../../Fixture/ForbidInternalMixedType/InheritedMixedTypes.php'], [
@@ -74,6 +74,10 @@ final class ForbidInternalMixedTypeRuleTest extends RuleTestCase
             [
                 'Replace concrete mixed type "mixed" in return type of Tests\Fixture\ForbidInternalMixedType\MixedImplementation::ownMethod()' . $guidance,
                 69,
+            ],
+            [
+                'Replace concrete mixed type "mixed" in return type of Tests\Fixture\ForbidInternalMixedType\UntypedImplementation::value()' . $guidance,
+                95,
             ],
         ]);
     }

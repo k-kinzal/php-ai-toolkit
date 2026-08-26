@@ -42,6 +42,31 @@ final class ConcreteMixedTypeInspector
     }
 
     /**
+     * Reports whether a resolved declaration contains concrete mixed,
+     * including mixed inferred from an omitted type.
+     */
+    public function containsIncludingImplicit(Type $type): bool
+    {
+        $contains = false;
+        TypeTraverser::map(
+            $type,
+            static function (Type $inner, callable $traverse) use (&$contains): Type {
+                if ($inner instanceof TemplateType) {
+                    return $inner;
+                }
+
+                if ($inner instanceof MixedType) {
+                    $contains = true;
+                }
+
+                return $traverse($inner);
+            }
+        );
+
+        return $contains;
+    }
+
+    /**
      * Describes the complete declaration that contains mixed.
      */
     public function describe(Type $type): string

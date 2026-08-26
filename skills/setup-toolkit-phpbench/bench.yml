@@ -1,0 +1,303 @@
+# Separate pull-request workflow for paired PHPBench measurements.
+#
+# Replace every REPLACE_WITH sentinel. Benchmark the merge-target SHA and the
+# synthetic merge commit sequentially in this one job; do not split them across
+# runners. Add disposable service setup before the measurements only when the
+# benchmark contract explicitly includes that service.
+name: Benchmarks
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  COMPOSER_NO_INTERACTION: '1'
+  BENCH_PROJECT_DIR: 'REPLACE_WITH_WORKING_DIRECTORY'
+  BENCHMARK_PATH: 'REPLACE_WITH_BENCHMARK_PATH'
+  PHPBENCH_CONFIG: 'REPLACE_WITH_PHPBENCH_CONFIG'
+  PERFORMANCE_GATE: 'REPLACE_WITH_TRUE_OR_FALSE'
+  MAX_REGRESSION_PERCENT: '10'
+
+jobs:
+  compare:
+    name: Compare with merge target
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out the candidate merge commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: candidate
+          persist-credentials: false
+
+      - name: Check out the merge target
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: baseline
+          persist-credentials: false
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: 'REPLACE_WITH_BENCH_PHP'
+          extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
+          coverage: none
+
+      - name: Validate benchmark workflow settings
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          case "$PERFORMANCE_GATE" in
+            true|false) ;;
+            *)
+              echo 'PERFORMANCE_GATE must be true or false.' >&2
+              exit 2
+              ;;
+          esac
+
+          case "$MAX_REGRESSION_PERCENT" in
+            ''|*[!0-9]*)
+              echo 'MAX_REGRESSION_PERCENT must be a non-negative integer.' >&2
+              exit 2
+              ;;
+          esac
+
+      - name: Determine whether the revisions are comparable
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          baseline_project="baseline/$BENCH_PROJECT_DIR"
+          candidate_project="candidate/$BENCH_PROJECT_DIR"
+          comparison_kind='comparable'
+          comparison_reason='Benchmark harness and configuration are unchanged.'
+
+          if [ ! -f "$candidate_project/$PHPBENCH_CONFIG" ]; then
+            echo "Candidate PHPBench configuration is missing: $candidate_project/$PHPBENCH_CONFIG" >&2
+            echo 'Install the shared PHPBench configuration before enabling this workflow.' >&2
+            exit 2
+          elif [ ! -d "$candidate_project/$BENCHMARK_PATH" ]; then
+            echo "Candidate benchmark directory is missing: $candidate_project/$BENCHMARK_PATH" >&2
+            echo 'Create at least one benchmark subject before enabling this workflow.' >&2
+            exit 2
+          elif ! php -r '$composer = json_decode((string) file_get_contents($argv[1]), true, 512, JSON_THROW_ON_ERROR); exit(isset($composer["require-dev"]["phpbench/phpbench"]) ? 0 : 1);' "$candidate_project/composer.json"; then
+            echo 'Candidate require-dev does not contain phpbench/phpbench.' >&2
+            echo 'Install PHPBench as a direct development dependency.' >&2
+            exit 2
+          elif [ ! -f "$baseline_project/$PHPBENCH_CONFIG" ] || [ ! -d "$baseline_project/$BENCHMARK_PATH" ]; then
+            comparison_kind='initial'
+            comparison_reason='The merge target has no benchmark suite yet; this run records the candidate only.'
+          elif ! php -r '$composer = json_decode((string) file_get_contents($argv[1]), true, 512, JSON_THROW_ON_ERROR); exit(isset($composer["require-dev"]["phpbench/phpbench"]) ? 0 : 1);' "$baseline_project/composer.json"; then
+            comparison_kind='initial'
+            comparison_reason='The merge target does not install PHPBench yet; this run records the candidate only.'
+          elif ! diff -q "$baseline_project/$PHPBENCH_CONFIG" "$candidate_project/$PHPBENCH_CONFIG" >/dev/null; then
+            comparison_kind='harness-changed'
+            comparison_reason='The PHPBench configuration changed, so the measurements cannot form a gate.'
+          elif ! diff -qr "$baseline_project/$BENCHMARK_PATH" "$candidate_project/$BENCHMARK_PATH" >/dev/null; then
+            comparison_kind='harness-changed'
+            comparison_reason='Benchmark code or benchmark-owned fixtures changed, so the measurements cannot form a gate.'
+          fi
+
+          echo "BENCH_COMPARISON_KIND=$comparison_kind" >> "$GITHUB_ENV"
+          echo "BENCH_COMPARISON_REASON=$comparison_reason" >> "$GITHUB_ENV"
+
+      - name: Install candidate dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        with:
+          working-directory: candidate/REPLACE_WITH_WORKING_DIRECTORY
+          dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
+          composer-options: --prefer-dist
+          require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
+
+      - name: Check candidate platform requirements
+        working-directory: candidate/REPLACE_WITH_WORKING_DIRECTORY
+        run: composer check-platform-reqs
+
+      - name: Install merge-target dependencies
+        if: env.BENCH_COMPARISON_KIND == 'comparable'
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        with:
+          working-directory: baseline/REPLACE_WITH_WORKING_DIRECTORY
+          dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
+          composer-options: --prefer-dist
+          require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
+
+      - name: Check merge-target platform requirements
+        if: env.BENCH_COMPARISON_KIND == 'comparable'
+        working-directory: baseline/REPLACE_WITH_WORKING_DIRECTORY
+        run: composer check-platform-reqs
+
+      - name: Verify the PHPBench tool version is comparable
+        if: env.BENCH_COMPARISON_KIND == 'comparable'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          baseline_phpbench="baseline/$BENCH_PROJECT_DIR/vendor/bin/phpbench"
+          candidate_phpbench="candidate/$BENCH_PROJECT_DIR/vendor/bin/phpbench"
+          baseline_version=$("$baseline_phpbench" --version)
+          candidate_version=$("$candidate_phpbench" --version)
+
+          if [ "$baseline_version" != "$candidate_version" ]; then
+            echo 'BENCH_COMPARISON_KIND=toolchain-changed' >> "$GITHUB_ENV"
+            echo 'BENCH_COMPARISON_REASON=The PHPBench version changed, so the measurements cannot form a gate.' >> "$GITHUB_ENV"
+          fi
+
+      - name: Measure the merge-target baseline
+        if: env.BENCH_COMPARISON_KIND == 'comparable'
+        working-directory: baseline/REPLACE_WITH_WORKING_DIRECTORY
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p build/phpbench
+          vendor/bin/phpbench run \
+            --config="$PHPBENCH_CONFIG" \
+            --tag=baseline \
+            --dump-file=build/phpbench/baseline.xml \
+            --progress=none \
+            2>&1 | tee build/phpbench/baseline.txt
+
+      - name: Transfer the baseline to the candidate
+        if: env.BENCH_COMPARISON_KIND == 'comparable'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          baseline_results="baseline/$BENCH_PROJECT_DIR/build/phpbench"
+          candidate_results="candidate/$BENCH_PROJECT_DIR/build/phpbench"
+          mkdir -p "$candidate_results/storage"
+          cp -R "$baseline_results/storage/." "$candidate_results/storage/"
+          cp "$baseline_results/baseline.xml" "$candidate_results/baseline.xml"
+
+      - name: Compare the candidate with the merge target
+        if: env.BENCH_COMPARISON_KIND == 'comparable'
+        working-directory: candidate/REPLACE_WITH_WORKING_DIRECTORY
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          assertion="mode(variant.time.avg) <= mode(baseline.time.avg) +/- ${MAX_REGRESSION_PERCENT}%"
+          arguments=(
+            run
+            "--config=$PHPBENCH_CONFIG"
+            --tag=candidate
+            --ref=baseline
+            --report=aggregate
+            --dump-file=build/phpbench/candidate.xml
+            --progress=none
+          )
+          if [ "$PERFORMANCE_GATE" = 'true' ]; then
+            arguments+=("--assert=$assertion")
+          fi
+
+          vendor/bin/phpbench "${arguments[@]}" 2>&1 | tee build/phpbench/comparison.txt
+
+      - name: Measure a non-comparable candidate
+        if: env.BENCH_COMPARISON_KIND != 'comparable'
+        working-directory: candidate/REPLACE_WITH_WORKING_DIRECTORY
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p build/phpbench
+          vendor/bin/phpbench run \
+            --config="$PHPBENCH_CONFIG" \
+            --tag=candidate \
+            --report=aggregate \
+            --dump-file=build/phpbench/candidate.xml \
+            --progress=none \
+            2>&1 | tee build/phpbench/candidate-only.txt
+
+      - name: Record benchmark metadata
+        if: always()
+        working-directory: candidate/REPLACE_WITH_WORKING_DIRECTORY
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          CANDIDATE_SHA: ${{ github.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          mkdir -p build/phpbench
+          {
+            echo "base_sha=$BASE_SHA"
+            echo "candidate_merge_sha=$CANDIDATE_SHA"
+            echo "pull_request_head_sha=$HEAD_SHA"
+            echo "comparison_kind=${BENCH_COMPARISON_KIND:-unknown}"
+            echo "comparison_reason=${BENCH_COMPARISON_REASON:-unknown}"
+            echo "performance_gate=$PERFORMANCE_GATE"
+            echo "max_regression_percent=$MAX_REGRESSION_PERCENT"
+            uname -a
+            php -v
+            if [ -x vendor/bin/phpbench ]; then
+              vendor/bin/phpbench --version
+            fi
+          } > build/phpbench/metadata.txt
+
+      - name: Publish the benchmark job summary
+        if: always()
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          CANDIDATE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          results="candidate/$BENCH_PROJECT_DIR/build/phpbench"
+          report="$results/comparison.txt"
+          if [ ! -f "$report" ]; then
+            report="$results/candidate-only.txt"
+          fi
+
+          {
+            echo '## PHPBench comparison'
+            echo
+            echo "- Merge target: \`$BASE_SHA\`"
+            echo "- Candidate merge: \`$CANDIDATE_SHA\`"
+            echo "- Comparison: ${BENCH_COMPARISON_KIND:-unknown}"
+            echo "- Gate enabled: \`$PERFORMANCE_GATE\` (maximum regression ${MAX_REGRESSION_PERCENT}%)"
+            echo
+            echo "${BENCH_COMPARISON_REASON:-Benchmark comparison did not start.}"
+            if [ -f "$report" ]; then
+              echo
+              echo '```text'
+              sed -n '1,240p' "$report"
+              echo '```'
+            fi
+            echo
+            echo 'Raw XML, full console output, storage, and environment metadata are attached to this run.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload benchmark evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: phpbench-pr-${{ github.event.pull_request.number }}-attempt-${{ github.run_attempt }}
+          path: |
+            baseline/REPLACE_WITH_WORKING_DIRECTORY/build/phpbench
+            candidate/REPLACE_WITH_WORKING_DIRECTORY/build/phpbench
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Reject a non-comparable gated change
+        if: >-
+          always() &&
+          env.PERFORMANCE_GATE == 'true' &&
+          env.BENCH_COMPARISON_KIND != 'comparable' &&
+          env.BENCH_COMPARISON_KIND != 'initial'
+        shell: bash
+        run: |
+          echo "A required performance gate is non-comparable: $BENCH_COMPARISON_REASON" >&2
+          echo 'Review this as a benchmark calibration change before re-enabling the gate.' >&2
+          exit 1

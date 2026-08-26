@@ -67,6 +67,7 @@ The component skills are also available for focused setup or maintenance:
 - `/setup-toolkit-fuzzing` — contract-driven, domain-aware fuzzing with reproducible corpora, crash artifacts, and scheduled CI
 - `/setup-toolkit-infection` — Infection mutation testing with a whole-tree threshold and a stricter one for pull requests
 - `/setup-toolkit-loc-guard` — LocGuard metrics checks for production source complexity and length limits
+- `/setup-toolkit-phpbench` — PHPBench subjects, consistent local commands, and same-runner pull-request comparisons with artifacts
 - `/setup-toolkit-php-compatibility` — PHPCompatibility gate that keeps the code runnable on the declared minimum PHP
 - `/setup-toolkit-php-cs-fixer` — PHP-CS-Fixer configuration
 - `/setup-toolkit-phpstan` — PHPStan at level max with strict rules and AI error formatter

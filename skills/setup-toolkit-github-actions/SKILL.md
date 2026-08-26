@@ -118,6 +118,14 @@ the job together with the configuration it depends on, because the job needs a
 coverage driver, `fetch-depth: 0`, and a different Composer script per event. Point
 the user there when they ask for an Infection job.
 
+## Out of Scope: Performance Benchmarks
+
+Do not add PHPBench to the normal test or lint matrix. `/setup-toolkit-phpbench`
+owns the benchmark contract, stable runner settings, paired merge-target and
+candidate measurements, relative gate, job summary, and evidence Artifact. A
+benchmark command run once on one matrix leg is neither a comparison nor a useful
+performance gate.
+
 ## Out of Scope: Fuzzing
 
 Do not write a generic fuzz job in `ci.yml`. `/setup-toolkit-fuzzing` derives the

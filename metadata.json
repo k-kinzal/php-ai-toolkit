@@ -1,0 +1,53 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M0XQVJ6CCV869PX3TABCWDXP",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 6,
+  "files_touched": [
+    ".php-cs-fixer.dist.php",
+    "deptrac.yaml",
+    "infection.json5",
+    "loc.yaml",
+    "phpcs.xml.dist",
+    "phpstan.neon",
+    "phpunit.xml.dist",
+    "phpunit10.xml.dist",
+    "phpunit11.xml.dist",
+    "phpunit12.xml.dist",
+    "phpunit9.xml.dist",
+    "rules.neon",
+    "skills/setup-php-ai-toolkit/SKILL.md",
+    "skills/setup-toolkit-agents-md/SKILL.md",
+    "skills/setup-toolkit-deptrac/SKILL.md",
+    "skills/setup-toolkit-infection/infection.json5",
+    "skills/setup-toolkit-loc-guard/loc.yaml",
+    "skills/setup-toolkit-php-compatibility/phpcs.xml.dist",
+    "skills/setup-toolkit-php-cs-fixer/.php-cs-fixer.dist.php",
+    "skills/setup-toolkit-phpstan/SKILL.md",
+    "skills/setup-toolkit-phpstan/phpstan.neon",
+    "skills/setup-toolkit-phpunit/phpunit.xml.dist",
+    "skills/setup-toolkit-phpunit/phpunit10.xml.dist",
+    "skills/setup-toolkit-phpunit/phpunit11.xml.dist",
+    "skills/setup-toolkit-phpunit/phpunit12.xml.dist",
+    "skills/setup-toolkit-phpunit/phpunit9.xml.dist",
+    "skills/setup-toolkit-tree-guard/tree.yaml",
+    "tree.yaml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 207203,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 5813248,
+    "output_tokens": 36858,
+    "api_call_count": 52
+  }
+}

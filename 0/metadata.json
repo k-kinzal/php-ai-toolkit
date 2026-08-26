@@ -1,0 +1,130 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M0XQVJ6CCV869PX3TABCWDXP",
+  "session_id": "01a03b62-2555-7862-a680-1c01f3955557",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-26T00:34:56.448312Z",
+  "branch": "main",
+  "checkpoints_count": 6,
+  "save_step_count": 6,
+  "files_touched": [
+    ".php-cs-fixer.dist.php",
+    "deptrac.yaml",
+    "infection.json5",
+    "loc.yaml",
+    "phpcs.xml.dist",
+    "phpstan.neon",
+    "phpunit.xml.dist",
+    "phpunit10.xml.dist",
+    "phpunit11.xml.dist",
+    "phpunit12.xml.dist",
+    "phpunit9.xml.dist",
+    "rules.neon",
+    "skills/setup-php-ai-toolkit/SKILL.md",
+    "skills/setup-toolkit-agents-md/SKILL.md",
+    "skills/setup-toolkit-deptrac/SKILL.md",
+    "skills/setup-toolkit-infection/infection.json5",
+    "skills/setup-toolkit-loc-guard/loc.yaml",
+    "skills/setup-toolkit-php-compatibility/phpcs.xml.dist",
+    "skills/setup-toolkit-php-cs-fixer/.php-cs-fixer.dist.php",
+    "skills/setup-toolkit-phpstan/SKILL.md",
+    "skills/setup-toolkit-phpstan/phpstan.neon",
+    "skills/setup-toolkit-phpunit/phpunit.xml.dist",
+    "skills/setup-toolkit-phpunit/phpunit10.xml.dist",
+    "skills/setup-toolkit-phpunit/phpunit11.xml.dist",
+    "skills/setup-toolkit-phpunit/phpunit12.xml.dist",
+    "skills/setup-toolkit-phpunit/phpunit9.xml.dist",
+    "skills/setup-toolkit-tree-guard/tree.yaml",
+    "tree.yaml"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.6-sol",
+  "turn_id": "9306aab3fb5e",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 207203,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 5813248,
+    "output_tokens": 36858,
+    "api_call_count": 52
+  },
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-26T00:34:56.34229Z",
+    "agent_lines": 50,
+    "agent_removed": 210,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 18,
+    "total_committed": 50,
+    "total_lines_changed": 278,
+    "agent_percentage": 93.5251798561151,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 13,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "deptrac.yaml": 1,
+        "infection.json5": 1,
+        "loc.yaml": 1,
+        "phpcs.xml.dist": 1,
+        "phpstan.neon": 2,
+        "phpunit.xml.dist": 1,
+        "phpunit10.xml.dist": 1,
+        "phpunit11.xml.dist": 1,
+        "phpunit12.xml.dist": 1,
+        "phpunit9.xml.dist": 1,
+        "rules.neon": 1,
+        "tree.yaml": 1
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 158,
+      "agent_lines_removed": 12
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 33,
+      "agent_lines_removed": 1
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 7,
+      "agent_lines_added": 63,
+      "agent_lines_removed": 189,
+      "user_removed_per_file": {
+        "skills/setup-php-ai-toolkit/SKILL.md": 7
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 74,
+      "agent_lines_removed": 214
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 11,
+      "agent_lines_added": 81,
+      "agent_lines_removed": 217,
+      "user_removed_per_file": {
+        "skills/setup-toolkit-agents-md/SKILL.md": 11
+      }
+    }
+  ]
+}

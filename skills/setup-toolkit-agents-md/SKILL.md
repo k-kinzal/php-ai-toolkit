@@ -42,19 +42,21 @@ Replace `{{PROJECT_DESCRIPTION}}` with a description that covers:
 Write in prose, not bullet points. Example (from a dependency analysis CLI tool):
 > A CLI tool that analyzes PHP code dependencies and visualizes the blast radius of changes. Its primary goal is impact analysis — automatically identifying what breaks when a class, method, or function changes. The tool builds a bidirectional graph model where nodes represent code elements (classes, methods, functions) and edges represent relationships (calls, extends, implements). Inverse edges are generated automatically, enabling traversal in both directions: what the target depends on, and what depends on the target. Output is available in two formats: a tree display for humans and structured data for AI agents.
 
-### Tradeoff Sliders
-These calibrate AI behavior. Treat the template positions as placeholders, not as
-facts inherited from php-ai-toolkit. Derive them from the target project's existing
-instructions and the user's stated priorities; when neither records the policy, ask
-before writing it. Typical interpretations include:
-- For prototypes/MVPs: reduce Quality to MEDIUM, increase Time to HIGH
-- For production services: quality is commonly prioritized over delivery speed
-
 ### Supported Versions
-Replace `{{SUPPORTED_VERSIONS}}` with the versions that the project guarantees to work on. Determine what to list from the project's own requirements — `composer.json`, CI matrix, documentation, etc. Only list what the project explicitly supports.
+Replace `{{SUPPORTED_VERSIONS}}` with the compatibility guarantees that agents
+need while changing the project. Determine them from `composer.json`, the CI
+matrix, and project documentation, and list only versions the project explicitly
+supports.
 
-Write the target's real constraint or enumerated CI-supported minors. Do not copy a
-version list from this repository. Shape example:
+Keep this section focused on the primary runtimes, platforms, frameworks, and
+development tools whose versions materially affect project-wide changes. Do not
+copy every direct or transitive package constraint from `composer.json`, and do not
+list internal parser, adapter, or helper libraries merely because the project
+supports multiple versions of them. Composer remains the source of truth for those
+implementation dependencies.
+
+Write the target's real constraint or enumerated CI-supported minors. Do not copy
+a version list from this repository. Shape example:
 ```markdown
 - **PHP**: <versions guaranteed by this project>
 ```
@@ -81,35 +83,28 @@ Pipeline: `CLI input → Config stacking → Action → Analyzer → Graph → T
 Dependencies between layers flow top-down only. Command never calls Analyzer directly.
 ```
 
-After the architecture description, replace `{{DIRECTORY_STRUCTURE}}` with the actual project directory tree. This is the physical structure that corresponds to the layers above. Example:
-```
-src/
-├── Command/    # CLI commands (IO only)
-├── Action/     # Use-case orchestration
-├── Analyzer/   # Analysis engine and graph model
-├── Config/     # Layered configuration readers
-└── Reporter/   # Output formatters
-tests/          # Mirrors src/ namespaces
-```
-
 ### Document References
-Replace `{{DOCUMENT_REFERENCES}}` with links to project-specific documentation that AI agents should read. Example:
+Replace `{{DOCUMENT_REFERENCES}}` with links to project-specific documentation
+directly under `docs/`. Keep this section as a short index of top-level entry
+points; do not list files from nested directories such as `docs/rules/`. Detailed
+pages should be linked from the relevant top-level document instead. Example:
 ```markdown
 - [API Specification](docs/api-spec.md)
 - [Database Schema](docs/schema.md)
 ```
 
-If the project has no documentation, remove this section entirely.
+If the project has no documentation directly under `docs/`, remove this section
+entirely.
 
 ## Adaptation Workflow
 
 When applying this template to a project, follow these steps:
 
-1. **Read `composer.json`** to determine PHP version, framework, and dependencies
+1. **Read `composer.json`** to determine the primary supported runtimes and tools
 2. **Scan the directory structure** to understand project layout
-3. **Look for existing documentation** in `docs/`, `README.md`, etc.
+3. **Look for top-level documentation** directly under `docs/`
 4. **Fill in all `{{PLACEHOLDER}}` values** with real project information
-5. **Remove unused placeholders** (e.g., `{{ADDITIONAL_CODING_RULES}}` if no extra rules)
+5. **Remove unused placeholders and sections**
 6. **Place as `AGENTS.md`** in the project root only after confirming that no
    existing file will be overwritten
 
@@ -121,8 +116,7 @@ After creating AGENTS.md, recommend setting up `.claude/settings.json` to preven
 {
     "permissions": {
         "deny": [
-            "Write(AGENTS.md)",
-            "Edit(AGENTS.md)",
+            "Edit(/AGENTS.md)",
             "Bash(*AGENTS.md*)"
         ]
     }
@@ -135,11 +129,3 @@ Create `CLAUDE.md` only when the user explicitly asks for Claude-specific setup:
 <!-- NOTE: You do not have permission to overwrite this file. Please ask a human operator to perform the changes for you. -->
 @AGENTS.md
 ```
-
-## Verification
-
-After creating AGENTS.md:
-1. Read the file and confirm all `{{PLACEHOLDER}}` values have been replaced
-2. Verify the supported versions match `composer.json` constraints
-3. Verify the architecture describes actual layering and dependency direction
-4. Verify the directory structure matches the actual project

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- NOTE: You do not have permission to overwrite this file. Please ask a human operator to perform the changes for you. -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="REPLACE_WITH_VENDOR_DIR/phpunit/phpunit/phpunit.xsd"
          bootstrap="REPLACE_WITH_VENDOR_DIR/autoload.php"

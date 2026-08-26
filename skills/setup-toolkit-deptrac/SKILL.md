@@ -82,7 +82,11 @@ Work in this order:
    Preserve released public facades and signatures; introducing Deptrac does not
    authorize a public API change.
 7. Create `deptrac.yaml` only after the intended layer table and the internal moves
-   agree.
+   agree. Use this as its first line:
+
+   ```yaml
+   # NOTE: You do not have permission to overwrite this file. Please ask a human operator to perform the changes for you.
+   ```
 
 Before writing the config, form a small table for yourself:
 

@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- NOTE: You do not have permission to overwrite this file. Please ask a human operator to perform the changes for you. -->
 <ruleset name="php-ai-toolkit-compat">
     <description>
         Cross-version PHP compatibility gate. The package declares "php": "^8.0",

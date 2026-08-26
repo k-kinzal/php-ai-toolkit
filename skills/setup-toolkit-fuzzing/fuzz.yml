@@ -1,0 +1,118 @@
+# Separate scheduled workflow for contract-driven fuzzing.
+#
+# Replace every REPLACE_WITH sentinel. Repeat the matrix entry for each contract;
+# do not combine targets that need different generators, corpora, services, or
+# oracles. Add a versioned-lock `cp` step before installation only when the target
+# project maintains one for REPLACE_WITH_FUZZ_JOB_PHP.
+name: Fuzz
+
+on:
+  schedule:
+    # Pick a deliberate cadence and a minute away from the start of the hour.
+    - cron: 'REPLACE_WITH_FUZZ_CRON'
+  workflow_dispatch:
+    inputs:
+      max_runs:
+        description: Maximum inputs evaluated by each fuzz target
+        required: true
+        default: '10000'
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  COMPOSER_NO_INTERACTION: '1'
+
+jobs:
+  fuzz:
+    name: Fuzz ${{ matrix.target.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: REPLACE_WITH_FUZZ_TIMEOUT_MINUTES
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - name: REPLACE_WITH_CONTRACT_NAME
+            script: fuzz/REPLACE_WITH_TARGET.php
+            corpus: fuzz/corpus/REPLACE_WITH_CORPUS
+            extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
+    defaults:
+      run:
+        working-directory: REPLACE_WITH_WORKING_DIRECTORY
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: 'REPLACE_WITH_FUZZ_JOB_PHP'
+          extensions: ${{ matrix.target.extensions }}
+          coverage: none
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        with:
+          working-directory: REPLACE_WITH_WORKING_DIRECTORY
+          dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
+          composer-options: --prefer-dist
+          require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
+
+      - name: Check installed platform requirements
+        run: composer check-platform-reqs
+
+      - name: Restore the evolved corpus
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: REPLACE_WITH_WORKING_DIRECTORY/${{ matrix.target.corpus }}
+          key: fuzz-${{ matrix.target.name }}-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_DEPENDENCY_HASH_FILES') }}-${{ hashFiles('REPLACE_WITH_FUZZ_INPUT_HASH_FILES') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            fuzz-${{ matrix.target.name }}-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_DEPENDENCY_HASH_FILES') }}-${{ hashFiles('REPLACE_WITH_FUZZ_INPUT_HASH_FILES') }}-
+            fuzz-${{ matrix.target.name }}-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_DEPENDENCY_HASH_FILES') }}-
+            fuzz-${{ matrix.target.name }}-${{ runner.os }}-
+
+      # Add disposable service/container startup here when the oracle compares
+      # against a real database, HTTP server, or protocol implementation.
+      - name: Run the fuzz target
+        env:
+          FUZZ_MAX_RUNS: ${{ inputs.max_runs || '10000' }}
+        run: |
+          set -euo pipefail
+
+          case "$FUZZ_MAX_RUNS" in
+            ''|*[!0-9]*)
+              echo 'max_runs must be a positive integer.' >&2
+              exit 2
+              ;;
+          esac
+          if [ "$FUZZ_MAX_RUNS" -lt 1 ]; then
+            echo 'max_runs must be a positive integer.' >&2
+            exit 2
+          fi
+
+          mkdir -p "${{ matrix.target.corpus }}"
+          vendor/bin/php-fuzzer fuzz \
+            "${{ matrix.target.script }}" \
+            "${{ matrix.target.corpus }}/" \
+            "--max-runs=$FUZZ_MAX_RUNS"
+
+      - name: Save the evolved corpus
+        if: always()
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: REPLACE_WITH_WORKING_DIRECTORY/${{ matrix.target.corpus }}
+          key: fuzz-${{ matrix.target.name }}-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_DEPENDENCY_HASH_FILES') }}-${{ hashFiles('REPLACE_WITH_FUZZ_INPUT_HASH_FILES') }}-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Upload crash inputs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: fuzz-crashes-${{ matrix.target.name }}
+          path: REPLACE_WITH_WORKING_DIRECTORY/crash-*
+          if-no-files-found: ignore
+          retention-days: REPLACE_WITH_CRASH_RETENTION_DAYS

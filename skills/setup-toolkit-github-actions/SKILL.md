@@ -60,6 +60,11 @@ Required gates when the corresponding script/config exists:
 - `composer deptrac` for Deptrac.
 - `composer test:unit`, `composer test:unit:legacy`, or `composer test` for PHPUnit.
 
+Property-based tests configured by `/setup-toolkit-pbt` run through
+`composer test:pbt` in their separate `pbt.yml` workflow. Verify that workflow is
+present and that ordinary PHPUnit and ParaTest commands exclude the `pbt` group;
+do not add the slower group to the normal test matrix as well.
+
 Every gate the project has configured belongs in CI. A tool that is installed,
 configured, and wired into `composer lint` but never runs on the default branch
 is a gate the project believes it has: it passes locally for whoever last ran it
@@ -112,6 +117,13 @@ Do not write a mutation testing job from scratch. `/setup-toolkit-infection` shi
 the job together with the configuration it depends on, because the job needs a
 coverage driver, `fetch-depth: 0`, and a different Composer script per event. Point
 the user there when they ask for an Infection job.
+
+## Out of Scope: Fuzzing
+
+Do not write a generic fuzz job in `ci.yml`. `/setup-toolkit-fuzzing` derives the
+input generator and oracle from a specific contract and ships a separate scheduled
+workflow with corpus caching and crash artifacts. A random-input loop without that
+contract design is not a CI gate.
 
 ## PHP Version Coverage
 

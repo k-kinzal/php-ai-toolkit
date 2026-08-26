@@ -1,0 +1,70 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M0Z7S9JQXXZQ48SJ8BKN3D08",
+  "session_id": "01a03e5d-2b66-7e21-ac7e-06aa2edd88b4",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-26T14:33:30.446525Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/phpstan-rules.md",
+    "rules.neon",
+    "src/PhpStan/Extension/RedundantDiagnostic/DirectThrowDiagnosticPolicy.php",
+    "src/PhpStan/Extension/RedundantDiagnostic/MemberDiagnosticPolicy.php",
+    "src/PhpStan/Extension/RedundantDiagnostic/RedundantDiagnosticErrorExtension.php",
+    "src/PhpStan/Extension/RedundantDiagnostic/RestrictedTestClassPolicy.php",
+    "src/PhpStan/Extension/RedundantDiagnostic/TestControlFlowDiagnosticPolicy.php",
+    "tests/Fixture/TestClassScope/ClassWithAttributeTest.php",
+    "tests/Unit/PhpStan/Extension/RedundantDiagnostic/DirectThrowDiagnosticPolicyTest.php",
+    "tests/Unit/PhpStan/Extension/RedundantDiagnostic/MemberDiagnosticPolicyTest.php",
+    "tests/Unit/PhpStan/Extension/RedundantDiagnostic/RedundantDiagnosticErrorExtensionTest.php",
+    "tests/Unit/PhpStan/Extension/RedundantDiagnostic/RestrictedTestClassPolicyTest.php",
+    "tests/Unit/PhpStan/Extension/RedundantDiagnostic/TestControlFlowDiagnosticPolicyTest.php"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.6-sol",
+  "turn_id": "db0f2b577201",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 296029,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 12565248,
+    "output_tokens": 61638,
+    "api_call_count": 82
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-26T14:33:29.668366Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 721,
+    "human_modified": 2,
+    "human_removed": 0,
+    "total_committed": 721,
+    "total_lines_changed": 723,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 598,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "docs/phpstan-rules.md": 2,
+        "docs/rules/ForbidFileTermRule.md": 114,
+        "src/PhpStan/Rule/Architecture/ForbidFileTermRule.php": 54,
+        "src/PhpStan/Rule/Architecture/ForbiddenFileTermErrorBuilder.php": 33,
+        "src/PhpStan/Rule/Architecture/ForbiddenFileTermInspector.php": 77,
+        "src/PhpStan/Rule/Architecture/ForbiddenFileTermRestrictions.php": 84,
+        "tests/Fixture/ForbidFileTerm/BackendLeak.php": 18,
+        "tests/Fixture/ForbidFileTerm/BackendNeutral.php": 13,
+        "tests/Unit/PhpStan/Rule/Architecture/ForbidFileTermRuleTest.php": 74,
+        "tests/Unit/PhpStan/Rule/Architecture/ForbiddenFileTermErrorBuilderTest.php": 29,
+        "tests/Unit/PhpStan/Rule/Architecture/ForbiddenFileTermInspectorTest.php": 53,
+        "tests/Unit/PhpStan/Rule/Architecture/ForbiddenFileTermRestrictionsTest.php": 47
+      }
+    }
+  ]
+}

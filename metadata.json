@@ -3,9 +3,21 @@
   "checkpoint_id": "01M0Z7S9JQXXZQ48SJ8BKN3D08",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 4,
+  "checkpoints_count": 5,
   "files_touched": [
-    "docs/phpstan-rules.md"
+    "docs/phpstan-rules.md",
+    "rules.neon",
+    "src/PhpStan/Extension/RedundantDiagnostic/DirectThrowDiagnosticPolicy.php",
+    "src/PhpStan/Extension/RedundantDiagnostic/MemberDiagnosticPolicy.php",
+    "src/PhpStan/Extension/RedundantDiagnostic/RedundantDiagnosticErrorExtension.php",
+    "src/PhpStan/Extension/RedundantDiagnostic/RestrictedTestClassPolicy.php",
+    "src/PhpStan/Extension/RedundantDiagnostic/TestControlFlowDiagnosticPolicy.php",
+    "tests/Fixture/TestClassScope/ClassWithAttributeTest.php",
+    "tests/Unit/PhpStan/Extension/RedundantDiagnostic/DirectThrowDiagnosticPolicyTest.php",
+    "tests/Unit/PhpStan/Extension/RedundantDiagnostic/MemberDiagnosticPolicyTest.php",
+    "tests/Unit/PhpStan/Extension/RedundantDiagnostic/RedundantDiagnosticErrorExtensionTest.php",
+    "tests/Unit/PhpStan/Extension/RedundantDiagnostic/RestrictedTestClassPolicyTest.php",
+    "tests/Unit/PhpStan/Extension/RedundantDiagnostic/TestControlFlowDiagnosticPolicyTest.php"
   ],
   "sessions": [
     {
@@ -28,13 +40,20 @@
       "compact_transcript": "/2/transcript.jsonl",
       "content_hash": "/2/content_hash.txt",
       "prompt": "/2/prompt.txt"
+    },
+    {
+      "metadata": "/3/metadata.json",
+      "transcript": "/3/full.jsonl",
+      "compact_transcript": "/3/transcript.jsonl",
+      "content_hash": "/3/content_hash.txt",
+      "prompt": "/3/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 103664,
+    "input_tokens": 399693,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 2482432,
-    "output_tokens": 22656,
-    "api_call_count": 44
+    "cache_read_tokens": 15047680,
+    "output_tokens": 84294,
+    "api_call_count": 126
   }
 }

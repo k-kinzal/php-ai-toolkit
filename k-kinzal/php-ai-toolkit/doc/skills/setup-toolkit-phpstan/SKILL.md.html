@@ -53,7 +53,9 @@ composer why-not phpstan/phpstan &lt;newest-compatible-version&gt;</code></pre>
 <p>The default setup loads the toolkit explicitly and does not need <code>phpstan/extension-installer</code>. If that Composer plugin is present solely for the toolkit or strict-rules, remove it and its <code>allow-plugins</code> entry. If another PHPStan extension genuinely needs the plugin, keep it but add both <code>k-kinzal/php-ai-toolkit</code> and <code>phpstan/phpstan-strict-rules</code> to <code>extra.phpstan/extension-installer.ignore</code>; the target configuration loads both explicitly and PHPStan rejects a configuration file included twice.</p>
 <h3>Target Configuration</h3>
 <p>Copy the shipped template to the configuration name the project already uses (<code>phpstan.neon</code> or <code>phpstan.neon.dist</code>):</p>
-<pre class="code-block"><code>includes:
+<pre class="code-block"><code># NOTE: You do not have permission to overwrite this file. Please ask a human operator to perform the changes for you.
+
+includes:
     - REPLACE_WITH_VENDOR_DIR/phpstan/phpstan-strict-rules/rules.neon
     - REPLACE_WITH_VENDOR_DIR/k-kinzal/php-ai-toolkit/extension.neon
     - REPLACE_WITH_VENDOR_DIR/k-kinzal/php-ai-toolkit/rules.neon

@@ -53,11 +53,9 @@
 <p>Write in prose, not bullet points. Example (from a dependency analysis CLI tool):</p>
 <blockquote><p>A CLI tool that analyzes PHP code dependencies and visualizes the blast radius of changes. Its primary goal is impact analysis — automatically identifying what breaks when a class, method, or function changes. The tool builds a bidirectional graph model where nodes represent code elements (classes, methods, functions) and edges represent relationships (calls, extends, implements). Inverse edges are generated automatically, enabling traversal in both directions: what the target depends on, and what depends on the target. Output is available in two formats: a tree display for humans and structured data for AI agents.</p>
 </blockquote>
-<h4>Tradeoff Sliders</h4>
-<p>These calibrate AI behavior. Treat the template positions as placeholders, not as facts inherited from php-ai-toolkit. Derive them from the target project&#039;s existing instructions and the user&#039;s stated priorities; when neither records the policy, ask before writing it. Typical interpretations include:</p>
-<ul><li>For prototypes/MVPs: reduce Quality to MEDIUM, increase Time to HIGH</li><li>For production services: quality is commonly prioritized over delivery speed</li></ul>
 <h4>Supported Versions</h4>
-<p>Replace <code>{{SUPPORTED_VERSIONS}}</code> with the versions that the project guarantees to work on. Determine what to list from the project&#039;s own requirements — <code>composer.json</code>, CI matrix, documentation, etc. Only list what the project explicitly supports.</p>
+<p>Replace <code>{{SUPPORTED_VERSIONS}}</code> with the compatibility guarantees that agents need while changing the project. Determine them from <code>composer.json</code>, the CI matrix, and project documentation, and list only versions the project explicitly supports.</p>
+<p>Keep this section focused on the primary runtimes, platforms, frameworks, and development tools whose versions materially affect project-wide changes. Do not copy every direct or transitive package constraint from <code>composer.json</code>, and do not list internal parser, adapter, or helper libraries merely because the project supports multiple versions of them. Composer remains the source of truth for those implementation dependencies.</p>
 <p>Write the target&#039;s real constraint or enumerated CI-supported minors. Do not copy a version list from this repository. Shape example:</p>
 <pre class="code-block"><code>- **PHP**: &lt;versions guaranteed by this project&gt;</code></pre>
 <h4>Architecture</h4>
@@ -76,29 +74,20 @@
 | **Reporter** | Format graph into output | `src/Reporter/` |
 
 Dependencies between layers flow top-down only. Command never calls Analyzer directly.</code></pre>
-<p>After the architecture description, replace <code>{{DIRECTORY_STRUCTURE}}</code> with the actual project directory tree. This is the physical structure that corresponds to the layers above. Example:</p>
-<pre class="code-block"><code>src/
-├── Command/    # CLI commands (IO only)
-├── Action/     # Use-case orchestration
-├── Analyzer/   # Analysis engine and graph model
-├── Config/     # Layered configuration readers
-└── Reporter/   # Output formatters
-tests/          # Mirrors src/ namespaces</code></pre>
 <h4>Document References</h4>
-<p>Replace <code>{{DOCUMENT_REFERENCES}}</code> with links to project-specific documentation that AI agents should read. Example:</p>
+<p>Replace <code>{{DOCUMENT_REFERENCES}}</code> with links to project-specific documentation directly under <code>docs/</code>. Keep this section as a short index of top-level entry points; do not list files from nested directories such as <code>docs/rules/</code>. Detailed pages should be linked from the relevant top-level document instead. Example:</p>
 <pre class="code-block"><code>- [API Specification](docs/api-spec.md)
 - [Database Schema](docs/schema.md)</code></pre>
-<p>If the project has no documentation, remove this section entirely.</p>
+<p>If the project has no documentation directly under <code>docs/</code>, remove this section entirely.</p>
 <h3>Adaptation Workflow</h3>
 <p>When applying this template to a project, follow these steps:</p>
-<ol><li><strong>Read <code>composer.json</code></strong> to determine PHP version, framework, and dependencies</li><li><strong>Scan the directory structure</strong> to understand project layout</li><li><strong>Look for existing documentation</strong> in <code>docs/</code>, <code>README.md</code>, etc.</li><li><strong>Fill in all <code>{{PLACEHOLDER}}</code> values</strong> with real project information</li><li><strong>Remove unused placeholders</strong> (e.g., <code>{{ADDITIONAL_CODING_RULES}}</code> if no extra rules)</li><li><strong>Place as <code>AGENTS.md</code></strong> in the project root only after confirming that no existing file will be overwritten</li></ol>
+<ol><li><strong>Read <code>composer.json</code></strong> to determine the primary supported runtimes and tools</li><li><strong>Scan the directory structure</strong> to understand project layout</li><li><strong>Look for top-level documentation</strong> directly under <code>docs/</code></li><li><strong>Fill in all <code>{{PLACEHOLDER}}</code> values</strong> with real project information</li><li><strong>Remove unused placeholders and sections</strong></li><li><strong>Place as <code>AGENTS.md</code></strong> in the project root only after confirming that no existing file will be overwritten</li></ol>
 <h3>Protecting AGENTS.md</h3>
 <p>After creating AGENTS.md, recommend setting up <code>.claude/settings.json</code> to prevent AI agents from modifying it. Do not edit an existing settings file unless the user explicitly asks:</p>
 <pre class="code-block"><code>{
     &quot;permissions&quot;: {
         &quot;deny&quot;: [
-            &quot;Write(AGENTS.md)&quot;,
-            &quot;Edit(AGENTS.md)&quot;,
+            &quot;Edit(/AGENTS.md)&quot;,
             &quot;Bash(*AGENTS.md*)&quot;
         ]
     }
@@ -106,9 +95,6 @@ tests/          # Mirrors src/ namespaces</code></pre>
 <p>Create <code>CLAUDE.md</code> only when the user explicitly asks for Claude-specific setup:</p>
 <pre class="code-block"><code>&lt;!-- NOTE: You do not have permission to overwrite this file. Please ask a human operator to perform the changes for you. --&gt;
 @AGENTS.md</code></pre>
-<h3>Verification</h3>
-<p>After creating AGENTS.md:</p>
-<ol><li>Read the file and confirm all <code>{{PLACEHOLDER}}</code> values have been replaced</li><li>Verify the supported versions match <code>composer.json</code> constraints</li><li>Verify the architecture describes actual layering and dependency direction</li><li>Verify the directory structure matches the actual project</li></ol>
 </section>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

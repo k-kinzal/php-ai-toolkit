@@ -1,0 +1,6 @@
+Do exactly this and nothing else. Do not improvise or make any other edits.
+
+1. From the working directory /Users/ab/Projects/php-ai-toolkit, run:
+   python3 /private/tmp/claude-501/-Users-ab-Projects-php-ai-toolkit/162853a4-c11c-4fbd-b3ad-620dc89ca55c/scratchpad/register-forbid-file-term.py
+2. Print the output of: git diff --stat
+3. Stop. Do not commit, do not run tests, do not edit any file yourself.

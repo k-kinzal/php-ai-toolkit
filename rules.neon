@@ -3,6 +3,7 @@ parametersSchema:
     toolkit: structure([
         allRules: bool()
         forbiddenComment: structure([enabled: bool()])
+        forbidFileTerm: structure([enabled: bool()])
         noPropertyInTestClass: structure([enabled: bool()])
         noClassConstantInTestClass: structure([enabled: bool()])
         noPrivateMethodInTestClass: structure([enabled: bool()])
@@ -40,6 +41,7 @@ parametersSchema:
         srcUnitTestPairExcludePatterns: listOf(string())
         srcMarker: string()
         unitTestMarker: string()
+        forbiddenTermsByPath: arrayOf(listOf(string()))
         forbiddenNamespacePrefixes: listOf(string())
         forbiddenClassLikeNameSuffixes: listOf(string())
         broadCatchAllowedPaths: listOf(string())
@@ -60,6 +62,8 @@ parameters:
     toolkit:
         allRules: true
         forbiddenComment:
+            enabled: %toolkit.allRules%
+        forbidFileTerm:
             enabled: %toolkit.allRules%
         noPropertyInTestClass:
             enabled: %toolkit.allRules%
@@ -133,6 +137,7 @@ parameters:
         srcUnitTestPairExcludePatterns: []
         srcMarker: '/src/'
         unitTestMarker: '/tests/Unit/'
+        forbiddenTermsByPath: []
         forbiddenNamespacePrefixes:
             - 'Tests\Support'
             - 'Tests\Supports'
@@ -214,6 +219,11 @@ services:
 
     toolkit.rule.forbiddenComment:
         class: Toolkit\PhpStan\Rule\ForbiddenCommentRule
+
+    toolkit.rule.forbidFileTerm:
+        class: Toolkit\PhpStan\Rule\Architecture\ForbidFileTermRule
+        arguments:
+            forbiddenTermsByPath: %toolkit.forbiddenTermsByPath%
 
     toolkit.rule.noPropertyInTestClass:
         class: Toolkit\PhpStan\Rule\NoPropertyInTestClassRule
@@ -428,6 +438,8 @@ services:
 conditionalTags:
     Toolkit\PhpStan\Rule\ForbiddenCommentRule:
         phpstan.rules.rule: %toolkit.forbiddenComment.enabled%
+    Toolkit\PhpStan\Rule\Architecture\ForbidFileTermRule:
+        phpstan.rules.rule: %toolkit.forbidFileTerm.enabled%
     Toolkit\PhpStan\Rule\NoPropertyInTestClassRule:
         phpstan.rules.rule: %toolkit.noPropertyInTestClass.enabled%
     Toolkit\PhpStan\Rule\NoClassConstantInTestClassRule:

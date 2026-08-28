@@ -9,6 +9,7 @@ Rules applied to all code.
 | Rule | Description | Error Identifier |
 |------|-------------|------------------|
 | [ForbiddenCommentRule](rules/ForbiddenCommentRule.md) | Forbids `@phpstan-ignore` and `@infection-ignore-all` comments | `customRules.phpstanIgnoreComment`, `customRules.infectionIgnoreAllComment` |
+| [ForbidFileTermRule](rules/ForbidFileTermRule.md) | Forbids configured literal terms in files matching restricted path patterns | `customRules.forbiddenFileTerm` |
 | [ForbiddenMagicMethodCallRule](rules/ForbiddenMagicMethodCallRule.md) | Forbids direct calls to magic methods | `customRules.forbiddenMagicMethodCall` |
 | [ForbiddenNamespaceRule](rules/ForbiddenNamespaceRule.md) | Forbids configured namespace prefixes such as `Tests\Support`, `Tests\Helper`, and `Tests\Util` | `customRules.forbiddenNamespace` |
 | [OverrideMustHaveAttributeRule](rules/OverrideMustHaveAttributeRule.md) | Requires `#[Override]` attribute on overridden methods | `customRules.overrideMustHaveAttribute` |
@@ -97,6 +98,7 @@ The following values can be customized under `parameters.toolkit` in a project's
 | `srcUnitTestPairExcludePatterns` | `[]` | Patterns to exclude from test pair checks |
 | `srcMarker` | `'/src/'` | Source code path marker |
 | `unitTestMarker` | `'/tests/Unit/'` | Unit test path marker |
+| `forbiddenTermsByPath` | `[]` | Map of restricted file path patterns to case-insensitive literal terms forbidden anywhere in matching files |
 | `forbiddenNamespacePrefixes` | `['Tests\Support', 'Tests\Supports', 'Tests\Helper', 'Tests\Helpers', 'Tests\Util', 'Tests\Utils', 'Tests\Utility', 'Tests\Utilities']` | Namespace prefixes to forbid |
 | `forbiddenClassLikeNameSuffixes` | See [`rules.neon`](../rules.neon) | Class-like declaration name suffixes to forbid |
 | `broadCatchAllowedPaths` | `[]` | fnmatch patterns of boundary files allowed to catch `Throwable`, `Exception`, and the `LogicException`/`Error` families |

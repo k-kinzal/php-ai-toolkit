@@ -28,7 +28,7 @@ repository.
 
 ## Apply Component Skills
 
-Read and follow each applicable component skill in this order:
+Read and follow the component skills in this order:
 
 1. `/setup-toolkit-phpstan`
 2. `/setup-toolkit-phpunit` and `/setup-toolkit-doctest`
@@ -56,4 +56,34 @@ PHPBench, fuzzing, and PBT are not checkbox gates. Skip PHPBench when no stable
 representative workload exists. Skip either fuzzing or PBT when no contract has a
 generator and oracle strong enough to justify it, and report those decisions.
 
-If a component does not apply to the target project, leave it out and report why.
+The core adoption is incomplete until PHPStan, PHPUnit, PHP-CS-Fixer,
+PHPCompatibility, LocGuard, TreeGuard, Deptrac, Infection, and GitHub Actions are
+installed, configured, wired into Composer, and exercised. Doctest and DocGen are
+also part of a complete adoption when the project has maintained PHPDoc examples or
+published API documentation.
+
+Do not silently classify a core component as inapplicable. LocGuard and TreeGuard
+apply to every project with maintained production PHP source. PHPCompatibility
+applies whenever the project declares a PHP support range. Deptrac applies even to
+a flat library: discover or create a meaningful responsibility boundary, and stop
+for the project's architecture decision if one cannot be derived without guessing.
+If a core component is genuinely blocked by the target's runtime or dependency
+graph, report the exact blocker and leave the overall setup incomplete.
+
+Before applying GitHub Actions, verify this completion table against files and
+Composer scripts rather than against work already attempted:
+
+| Component | Required evidence |
+|-----------|-------------------|
+| PHPStan | `phpstan.neon` or `.dist`, and `composer phpstan` |
+| PHPUnit | version-correct configuration, and `composer test:unit` |
+| PHP-CS-Fixer | `.php-cs-fixer.dist.php`, and `composer format:check` |
+| PHPCompatibility | `phpcs.xml.dist`, and `composer compat` |
+| LocGuard | `loc.yaml`, and `composer loc-guard` |
+| TreeGuard | `tree.yaml`, and `composer tree-guard` |
+| Deptrac | `deptrac.yaml`, and `composer deptrac` |
+| Infection | `infection.json5`, and a mutation CI job |
+
+Every configured fast gate must also appear in the aggregate `lint` script. Re-open
+the generated workflow after GitHub Actions is applied and confirm that every row
+is invoked. Missing evidence is a setup failure, not an optional follow-up.

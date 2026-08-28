@@ -1,19 +1,3 @@
-# Publishes the DocGen site of the default branch to GitHub Pages.
-#
-# One-time setup in the repository:
-#   1. Create the empty documentation branch:
-#        git switch --orphan gh-pages
-#        git commit --allow-empty -m 'docs: create the documentation branch'
-#        git push -u origin gh-pages
-#        git switch REPLACE_WITH_DEFAULT_BRANCH
-#   2. Settings > Pages > Build and deployment > Source: "Deploy from a branch",
-#      branch "gh-pages", folder "/ (root)".
-#
-# The site owns the root of that branch: everything else there is replaced on
-# every run, except `pr/` (previews written by docs-preview.yml) and `CNAME`
-# (a custom Pages domain).
-# Replace every REPLACE_WITH sentinel from the target project's support matrix,
-# lock policy, extensions, and branch choices before installing this workflow.
 name: Docs
 
 on:
@@ -42,21 +26,17 @@ jobs:
       contents: write
     steps:
       - name: Check out the repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
       - name: Set up PHP
-        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
         with:
           php-version: 'REPLACE_WITH_DOCGEN_JOB_PHP'
           extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
-          # pcov, not none, when the site should link every method to the test
-          # cases covering it — that needs a --coverage-xml report, and pcov is
-          # several times faster than Xdebug at producing one. Leave this at
-          # `none` and drop the coverage step below when it should not.
           coverage: pcov
 
       - name: Install dependencies
-        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
         with:
           dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
           composer-options: --prefer-dist
@@ -66,7 +46,7 @@ jobs:
         run: composer check-platform-reqs
 
       - name: Restore the DocGen cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: build/docgen-cache
           key: docgen-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_SELECTED_LOCK_FILE') }}-${{ github.sha }}
@@ -74,19 +54,9 @@ jobs:
             docgen-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_SELECTED_LOCK_FILE') }}-
             docgen-${{ runner.os }}-
 
-      # The report --coverage points at below. A strict PHPUnit configuration
-      # reports a test that executes an undeclared class as risky, so this step
-      # is also what keeps the project's #[CoversClass] and #[UsesClass]
-      # metadata honest. Drop it, and the --coverage option, when the site
-      # should not carry per-method test references.
       - name: Generate the coverage report the site reads
         run: vendor/bin/phpunit --coverage-xml build/coverage-xml
 
-      # docgen is configured by its options alone, so this command is the
-      # whole documentation configuration. The address the site is published
-      # at is what the workflow knows and the command cannot work out, so the
-      # job passes it: every page then carries its canonical link and the tags
-      # a shared link is rendered from.
       - name: Generate the documentation
         run: |
           set -euo pipefail
@@ -96,7 +66,7 @@ jobs:
             --base-url="https://${repository%%/*}.github.io/${repository#*/}"
 
       - name: Check out the documentation branch
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ env.DOCS_BRANCH }}
           path: .docs-branch
@@ -106,8 +76,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          # The site owns the root of the branch; the pull request previews
-          # under pr/ and a custom Pages domain in CNAME are kept.
           rsync -a --checksum --delete --exclude '/.git/' --exclude '/pr/' --exclude '/CNAME' ../build/docs/ ./
 
           git add --all

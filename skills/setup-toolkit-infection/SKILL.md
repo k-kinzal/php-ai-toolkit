@@ -198,36 +198,27 @@ not count as a killed mutant:
   pinned older, report the limitation and choose a timeout above the measured test
   duration; do not pretend timeout classification is enforced.
 
-## Running Against a Pre-generated Coverage Report
+## Coverage Collection
 
-The templates run Infection with `--coverage` and `--skip-initial-tests`, and a
-separate Composer script produces the coverage report. That is not an optimisation.
-Infection's own initial test run is unusable against a strict toolkit PHPUnit
-configuration for two reasons:
+Let Infection run its normal initial test phase and generate the coverage it needs.
+With pcov or Xdebug enabled, no separate PHPUnit coverage command is required.
+`--coverage` means reuse an existing XML and JUnit report; it is not a prerequisite
+for mutation testing. `--skip-initial-tests` is only valid when that existing report
+is supplied and the suite was already proved green.
 
-- Infection stops the initial test process at the first byte written to STDERR.
-  This toolkit's AI test reporter writes issues to STDERR, so a single risky or
-  failing test aborts the run.
-- Infection adds `stopOnDefect="true"` to the PHPUnit configuration it generates.
-  With `beStrictAboutCoverageMetadata="true"`, every test that touches code it does
-  not declare as covered is risky, so the run stops after the first such test — and
-  if the exit code is relaxed with `--do-not-fail-on-risky`, Infection accepts that
-  near-empty coverage report and scores a handful of mutants as if it had scored
-  them all.
+Do not add a `Generate coverage for mutation testing` step solely for Infection,
+and do not pass `--coverage` or `--skip-initial-tests` in the standard job. Reuse a
+pre-generated report only when the workflow already creates it for another
+independent consumer and the saved runtime justifies the extra coupling.
 
-Generating coverage with the project's own PHPUnit configuration avoids both. Keep
-`"testFrameworkExtraArgs": "--no-extensions"` in both configurations as well: in AI
-mode the reporter replaces PHPUnit's result output, and Infection reads that output
-to tell a killed mutant from an escaped one. Without the flag, an agent running the
-gate locally scores every mutant as killed.
+Keep `"testFrameworkExtraArgs": "--no-extensions"` so the toolkit's AI reporter
+cannot replace the PHPUnit result output Infection reads to distinguish killed from
+escaped mutants. A risky or failing initial test should fail the mutation job; do
+not weaken PHPUnit with `--do-not-fail-on-risky`.
 
 `testFrameworkExtraArgs` arrived in Infection 0.34. On an older line the same value
 goes under `testFrameworkOptions`, which every version from 0.26 accepts and 0.34
 and later still honour; setting both is an error.
-
-The gate is only as honest as the coverage report it is handed. Regenerate coverage
-in the same command that runs Infection — the Composer scripts below do — so a stale
-report can never be scored.
 
 ## Do Not Wrap It in Composer Scripts
 
@@ -248,11 +239,10 @@ documentation unless the user explicitly names another developer-owned location.
 ## CI Wiring
 
 Merge `mutation-job.yml` into `.github/workflows/ci.yml` as a separate job. It needs
-four things the other jobs do not:
+three things the other jobs do not:
 
 - `fetch-depth: 0` on checkout, so the pull request can be diffed against its base.
 - A coverage driver: `coverage: pcov` in `setup-php`.
-- A step that produces the coverage report before Infection reads it.
 - A branch on the event: a changed-lines step guarded by
   `if: github.event_name == 'pull_request'`, a whole-tree step guarded by the
   negation.

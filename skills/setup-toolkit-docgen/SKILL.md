@@ -168,7 +168,7 @@ Adapt both to the project before applying:
 - Match the generation command to the project: the Composer script, or `vendor/bin/docgen` with the project's own
   options spelled out.
 - Match the `on.push.branches` entry to the default branch, and `DOCS_BRANCH` to the branch Pages serves.
-- Keep the action pins as full commit SHAs with the release tag in a comment, the per-job `contents: write`
+- Keep the action pins as full commit SHAs without release-tag comments, the per-job `contents: write`
   permission, and `pull_request` (never `pull_request_target`) as the preview trigger.
 
 The default-branch and pull-request workflows must generate the same product site.

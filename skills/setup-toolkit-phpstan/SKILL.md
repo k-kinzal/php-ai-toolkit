@@ -83,18 +83,23 @@ includes:
 
 parameters:
     level: max
+    paths:
+        - REPLACE_WITH_ANALYSIS_PATH
 ```
 
 Replace `REPLACE_WITH_VENDOR_DIR` with `composer config vendor-dir` before use. A
-remaining sentinel is a configuration error, not a literal directory name.
+remaining sentinel is a configuration error, not a literal directory name. Replace
+`REPLACE_WITH_ANALYSIS_PATH` with every production and test autoload root derived
+from `composer.json`; repeat the list item for multiple roots.
 
-That is the complete standard configuration. Put analysis paths on the Composer
-command so the configuration remains only the toolkit contract:
+Analysis scope belongs in PHPStan configuration so direct invocations, editor
+integrations, Composer, and CI all analyse the same paths. Do not put the paths only
+on the Composer command. Keep that command independent of project layout:
 
 ```json
 {
     "scripts": {
-        "phpstan": "phpstan analyse REPLACE_WITH_ANALYSIS_PATHS --memory-limit=512M",
+        "phpstan": "phpstan analyse --memory-limit=512M",
         "lint": [
             "@format:check",
             "@phpstan"
@@ -103,14 +108,12 @@ command so the configuration remains only the toolkit contract:
 }
 ```
 
-Replace `REPLACE_WITH_ANALYSIS_PATHS` with the production and test autoload roots
-from `composer.json`.
-
 ## Existing Configuration
 
-Reduce an existing configuration to the three baseline includes, `level: max`,
-and settings that are both project-specific and necessary. Remove copied rule
-definitions, the old error-formatter include, and copied exception defaults.
+Reduce an existing configuration to the three baseline includes, `level: max`, the
+project's complete `paths`, and settings that are both project-specific and
+necessary. Remove copied rule definitions, the old error-formatter include, and
+copied exception defaults.
 
 The following additions can be legitimate:
 

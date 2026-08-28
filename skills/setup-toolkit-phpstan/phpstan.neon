@@ -7,3 +7,5 @@ includes:
 
 parameters:
     level: max
+    paths:
+        - REPLACE_WITH_ANALYSIS_PATH

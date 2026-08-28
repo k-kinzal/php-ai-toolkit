@@ -1,85 +1,49 @@
-# Mutation testing job for .github/workflows/ci.yml.
-#
-# Merge this job into the existing `jobs:` mapping; do not create a second
-# workflow for it. Mutation testing runs on one PHP version because it is
-# expensive and the mutation score does not depend on the runtime. Pick the
-# newest compatible PHP runtime selected for the target's mutation toolchain.
-# Replace every REPLACE_WITH sentinel and add a versioned-lock `cp` step only
-# when the target actually maintains one for that runtime.
-#
-# The commands live here rather than in Composer scripts. This gate runs in CI,
-# so a Composer wrapper would only add a layer to look through, a second place
-# for the flags to drift, and a 300-second process timeout to work around.
-#
-# Pull requests are scored on their changed lines against the stricter
-# thresholds passed below; the default branch is scored on the whole source tree
-# against the thresholds in infection.json5.
-  mutation:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          # Scoring a pull request means diffing it against its base branch,
-          # which needs more than the single commit a shallow clone provides.
-          fetch-depth: 0
+mutation:
+  name: Mutation testing
+  runs-on: ubuntu-latest
+  timeout-minutes: 60
+  steps:
+    - name: Check out the repository
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        fetch-depth: 0
 
-      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
-        with:
-          php-version: 'REPLACE_WITH_MUTATION_JOB_PHP'
-          extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
-          # Infection needs a coverage driver. pcov is several times faster than
-          # Xdebug and Infection collects nothing Xdebug alone can provide.
-          coverage: pcov
+    - name: Set up PHP
+      uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+      with:
+        php-version: 'REPLACE_WITH_MUTATION_JOB_PHP'
+        extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
+        coverage: pcov
 
-      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
-        with:
-          dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
-          composer-options: --prefer-dist
-          require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
+    - name: Install dependencies
+      uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
+      with:
+        dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
+        composer-options: --prefer-dist
+        require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
 
-      - name: Check installed platform requirements
-        run: composer check-platform-reqs
+    - name: Check installed platform requirements
+      run: composer check-platform-reqs
 
-      # Infection's own initial test run cannot be used against a strict toolkit
-      # PHPUnit configuration; see the skill for why. Drop --do-not-fail-on-risky
-      # if the project's suite is green with coverage enabled.
-      - name: Generate coverage for mutation testing
-        run: >-
-          php -d memory_limit=1G vendor/bin/phpunit
-          --no-extensions
-          --do-not-fail-on-risky
-          --coverage-xml build/infection-coverage/coverage-xml
-          --log-junit build/infection-coverage/junit.xml
+    - name: Mutation testing on changed lines
+      if: github.event_name == 'pull_request'
+      run: >-
+        php -d memory_limit=4G vendor/bin/infection
+        --configuration=infection.json5
+        --threads=max
+        --git-diff-lines
+        --git-diff-base="origin/${GITHUB_BASE_REF}"
+        --ignore-msi-with-no-mutations
+        --min-msi=85
+        --min-covered-msi=85
+        --no-progress
+        --logger-github
 
-      # Size memory_limit for the reports rather than for the run: Infection holds
-      # every mutant result and encodes all of them into build/infection.json once
-      # the score is printed, so a large source tree exhausts a limit the scoring
-      # itself never came close to — and it does so after the score, failing the
-      # job on a report. Raise this when the tree grows.
-      - name: Mutation testing on changed lines
-        if: github.event_name == 'pull_request'
-        run: >-
-          php -d memory_limit=4G vendor/bin/infection
-          --configuration=infection.json5
-          --threads=max
-          --coverage=build/infection-coverage
-          --skip-initial-tests
-          --git-diff-lines
-          --git-diff-base="origin/${GITHUB_BASE_REF}"
-          --ignore-msi-with-no-mutations
-          --min-msi=85
-          --min-covered-msi=85
-          --no-progress
-          --logger-github
-
-      - name: Mutation testing on the whole source tree
-        if: github.event_name != 'pull_request'
-        run: >-
-          php -d memory_limit=4G vendor/bin/infection
-          --configuration=infection.json5
-          --threads=max
-          --coverage=build/infection-coverage
-          --skip-initial-tests
-          --no-progress
-          --logger-github
+    - name: Mutation testing on the whole source tree
+      if: github.event_name != 'pull_request'
+      run: >-
+        php -d memory_limit=4G vendor/bin/infection
+        --configuration=infection.json5
+        --threads=max
+        --no-progress
+        --logger-github

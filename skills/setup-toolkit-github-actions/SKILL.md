@@ -58,7 +58,8 @@ Required gates when the corresponding script/config exists:
 - `composer loc-guard` for LocGuard.
 - `composer tree-guard` for TreeGuard.
 - `composer deptrac` for Deptrac.
-- `composer test:unit`, `composer test:unit:legacy`, or `composer test` for PHPUnit.
+- `composer test` for the PHPUnit suite when ParaTest is installed, otherwise
+  `composer test:unit`.
 
 Property-based tests configured by `/setup-toolkit-pbt` run through
 `composer test:pbt` in their separate `pbt.yml` workflow. Verify that workflow is
@@ -83,21 +84,16 @@ do not invent the gate in CI; set up that tool first.
 
 ### The Parallel Test Runner
 
-A project whose `composer test` runs ParaTest rather than PHPUnit directly has
-two runners configured, and the matrix only exercises one of them. Give the
-parallel one its own small job.
+When ParaTest is installed, make `composer test` select it and run that command in
+the normal PHP matrix. Do not add a second sequential PHPUnit job: ParaTest already
+executes the PHPUnit suite, and the matrix simultaneously verifies runtime support
+and isolation across worker processes.
 
-It is not a second matrix. The suite's compatibility with each PHP version is
-what the `tests` matrix answers; what the parallel runner adds is whether the
-suite survives being split across processes — no test class sharing a fixture
-file with another, no ordering assumed between classes, no global state carried
-across. None of that depends on the PHP version, so run it once on the highest
-supported one, the way mutation testing is scored once.
-
-Note that `composer test` usually carries no `--configuration`, so it picks up
-`phpunit.xml.dist`. In a project that keeps a separate PHPUnit 9 config for an
-older PHP floor, that makes the parallel job implicitly a modern-PHP job; pin it
-to a version the default config supports.
+A real multi-major matrix must use the version-selecting `phpunit.php` runner from
+`/setup-toolkit-phpunit`, so ParaTest receives the configuration matching the
+installed PHPUnit major. Do not rely on the newest `phpunit.xml.dist` under older
+dependency graphs. Keep `composer test:unit` available for local debugging and for
+tools that specifically require PHPUnit, but CI does not need to repeat it.
 
 ## Separate Decision: Documentation Publishing
 
@@ -140,7 +136,7 @@ bad Composer constraint by narrowing the workflow matrix.
 
 1. Determine the supported PHP range from `composer.json require.php` and the
    project docs.
-2. List every supported minor version in the `tests` and `lint` matrices.
+2. List every supported minor version in the `tests` matrix.
 3. Prefer the project's existing lock policy. A normal single `composer.lock`
    is fine for most applications. Use PHP-versioned lock files only when a
    supported older PHP minor needs a different dependency graph and the project
@@ -156,16 +152,18 @@ bad Composer constraint by narrowing the workflow matrix.
 6. If dependencies do not install on a supported PHP minor, fix the Composer
    constraints first. Select the newest compatible tool line for that leg and add
    an older line only when Composer proves the target matrix needs it.
-7. Run the lint gates as named steps inside the `lint` job on the supported
-   PHP matrix.
-8. Use the highest matrix minor for one-off parallel, mutation, and documentation
+7. Run the lint gates as named steps in one `lint` job on the highest supported
+   runtime compatible with the tooling. PHPCompatibility checks the declared PHP
+   range; repeating formatting, PHPStan, LocGuard, TreeGuard, and Deptrac on every
+   runtime adds no distinct gate.
+8. Use the highest matrix minor for one-off mutation, documentation, and benchmark
    jobs unless the tool cannot run there. Record that limitation rather than
    copying the template's PHP literal.
 
 Never use `--ignore-platform-reqs` to make a lower PHP job pass. That hides a
 real compatibility problem.
 
-The workflow template is deliberately incomplete until its PHP values, test scripts,
+The workflow template is deliberately incomplete until its PHP values, test command,
 extensions, branches, and lock steps are derived from the target. Never retain a
 literal merely because it matches php-ai-toolkit's own CI. In particular, do not
 copy this repository's full matrix or versioned-lock topology into a single-runtime
@@ -191,7 +189,9 @@ cp "$lock_tmp_dir/composer.lock" "composer.lock.php-$target_php"
 Apply these rules to every workflow created by this skill:
 
 - Pin every external action with the full 40-character commit SHA.
-- Keep the release tag as an inline comment next to the SHA for reviewability.
+- Keep workflow YAML free of explanatory comments, including release-tag comments
+  after action SHAs. Put rationale in the setup skill or project developer
+  documentation and use clear job and step names in the workflow itself.
 - Verify each SHA from the action's original repository:
   ```bash
   gh release view --repo actions/checkout --json tagName,publishedAt,url
@@ -236,7 +236,7 @@ git ls-remote --tags https://github.com/ramsey/composer-install.git 'refs/tags/<
 ```
 
 Use the SHA returned for the exact tag. Do not use a moving branch, a major tag,
-or an abbreviated SHA.
+or an abbreviated SHA. Do not append the tag as a YAML comment.
 
 ## Verification
 
@@ -259,8 +259,7 @@ composer loc-guard
 composer tree-guard
 composer deptrac
 composer test:unit
-composer test:unit:legacy # only when the resolved target graph uses the legacy config
-composer test             # when the project has a parallel runner script
+composer test
 ```
 
 Then check that nothing configured was left out of the workflow. Every Composer

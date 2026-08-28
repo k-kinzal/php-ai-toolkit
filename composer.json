@@ -50,8 +50,8 @@
         }
     },
     "scripts": {
-        "test": "paratest --processes=auto",
-        "test:unit": "@test:unit:13",
+        "test": "@php -d memory_limit=512M phpunit.php --parallel --processes=auto --max-processes=4",
+        "test:unit": "@php -d memory_limit=512M phpunit.php",
         "test:unit:9": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit9.xml.dist",
         "test:unit:10": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit10.xml.dist",
         "test:unit:11": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit11.xml.dist",

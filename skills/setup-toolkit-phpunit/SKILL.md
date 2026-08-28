@@ -252,20 +252,23 @@ Add to the target project's `composer.json`:
 }
 ```
 
-For a real multi-major matrix, keep explicit scripts so every leg selects its own
-schema instead of relying on whichever file happens to be named `phpunit.xml.dist`:
+For a real multi-major matrix, copy `phpunit.php` from this skill to the project
+root along with one configuration per installed major. The runner reads the
+installed `phpunit/phpunit` version and selects the matching schema, including the
+separate PHPUnit 10, 11, and 12 files. This keeps the public Composer command stable
+instead of making CI reimplement dependency resolution as a matrix-to-script map:
 
 ```json
 {
     "scripts": {
-        "test:unit:9": "phpunit --configuration phpunit9.xml.dist",
-        "test:unit:10": "phpunit --configuration phpunit10.xml.dist",
-        "test:unit:11": "phpunit --configuration phpunit11.xml.dist",
-        "test:unit:12": "phpunit --configuration phpunit12.xml.dist",
-        "test:unit:13": "phpunit --configuration phpunit.xml.dist"
+        "test:unit": "@php -d memory_limit=512M phpunit.php"
     }
 }
 ```
+
+Run `composer test:unit` under every maintained dependency graph and confirm the
+selected file validates. Do not point the generic script at the newest schema when
+an older supported runtime installs PHPUnit 10–12.
 
 ## Parallel Execution with ParaTest
 
@@ -288,15 +291,15 @@ composer require --dev "brianium/paratest:<target-derived-constraint>" --dry-run
 
 Select that constraint with the same target-first process as PHPUnit: use the
 newest ParaTest release compatible with the resolved PHPUnit version and the PHP
-runtime of the parallel job. Run the command without `--dry-run` after confirming
+runtime of the test jobs. Run the command without `--dry-run` after confirming
 the resolution. Add an older ParaTest line only when a real supported graph needs
 it; do not copy this repository's union.
 
 ```json
 {
     "scripts": {
-        "test": "paratest --processes=auto",
-        "test:unit": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist"
+        "test": "@php -d memory_limit=512M phpunit.php --parallel --processes=auto --max-processes=4",
+        "test:unit": "@php -d memory_limit=512M phpunit.php"
     }
 }
 ```
@@ -305,13 +308,13 @@ Three things to check before wiring it in:
 
 - `ext-pcntl` must be available; it is what ParaTest forks workers with. Add it
   to the CI `extensions:` list.
-- `paratest` takes no `--configuration` above, so it reads `phpunit.xml.dist`.
-  A project that keeps a separate PHPUnit 9 config for an older PHP floor must
-  keep a `phpunit` script naming that file, and must not point the parallel job
-  at the old floor.
-- Keep the single-process script. The two runners answer different questions and
-  both belong in CI: the version matrix on the single-process one, and one job
-  on the parallel one. See the `/setup-toolkit-github-actions` skill.
+- `phpunit.php` passes the selected configuration to ParaTest, so every supported
+  dependency graph uses the schema for its installed PHPUnit major. It also passes
+  the configured PHP memory limit to ParaTest workers rather than silently falling
+  back to the runtime default.
+- Keep the single-process script for local debugging and tools that invoke PHPUnit
+  directly. CI should use the parallel `composer test` command in its PHP matrix;
+  duplicating the same suite in a second CI job adds no gate.
 
 ## Verification
 

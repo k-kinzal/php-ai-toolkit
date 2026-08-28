@@ -1,11 +1,3 @@
-# The workflow name is what the README status badge renders as its label, so it
-# is not optional: an unnamed workflow badges as its own file path.
-#
-# Replace every REPLACE_WITH sentinel before use. Derive the PHP matrix, test
-# scripts, extensions, branches, and Composer lock mode from the target project.
-# Add a per-version `cp composer.lock.php-${{ matrix.php }} composer.lock` step
-# only when that target actually maintains PHP-versioned locks. Drop a lint step
-# whose Composer script does not exist; do not keep a gate that was never set up.
 name: CI
 
 on:
@@ -32,86 +24,44 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          # Repeat for every supported minor and select the test script that
-          # matches the dependency graph resolved on that minor.
-          - php: 'REPLACE_WITH_SUPPORTED_PHP'
-            test-script: REPLACE_WITH_TEST_SCRIPT
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
-          coverage: none
-
-      - name: Install dependencies
-        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
-        with:
-          dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
-          composer-options: --prefer-dist
-          require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
-
-      - name: Check installed platform requirements
-        run: composer check-platform-reqs
-
-      - name: Run the unit tests
-        run: composer ${{ matrix.test-script }}
-
-  # Keep this job only when the project has a parallel runner script such as
-  # `composer test` on ParaTest. It runs the same suite the `tests` matrix runs,
-  # so it is not a matrix: what it verifies is that the suite survives being
-  # split across processes — no shared fixture files, no ordering between test
-  # classes, no global state carried between them. That does not depend on the
-  # PHP version, so it is checked once on the highest supported one.
-  tests-parallel:
-    name: Tests through the parallel runner
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
-        with:
-          php-version: 'REPLACE_WITH_HIGHEST_SUPPORTED_PHP'
-          extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
-          coverage: none
-
-      - name: Install dependencies
-        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
-        with:
-          dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
-          composer-options: --prefer-dist
-          require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
-
-      - name: Check installed platform requirements
-        run: composer check-platform-reqs
-
-      - name: Run the suite under the parallel runner
-        run: composer test
-
-  lint:
-    name: Lint on PHP ${{ matrix.php }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    strategy:
-      fail-fast: false
-      matrix:
         php:
           - 'REPLACE_WITH_SUPPORTED_PHP'
     steps:
       - name: Check out the repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
       - name: Set up PHP
-        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
         with:
           php-version: ${{ matrix.php }}
+          extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
+          coverage: none
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
+        with:
+          dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
+          composer-options: --prefer-dist
+          require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
+
+      - name: Check installed platform requirements
+        run: composer check-platform-reqs
+
+      - name: Run the tests
+        run: REPLACE_WITH_TEST_COMMAND
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: 'REPLACE_WITH_TOOLING_PHP'
           extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
           coverage: none
 
@@ -119,7 +69,7 @@ jobs:
         run: composer validate --strict --no-check-publish
 
       - name: Install dependencies
-        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
         with:
           dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
           composer-options: --prefer-dist
@@ -134,7 +84,7 @@ jobs:
       - name: Analyse with PHPStan
         run: composer phpstan
 
-      - name: Check compatibility with the PHP floor
+      - name: Check PHP compatibility
         run: composer compat
 
       - name: Check the source metrics

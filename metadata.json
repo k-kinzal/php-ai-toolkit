@@ -3,7 +3,7 @@
   "checkpoint_id": "01M1477XNZ4XFWWRFSNJTFWVGC",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 4,
+  "checkpoints_count": 5,
   "files_touched": [
     "docs/phpstan-rules.md",
     "docs/rules/ForbidFileTermRule.md",
@@ -39,13 +39,20 @@
       "compact_transcript": "/2/transcript.jsonl",
       "content_hash": "/2/content_hash.txt",
       "prompt": "/2/prompt.txt"
+    },
+    {
+      "metadata": "/3/metadata.json",
+      "transcript": "/3/full.jsonl",
+      "compact_transcript": "/3/transcript.jsonl",
+      "content_hash": "/3/content_hash.txt",
+      "prompt": "/3/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 53580,
+    "input_tokens": 71246,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 1613568,
-    "output_tokens": 17707,
-    "api_call_count": 29
+    "cache_read_tokens": 1706496,
+    "output_tokens": 18883,
+    "api_call_count": 34
   }
 }

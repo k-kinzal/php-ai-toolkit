@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M1477XNZ4XFWWRFSNJTFWVGC",
+  "session_id": "01a03e4c-879a-76b0-a43b-defe8a97b122",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-28T12:59:21.944065Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/phpstan-rules.md"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.6-sol",
+  "turn_id": "b8638e9be5a6",
+  "checkpoint_transcript_start": 336,
+  "transcript_lines_at_start": 336,
+  "compact_transcript_start": 41,
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-28T12:59:21.761822Z",
+    "agent_lines": 2,
+    "agent_removed": 0,
+    "human_added": 602,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 604,
+    "total_lines_changed": 604,
+    "agent_percentage": 0.33112582781456956,
+    "metric_version": 2
+  }
+}

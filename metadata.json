@@ -1,0 +1,37 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M1477XNZ4XFWWRFSNJTFWVGC",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "docs/phpstan-rules.md",
+    "docs/rules/ForbidFileTermRule.md",
+    "src/PhpStan/Rule/Architecture/ForbidFileTermRule.php",
+    "src/PhpStan/Rule/Architecture/ForbiddenFileTermErrorBuilder.php",
+    "src/PhpStan/Rule/Architecture/ForbiddenFileTermInspector.php",
+    "src/PhpStan/Rule/Architecture/ForbiddenFileTermRestrictions.php",
+    "tests/Fixture/ForbidFileTerm/BackendLeak.php",
+    "tests/Fixture/ForbidFileTerm/BackendNeutral.php",
+    "tests/Unit/PhpStan/Rule/Architecture/ForbidFileTermRuleTest.php",
+    "tests/Unit/PhpStan/Rule/Architecture/ForbiddenFileTermErrorBuilderTest.php",
+    "tests/Unit/PhpStan/Rule/Architecture/ForbiddenFileTermInspectorTest.php",
+    "tests/Unit/PhpStan/Rule/Architecture/ForbiddenFileTermRestrictionsTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 53580,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1613568,
+    "output_tokens": 17707,
+    "api_call_count": 29
+  }
+}

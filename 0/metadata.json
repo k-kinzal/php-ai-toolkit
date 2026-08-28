@@ -1,0 +1,50 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M1477XNZ4XFWWRFSNJTFWVGC",
+  "session_id": "01a03e38-62f7-76d0-af47-76b13c8d2cf0",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-28T12:59:19.236237Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 1,
+  "files_touched": [
+    "docs/phpstan-rules.md",
+    "docs/rules/ForbidFileTermRule.md",
+    "src/PhpStan/Rule/Architecture/ForbidFileTermRule.php",
+    "src/PhpStan/Rule/Architecture/ForbiddenFileTermErrorBuilder.php",
+    "src/PhpStan/Rule/Architecture/ForbiddenFileTermInspector.php",
+    "src/PhpStan/Rule/Architecture/ForbiddenFileTermRestrictions.php",
+    "tests/Fixture/ForbidFileTerm/BackendLeak.php",
+    "tests/Fixture/ForbidFileTerm/BackendNeutral.php",
+    "tests/Unit/PhpStan/Rule/Architecture/ForbidFileTermRuleTest.php",
+    "tests/Unit/PhpStan/Rule/Architecture/ForbiddenFileTermErrorBuilderTest.php",
+    "tests/Unit/PhpStan/Rule/Architecture/ForbiddenFileTermInspectorTest.php",
+    "tests/Unit/PhpStan/Rule/Architecture/ForbiddenFileTermRestrictionsTest.php"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.6-sol",
+  "turn_id": "1ab20906b9ee",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 53580,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1613568,
+    "output_tokens": 17707,
+    "api_call_count": 29
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-28T12:59:19.035217Z",
+    "agent_lines": 597,
+    "agent_removed": 0,
+    "human_added": 6,
+    "human_modified": 1,
+    "human_removed": 0,
+    "total_committed": 604,
+    "total_lines_changed": 604,
+    "agent_percentage": 98.84105960264901,
+    "metric_version": 2
+  }
+}

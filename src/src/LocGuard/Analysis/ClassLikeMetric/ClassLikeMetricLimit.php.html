@@ -50,7 +50,7 @@
 <span class="src-line" id="L14"><a class="ln" href="#L14">14</a>    <span class="tok-com">/**</span></span>
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-com">     * Returns the applicable physical-line limit for the class-like kind.</span></span>
 <span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L17"><a class="ln" href="#L17">17</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">limit</span>(<span class="tok-id">ClassLikeMetric</span> <span class="tok-var">$metric</span>, <span class="tok-id">LimitConfig</span> <span class="tok-var">$limits</span>): <span class="tok-id">int</span></span>
+<span class="src-line" id="L17"><a class="ln" href="#L17">17</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">limit</span>(<span class="tok-id">ClassLikeMetric</span> <span class="tok-var">$metric</span>, <span class="tok-id">LimitConfig</span> <span class="tok-var">$limits</span>): ?<span class="tok-id">int</span></span>
 <span class="src-line" id="L18"><a class="ln" href="#L18">18</a>    {</span>
 <span class="src-line" id="L19"><a class="ln" href="#L19">19</a>        <span class="tok-kw">if</span> (<span class="tok-var">$metric</span>-&gt;<span class="tok-id">kind</span> === <span class="tok-str">&#039;trait&#039;</span>) {</span>
 <span class="src-line" id="L20"><a class="ln" href="#L20">20</a>            <span class="tok-kw">return</span> <span class="tok-var">$limits</span>-&gt;<span class="tok-id">maxTraitLines</span>;</span>

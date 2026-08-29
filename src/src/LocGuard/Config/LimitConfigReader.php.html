@@ -40,53 +40,91 @@
 <span class="src-line" id="L4"><a class="ln" href="#L4">4</a></span>
 <span class="src-line" id="L5"><a class="ln" href="#L5">5</a><span class="tok-kw">namespace</span> <span class="tok-id">Toolkit\LocGuard\Config</span>;</span>
 <span class="src-line" id="L6"><a class="ln" href="#L6">6</a></span>
-<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">is_array</span>;</span>
-<span class="src-line" id="L8"><a class="ln" href="#L8">8</a></span>
-<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\LocGuard\LocGuardException</span>;</span>
-<span class="src-line" id="L10"><a class="ln" href="#L10">10</a></span>
-<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-com">/**</span></span>
-<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-com"> * Reads LocGuard numeric limits from loc.yaml.</span></span>
-<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-com"> */</span></span>
-<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">LimitConfigReader</span></span>
-<span class="src-line" id="L15"><a class="ln" href="#L15">15</a>{</span>
-<span class="src-line" id="L16"><a class="ln" href="#L16">16</a>    <span class="tok-com">/** @readonly */</span></span>
-<span class="src-line" id="L17"><a class="ln" href="#L17">17</a>    <span class="tok-kw">private</span> <span class="tok-id">ConfigScalarReader</span> <span class="tok-var">$scalarReader</span>;</span>
-<span class="src-line" id="L18"><a class="ln" href="#L18">18</a></span>
-<span class="src-line" id="L19"><a class="ln" href="#L19">19</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-com">     * Creates a reader from scalar validation.</span></span>
-<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L22"><a class="ln" href="#L22">22</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(?<span class="tok-id">ConfigScalarReader</span> <span class="tok-var">$scalarReader</span> = <span class="tok-id">null</span>)</span>
-<span class="src-line" id="L23"><a class="ln" href="#L23">23</a>    {</span>
-<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">scalarReader</span> = <span class="tok-var">$scalarReader</span> ?? <span class="tok-kw">new</span> <span class="tok-id">ConfigScalarReader</span>();</span>
-<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>    }</span>
-<span class="src-line" id="L26"><a class="ln" href="#L26">26</a></span>
-<span class="src-line" id="L27"><a class="ln" href="#L27">27</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L28"><a class="ln" href="#L28">28</a><span class="tok-com">     * Reads line-count and complexity limits.</span></span>
-<span class="src-line" id="L29"><a class="ln" href="#L29">29</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L30"><a class="ln" href="#L30">30</a><span class="tok-com">     * @param mixed $value</span></span>
-<span class="src-line" id="L31"><a class="ln" href="#L31">31</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a><span class="tok-com">     * @throws LocGuardException when the limits section is not a mapping</span></span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">read</span>(<span class="tok-var">$value</span>): <span class="tok-id">LimitConfig</span></span>
-<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>    {</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        <span class="tok-kw">if</span> (!<span class="tok-id">is_array</span>(<span class="tok-var">$value</span>)) {</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>            <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">LocGuardException</span>(<span class="tok-str">&#039;Invalid loc.yaml: &quot;limits&quot; must be a mapping.&#039;</span>);</span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>        }</span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a></span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">LimitConfig</span>(</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">scalarReader</span>-&gt;<span class="tok-id">positiveInt</span>(<span class="tok-var">$value</span>, <span class="tok-str">&#039;max_file_lines&#039;</span>, <span class="tok-num">500</span>),</span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">scalarReader</span>-&gt;<span class="tok-id">positiveInt</span>(<span class="tok-var">$value</span>, <span class="tok-str">&#039;max_file_ncloc&#039;</span>, <span class="tok-num">350</span>),</span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">scalarReader</span>-&gt;<span class="tok-id">positiveInt</span>(<span class="tok-var">$value</span>, <span class="tok-str">&#039;max_class_lines&#039;</span>, <span class="tok-num">400</span>),</span>
-<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">scalarReader</span>-&gt;<span class="tok-id">positiveInt</span>(<span class="tok-var">$value</span>, <span class="tok-str">&#039;max_trait_lines&#039;</span>, <span class="tok-num">300</span>),</span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">scalarReader</span>-&gt;<span class="tok-id">positiveInt</span>(<span class="tok-var">$value</span>, <span class="tok-str">&#039;max_interface_lines&#039;</span>, <span class="tok-num">200</span>),</span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">scalarReader</span>-&gt;<span class="tok-id">positiveInt</span>(<span class="tok-var">$value</span>, <span class="tok-str">&#039;max_enum_lines&#039;</span>, <span class="tok-num">200</span>),</span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">scalarReader</span>-&gt;<span class="tok-id">positiveInt</span>(<span class="tok-var">$value</span>, <span class="tok-str">&#039;max_function_lines&#039;</span>, <span class="tok-num">50</span>),</span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">scalarReader</span>-&gt;<span class="tok-id">positiveInt</span>(<span class="tok-var">$value</span>, <span class="tok-str">&#039;max_method_lines&#039;</span>, <span class="tok-num">50</span>),</span>
-<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">scalarReader</span>-&gt;<span class="tok-id">positiveInt</span>(<span class="tok-var">$value</span>, <span class="tok-str">&#039;max_cyclomatic_complexity&#039;</span>, <span class="tok-num">20</span>),</span>
-<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>        );</span>
-<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>    }</span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>}</span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a></span>
+<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">array_key_exists</span>;</span>
+<span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">array_keys</span>;</span>
+<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">is_array</span>;</span>
+<span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">sprintf</span>;</span>
+<span class="src-line" id="L11"><a class="ln" href="#L11">11</a></span>
+<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\LocGuard\LocGuardException</span>;</span>
+<span class="src-line" id="L13"><a class="ln" href="#L13">13</a></span>
+<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-com">/**</span></span>
+<span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-com"> * Reads nested optional metric limits from one policy.</span></span>
+<span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-com"> */</span></span>
+<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">LimitConfigReader</span></span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a>{</span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a>    <span class="tok-com">/** @var array&lt;string, list&lt;string&gt;&gt; */</span></span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a>    <span class="tok-kw">private</span> <span class="tok-kw">const</span> <span class="tok-id">METRICS</span> = [</span>
+<span class="src-line" id="L21"><a class="ln" href="#L21">21</a>        <span class="tok-str">&#039;file&#039;</span> =&gt; [<span class="tok-str">&#039;lines&#039;</span>, <span class="tok-str">&#039;ncloc&#039;</span>],</span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a>        <span class="tok-str">&#039;class&#039;</span> =&gt; [<span class="tok-str">&#039;lines&#039;</span>],</span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a>        <span class="tok-str">&#039;trait&#039;</span> =&gt; [<span class="tok-str">&#039;lines&#039;</span>],</span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>        <span class="tok-str">&#039;interface&#039;</span> =&gt; [<span class="tok-str">&#039;lines&#039;</span>],</span>
+<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>        <span class="tok-str">&#039;enum&#039;</span> =&gt; [<span class="tok-str">&#039;lines&#039;</span>],</span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>        <span class="tok-str">&#039;function&#039;</span> =&gt; [<span class="tok-str">&#039;lines&#039;</span>, <span class="tok-str">&#039;cyclomatic_complexity&#039;</span>],</span>
+<span class="src-line" id="L27"><a class="ln" href="#L27">27</a>        <span class="tok-str">&#039;method&#039;</span> =&gt; [<span class="tok-str">&#039;lines&#039;</span>, <span class="tok-str">&#039;cyclomatic_complexity&#039;</span>],</span>
+<span class="src-line" id="L28"><a class="ln" href="#L28">28</a>    ];</span>
+<span class="src-line" id="L29"><a class="ln" href="#L29">29</a></span>
+<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>    <span class="tok-com">/** @readonly */</span></span>
+<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>    <span class="tok-kw">private</span> <span class="tok-id">ConfigKeyValidator</span> <span class="tok-var">$keyValidator</span>;</span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a></span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>    <span class="tok-com">/** @readonly */</span></span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>    <span class="tok-kw">private</span> <span class="tok-id">ConfigScalarReader</span> <span class="tok-var">$scalarReader</span>;</span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a></span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a><span class="tok-com">     * Creates a limit reader from mapping and scalar validation.</span></span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        ?<span class="tok-id">ConfigKeyValidator</span> <span class="tok-var">$keyValidator</span> = <span class="tok-id">null</span>,</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>        ?<span class="tok-id">ConfigScalarReader</span> <span class="tok-var">$scalarReader</span> = <span class="tok-id">null</span>,</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>    ) {</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">keyValidator</span> = <span class="tok-var">$keyValidator</span> ?? <span class="tok-kw">new</span> <span class="tok-id">ConfigKeyValidator</span>();</span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">scalarReader</span> = <span class="tok-var">$scalarReader</span> ?? <span class="tok-kw">new</span> <span class="tok-id">ConfigScalarReader</span>();</span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>    }</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a></span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a><span class="tok-com">     * Reads a partial limit mapping while preserving explicit null values.</span></span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a><span class="tok-com">     * @param mixed $value</span></span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a><span class="tok-com">     * @return array&lt;string, ?int&gt;</span></span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a><span class="tok-com">     * @throws LocGuardException when a limit mapping or value is invalid</span></span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">read</span>(<span class="tok-var">$value</span>, <span class="tok-id">string</span> <span class="tok-var">$context</span> = <span class="tok-str">&#039;limits&#039;</span>): <span class="tok-kw">array</span></span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>    {</span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>        <span class="tok-kw">if</span> (!<span class="tok-id">is_array</span>(<span class="tok-var">$value</span>)) {</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>            <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">LocGuardException</span>(<span class="tok-id">sprintf</span>(<span class="tok-str">&#039;Invalid loc.yaml: &quot;%s&quot; must be a mapping.&#039;</span>, <span class="tok-var">$context</span>));</span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>        }</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">keyValidator</span>-&gt;<span class="tok-id">rejectUnknown</span>(<span class="tok-var">$value</span>, <span class="tok-id">array_keys</span>(<span class="tok-id">self</span>::<span class="tok-id">METRICS</span>), <span class="tok-var">$context</span>);</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a></span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>        <span class="tok-var">$limits</span> = [];</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>        <span class="tok-kw">foreach</span> (<span class="tok-id">self</span>::<span class="tok-id">METRICS</span> <span class="tok-kw">as</span> <span class="tok-var">$subject</span> =&gt; <span class="tok-var">$metrics</span>) {</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>            <span class="tok-kw">if</span> (!<span class="tok-id">array_key_exists</span>(<span class="tok-var">$subject</span>, <span class="tok-var">$value</span>)) {</span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>                <span class="tok-kw">continue</span>;</span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>            }</span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>            <span class="tok-kw">if</span> (!<span class="tok-id">is_array</span>(<span class="tok-var">$value</span>[<span class="tok-var">$subject</span>])) {</span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>                <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">LocGuardException</span>(<span class="tok-id">sprintf</span>(</span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>                    <span class="tok-str">&#039;Invalid loc.yaml: &quot;%s.%s&quot; must be a mapping.&#039;</span>,</span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>                    <span class="tok-var">$context</span>,</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>                    <span class="tok-var">$subject</span>,</span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>                ));</span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>            }</span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a></span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>            <span class="tok-var">$subjectContext</span> = <span class="tok-var">$context</span> . <span class="tok-str">&#039;.&#039;</span> . <span class="tok-var">$subject</span>;</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">keyValidator</span>-&gt;<span class="tok-id">rejectUnknown</span>(<span class="tok-var">$value</span>[<span class="tok-var">$subject</span>], <span class="tok-var">$metrics</span>, <span class="tok-var">$subjectContext</span>);</span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$metrics</span> <span class="tok-kw">as</span> <span class="tok-var">$metric</span>) {</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>                <span class="tok-kw">if</span> (<span class="tok-id">array_key_exists</span>(<span class="tok-var">$metric</span>, <span class="tok-var">$value</span>[<span class="tok-var">$subject</span>])) {</span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>                    <span class="tok-var">$limits</span>[<span class="tok-var">$subject</span> . <span class="tok-str">&#039;.&#039;</span> . <span class="tok-var">$metric</span>] = <span class="tok-var">$this</span>-&gt;<span class="tok-id">scalarReader</span>-&gt;<span class="tok-id">nullablePositiveInt</span>(</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>                        <span class="tok-var">$value</span>[<span class="tok-var">$subject</span>],</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>                        <span class="tok-var">$metric</span>,</span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>                        <span class="tok-var">$subjectContext</span>,</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>                    );</span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>                }</span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>            }</span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        }</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a></span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>        <span class="tok-kw">return</span> <span class="tok-var">$limits</span>;</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>    }</span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>}</span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

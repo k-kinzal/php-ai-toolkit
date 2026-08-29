@@ -74,7 +74,7 @@
 <span class="src-line" id="L38"><a class="ln" href="#L38">38</a>        <span class="tok-var">$output</span> = (<span class="tok-kw">new</span> <span class="tok-id">JsonReporter</span>())-&gt;<span class="tok-id">report</span>(</span>
 <span class="src-line" id="L39"><a class="ln" href="#L39">39</a>            <span class="tok-kw">new</span> <span class="tok-id">AnalysisResult</span>(</span>
 <span class="src-line" id="L40"><a class="ln" href="#L40">40</a>                [<span class="tok-kw">new</span> <span class="tok-id">FileMetric</span>(<span class="tok-str">&#039;src/A.php&#039;</span>, <span class="tok-num">10</span>, <span class="tok-num">7</span>)],</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>                [<span class="tok-kw">new</span> <span class="tok-id">Violation</span>(<span class="tok-str">&#039;src/A.php&#039;</span>, <span class="tok-num">2</span>, <span class="tok-str">&#039;file_lines&#039;</span>, <span class="tok-num">10</span>, <span class="tok-num">5</span>, <span class="tok-str">&#039;Too long.&#039;</span>)],</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>                [<span class="tok-kw">new</span> <span class="tok-id">Violation</span>(<span class="tok-str">&#039;src/A.php&#039;</span>, <span class="tok-num">2</span>, <span class="tok-str">&#039;file_lines&#039;</span>, <span class="tok-num">10</span>, <span class="tok-num">5</span>, <span class="tok-str">&#039;Too long.&#039;</span>, <span class="tok-str">&#039;strict&#039;</span>)],</span>
 <span class="src-line" id="L42"><a class="ln" href="#L42">42</a>            ),</span>
 <span class="src-line" id="L43"><a class="ln" href="#L43">43</a>            <span class="tok-kw">new</span> <span class="tok-id">ReportConfig</span>(<span class="tok-str">&#039;json&#039;</span>, [<span class="tok-str">&#039;path&#039;</span>, <span class="tok-str">&#039;line&#039;</span>, <span class="tok-str">&#039;rule&#039;</span>]),</span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a>        );</span>
@@ -82,25 +82,26 @@
 <span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;&quot;status&quot;: &quot;failed&quot;&#039;</span>, <span class="tok-var">$output</span>);</span>
 <span class="src-line" id="L47"><a class="ln" href="#L47">47</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;&quot;physical_lines&quot;: 10&#039;</span>, <span class="tok-var">$output</span>);</span>
 <span class="src-line" id="L48"><a class="ln" href="#L48">48</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;&quot;rule&quot;: &quot;file_lines&quot;&#039;</span>, <span class="tok-var">$output</span>);</span>
-<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>    }</span>
-<span class="src-line" id="L50"><a class="ln" href="#L50">50</a></span>
-<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testReportAppliesConfiguredViolationOrder</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>    {</span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-var">$output</span> = (<span class="tok-kw">new</span> <span class="tok-id">JsonReporter</span>())-&gt;<span class="tok-id">report</span>(</span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>            <span class="tok-kw">new</span> <span class="tok-id">AnalysisResult</span>(</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>                [<span class="tok-kw">new</span> <span class="tok-id">FileMetric</span>(<span class="tok-str">&#039;src/A.php&#039;</span>, <span class="tok-num">10</span>, <span class="tok-num">7</span>)],</span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>                [</span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>                    <span class="tok-kw">new</span> <span class="tok-id">Violation</span>(<span class="tok-str">&#039;src/B.php&#039;</span>, <span class="tok-num">1</span>, <span class="tok-str">&#039;method_lines&#039;</span>, <span class="tok-num">11</span>, <span class="tok-num">5</span>, <span class="tok-str">&#039;B&#039;</span>),</span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>                    <span class="tok-kw">new</span> <span class="tok-id">Violation</span>(<span class="tok-str">&#039;src/A.php&#039;</span>, <span class="tok-num">1</span>, <span class="tok-str">&#039;file_lines&#039;</span>, <span class="tok-num">12</span>, <span class="tok-num">5</span>, <span class="tok-str">&#039;A&#039;</span>),</span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>                ],</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>            ),</span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>            <span class="tok-kw">new</span> <span class="tok-id">ReportConfig</span>(<span class="tok-str">&#039;json&#039;</span>, [<span class="tok-str">&#039;path&#039;</span>, <span class="tok-str">&#039;line&#039;</span>, <span class="tok-str">&#039;rule&#039;</span>]),</span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>        );</span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a></span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        <span class="tok-id">self</span>::<span class="tok-id">assertLessThan</span>(<span class="tok-id">strpos</span>(<span class="tok-var">$output</span>, <span class="tok-str">&#039;src/B.php&#039;</span>), <span class="tok-id">strpos</span>(<span class="tok-var">$output</span>, <span class="tok-str">&#039;src/A.php&#039;</span>));</span>
-<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>    }</span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>}</span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a></span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;&quot;policy&quot;: &quot;strict&quot;&#039;</span>, <span class="tok-var">$output</span>);</span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>    }</span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a></span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testReportAppliesConfiguredViolationOrder</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>    {</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>        <span class="tok-var">$output</span> = (<span class="tok-kw">new</span> <span class="tok-id">JsonReporter</span>())-&gt;<span class="tok-id">report</span>(</span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>            <span class="tok-kw">new</span> <span class="tok-id">AnalysisResult</span>(</span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>                [<span class="tok-kw">new</span> <span class="tok-id">FileMetric</span>(<span class="tok-str">&#039;src/A.php&#039;</span>, <span class="tok-num">10</span>, <span class="tok-num">7</span>)],</span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>                [</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>                    <span class="tok-kw">new</span> <span class="tok-id">Violation</span>(<span class="tok-str">&#039;src/B.php&#039;</span>, <span class="tok-num">1</span>, <span class="tok-str">&#039;method_lines&#039;</span>, <span class="tok-num">11</span>, <span class="tok-num">5</span>, <span class="tok-str">&#039;B&#039;</span>),</span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>                    <span class="tok-kw">new</span> <span class="tok-id">Violation</span>(<span class="tok-str">&#039;src/A.php&#039;</span>, <span class="tok-num">1</span>, <span class="tok-str">&#039;file_lines&#039;</span>, <span class="tok-num">12</span>, <span class="tok-num">5</span>, <span class="tok-str">&#039;A&#039;</span>),</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>                ],</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>            ),</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>            <span class="tok-kw">new</span> <span class="tok-id">ReportConfig</span>(<span class="tok-str">&#039;json&#039;</span>, [<span class="tok-str">&#039;path&#039;</span>, <span class="tok-str">&#039;line&#039;</span>, <span class="tok-str">&#039;rule&#039;</span>]),</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>        );</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a></span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>        <span class="tok-id">self</span>::<span class="tok-id">assertLessThan</span>(<span class="tok-id">strpos</span>(<span class="tok-var">$output</span>, <span class="tok-str">&#039;src/B.php&#039;</span>), <span class="tok-id">strpos</span>(<span class="tok-var">$output</span>, <span class="tok-str">&#039;src/A.php&#039;</span>));</span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>    }</span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>}</span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

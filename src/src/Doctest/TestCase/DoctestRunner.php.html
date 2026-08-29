@@ -90,7 +90,7 @@
 <span class="src-line" id="L54"><a class="ln" href="#L54">54</a>    <span class="tok-com">/**</span></span>
 <span class="src-line" id="L55"><a class="ln" href="#L55">55</a><span class="tok-com">     * Provides examples as test data.</span></span>
 <span class="src-line" id="L56"><a class="ln" href="#L56">56</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a><span class="tok-com">     * @return Generator&lt;string, array{Example}&gt;</span></span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a><span class="tok-com">     * @return Generator&lt;string, array{?Example}&gt;</span></span>
 <span class="src-line" id="L58"><a class="ln" href="#L58">58</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L59"><a class="ln" href="#L59">59</a>    <span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">doctestProvider</span>(): <span class="tok-id">Generator</span></span>
 <span class="src-line" id="L60"><a class="ln" href="#L60">60</a>    {</span>
@@ -98,35 +98,47 @@
 <span class="src-line" id="L62"><a class="ln" href="#L62">62</a>        <span class="tok-var">$fileScanner</span> = <span class="tok-kw">new</span> <span class="tok-id">FileScanner</span>(<span class="tok-var">$config</span>);</span>
 <span class="src-line" id="L63"><a class="ln" href="#L63">63</a>        <span class="tok-var">$sourceScanner</span> = <span class="tok-kw">new</span> <span class="tok-id">SourceScanner</span>();</span>
 <span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        <span class="tok-var">$extractor</span> = <span class="tok-kw">new</span> <span class="tok-id">ExampleExtractor</span>();</span>
-<span class="src-line" id="L65"><a class="ln" href="#L65">65</a></span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$fileScanner</span>-&gt;<span class="tok-id">scan</span>() <span class="tok-kw">as</span> <span class="tok-var">$filePath</span>) {</span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$sourceScanner</span>-&gt;<span class="tok-id">scanFile</span>(<span class="tok-var">$filePath</span>) <span class="tok-kw">as</span> <span class="tok-var">$target</span>) {</span>
-<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>                <span class="tok-kw">foreach</span> (<span class="tok-var">$extractor</span>-&gt;<span class="tok-id">extract</span>(<span class="tok-var">$target</span>) <span class="tok-kw">as</span> <span class="tok-var">$example</span>) {</span>
-<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>                    <span class="tok-kw">yield</span> <span class="tok-var">$example</span>-&gt;<span class="tok-id">getName</span>() =&gt; [<span class="tok-var">$example</span>];</span>
-<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>                }</span>
-<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>            }</span>
-<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>        }</span>
-<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>    }</span>
-<span class="src-line" id="L74"><a class="ln" href="#L74">74</a></span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a><span class="tok-com">     * Tests a docblock example.</span></span>
-<span class="src-line" id="L77"><a class="ln" href="#L77">77</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a><span class="tok-com">     * @param Example $example the example to test</span></span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>    #[<span class="tok-id">Test</span>]</span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>    #[<span class="tok-id">DataProvider</span>(<span class="tok-str">&#039;doctestProvider&#039;</span>)]</span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testDocblockExample</span>(<span class="tok-id">Example</span> <span class="tok-var">$example</span>): <span class="tok-id">void</span></span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>    {</span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>        <span class="tok-kw">if</span> (<span class="tok-id">self</span>::<span class="tok-var">$executor</span> === <span class="tok-id">null</span>) {</span>
-<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>            <span class="tok-id">self</span>::<span class="tok-var">$executor</span> = <span class="tok-kw">new</span> <span class="tok-id">ExampleExecutor</span>(<span class="tok-kw">static</span>::<span class="tok-id">configure</span>()-&gt;<span class="tok-id">getBootstrap</span>());</span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        }</span>
-<span class="src-line" id="L87"><a class="ln" href="#L87">87</a></span>
-<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>        <span class="tok-var">$result</span> = <span class="tok-id">self</span>::<span class="tok-var">$executor</span>-&gt;<span class="tok-id">execute</span>(<span class="tok-var">$example</span>);</span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a></span>
-<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>(<span class="tok-var">$result</span>-&gt;<span class="tok-id">passed</span>, <span class="tok-var">$result</span>-&gt;<span class="tok-id">getErrorMessage</span>());</span>
-<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>    }</span>
-<span class="src-line" id="L92"><a class="ln" href="#L92">92</a>}</span>
-<span class="src-line" id="L93"><a class="ln" href="#L93">93</a></span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>        <span class="tok-var">$found</span> = <span class="tok-id">false</span>;</span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a></span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$fileScanner</span>-&gt;<span class="tok-id">scan</span>() <span class="tok-kw">as</span> <span class="tok-var">$filePath</span>) {</span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$sourceScanner</span>-&gt;<span class="tok-id">scanFile</span>(<span class="tok-var">$filePath</span>) <span class="tok-kw">as</span> <span class="tok-var">$target</span>) {</span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>                <span class="tok-kw">foreach</span> (<span class="tok-var">$extractor</span>-&gt;<span class="tok-id">extract</span>(<span class="tok-var">$target</span>) <span class="tok-kw">as</span> <span class="tok-var">$example</span>) {</span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>                    <span class="tok-var">$found</span> = <span class="tok-id">true</span>;</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>                    <span class="tok-kw">yield</span> <span class="tok-var">$example</span>-&gt;<span class="tok-id">getName</span>() =&gt; [<span class="tok-var">$example</span>];</span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>                }</span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>            }</span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>        }</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a></span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$found</span>) {</span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>            <span class="tok-kw">yield</span> <span class="tok-str">&#039;No doctest examples found&#039;</span> =&gt; [<span class="tok-id">null</span>];</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>        }</span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>    }</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a></span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a><span class="tok-com">     * Tests a docblock example.</span></span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a><span class="tok-com">     * @param ?Example $example the example to test, or null when none were discovered</span></span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>    #[<span class="tok-id">Test</span>]</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>    #[<span class="tok-id">DataProvider</span>(<span class="tok-str">&#039;doctestProvider&#039;</span>)]</span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testDocblockExample</span>(?<span class="tok-id">Example</span> <span class="tok-var">$example</span>): <span class="tok-id">void</span></span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>    {</span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>        <span class="tok-kw">if</span> (<span class="tok-var">$example</span> === <span class="tok-id">null</span>) {</span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">addToAssertionCount</span>(<span class="tok-num">1</span>);</span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a></span>
+<span class="src-line" id="L93"><a class="ln" href="#L93">93</a>            <span class="tok-kw">return</span>;</span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>        }</span>
+<span class="src-line" id="L95"><a class="ln" href="#L95">95</a></span>
+<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>        <span class="tok-kw">if</span> (<span class="tok-id">self</span>::<span class="tok-var">$executor</span> === <span class="tok-id">null</span>) {</span>
+<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>            <span class="tok-id">self</span>::<span class="tok-var">$executor</span> = <span class="tok-kw">new</span> <span class="tok-id">ExampleExecutor</span>(<span class="tok-kw">static</span>::<span class="tok-id">configure</span>()-&gt;<span class="tok-id">getBootstrap</span>());</span>
+<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>        }</span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a></span>
+<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>        <span class="tok-var">$result</span> = <span class="tok-id">self</span>::<span class="tok-var">$executor</span>-&gt;<span class="tok-id">execute</span>(<span class="tok-var">$example</span>);</span>
+<span class="src-line" id="L101"><a class="ln" href="#L101">101</a></span>
+<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>(<span class="tok-var">$result</span>-&gt;<span class="tok-id">passed</span>, <span class="tok-var">$result</span>-&gt;<span class="tok-id">getErrorMessage</span>());</span>
+<span class="src-line" id="L103"><a class="ln" href="#L103">103</a>    }</span>
+<span class="src-line" id="L104"><a class="ln" href="#L104">104</a>}</span>
+<span class="src-line" id="L105"><a class="ln" href="#L105">105</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

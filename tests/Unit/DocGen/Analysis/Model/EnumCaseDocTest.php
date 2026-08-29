@@ -16,6 +16,7 @@ use Toolkit\DocGen\Analysis\Model\EnumCaseDoc;
  */
 #[CoversClass(EnumCaseDoc::class)]
 #[UsesClass(DocBlock::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
 final class EnumCaseDocTest extends TestCase
 {
     public function testStoresDeclarationData(): void

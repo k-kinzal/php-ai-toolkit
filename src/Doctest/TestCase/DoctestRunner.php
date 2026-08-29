@@ -54,7 +54,7 @@ abstract class DoctestRunner extends TestCase
     /**
      * Provides examples as test data.
      *
-     * @return Generator<string, array{Example}>
+     * @return Generator<string, array{?Example}>
      */
     public static function doctestProvider(): Generator
     {
@@ -62,25 +62,37 @@ abstract class DoctestRunner extends TestCase
         $fileScanner = new FileScanner($config);
         $sourceScanner = new SourceScanner();
         $extractor = new ExampleExtractor();
+        $found = false;
 
         foreach ($fileScanner->scan() as $filePath) {
             foreach ($sourceScanner->scanFile($filePath) as $target) {
                 foreach ($extractor->extract($target) as $example) {
+                    $found = true;
                     yield $example->getName() => [$example];
                 }
             }
+        }
+
+        if (!$found) {
+            yield 'No doctest examples found' => [null];
         }
     }
 
     /**
      * Tests a docblock example.
      *
-     * @param Example $example the example to test
+     * @param ?Example $example the example to test, or null when none were discovered
      */
     #[Test]
     #[DataProvider('doctestProvider')]
-    public function testDocblockExample(Example $example): void
+    public function testDocblockExample(?Example $example): void
     {
+        if ($example === null) {
+            $this->addToAssertionCount(1);
+
+            return;
+        }
+
         if (self::$executor === null) {
             self::$executor = new ExampleExecutor(static::configure()->getBootstrap());
         }

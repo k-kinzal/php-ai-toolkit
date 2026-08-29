@@ -31,6 +31,7 @@ use Toolkit\DocGen\Analysis\Model\TypeSignature;
 #[UsesClass(MethodDoc::class)]
 #[UsesClass(PropertyDoc::class)]
 #[UsesClass(TypeSignature::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
 final class ClassLikeDocTest extends TestCase
 {
     public function testStoresDeclarationData(): void

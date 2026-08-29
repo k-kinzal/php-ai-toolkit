@@ -268,6 +268,7 @@ use Toolkit\DocGen\Render\TypeRenderContext;
 #[UsesClass(WorkScheduler::class)]
 #[UsesClass(WorkerCount::class)]
 #[UsesClass(WorkerPool::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
 final class SiteRendererTest extends TestCase
 {
     public function testRenderWritesCompleteSite(): void

@@ -119,6 +119,7 @@ use Toolkit\DocGen\Render\TypeHtml;
 #[UsesClass(TypeHtml::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UsageIndex::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
 final class AllItemsPageTest extends TestCase
 {
     public function testRenderProducesCompleteDocumentWithCrumbsAndSectionAnchors(): void

@@ -115,6 +115,8 @@ use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
 #[UsesClass(SymbolFingerprint::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UseMapCollector::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContractReader::class)]
 final class ClassLikeMergerTest extends TestCase
 {
     public function testMergeMarksTheDeclarationHeadTheMembersAndTheSymbolItself(): void

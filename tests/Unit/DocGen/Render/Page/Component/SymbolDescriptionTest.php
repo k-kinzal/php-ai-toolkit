@@ -82,6 +82,8 @@ use Toolkit\DocGen\Render\Page\Component\SymbolDescription;
 #[UsesClass(SymbolContext::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UseMapCollector::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContractReader::class)]
 final class SymbolDescriptionTest extends TestCase
 {
     public function testOfClassLikeReadsTheSummaryLineOfTheSymbol(): void

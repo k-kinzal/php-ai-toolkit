@@ -301,6 +301,8 @@ use Toolkit\DocGen\Render\TypeRenderContext;
 #[UsesClass(WorkScheduler::class)]
 #[UsesClass(WorkerCount::class)]
 #[UsesClass(WorkerPool::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContractReader::class)]
 final class ClassLikePageTest extends TestCase
 {
     public function testRenderProducesCompleteDocument(): void

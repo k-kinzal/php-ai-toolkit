@@ -22,6 +22,7 @@ use Toolkit\DocGen\Analysis\Model\TypeSignature;
 #[UsesClass(DocBlock::class)]
 #[UsesClass(ParameterDoc::class)]
 #[UsesClass(TypeSignature::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
 final class FunctionDocTest extends TestCase
 {
     public function testStoresDeclarationData(): void

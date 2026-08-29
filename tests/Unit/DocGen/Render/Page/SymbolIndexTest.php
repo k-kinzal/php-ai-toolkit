@@ -89,6 +89,7 @@ use Toolkit\DocGen\Render\TypeHtml;
 #[UsesClass(TypeHtml::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UsageIndex::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
 final class SymbolIndexTest extends TestCase
 {
     public function testInNamespaceListsOwnSymbolsWithPageSummaryAndLayers(): void

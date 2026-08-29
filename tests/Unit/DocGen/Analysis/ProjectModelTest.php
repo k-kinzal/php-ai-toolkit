@@ -46,6 +46,7 @@ use Toolkit\DocGen\Package\PackageGraph;
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(UsageIndex::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
 final class ProjectModelTest extends TestCase
 {
     public function testStoresAnalyzedProjectData(): void

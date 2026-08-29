@@ -61,6 +61,7 @@ use Toolkit\DocGen\Render\SiteUrl;
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UsageIndex::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
 final class SearchIndexBuilderTest extends TestCase
 {
     public function testBuildEmitsEntriesForPublicSymbols(): void

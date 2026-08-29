@@ -116,6 +116,7 @@ use Toolkit\DocGen\Render\TypeHtml;
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(TypeHtml::class)]
 #[UsesClass(UsageIndex::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
 final class LayerPageTest extends TestCase
 {
     public function testRenderProducesCompleteDocumentWithLayerCrumbAndListing(): void

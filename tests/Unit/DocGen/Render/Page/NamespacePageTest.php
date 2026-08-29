@@ -119,6 +119,7 @@ use Toolkit\DocGen\Render\TypeHtml;
 #[UsesClass(TypeHtml::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UsageIndex::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
 final class NamespacePageTest extends TestCase
 {
     public function testRenderProducesCompleteDocumentWithSidebarAndCrumbs(): void

@@ -16,6 +16,7 @@ use Toolkit\DocGen\Analysis\Model\DocBlock;
  */
 #[CoversClass(ConstantDoc::class)]
 #[UsesClass(DocBlock::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
 final class ConstantDocTest extends TestCase
 {
     public function testStoresDeclarationData(): void

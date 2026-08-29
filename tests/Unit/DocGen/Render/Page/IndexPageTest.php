@@ -256,6 +256,8 @@ use Toolkit\DocGen\Render\TypeHtml;
 #[UsesClass(WorkScheduler::class)]
 #[UsesClass(WorkerCount::class)]
 #[UsesClass(WorkerPool::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContractReader::class)]
 final class IndexPageTest extends TestCase
 {
     public function testRenderProducesCompleteDocument(): void

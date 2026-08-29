@@ -12,6 +12,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use Tests\Fixture\Doctest\EmptyDoctestSuite;
 use Tests\Fixture\Doctest\FixtureDoctestSuite;
 use Toolkit\Doctest\Parser\Example;
 use Toolkit\Doctest\TestCase\DoctestRunner;
@@ -45,7 +46,27 @@ final class DoctestRunnerTest extends TestCase
             ],
             array_keys($provided),
         );
-        self::assertSame('Calculator example #1: Building a calculator', $provided['Calculator example #1: Building a calculator'][0]->getName());
+        $example = $provided['Calculator example #1: Building a calculator'][0];
+        self::assertInstanceOf(Example::class, $example);
+        self::assertSame('Calculator example #1: Building a calculator', $example->getName());
+    }
+
+    public function testDoctestProviderReturnsSkipCaseWhenNoExamplesExist(): void
+    {
+        self::assertSame(
+            ['No doctest examples found' => [null]],
+            iterator_to_array(EmptyDoctestSuite::doctestProvider()),
+        );
+    }
+
+    public function testTestDocblockExamplePassesWhenNoExamplesExist(): void
+    {
+        $case = new EmptyDoctestSuite('testDocblockExample');
+        $before = $case->numberOfAssertionsPerformed();
+
+        $case->testDocblockExample(null);
+
+        self::assertSame($before + 1, $case->numberOfAssertionsPerformed());
     }
 
     public function testTestDocblockExamplePassesForAnExampleThatHolds(): void

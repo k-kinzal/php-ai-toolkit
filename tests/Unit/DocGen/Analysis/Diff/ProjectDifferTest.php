@@ -139,6 +139,8 @@ use Toolkit\DocGen\Package\PackageGraph;
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UsageIndex::class)]
 #[UsesClass(UseMapCollector::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContractReader::class)]
 final class ProjectDifferTest extends TestCase
 {
     public function testDiffMergesBothRevisionsIntoOneModelOfTheWholeComparison(): void

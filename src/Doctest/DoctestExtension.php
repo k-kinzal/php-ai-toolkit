@@ -19,6 +19,9 @@ use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Configuration as PhpUnitConfiguration;
 use PHPUnit\TextUI\Configuration\Registry;
+
+use function str_contains;
+
 use Toolkit\Doctest\Configuration\Configuration;
 use Toolkit\Doctest\Configuration\ConfigurationLoader;
 
@@ -66,7 +69,9 @@ final class DoctestExtension implements Extension
      *
      * Paths in phpunit.xml are written relative to that file, so the directory
      * holding it is the base; a run without a configuration file falls back to
-     * the working directory.
+     * the working directory. Infection copies PHPUnit configuration into its
+     * temporary directory without rebasing extension parameters, so those
+     * generated files retain the project working directory as their base.
      *
      * @param PhpUnitConfiguration $configuration the configuration of the running test runner
      */
@@ -74,6 +79,12 @@ final class DoctestExtension implements Extension
     {
         $configFile = $configuration->hasConfigurationFile() ? $configuration->configurationFile() : '';
         if ($configFile !== '') {
+            if (str_contains($configFile, '.infection.')) {
+                $workingDirectory = getcwd();
+
+                return $workingDirectory === false ? '' : $workingDirectory;
+            }
+
             return dirname($configFile);
         }
 

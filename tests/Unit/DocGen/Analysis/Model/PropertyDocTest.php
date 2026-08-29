@@ -19,6 +19,7 @@ use Toolkit\DocGen\Analysis\Model\TypeSignature;
 #[CoversClass(PropertyDoc::class)]
 #[UsesClass(DocBlock::class)]
 #[UsesClass(TypeSignature::class)]
+#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
 final class PropertyDocTest extends TestCase
 {
     public function testStoresDeclarationData(): void

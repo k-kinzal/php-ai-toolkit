@@ -20,6 +20,7 @@ use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
 use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use Toolkit\Mutation\MutationContract;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
@@ -43,6 +44,7 @@ use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 #[UsesClass(ParameterModifiers::class)]
 #[UsesClass(PhpParserBridge::class)]
 #[UsesClass(TypeSignature::class)]
+#[UsesClass(MutationContract::class)]
 final class ParameterBuilderTest extends TestCase
 {
     public function testBuildReadsTypedParameterWithDefault(): void
@@ -126,5 +128,14 @@ PHP;
 
         self::assertNull($parameter->type->annotated);
         self::assertSame('', $parameter->description);
+    }
+
+    public function testBuildMarksAContractParameterMutable(): void
+    {
+        $docBlock = new DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '', [], new MutationContract(['width']));
+        $statement = (new AstParser())->parse('<?php function fmt(int $width): void {}', 'fmt.php')[0];
+        self::assertInstanceOf(Function_::class, $statement);
+
+        self::assertTrue((new ParameterBuilder())->build($statement->params[0], $docBlock)->mutable);
     }
 }

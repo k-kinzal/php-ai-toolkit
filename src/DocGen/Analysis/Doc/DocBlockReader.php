@@ -28,6 +28,7 @@ use Toolkit\DocGen\Analysis\Model\DocBlock;
 use Toolkit\DocGen\Analysis\Model\DocTag;
 use Toolkit\DocGen\Analysis\Model\TemplateDoc;
 use Toolkit\DocGen\Analysis\Model\TypeAliasDoc;
+use Toolkit\Mutation\MutationContractReader;
 
 use function trim;
 
@@ -43,12 +44,16 @@ final class DocBlockReader
     /** @readonly */
     private PhpDocParserBridge $bridge;
 
+    /** @readonly */
+    private MutationContractReader $mutationReader;
+
     /**
      * Creates a doc block reader from the version bridge.
      */
-    public function __construct(?PhpDocParserBridge $bridge = null)
+    public function __construct(?PhpDocParserBridge $bridge = null, ?MutationContractReader $mutationReader = null)
     {
         $this->bridge = $bridge ?? new PhpDocParserBridge();
+        $this->mutationReader = $mutationReader ?? new MutationContractReader();
     }
 
     /**
@@ -79,6 +84,7 @@ final class DocBlockReader
             $node->getTagsByName('@internal') !== [],
             $docComment,
             $this->visibility($node),
+            $this->mutationReader->read($node),
         );
     }
 
@@ -145,7 +151,10 @@ final class DocBlockReader
         foreach (['@param', '@psalm-param', '@phpstan-param'] as $name) {
             foreach ($node->getTagsByName($name) as $tag) {
                 if ($tag->value instanceof ParamTagValueNode) {
-                    $tags[$tag->value->parameterName] = new DocTag($tag->value->type, $tag->value->description);
+                    $tags[$tag->value->parameterName] = new DocTag(
+                        $tag->value->type,
+                        $this->mutationReader->cleanDescription($tag->value->description),
+                    );
                 }
             }
         }

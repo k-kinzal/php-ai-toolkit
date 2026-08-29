@@ -218,6 +218,7 @@ final class MemberHtml
     public function signatureTable(RenderKit $services, array $parameters, TypeSignature $returnType, ?DocBlock $docBlock, TypeRenderContext $context, string $ownerKey = ''): string
     {
         return $this->parameterSection($services, $parameters, $context, $ownerKey)
+            . $this->mutationSection($services, $parameters, $docBlock)
             . $this->returnSection($services, $returnType, $context, $ownerKey)
             . $this->throwsSection($services, $docBlock, $context, $ownerKey);
     }
@@ -240,9 +241,10 @@ final class MemberHtml
             $annotated = $parameter->type->annotated;
             $statuses[] = $ownerKey === '' ? DiffStatus::SAME : $services->diff->parameterStatus($ownerKey, $parameter->name);
             $rows .= sprintf(
-                '<tr%s><td><code class="t-var">$%s</code></td><td><code>%s</code></td><td>%s</td></tr>',
+                '<tr%s><td><code class="t-var">$%s</code>%s</td><td><code>%s</code></td><td>%s</td></tr>',
                 $ownerKey === '' ? '' : $services->diff->parameter($ownerKey, $parameter->name),
                 $services->escaper->e($parameter->name),
+                $parameter->mutable ? ' <span class="chip chip-sm">mut</span>' : '',
                 $services->typeHtml->render($annotated !== null ? $annotated->type : null, $parameter->type->native, $context),
                 $services->escaper->e($parameter->description),
             );
@@ -253,6 +255,44 @@ final class MemberHtml
             '<div class="table-wrap"><table class="param-table">' . $rows . '</table></div>',
             $ownerKey === '' ? '' : $services->diff->combined($statuses),
         );
+    }
+
+    /**
+     * Renders the externally visible effects declared by a callable.
+     *
+     * @param list<ParameterDoc> $parameters
+     */
+    public function mutationSection(RenderKit $services, array $parameters, ?DocBlock $docBlock): string
+    {
+        if ($docBlock === null) {
+            return '';
+        }
+
+        $targets = [];
+        foreach ($parameters as $parameter) {
+            if ($parameter->mutable) {
+                $targets[] = '$' . $parameter->name;
+            }
+        }
+
+        if ($docBlock->mutation->mutatesThis()) {
+            $targets[] = '$this';
+        }
+
+        if ($docBlock->mutation->mutatesGlobal()) {
+            $targets[] = 'global';
+        }
+
+        if ($targets === []) {
+            return '';
+        }
+
+        $items = '';
+        foreach ($targets as $target) {
+            $items .= '<code>' . $services->escaper->e($target) . '</code> ';
+        }
+
+        return $this->block('Mutates', '<div class="type-row">' . trim($items) . '</div>');
     }
 
     /**

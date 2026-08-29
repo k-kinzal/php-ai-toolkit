@@ -126,6 +126,7 @@ final class SymbolFingerprint
             $parameter->name,
             $parameter->defaultText ?? '',
             $parameter->description,
+            $parameter->mutable ? 'mutable' : '',
         ]);
     }
 

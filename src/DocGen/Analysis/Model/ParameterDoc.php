@@ -14,6 +14,7 @@ namespace Toolkit\DocGen\Analysis\Model;
  * @property-read ?string $defaultText
  * @property-read ?string $promotedVisibility
  * @property-read string $description
+ * @property-read bool $mutable
  */
 final class ParameterDoc
 {
@@ -35,6 +36,8 @@ final class ParameterDoc
         private ?string $promotedVisibility,
         /** @readonly */
         private string $description,
+        /** @readonly */
+        private bool $mutable = false,
     ) {
     }
 
@@ -53,6 +56,7 @@ final class ParameterDoc
             'defaultText' => $this->defaultText,
             'promotedVisibility' => $this->promotedVisibility,
             'description' => $this->description,
+            'mutable' => $this->mutable,
             default => null,
         };
     }

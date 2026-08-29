@@ -206,6 +206,18 @@ examples. A runnable figure carries a **doctest** badge titled with the example'
 the example itself, and a **run** button carrying the `vendor/bin/phpunit --filter` command for that one example. See
 [Doctest](doctest.md).
 
+### Mutation Contracts
+
+DocGen reads `+mut` from parameter tags and `$this` / `global` from `@mutation`. The marker is removed from the
+parameter prose, mutable parameters receive a **mut** chip, and functions and methods with effects receive a
+**Mutates** block naming every declared target. Mutation permissions participate in symbol and parameter
+fingerprints, so changing one is visible in revision diffs and invalidates the affected cached pages.
+
+DocGen renders declarations; PHPStan's
+[EnforceMutationContractRule](rules/EnforceMutationContractRule.md) resolves inherited effects, checks bodies, and
+propagates effects through calls. An inherited contract remains visible on the parent or interface declaration rather
+than being copied into an implementation's source documentation.
+
 ## Navigation
 
 The site drills down the way rustdoc does. `index.html` lists the packages and their dependency graph; a package page

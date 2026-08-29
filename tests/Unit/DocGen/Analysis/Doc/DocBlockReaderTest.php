@@ -13,6 +13,8 @@ use Toolkit\DocGen\Analysis\Model\DocBlock;
 use Toolkit\DocGen\Analysis\Model\DocTag;
 use Toolkit\DocGen\Analysis\Model\TemplateDoc;
 use Toolkit\DocGen\Analysis\Model\TypeAliasDoc;
+use Toolkit\Mutation\MutationContract;
+use Toolkit\Mutation\MutationContractReader;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Doc\DocBlockReader
@@ -28,6 +30,8 @@ use Toolkit\DocGen\Analysis\Model\TypeAliasDoc;
 #[UsesClass(PhpDocParserBridge::class)]
 #[UsesClass(TemplateDoc::class)]
 #[UsesClass(TypeAliasDoc::class)]
+#[UsesClass(MutationContract::class)]
+#[UsesClass(MutationContractReader::class)]
 final class DocBlockReaderTest extends TestCase
 {
     public function testReadReturnsNullForMissingOrBlankComment(): void
@@ -53,6 +57,22 @@ DOC;
     public function testVisibilityReturnsNothingWithoutTheTag(): void
     {
         self::assertSame([], (new DocBlockReader())->read('/** Summary line. */')?->visibility);
+    }
+
+    public function testReadExtractsMutationEffectsAndCleansParameterProse(): void
+    {
+        $docBlock = (new DocBlockReader())->read(<<<'DOC'
+/**
+ * @param object $value +mut changed value
+ * @mutation $this, global
+ */
+DOC);
+
+        self::assertNotNull($docBlock);
+        self::assertSame('changed value', $docBlock->params['$value']->description);
+        self::assertTrue($docBlock->mutation->mutatesParameter('value'));
+        self::assertTrue($docBlock->mutation->mutatesThis());
+        self::assertTrue($docBlock->mutation->mutatesGlobal());
     }
 
     public function testReadSplitsSummaryAndDescriptionOnBlankLine(): void

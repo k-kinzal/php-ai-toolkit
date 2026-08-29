@@ -62,6 +62,7 @@ final class ParameterBuilder
             $this->exprPrinter->print($param->default),
             $this->modifiers->promotedVisibility($param->flags),
             $annotated instanceof DocTag ? $annotated->description : '',
+            $docBlock !== null && $docBlock->mutation->mutatesParameter($name),
         );
     }
 }

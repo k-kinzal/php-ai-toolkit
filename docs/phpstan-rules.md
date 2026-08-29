@@ -17,6 +17,7 @@ Rules applied to all code.
 | [RequirePhpDocOnPublicApiRule](rules/RequirePhpDocOnPublicApiRule.md) | Requires PHPDoc on all public API elements | `customRules.requirePhpDocOnPublicApi` |
 | [RequireExampleOnPublicApiRule](rules/RequireExampleOnPublicApiRule.md) | Requires a runnable `@example` on declarations marked `@visibility public` | `customRules.requireExampleOnClass`, `customRules.requireExampleOnMethod`, `customRules.requireExampleOnProperty`, `customRules.requireExampleOnConstant`, `customRules.requireExampleOnEnumCase` |
 | [EnforceVisibilityScopeRule](rules/EnforceVisibilityScopeRule.md) | Enforces namespace visibility scopes declared with `@visibility` and treats explicitly public API as externally used | `customRules.visibilityInvalidScope`, `customRules.visibilityOutOfScope` |
+| [EnforceMutationContractRule](rules/EnforceMutationContractRule.md) | Makes parameter, receiver, and global mutation explicit and propagates effects through statically resolved calls | `customRules.mutationInvalidContract`, `customRules.mutationUndeclared`, `customRules.mutationOverrideWidened` |
 | [ForbidNonDocCommentRule](rules/ForbidNonDocCommentRule.md) | Forbids `/* */` and `#` comments everywhere, and `//` comments outside `catch` blocks and array literals; `/** */` PHPDoc is allowed | `customRules.forbidNonDocComment` |
 | [ForbidSingleLinePhpDocRule](rules/ForbidSingleLinePhpDocRule.md) | Forbids single-line PHPDoc on public elements; requires multi-line format | `customRules.forbidSingleLinePhpDoc` |
 | [ForbidClassLikeNameSuffixRule](rules/ForbidClassLikeNameSuffixRule.md) | Forbids configured suffixes on class, interface, trait, and enum names | `customRules.forbiddenClassLikeNameSuffix` |
@@ -51,8 +52,9 @@ Rules applied to test classes in the `Tests\Unit` / `Tests\Integration` namespac
 
 ## Enabling and Disabling Rules
 
-All rules inherit `toolkit.allRules`, which defaults to `true`. Override a
-specific rule through its `enabled` value:
+Rules inherit `toolkit.allRules`, which defaults to `true`, except mutation
+contracts, which are opt-in so an existing unannotated project does not change
+semantics on upgrade. Override a specific rule through its `enabled` value:
 
 ```neon
 parameters:
@@ -63,6 +65,8 @@ parameters:
 
 Set `allRules: false` to make every rule opt-in. Toolkit adoption keeps the
 default; changing a switch is an explicit project policy decision.
+
+Enable mutation contracts explicitly with `toolkit.mutation.enabled: true`.
 
 ## Redundant PHPStan Diagnostics
 

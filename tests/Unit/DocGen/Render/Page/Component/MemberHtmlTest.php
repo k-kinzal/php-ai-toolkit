@@ -99,6 +99,8 @@ use Toolkit\DocGen\Render\Social\SocialCard;
 use Toolkit\DocGen\Render\Social\SocialMeta;
 use Toolkit\DocGen\Render\TypeHtml;
 use Toolkit\DocGen\Render\TypeRenderContext;
+use Toolkit\Mutation\MutationContract;
+use Toolkit\Mutation\MutationContractReader;
 
 /**
  * @covers \Toolkit\DocGen\Render\Page\Component\MemberHtml
@@ -241,6 +243,8 @@ use Toolkit\DocGen\Render\TypeRenderContext;
 #[UsesClass(MethodBuilder::class)]
 #[UsesClass(MethodCoverage::class)]
 #[UsesClass(MethodDoc::class)]
+#[UsesClass(MutationContract::class)]
+#[UsesClass(MutationContractReader::class)]
 #[UsesClass(NamespacePage::class)]
 #[UsesClass(NativeTypePrinter::class)]
 #[UsesClass(PackageGraph::class)]
@@ -642,6 +646,45 @@ PHP;
             (new MemberHtml())->parameterSection($services, $widget->methods[0]->parameters, $context),
         );
         self::assertSame('', (new MemberHtml())->parameterSection($services, [], $context));
+    }
+
+    public function testMutationSectionRendersCompactCallableEffects(): void
+    {
+        $code = <<<'PHP'
+<?php
+
+namespace Demo;
+
+class Widget
+{
+    /**
+     * @param object $value +mut changed value
+     * @mutation $this, global
+     */
+    public function change(object $value): void
+    {
+    }
+}
+PHP;
+        $statements = (new AstParser())->parse($code, 'src/Demo/Widget.php');
+        $symbols = (new FileSymbolCollector())->collect($statements, 'demo/pkg', 'src/Demo/Widget.php', false);
+        $method = $symbols->classLikes[0]->methods[0];
+        $table = new SymbolTable();
+        $table->registerClassLike($symbols->classLikes[0]);
+        $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), $symbols->classLikes, [], $table, new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);
+        $services = (new SiteRenderer())->services($model);
+
+        $html = (new MemberHtml())->mutationSection(
+            $services,
+            $method->parameters,
+            $method->docBlock,
+        );
+
+        self::assertStringContainsString('<h4>Mutates</h4>', $html);
+        self::assertStringContainsString('<code>$value</code>', $html);
+        self::assertStringContainsString('<code>$this</code>', $html);
+        self::assertStringContainsString('<code>global</code>', $html);
+        self::assertSame('changed value', $method->parameters[0]->description);
     }
 
     public function testReturnSectionShowsTheTypeWithItsNoteAndSkipsVoid(): void

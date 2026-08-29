@@ -36,6 +36,8 @@ use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
+use Toolkit\Mutation\MutationContract;
+use Toolkit\Mutation\MutationContractReader;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Diff\SymbolFingerprint
@@ -97,6 +99,8 @@ use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
 #[UsesClass(SymbolContext::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UseMapCollector::class)]
+#[UsesClass(MutationContract::class)]
+#[UsesClass(MutationContractReader::class)]
 final class SymbolFingerprintTest extends TestCase
 {
     public function testClassHeaderCoversTheKeywordsAndTheParents(): void
@@ -329,6 +333,18 @@ PHP;
 
         self::assertSame('', $fingerprint->parameters([]));
         self::assertNotSame($fingerprint->parameters($methods[0]->parameters), $fingerprint->parameters($methods[1]->parameters));
+    }
+
+    public function testParameterTreatsMutationPermissionAsAnApiChange(): void
+    {
+        $type = new TypeSignature('object', null);
+        $readonly = new ParameterDoc('value', $type, false, false, null, null, '', false);
+        $mutable = new ParameterDoc('value', $type, false, false, null, null, '', true);
+
+        self::assertNotSame(
+            (new SymbolFingerprint())->parameter($readonly),
+            (new SymbolFingerprint())->parameter($mutable),
+        );
     }
 
     public function testTypeCoversTheDeclaredTypeAndItsDocumentedRefinement(): void

@@ -35,6 +35,7 @@ parametersSchema:
         requireListForArrayLiteral: structure([enabled: bool()])
         requireExhaustiveDispatch: structure([enabled: bool()])
         visibilityScope: structure([enabled: bool()])
+        mutation: structure([enabled: bool()])
         testNamespacePrefixes: listOf(string())
         restrictedTestNamespacePrefixes: listOf(string())
         visibilityExemptNamespacePrefixes: listOf(string())
@@ -127,6 +128,8 @@ parameters:
             enabled: %toolkit.allRules%
         visibilityScope:
             enabled: %toolkit.allRules%
+        mutation:
+            enabled: false
         testNamespacePrefixes:
             - 'Tests'
         restrictedTestNamespacePrefixes:
@@ -395,6 +398,17 @@ services:
     toolkit.collector.visibilityReference:
         class: Toolkit\PhpStan\Rule\Visibility\VisibilityReferenceCollector
 
+    toolkit.rule.enforceMutationContract:
+        class: Toolkit\PhpStan\Rule\Mutation\EnforceMutationContractRule
+
+    toolkit.collector.mutationDeclaration:
+        class: Toolkit\PhpStan\Rule\Mutation\MutationDeclarationCollector
+
+    toolkit.collector.mutationOperation:
+        class: Toolkit\PhpStan\Rule\Mutation\MutationOperationCollector
+        arguments:
+            reflectionProvider: @reflectionProvider
+
     toolkit.extension.visibilityPublicUnusedError:
         class: Toolkit\PhpStan\Extension\Visibility\VisibilityPublicUnusedErrorExtension
         tags:
@@ -524,3 +538,9 @@ conditionalTags:
         phpstan.collector: %toolkit.visibilityScope.enabled%
     Toolkit\PhpStan\Rule\Visibility\VisibilityReferenceCollector:
         phpstan.collector: %toolkit.visibilityScope.enabled%
+    Toolkit\PhpStan\Rule\Mutation\EnforceMutationContractRule:
+        phpstan.rules.rule: %toolkit.mutation.enabled%
+    Toolkit\PhpStan\Rule\Mutation\MutationDeclarationCollector:
+        phpstan.collector: %toolkit.mutation.enabled%
+    Toolkit\PhpStan\Rule\Mutation\MutationOperationCollector:
+        phpstan.collector: %toolkit.mutation.enabled%

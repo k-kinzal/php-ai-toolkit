@@ -6,6 +6,8 @@ namespace Toolkit\DocGen\Analysis\Model;
 
 use function strtolower;
 
+use Toolkit\Mutation\MutationContract;
+
 /**
  * Structured view of one PHPDoc block.
  *
@@ -26,10 +28,14 @@ use function strtolower;
  * @property-read ?string $deprecated
  * @property-read bool $internal
  * @property-read list<string> $visibility
+ * @property-read MutationContract $mutation
  * @property-read string $raw
  */
 final class DocBlock
 {
+    /** @readonly */
+    private MutationContract $mutation;
+
     /**
      * @param array<string, DocTag> $params
      * @param list<DocTag> $throws
@@ -74,7 +80,9 @@ final class DocBlock
          * @readonly
          */
         private array $visibility = [],
+        ?MutationContract $mutation = null,
     ) {
+        $this->mutation = $mutation ?? new MutationContract();
     }
 
     /**
@@ -100,6 +108,7 @@ final class DocBlock
             'internal' => $this->internal,
             'raw' => $this->raw,
             'visibility' => $this->visibility,
+            'mutation' => $this->mutation,
             default => null,
         };
     }

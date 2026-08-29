@@ -56,31 +56,32 @@
 <span class="src-line" id="L20"><a class="ln" href="#L20">20</a></span>
 <span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-com">/**</span></span>
 <span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-com"> * @covers \Toolkit\PhpStan\ErrorFormatter\HumanErrorRenderer</span></span>
-<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-com"> */</span></span>
-<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">HumanErrorRenderer</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>#[<span class="tok-id">Medium</span>]</span>
-<span class="src-line" id="L26"><a class="ln" href="#L26">26</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">HumanErrorRendererTest</span> <span class="tok-kw">extends</span> <span class="tok-id">ErrorFormatterTestCase</span></span>
-<span class="src-line" id="L27"><a class="ln" href="#L27">27</a>{</span>
-<span class="src-line" id="L28"><a class="ln" href="#L28">28</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testFormatWritesHumanFileBlockAndSummary</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L29"><a class="ln" href="#L29">29</a>    {</span>
-<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>        <span class="tok-var">$formatter</span> = <span class="tok-kw">new</span> <span class="tok-id">HumanErrorRenderer</span>(</span>
-<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>            <span class="tok-kw">new</span> <span class="tok-id">SimpleRelativePathHelper</span>(<span class="tok-id">dirname</span>(__DIR__, <span class="tok-num">3</span>)),</span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>            <span class="tok-kw">new</span> <span class="tok-id">ErrorSourceReader</span>(),</span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>            <span class="tok-kw">new</span> <span class="tok-id">ErrorGutter</span>(),</span>
-<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>            <span class="tok-kw">new</span> <span class="tok-id">ErrorGrouping</span>(),</span>
-<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>            <span class="tok-kw">new</span> <span class="tok-id">ErrorCollectionSummary</span>(),</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        );</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        <span class="tok-var">$file</span> = __DIR__ . <span class="tok-str">&#039;/../../../Fixture/ErrorFormatter/SampleSource.php&#039;</span>;</span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a></span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>        <span class="tok-var">$formatter</span>-&gt;<span class="tok-id">format</span>(<span class="tok-kw">new</span> <span class="tok-id">AnalysisResult</span>([</span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>            <span class="tok-kw">new</span> <span class="tok-id">Error</span>(<span class="tok-str">&#039;Property.&#039;</span>, <span class="tok-var">$file</span>, <span class="tok-num">9</span>, <span class="tok-id">true</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;Remove it.&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;custom.a&#039;</span>),</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>        ], [], [], [], [], <span class="tok-id">false</span>, <span class="tok-id">null</span>, <span class="tok-id">true</span>, <span class="tok-num">0</span>, <span class="tok-id">false</span>, []), <span class="tok-var">$this</span>-&gt;<span class="tok-id">getOutput</span>());</span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a></span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;SampleSource.php&#039;</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">getOutputContent</span>());</span>
-<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;Found 1 error&#039;</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">getOutputContent</span>());</span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>    }</span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>}</span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a></span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-com"> * @medium</span></span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-com"> */</span></span>
+<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">HumanErrorRenderer</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>#[<span class="tok-id">Medium</span>]</span>
+<span class="src-line" id="L27"><a class="ln" href="#L27">27</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">HumanErrorRendererTest</span> <span class="tok-kw">extends</span> <span class="tok-id">ErrorFormatterTestCase</span></span>
+<span class="src-line" id="L28"><a class="ln" href="#L28">28</a>{</span>
+<span class="src-line" id="L29"><a class="ln" href="#L29">29</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testFormatWritesHumanFileBlockAndSummary</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>    {</span>
+<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>        <span class="tok-var">$formatter</span> = <span class="tok-kw">new</span> <span class="tok-id">HumanErrorRenderer</span>(</span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>            <span class="tok-kw">new</span> <span class="tok-id">SimpleRelativePathHelper</span>(<span class="tok-id">dirname</span>(__DIR__, <span class="tok-num">3</span>)),</span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>            <span class="tok-kw">new</span> <span class="tok-id">ErrorSourceReader</span>(),</span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>            <span class="tok-kw">new</span> <span class="tok-id">ErrorGutter</span>(),</span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>            <span class="tok-kw">new</span> <span class="tok-id">ErrorGrouping</span>(),</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>            <span class="tok-kw">new</span> <span class="tok-id">ErrorCollectionSummary</span>(),</span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        );</span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>        <span class="tok-var">$file</span> = __DIR__ . <span class="tok-str">&#039;/../../../Fixture/ErrorFormatter/SampleSource.php&#039;</span>;</span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a></span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        <span class="tok-var">$formatter</span>-&gt;<span class="tok-id">format</span>(<span class="tok-kw">new</span> <span class="tok-id">AnalysisResult</span>([</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>            <span class="tok-kw">new</span> <span class="tok-id">Error</span>(<span class="tok-str">&#039;Property.&#039;</span>, <span class="tok-var">$file</span>, <span class="tok-num">9</span>, <span class="tok-id">true</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;Remove it.&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-str">&#039;custom.a&#039;</span>),</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        ], [], [], [], [], <span class="tok-id">false</span>, <span class="tok-id">null</span>, <span class="tok-id">true</span>, <span class="tok-num">0</span>, <span class="tok-id">false</span>, []), <span class="tok-var">$this</span>-&gt;<span class="tok-id">getOutput</span>());</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a></span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;SampleSource.php&#039;</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">getOutputContent</span>());</span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;Found 1 error&#039;</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">getOutputContent</span>());</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>    }</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>}</span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

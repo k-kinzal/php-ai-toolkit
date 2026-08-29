@@ -60,62 +60,63 @@
 <span class="src-line" id="L24"><a class="ln" href="#L24">24</a></span>
 <span class="src-line" id="L25"><a class="ln" href="#L25">25</a><span class="tok-com">/**</span></span>
 <span class="src-line" id="L26"><a class="ln" href="#L26">26</a><span class="tok-com"> * @coversNothing</span></span>
-<span class="src-line" id="L27"><a class="ln" href="#L27">27</a><span class="tok-com"> */</span></span>
-<span class="src-line" id="L28"><a class="ln" href="#L28">28</a>#[<span class="tok-id">CoversNothing</span>]</span>
-<span class="src-line" id="L29"><a class="ln" href="#L29">29</a>#[<span class="tok-id">Large</span>]</span>
-<span class="src-line" id="L30"><a class="ln" href="#L30">30</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">EventTestNameResolverTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span></span>
-<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>{</span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    #[<span class="tok-id">Override</span>]</span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">setUp</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>    {</span>
-<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>        <span class="tok-id">parent</span>::<span class="tok-id">setUp</span>();</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        <span class="tok-kw">if</span> (!<span class="tok-id">interface_exists</span>(<span class="tok-str">&#039;PHPUnit\Runner\Extension\Extension&#039;</span>)) {</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>            <span class="tok-id">self</span>::<span class="tok-id">markTestSkipped</span>(<span class="tok-str">&#039;Requires PHPUnit 10 event extension API.&#039;</span>);</span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>        }</span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>    }</span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a></span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testResolveReturnsClassQualifiedMethodName</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>    {</span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        <span class="tok-var">$environment</span> = <span class="tok-id">getenv</span>();</span>
-<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>        <span class="tok-kw">unset</span>(<span class="tok-var">$environment</span>[<span class="tok-str">&#039;PARATEST&#039;</span>]);</span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        <span class="tok-var">$environment</span> = <span class="tok-id">array_merge</span>(<span class="tok-var">$environment</span>, [<span class="tok-str">&#039;AI_AGENT&#039;</span> =&gt; <span class="tok-str">&#039;1&#039;</span>]);</span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a></span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>        <span class="tok-var">$pipes</span> = [];</span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>        <span class="tok-var">$process</span> = <span class="tok-id">proc_open</span>(</span>
-<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>            [</span>
-<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>                <span class="tok-id">PHP_BINARY</span>,</span>
-<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>                <span class="tok-str">&#039;vendor/bin/phpunit&#039;</span>,</span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>                <span class="tok-str">&#039;--configuration&#039;</span>,</span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>                <span class="tok-str">&#039;tests/Fixture/TestReporter/phpunit-extension.xml.dist&#039;</span>,</span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>                <span class="tok-str">&#039;--colors=never&#039;</span>,</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>            ],</span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>            [</span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>                <span class="tok-num">0</span> =&gt; [<span class="tok-str">&#039;pipe&#039;</span>, <span class="tok-str">&#039;r&#039;</span>],</span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>                <span class="tok-num">1</span> =&gt; [<span class="tok-str">&#039;pipe&#039;</span>, <span class="tok-str">&#039;w&#039;</span>],</span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>                <span class="tok-num">2</span> =&gt; [<span class="tok-str">&#039;pipe&#039;</span>, <span class="tok-str">&#039;w&#039;</span>],</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>            ],</span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>            <span class="tok-var">$pipes</span>,</span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>            <span class="tok-id">dirname</span>(__DIR__, <span class="tok-num">4</span>),</span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>            <span class="tok-var">$environment</span>,</span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        );</span>
-<span class="src-line" id="L65"><a class="ln" href="#L65">65</a></span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>        <span class="tok-id">self</span>::<span class="tok-id">assertIsResource</span>(<span class="tok-var">$process</span>);</span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a></span>
-<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>        <span class="tok-id">fclose</span>(<span class="tok-var">$pipes</span>[<span class="tok-num">0</span>]);</span>
-<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        <span class="tok-var">$stdout</span> = <span class="tok-id">stream_get_contents</span>(<span class="tok-var">$pipes</span>[<span class="tok-num">1</span>]);</span>
-<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>        <span class="tok-var">$stderr</span> = <span class="tok-id">stream_get_contents</span>(<span class="tok-var">$pipes</span>[<span class="tok-num">2</span>]);</span>
-<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>        <span class="tok-id">fclose</span>(<span class="tok-var">$pipes</span>[<span class="tok-num">1</span>]);</span>
-<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>        <span class="tok-id">fclose</span>(<span class="tok-var">$pipes</span>[<span class="tok-num">2</span>]);</span>
-<span class="src-line" id="L73"><a class="ln" href="#L73">73</a></span>
-<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>        <span class="tok-var">$exitCode</span> = <span class="tok-id">proc_close</span>(<span class="tok-var">$process</span>);</span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a></span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        <span class="tok-id">self</span>::<span class="tok-id">assertIsString</span>(<span class="tok-var">$stdout</span>);</span>
-<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>        <span class="tok-id">self</span>::<span class="tok-id">assertIsString</span>(<span class="tok-var">$stderr</span>);</span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNotSame</span>(<span class="tok-num">0</span>, <span class="tok-var">$exitCode</span>);</span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;Tests\Fixture\TestReporter\FailingTest::testFails&#039;</span>, <span class="tok-var">$stdout</span> . <span class="tok-var">$stderr</span>);</span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>    }</span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>}</span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a></span>
+<span class="src-line" id="L27"><a class="ln" href="#L27">27</a><span class="tok-com"> * @large</span></span>
+<span class="src-line" id="L28"><a class="ln" href="#L28">28</a><span class="tok-com"> */</span></span>
+<span class="src-line" id="L29"><a class="ln" href="#L29">29</a>#[<span class="tok-id">CoversNothing</span>]</span>
+<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>#[<span class="tok-id">Large</span>]</span>
+<span class="src-line" id="L31"><a class="ln" href="#L31">31</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">EventTestNameResolverTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span></span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>{</span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>    #[<span class="tok-id">Override</span>]</span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">setUp</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>    {</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        <span class="tok-id">parent</span>::<span class="tok-id">setUp</span>();</span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        <span class="tok-kw">if</span> (!<span class="tok-id">interface_exists</span>(<span class="tok-str">&#039;PHPUnit\Runner\Extension\Extension&#039;</span>)) {</span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>            <span class="tok-id">self</span>::<span class="tok-id">markTestSkipped</span>(<span class="tok-str">&#039;Requires PHPUnit 10 event extension API.&#039;</span>);</span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>        }</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>    }</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a></span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testResolveReturnsClassQualifiedMethodName</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>    {</span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>        <span class="tok-var">$environment</span> = <span class="tok-id">getenv</span>();</span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        <span class="tok-kw">unset</span>(<span class="tok-var">$environment</span>[<span class="tok-str">&#039;PARATEST&#039;</span>]);</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-var">$environment</span> = <span class="tok-id">array_merge</span>(<span class="tok-var">$environment</span>, [<span class="tok-str">&#039;AI_AGENT&#039;</span> =&gt; <span class="tok-str">&#039;1&#039;</span>]);</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a></span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>        <span class="tok-var">$pipes</span> = [];</span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>        <span class="tok-var">$process</span> = <span class="tok-id">proc_open</span>(</span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>            [</span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>                <span class="tok-id">PHP_BINARY</span>,</span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>                <span class="tok-str">&#039;vendor/bin/phpunit&#039;</span>,</span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>                <span class="tok-str">&#039;--configuration&#039;</span>,</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>                <span class="tok-str">&#039;tests/Fixture/TestReporter/phpunit-extension.xml.dist&#039;</span>,</span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>                <span class="tok-str">&#039;--colors=never&#039;</span>,</span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>            ],</span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>            [</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>                <span class="tok-num">0</span> =&gt; [<span class="tok-str">&#039;pipe&#039;</span>, <span class="tok-str">&#039;r&#039;</span>],</span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>                <span class="tok-num">1</span> =&gt; [<span class="tok-str">&#039;pipe&#039;</span>, <span class="tok-str">&#039;w&#039;</span>],</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>                <span class="tok-num">2</span> =&gt; [<span class="tok-str">&#039;pipe&#039;</span>, <span class="tok-str">&#039;w&#039;</span>],</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>            ],</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>            <span class="tok-var">$pipes</span>,</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>            <span class="tok-id">dirname</span>(__DIR__, <span class="tok-num">4</span>),</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>            <span class="tok-var">$environment</span>,</span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>        );</span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a></span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>        <span class="tok-id">self</span>::<span class="tok-id">assertIsResource</span>(<span class="tok-var">$process</span>);</span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a></span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        <span class="tok-id">fclose</span>(<span class="tok-var">$pipes</span>[<span class="tok-num">0</span>]);</span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>        <span class="tok-var">$stdout</span> = <span class="tok-id">stream_get_contents</span>(<span class="tok-var">$pipes</span>[<span class="tok-num">1</span>]);</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>        <span class="tok-var">$stderr</span> = <span class="tok-id">stream_get_contents</span>(<span class="tok-var">$pipes</span>[<span class="tok-num">2</span>]);</span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>        <span class="tok-id">fclose</span>(<span class="tok-var">$pipes</span>[<span class="tok-num">1</span>]);</span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>        <span class="tok-id">fclose</span>(<span class="tok-var">$pipes</span>[<span class="tok-num">2</span>]);</span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a></span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>        <span class="tok-var">$exitCode</span> = <span class="tok-id">proc_close</span>(<span class="tok-var">$process</span>);</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a></span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>        <span class="tok-id">self</span>::<span class="tok-id">assertIsString</span>(<span class="tok-var">$stdout</span>);</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>        <span class="tok-id">self</span>::<span class="tok-id">assertIsString</span>(<span class="tok-var">$stderr</span>);</span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNotSame</span>(<span class="tok-num">0</span>, <span class="tok-var">$exitCode</span>);</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;Tests\Fixture\TestReporter\FailingTest::testFails&#039;</span>, <span class="tok-var">$stdout</span> . <span class="tok-var">$stderr</span>);</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>    }</span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>}</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

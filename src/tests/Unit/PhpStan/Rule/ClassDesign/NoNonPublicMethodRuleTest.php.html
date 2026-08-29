@@ -50,78 +50,79 @@
 <span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-com">/**</span></span>
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-com"> * @extends RuleTestCase&lt;NoNonPublicMethodRule&gt;</span></span>
 <span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-com"> * @covers \Toolkit\PhpStan\Rule\ClassDesign\NoNonPublicMethodRule</span></span>
-<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-com"> */</span></span>
-<span class="src-line" id="L18"><a class="ln" href="#L18">18</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">NoNonPublicMethodRule</span>::<span class="tok-kw">class</span>)]</span>
-<span class="src-line" id="L19"><a class="ln" href="#L19">19</a>#[<span class="tok-id">Medium</span>]</span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">NoNonPublicMethodRuleTest</span> <span class="tok-kw">extends</span> <span class="tok-id">RuleTestCase</span></span>
-<span class="src-line" id="L21"><a class="ln" href="#L21">21</a>{</span>
-<span class="src-line" id="L22"><a class="ln" href="#L22">22</a>    #[<span class="tok-id">Override</span>]</span>
-<span class="src-line" id="L23"><a class="ln" href="#L23">23</a>    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">getRule</span>(): <span class="tok-id">Rule</span></span>
-<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>    {</span>
-<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>        <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">NoNonPublicMethodRule</span>();</span>
-<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>    }</span>
-<span class="src-line" id="L27"><a class="ln" href="#L27">27</a></span>
-<span class="src-line" id="L28"><a class="ln" href="#L28">28</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testGetNodeTypeReturnsExpectedClass</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L29"><a class="ln" href="#L29">29</a>    {</span>
-<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-id">\PhpParser\Node\Stmt\ClassLike</span>::<span class="tok-kw">class</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">getRule</span>()-&gt;<span class="tok-id">getNodeType</span>());</span>
-<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>    }</span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a></span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testPrivateMethodViolationIsReported</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>    {</span>
-<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/WithPrivateMethod.php&#039;</span>], [</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>            [</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>                <span class="tok-str">&#039;Move private method helper() out of Tests\\Fixture\\NoNonPublicMethod\\WithPrivateMethod into a focused collaborator, or make it public only if it is part of this type\&#039;s API.&#039;</span>,</span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>                <span class="tok-num">14</span>,</span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>            ],</span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        ]);</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>    }</span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a></span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProtectedMethodViolationIsReported</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>    {</span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/WithProtectedMethod.php&#039;</span>], [</span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>            [</span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>                <span class="tok-str">&#039;Move protected method helper() out of concrete class Tests\\Fixture\\NoNonPublicMethod\\WithProtectedMethod, or put the extension point on an abstract class, trait, or override method.&#039;</span>,</span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>                <span class="tok-num">14</span>,</span>
-<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>            ],</span>
-<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>        ]);</span>
-<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>    }</span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a></span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testAllowsProtectedMethodInAbstractClass</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>    {</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/AbstractClassWithProtectedMethod.php&#039;</span>], []);</span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>    }</span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a></span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeProtectedMethodInTraitIsNotReported</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>    {</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/TraitWithProtectedMethod.php&#039;</span>], []);</span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>    }</span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a></span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testHasOverrideAttributeAllowsProtectedOverride</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>    {</span>
-<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/OverrideProtectedMethod.php&#039;</span>], []);</span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>    }</span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a></span>
-<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testResolveClassNameInPrivateMethodViolationForAbstractClass</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>    {</span>
-<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/AbstractClassWithPrivateMethod.php&#039;</span>], [</span>
-<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>            [</span>
-<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>                <span class="tok-str">&#039;Move private method helper() out of Tests\\Fixture\\NoNonPublicMethod\\AbstractClassWithPrivateMethod into a focused collaborator, or make it public only if it is part of this type\&#039;s API.&#039;</span>,</span>
-<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>                <span class="tok-num">14</span>,</span>
-<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>            ],</span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>        ]);</span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>    }</span>
-<span class="src-line" id="L77"><a class="ln" href="#L77">77</a></span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodePrivateMethodInTraitIsReported</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>    {</span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/TraitWithPrivateMethod.php&#039;</span>], [</span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>            [</span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>                <span class="tok-str">&#039;Move private method helper() out of Tests\\Fixture\\NoNonPublicMethod\\TraitWithPrivateMethod into a focused collaborator, or make it public only if it is part of this type\&#039;s API.&#039;</span>,</span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>                <span class="tok-num">14</span>,</span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>            ],</span>
-<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>        ]);</span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>    }</span>
-<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>}</span>
-<span class="src-line" id="L88"><a class="ln" href="#L88">88</a></span>
+<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-com"> * @medium</span></span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-com"> */</span></span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a>#[<span class="tok-id">CoversClass</span>(<span class="tok-id">NoNonPublicMethodRule</span>::<span class="tok-kw">class</span>)]</span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a>#[<span class="tok-id">Medium</span>]</span>
+<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">NoNonPublicMethodRuleTest</span> <span class="tok-kw">extends</span> <span class="tok-id">RuleTestCase</span></span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a>{</span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a>    #[<span class="tok-id">Override</span>]</span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">getRule</span>(): <span class="tok-id">Rule</span></span>
+<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>    {</span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>        <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">NoNonPublicMethodRule</span>();</span>
+<span class="src-line" id="L27"><a class="ln" href="#L27">27</a>    }</span>
+<span class="src-line" id="L28"><a class="ln" href="#L28">28</a></span>
+<span class="src-line" id="L29"><a class="ln" href="#L29">29</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testGetNodeTypeReturnsExpectedClass</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>    {</span>
+<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-id">\PhpParser\Node\Stmt\ClassLike</span>::<span class="tok-kw">class</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">getRule</span>()-&gt;<span class="tok-id">getNodeType</span>());</span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    }</span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a></span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testPrivateMethodViolationIsReported</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>    {</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/WithPrivateMethod.php&#039;</span>], [</span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>            [</span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>                <span class="tok-str">&#039;Move private method helper() out of Tests\\Fixture\\NoNonPublicMethod\\WithPrivateMethod into a focused collaborator, or make it public only if it is part of this type\&#039;s API.&#039;</span>,</span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>                <span class="tok-num">14</span>,</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>            ],</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>        ]);</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>    }</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a></span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProtectedMethodViolationIsReported</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>    {</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/WithProtectedMethod.php&#039;</span>], [</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>            [</span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>                <span class="tok-str">&#039;Move protected method helper() out of concrete class Tests\\Fixture\\NoNonPublicMethod\\WithProtectedMethod, or put the extension point on an abstract class, trait, or override method.&#039;</span>,</span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>                <span class="tok-num">14</span>,</span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>            ],</span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>        ]);</span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>    }</span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a></span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testAllowsProtectedMethodInAbstractClass</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>    {</span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/AbstractClassWithProtectedMethod.php&#039;</span>], []);</span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>    }</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a></span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeProtectedMethodInTraitIsNotReported</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>    {</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/TraitWithProtectedMethod.php&#039;</span>], []);</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>    }</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a></span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testHasOverrideAttributeAllowsProtectedOverride</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>    {</span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/OverrideProtectedMethod.php&#039;</span>], []);</span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>    }</span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a></span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testResolveClassNameInPrivateMethodViolationForAbstractClass</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>    {</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/AbstractClassWithPrivateMethod.php&#039;</span>], [</span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>            [</span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>                <span class="tok-str">&#039;Move private method helper() out of Tests\\Fixture\\NoNonPublicMethod\\AbstractClassWithPrivateMethod into a focused collaborator, or make it public only if it is part of this type\&#039;s API.&#039;</span>,</span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>                <span class="tok-num">14</span>,</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>            ],</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        ]);</span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>    }</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a></span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodePrivateMethodInTraitIsReported</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>    {</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoNonPublicMethod/TraitWithPrivateMethod.php&#039;</span>], [</span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>            [</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>                <span class="tok-str">&#039;Move private method helper() out of Tests\\Fixture\\NoNonPublicMethod\\TraitWithPrivateMethod into a focused collaborator, or make it public only if it is part of this type\&#039;s API.&#039;</span>,</span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>                <span class="tok-num">14</span>,</span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>            ],</span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        ]);</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>    }</span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>}</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a></span>
 </code></pre>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

@@ -1,0 +1,54 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M1692X2G45FRFHHBVXBCH8SZ",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 7,
+  "files_touched": [
+    "docs/docgen.md",
+    "docs/phpstan-rules.md",
+    "docs/rules/EnforceMutationContractRule.md",
+    "rules.neon",
+    "src/DocGen/Analysis/Diff/SymbolFingerprint.php",
+    "src/DocGen/Analysis/Doc/DocBlockReader.php",
+    "src/DocGen/Analysis/Model/DocBlock.php",
+    "src/DocGen/Analysis/Model/ParameterDoc.php",
+    "src/DocGen/Analysis/Parse/Builder/ParameterBuilder.php",
+    "src/DocGen/Render/Page/Component/MemberHtml.php",
+    "src/Mutation/MutationContract.php",
+    "src/Mutation/MutationContractReader.php",
+    "src/PhpStan/Rule/Mutation/CallableId.php",
+    "src/PhpStan/Rule/Mutation/EnforceMutationContractRule.php",
+    "src/PhpStan/Rule/Mutation/MutationDeclarationCollector.php",
+    "src/PhpStan/Rule/Mutation/MutationInspector.php",
+    "src/PhpStan/Rule/Mutation/MutationOperationCollector.php",
+    "tests/Fixture/MutationContract/project/src/MutationCases.php",
+    "tests/Unit/DocGen/Analysis/Diff/SymbolFingerprintTest.php",
+    "tests/Unit/DocGen/Analysis/Doc/DocBlockReaderTest.php",
+    "tests/Unit/DocGen/Analysis/Parse/Builder/ParameterBuilderTest.php",
+    "tests/Unit/DocGen/Render/Page/Component/MemberHtmlTest.php",
+    "tests/Unit/Mutation/MutationContractReaderTest.php",
+    "tests/Unit/Mutation/MutationContractTest.php",
+    "tests/Unit/PhpStan/Rule/Mutation/CallableIdTest.php",
+    "tests/Unit/PhpStan/Rule/Mutation/EnforceMutationContractRuleTest.php",
+    "tests/Unit/PhpStan/Rule/Mutation/MutationDeclarationCollectorTest.php",
+    "tests/Unit/PhpStan/Rule/Mutation/MutationInspectorTest.php",
+    "tests/Unit/PhpStan/Rule/Mutation/MutationOperationCollectorTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 359680,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 18700544,
+    "output_tokens": 64531,
+    "api_call_count": 184
+  }
+}

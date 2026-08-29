@@ -1,0 +1,83 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M1692X2G45FRFHHBVXBCH8SZ",
+  "session_id": "01a04c2d-cc4a-77b1-aa4b-58931e673a1d",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-29T08:10:01.044812Z",
+  "branch": "main",
+  "checkpoints_count": 7,
+  "save_step_count": 1,
+  "files_touched": [
+    "docs/docgen.md",
+    "docs/phpstan-rules.md",
+    "docs/rules/EnforceMutationContractRule.md",
+    "rules.neon",
+    "src/DocGen/Analysis/Diff/SymbolFingerprint.php",
+    "src/DocGen/Analysis/Doc/DocBlockReader.php",
+    "src/DocGen/Analysis/Model/DocBlock.php",
+    "src/DocGen/Analysis/Model/ParameterDoc.php",
+    "src/DocGen/Analysis/Parse/Builder/ParameterBuilder.php",
+    "src/DocGen/Render/Page/Component/MemberHtml.php",
+    "src/Mutation/MutationContract.php",
+    "src/Mutation/MutationContractReader.php",
+    "src/PhpStan/Rule/Mutation/CallableId.php",
+    "src/PhpStan/Rule/Mutation/EnforceMutationContractRule.php",
+    "src/PhpStan/Rule/Mutation/MutationDeclarationCollector.php",
+    "src/PhpStan/Rule/Mutation/MutationInspector.php",
+    "src/PhpStan/Rule/Mutation/MutationOperationCollector.php",
+    "tests/Fixture/MutationContract/project/src/MutationCases.php",
+    "tests/Unit/DocGen/Analysis/Diff/SymbolFingerprintTest.php",
+    "tests/Unit/DocGen/Analysis/Doc/DocBlockReaderTest.php",
+    "tests/Unit/DocGen/Analysis/Parse/Builder/ParameterBuilderTest.php",
+    "tests/Unit/DocGen/Render/Page/Component/MemberHtmlTest.php",
+    "tests/Unit/Mutation/MutationContractReaderTest.php",
+    "tests/Unit/Mutation/MutationContractTest.php",
+    "tests/Unit/PhpStan/Rule/Mutation/CallableIdTest.php",
+    "tests/Unit/PhpStan/Rule/Mutation/EnforceMutationContractRuleTest.php",
+    "tests/Unit/PhpStan/Rule/Mutation/MutationDeclarationCollectorTest.php",
+    "tests/Unit/PhpStan/Rule/Mutation/MutationInspectorTest.php",
+    "tests/Unit/PhpStan/Rule/Mutation/MutationOperationCollectorTest.php"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.6-sol",
+  "turn_id": "0007c638b4ca",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 359680,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 18700544,
+    "output_tokens": 64531,
+    "api_call_count": 184
+  },
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-29T08:10:00.648582Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 2077,
+    "human_modified": 5,
+    "human_removed": 0,
+    "total_committed": 2077,
+    "total_lines_changed": 2082,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 317,
+      "agent_lines_removed": 0
+    }
+  ]
+}

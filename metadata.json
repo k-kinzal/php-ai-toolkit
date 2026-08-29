@@ -1,0 +1,55 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M179TAKB3670GKQ6MNA0437E",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "composer.json",
+    "src/Doctest/DoctestExtension.php",
+    "src/Doctest/TestCase/DoctestRunner.php",
+    "tests/Fixture/Doctest/EmptyDoctestSuite.php",
+    "tests/Unit/DocGen/Analysis/Diff/ClassLikeMergerTest.php",
+    "tests/Unit/DocGen/Analysis/Diff/FunctionMergerTest.php",
+    "tests/Unit/DocGen/Analysis/Diff/ProjectDifferTest.php",
+    "tests/Unit/DocGen/Analysis/Model/ClassLikeDocTest.php",
+    "tests/Unit/DocGen/Analysis/Model/ConstantDocTest.php",
+    "tests/Unit/DocGen/Analysis/Model/DocBlockTest.php",
+    "tests/Unit/DocGen/Analysis/Model/EnumCaseDocTest.php",
+    "tests/Unit/DocGen/Analysis/Model/FunctionDocTest.php",
+    "tests/Unit/DocGen/Analysis/Model/MethodDocTest.php",
+    "tests/Unit/DocGen/Analysis/Model/PropertyDocTest.php",
+    "tests/Unit/DocGen/Analysis/ProjectModelTest.php",
+    "tests/Unit/DocGen/Render/Page/AllItemsPageTest.php",
+    "tests/Unit/DocGen/Render/Page/ClassLikePageTest.php",
+    "tests/Unit/DocGen/Render/Page/Component/DocTextHtmlTest.php",
+    "tests/Unit/DocGen/Render/Page/Component/SignatureHtmlTest.php",
+    "tests/Unit/DocGen/Render/Page/Component/SymbolDescriptionTest.php",
+    "tests/Unit/DocGen/Render/Page/FunctionPageTest.php",
+    "tests/Unit/DocGen/Render/Page/IndexPageTest.php",
+    "tests/Unit/DocGen/Render/Page/LayerPageTest.php",
+    "tests/Unit/DocGen/Render/Page/NamespacePageTest.php",
+    "tests/Unit/DocGen/Render/Page/SymbolIndexTest.php",
+    "tests/Unit/DocGen/Render/SearchIndexBuilderTest.php",
+    "tests/Unit/DocGen/Render/SiteRendererTest.php",
+    "tests/Unit/DocGen/Render/TypeHtmlTest.php",
+    "tests/Unit/Doctest/TestCase/DoctestRunnerTest.php",
+    "tests/Unit/PhpStan/Rule/Architecture/ForbiddenFileTermErrorBuilderTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 336399,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 27781632,
+    "output_tokens": 35037,
+    "api_call_count": 150
+  }
+}

@@ -63,7 +63,7 @@ final class PhpFileAnalyzer
     /**
      * Analyzes one file and returns its metrics and threshold violations.
      */
-    public function analyze(string $path, string $relativePath, LimitConfig $limits): FileAnalysis
+    public function analyze(string $path, string $relativePath, LimitConfig $limits, string $policy = 'standard'): FileAnalysis
     {
         $source = file_get_contents($path);
         if ($source === false) {
@@ -78,9 +78,9 @@ final class PhpFileAnalyzer
         );
 
         $violations = array_merge(
-            $this->fileViolationBuilder->violations($file, $limits),
-            $this->classLikeViolationBuilder->violations($relativePath, $this->classLikeCollector->collect($tokens), $limits),
-            $this->functionViolationBuilder->violations($relativePath, $this->functionCollector->collect($tokens), $limits),
+            $this->fileViolationBuilder->violations($file, $limits, $policy),
+            $this->classLikeViolationBuilder->violations($relativePath, $this->classLikeCollector->collect($tokens), $limits, $policy),
+            $this->functionViolationBuilder->violations($relativePath, $this->functionCollector->collect($tokens), $limits, $policy),
         );
 
         return new FileAnalysis($file, $violations);

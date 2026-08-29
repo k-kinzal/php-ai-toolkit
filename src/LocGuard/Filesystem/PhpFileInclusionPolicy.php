@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Toolkit\LocGuard\Filesystem;
 
-use function fnmatch;
+use function array_pop;
+use function explode;
+use function implode;
 use function str_ends_with;
 
 use Toolkit\LocGuard\Config\LocGuardConfig;
@@ -17,12 +19,18 @@ final class PhpFileInclusionPolicy
     /** @readonly */
     private LocGuardPathResolver $pathResolver;
 
+    /** @readonly */
+    private FilePathPatternMatcher $patternMatcher;
+
     /**
      * Creates an inclusion policy from path resolution.
      */
-    public function __construct(?LocGuardPathResolver $pathResolver = null)
-    {
+    public function __construct(
+        ?LocGuardPathResolver $pathResolver = null,
+        ?FilePathPatternMatcher $patternMatcher = null,
+    ) {
         $this->pathResolver = $pathResolver ?? new LocGuardPathResolver();
+        $this->patternMatcher = $patternMatcher ?? new FilePathPatternMatcher();
     }
 
     /**
@@ -35,10 +43,15 @@ final class PhpFileInclusionPolicy
             return false;
         }
 
-        foreach ($config->exclude as $pattern) {
-            if (fnmatch($pattern, $relativePath)) {
-                return false;
+        $candidate = explode('/', $relativePath);
+        foreach ($config->scan->exclude as $pattern) {
+            while ($candidate !== []) {
+                if ($this->patternMatcher->matches($pattern, implode('/', $candidate))) {
+                    return false;
+                }
+                array_pop($candidate);
             }
+            $candidate = explode('/', $relativePath);
         }
 
         return true;

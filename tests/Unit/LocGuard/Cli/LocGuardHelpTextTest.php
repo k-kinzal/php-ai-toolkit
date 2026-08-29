@@ -16,6 +16,9 @@ final class LocGuardHelpTextTest extends TestCase
 {
     public function testTextReturnsUsageText(): void
     {
-        self::assertStringContainsString('Usage:', (new LocGuardHelpText())->text());
+        $text = (new LocGuardHelpText())->text();
+
+        self::assertStringContainsString('Usage:', $text);
+        self::assertStringContainsString('--explain PATH', $text);
     }
 }

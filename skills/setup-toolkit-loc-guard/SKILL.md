@@ -44,19 +44,22 @@ setup.
 
 The default toolkit metrics are:
 
-| Setting | Default | Meaning |
-|---------|---------|---------|
-| `limits.max_file_lines` | `500` | Files with more than 500 physical lines fail. |
-| `limits.max_file_ncloc` | `350` | Files with more than 350 non-comment lines of code fail. |
-| `limits.max_class_lines` | `400` | Classes with more than 400 physical lines fail. |
-| `limits.max_trait_lines` | `300` | Traits with more than 300 physical lines fail. |
-| `limits.max_interface_lines` | `200` | Interfaces with more than 200 physical lines fail. |
-| `limits.max_enum_lines` | `200` | Enums with more than 200 physical lines fail. |
-| `limits.max_function_lines` | `50` | Functions with more than 50 physical lines fail. |
-| `limits.max_method_lines` | `50` | Methods with more than 50 physical lines fail. |
-| `limits.max_cyclomatic_complexity` | `20` | Functions or methods with complexity greater than 20 fail. |
+| Setting | Recommended | Meaning |
+|---------|------------:|---------|
+| `file.lines` | `500` | Files with more than 500 physical lines fail. |
+| `file.ncloc` | `350` | Files with more than 350 non-comment lines of code fail. |
+| `class.lines` | `400` | Classes with more than 400 physical lines fail. |
+| `trait.lines` | `300` | Traits with more than 300 physical lines fail. |
+| `interface.lines` | `200` | Interfaces with more than 200 physical lines fail. |
+| `enum.lines` | `200` | Enums with more than 200 physical lines fail. |
+| `function.lines` | `50` | Functions with more than 50 physical lines fail. |
+| `method.lines` | `50` | Methods with more than 50 physical lines fail. |
+| `function.cyclomatic_complexity` | `20` | Functions with complexity greater than 20 fail. |
+| `method.cyclomatic_complexity` | `20` | Methods with complexity greater than 20 fail. |
 
-The limit value itself is allowed. For example, a 50-line method passes when `max_method_lines` is `50`.
+The limit value itself is allowed. For example, a 50-line method passes when `method.lines` is `50`.
+
+LocGuard has no implicit metric defaults. Keep every intended standard limit explicit under `policies.standard.limits`; an omitted metric in a root policy is disabled.
 
 ## Reporter
 
@@ -79,29 +82,68 @@ Supported `order_by` fields are `path`, `line`, `rule`, `actual`, and `limit`. P
 
 Run LocGuard only on production source paths discovered from Composer autoload roots. Do not include `tests/` by default; test method and fixture length are intentionally out of scope.
 
-For standard projects:
+Configure exact source directories under `scan.roots`. For standard projects:
 
 ```yaml
-paths:
-  - src
+scan:
+  roots:
+    - src
 ```
 
 For non-standard production roots:
 
 ```yaml
-paths:
-  - app
-  - packages/Core/src
+scan:
+  roots:
+    - app
+    - packages/Core/src
 ```
 
 Use `exclude` for generated production files only:
 
 ```yaml
-exclude:
-  - 'src/Generated/*'
+scan:
+  roots:
+    - src
+  exclude:
+    - 'src/Generated/**'
 ```
 
 Do not add broad excludes just to make violations pass. Fix the source or report the exact files that need a project-level decision.
+
+## Multiple Policies
+
+When code has a structurally different but legitimate source shape, define a named policy and assign the exact files. Do not create a second config file or exclude the source:
+
+```yaml
+policies:
+  standard:
+    limits:
+      file: { lines: 500, ncloc: 350 }
+      class: { lines: 400 }
+      function: { lines: 50, cyclomatic_complexity: 20 }
+      method: { lines: 50, cyclomatic_complexity: 20 }
+
+  native-api-adapter:
+    extends: standard
+    limits:
+      file: { lines: 900, ncloc: 650 }
+      class: { lines: 800 }
+
+apply:
+  default: standard
+  rules:
+    - name: native-api-adapters
+      match:
+        paths:
+          - 'src/ZtdMysqli.php'
+          - 'src/ZtdMysqliStatement.php'
+      policy: native-api-adapter
+```
+
+Omitted child limits inherit the parent. An explicit `null` disables a limit. Prefer retaining method length and complexity limits when only an inherited native API surface makes a file or class larger.
+
+All path rules must be disjoint. LocGuard rejects overlapping rules, rules matching no scanned PHP files, unused policies, empty scans, inheritance cycles, missing policy references, and unknown configuration keys.
 
 ## Recommended Composer Scripts
 
@@ -129,6 +171,12 @@ After applying:
 
 ```bash
 vendor/bin/loc-guard --config=loc.yaml
+```
+
+For every non-default policy rule, explain at least one matched file and verify its effective limits:
+
+```bash
+vendor/bin/loc-guard --config=loc.yaml --explain=src/ZtdMysqli.php
 ```
 
 Exit codes:

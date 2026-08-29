@@ -135,7 +135,7 @@ PHP);
         $analysis = (new PhpFileAnalyzer())->analyze(
             $file,
             'src/Example.php',
-            new LimitConfig(10, 8, 5, 50, 50, 50, 3, 4, 2),
+            new LimitConfig(10, 8, 5, 50, 50, 50, 3, 4, 2, 2),
         );
 
         self::assertSame('src/Example.php', $analysis->file->path);
@@ -161,7 +161,7 @@ PHP);
         $analysis = (new PhpFileAnalyzer())->analyze(
             $file,
             'src/Example.php',
-            new LimitConfig(5, 3, 50, 50, 50, 50, 3, 50, 1),
+            new LimitConfig(5, 3, 50, 50, 50, 50, 3, 50, 1, 1),
         );
 
         self::assertSame([], $analysis->violations);
@@ -194,7 +194,7 @@ PHP);
         $analysis = (new PhpFileAnalyzer())->analyze(
             $file,
             'src/Types.php',
-            new LimitConfig(100, 100, 2, 2, 2, 2, 50, 50, 20),
+            new LimitConfig(100, 100, 2, 2, 2, 2, 50, 50, 20, 20),
         );
 
         self::assertSame(
@@ -219,7 +219,7 @@ PHP);
         $analysis = (new PhpFileAnalyzer())->analyze(
             $file,
             'src/Comments.php',
-            new LimitConfig(4, 1, 50, 50, 50, 50, 50, 50, 20),
+            new LimitConfig(4, 1, 50, 50, 50, 50, 50, 50, 20, 20),
         );
 
         self::assertSame(7, $analysis->file->physicalLines);

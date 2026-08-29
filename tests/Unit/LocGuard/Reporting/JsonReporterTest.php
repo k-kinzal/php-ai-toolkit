@@ -38,7 +38,7 @@ final class JsonReporterTest extends TestCase
         $output = (new JsonReporter())->report(
             new AnalysisResult(
                 [new FileMetric('src/A.php', 10, 7)],
-                [new Violation('src/A.php', 2, 'file_lines', 10, 5, 'Too long.')],
+                [new Violation('src/A.php', 2, 'file_lines', 10, 5, 'Too long.', 'strict')],
             ),
             new ReportConfig('json', ['path', 'line', 'rule']),
         );
@@ -46,6 +46,7 @@ final class JsonReporterTest extends TestCase
         self::assertStringContainsString('"status": "failed"', $output);
         self::assertStringContainsString('"physical_lines": 10', $output);
         self::assertStringContainsString('"rule": "file_lines"', $output);
+        self::assertStringContainsString('"policy": "strict"', $output);
     }
 
     public function testReportAppliesConfiguredViolationOrder(): void

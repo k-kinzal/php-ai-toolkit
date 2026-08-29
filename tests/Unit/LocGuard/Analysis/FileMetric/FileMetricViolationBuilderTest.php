@@ -28,7 +28,7 @@ final class FileMetricViolationBuilderTest extends TestCase
     {
         $violations = (new FileMetricViolationBuilder())->violations(
             new FileMetric('src/Example.php', 12, 8),
-            new LimitConfig(10, 7, 50, 50, 50, 50, 50, 50, 50),
+            new LimitConfig(10, 7, 50, 50, 50, 50, 50, 50, 50, 50),
         );
 
         self::assertSame(['file_lines', 'file_ncloc'], array_map(static fn ($violation): string => $violation->rule, $violations));
@@ -38,7 +38,7 @@ final class FileMetricViolationBuilderTest extends TestCase
     {
         $violations = (new FileMetricViolationBuilder())->violations(
             new FileMetric('src/Example.php', 10, 7),
-            new LimitConfig(10, 7, 50, 50, 50, 50, 50, 50, 50),
+            new LimitConfig(10, 7, 50, 50, 50, 50, 50, 50, 50, 50),
         );
 
         self::assertSame([], $violations);

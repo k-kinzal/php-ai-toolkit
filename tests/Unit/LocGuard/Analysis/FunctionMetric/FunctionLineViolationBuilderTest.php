@@ -29,7 +29,7 @@ final class FunctionLineViolationBuilderTest extends TestCase
         $violations = (new FunctionLineViolationBuilder())->violations(
             'src/Example.php',
             new FunctionMetric('method', 'Example::run', 2, 8, 3, 7),
-            new LimitConfig(100, 100, 50, 50, 50, 50, 50, 3, 50),
+            new LimitConfig(100, 100, 50, 50, 50, 50, 50, 3, 50, 50),
         );
 
         self::assertSame(['method_lines'], array_map(static fn ($violation): string => $violation->rule, $violations));
@@ -40,7 +40,7 @@ final class FunctionLineViolationBuilderTest extends TestCase
         $violations = (new FunctionLineViolationBuilder())->violations(
             'src/Example.php',
             new FunctionMetric('function', 'run', 2, 4, 3, 4),
-            new LimitConfig(100, 100, 50, 50, 50, 50, 3, 50, 50),
+            new LimitConfig(100, 100, 50, 50, 50, 50, 3, 50, 50, 50),
         );
 
         self::assertSame([], $violations);

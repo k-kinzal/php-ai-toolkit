@@ -23,7 +23,7 @@ final class ClassLikeMetricLimitTest extends TestCase
 {
     public function testLimitReturnsClassLikeSpecificLimit(): void
     {
-        $limits = new LimitConfig(100, 100, 10, 11, 12, 13, 50, 50, 50);
+        $limits = new LimitConfig(100, 100, 10, 11, 12, 13, 50, 50, 50, 50);
         $limit = new ClassLikeMetricLimit();
 
         self::assertSame(10, $limit->limit(new ClassLikeMetric('class', 'Example', 1, 3), $limits));

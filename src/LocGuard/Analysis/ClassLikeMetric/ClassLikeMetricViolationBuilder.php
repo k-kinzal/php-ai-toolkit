@@ -32,12 +32,12 @@ final class ClassLikeMetricViolationBuilder
      * @param list<ClassLikeMetric> $metrics
      * @return list<Violation>
      */
-    public function violations(string $relativePath, array $metrics, LimitConfig $limits): array
+    public function violations(string $relativePath, array $metrics, LimitConfig $limits, string $policy = 'standard'): array
     {
         $violations = [];
         foreach ($metrics as $metric) {
             $limit = $this->classLikeMetricLimit->limit($metric, $limits);
-            if ($metric->lineCount() <= $limit) {
+            if ($limit === null || $metric->lineCount() <= $limit) {
                 continue;
             }
 
@@ -48,6 +48,7 @@ final class ClassLikeMetricViolationBuilder
                 $metric->lineCount(),
                 $limit,
                 sprintf('%s %s has %d physical lines; maximum is %d.', $metric->kind, $metric->name, $metric->lineCount(), $limit),
+                $policy,
             );
         }
 

@@ -18,15 +18,20 @@ final class LocGuardAnalyzer
     /** @readonly */
     private PhpFileAnalyzer $fileAnalyzer;
 
+    /** @readonly */
+    private FilePolicyAssigner $policyAssigner;
+
     /**
      * Creates an analyzer with injectable file discovery and per-file analysis.
      */
     public function __construct(
         ?PhpFileFinder $fileFinder = null,
         ?PhpFileAnalyzer $fileAnalyzer = null,
+        ?FilePolicyAssigner $policyAssigner = null,
     ) {
         $this->fileFinder = $fileFinder ?? new PhpFileFinder();
         $this->fileAnalyzer = $fileAnalyzer ?? new PhpFileAnalyzer();
+        $this->policyAssigner = $policyAssigner ?? new FilePolicyAssigner();
     }
 
     /**
@@ -37,8 +42,14 @@ final class LocGuardAnalyzer
         $files = [];
         $violations = [];
 
-        foreach ($this->fileFinder->find($config) as $path => $relativePath) {
-            $analysis = $this->fileAnalyzer->analyze($path, $relativePath, $config->limits);
+        $assignments = $this->policyAssigner->assign($config, $this->fileFinder->find($config));
+        foreach ($assignments as $assignment) {
+            $analysis = $this->fileAnalyzer->analyze(
+                $assignment->path,
+                $assignment->relativePath,
+                $assignment->policy->limits,
+                $assignment->policy->name,
+            );
             $files[] = $analysis->file;
             $violations = array_merge($violations, $analysis->violations);
         }

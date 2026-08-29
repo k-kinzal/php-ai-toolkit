@@ -38,7 +38,7 @@ final class FunctionMetricViolationBuilderTest extends TestCase
         $violations = (new FunctionMetricViolationBuilder())->violations(
             'src/Example.php',
             [$metric],
-            new LimitConfig(100, 100, 50, 50, 50, 50, 3, 50, 3),
+            new LimitConfig(100, 100, 50, 50, 50, 50, 3, 50, 3, 3),
         );
 
         self::assertSame(['function_lines', 'cyclomatic_complexity'], array_map(static fn ($violation): string => $violation->rule, $violations));

@@ -19,9 +19,11 @@ loc-guard checks PHP source line-count and complexity thresholds.
 
 Usage:
   loc-guard [--config=loc.yaml] [--reporter=ai|text|json]
+  loc-guard [--config=loc.yaml] --explain=PATH
 
 Options:
   --config PATH       Path to loc.yaml (default: loc.yaml)
+  --explain PATH      Show the effective policy and limits for one scanned file
   --reporter NAME     Reporter: ai, text, or json
   --format NAME       Alias of --reporter
   --help, -h          Show this help message

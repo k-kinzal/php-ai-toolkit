@@ -48,6 +48,7 @@ final class JsonReporter implements Reporter
                     'path' => $violation->path,
                     'line' => $violation->line,
                     'rule' => $violation->rule,
+                    'policy' => $violation->policy,
                     'actual' => $violation->actual,
                     'limit' => $violation->limit,
                     'message' => $violation->message,

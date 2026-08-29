@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\LocGuard\Analysis\AnalysisResult;
+use Toolkit\LocGuard\Analysis\ApplyRuleMatcher;
 use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader;
 use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector;
 use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder;
@@ -17,6 +18,8 @@ use Toolkit\LocGuard\Analysis\Complexity\CyclomaticDecisionWeight;
 use Toolkit\LocGuard\Analysis\FileAnalysis;
 use Toolkit\LocGuard\Analysis\FileMetric\FileMetric;
 use Toolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder;
+use Toolkit\LocGuard\Analysis\FilePolicyAssigner;
+use Toolkit\LocGuard\Analysis\FilePolicyAssignment;
 use Toolkit\LocGuard\Analysis\FunctionMetric\ArrowExpressionBoundary;
 use Toolkit\LocGuard\Analysis\FunctionMetric\ArrowFunctionMetricReader;
 use Toolkit\LocGuard\Analysis\FunctionMetric\BlockFunctionMetricReader;
@@ -41,18 +44,34 @@ use Toolkit\LocGuard\Analysis\Violation;
 use Toolkit\LocGuard\Cli\Application;
 use Toolkit\LocGuard\Cli\LocGuardAnalysisRunner;
 use Toolkit\LocGuard\Cli\LocGuardCliArgumentParser;
+use Toolkit\LocGuard\Cli\LocGuardCliValueOption;
+use Toolkit\LocGuard\Cli\LocGuardCliValueOptionParser;
 use Toolkit\LocGuard\Cli\LocGuardConfigPathResolver;
+use Toolkit\LocGuard\Cli\LocGuardExplainRunner;
 use Toolkit\LocGuard\Cli\LocGuardHelpText;
 use Toolkit\LocGuard\Cli\LocGuardOutputWriter;
 use Toolkit\LocGuard\Cli\LocGuardReporterOverride;
+use Toolkit\LocGuard\Config\ConfigKeyValidator;
 use Toolkit\LocGuard\Config\ConfigLoader;
 use Toolkit\LocGuard\Config\ConfigScalarReader;
 use Toolkit\LocGuard\Config\ConfigStringListReader;
 use Toolkit\LocGuard\Config\LimitConfig;
 use Toolkit\LocGuard\Config\LimitConfigReader;
 use Toolkit\LocGuard\Config\LocGuardConfig;
+use Toolkit\LocGuard\Config\Policy\ApplyConfig;
+use Toolkit\LocGuard\Config\Policy\ApplyConfigReader;
+use Toolkit\LocGuard\Config\Policy\ApplyPolicyUsageValidator;
+use Toolkit\LocGuard\Config\Policy\ApplyRuleConfigReader;
+use Toolkit\LocGuard\Config\Policy\ApplyRuleListConfigReader;
+use Toolkit\LocGuard\Config\Policy\PolicyConfig;
+use Toolkit\LocGuard\Config\Policy\PolicyConfigReader;
+use Toolkit\LocGuard\Config\Policy\PolicyDefinition;
+use Toolkit\LocGuard\Config\Policy\PolicyListConfigReader;
+use Toolkit\LocGuard\Config\Policy\PolicyResolver;
 use Toolkit\LocGuard\Config\ReportConfig;
 use Toolkit\LocGuard\Config\ReportConfigReader;
+use Toolkit\LocGuard\Config\ScanConfig;
+use Toolkit\LocGuard\Config\ScanConfigReader;
 use Toolkit\LocGuard\Filesystem\LocGuardPathResolver;
 use Toolkit\LocGuard\Filesystem\PhpFileFinder;
 use Toolkit\LocGuard\Filesystem\PhpFileInclusionPolicy;
@@ -129,6 +148,25 @@ use Toolkit\LocGuard\Reporting\ViolationSorter;
  * @uses \Toolkit\LocGuard\Analysis\Token\TokenLineCounter
  * @uses \Toolkit\LocGuard\Analysis\Violation
  * @uses \Toolkit\LocGuard\Reporting\ViolationSorter
+ * @uses \Toolkit\LocGuard\Analysis\ApplyRuleMatcher
+ * @uses \Toolkit\LocGuard\Analysis\FilePolicyAssigner
+ * @uses \Toolkit\LocGuard\Analysis\FilePolicyAssignment
+ * @uses \Toolkit\LocGuard\Cli\LocGuardCliValueOption
+ * @uses \Toolkit\LocGuard\Cli\LocGuardCliValueOptionParser
+ * @uses \Toolkit\LocGuard\Cli\LocGuardExplainRunner
+ * @uses \Toolkit\LocGuard\Config\Policy\ApplyConfig
+ * @uses \Toolkit\LocGuard\Config\Policy\ApplyConfigReader
+ * @uses \Toolkit\LocGuard\Config\Policy\ApplyPolicyUsageValidator
+ * @uses \Toolkit\LocGuard\Config\Policy\ApplyRuleConfigReader
+ * @uses \Toolkit\LocGuard\Config\Policy\ApplyRuleListConfigReader
+ * @uses \Toolkit\LocGuard\Config\ConfigKeyValidator
+ * @uses \Toolkit\LocGuard\Config\Policy\PolicyConfig
+ * @uses \Toolkit\LocGuard\Config\Policy\PolicyConfigReader
+ * @uses \Toolkit\LocGuard\Config\Policy\PolicyDefinition
+ * @uses \Toolkit\LocGuard\Config\Policy\PolicyListConfigReader
+ * @uses \Toolkit\LocGuard\Config\Policy\PolicyResolver
+ * @uses \Toolkit\LocGuard\Config\ScanConfig
+ * @uses \Toolkit\LocGuard\Config\ScanConfigReader
  */
 #[CoversClass(Application::class)]
 #[UsesClass(AiReportGuidance::class)]
@@ -190,6 +228,25 @@ use Toolkit\LocGuard\Reporting\ViolationSorter;
 #[UsesClass(TokenLineCounter::class)]
 #[UsesClass(Violation::class)]
 #[UsesClass(ViolationSorter::class)]
+#[UsesClass(ApplyRuleMatcher::class)]
+#[UsesClass(FilePolicyAssigner::class)]
+#[UsesClass(FilePolicyAssignment::class)]
+#[UsesClass(LocGuardCliValueOption::class)]
+#[UsesClass(LocGuardCliValueOptionParser::class)]
+#[UsesClass(LocGuardExplainRunner::class)]
+#[UsesClass(ApplyConfig::class)]
+#[UsesClass(ApplyConfigReader::class)]
+#[UsesClass(ApplyPolicyUsageValidator::class)]
+#[UsesClass(ApplyRuleConfigReader::class)]
+#[UsesClass(ApplyRuleListConfigReader::class)]
+#[UsesClass(ConfigKeyValidator::class)]
+#[UsesClass(PolicyConfig::class)]
+#[UsesClass(PolicyConfigReader::class)]
+#[UsesClass(PolicyDefinition::class)]
+#[UsesClass(PolicyListConfigReader::class)]
+#[UsesClass(PolicyResolver::class)]
+#[UsesClass(ScanConfig::class)]
+#[UsesClass(ScanConfigReader::class)]
 final class ApplicationTest extends TestCase
 {
     public function testRunReturnsZeroWhenNoViolationsExist(): void
@@ -205,13 +262,14 @@ function small(): void
 }
 PHP);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
-paths:
-  - src
-limits:
-  max_file_lines: 100
-  max_function_lines: 3
-  max_method_lines: 3
-  max_cyclomatic_complexity: 20
+scan:
+  roots: [src]
+policies:
+  standard:
+    limits:
+      function: { lines: 3 }
+apply:
+  default: standard
 YAML);
 
         $output = '';
@@ -239,13 +297,14 @@ function too_long(): void
 }
 PHP);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
-paths:
-  - src
-limits:
-  max_file_lines: 100
-  max_function_lines: 3
-  max_method_lines: 3
-  max_cyclomatic_complexity: 20
+scan:
+  roots: [src]
+policies:
+  standard:
+    limits:
+      function: { lines: 3 }
+apply:
+  default: standard
 YAML);
 
         $output = '';
@@ -270,8 +329,14 @@ function small(): void
 }
 PHP);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
-paths:
-  - src
+scan:
+  roots: [src]
+policies:
+  standard:
+    limits:
+      function: { lines: 50 }
+apply:
+  default: standard
 YAML);
 
         $output = '';
@@ -314,8 +379,14 @@ function small(): void
 }
 PHP);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
-paths:
-  - src
+scan:
+  roots: [src]
+policies:
+  standard:
+    limits:
+      function: { lines: 50 }
+apply:
+  default: standard
 YAML);
 
         $output = '';
@@ -340,8 +411,14 @@ function small(): void
 }
 PHP);
         file_put_contents($dir . '/loc.yaml', <<<'YAML'
-paths:
-  - src
+scan:
+  roots: [src]
+policies:
+  standard:
+    limits:
+      function: { lines: 50 }
+apply:
+  default: standard
 YAML);
 
         $output = '';

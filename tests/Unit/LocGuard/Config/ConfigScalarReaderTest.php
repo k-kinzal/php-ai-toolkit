@@ -20,9 +20,12 @@ final class ConfigScalarReaderTest extends TestCase
         self::assertSame('ai', (new ConfigScalarReader())->string(['reporter' => 'ai'], 'reporter', 'text'));
     }
 
-    public function testPositiveIntReturnsPositiveInteger(): void
+    public function testNullablePositiveIntReturnsPositiveIntegerAndNull(): void
     {
-        self::assertSame(10, (new ConfigScalarReader())->positiveInt(['max_file_lines' => 10], 'max_file_lines', 500));
+        $reader = new ConfigScalarReader();
+
+        self::assertSame(10, $reader->nullablePositiveInt(['lines' => 10], 'lines', 'limits.file'));
+        self::assertNull($reader->nullablePositiveInt(['lines' => null], 'lines', 'limits.file'));
     }
 
     public function testStringRejectsEmptyString(): void
@@ -32,10 +35,26 @@ final class ConfigScalarReaderTest extends TestCase
         (new ConfigScalarReader())->string(['reporter' => ''], 'reporter', 'ai');
     }
 
-    public function testPositiveIntRejectsNonPositiveInteger(): void
+    public function testNullablePositiveIntRejectsNonPositiveInteger(): void
     {
         $this->expectException(LocGuardException::class);
 
-        (new ConfigScalarReader())->positiveInt(['max_file_lines' => 0], 'max_file_lines', 500);
+        (new ConfigScalarReader())->nullablePositiveInt(['lines' => 0], 'lines', 'limits.file');
+    }
+
+    public function testRequiredStringRejectsMissingValue(): void
+    {
+        $this->expectException(LocGuardException::class);
+        $this->expectExceptionMessage('apply.default');
+
+        (new ConfigScalarReader())->requiredString([], 'default', 'apply');
+    }
+
+    public function testOptionalStringReturnsConfiguredValueOrNull(): void
+    {
+        $reader = new ConfigScalarReader();
+
+        self::assertSame('standard', $reader->optionalString(['extends' => 'standard'], 'extends', 'policies.native'));
+        self::assertNull($reader->optionalString([], 'extends', 'policies.standard'));
     }
 }

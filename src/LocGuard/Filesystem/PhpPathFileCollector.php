@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Toolkit\LocGuard\Filesystem;
 
 use function is_dir;
-use function is_file;
 
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -47,12 +46,11 @@ final class PhpPathFileCollector
      */
     public function files(LocGuardConfig $config, string $path): array
     {
-        if (is_file($path)) {
-            return $this->inclusionPolicy->includes($config, $path) ? [$path => $this->pathResolver->relative($config->root, $path)] : [];
-        }
-
         if (!is_dir($path)) {
-            throw new LocGuardException(sprintf('Configured path does not exist: %s', $path));
+            throw new LocGuardException(sprintf(
+                'Configured scan root is not a directory: %s. Set scan.roots to existing source directories.',
+                $path,
+            ));
         }
 
         $files = [];

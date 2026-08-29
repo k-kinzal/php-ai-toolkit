@@ -32,7 +32,7 @@ final class FunctionComplexityViolationBuilderTest extends TestCase
         $violation = (new FunctionComplexityViolationBuilder())->violation(
             'src/Example.php',
             $metric,
-            new LimitConfig(100, 100, 50, 50, 50, 50, 50, 50, 3),
+            new LimitConfig(100, 100, 50, 50, 50, 50, 50, 50, 3, 3),
         );
 
         self::assertInstanceOf(Violation::class, $violation);
@@ -47,7 +47,36 @@ final class FunctionComplexityViolationBuilderTest extends TestCase
         self::assertNull((new FunctionComplexityViolationBuilder())->violation(
             'src/Example.php',
             $metric,
-            new LimitConfig(100, 100, 50, 50, 50, 50, 50, 50, 3),
+            new LimitConfig(100, 100, 50, 50, 50, 50, 50, 50, 3, 3),
+        ));
+    }
+
+    public function testViolationUsesSeparateMethodComplexityLimit(): void
+    {
+        $metric = new FunctionMetric('method', 'run', 2, 4, 3, 4);
+        $metric->cyclomaticComplexity = 4;
+
+        $violation = (new FunctionComplexityViolationBuilder())->violation(
+            'src/Example.php',
+            $metric,
+            new LimitConfig(100, 100, 50, 50, 50, 50, 50, 50, 10, 3),
+            'strict',
+        );
+
+        self::assertInstanceOf(Violation::class, $violation);
+        self::assertSame(3, $violation->limit);
+        self::assertSame('strict', $violation->policy);
+    }
+
+    public function testViolationReturnsNullWhenMetricIsDisabled(): void
+    {
+        $metric = new FunctionMetric('function', 'run', 2, 4, 3, 4);
+        $metric->cyclomaticComplexity = 100;
+
+        self::assertNull((new FunctionComplexityViolationBuilder())->violation(
+            'src/Example.php',
+            $metric,
+            LimitConfig::disabled(),
         ));
     }
 }

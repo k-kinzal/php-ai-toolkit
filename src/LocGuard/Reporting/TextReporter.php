@@ -44,10 +44,11 @@ final class TextReporter implements Reporter
         $output = sprintf("LocGuard found %d violations.\n", $result->violationCount()) . $summary;
         foreach ($this->sorter->sort($result->violations, $config) as $violation) {
             $output .= sprintf(
-                "\n%s:%d [%s]\n  %s\n  Actual: %d, Limit: %d\n",
+                "\n%s:%d [%s]\n  Policy: %s\n  %s\n  Actual: %d, Limit: %d\n",
                 $violation->path,
                 $violation->line,
                 $violation->rule,
+                $violation->policy,
                 $violation->message,
                 $violation->actual,
                 $violation->limit,

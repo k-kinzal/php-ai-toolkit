@@ -19,10 +19,14 @@ final class FunctionLineViolationBuilder
      *
      * @return list<Violation>
      */
-    public function violations(string $relativePath, FunctionMetric $metric, LimitConfig $limits): array
-    {
+    public function violations(
+        string $relativePath,
+        FunctionMetric $metric,
+        LimitConfig $limits,
+        string $policy = 'standard',
+    ): array {
         $limit = $metric->kind === 'method' ? $limits->maxMethodLines : $limits->maxFunctionLines;
-        if ($metric->lineCount() <= $limit) {
+        if ($limit === null || $metric->lineCount() <= $limit) {
             return [];
         }
 
@@ -34,6 +38,7 @@ final class FunctionLineViolationBuilder
                 $metric->lineCount(),
                 $limit,
                 sprintf('%s %s has %d physical lines; maximum is %d.', $metric->kind, $metric->name, $metric->lineCount(), $limit),
+                $policy,
             ),
         ];
     }

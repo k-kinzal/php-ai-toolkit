@@ -19,10 +19,10 @@ final class FileMetricViolationBuilder
      *
      * @return list<Violation>
      */
-    public function violations(FileMetric $file, LimitConfig $limits): array
+    public function violations(FileMetric $file, LimitConfig $limits, string $policy = 'standard'): array
     {
         $violations = [];
-        if ($file->physicalLines > $limits->maxFileLines) {
+        if ($limits->maxFileLines !== null && $file->physicalLines > $limits->maxFileLines) {
             $violations[] = new Violation(
                 $file->path,
                 1,
@@ -30,10 +30,11 @@ final class FileMetricViolationBuilder
                 $file->physicalLines,
                 $limits->maxFileLines,
                 sprintf('File has %d physical lines; maximum is %d.', $file->physicalLines, $limits->maxFileLines),
+                $policy,
             );
         }
 
-        if ($file->nonCommentLines > $limits->maxFileNcloc) {
+        if ($limits->maxFileNcloc !== null && $file->nonCommentLines > $limits->maxFileNcloc) {
             $violations[] = new Violation(
                 $file->path,
                 1,
@@ -41,6 +42,7 @@ final class FileMetricViolationBuilder
                 $file->nonCommentLines,
                 $limits->maxFileNcloc,
                 sprintf('File has %d non-comment lines of code; maximum is %d.', $file->nonCommentLines, $limits->maxFileNcloc),
+                $policy,
             );
         }
 

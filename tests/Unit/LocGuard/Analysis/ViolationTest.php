@@ -16,7 +16,7 @@ final class ViolationTest extends TestCase
 {
     public function testStoresViolationData(): void
     {
-        $violation = new Violation('src/Example.php', 12, 'method_lines', 51, 50, 'Too long.');
+        $violation = new Violation('src/Example.php', 12, 'method_lines', 51, 50, 'Too long.', 'native-api');
 
         self::assertSame('src/Example.php', $violation->path);
         self::assertSame(12, $violation->line);
@@ -24,5 +24,6 @@ final class ViolationTest extends TestCase
         self::assertSame(51, $violation->actual);
         self::assertSame(50, $violation->limit);
         self::assertSame('Too long.', $violation->message);
+        self::assertSame('native-api', $violation->policy);
     }
 }

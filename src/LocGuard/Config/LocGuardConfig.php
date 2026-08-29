@@ -4,30 +4,32 @@ declare(strict_types=1);
 
 namespace Toolkit\LocGuard\Config;
 
+use Toolkit\LocGuard\Config\Policy\ApplyConfig;
+use Toolkit\LocGuard\Config\Policy\PolicyConfig;
+
 /**
  * Fully resolved LocGuard configuration.
  *
  * @property-read string $root
- * @property-read list<string> $paths
- * @property-read list<string> $exclude
- * @property-read LimitConfig $limits
+ * @property-read ScanConfig $scan
+ * @property-read array<string, PolicyConfig> $policies
+ * @property-read ApplyConfig $apply
  * @property-read ReportConfig $report
  */
 final class LocGuardConfig
 {
     /**
-     * @param list<string> $paths
-     * @param list<string> $exclude
+     * @param array<string, PolicyConfig> $policies
      */
     public function __construct(
         /** @readonly */
         private string $root,
         /** @readonly */
-        private array $paths,
+        private ScanConfig $scan,
         /** @readonly */
-        private array $exclude,
+        private array $policies,
         /** @readonly */
-        private LimitConfig $limits,
+        private ApplyConfig $apply,
         /** @readonly */
         private ReportConfig $report,
     ) {
@@ -42,9 +44,9 @@ final class LocGuardConfig
     {
         return match ($name) {
             'root' => $this->root,
-            'paths' => $this->paths,
-            'exclude' => $this->exclude,
-            'limits' => $this->limits,
+            'scan' => $this->scan,
+            'policies' => $this->policies,
+            'apply' => $this->apply,
             'report' => $this->report,
             default => null,
         };

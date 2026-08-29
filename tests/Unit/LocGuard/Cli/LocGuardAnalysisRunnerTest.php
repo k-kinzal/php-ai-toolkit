@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\LocGuard\Analysis\AnalysisResult;
+use Toolkit\LocGuard\Analysis\ApplyRuleMatcher;
 use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeDeclarationReader;
 use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricCollector;
 use Toolkit\LocGuard\Analysis\ClassLikeMetric\ClassLikeMetricViolationBuilder;
@@ -15,6 +16,8 @@ use Toolkit\LocGuard\Analysis\Complexity\CyclomaticComplexityCalculator;
 use Toolkit\LocGuard\Analysis\FileAnalysis;
 use Toolkit\LocGuard\Analysis\FileMetric\FileMetric;
 use Toolkit\LocGuard\Analysis\FileMetric\FileMetricViolationBuilder;
+use Toolkit\LocGuard\Analysis\FilePolicyAssigner;
+use Toolkit\LocGuard\Analysis\FilePolicyAssignment;
 use Toolkit\LocGuard\Analysis\FunctionMetric\ArrowFunctionMetricReader;
 use Toolkit\LocGuard\Analysis\FunctionMetric\BlockFunctionMetricReader;
 use Toolkit\LocGuard\Analysis\FunctionMetric\FunctionBodyLocator;
@@ -32,14 +35,27 @@ use Toolkit\LocGuard\Cli\LocGuardAnalysisRunner;
 use Toolkit\LocGuard\Cli\LocGuardConfigPathResolver;
 use Toolkit\LocGuard\Cli\LocGuardOutputWriter;
 use Toolkit\LocGuard\Cli\LocGuardReporterOverride;
+use Toolkit\LocGuard\Config\ConfigKeyValidator;
 use Toolkit\LocGuard\Config\ConfigLoader;
 use Toolkit\LocGuard\Config\ConfigScalarReader;
 use Toolkit\LocGuard\Config\ConfigStringListReader;
 use Toolkit\LocGuard\Config\LimitConfig;
 use Toolkit\LocGuard\Config\LimitConfigReader;
 use Toolkit\LocGuard\Config\LocGuardConfig;
+use Toolkit\LocGuard\Config\Policy\ApplyConfig;
+use Toolkit\LocGuard\Config\Policy\ApplyConfigReader;
+use Toolkit\LocGuard\Config\Policy\ApplyPolicyUsageValidator;
+use Toolkit\LocGuard\Config\Policy\ApplyRuleConfigReader;
+use Toolkit\LocGuard\Config\Policy\ApplyRuleListConfigReader;
+use Toolkit\LocGuard\Config\Policy\PolicyConfig;
+use Toolkit\LocGuard\Config\Policy\PolicyConfigReader;
+use Toolkit\LocGuard\Config\Policy\PolicyDefinition;
+use Toolkit\LocGuard\Config\Policy\PolicyListConfigReader;
+use Toolkit\LocGuard\Config\Policy\PolicyResolver;
 use Toolkit\LocGuard\Config\ReportConfig;
 use Toolkit\LocGuard\Config\ReportConfigReader;
+use Toolkit\LocGuard\Config\ScanConfig;
+use Toolkit\LocGuard\Config\ScanConfigReader;
 use Toolkit\LocGuard\Filesystem\LocGuardPathResolver;
 use Toolkit\LocGuard\Filesystem\PhpFileFinder;
 use Toolkit\LocGuard\Filesystem\PhpFileInclusionPolicy;
@@ -93,6 +109,22 @@ use Toolkit\LocGuard\Reporting\ViolationSorter;
  * @uses \Toolkit\LocGuard\Reporting\ReporterFactory
  * @uses \Toolkit\LocGuard\Analysis\Token\TokenLineCounter
  * @uses \Toolkit\LocGuard\Reporting\ViolationSorter
+ * @uses \Toolkit\LocGuard\Analysis\ApplyRuleMatcher
+ * @uses \Toolkit\LocGuard\Analysis\FilePolicyAssigner
+ * @uses \Toolkit\LocGuard\Analysis\FilePolicyAssignment
+ * @uses \Toolkit\LocGuard\Config\Policy\ApplyConfig
+ * @uses \Toolkit\LocGuard\Config\Policy\ApplyConfigReader
+ * @uses \Toolkit\LocGuard\Config\Policy\ApplyPolicyUsageValidator
+ * @uses \Toolkit\LocGuard\Config\Policy\ApplyRuleConfigReader
+ * @uses \Toolkit\LocGuard\Config\Policy\ApplyRuleListConfigReader
+ * @uses \Toolkit\LocGuard\Config\ConfigKeyValidator
+ * @uses \Toolkit\LocGuard\Config\Policy\PolicyConfig
+ * @uses \Toolkit\LocGuard\Config\Policy\PolicyConfigReader
+ * @uses \Toolkit\LocGuard\Config\Policy\PolicyDefinition
+ * @uses \Toolkit\LocGuard\Config\Policy\PolicyListConfigReader
+ * @uses \Toolkit\LocGuard\Config\Policy\PolicyResolver
+ * @uses \Toolkit\LocGuard\Config\ScanConfig
+ * @uses \Toolkit\LocGuard\Config\ScanConfigReader
  */
 #[CoversClass(LocGuardAnalysisRunner::class)]
 #[UsesClass(AiReportSummary::class)]
@@ -136,6 +168,22 @@ use Toolkit\LocGuard\Reporting\ViolationSorter;
 #[UsesClass(ReporterFactory::class)]
 #[UsesClass(TokenLineCounter::class)]
 #[UsesClass(ViolationSorter::class)]
+#[UsesClass(ApplyRuleMatcher::class)]
+#[UsesClass(FilePolicyAssigner::class)]
+#[UsesClass(FilePolicyAssignment::class)]
+#[UsesClass(ApplyConfig::class)]
+#[UsesClass(ApplyConfigReader::class)]
+#[UsesClass(ApplyPolicyUsageValidator::class)]
+#[UsesClass(ApplyRuleConfigReader::class)]
+#[UsesClass(ApplyRuleListConfigReader::class)]
+#[UsesClass(ConfigKeyValidator::class)]
+#[UsesClass(PolicyConfig::class)]
+#[UsesClass(PolicyConfigReader::class)]
+#[UsesClass(PolicyDefinition::class)]
+#[UsesClass(PolicyListConfigReader::class)]
+#[UsesClass(PolicyResolver::class)]
+#[UsesClass(ScanConfig::class)]
+#[UsesClass(ScanConfigReader::class)]
 final class LocGuardAnalysisRunnerTest extends TestCase
 {
     public function testRunWritesReportAndReturnsAnalyzerExitCode(): void
@@ -143,7 +191,16 @@ final class LocGuardAnalysisRunnerTest extends TestCase
         $dir = sys_get_temp_dir() . '/locguard-runner-' . uniqid('', true);
         mkdir($dir . '/src', 0755, true);
         file_put_contents($dir . '/src/Example.php', "<?php\n");
-        file_put_contents($dir . '/loc.yaml', "paths:\n  - src\n");
+        file_put_contents($dir . '/loc.yaml', <<<'YAML'
+scan:
+  roots: [src]
+policies:
+  standard:
+    limits:
+      file: { lines: 500 }
+apply:
+  default: standard
+YAML);
         $output = '';
 
         $exitCode = (new LocGuardAnalysisRunner(

@@ -36,7 +36,7 @@ final class PhpFileFinder
     public function find(LocGuardConfig $config): array
     {
         $files = [];
-        foreach ($config->paths as $path) {
+        foreach ($config->scan->roots as $path) {
             $absolutePath = $this->pathResolver->absolute($config->root, $path);
             $files += $this->pathFileCollector->files($config, $absolutePath);
         }

@@ -32,7 +32,7 @@ final class ClassLikeMetricViolationBuilderTest extends TestCase
         $violations = (new ClassLikeMetricViolationBuilder())->violations(
             'src/Example.php',
             [new ClassLikeMetric('class', 'Example', 3, 8)],
-            new LimitConfig(100, 100, 3, 50, 50, 50, 50, 50, 50),
+            new LimitConfig(100, 100, 3, 50, 50, 50, 50, 50, 50, 50),
         );
 
         self::assertSame(['class_lines'], array_map(static fn ($violation): string => $violation->rule, $violations));
@@ -44,7 +44,7 @@ final class ClassLikeMetricViolationBuilderTest extends TestCase
         $violations = (new ClassLikeMetricViolationBuilder())->violations(
             'src/Example.php',
             [new ClassLikeMetric('class', 'Example', 3, 5)],
-            new LimitConfig(100, 100, 3, 50, 50, 50, 50, 50, 50),
+            new LimitConfig(100, 100, 3, 50, 50, 50, 50, 50, 50, 50),
         );
 
         self::assertSame([], $violations);

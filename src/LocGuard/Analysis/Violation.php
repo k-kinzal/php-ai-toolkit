@@ -13,6 +13,7 @@ namespace Toolkit\LocGuard\Analysis;
  * @property-read int $actual
  * @property-read int $limit
  * @property-read string $message
+ * @property-read string $policy
  */
 final class Violation
 {
@@ -32,6 +33,8 @@ final class Violation
         private int $limit,
         /** @readonly */
         private string $message,
+        /** @readonly */
+        private string $policy = 'standard',
     ) {
     }
 
@@ -49,6 +52,7 @@ final class Violation
             'actual' => $this->actual,
             'limit' => $this->limit,
             'message' => $this->message,
+            'policy' => $this->policy,
             default => null,
         };
     }

@@ -37,12 +37,12 @@ final class FunctionMetricViolationBuilder
      * @param list<FunctionMetric> $metrics
      * @return list<Violation>
      */
-    public function violations(string $relativePath, array $metrics, LimitConfig $limits): array
+    public function violations(string $relativePath, array $metrics, LimitConfig $limits, string $policy = 'standard'): array
     {
         $violations = [];
         foreach ($metrics as $metric) {
-            $violations = array_merge($violations, $this->lineViolationBuilder->violations($relativePath, $metric, $limits));
-            $complexityViolation = $this->complexityViolationBuilder->violation($relativePath, $metric, $limits);
+            $violations = array_merge($violations, $this->lineViolationBuilder->violations($relativePath, $metric, $limits, $policy));
+            $complexityViolation = $this->complexityViolationBuilder->violation($relativePath, $metric, $limits, $policy);
             if ($complexityViolation !== null) {
                 $violations[] = $complexityViolation;
             }

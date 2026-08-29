@@ -26,4 +26,12 @@ final class ConfigStringListReaderTest extends TestCase
 
         (new ConfigStringListReader())->read(['paths' => [1]], 'paths', []);
     }
+
+    public function testReadRequiredRejectsEmptyList(): void
+    {
+        $this->expectException(LocGuardException::class);
+        $this->expectExceptionMessage('must contain at least one entry');
+
+        (new ConfigStringListReader())->readRequired(['roots' => []], 'roots', 'scan', false);
+    }
 }

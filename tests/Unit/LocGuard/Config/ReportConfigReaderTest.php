@@ -7,6 +7,7 @@ namespace Tests\Unit\LocGuard\Config;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\LocGuard\Config\ConfigKeyValidator;
 use Toolkit\LocGuard\Config\ConfigScalarReader;
 use Toolkit\LocGuard\Config\ConfigStringListReader;
 use Toolkit\LocGuard\Config\ReportConfig;
@@ -17,11 +18,13 @@ use Toolkit\LocGuard\LocGuardException;
  * @covers \Toolkit\LocGuard\Config\ReportConfigReader
  * @uses \Toolkit\LocGuard\Config\ConfigScalarReader
  * @uses \Toolkit\LocGuard\Config\ConfigStringListReader
+ * @uses \Toolkit\LocGuard\Config\ConfigKeyValidator
  * @uses \Toolkit\LocGuard\Config\ReportConfig
  */
 #[CoversClass(ReportConfigReader::class)]
 #[UsesClass(ConfigScalarReader::class)]
 #[UsesClass(ConfigStringListReader::class)]
+#[UsesClass(ConfigKeyValidator::class)]
 #[UsesClass(ReportConfig::class)]
 final class ReportConfigReaderTest extends TestCase
 {

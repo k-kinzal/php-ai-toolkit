@@ -35,6 +35,9 @@ final class Application
     private LocGuardAnalysisRunner $analysisRunner;
 
     /** @readonly */
+    private LocGuardExplainRunner $explainRunner;
+
+    /** @readonly */
     private ConfigLoader $configLoader;
 
     /** @readonly */
@@ -57,6 +60,7 @@ final class Application
         ?LocGuardCliArgumentParser $argumentParser = null,
         ?LocGuardHelpText $helpText = null,
         ?LocGuardAnalysisRunner $analysisRunner = null,
+        ?LocGuardExplainRunner $explainRunner = null,
     ) {
         $this->configLoader = $configLoader ?? new ConfigLoader();
         $this->analyzer = $analyzer ?? new LocGuardAnalyzer();
@@ -69,6 +73,11 @@ final class Application
             $this->configLoader,
             $this->analyzer,
             $this->reporterFactory,
+            $this->writer,
+        );
+        $this->explainRunner = $explainRunner ?? new LocGuardExplainRunner(
+            $this->workingDirectory,
+            $this->configLoader,
             $this->writer,
         );
     }
@@ -97,6 +106,10 @@ final class Application
             $this->writer->write(sprintf("loc-guard %s\n", self::VERSION));
 
             return 0;
+        }
+
+        if ($arguments['explain'] !== null) {
+            return $this->explainRunner->run($arguments['config'], $arguments['explain']);
         }
 
         return $this->analysisRunner->run($arguments['config'], $arguments['reporter']);

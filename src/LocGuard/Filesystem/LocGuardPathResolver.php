@@ -23,6 +23,10 @@ final class LocGuardPathResolver
             return rtrim($path, '/');
         }
 
+        if ($path === '.') {
+            return rtrim($root, '/');
+        }
+
         return rtrim($root . '/' . $path, '/');
     }
 

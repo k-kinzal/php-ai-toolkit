@@ -30,11 +30,12 @@ final class AiViolationFormatter
     public function format(int $number, Violation $violation): string
     {
         return sprintf(
-            "%d. %s:%d [%s]\n   actual: %d\n   limit: %d\n   message: %s\n   action: %s\n",
+            "%d. %s:%d [%s]\n   policy: %s\n   actual: %d\n   limit: %d\n   message: %s\n   action: %s\n",
             $number,
             $violation->path,
             $violation->line,
             $violation->rule,
+            $violation->policy,
             $violation->actual,
             $violation->limit,
             $violation->message,

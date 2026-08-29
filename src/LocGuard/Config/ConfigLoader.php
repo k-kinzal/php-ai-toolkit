@@ -11,6 +11,8 @@ use function sprintf;
 
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use Toolkit\LocGuard\Config\Policy\ApplyConfigReader;
+use Toolkit\LocGuard\Config\Policy\PolicyListConfigReader;
 use Toolkit\LocGuard\LocGuardException;
 
 /**
@@ -19,10 +21,16 @@ use Toolkit\LocGuard\LocGuardException;
 final class ConfigLoader
 {
     /** @readonly */
-    private ConfigStringListReader $stringListReader;
+    private ConfigKeyValidator $keyValidator;
 
     /** @readonly */
-    private LimitConfigReader $limitConfigReader;
+    private ScanConfigReader $scanConfigReader;
+
+    /** @readonly */
+    private PolicyListConfigReader $policyListConfigReader;
+
+    /** @readonly */
+    private ApplyConfigReader $applyConfigReader;
 
     /** @readonly */
     private ReportConfigReader $reportConfigReader;
@@ -31,12 +39,16 @@ final class ConfigLoader
      * Creates a config loader from YAML section readers.
      */
     public function __construct(
-        ?ConfigStringListReader $stringListReader = null,
-        ?LimitConfigReader $limitConfigReader = null,
+        ?ConfigKeyValidator $keyValidator = null,
+        ?ScanConfigReader $scanConfigReader = null,
+        ?PolicyListConfigReader $policyListConfigReader = null,
+        ?ApplyConfigReader $applyConfigReader = null,
         ?ReportConfigReader $reportConfigReader = null,
     ) {
-        $this->stringListReader = $stringListReader ?? new ConfigStringListReader();
-        $this->limitConfigReader = $limitConfigReader ?? new LimitConfigReader();
+        $this->keyValidator = $keyValidator ?? new ConfigKeyValidator();
+        $this->scanConfigReader = $scanConfigReader ?? new ScanConfigReader();
+        $this->policyListConfigReader = $policyListConfigReader ?? new PolicyListConfigReader();
+        $this->applyConfigReader = $applyConfigReader ?? new ApplyConfigReader();
         $this->reportConfigReader = $reportConfigReader ?? new ReportConfigReader();
     }
 
@@ -61,11 +73,14 @@ final class ConfigLoader
             throw new LocGuardException('Invalid loc.yaml: top-level value must be a mapping.');
         }
 
+        $this->keyValidator->rejectUnknown($data, ['scan', 'policies', 'apply', 'report'], 'top-level');
+        $policies = $this->policyListConfigReader->read($data['policies'] ?? null);
+
         return new LocGuardConfig(
             dirname($path),
-            $this->stringListReader->read($data, 'paths', ['src']),
-            $this->stringListReader->read($data, 'exclude', []),
-            $this->limitConfigReader->read($data['limits'] ?? []),
+            $this->scanConfigReader->read($data['scan'] ?? null),
+            $policies,
+            $this->applyConfigReader->read($data['apply'] ?? null, $policies),
             $this->reportConfigReader->read($data['report'] ?? []),
         );
     }

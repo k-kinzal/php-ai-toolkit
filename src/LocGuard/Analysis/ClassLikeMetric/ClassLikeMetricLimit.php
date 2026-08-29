@@ -14,7 +14,7 @@ final class ClassLikeMetricLimit
     /**
      * Returns the applicable physical-line limit for the class-like kind.
      */
-    public function limit(ClassLikeMetric $metric, LimitConfig $limits): int
+    public function limit(ClassLikeMetric $metric, LimitConfig $limits): ?int
     {
         if ($metric->kind === 'trait') {
             return $limits->maxTraitLines;

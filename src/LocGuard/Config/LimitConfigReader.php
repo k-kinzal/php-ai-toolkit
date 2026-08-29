@@ -4,49 +4,87 @@ declare(strict_types=1);
 
 namespace Toolkit\LocGuard\Config;
 
+use function array_key_exists;
+use function array_keys;
 use function is_array;
+use function sprintf;
 
 use Toolkit\LocGuard\LocGuardException;
 
 /**
- * Reads LocGuard numeric limits from loc.yaml.
+ * Reads nested optional metric limits from one policy.
  */
 final class LimitConfigReader
 {
+    /** @var array<string, list<string>> */
+    private const METRICS = [
+        'file' => ['lines', 'ncloc'],
+        'class' => ['lines'],
+        'trait' => ['lines'],
+        'interface' => ['lines'],
+        'enum' => ['lines'],
+        'function' => ['lines', 'cyclomatic_complexity'],
+        'method' => ['lines', 'cyclomatic_complexity'],
+    ];
+
+    /** @readonly */
+    private ConfigKeyValidator $keyValidator;
+
     /** @readonly */
     private ConfigScalarReader $scalarReader;
 
     /**
-     * Creates a reader from scalar validation.
+     * Creates a limit reader from mapping and scalar validation.
      */
-    public function __construct(?ConfigScalarReader $scalarReader = null)
-    {
+    public function __construct(
+        ?ConfigKeyValidator $keyValidator = null,
+        ?ConfigScalarReader $scalarReader = null,
+    ) {
+        $this->keyValidator = $keyValidator ?? new ConfigKeyValidator();
         $this->scalarReader = $scalarReader ?? new ConfigScalarReader();
     }
 
     /**
-     * Reads line-count and complexity limits.
+     * Reads a partial limit mapping while preserving explicit null values.
      *
      * @param mixed $value
+     * @return array<string, ?int>
      *
-     * @throws LocGuardException when the limits section is not a mapping
+     * @throws LocGuardException when a limit mapping or value is invalid
      */
-    public function read($value): LimitConfig
+    public function read($value, string $context = 'limits'): array
     {
         if (!is_array($value)) {
-            throw new LocGuardException('Invalid loc.yaml: "limits" must be a mapping.');
+            throw new LocGuardException(sprintf('Invalid loc.yaml: "%s" must be a mapping.', $context));
+        }
+        $this->keyValidator->rejectUnknown($value, array_keys(self::METRICS), $context);
+
+        $limits = [];
+        foreach (self::METRICS as $subject => $metrics) {
+            if (!array_key_exists($subject, $value)) {
+                continue;
+            }
+            if (!is_array($value[$subject])) {
+                throw new LocGuardException(sprintf(
+                    'Invalid loc.yaml: "%s.%s" must be a mapping.',
+                    $context,
+                    $subject,
+                ));
+            }
+
+            $subjectContext = $context . '.' . $subject;
+            $this->keyValidator->rejectUnknown($value[$subject], $metrics, $subjectContext);
+            foreach ($metrics as $metric) {
+                if (array_key_exists($metric, $value[$subject])) {
+                    $limits[$subject . '.' . $metric] = $this->scalarReader->nullablePositiveInt(
+                        $value[$subject],
+                        $metric,
+                        $subjectContext,
+                    );
+                }
+            }
         }
 
-        return new LimitConfig(
-            $this->scalarReader->positiveInt($value, 'max_file_lines', 500),
-            $this->scalarReader->positiveInt($value, 'max_file_ncloc', 350),
-            $this->scalarReader->positiveInt($value, 'max_class_lines', 400),
-            $this->scalarReader->positiveInt($value, 'max_trait_lines', 300),
-            $this->scalarReader->positiveInt($value, 'max_interface_lines', 200),
-            $this->scalarReader->positiveInt($value, 'max_enum_lines', 200),
-            $this->scalarReader->positiveInt($value, 'max_function_lines', 50),
-            $this->scalarReader->positiveInt($value, 'max_method_lines', 50),
-            $this->scalarReader->positiveInt($value, 'max_cyclomatic_complexity', 20),
-        );
+        return $limits;
     }
 }

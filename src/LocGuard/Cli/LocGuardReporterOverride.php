@@ -23,9 +23,9 @@ final class LocGuardReporterOverride
 
         return new LocGuardConfig(
             $config->root,
-            $config->paths,
-            $config->exclude,
-            $config->limits,
+            $config->scan,
+            $config->policies,
+            $config->apply,
             new ReportConfig($reporter, $config->report->orderBy),
         );
     }

@@ -17,9 +17,16 @@ final class FunctionComplexityViolationBuilder
     /**
      * Returns a complexity violation when the metric exceeds the configured limit.
      */
-    public function violation(string $relativePath, FunctionMetric $metric, LimitConfig $limits): ?Violation
-    {
-        if ($metric->cyclomaticComplexity <= $limits->maxCyclomaticComplexity) {
+    public function violation(
+        string $relativePath,
+        FunctionMetric $metric,
+        LimitConfig $limits,
+        string $policy = 'standard',
+    ): ?Violation {
+        $limit = $metric->kind === 'method'
+            ? $limits->maxMethodCyclomaticComplexity
+            : $limits->maxFunctionCyclomaticComplexity;
+        if ($limit === null || $metric->cyclomaticComplexity <= $limit) {
             return null;
         }
 
@@ -28,14 +35,15 @@ final class FunctionComplexityViolationBuilder
             $metric->startLine,
             'cyclomatic_complexity',
             $metric->cyclomaticComplexity,
-            $limits->maxCyclomaticComplexity,
+            $limit,
             sprintf(
                 '%s %s has cyclomatic complexity %d; maximum is %d.',
                 $metric->kind,
                 $metric->name,
                 $metric->cyclomaticComplexity,
-                $limits->maxCyclomaticComplexity,
+                $limit,
             ),
+            $policy,
         );
     }
 }

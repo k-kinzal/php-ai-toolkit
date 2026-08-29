@@ -25,6 +25,7 @@ use Toolkit\PhpStan\Rule\ControlFlow\SubtypeIndex;
  * @uses \Toolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
  * @uses \Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder
  * @uses \Toolkit\PhpStan\Rule\ControlFlow\SubtypeIndex
+ * @medium
  */
 #[CoversClass(RequireExhaustiveClassDispatchRule::class)]
 #[UsesClass(ClassAncestorCollector::class)]

@@ -28,6 +28,7 @@ use Toolkit\PhpUnit\TestReporter\Subscriber\TestFailedSubscriber;
 
 /**
  * @coversNothing
+ * @large
  */
 #[CoversNothing]
 #[Large]

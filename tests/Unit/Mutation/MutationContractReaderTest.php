@@ -11,6 +11,9 @@ use Toolkit\Mutation\MutationContract;
 use Toolkit\Mutation\MutationContractReader;
 use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 
+/**
+ * @covers \Toolkit\Mutation\MutationContractReader
+ */
 #[CoversClass(MutationContractReader::class)]
 #[UsesClass(MutationContract::class)]
 #[UsesClass(RulePhpDocParser::class)]

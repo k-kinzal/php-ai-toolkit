@@ -40,6 +40,7 @@ use Toolkit\PhpStan\Rule\Visibility\VisibilityRuleErrorBuilder;
  * @uses \Toolkit\PhpStan\Rule\Visibility\VisibilityInspector
  * @uses \Toolkit\PhpStan\Rule\Visibility\VisibilityReferenceCollector
  * @uses \Toolkit\PhpStan\Rule\Visibility\VisibilityRuleErrorBuilder
+ * @medium
  */
 #[CoversClass(EnforceVisibilityScopeRule::class)]
 #[UsesClass(ClassLikeKindLabel::class)]

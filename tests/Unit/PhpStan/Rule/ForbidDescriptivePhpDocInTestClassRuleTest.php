@@ -21,6 +21,7 @@ use Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector;
  * @uses \Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocErrorCollector
  * @uses \Toolkit\PhpStan\Rule\TestClass\DescriptivePhpDocTextDetector
  * @uses \Toolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher
+ * @medium
  */
 #[CoversClass(ForbidDescriptivePhpDocInTestClassRule::class)]
 #[UsesClass(DescriptivePhpDocErrorCollector::class)]

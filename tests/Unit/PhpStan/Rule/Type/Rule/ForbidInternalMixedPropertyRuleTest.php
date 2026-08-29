@@ -17,6 +17,7 @@ use Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedPropertyRule;
  * @extends RuleTestCase<ForbidInternalMixedPropertyRule>
  * @covers \Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedPropertyRule
  * @uses \Toolkit\PhpStan\Rule\Type\MixedPropertyErrorCollector
+ * @medium
  */
 #[CoversClass(ForbidInternalMixedPropertyRule::class)]
 #[UsesClass(MixedPropertyErrorCollector::class)]

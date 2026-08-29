@@ -25,6 +25,7 @@ use Toolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder;
  * @uses \Toolkit\PhpStan\Rule\ControlFlow\DispatchSubjectResolver
  * @uses \Toolkit\PhpStan\Rule\ControlFlow\RequireExhaustiveDispatchErrorBuilder
  * @uses \Toolkit\PhpStan\Rule\ControlFlow\UnhandledVariantFinder
+ * @medium
  */
 #[CoversClass(RequireExhaustiveDispatchRule::class)]
 #[UsesClass(ClosedTypeVariants::class)]

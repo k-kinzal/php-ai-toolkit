@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\Mutation\MutationContract;
 
+/**
+ * @covers \Toolkit\Mutation\MutationContract
+ */
 #[CoversClass(MutationContract::class)]
 final class MutationContractTest extends TestCase
 {

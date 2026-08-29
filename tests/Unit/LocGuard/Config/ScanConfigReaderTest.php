@@ -12,6 +12,9 @@ use Toolkit\LocGuard\Config\ConfigStringListReader;
 use Toolkit\LocGuard\Config\ScanConfig;
 use Toolkit\LocGuard\Config\ScanConfigReader;
 
+/**
+ * @covers \Toolkit\LocGuard\Config\ScanConfigReader
+ */
 #[CoversClass(ScanConfigReader::class)]
 #[UsesClass(ConfigKeyValidator::class)]
 #[UsesClass(ConfigStringListReader::class)]

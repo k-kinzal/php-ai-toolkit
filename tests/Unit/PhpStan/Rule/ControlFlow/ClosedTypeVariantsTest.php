@@ -19,6 +19,7 @@ use Toolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants;
 
 /**
  * @covers \Toolkit\PhpStan\Rule\ControlFlow\ClosedTypeVariants
+ * @medium
  */
 #[CoversClass(ClosedTypeVariants::class)]
 #[Medium]

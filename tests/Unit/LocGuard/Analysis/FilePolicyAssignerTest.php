@@ -20,6 +20,9 @@ use Toolkit\LocGuard\Config\ScanConfig;
 use Toolkit\LocGuard\Filesystem\FilePathPatternMatcher;
 use Toolkit\LocGuard\LocGuardException;
 
+/**
+ * @covers \Toolkit\LocGuard\Analysis\FilePolicyAssigner
+ */
 #[CoversClass(FilePolicyAssigner::class)]
 #[UsesClass(ApplyRuleMatcher::class)]
 #[UsesClass(FilePolicyAssignment::class)]

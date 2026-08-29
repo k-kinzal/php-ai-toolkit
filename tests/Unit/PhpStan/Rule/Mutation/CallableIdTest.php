@@ -9,6 +9,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\PhpStan\Rule\Mutation\CallableId;
 
+/**
+ * @covers \Toolkit\PhpStan\Rule\Mutation\CallableId
+ */
 #[CoversClass(CallableId::class)]
 final class CallableIdTest extends TestCase
 {

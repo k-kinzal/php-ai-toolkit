@@ -27,6 +27,7 @@ use Toolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
  * @uses \Toolkit\PhpStan\Rule\Shared\LineOrderedErrors
  * @uses \Toolkit\PhpStan\Rule\Shared\Path\RulePathMatcher
  * @uses \Toolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer
+ * @medium
  */
 #[CoversClass(ForbidFileTermRule::class)]
 #[UsesClass(ForbiddenFileTermErrorBuilder::class)]

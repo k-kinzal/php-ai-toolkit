@@ -18,6 +18,7 @@ use Toolkit\PhpStan\Rule\Shared\ClassLikeKindLabel;
  * @covers \Toolkit\PhpStan\Rule\Naming\ForbidClassLikeNameSuffixRule
  * @covers \Toolkit\PhpStan\Rule\Shared\ClassLikeKindLabel
  * @covers \Toolkit\PhpStan\Rule\Naming\ForbiddenClassLikeSuffixes
+ * @medium
  */
 #[CoversClass(ForbidClassLikeNameSuffixRule::class)]
 #[CoversClass(ClassLikeKindLabel::class)]

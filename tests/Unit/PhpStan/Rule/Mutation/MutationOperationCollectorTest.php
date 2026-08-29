@@ -12,6 +12,9 @@ use PHPUnit\Framework\TestCase;
 use Toolkit\PhpStan\Rule\Mutation\CallableId;
 use Toolkit\PhpStan\Rule\Mutation\MutationOperationCollector;
 
+/**
+ * @covers \Toolkit\PhpStan\Rule\Mutation\MutationOperationCollector
+ */
 #[CoversClass(MutationOperationCollector::class)]
 #[UsesClass(CallableId::class)]
 final class MutationOperationCollectorTest extends TestCase

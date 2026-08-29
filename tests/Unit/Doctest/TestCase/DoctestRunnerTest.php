@@ -19,6 +19,7 @@ use Toolkit\Doctest\TestCase\DoctestRunner;
 
 /**
  * @covers \Toolkit\Doctest\TestCase\DoctestRunner
+ * @medium
  */
 #[CoversClass(DoctestRunner::class)]
 #[Medium]
@@ -61,12 +62,10 @@ final class DoctestRunnerTest extends TestCase
 
     public function testTestDocblockExamplePassesWhenNoExamplesExist(): void
     {
+        $this->expectNotToPerformAssertions();
         $case = new EmptyDoctestSuite('testDocblockExample');
-        $before = $case->numberOfAssertionsPerformed();
 
         $case->testDocblockExample(null);
-
-        self::assertSame($before + 1, $case->numberOfAssertionsPerformed());
     }
 
     public function testTestDocblockExamplePassesForAnExampleThatHolds(): void

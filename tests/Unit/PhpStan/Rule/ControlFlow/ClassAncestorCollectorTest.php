@@ -14,6 +14,7 @@ use Toolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector;
 
 /**
  * @covers \Toolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector
+ * @medium
  */
 #[CoversClass(ClassAncestorCollector::class)]
 #[Medium]

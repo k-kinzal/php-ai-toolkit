@@ -19,6 +19,7 @@ use Toolkit\PhpStan\ErrorFormatter\ErrorSourceReader;
 
 /**
  * @covers \Toolkit\PhpStan\ErrorFormatter\AiErrorRenderer
+ * @medium
  */
 #[CoversClass(AiErrorRenderer::class)]
 #[Medium]

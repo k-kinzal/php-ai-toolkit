@@ -12,6 +12,7 @@ use Toolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfTypeMatcher;
 
 /**
  * @covers \Toolkit\PhpStan\Rule\TestAssertion\AssertInstanceOfTypeMatcher
+ * @medium
  */
 #[CoversClass(AssertInstanceOfTypeMatcher::class)]
 #[Medium]

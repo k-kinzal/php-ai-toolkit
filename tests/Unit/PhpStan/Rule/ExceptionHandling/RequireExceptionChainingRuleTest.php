@@ -21,6 +21,7 @@ use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowChainEvaluator;
  * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowCollector
  * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor
  * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowChainEvaluator
+ * @medium
  */
 #[CoversClass(RequireExceptionChainingRule::class)]
 #[UsesClass(CatchThrowCollector::class)]

@@ -15,6 +15,7 @@ use Toolkit\PhpStan\Support\TestClassScope;
 /**
  * @extends RuleTestCase<NoPropertyInTestClassRule>
  * @covers \Toolkit\PhpStan\Rule\NoPropertyInTestClassRule
+ * @large
  */
 #[CoversClass(NoPropertyInTestClassRule::class)]
 #[Large]

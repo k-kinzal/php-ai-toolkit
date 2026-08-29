@@ -16,6 +16,7 @@ use Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner;
 
 /**
  * @covers \Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner
+ * @medium
  */
 #[CoversClass(LegacyDoctestRunner::class)]
 #[Medium]

@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 use Toolkit\LocGuard\Cli\LocGuardCliValueOption;
 use Toolkit\LocGuard\Cli\LocGuardCliValueOptionParser;
 
+/**
+ * @covers \Toolkit\LocGuard\Cli\LocGuardCliValueOptionParser
+ */
 #[CoversClass(LocGuardCliValueOptionParser::class)]
 #[UsesClass(LocGuardCliValueOption::class)]
 final class LocGuardCliValueOptionParserTest extends TestCase

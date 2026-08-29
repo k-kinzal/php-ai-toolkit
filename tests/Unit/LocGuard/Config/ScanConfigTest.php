@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\LocGuard\Config\ScanConfig;
 
+/**
+ * @covers \Toolkit\LocGuard\Config\ScanConfig
+ */
 #[CoversClass(ScanConfig::class)]
 final class ScanConfigTest extends TestCase
 {

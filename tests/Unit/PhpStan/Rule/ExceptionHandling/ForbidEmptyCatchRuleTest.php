@@ -14,6 +14,7 @@ use Toolkit\PhpStan\Rule\ExceptionHandling\ForbidEmptyCatchRule;
 /**
  * @extends RuleTestCase<ForbidEmptyCatchRule>
  * @covers \Toolkit\PhpStan\Rule\ExceptionHandling\ForbidEmptyCatchRule
+ * @medium
  */
 #[CoversClass(ForbidEmptyCatchRule::class)]
 #[Medium]

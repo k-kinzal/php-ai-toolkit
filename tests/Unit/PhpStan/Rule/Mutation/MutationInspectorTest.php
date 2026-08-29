@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\PhpStan\Rule\Mutation\MutationInspector;
 
+/**
+ * @covers \Toolkit\PhpStan\Rule\Mutation\MutationInspector
+ */
 #[CoversClass(MutationInspector::class)]
 final class MutationInspectorTest extends TestCase
 {

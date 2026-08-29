@@ -15,6 +15,7 @@ use Toolkit\PhpStan\Support\TestClassScope;
 /**
  * @extends RuleTestCase<TestNamingConventionRule>
  * @covers \Toolkit\PhpStan\Rule\TestNamingConventionRule
+ * @medium
  */
 #[CoversClass(TestNamingConventionRule::class)]
 #[Medium]

@@ -13,6 +13,9 @@ use Toolkit\LocGuard\Config\LimitConfigReader;
 use Toolkit\LocGuard\Config\Policy\PolicyConfigReader;
 use Toolkit\LocGuard\Config\Policy\PolicyDefinition;
 
+/**
+ * @covers \Toolkit\LocGuard\Config\Policy\PolicyConfigReader
+ */
 #[CoversClass(PolicyConfigReader::class)]
 #[UsesClass(ConfigKeyValidator::class)]
 #[UsesClass(ConfigScalarReader::class)]

@@ -15,6 +15,7 @@ use Toolkit\PhpStan\Support\TestClassScope;
 /**
  * @extends RuleTestCase<NoReflectionInTestClassRule>
  * @covers \Toolkit\PhpStan\Rule\NoReflectionInTestClassRule
+ * @medium
  */
 #[CoversClass(NoReflectionInTestClassRule::class)]
 #[Medium]

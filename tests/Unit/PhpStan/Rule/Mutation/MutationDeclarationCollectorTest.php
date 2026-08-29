@@ -14,6 +14,9 @@ use Toolkit\PhpStan\Rule\Mutation\CallableId;
 use Toolkit\PhpStan\Rule\Mutation\MutationDeclarationCollector;
 use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 
+/**
+ * @covers \Toolkit\PhpStan\Rule\Mutation\MutationDeclarationCollector
+ */
 #[CoversClass(MutationDeclarationCollector::class)]
 #[UsesClass(CallableId::class)]
 #[UsesClass(MutationContract::class)]

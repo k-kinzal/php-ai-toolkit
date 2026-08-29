@@ -14,6 +14,7 @@ use Toolkit\PhpStan\Rule\ClassDesign\OverrideMustHaveAttributeRule;
 /**
  * @extends RuleTestCase<OverrideMustHaveAttributeRule>
  * @covers \Toolkit\PhpStan\Rule\ClassDesign\OverrideMustHaveAttributeRule
+ * @medium
  */
 #[CoversClass(OverrideMustHaveAttributeRule::class)]
 #[Medium]

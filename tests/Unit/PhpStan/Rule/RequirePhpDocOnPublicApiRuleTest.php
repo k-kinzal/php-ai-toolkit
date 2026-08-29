@@ -14,6 +14,7 @@ use Toolkit\PhpStan\Rule\RequirePhpDocOnPublicApiRule;
 /**
  * @extends RuleTestCase<RequirePhpDocOnPublicApiRule>
  * @covers \Toolkit\PhpStan\Rule\RequirePhpDocOnPublicApiRule
+ * @medium
  */
 #[CoversClass(RequirePhpDocOnPublicApiRule::class)]
 #[Medium]

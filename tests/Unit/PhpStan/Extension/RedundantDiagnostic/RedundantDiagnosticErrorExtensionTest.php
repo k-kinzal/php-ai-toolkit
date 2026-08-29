@@ -8,7 +8,6 @@ use function array_filter;
 
 use Override;
 use PHPStan\Analyser\Error;
-use PHPStan\Analyser\IgnoreErrorExtension;
 use PHPStan\Analyser\Scope;
 use PHPStan\Testing\PHPStanTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -26,6 +25,7 @@ use Toolkit\PhpStan\Extension\RedundantDiagnostic\TestControlFlowDiagnosticPolic
  * @uses \Toolkit\PhpStan\Extension\RedundantDiagnostic\MemberDiagnosticPolicy
  * @uses \Toolkit\PhpStan\Extension\RedundantDiagnostic\RestrictedTestClassPolicy
  * @uses \Toolkit\PhpStan\Extension\RedundantDiagnostic\TestControlFlowDiagnosticPolicy
+ * @large
  */
 #[CoversClass(RedundantDiagnosticErrorExtension::class)]
 #[UsesClass(DirectThrowDiagnosticPolicy::class)]
@@ -93,7 +93,7 @@ final class RedundantDiagnosticErrorExtensionTest extends PHPStanTestCase
 
     public function testDistributedRulesRegisterTheExtension(): void
     {
-        $extensions = self::getContainer()->getServicesByTag(IgnoreErrorExtension::EXTENSION_TAG);
+        $extensions = self::getContainer()->getServicesByTag('phpstan.ignoreErrorExtension');
 
         self::assertNotEmpty(array_filter(
             $extensions,

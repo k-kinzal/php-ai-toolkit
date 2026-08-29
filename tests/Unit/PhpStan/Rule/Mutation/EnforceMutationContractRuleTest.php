@@ -22,6 +22,8 @@ use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 
 /**
  * @extends RuleTestCase<EnforceMutationContractRule>
+ * @covers \Toolkit\PhpStan\Rule\Mutation\EnforceMutationContractRule
+ * @medium
  */
 #[CoversClass(EnforceMutationContractRule::class)]
 #[UsesClass(MutationInspector::class)]

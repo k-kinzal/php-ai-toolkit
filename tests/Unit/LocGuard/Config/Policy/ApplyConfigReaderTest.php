@@ -19,6 +19,9 @@ use Toolkit\LocGuard\Config\Policy\ApplyRuleConfigReader;
 use Toolkit\LocGuard\Config\Policy\ApplyRuleListConfigReader;
 use Toolkit\LocGuard\Config\Policy\PolicyConfig;
 
+/**
+ * @covers \Toolkit\LocGuard\Config\Policy\ApplyConfigReader
+ */
 #[CoversClass(ApplyConfigReader::class)]
 #[UsesClass(ApplyConfig::class)]
 #[UsesClass(ApplyPolicyUsageValidator::class)]

@@ -20,6 +20,7 @@ use Toolkit\PhpStan\ErrorFormatter\HumanErrorRenderer;
 
 /**
  * @covers \Toolkit\PhpStan\ErrorFormatter\HumanErrorRenderer
+ * @medium
  */
 #[CoversClass(HumanErrorRenderer::class)]
 #[Medium]

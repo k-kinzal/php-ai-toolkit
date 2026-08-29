@@ -35,6 +35,7 @@ use Toolkit\PhpStan\Support\ShortArrayOpeningPolicy;
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\NonDocCommentTokenAnalyzer
  * @uses \Toolkit\PhpStan\Support\NonDocCommentTokenClassifier
  * @uses \Toolkit\PhpStan\Support\ShortArrayOpeningPolicy
+ * @medium
  */
 #[CoversClass(ForbidNonDocCommentRule::class)]
 #[UsesClass(CommentTextFormatter::class)]

@@ -23,6 +23,7 @@ use Toolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
  * @uses \Toolkit\PhpStan\Rule\Shared\Path\RulePathMatcher
  * @uses \Toolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer
+ * @medium
  */
 #[CoversClass(ForbidMixedArrayReturnTypeRule::class)]
 #[UsesClass(MixedArrayReturnTypeInspector::class)]

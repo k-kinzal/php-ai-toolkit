@@ -14,6 +14,7 @@ use Toolkit\PhpStan\Rule\ExceptionHandling\ForbidGenericThrowsTagRule;
 /**
  * @extends RuleTestCase<ForbidGenericThrowsTagRule>
  * @covers \Toolkit\PhpStan\Rule\ExceptionHandling\ForbidGenericThrowsTagRule
+ * @medium
  */
 #[CoversClass(ForbidGenericThrowsTagRule::class)]
 #[Medium]

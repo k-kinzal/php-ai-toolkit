@@ -11,6 +11,9 @@ use Toolkit\LocGuard\Analysis\ApplyRuleMatcher;
 use Toolkit\LocGuard\Config\Policy\ApplyRuleConfig;
 use Toolkit\LocGuard\Filesystem\FilePathPatternMatcher;
 
+/**
+ * @covers \Toolkit\LocGuard\Analysis\ApplyRuleMatcher
+ */
 #[CoversClass(ApplyRuleMatcher::class)]
 #[UsesClass(ApplyRuleConfig::class)]
 #[UsesClass(FilePathPatternMatcher::class)]

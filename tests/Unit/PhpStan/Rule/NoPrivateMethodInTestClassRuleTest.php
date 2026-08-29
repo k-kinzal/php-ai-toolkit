@@ -15,6 +15,7 @@ use Toolkit\PhpStan\Support\TestClassScope;
 /**
  * @extends RuleTestCase<NoPrivateMethodInTestClassRule>
  * @covers \Toolkit\PhpStan\Rule\NoPrivateMethodInTestClassRule
+ * @medium
  */
 #[CoversClass(NoPrivateMethodInTestClassRule::class)]
 #[Medium]

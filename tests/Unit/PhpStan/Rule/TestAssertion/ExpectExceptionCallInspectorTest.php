@@ -27,6 +27,7 @@ use Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder;
  * @uses \Toolkit\PhpStan\Rule\Shared\ClassStringExpressionResolver
  * @uses \Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder
  * @uses \Toolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
+ * @medium
  */
 #[CoversClass(ExpectExceptionCallInspector::class)]
 #[UsesClass(BrokenCodeExceptionClassifier::class)]

@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 use Toolkit\LocGuard\Config\ConfigKeyValidator;
 use Toolkit\LocGuard\LocGuardException;
 
+/**
+ * @covers \Toolkit\LocGuard\Config\ConfigKeyValidator
+ */
 #[CoversClass(ConfigKeyValidator::class)]
 final class ConfigKeyValidatorTest extends TestCase
 {

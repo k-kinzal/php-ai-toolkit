@@ -24,6 +24,7 @@ use function stream_get_contents;
 
 /**
  * @coversNothing
+ * @large
  */
 #[CoversNothing]
 #[Large]

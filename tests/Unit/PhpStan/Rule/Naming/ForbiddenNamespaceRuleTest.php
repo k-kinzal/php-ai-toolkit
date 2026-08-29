@@ -18,6 +18,7 @@ use Toolkit\PhpStan\Rule\Naming\NamespacePrefixNormalizer;
  * @covers \Toolkit\PhpStan\Rule\Naming\ForbiddenNamespaceRule
  * @covers \Toolkit\PhpStan\Rule\Naming\ForbiddenNamespacePrefixes
  * @covers \Toolkit\PhpStan\Rule\Naming\NamespacePrefixNormalizer
+ * @medium
  */
 #[CoversClass(ForbiddenNamespaceRule::class)]
 #[CoversClass(ForbiddenNamespacePrefixes::class)]

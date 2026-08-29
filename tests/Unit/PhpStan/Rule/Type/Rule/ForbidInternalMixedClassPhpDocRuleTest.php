@@ -23,6 +23,7 @@ use Toolkit\PhpStan\Rule\Type\Rule\ForbidInternalMixedClassPhpDocRule;
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
  * @uses \Toolkit\PhpStan\Rule\Type\ConcreteMixedTypeInspector
  * @uses \Toolkit\PhpStan\Rule\Type\MixedClassPhpDocErrorCollector
+ * @medium
  */
 #[CoversClass(ForbidInternalMixedClassPhpDocRule::class)]
 #[UsesClass(ConcreteMixedTypeInspector::class)]

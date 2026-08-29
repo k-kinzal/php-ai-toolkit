@@ -15,6 +15,7 @@ use Toolkit\PhpStan\Support\TestClassScope;
 /**
  * @extends RuleTestCase<NoClassConstantInTestClassRule>
  * @covers \Toolkit\PhpStan\Rule\NoClassConstantInTestClassRule
+ * @medium
  */
 #[CoversClass(NoClassConstantInTestClassRule::class)]
 #[Medium]

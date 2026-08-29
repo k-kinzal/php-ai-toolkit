@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\LocGuard\Config\Policy\PolicyDefinition;
 
+/**
+ * @covers \Toolkit\LocGuard\Config\Policy\PolicyDefinition
+ */
 #[CoversClass(PolicyDefinition::class)]
 final class PolicyDefinitionTest extends TestCase
 {

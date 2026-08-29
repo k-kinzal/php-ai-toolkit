@@ -28,6 +28,7 @@ use Toolkit\PhpUnit\TestReporter\Subscriber\ExecutionFinishedSubscriber;
 
 /**
  * @coversNothing
+ * @large
  */
 #[CoversNothing]
 #[Large]

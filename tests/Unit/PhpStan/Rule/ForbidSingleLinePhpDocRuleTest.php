@@ -25,6 +25,7 @@ use Toolkit\PhpStan\Rule\Shared\CommentTextFormatter;
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocDetector
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorBuilder
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\SingleLinePhpDocErrorCollector
+ * @medium
  */
 #[CoversClass(ForbidSingleLinePhpDocRule::class)]
 #[UsesClass(AnonymousClassDetector::class)]

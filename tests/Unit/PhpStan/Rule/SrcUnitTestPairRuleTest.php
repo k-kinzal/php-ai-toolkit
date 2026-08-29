@@ -14,6 +14,7 @@ use Toolkit\PhpStan\Rule\SrcUnitTestPairRule;
 /**
  * @extends RuleTestCase<SrcUnitTestPairRule>
  * @covers \Toolkit\PhpStan\Rule\SrcUnitTestPairRule
+ * @medium
  */
 #[CoversClass(SrcUnitTestPairRule::class)]
 #[Medium]

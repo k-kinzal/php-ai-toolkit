@@ -22,6 +22,7 @@ use PHPUnit\Framework\Warning;
 
 use function proc_close;
 use function proc_open;
+use function putenv;
 
 use RuntimeException;
 
@@ -63,7 +64,10 @@ final class LegacyAiTestReporterListenerTest extends TestCase
         );
         $listener = new LegacyAiTestReporterListener($runtime);
 
+        $paraTestEnvironment = getenv('PARATEST');
+        putenv('PARATEST');
         $listener->addError(new self(__FUNCTION__), new RuntimeException('legacy error'), 0.0);
+        putenv($paraTestEnvironment === false ? 'PARATEST' : 'PARATEST=' . $paraTestEnvironment);
         $runtime->writeReport();
 
         self::assertCount(1, $output);
@@ -103,7 +107,10 @@ final class LegacyAiTestReporterListenerTest extends TestCase
         );
         $listener = new LegacyAiTestReporterListener($runtime);
 
+        $paraTestEnvironment = getenv('PARATEST');
+        putenv('PARATEST');
         $listener->addFailure(new self(__FUNCTION__), new ExpectationFailedException('legacy failure'), 0.0);
+        putenv($paraTestEnvironment === false ? 'PARATEST' : 'PARATEST=' . $paraTestEnvironment);
         $runtime->writeReport();
 
         self::assertCount(1, $output);
@@ -143,7 +150,10 @@ final class LegacyAiTestReporterListenerTest extends TestCase
         );
         $listener = new LegacyAiTestReporterListener($runtime);
 
+        $paraTestEnvironment = getenv('PARATEST');
+        putenv('PARATEST');
         $listener->addRiskyTest(new self(__FUNCTION__), new RuntimeException('legacy risky'), 0.0);
+        putenv($paraTestEnvironment === false ? 'PARATEST' : 'PARATEST=' . $paraTestEnvironment);
         $runtime->writeReport();
 
         self::assertCount(1, $output);

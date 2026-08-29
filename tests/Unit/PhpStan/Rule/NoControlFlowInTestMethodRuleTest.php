@@ -24,6 +24,7 @@ use Toolkit\PhpStan\Support\TestClassScope;
  * @uses \Toolkit\PhpStan\Rule\TestClass\NestedScopeFilter
  * @uses \Toolkit\PhpStan\Rule\TestClass\TestMethodControlFlowErrorCollector
  * @uses \Toolkit\PhpStan\Rule\Shared\TestMethodDetector
+ * @medium
  */
 #[CoversClass(NoControlFlowInTestMethodRule::class)]
 #[UsesClass(ControlFlowTypeResolver::class)]

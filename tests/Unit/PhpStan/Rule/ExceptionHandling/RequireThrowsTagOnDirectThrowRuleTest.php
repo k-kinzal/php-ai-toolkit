@@ -25,6 +25,7 @@ use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor;
  * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteCollector
  * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor
  * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowsDeclarationInspector
+ * @medium
  */
 #[CoversClass(RequireThrowsTagOnDirectThrowRule::class)]
 #[UsesClass(MissingThrowsTagErrorBuilder::class)]

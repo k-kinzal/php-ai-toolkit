@@ -53,10 +53,16 @@ final class TestControlFlowDiagnosticPolicy
             return false;
         }
 
-        foreach ($classReflection->getNativeMethod($methodName)->getAttributes() as $attribute) {
-            $name = $attribute->getName();
-            if ($name === 'Test' || str_ends_with($name, '\\Test')) {
-                return true;
+        foreach ($classReflection->getNativeReflection()->getMethods() as $method) {
+            if ($method->getName() !== $methodName) {
+                continue;
+            }
+
+            foreach ($method->getAttributes() as $attribute) {
+                $name = $attribute->getName();
+                if ($name === 'Test' || str_ends_with($name, '\\Test')) {
+                    return true;
+                }
             }
         }
 

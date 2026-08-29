@@ -31,6 +31,7 @@ use Toolkit\PhpStan\Support\TestClassScope;
  * @uses \Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationErrorBuilder
  * @uses \Toolkit\PhpStan\Rule\Shared\PhpUnitCallTargetMatcher
  * @uses \Toolkit\PhpStan\Support\TestClassScope
+ * @medium
  */
 #[CoversClass(NoBrokenCodeExpectationRule::class)]
 #[UsesClass(BrokenCodeExceptionClassifier::class)]

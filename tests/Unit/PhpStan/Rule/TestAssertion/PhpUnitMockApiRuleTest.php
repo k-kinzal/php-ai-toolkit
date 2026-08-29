@@ -15,6 +15,7 @@ use Toolkit\PhpStan\Support\TestClassScope;
 /**
  * @extends RuleTestCase<PhpUnitMockApiRule>
  * @covers \Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiRule
+ * @medium
  */
 #[CoversClass(PhpUnitMockApiRule::class)]
 #[Medium]

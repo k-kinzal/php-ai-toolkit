@@ -12,6 +12,7 @@ use Toolkit\PhpStan\Support\TestClassScope;
 
 /**
  * @covers \Toolkit\PhpStan\Support\TestClassScope
+ * @medium
  */
 #[CoversClass(TestClassScope::class)]
 #[Medium]

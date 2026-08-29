@@ -20,6 +20,7 @@ use Toolkit\PhpStan\Support\ShortArrayOpeningPolicy;
  * @uses \Toolkit\PhpStan\Support\NonDocCommentCatchContext
  * @uses \Toolkit\PhpStan\Support\NonDocCommentTokenClassifier
  * @uses \Toolkit\PhpStan\Support\ShortArrayOpeningPolicy
+ * @medium
  */
 #[CoversClass(NonDocCommentContext::class)]
 #[UsesClass(NonDocCommentArrayContext::class)]

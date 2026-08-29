@@ -21,6 +21,7 @@ use Toolkit\Shared\AgentDetector;
 
 /**
  * @covers \Toolkit\PhpStan\ErrorFormatter\AiErrorFormatter
+ * @medium
  */
 #[CoversClass(AiErrorFormatter::class)]
 #[Medium]

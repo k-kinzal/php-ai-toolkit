@@ -15,6 +15,9 @@ use Toolkit\LocGuard\Config\Policy\ApplyRuleConfigReader;
 use Toolkit\LocGuard\Config\Policy\ApplyRuleListConfigReader;
 use Toolkit\LocGuard\LocGuardException;
 
+/**
+ * @covers \Toolkit\LocGuard\Config\Policy\ApplyRuleListConfigReader
+ */
 #[CoversClass(ApplyRuleListConfigReader::class)]
 #[UsesClass(ApplyRuleConfig::class)]
 #[UsesClass(ApplyRuleConfigReader::class)]

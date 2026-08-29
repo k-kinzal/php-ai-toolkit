@@ -42,6 +42,9 @@ use Toolkit\LocGuard\Filesystem\PhpFileFinder;
 use Toolkit\LocGuard\Filesystem\PhpFileInclusionPolicy;
 use Toolkit\LocGuard\Filesystem\PhpPathFileCollector;
 
+/**
+ * @covers \Toolkit\LocGuard\Cli\LocGuardExplainRunner
+ */
 #[CoversClass(LocGuardExplainRunner::class)]
 #[UsesClass(ApplyRuleMatcher::class)]
 #[UsesClass(FilePolicyAssigner::class)]

@@ -15,6 +15,7 @@ use Toolkit\PhpStan\Support\TestClassScope;
 /**
  * @extends RuleTestCase<NoRedundantAssertInstanceOfRule>
  * @covers \Toolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfRule
+ * @medium
  */
 #[CoversClass(NoRedundantAssertInstanceOfRule::class)]
 #[Medium]

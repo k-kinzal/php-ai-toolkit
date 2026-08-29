@@ -40,6 +40,7 @@ use Toolkit\Doctest\Scanner\TargetKind;
  * @uses \Toolkit\Doctest\Executor\ExpressionEvaluator
  * @uses \Toolkit\Doctest\Executor\Evaluation
  * @uses \Toolkit\Doctest\Executor\ExceptionMatcher
+ * @medium
  */
 #[CoversClass(ExampleExecutor::class)]
 #[UsesClass(Example::class)]

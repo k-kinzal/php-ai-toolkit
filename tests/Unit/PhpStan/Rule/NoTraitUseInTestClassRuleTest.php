@@ -15,6 +15,7 @@ use Toolkit\PhpStan\Support\TestClassScope;
 /**
  * @extends RuleTestCase<NoTraitUseInTestClassRule>
  * @covers \Toolkit\PhpStan\Rule\NoTraitUseInTestClassRule
+ * @medium
  */
 #[CoversClass(NoTraitUseInTestClassRule::class)]
 #[Medium]

@@ -21,6 +21,7 @@ use Toolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer;
  * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\BroadCatchPathMatcher
  * @uses \Toolkit\PhpStan\Rule\Shared\Path\RulePathNormalizer
  * @uses \Toolkit\PhpStan\Rule\Shared\Path\RulePathMatcher
+ * @medium
  */
 #[CoversClass(ForbidBroadCatchRule::class)]
 #[UsesClass(BroadCatchPathMatcher::class)]

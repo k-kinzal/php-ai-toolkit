@@ -14,6 +14,7 @@ use Toolkit\PhpStan\Extension\RedundantDiagnostic\TestControlFlowDiagnosticPolic
 
 /**
  * @covers \Toolkit\PhpStan\Extension\RedundantDiagnostic\TestControlFlowDiagnosticPolicy
+ * @medium
  */
 #[CoversClass(TestControlFlowDiagnosticPolicy::class)]
 #[Medium]

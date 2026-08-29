@@ -11,6 +11,9 @@ use Toolkit\LocGuard\Analysis\FilePolicyAssignment;
 use Toolkit\LocGuard\Config\LimitConfig;
 use Toolkit\LocGuard\Config\Policy\PolicyConfig;
 
+/**
+ * @covers \Toolkit\LocGuard\Analysis\FilePolicyAssignment
+ */
 #[CoversClass(FilePolicyAssignment::class)]
 #[UsesClass(LimitConfig::class)]
 #[UsesClass(PolicyConfig::class)]

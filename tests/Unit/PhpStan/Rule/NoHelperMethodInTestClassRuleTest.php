@@ -22,6 +22,7 @@ use Toolkit\PhpStan\Support\TestClassScope;
  * @uses \Toolkit\PhpStan\Rule\Shared\OverrideAttributeDetector
  * @uses \Toolkit\PhpStan\Rule\TestClass\OverrideMethodDetector
  * @uses \Toolkit\PhpStan\Rule\Shared\TestMethodDetector
+ * @large
  */
 #[CoversClass(NoHelperMethodInTestClassRule::class)]
 #[UsesClass(OverrideAttributeDetector::class)]

@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\LocGuard\Config\Policy\ApplyRuleConfig;
 
+/**
+ * @covers \Toolkit\LocGuard\Config\Policy\ApplyRuleConfig
+ */
 #[CoversClass(ApplyRuleConfig::class)]
 final class ApplyRuleConfigTest extends TestCase
 {

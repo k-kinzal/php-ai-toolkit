@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\LocGuard\Filesystem\FilePathPatternMatcher;
 
+/**
+ * @covers \Toolkit\LocGuard\Filesystem\FilePathPatternMatcher
+ */
 #[CoversClass(FilePathPatternMatcher::class)]
 final class FilePathPatternMatcherTest extends TestCase
 {

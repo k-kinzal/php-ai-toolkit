@@ -21,6 +21,7 @@ use Toolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry;
  * @uses \Toolkit\PhpStan\Rule\ClassDesign\MagicMethodCallErrorBuilder
  * @uses \Toolkit\PhpStan\Rule\ClassDesign\MagicMethodCallInspector
  * @uses \Toolkit\PhpStan\Rule\ClassDesign\MagicMethodRegistry
+ * @medium
  */
 #[CoversClass(ForbiddenMagicMethodCallRule::class)]
 #[UsesClass(MagicMethodCallErrorBuilder::class)]

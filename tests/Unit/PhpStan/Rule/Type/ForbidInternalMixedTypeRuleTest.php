@@ -31,6 +31,7 @@ use Toolkit\PhpStan\Rule\Type\MixedVisibilityDetector;
  * @uses \Toolkit\PhpStan\Rule\Type\MixedCallableErrorCollector
  * @uses \Toolkit\PhpStan\Rule\Type\MixedTypeErrorBuilder
  * @uses \Toolkit\PhpStan\Rule\Type\MixedVisibilityDetector
+ * @medium
  */
 #[CoversClass(ForbidInternalMixedTypeRule::class)]
 #[UsesClass(ConcreteMixedTypeInspector::class)]

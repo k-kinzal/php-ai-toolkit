@@ -12,6 +12,9 @@ use Toolkit\LocGuard\Cli\PolicyExplanationFormatter;
 use Toolkit\LocGuard\Config\LimitConfig;
 use Toolkit\LocGuard\Config\Policy\PolicyConfig;
 
+/**
+ * @covers \Toolkit\LocGuard\Cli\PolicyExplanationFormatter
+ */
 #[CoversClass(PolicyExplanationFormatter::class)]
 #[UsesClass(FilePolicyAssignment::class)]
 #[UsesClass(LimitConfig::class)]

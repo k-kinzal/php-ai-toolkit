@@ -13,6 +13,9 @@ use Toolkit\LocGuard\Config\Policy\PolicyDefinition;
 use Toolkit\LocGuard\Config\Policy\PolicyResolver;
 use Toolkit\LocGuard\LocGuardException;
 
+/**
+ * @covers \Toolkit\LocGuard\Config\Policy\PolicyResolver
+ */
 #[CoversClass(PolicyResolver::class)]
 #[UsesClass(LimitConfig::class)]
 #[UsesClass(PolicyConfig::class)]

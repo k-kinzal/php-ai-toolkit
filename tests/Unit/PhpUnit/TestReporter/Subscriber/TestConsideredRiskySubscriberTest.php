@@ -28,6 +28,7 @@ use Toolkit\PhpUnit\TestReporter\Subscriber\TestConsideredRiskySubscriber;
 
 /**
  * @coversNothing
+ * @large
  */
 #[CoversNothing]
 #[Large]

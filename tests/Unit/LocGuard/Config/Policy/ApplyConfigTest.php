@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 use Toolkit\LocGuard\Config\Policy\ApplyConfig;
 use Toolkit\LocGuard\Config\Policy\ApplyRuleConfig;
 
+/**
+ * @covers \Toolkit\LocGuard\Config\Policy\ApplyConfig
+ */
 #[CoversClass(ApplyConfig::class)]
 #[UsesClass(ApplyRuleConfig::class)]
 final class ApplyConfigTest extends TestCase

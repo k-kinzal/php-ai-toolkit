@@ -11,6 +11,7 @@ use Toolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier;
 
 /**
  * @covers \Toolkit\PhpStan\Rule\TestAssertion\BrokenCodeExceptionClassifier
+ * @medium
  */
 #[CoversClass(BrokenCodeExceptionClassifier::class)]
 #[Medium]

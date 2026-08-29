@@ -26,6 +26,7 @@ use Toolkit\PhpStan\Rule\Shared\ForbiddenCommentTokenAnalyzer;
  * @uses \Toolkit\PhpStan\Rule\Shared\ForbiddenCommentErrorBuilder
  * @uses \Toolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern
  * @uses \Toolkit\PhpStan\Rule\Shared\ForbiddenCommentTokenAnalyzer
+ * @medium
  */
 #[CoversClass(ForbiddenCommentRule::class)]
 #[UsesClass(CommentTextFormatter::class)]

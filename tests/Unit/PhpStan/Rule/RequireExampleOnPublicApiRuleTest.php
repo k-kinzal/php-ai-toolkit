@@ -14,6 +14,7 @@ use Toolkit\PhpStan\Rule\RequireExampleOnPublicApiRule;
 /**
  * @extends RuleTestCase<RequireExampleOnPublicApiRule>
  * @covers \Toolkit\PhpStan\Rule\RequireExampleOnPublicApiRule
+ * @medium
  */
 #[CoversClass(RequireExampleOnPublicApiRule::class)]
 #[Medium]

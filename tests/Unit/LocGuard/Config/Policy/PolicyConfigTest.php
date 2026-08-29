@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 use Toolkit\LocGuard\Config\LimitConfig;
 use Toolkit\LocGuard\Config\Policy\PolicyConfig;
 
+/**
+ * @covers \Toolkit\LocGuard\Config\Policy\PolicyConfig
+ */
 #[CoversClass(PolicyConfig::class)]
 #[UsesClass(LimitConfig::class)]
 final class PolicyConfigTest extends TestCase

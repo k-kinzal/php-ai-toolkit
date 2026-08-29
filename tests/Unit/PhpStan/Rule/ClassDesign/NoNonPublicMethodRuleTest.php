@@ -14,6 +14,7 @@ use Toolkit\PhpStan\Rule\ClassDesign\NoNonPublicMethodRule;
 /**
  * @extends RuleTestCase<NoNonPublicMethodRule>
  * @covers \Toolkit\PhpStan\Rule\ClassDesign\NoNonPublicMethodRule
+ * @medium
  */
 #[CoversClass(NoNonPublicMethodRule::class)]
 #[Medium]

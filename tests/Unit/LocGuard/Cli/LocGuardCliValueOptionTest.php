@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\LocGuard\Cli\LocGuardCliValueOption;
 
+/**
+ * @covers \Toolkit\LocGuard\Cli\LocGuardCliValueOption
+ */
 #[CoversClass(LocGuardCliValueOption::class)]
 final class LocGuardCliValueOptionTest extends TestCase
 {

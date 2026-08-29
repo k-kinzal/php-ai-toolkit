@@ -25,6 +25,7 @@ use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\FixedListExpressionInspector
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\ListTypeDeclarationInspector
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser
+ * @medium
  */
 #[CoversClass(RequireListForArrayLiteralRule::class)]
 #[UsesClass(FixedListExpressionInspector::class)]

@@ -17,6 +17,7 @@ use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite;
 /**
  * @covers \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowsDeclarationInspector
  * @uses \Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite
+ * @medium
  */
 #[CoversClass(ThrowsDeclarationInspector::class)]
 #[UsesClass(ThrowSite::class)]

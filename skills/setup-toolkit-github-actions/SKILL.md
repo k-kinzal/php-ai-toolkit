@@ -89,7 +89,7 @@ the normal PHP matrix. Do not add a second sequential PHPUnit job: ParaTest alre
 executes the PHPUnit suite, and the matrix simultaneously verifies runtime support
 and isolation across worker processes.
 
-A real multi-major matrix must use the version-selecting `phpunit.php` runner from
+A real multi-major matrix must use the version-selecting `tests/run.php` runner from
 `/setup-toolkit-phpunit`, so ParaTest receives the configuration matching the
 installed PHPUnit major. Do not rely on the newest `phpunit.xml.dist` under older
 dependency graphs. Keep `composer test:unit` available for local debugging and for

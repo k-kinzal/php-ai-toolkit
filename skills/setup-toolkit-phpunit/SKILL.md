@@ -252,8 +252,9 @@ Add to the target project's `composer.json`:
 }
 ```
 
-For a real multi-major matrix, copy `phpunit.php` from this skill to the project
-root along with one configuration per installed major. The runner reads the
+For a real multi-major matrix, copy `run-tests.php` from this skill to the target
+project as `tests/run.php`, along with one configuration per installed major in
+the project root. The runner reads the
 installed `phpunit/phpunit` version and selects the matching schema, including the
 separate PHPUnit 10, 11, and 12 files. This keeps the public Composer command stable
 instead of making CI reimplement dependency resolution as a matrix-to-script map:
@@ -261,7 +262,7 @@ instead of making CI reimplement dependency resolution as a matrix-to-script map
 ```json
 {
     "scripts": {
-        "test:unit": "@php -d memory_limit=512M phpunit.php"
+        "test:unit": "@php -d memory_limit=512M tests/run.php"
     }
 }
 ```
@@ -298,8 +299,8 @@ it; do not copy this repository's union.
 ```json
 {
     "scripts": {
-        "test": "@php -d memory_limit=512M phpunit.php --parallel --processes=auto --max-processes=4",
-        "test:unit": "@php -d memory_limit=512M phpunit.php"
+        "test": "@php -d memory_limit=512M tests/run.php --parallel --processes=auto --max-processes=4",
+        "test:unit": "@php -d memory_limit=512M tests/run.php"
     }
 }
 ```
@@ -308,7 +309,7 @@ Three things to check before wiring it in:
 
 - `ext-pcntl` must be available; it is what ParaTest forks workers with. Add it
   to the CI `extensions:` list.
-- `phpunit.php` passes the selected configuration to ParaTest, so every supported
+- `tests/run.php` passes the selected configuration to ParaTest, so every supported
   dependency graph uses the schema for its installed PHPUnit major. It also passes
   the configured PHP memory limit to ParaTest workers rather than silently falling
   back to the runtime default.

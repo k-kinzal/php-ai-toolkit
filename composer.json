@@ -45,13 +45,14 @@
     "extra": {
         "phpstan": {
             "includes": [
-                "extension.neon"
+                "extension.neon",
+                "rules.neon"
             ]
         }
     },
     "scripts": {
-        "test": "@php -d memory_limit=512M phpunit.php --parallel --processes=auto --max-processes=4",
-        "test:unit": "@php -d memory_limit=512M phpunit.php",
+        "test": "@php -d memory_limit=512M tests/run.php --parallel --processes=auto --max-processes=4",
+        "test:unit": "@php -d memory_limit=512M tests/run.php",
         "test:unit:9": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit9.xml.dist",
         "test:unit:10": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit10.xml.dist",
         "test:unit:11": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit11.xml.dist",

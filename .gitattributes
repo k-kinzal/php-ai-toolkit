@@ -21,7 +21,7 @@
 /phpunit10.xml.dist export-ignore
 /phpunit11.xml.dist export-ignore
 /phpunit12.xml.dist export-ignore
-/phpunit.php      export-ignore
+/tests/run.php   export-ignore
 AGENTS.md         export-ignore
 
 # docs/ ships with the package on purpose. Every setup skill closes with a

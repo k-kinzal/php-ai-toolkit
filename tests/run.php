@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 use Composer\InstalledVersions;
 
-$autoloadPath = __DIR__ . '/vendor/autoload.php';
+$projectRoot = dirname(__DIR__);
+$autoloadPath = $projectRoot . '/vendor/autoload.php';
 
 if (!is_file($autoloadPath)) {
     fwrite(STDERR, 'Composer dependencies are missing. Run "composer install" first.' . PHP_EOL);
@@ -37,13 +38,13 @@ $configuration = $configurations[$phpUnitMajor] ?? null;
 
 if ($configuration === null) {
     fwrite(STDERR, sprintf(
-        'Installed PHPUnit major %s is unsupported. Add its configuration to phpunit.php.',
+        'Installed PHPUnit major %s is unsupported. Add its configuration to the test runner map.',
         $phpUnitMajor,
     ) . PHP_EOL);
     exit(1);
 }
 
-$configurationPath = __DIR__ . '/' . $configuration;
+$configurationPath = $projectRoot . '/' . $configuration;
 
 if (!is_file($configurationPath)) {
     fwrite(STDERR, sprintf(
@@ -54,14 +55,31 @@ if (!is_file($configurationPath)) {
     exit(1);
 }
 
-$arguments = array_slice($argv, 1);
+$rawArguments = $_SERVER['argv'] ?? null;
+
+if (!is_array($rawArguments)) {
+    fwrite(STDERR, 'CLI arguments are unavailable. Run tests/run.php from the command line.' . PHP_EOL);
+    exit(1);
+}
+
+$arguments = [];
+
+foreach (array_slice($rawArguments, 1) as $argument) {
+    if (!is_string($argument)) {
+        fwrite(STDERR, 'A CLI argument is invalid. Pass only string arguments to tests/run.php.' . PHP_EOL);
+        exit(1);
+    }
+
+    $arguments[] = $argument;
+}
+
 $parallel = ($arguments[0] ?? null) === '--parallel';
 
 if ($parallel) {
     array_shift($arguments);
 }
 
-$runner = __DIR__ . '/vendor/bin/' . ($parallel ? 'paratest' : 'phpunit');
+$runner = $projectRoot . '/vendor/bin/' . ($parallel ? 'paratest' : 'phpunit');
 
 if (!is_file($runner)) {
     fwrite(STDERR, sprintf(
@@ -71,7 +89,7 @@ if (!is_file($runner)) {
     exit(1);
 }
 
-$memoryLimit = (string) ini_get('memory_limit');
+$memoryLimit = ini_get('memory_limit');
 
 if ($parallel) {
     array_unshift($arguments, '--passthru-php=-d memory_limit=' . $memoryLimit);

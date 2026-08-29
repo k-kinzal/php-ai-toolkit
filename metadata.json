@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.10.2",
+  "checkpoint_id": "01M15X89A4TYNT502CM5CZ4W1M",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".gitattributes",
+    "composer.json",
+    "composer.lock.php-8.0",
+    "composer.lock.php-8.1",
+    "composer.lock.php-8.2",
+    "composer.lock.php-8.3",
+    "composer.lock.php-8.4",
+    "composer.lock.php-8.5",
+    "phpunit.php",
+    "skills/setup-toolkit-github-actions/SKILL.md",
+    "skills/setup-toolkit-phpunit/SKILL.md",
+    "skills/setup-toolkit-phpunit/phpunit.php",
+    "skills/setup-toolkit-phpunit/run-tests.php",
+    "tests/run.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 287726,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1812224,
+    "output_tokens": 14515,
+    "api_call_count": 134
+  }
+}

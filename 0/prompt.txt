@@ -1,0 +1,18 @@
+php-ai-toolkitをプロジェクトに導入しています。
+https://github.com/k-kinzal/ztd-query-php/pull/281/ この変更内容を確認して私の指摘は下記になります。
+
+- actionsに書いているコメントを削除してください
+- testとparallelを分ける理由がない。むしろCIではparallelだけで十分ではないでしょうか
+- lint/static-anlysisを分けたいモチベーションはどこでしょうか？私の理解では1つで十分な認識です
+- mutationで1つ疑問です。「Generate coverage for mutation testing」でカバレッジを作る理由はなんでしょうか？infectionでは事前処理は不要な認識です
+- loc/treeの対応が入っていません
+- deptracの対応が入っていません
+- phpcsでのcompatiblityが入っていません
+- composer test:unitはphpunitバージョンを見て10〜12で選ぶべきです
+- phpstan.neonはpathsを指定すべきです。composer scriptsでパスを並べるのは微妙です
+
+対応が入っていないのはAIの問題だとしても、他の指摘に関してはphp-ai-toolkitの見本、setupの指示が悪い可能性が高いです。問題を確認し修正してください。
+
+---
+
+phpunit.phpをPJ rootに配置しないでください。tests以下におかれるべきものであり、phpunit.php以外に別に適切な名前で置かれるべきだと考えます。また確認していたらcomposer.jsonのextraのphpstanでrules.neonが入ってませんが漏れてませんか？

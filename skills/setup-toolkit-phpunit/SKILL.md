@@ -9,18 +9,48 @@ description: >-
 
 This skill configures PHPUnit with maximum strictness and enables the AI test reporter from php-ai-toolkit.
 
+## Choose the Version Policy
+
+Which PHPUnit majors a project installs is a project decision, not a toolkit
+default. Decide it explicitly and state the decision in the setup summary, because
+it determines how many configuration files this setup produces. Two policies are
+valid:
+
+**Pinned floor.** The project pins resolution to its oldest supported PHP —
+normally `config.platform.php` in `composer.json` plus a committed
+`composer.lock` — so every CI leg installs the same PHPUnit major whatever PHP
+runs it. One configuration file, no runner script. Confirm the pin before
+concluding this applies:
+
+```bash
+composer config platform.php            # empty output means there is no pin
+composer show phpunit/phpunit --locked  # what the committed lock actually installs
+```
+
+**Per-runtime resolution.** No platform pin, or PHP-versioned locks such as
+`composer.lock.php-8.1`, so each matrix leg resolves the newest PHPUnit its PHP
+admits and the majors genuinely differ across CI.
+
+This toolkit repository uses per-runtime resolution because validating every
+template on every supported major is its purpose. A consuming project carries no
+such obligation, and a pinned floor is the simpler default; do not copy this
+repository's `^9.6 || ^10.5 || ^11 || ^12 || ^13` constraint reflexively.
+
+Under either policy, `require-dev` must advertise only what some maintained lock or
+CI leg actually installs. A constraint such as `^10.5 || ^11 || ^12 || ~13.0.0`
+combined with a `config.platform.php` of `8.1` never resolves past 10.5: the extra
+majors are untested surface, and the single configuration written for 10.5 is
+invalid under them. Report that conflict and resolve it — narrow the constraint to
+the pinned major, or drop the pin and add the per-major configurations below. Do
+not leave a constraint that promises coverage no lock or CI leg provides.
+
 ## Prerequisites
 
-Choose PHPUnit from the target's PHP support range, existing test extensions,
-Composer graph, and CI topology. Inspect current Composer metadata and PHPUnit's
-support documentation at application time, then select the newest compatible
-release. Do not copy this toolkit repository's multi-major constraint.
-
-A single-runtime application normally needs one current major. A project that
-installs development dependencies on several PHP minors may need a minimal union,
-but include an older major only for an actual matrix leg that cannot install the
-newest compatible line. Verify every maintained lock or CI leg and diagnose an
-unexpected older resolution with `composer why-not`:
+Having fixed the policy, select releases from the target's PHP support range,
+existing test extensions, Composer graph, and CI topology. Inspect current Composer
+metadata and PHPUnit's support documentation at application time, then select the
+newest release each supported graph admits. Verify every maintained lock or CI leg
+and diagnose an unexpected older resolution with `composer why-not`:
 
 ```bash
 composer require --dev "phpunit/phpunit:<target-derived-constraint>" k-kinzal/php-ai-toolkit --dry-run
@@ -51,23 +81,68 @@ settings added by later majors, while a PHPUnit 13 file is invalid on older ones
 
 Read the selected file from
 `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-phpunit/` and apply it to the
-project root as `phpunit.xml.dist`. A project that genuinely installs multiple
-PHPUnit majors must retain one configuration per major and select the matching
-file in each CI leg.
+project root as `phpunit.xml.dist`.
+
+The set of configuration files must equal the set of majors that some maintained
+lock actually installs — no more, no less. Under a pinned floor that is exactly one
+file, named `phpunit.xml.dist`, written for the pinned major. Under per-runtime
+resolution it is one file per resolved major, plus the runner that selects between
+them (see Recommended Composer Scripts). A configuration for a major nothing
+installs is dead weight; a major that installs with no matching configuration is a
+broken CI leg.
 
 The 10–12 templates track their maintained minor's current schema. Some strict
 attributes were added in patch releases, so an older locked patch may reject the
 template even within the same minor. Update it to the newest compatible patch as
 required above, or derive a configuration from that exact installed XSD.
 
-Validate every file with the PHPUnit version that consumes it. If a future schema
-differs from the shipped PHPUnit 13 template, migrate the template to that
-installed schema; do not downgrade PHPUnit merely to match an example file.
+Validate every file against the XSD of the PHPUnit version that consumes it:
+
+```bash
+xmllint --noout --schema vendor/phpunit/phpunit/phpunit.xsd phpunit.xml.dist
+```
+
+The schemas are not interchangeable in either direction. A PHPUnit 10 file fails
+PHPUnit 11+ validation on `restrictDeprecations`, which PHPUnit 11 removed; a
+PHPUnit 13 file fails on older majors. Validating a configuration only under the
+single locally installed PHPUnit proves nothing about the other legs of a
+per-runtime matrix. If a future schema differs from the shipped PHPUnit 13
+template, migrate the template to that installed schema; do not downgrade PHPUnit
+merely to match an example file.
 
 For a new configuration, replace `REPLACE_WITH_VENDOR_DIR` from `composer config
 vendor-dir`, and replace `REPLACE_WITH_UNIT_TEST_PATH` and
 `REPLACE_WITH_PRODUCTION_PATH` from the target's test layout and production
 autoload roots. A remaining sentinel or a zero-test suite is a failed setup.
+
+## Required PHP Extensions
+
+Every runtime that installs the dev graph or runs the suite needs these. Name each
+one in the CI `extensions:` list with the reason, rather than relying on what the
+runner image happens to preinstall.
+
+| Extension | Required by | Failure without it |
+|-----------|-------------|--------------------|
+| `mbstring` | `phpunit/phpunit` itself, plus `phpunit/php-code-coverage`, `sebastian/comparator`, `sebastian/exporter`, and `infection/infection` — all list it under `require`, not `suggest` | `composer install` fails the platform check; nothing runs |
+| `pcntl` | `phpunit/php-invoker`, which is what implements the template's `enforceTimeLimit="true"` via `pcntl_alarm()`, `pcntl_signal()`, and `pcntl_async_signals()` | Time limits are silently not enforced. PHPUnit 10+ raises the test-runner warning `The pcntl extension is required for enforcing time limits`, and because the template also sets `failOnAllIssues="true"` the run exits 1 |
+
+ParaTest does **not** need `pcntl`. It starts workers through `symfony/process`, not
+`pcntl_fork()`, and counts cores through `fidry/cpu-core-counter`; the `ext-pcntl`
+entry in its own `composer.json` is a `require-dev` for its own test suite. Its
+runtime platform requirements are `ext-dom`, `ext-pcre`, `ext-reflection`, and
+`ext-simplexml`, all of which are compiled in by default on a normal PHP build.
+
+Derive any further entries from the resolved graph rather than from this list:
+
+```bash
+composer check-platform-reqs   # every ext-* the installed graph demands
+```
+
+Add the resulting list to every job that installs the dev graph or executes tests —
+including a mutation-testing job, which runs the same `phpunit.xml.dist` through
+Infection and so hits the same `enforceTimeLimit` requirement. Adding an extension
+to the test job alone leaves the other jobs failing for a reason the diff does not
+explain.
 
 ## Merging with Existing Configuration
 
@@ -241,7 +316,8 @@ silently inflating coverage.
 
 ## Recommended Composer Scripts
 
-Add to the target project's `composer.json`:
+Under a pinned floor there is one configuration, so the scripts call the runner
+directly:
 
 ```json
 {
@@ -252,17 +328,17 @@ Add to the target project's `composer.json`:
 }
 ```
 
-For a real multi-major matrix, copy `run-tests.php` from this skill to the target
-project as `tests/run.php`, along with one configuration per installed major in
-the project root. The runner reads the
-installed `phpunit/phpunit` version and selects the matching schema, including the
-separate PHPUnit 10, 11, and 12 files. This keeps the public Composer command stable
-instead of making CI reimplement dependency resolution as a matrix-to-script map:
+Under per-runtime resolution, copy `run-tests.php` from this skill to the target
+project as `tests/run.php`, along with one configuration per resolved major in the
+project root. The runner reads the installed `phpunit/phpunit` version and selects
+the matching schema, including the separate PHPUnit 10, 11, and 12 files. This
+keeps the public Composer command stable instead of making CI reimplement
+dependency resolution as a matrix-to-script map:
 
 ```json
 {
     "scripts": {
-        "test:unit": "@php -d memory_limit=512M tests/run.php"
+        "test:unit": "@php tests/run.php"
     }
 }
 ```
@@ -270,6 +346,32 @@ instead of making CI reimplement dependency resolution as a matrix-to-script map
 Run `composer test:unit` under every maintained dependency graph and confirm the
 selected file validates. Do not point the generic script at the newest schema when
 an older supported runtime installs PHPUnit 10–12.
+
+### Memory limit
+
+Do not put `-d memory_limit=...` in these scripts by default. An unexplained limit
+is either a no-op or a cap someone has to debug later, and it is not part of this
+setup. Add one only for a measured failure.
+
+PHPUnit reports the peak of every run in its footer (`Time: 00:00.123, Memory:
+26.00 MB`). Compare that against what the target runtime actually allows —
+`php -r 'echo ini_get("memory_limit"), PHP_EOL;'` — remembering that PHP CLI
+frequently ships `memory_limit=-1`, in which case adding a finite value only makes
+the suite fail sooner than it does today. If the suite fits, ship no limit.
+
+This repository is the counterexample that justifies one: its PHPStan rule tests
+boot a PHPStan DI container, and the suite dies with `Allowed memory size of
+167772160 bytes exhausted` at 160M, so `composer test:unit` sets 512M. That number
+comes from a reproduced failure, not from habit — derive the target's number the
+same way.
+
+When a limit is genuinely needed, make sure it reaches the ParaTest workers.
+`-d memory_limit=...` applies to the parent process only; workers are separate PHP
+processes and fall back to the runtime default. `tests/run.php` forwards the
+active limit for you; without it, pass
+`--passthru-php="'-d' 'memory_limit=512M'"` explicitly. Each worker receives the
+full limit, so the machine's real ceiling is processes × limit — check that
+product against the runner before raising either.
 
 ## Parallel Execution with ParaTest
 
@@ -296,23 +398,56 @@ runtime of the test jobs. Run the command without `--dry-run` after confirming
 the resolution. Add an older ParaTest line only when a real supported graph needs
 it; do not copy this repository's union.
 
+Under a pinned floor:
+
 ```json
 {
     "scripts": {
-        "test": "@php -d memory_limit=512M tests/run.php --parallel --processes=auto --max-processes=4",
-        "test:unit": "@php -d memory_limit=512M tests/run.php"
+        "test": "paratest --testsuite unit",
+        "test:unit": "phpunit --testsuite unit"
     }
 }
 ```
 
-Three things to check before wiring it in:
+Under per-runtime resolution:
 
-- `ext-pcntl` must be available; it is what ParaTest forks workers with. Add it
-  to the CI `extensions:` list.
+```json
+{
+    "scripts": {
+        "test": "@php tests/run.php --parallel",
+        "test:unit": "@php tests/run.php"
+    }
+}
+```
+
+### Process count
+
+Leave the process count to ParaTest. `--processes` already defaults to `auto` in
+every release this skill can select — 6.11 and the whole 7.x line — and `auto`
+resolves through `fidry/cpu-core-counter` on the machine that runs the suite. No
+supported version requires a fixed number, so there is no version-compatibility
+reason to write one.
+
+Never hardcode a count. `--processes=4` under-uses a larger runner, oversubscribes
+a smaller one, and stops matching the hardware silently the first time CI changes
+its runner size. Writing `--processes=auto` explicitly is redundant but acceptable
+as a statement of intent.
+
+Cap the count only for a demonstrated resource problem, and cap it with
+`--max-processes`, which bounds `auto` rather than replacing it. That option exists
+only from ParaTest 7.17.0; on an older line there is no way to bound `auto`, so
+leave the count alone instead of reverting to a fixed number.
+
+### Before wiring it in
+
+- Check ParaTest's extensions, not folklore: it needs `ext-dom`, `ext-pcre`,
+  `ext-reflection`, and `ext-simplexml`, and it does not use `pcntl`. The suite
+  still needs `pcntl` for `enforceTimeLimit`, for the reason given in Required PHP
+  Extensions.
 - `tests/run.php` passes the selected configuration to ParaTest, so every supported
-  dependency graph uses the schema for its installed PHPUnit major. It also passes
-  the configured PHP memory limit to ParaTest workers rather than silently falling
-  back to the runtime default.
+  dependency graph uses the schema for its installed PHPUnit major. It also
+  forwards the active PHP memory limit to the workers, which otherwise fall back to
+  the runtime default.
 - Keep the single-process script for local debugging and tools that invoke PHPUnit
   directly. CI should use the parallel `composer test` command in its PHP matrix;
   duplicating the same suite in a second CI job adds no gate.
@@ -322,10 +457,19 @@ Three things to check before wiring it in:
 After applying:
 
 ```bash
+composer check-platform-reqs                                          # Extensions the graph demands
+xmllint --noout --schema vendor/phpunit/phpunit/phpunit.xsd phpunit.xml.dist
 vendor/bin/phpunit --list-tests   # Verify tests are discovered
 composer test:unit                 # Run the full suite in one process
 composer test                      # Run it again through the parallel runner
 ```
+
+Repeat the schema check for every configuration file under per-runtime resolution,
+each against the XSD of the PHPUnit its own leg installs. Confirm that every CI job
+which installs the dev graph or runs tests lists the extensions from Required PHP
+Extensions, and that `enforceTimeLimit` is not silently inert: a run with
+`pcntl` missing reports `The pcntl extension is required for enforcing time limits`
+rather than passing quietly.
 
 If the suite passes in one process and fails under the parallel runner, the
 failure is real: it is test-to-test coupling that the single-process run was

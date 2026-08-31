@@ -26,9 +26,26 @@ Read these files before editing CI:
 - Composer lock policy: one normal `composer.lock`, no committed lock, or
   PHP-versioned locks such as `composer.lock.php-<minor>`.
 - Composer platform requirements and each command's runtime needs. Derive the
-  `setup-php` extension list from these; do not rely on what `ubuntu-latest`
-  happens to preinstall. ParaTest needs `pcntl`, coverage needs `pcov` or Xdebug,
-  and DocGen social images need GD with FreeType.
+  `setup-php` extension list from `composer check-platform-reqs` plus the
+  config-driven needs below; do not rely on what `ubuntu-latest` happens to
+  preinstall, and do not copy another project's list.
+
+Extensions that a project's configuration demands even though no `require`
+declares them:
+
+| Extension | Needed by | Failure without it |
+|-----------|-----------|--------------------|
+| `mbstring` | `phpunit/phpunit` and `infection/infection` require it directly | `composer install` fails the platform check |
+| `pcntl` | `phpunit/php-invoker`, which implements PHPUnit's `enforceTimeLimit="true"` | Time limits are not enforced; PHPUnit 10+ raises a runner warning that `failOnAllIssues="true"` turns into exit 1 |
+| `pcov` or Xdebug | Coverage and mutation testing | No coverage data |
+| GD with FreeType | DocGen social preview images | Image generation fails |
+
+ParaTest does not need `pcntl`: it starts workers through `symfony/process`, and
+its own `ext-pcntl` entry is a `require-dev` for its own test suite.
+
+Apply the list to every job that installs the dev graph or runs tests, including a
+mutation-testing job — it executes the same `phpunit.xml.dist` through Infection
+and hits the same requirements as the test job.
 
 If the declared PHP floor, Composer constraint, docs, and CI matrix disagree,
 surface the conflict and make CI match the declared support policy.

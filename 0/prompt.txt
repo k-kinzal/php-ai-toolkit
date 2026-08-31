@@ -1,0 +1,11 @@
+https://github.com/k-kinzal/ztd-query-php/pull/293 にてSQLFakerにphp-ai-toolkitをベースにphpunitを入れる対応で下記の指摘を入れました。これは実質php-ai-toolkitのsetupの問題だと認識しフィードバックとして修正を行なってください。
+
+- mbstrig、pcntlを入れる必要性を説明してください。何がそれに依存していますか？
+- paratestの実行は環境によってCPU数が違うのでautoであるべきです。どのバージョンが固定数でないとダメですか？
+- phpunit/paratestでmemory_limitを指定する理由は何ですか？メモリ不足が発生しますか？
+- phpunitの利用バージョン別に最適なphpunit.xmlの設定が違うとphp-ai-toolkitではあり、複数のxmlとそれの選択するrun.phpを使う方式だった認識ですが対応が入っていない理由はなんですか？
+    - PHPUnitバージョンの件についてはztd-query-phpとしては動作する最小バージョン方針でしょうか？であるならcomposer.jsonのバージョン指定がおかしいようにも見受けられます。
+
+個人的な所感としてPHPUnitのバージョンをどう指定するのか、どれを使うかはプロジェクト固有であり、php-ai-toolkitはPHPバージョン毎に変わる、ztd-query-phpは最小バージョンを使うのでこれは選択の話になるという理解です。基本的に動く最小バージョンで良いとしつつphp-ai-toolkitは全バージョンで最適な設定を検証する責務があるのでこうなっているという認識です。
+
+また、該当PRの変更を確認し、漏れがあれば明示してください。

@@ -13,6 +13,12 @@ description: >-
 
 This skill configures `tree-guard`, the php-ai-toolkit CLI for directory file counts, subdirectory counts, subtree totals, nesting depth, naming conventions, required files, empty directories, and reporter output.
 
+Keep generated and edited configuration files free of explanatory comments and
+commented-out examples. Keep reusable explanations in this skill; report
+project-specific rationale and measurements in the setup summary and, when
+created, the commit message or PR description. Preserve existing ownership notices
+and directives required by tools.
+
 ## Prerequisites
 
 Inspect `composer.json` before configuring:

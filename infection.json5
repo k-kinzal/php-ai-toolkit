@@ -1,35 +1,10 @@
 // NOTE: You do not have permission to overwrite this file. Please ask a human operator to perform the changes for you.
 {
-    // Mutation testing gate. The `mutation` job of .github/workflows/ci.yml scores
-    // the whole source tree on the default branch and only the lines a change touches
-    // on a pull request. One configuration file, thresholds per run: the changed-lines
-    // bar is passed as --min-msi and --min-covered-msi by the workflow step, which is
-    // how Infection is meant to be driven in CI.
-    //
-    // The thresholds below are the toolkit's fixed whole-tree quality policy. A
-    // measured score verifies that this policy is feasible; it must not silently
-    // become a new threshold by rounding one run. Tightening the policy requires an
-    // explicit human decision.
-    //
-    // Lowering a threshold, disabling a mutator, or widening `source.excludes` to
-    // make a red build green removes the safety net this file exists to provide —
-    // fix the tests instead, and ask a human operator when an exception is
-    // genuinely justified.
     "$schema": "vendor/infection/infection/resources/schema.json",
     "source": {
         "directories": [
             "src"
         ],
-        // The PHPUnit 9.6 listener is exercised by tests/Unit/PhpUnit/TestReporter/Legacy,
-        // which only runs under the PHPUnit 9 configuration on PHP 8.0. Mutation testing
-        // runs on a single modern PHP version, whose configuration excludes those tests,
-        // so every mutant here would be reported as uncovered rather than as a missing
-        // test.
-        //
-        // Composer executes the compatibility alias registrar before PHPUnit starts
-        // coverage and before Infection installs its include interceptor. Its behavior
-        // is verified through the legacy FQCNs, but the bootstrap file itself cannot be
-        // mutation-tested without replacing Composer's bootstrap sequence.
         "excludes": [
             "PhpUnit/TestReporter/Legacy",
             "Compatibility/ClassAliases.php"
@@ -40,14 +15,9 @@
     },
     "minMsi": 80,
     "minCoveredMsi": 80,
-    // A representative PHPStan-rule mutant takes about 4.7 seconds alone, while
-    // seven saturated workers exceeded 10 seconds. Thirty seconds preserves more
-    // than 3x parallel-run headroom; it is not derived from mutation score.
     "timeout": 30,
     "timeoutsAsEscaped": true,
     "maxTimeouts": 0,
-    // Infection wipes its temporary directory when the run finishes, so it must not
-    // be the directory the reports are written to.
     "tmpDir": "build/infection-tmp",
     "logs": {
         "text": "build/infection/escaped.log",
@@ -55,11 +25,6 @@
         "perMutator": "build/infection/per-mutator.md",
         "json": "build/infection/infection.json"
     },
-    // Keeps the toolkit's AI test reporter out of the mutation runs. In AI mode the
-    // reporter replaces PHPUnit's result output, and Infection reads that output to
-    // tell a killed mutant from an escaped one: without this flag every mutant would
-    // count as killed whenever an agent runs the gate. Drop it only if the project
-    // registers no PHPUnit extension that replaces the result output.
     "testFrameworkExtraArgs": "--no-extensions",
     "testFramework": "phpunit"
 }

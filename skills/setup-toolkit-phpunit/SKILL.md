@@ -9,6 +9,12 @@ description: >-
 
 This skill configures PHPUnit with maximum strictness and enables the AI test reporter from php-ai-toolkit.
 
+Keep generated and edited configuration files free of explanatory comments and
+commented-out examples. Keep reusable explanations in this skill; report
+project-specific rationale and measurements in the setup summary and, when
+created, the commit message or PR description. Preserve existing ownership notices
+and directives required by tools.
+
 ## Choose the Version Policy
 
 Which PHPUnit majors a project installs is a project decision, not a toolkit
@@ -118,8 +124,8 @@ autoload roots. A remaining sentinel or a zero-test suite is a failed setup.
 ## Required PHP Extensions
 
 Every runtime that installs the dev graph or runs the suite needs these. Name each
-one in the CI `extensions:` list with the reason, rather than relying on what the
-runner image happens to preinstall.
+one explicitly in the CI `extensions:` list rather than relying on what the
+runner image happens to preinstall. Report the reasons in the setup summary.
 
 | Extension | Required by | Failure without it |
 |-----------|-------------|--------------------|
@@ -257,10 +263,10 @@ an existing layout:
 ```xml
 <testsuites>
     <testsuite name="unit">
-        <directory>tests/Unit</directory>         <!-- existing -->
+        <directory>tests/Unit</directory>
     </testsuite>
     <testsuite name="integration">
-        <directory>tests/Integration</directory>  <!-- existing -->
+        <directory>tests/Integration</directory>
     </testsuite>
 </testsuites>
 ```
@@ -272,8 +278,8 @@ Use this section only for PHPUnit 10.5 or later.
 Add the toolkit extension alongside existing extensions. Do not remove existing ones:
 ```xml
 <extensions>
-    <bootstrap class="Existing\Extension"/>                              <!-- keep -->
-    <bootstrap class="Toolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>  <!-- add -->
+    <bootstrap class="Existing\Extension"/>
+    <bootstrap class="Toolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>
 </extensions>
 ```
 
@@ -284,8 +290,8 @@ Use this section only for PHPUnit 9.6. Do not register `AiTestReporterExtension`
 Add the legacy listener alongside existing listeners:
 ```xml
 <listeners>
-    <listener class="Existing\Listener"/>                                                <!-- keep -->
-    <listener class="Toolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener"/>  <!-- add -->
+    <listener class="Existing\Listener"/>
+    <listener class="Toolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener"/>
 </listeners>
 ```
 

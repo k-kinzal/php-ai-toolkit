@@ -1,4 +1,3 @@
-# EXAMPLE ONLY: use for apps that really have these directories.
 deptrac:
   paths:
     - ./app

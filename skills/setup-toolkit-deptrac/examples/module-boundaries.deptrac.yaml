@@ -1,4 +1,3 @@
-# EXAMPLE ONLY: use for modular codebases where modules should stay independent.
 deptrac:
   paths:
     - ./src

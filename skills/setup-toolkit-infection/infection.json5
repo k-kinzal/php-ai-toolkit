@@ -1,45 +1,19 @@
 // NOTE: You do not have permission to overwrite this file. Please ask a human operator to perform the changes for you.
 {
-    // Mutation testing gate. The `mutation` job of .github/workflows/ci.yml scores
-    // the whole source tree on the default branch and only the lines a change touches
-    // on a pull request. One configuration file, thresholds per run: the changed-lines
-    // bar is passed as --min-msi and --min-covered-msi by the workflow step, which is
-    // how Infection is meant to be driven in CI.
-    //
-    // These thresholds are the toolkit's minimum whole-tree baseline, not values to
-    // replace with a lower measured score. If the project starts below them, improve
-    // its tests and design until it passes. A higher measured score is verification,
-    // not permission to invent a stricter policy; changing these numbers requires an
-    // explicit human quality-policy decision.
-    //
-    // Lowering a threshold, disabling a mutator, or widening `source.excludes` to
-    // make a red build green removes the safety net this file exists to provide —
-    // fix the tests instead, and ask a human operator when an exception is
-    // genuinely justified.
     "$schema": "vendor/infection/infection/resources/schema.json",
     "source": {
         "directories": [
             "REPLACE_WITH_PRODUCTION_SOURCE_ROOT"
-        ],
-        // Add "excludes" only for code whose tests cannot run in the same job as the
-        // gate, and write the reason next to it. Entries are relative to each source
-        // directory, not to the project root.
+        ]
     },
     "mutators": {
         "@default": true
     },
     "minMsi": 80,
     "minCoveredMsi": 80,
-    // Operational starting point only. Measure the slowest relevant mutant test and
-    // raise this above that duration with runner headroom.
     "timeout": 30,
-    // A hung or excessively slow mutant is not evidence that the test suite detected
-    // the behavioral change. Validate these keys against the schema shipped by the
-    // target project's resolved Infection release.
     "timeoutsAsEscaped": true,
     "maxTimeouts": 0,
-    // Infection wipes its temporary directory when the run finishes, so it must not
-    // be the directory the reports are written to.
     "tmpDir": "build/infection-tmp",
     "logs": {
         "text": "build/infection/escaped.log",
@@ -47,11 +21,6 @@
         "perMutator": "build/infection/per-mutator.md",
         "json": "build/infection/infection.json"
     },
-    // Keeps the toolkit's AI test reporter out of the mutation runs. In AI mode the
-    // reporter replaces PHPUnit's result output, and Infection reads that output to
-    // tell a killed mutant from an escaped one: without this flag every mutant would
-    // count as killed whenever an agent runs the gate. Drop it only if the project
-    // registers no PHPUnit extension that replaces the result output.
     "testFrameworkExtraArgs": "--no-extensions",
     "testFramework": "phpunit"
 }

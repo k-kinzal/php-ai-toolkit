@@ -1,4 +1,3 @@
-# EXAMPLE ONLY: use for libraries with explicit contracts, core code, internals, and adapters.
 deptrac:
   paths:
     - ./src

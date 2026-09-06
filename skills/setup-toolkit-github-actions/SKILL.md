@@ -13,6 +13,12 @@ description: >-
 This skill configures GitHub Actions so every php-ai-toolkit gate is visible in
 CI and the workflow follows Actions security and maintainability practices.
 
+Keep generated and edited configuration files free of explanatory comments and
+commented-out examples. Keep reusable explanations in this skill; report
+project-specific rationale and measurements in the setup summary and, when
+created, the commit message or PR description. Preserve existing ownership notices
+and directives required by tools.
+
 ## Discover Project Constraints
 
 Read these files before editing CI:
@@ -207,8 +213,8 @@ Apply these rules to every workflow created by this skill:
 
 - Pin every external action with the full 40-character commit SHA.
 - Keep workflow YAML free of explanatory comments, including release-tag comments
-  after action SHAs. Put rationale in the setup skill or project developer
-  documentation and use clear job and step names in the workflow itself.
+  after action SHAs. Use clear job and step names; report project-specific rationale
+  in the setup summary and any commit message or PR description for the change.
 - Verify each SHA from the action's original repository:
   ```bash
   gh release view --repo actions/checkout --json tagName,publishedAt,url

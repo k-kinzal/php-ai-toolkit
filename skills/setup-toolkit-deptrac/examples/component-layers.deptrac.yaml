@@ -1,4 +1,3 @@
-# EXAMPLE ONLY: use for tools/libraries where top-level directories are real components.
 deptrac:
   paths:
     - ./src

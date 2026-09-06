@@ -16,6 +16,12 @@ This skill configures doctest, the toolkit's port of [k-kinzal/doctest-php](http
 
 It is a PHPUnit extension plus a test suite. The project already has a runner, a reporter, and a CI job that reports through it, so a documented example that disagrees with the code is reported as a failing test.
 
+Keep generated and edited configuration files free of explanatory comments and
+commented-out examples. Keep reusable explanations in this skill; report
+project-specific rationale and measurements in the setup summary and, when
+created, the commit message or PR description. Preserve existing ownership notices
+and directives required by tools.
+
 ## Prerequisites
 
 Inspect the project before configuring:

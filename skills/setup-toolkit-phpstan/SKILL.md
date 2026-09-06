@@ -12,6 +12,12 @@ The target configuration assembles the baseline from PHPStan's strict rules and
 the toolkit's two public configuration files. Do not copy their contents into
 the target or tune the baseline until the current code passes.
 
+Keep generated and edited configuration files free of explanatory comments and
+commented-out examples. Keep reusable explanations in this skill; report
+project-specific rationale and measurements in the setup summary and, when
+created, the commit message or PR description. Preserve existing ownership notices
+and directives required by tools.
+
 ## Configuration Responsibilities
 
 - `phpstan/phpstan-strict-rules/rules.neon` registers the official strict rules;

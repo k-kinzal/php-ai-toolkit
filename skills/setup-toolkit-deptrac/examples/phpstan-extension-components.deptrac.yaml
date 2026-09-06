@@ -1,4 +1,3 @@
-# EXAMPLE ONLY: use for PHPStan extension/toolkit packages with these components.
 deptrac:
   paths:
     - ./src

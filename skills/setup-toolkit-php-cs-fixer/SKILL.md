@@ -9,6 +9,12 @@ description: >-
 
 This skill configures PHP-CS-Fixer with strict coding standards optimized for AI-assisted PHP development.
 
+Keep generated and edited configuration files free of explanatory comments and
+commented-out examples. Keep reusable explanations in this skill; report
+project-specific rationale and measurements in the setup summary and, when
+created, the commit message or PR description. Preserve existing ownership notices
+and directives required by tools.
+
 ## Prerequisites
 
 Inspect the target's PHP constraint, existing formatter constraint and lock, and
@@ -51,23 +57,6 @@ Merge `setRules()` arrays. When the same rule key exists in both, the toolkit va
 | Existing has a different setting | `'ordered_imports' => ['sort_algorithm' => 'length']` | Override to `alpha`. `alpha` is deterministic and AI agents can always compute the correct insertion position. |
 | Existing has rules not in toolkit | `'no_trailing_whitespace' => true` | Keep. Additional rules are fine. |
 | Existing uses a preset that conflicts | `'@PhpCsFixer:risky' => true` | Keep the preset, but add toolkit rules after it so they override any conflicting preset values. |
-
-Example merge:
-```php
-return (new PhpCsFixer\Config())
-    ->setRiskyAllowed(true)
-    ->setRules([
-        '@PhpCsFixer:risky' => true,       // existing preset — keep
-        'no_trailing_whitespace' => true,   // existing extra rule — keep
-        // toolkit rules below — these override any conflicting preset values
-        '@PSR12' => true,
-        'declare_strict_types' => true,
-        'strict_param' => true,
-        'strict_comparison' => true,
-        // ... all other toolkit rules
-    ])
-    ->setFinder($finder);
-```
 
 ### Finder
 

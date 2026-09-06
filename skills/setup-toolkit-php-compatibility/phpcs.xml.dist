@@ -1,22 +1,10 @@
 <?xml version="1.0"?>
 <!-- NOTE: You do not have permission to overwrite this file. Please ask a human operator to perform the changes for you. -->
 <ruleset name="php-compatibility">
-    <description>
-        Cross-version PHP compatibility gate. Reports any syntax or function
-        newer than the project's declared PHP floor, so code cannot silently
-        drift above the minimum supported runtime.
+    <description>Checks compatibility with the declared PHP support range.</description>
 
-        Only PHPCompatibility runs here — code style is owned by PHP-CS-Fixer.
-        Do NOT add style sniffs (PSR12, Squiz, ...) to this ruleset; that would
-        overlap with and fight the formatter.
-    </description>
-
-    <!-- Replace every sentinel before use. Repeat <file> for every shipped or
-         runtime autoload root the target project's compatibility policy covers. -->
     <file>REPLACE_WITH_PRODUCTION_AUTOLOAD_ROOT</file>
 
-    <!-- PHP_VERSION_RANGE is the target's declared single minor, bounded range,
-         or open range, not this toolkit repository's PHP matrix. -->
     <config name="testVersion" value="PHP_VERSION_RANGE"/>
 
     <rule ref="PHPCompatibility"/>

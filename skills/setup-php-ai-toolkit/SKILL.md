@@ -12,6 +12,12 @@ This skill is the entry point for applying php-ai-toolkit to a user's project.
 It coordinates the component setup skills; the component skills own the detailed
 requirements, templates, and verification steps.
 
+Keep generated and edited configuration files free of explanatory comments and
+commented-out examples. Keep reusable explanations in this skill; report
+project-specific rationale and measurements in the setup summary and, when
+created, the commit message or PR description. Preserve existing ownership notices
+and directives required by tools.
+
 ## Inspect the Project
 
 Before selecting components, read:

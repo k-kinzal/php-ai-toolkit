@@ -19,6 +19,12 @@ documentation site — complete types, interface implementations, call sites, ar
 test references, runnable doctest examples, and an optional comparison of two git revisions — for the composer
 packages of a project.
 
+Keep generated and edited configuration files free of explanatory comments and
+commented-out examples. Keep reusable explanations in this skill; report
+project-specific rationale and measurements in the setup summary and, when
+created, the commit message or PR description. Preserve existing ownership notices
+and directives required by tools.
+
 ## Prerequisites
 
 Inspect `composer.json` before configuring:

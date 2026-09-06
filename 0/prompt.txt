@@ -1,0 +1,1 @@
+https://github.com/k-kinzal/ztd-query-php/blob/9e8a76156552c50dce52297b338fa1513815266f/packages/sql-faker/infection.json5 php-ai-toolkitのinfectionスキルを使ったところ設定ファイルに大量のコメントが書き込まれました。基本的に設定ファイルに細かいコメントを残す理由はありません。コミットログやPRに残るので。とした上でskillの提示例がおかしいのではないでしょうか？またこれはinfectionだけではなく他の設定ファイル群に関しても同様の問題があるのではないかと疑っています。是正してください。

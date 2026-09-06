@@ -1,0 +1,51 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M1TWR67268191VDQKMWCYVQJ",
+  "session_id": "01a075c5-2b77-7813-bda1-cff671db0244",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-06T08:18:25.901354Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "skills/setup-toolkit-github-actions/SKILL.md",
+    "skills/setup-toolkit-infection/SKILL.md",
+    "skills/setup-toolkit-phpunit/SKILL.md"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "11c3d0240e40",
+  "checkpoint_transcript_start": 131,
+  "transcript_lines_at_start": 131,
+  "compact_transcript_start": 15,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": -518272,
+    "output_tokens": -6330,
+    "api_call_count": 3
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-06T08:18:25.847287Z",
+    "agent_lines": 6,
+    "agent_removed": 28,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 6,
+    "total_lines_changed": 106,
+    "agent_percentage": 32.075471698113205,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

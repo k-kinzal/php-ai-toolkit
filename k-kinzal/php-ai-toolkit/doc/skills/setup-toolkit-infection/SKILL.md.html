@@ -70,18 +70,19 @@ composer config allow-plugins.infection/extension-installer true</code></pre>
 <p>Lowering a threshold to make a red build green defeats the gate. So does disabling a mutator, widening <code>source.excludes</code>, or pointing the gate at fewer directories. Fix the tests, and ask a human operator when an exception is genuinely justified.</p>
 <h3>Mutators</h3>
 <p>Keep <code>&quot;@default&quot;: true</code>. The default profile is what the published mutation scores of other projects mean, and a trimmed profile makes the number incomparable and usually flatters the suite.</p>
-<p>Resist disabling a mutator that produces equivalent mutants when it also kills real ones. <code>Coalesce</code> still catches genuine missing tests on <code>??</code> over data even when a particular construction idiom produces equivalent survivors. Improve that idiom; disable a mutator only when it produces nothing but equivalent mutants for the project, with human approval and the reason recorded next to the setting.</p>
+<p>Resist disabling a mutator that produces equivalent mutants when it also kills real ones. <code>Coalesce</code> still catches genuine missing tests on <code>??</code> over data even when a particular construction idiom produces equivalent survivors. Improve that idiom; disable a mutator only when it produces nothing but equivalent mutants for the project, with human approval.</p>
 <h3>Analysis Scope</h3>
 <p>Mutate production source only:</p>
 <pre class="code-block"><code>&quot;source&quot;: {
     &quot;directories&quot;: [&quot;REPLACE_WITH_PRODUCTION_SOURCE_ROOT&quot;]
 }</code></pre>
 <p><code>source.excludes</code> entries are relative to each source directory, not to the project root. Resolve every path from the target&#039;s selected source directories.</p>
-<p>Exclude a directory only when its tests cannot run in the same job as the gate — for example code exercised exclusively by a legacy PHPUnit configuration on an older PHP version. Write the reason in the file. Do not exclude code because its mutants survive.</p>
+<p>Exclude a directory only when its tests cannot run in the same job as the gate — for example code exercised exclusively by a legacy PHPUnit configuration on an older PHP version. Do not exclude code because its mutants survive.</p>
 <h3>Timeouts</h3>
 <p><code>timeout</code> is an operational starting point, not a quality threshold. Measure the slowest relevant mutant test and set it above that duration with enough runner headroom; do not keep <code>10</code> merely because the first run was green. A timeout must not count as a killed mutant:</p>
 <ul><li>Infection 0.32.3 and later must set <code>timeoutsAsEscaped: true</code> and <code>maxTimeouts: 0</code>.</li><li>Older supported Infection lines cannot express that policy. Prefer running the isolated mutation job on a current Infection line. If the target is genuinely pinned older, report the limitation and choose a timeout above the measured test duration; do not pretend timeout classification is enforced.</li></ul>
 <h3>Coverage Collection</h3>
+<p>Keep <code>tmpDir</code> separate from the report directory in <code>logs</code>: Infection removes its temporary directory when the run finishes.</p>
 <p>Let Infection run its normal initial test phase and generate the coverage it needs. With pcov or Xdebug enabled, no separate PHPUnit coverage command is required. <code>--coverage</code> means reuse an existing XML and JUnit report; it is not a prerequisite for mutation testing. <code>--skip-initial-tests</code> is only valid when that existing report is supplied and the suite was already proved green.</p>
 <p>Do not add a <code>Generate coverage for mutation testing</code> step solely for Infection, and do not pass <code>--coverage</code> or <code>--skip-initial-tests</code> in the standard job. Reuse a pre-generated report only when the workflow already creates it for another independent consumer and the saved runtime justifies the extra coupling.</p>
 <p>Keep <code>&quot;testFrameworkExtraArgs&quot;: &quot;--no-extensions&quot;</code> so the toolkit&#039;s AI reporter cannot replace the PHPUnit result output Infection reads to distinguish killed from escaped mutants. A risky or failing initial test should fail the mutation job; do not weaken PHPUnit with <code>--do-not-fail-on-risky</code>.</p>

@@ -53,20 +53,6 @@ composer why-not friendsofphp/php-cs-fixer &lt;newest-compatible-version&gt;</co
 <h4>Rules — toolkit rules always win</h4>
 <p>Merge <code>setRules()</code> arrays. When the same rule key exists in both, the toolkit value takes precedence. The toolkit rules are the minimum bar and must not be weakened.</p>
 <div class="table-wrap"><table><thead><tr><th>Conflict type</th><th>Example</th><th>Resolution</th></tr></thead><tbody><tr><td>Existing disables a toolkit rule</td><td><code>&#039;strict_comparison&#039; =&gt; false</code></td><td>Override to <code>true</code>. There is no use case for <code>==</code> in PHP.</td></tr><tr><td>Existing has a weaker setting</td><td><code>&#039;ordered_imports&#039; =&gt; [&#039;sort_algorithm&#039; =&gt; &#039;none&#039;]</code></td><td>Override to <code>[&#039;sort_algorithm&#039; =&gt; &#039;alpha&#039;]</code>.</td></tr><tr><td>Existing has a different setting</td><td><code>&#039;ordered_imports&#039; =&gt; [&#039;sort_algorithm&#039; =&gt; &#039;length&#039;]</code></td><td>Override to <code>alpha</code>. <code>alpha</code> is deterministic and AI agents can always compute the correct insertion position.</td></tr><tr><td>Existing has rules not in toolkit</td><td><code>&#039;no_trailing_whitespace&#039; =&gt; true</code></td><td>Keep. Additional rules are fine.</td></tr><tr><td>Existing uses a preset that conflicts</td><td><code>&#039;@PhpCsFixer:risky&#039; =&gt; true</code></td><td>Keep the preset, but add toolkit rules after it so they override any conflicting preset values.</td></tr></tbody></table></div>
-<p>Example merge:</p>
-<pre class="code-block"><code><span class="tok-kw">return</span> (<span class="tok-kw">new</span> <span class="tok-id">PhpCsFixer\Config</span>())
-    -&gt;<span class="tok-id">setRiskyAllowed</span>(<span class="tok-id">true</span>)
-    -&gt;<span class="tok-id">setRules</span>([
-        <span class="tok-str">&#039;@PhpCsFixer:risky&#039;</span> =&gt; <span class="tok-id">true</span>,       <span class="tok-com">// existing preset — keep</span>
-        <span class="tok-str">&#039;no_trailing_whitespace&#039;</span> =&gt; <span class="tok-id">true</span>,   <span class="tok-com">// existing extra rule — keep</span>
-        <span class="tok-com">// toolkit rules below — these override any conflicting preset values</span>
-        <span class="tok-str">&#039;@PSR12&#039;</span> =&gt; <span class="tok-id">true</span>,
-        <span class="tok-str">&#039;declare_strict_types&#039;</span> =&gt; <span class="tok-id">true</span>,
-        <span class="tok-str">&#039;strict_param&#039;</span> =&gt; <span class="tok-id">true</span>,
-        <span class="tok-str">&#039;strict_comparison&#039;</span> =&gt; <span class="tok-id">true</span>,
-        <span class="tok-com">// ... all other toolkit rules</span>
-    ])
-    -&gt;<span class="tok-id">setFinder</span>(<span class="tok-var">$finder</span>);</code></pre>
 <h4>Finder</h4>
 <p>Keep existing maintained source and test paths, but never scan vendored or generated trees. The toolkit default excludes <code>vendor</code>, <code>build</code>, <code>cache</code>, <code>var</code>, and <code>node_modules</code>; preserve those exclusions and add project-specific generated paths when needed. Do not exclude maintained PHP merely to make formatting pass.</p>
 <p>Example:</p>

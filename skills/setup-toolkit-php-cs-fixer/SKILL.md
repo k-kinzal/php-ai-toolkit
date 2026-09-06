@@ -9,12 +9,6 @@ description: >-
 
 This skill configures PHP-CS-Fixer with strict coding standards optimized for AI-assisted PHP development.
 
-Keep generated and edited configuration files free of explanatory comments and
-commented-out examples. Keep reusable explanations in this skill; report
-project-specific rationale and measurements in the setup summary and, when
-created, the commit message or PR description. Preserve existing ownership notices
-and directives required by tools.
-
 ## Prerequisites
 
 Inspect the target's PHP constraint, existing formatter constraint and lock, and

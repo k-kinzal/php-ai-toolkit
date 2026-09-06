@@ -9,18 +9,11 @@ description: >-
 
 This skill configures PHPUnit with maximum strictness and enables the AI test reporter from php-ai-toolkit.
 
-Keep generated and edited configuration files free of explanatory comments and
-commented-out examples. Keep reusable explanations in this skill; report
-project-specific rationale and measurements in the setup summary and, when
-created, the commit message or PR description. Preserve existing ownership notices
-and directives required by tools.
-
 ## Choose the Version Policy
 
 Which PHPUnit majors a project installs is a project decision, not a toolkit
-default. Decide it explicitly and state the decision in the setup summary, because
-it determines how many configuration files this setup produces. Two policies are
-valid:
+default. It determines how many configuration files this setup produces. Two
+policies are valid:
 
 **Pinned floor.** The project pins resolution to its oldest supported PHP —
 normally `config.platform.php` in `composer.json` plus a committed
@@ -125,7 +118,7 @@ autoload roots. A remaining sentinel or a zero-test suite is a failed setup.
 
 Every runtime that installs the dev graph or runs the suite needs these. Name each
 one explicitly in the CI `extensions:` list rather than relying on what the
-runner image happens to preinstall. Report the reasons in the setup summary.
+runner image happens to preinstall.
 
 | Extension | Required by | Failure without it |
 |-----------|-------------|--------------------|

@@ -19,12 +19,6 @@ Line coverage says a line ran. Mutation testing says the tests noticed what the 
 did. It is the check that catches the failure mode this toolkit exists for:
 AI-generated tests that execute code and assert nothing meaningful about it.
 
-Keep generated and edited configuration files free of explanatory comments and
-commented-out examples. Keep reusable explanations in this skill; report
-project-specific rationale and measurements in the setup summary and, when
-created, the commit message or PR description. Preserve existing ownership notices
-and directives required by tools.
-
 ## Prerequisites
 
 Inspect the project before configuring:
@@ -170,8 +164,7 @@ Resist disabling a mutator that produces equivalent mutants when it also kills r
 ones. `Coalesce` still catches genuine missing tests on `??` over data even when a
 particular construction idiom produces equivalent survivors. Improve that idiom;
 disable a mutator only when it produces nothing but equivalent mutants for the
-project, with human approval and the reason recorded in the setup summary and any
-commit message or PR description for the change.
+project, with human approval.
 
 ## Analysis Scope
 
@@ -188,8 +181,7 @@ root. Resolve every path from the target's selected source directories.
 
 Exclude a directory only when its tests cannot run in the same job as the gate — for
 example code exercised exclusively by a legacy PHPUnit configuration on an older PHP
-version. Record the reason in the setup summary and any commit message or PR
-description for the change. Do not exclude code because its mutants survive.
+version. Do not exclude code because its mutants survive.
 
 ## Timeouts
 

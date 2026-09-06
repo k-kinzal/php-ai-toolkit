@@ -18,12 +18,6 @@ which neither PHP-CS-Fixer nor a single-version CI run verifies.
 PHPCompatibility is a PHP_CodeSniffer standard, so it runs on the `phpcs` binary.
 It is a static analyzer only — it never rewrites code.
 
-Keep generated and edited configuration files free of explanatory comments and
-commented-out examples. Keep reusable explanations in this skill; report
-project-specific rationale and measurements in the setup summary and, when
-created, the commit message or PR description. Preserve existing ownership notices
-and directives required by tools.
-
 ## Determine the Supported Range First
 
 Discover the target project's complete supported PHP set before choosing a package

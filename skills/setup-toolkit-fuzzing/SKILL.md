@@ -21,12 +21,6 @@ correctness targets compare an adapter with a native database. Its exact SQL
 generators, database versions, dependencies, run counts, and workflow topology
 are examples, not defaults for another project.
 
-Keep generated and edited configuration files free of explanatory comments and
-commented-out examples. Keep reusable explanations in this skill; report
-project-specific rationale and measurements in the setup summary and, when
-created, the commit message or PR description. Preserve existing ownership notices
-and directives required by tools.
-
 ## Inspect the Target Project
 
 Read before choosing a tool or editing files:

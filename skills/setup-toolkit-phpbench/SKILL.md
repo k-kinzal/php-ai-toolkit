@@ -17,12 +17,6 @@ The PHPBench setups in `k-kinzal/ztd-query-php` and `k-kinzal/peq` show the two
 layouts this skill commonly encounters. Treat their subjects and revolution
 counts as project-specific evidence, not defaults to copy.
 
-Keep generated and edited configuration files free of explanatory comments and
-commented-out examples. Keep reusable explanations in this skill; report
-project-specific rationale and measurements in the setup summary and, when
-created, the commit message or PR description. Preserve existing ownership notices
-and directives required by tools.
-
 ## Inspect the Target
 
 Read before editing:

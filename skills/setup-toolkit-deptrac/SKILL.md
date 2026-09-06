@@ -14,12 +14,6 @@ This skill configures Deptrac around the architecture the project should have.
 Current directories and dependencies are evidence, not the model: a configuration
 that merely permits the existing graph makes a poor design permanently green.
 
-Keep generated and edited configuration files free of explanatory comments and
-commented-out examples. Keep reusable explanations in this skill; report
-project-specific rationale and measurements in the setup summary and, when
-created, the commit message or PR description. Preserve existing ownership notices
-and directives required by tools.
-
 ## Prerequisites
 
 Inspect `composer.json` before installing:

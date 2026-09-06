@@ -15,12 +15,6 @@ values and shrinks a failure to a smaller counterexample. It is not a replacemen
 for examples, and an iteration loop around random Faker values is not PBT unless
 the generator, property, shrinking, and reproduction behavior are intentional.
 
-Keep generated and edited configuration files free of explanatory comments and
-commented-out examples. Keep reusable explanations in this skill; report
-project-specific rationale and measurements in the setup summary and, when
-created, the commit message or PR description. Preserve existing ownership notices
-and directives required by tools.
-
 ## Inspect and Choose the Contract
 
 Read `composer.json`, PHP and PHPUnit constraints, every lock and PHPUnit

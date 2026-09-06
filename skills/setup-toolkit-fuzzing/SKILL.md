@@ -213,6 +213,15 @@ Read `fuzz.yml` from
 separate `.github/workflows/fuzz.yml`. Do not merge an unbounded or scheduled fuzz
 campaign into ordinary pull-request tests.
 
+PHP-Fuzzer separates findings from campaign failures at the process level:
+`php-fuzzer fuzz` records a finding as a `crash-*` file and still exits zero,
+while a non-zero exit means the campaign itself was impeded — a usage error, a
+`FuzzerException`, broken instrumentation, or a dead process. Keep that
+separation in the workflow: findings surface as crash artifacts on a green run,
+and as issue creation only when the user has asked for it, while a red run means
+the campaign could not execute. Do not wrap the fuzzer in exit-code handling
+that turns a finding into a step failure or a step failure into success.
+
 Replace every `REPLACE_WITH_*` sentinel from the target project. Expand the target
 matrix so each entry has one contract, corpus, and required extension set. Add
 service/container setup before the fuzzer when the oracle needs a real database or
@@ -225,7 +234,9 @@ The workflow must:
   fuzz-tool PHP runtime rather than the compatibility matrix;
 - validate the manual run budget before passing it to a shell command;
 - restore and save each target's corpus with separate keys;
-- upload crash files even after the fuzzer step fails;
+- upload crash files whether the fuzzer step succeeds or fails: findings arrive
+  on a green step, and an impeded campaign may still have written crashes before
+  stopping;
 - use job timeouts as a second bound in addition to `--max-runs` or the selected
   engine's time limit;
 - pin external actions to full commit SHAs, use `contents: read`, and avoid write
@@ -250,7 +261,7 @@ vendor/bin/php-fuzzer minimize-crash fuzz/REPLACE_WITH_TARGET.php crash-REPLACE_
 Confirm the minimized input fails repeatedly. Determine whether it is a product
 bug, generator bug, invalid oracle, resource-limit breach, or intentionally allowed
 rejection. Fix the cause; do not broaden a catch block or allowed-error list merely
-to turn the campaign green. Promote the minimized case to a deterministic
+to make the finding disappear. Promote the minimized case to a deterministic
 regression test or reviewed seed corpus, then keep the fuzz target so related cases
 remain discoverable.
 
@@ -260,8 +271,9 @@ Before completing setup:
 
 1. Run each entry point once with a tiny bounded budget and confirm it executes the
    intended production code.
-2. Give the target a disposable known-bad oracle or input and confirm the process
-   exits non-zero and writes a reproducible crash; remove the probe afterward.
+2. Give the target a disposable known-bad oracle or input and confirm the run
+   reports the crash and writes a reproducible `crash-*` file; with PHP-Fuzzer
+   the process still exits zero. Remove the probe afterward.
 3. Run `run-single` on that crash and verify the diagnostic contains the contract,
    domain input or seed, and environment version.
 4. Confirm state is reset by running the same corpus twice in one process.

@@ -1,0 +1,12 @@
+まずREADME.mdにDeepWikiのバッヂを追加ください。
+次にContext7のCIを入れてmainを更新したらContext7を更新するようにしたいです。
+
+また、setupスキルも欲しく、Context7の話はactions-setupに入れてください。これは発火は運用次第でtagやリリースで発火など対象のライフサイクルに合わせるようにしてください。
+setup-readmeスキルも欲しくDeepWikiはそちらに入れてください。
+参考になるREADMEはこのあたりになります
+https://github.com/k-kinzal/testcontainers-php/blob/main/README.md
+https://github.com/k-kinzal/ztd-query-php/blob/main/packages/sql-faker/README.md
+https://github.com/k-kinzal/peq/blob/main/README.md
+基本的に情報を最小にするのが好みで、基本はセクションなし概要、Requirements、Getting Started、Licenceぐらいで、あとは対象として必要なら何か情報を入れるくらいです。バッヂは入れれるものは入れていくスタンスになります。
+
+修正しコミットを入れてください。

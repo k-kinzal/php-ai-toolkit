@@ -82,6 +82,7 @@ composer why-not phpcompatibility/php-compatibility &lt;newest-capable-version&g
     }
 }</code></pre>
 <p>Add <code>@compat</code> to the existing gate sequence without removing other steps. If the first run finds violations, fix the code or resolve the declared support-policy conflict; do not weaken the range or leave the configured gate unwired.</p>
+<p>Keep compatibility tooling behind the existing <code>lint</code> development entry point. Do not add a compatibility tutorial or a separate command catalogue to the product README or <code>docs/</code> unless that documentation is requested.</p>
 <h3>Relationship to PHPStan</h3>
 <p>PHPStan can also flag version drift when the installed release supports declaring the target range, and needs no extra dependency. It is a reasonable alternative when the project wants to avoid a second toolchain, but syntax outside the parser&#039;s range can halt analysis and its messages are coarser. PHPCompatibility gives per-feature messages and stable sniff identifiers, so prefer it when diagnostic quality matters. Do not run both as the compatibility gate.</p>
 <h3>Verification</h3>

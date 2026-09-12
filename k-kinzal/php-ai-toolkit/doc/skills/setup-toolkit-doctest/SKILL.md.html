@@ -78,6 +78,8 @@
 <p>The suite reports nothing until docblocks carry examples, so adoption is the work, not the configuration. Do not add examples in bulk. Take the entry points first:</p>
 <ul><li>The types a consumer names to start using the package. An example there is the one readers look for.</li><li>Methods whose contract is easy to get wrong — an argument order, a unit, a nullable return.</li><li>Methods that throw. <code>// throws InvalidArgumentException: amount</code> documents the failure a caller has to handle and proves it still happens.</li><li>Anything whose prose already says &quot;for example&quot;. Turn it into a runnable one.</li></ul>
 <p>Report the surface found and confirm the first few examples run before writing more. An example that cannot be executed is worse than no example: it is a claim nothing checks.</p>
+<p>Each example must establish its own state. For random APIs, construct providers and other collaborators before seeding if their bootstrap can consume randomness; check examples both in isolation and in the full suite. Assert promised output properties rather than incidental seeded spellings across dependency versions.</p>
+<p>Keep setup focused on PHPDoc and its runner. Do not add a developer guide or rewrite the README as a side effect. When product documentation is explicitly in scope, describe the consumer API and preserve unrelated sections. Markdown examples are not covered by the PHPDoc suite: execute them separately before claiming that all documentation examples pass.</p>
 <h3>Notation</h3>
 <pre class="code-block"><code><span class="tok-com">/**</span>
 <span class="tok-com"> * @example Adding two numbers</span>

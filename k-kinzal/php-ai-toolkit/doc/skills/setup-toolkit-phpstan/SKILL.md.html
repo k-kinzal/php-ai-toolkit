@@ -95,6 +95,7 @@ parameters:
 <p>Only list a <code>broadCatchAllowedPaths</code> entry for a real process or protocol boundary that must translate every failure. Only list pairing exclusions for generated declarations or another evidenced non-source artifact.</p>
 <p>Do not add <code>ignoreErrors</code> to make adoption green. Fix the code. A narrow ignore for a demonstrated upstream type error needs the exact identifier and path and human approval.</p>
 <p>Introducing the toolkit is not permission to change a released public API, product documentation, or <code>AGENTS.md</code>. Preserve public facades and refactor their internals when a rule exposes a design problem.</p>
+<p>When refactoring tests, keep important inputs and expected results visible in the test. Do not replace forbidden private helpers with a fixture-builder layer or a scripted Faker subclass that asserts random-call order and bounds. Exercise real collaborators; extract deterministic production transformations for explicit input/output cases and test random output against its observable contract. Preserve parameter names and defaults as well as types when moving public facade internals.</p>
 <h3>Verification</h3>
 <p>Run the exact Composer script that CI will run:</p>
 <pre class="code-block"><code>composer phpstan</code></pre>

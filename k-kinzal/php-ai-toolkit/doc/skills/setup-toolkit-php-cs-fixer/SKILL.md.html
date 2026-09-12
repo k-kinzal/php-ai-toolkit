@@ -61,6 +61,7 @@ composer why-not friendsofphp/php-cs-fixer &lt;newest-compatible-version&gt;</co
 <p>For Laravel or Symfony projects, their rule sets can be added alongside toolkit rules. Place toolkit rules after framework presets so they take precedence on conflicts.</p>
 <h4>Initial application</h4>
 <p>The first run will likely fix many files. Run <code>composer format</code> and commit all changes in a single &quot;Apply strict coding standards&quot; commit before doing other work.</p>
+<p>Configure the formatter and its existing lint/CI entry points without adding a formatting tutorial to the product README or <code>docs/</code>. Setup rationale belongs in the delivery explanation unless a documentation change is requested.</p>
 <h3>Recommended Composer Scripts</h3>
 <p>Add to the target project&#039;s <code>composer.json</code>:</p>
 <pre class="code-block"><code>{

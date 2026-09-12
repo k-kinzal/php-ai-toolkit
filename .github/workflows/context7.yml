@@ -31,9 +31,23 @@ jobs:
             exit 1
           fi
 
-          curl --fail-with-body --silent --show-error \
+          response_file="$(mktemp)"
+          status="$(curl --silent --show-error --output "${response_file}" --write-out '%{http_code}' \
             --request POST https://context7.com/api/v1/refresh \
             --header 'Content-Type: application/json' \
             --header "Authorization: Bearer ${CONTEXT7_API_KEY}" \
-            --data "{\"libraryName\": \"${LIBRARY_NAME}\"}"
-          echo
+            --data "{\"libraryName\": \"${LIBRARY_NAME}\"}")"
+          echo "HTTP ${status}: $(cat "${response_file}")"
+
+          if [ "${status}" = '200' ]; then
+            exit 0
+          fi
+
+          error_code="$(jq -r '.error // empty' "${response_file}" 2>/dev/null || true)"
+          if [ "${status}" = '400' ] && [ "${error_code}" = 'too-early' ]; then
+            echo "::notice::Context7 declined the refresh of ${LIBRARY_NAME} because its minimum interval since the last update has not passed. The next push after that interval refreshes the library."
+            exit 0
+          fi
+
+          echo "::error::Context7 rejected the refresh of ${LIBRARY_NAME} with HTTP ${status}. Check the response above: 401 means the CONTEXT7_API_KEY secret is wrong, 404 means the library is not registered under that name."
+          exit 1

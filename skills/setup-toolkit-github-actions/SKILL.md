@@ -198,14 +198,26 @@ fixtures, or vendored documentation would pollute the index, a `context7.json`
 at the repository root narrows the scope; see
 https://context7.com/docs/adding-libraries for the current fields.
 
+Context7 accepts a refresh of a library at most once per minimum interval, ten
+days at the time of writing, and answers `400` with `"error":"too-early"` in
+between. The template treats that answer as a skipped refresh: it annotates the
+run and exits successfully, because the next push after the interval refreshes
+the library and a red badge would report a non-defect. Every other error still
+fails the job. If pushes are rare enough that a declined refresh may not be
+followed by another push for weeks, a `schedule` trigger at the interval's
+cadence catches up; add it only when the user confirms the tracked branch should
+be re-indexed without a push.
+
 After installing the workflow, validate it with actionlint. Once the secret
 exists, run it through `workflow_dispatch` and read the job log:
 
 - `{"message":"Refresh started successfully"}`: the refresh is queued.
+- `400` with `too-early`: the interval since the last update has not passed;
+  the job exits 0 with a notice, and the answer proves the secret and the
+  library id work.
 - `401`: the secret is missing or wrong.
 - `404`: the library is not registered, or `libraryName` differs from its id.
-- `429`: refreshes are rate limited; do not add retries or a schedule to work
-  around it.
+- `429`: refreshes are rate limited; do not add retries to work around it.
 
 ## Out of Scope: Mutation Testing
 

@@ -26,6 +26,22 @@ Use values derived from the target project. Do not copy PHP versions, paths,
 namespaces, dependency constraints, or CI settings from the php-ai-toolkit
 repository.
 
+In a monorepo, identify the requested package and its owning workflows before
+editing. Keep package commands, autoload changes, generated output, and tool
+dependencies within that scope; update shared callers only where the change
+requires it.
+
+Setup does not include rewriting the product README, adding architecture or
+tooling pages under `docs/`, or creating `CONTRIBUTING.md`. Keep setup rationale in
+the delivery explanation and operational settings in their tool files. If the user
+requests a documentation edit, preserve content outside that request; removing a
+section does not authorize replacing the rest of the README or moving the removed
+material into a new guide.
+
+Preserve established tool and workflow layouts. Standardizing a component's
+configuration does not by itself call for a new workflow or a nested Composer
+project under `tools/`.
+
 ## Apply Component Skills
 
 Read and follow the component skills in this order:

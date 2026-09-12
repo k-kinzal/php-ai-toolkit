@@ -15,10 +15,10 @@ Fuzzing is useful only after the contract under test is explicit. Do not add a
 loop that feeds arbitrary strings to an arbitrary method and calls a lack of
 crashes success.
 
-The design in `k-kinzal/ztd-query-php` is the reference shape: fuzzer bytes select
-and seed grammar-aware SQL generation, robustness targets check invariants, and
-correctness targets compare an adapter with a native database. Its exact SQL
-generators, database versions, dependencies, run counts, and workflow topology
+The design in `k-kinzal/ztd-query-php` is the reference shape: SQL Faker compiles
+fuzzer bytes into generation plans and prepares the resulting SQL on native
+databases; adapter correctness targets compare native and wrapped behavior. Its
+exact SQL generators, database versions, dependencies, run counts, and workflow topology
 are examples, not defaults for another project.
 
 ## Inspect the Target Project
@@ -38,6 +38,10 @@ Read before choosing a tool or editing files:
 Preserve unrelated changes. Never point a fuzzer at production or at a shared
 environment. Starting a local disposable service is in scope for setup; fuzzing an
 external service requires the user's explicit authorization for that exact target.
+
+Keep campaign instructions with an existing development-owned `fuzz/` surface when
+needed. Do not add fuzz setup, coverage reports, or reproduction tooling to the
+product README or `docs/` unless that documentation is requested.
 
 ## Define the Contract First
 
@@ -99,15 +103,21 @@ claiming syntax correctness. For adapters and rewriters, run the same schema,
 fixtures, query, and transaction through the native and wrapped paths and compare
 normalized results and final state.
 
+A syntax target should reach the server's parser/prepare operation without
+executing arbitrary generated statements. Verify the driver does not emulate or
+rewrite the input before the server sees it. Use execution and fixture state only
+for contracts that actually require them, such as adapter correctness.
+
 ### Make Fuzzer Bytes Useful
 
 The target must be deterministic for the same input and environment. Raw fuzzer
 bytes may be consumed directly, used to select generator branches and complexity,
 or converted to a reproducible seed. Prefer consuming bytes across structural
-choices because nearby mutations can then produce nearby cases. A whole-input hash
-or CRC seed is an acceptable initial bridge to an existing seeded generator, as in
-`ztd-query-php`, but verify that the corpus actually grows and coverage improves;
-an avalanche hash can discard useful mutation locality.
+choices because nearby mutations can then produce nearby cases. When the product
+has a plan/compiler API, use it to freeze production choices, values, and budgets;
+later random state must not change replay. A whole-input hash or CRC seed is only
+a fallback for a generator without structural controls. Verify useful corpus and
+coverage growth before treating that bridge as sufficient.
 
 Bound recursion, collection sizes, request sequences, payload length, and per-input
 work. Keep boundary values, empty values, malformed encodings, duplicate fields,
@@ -140,9 +150,33 @@ contract mismatches to an `Error` that prints the target name, fuzzer input or
 seed, generated domain input, and relevant environment versions. Keep the allowed
 rejection list narrow and explain each entry.
 
+Keep allowed rejections in a readable target-owned table with the reason beside
+each code. When one code represents both syntax and semantic failures, use a
+source-verified predicate for the allowed case. A dead connection, missing service,
+or broken instrumentation is a campaign failure and must stop with a non-zero
+status, not disappear as an ordinary ignored exception or become a product crash.
+
 Reset mutable state in `finally` after every input. For stateful sequences, reset
 between sequences, not between operations within the sequence. A crash must not be
 caused by state leaked from an unrelated previous input.
+
+## Keep the Harness Small
+
+Let the fuzz engine own the campaign loop, input mutation, corpus evolution, crash
+files, and minimization. The target should compose environment setup, input-to-plan
+conversion, one product operation, and its oracle. Do not build a second campaign
+runner, verdict registry, witness database, acceptance dashboard, or native
+extension merely to apply this skill.
+
+Keep reusable planning and domain coverage in the product that owns those
+concepts. The fuzz target can enable its recorder; it should not build a parallel
+coverage model or feed every oracle verdict back into production. Add custom
+engine feedback only for demonstrated coverage gaps the normal engine cannot see.
+
+Verify a thin harness through bounded execution and crash replay rather than
+creating a unit/integration suite for its wiring. Test substantive product
+algorithms and nontrivial oracle decisions where needed, using visible fixtures
+and the test framework's assertions instead of a bespoke testing framework.
 
 ## PHP-Fuzzer Setup
 
@@ -181,10 +215,13 @@ fuzz/
 ```
 
 Add target support classes to `autoload-dev` with a project-derived namespace and
-run `composer dump-autoload`. Commit a small corpus containing representative
-valid, invalid, empty, boundary, and previously failing inputs. Let local and CI
-runs evolve it. Ignore generated corpus entries and root `crash-*` files without
-untracking the reviewed seeds; force-add a deliberately promoted seed when needed.
+run `composer dump-autoload`. Keep reviewed seeds when they unlock meaningful
+states or reproduce a defect. Do not manufacture fixed binary seeds or add a
+corpus-preparation program just to populate a directory: an engine-generated
+corpus is sufficient when the byte-to-plan mapping already reaches useful cases.
+Let local and CI runs evolve it. Ignore generated corpus entries and root `crash-*`
+files without untracking reviewed seeds; force-add a deliberately promoted seed
+when needed.
 Never commit credentials, production data, access tokens, or sensitive HTTP
 responses in a corpus or crash artifact.
 
@@ -277,7 +314,7 @@ Before completing setup:
 3. Run `run-single` on that crash and verify the diagnostic contains the contract,
    domain input or seed, and environment version.
 4. Confirm state is reset by running the same corpus twice in one process.
-5. Check that reviewed seeds are tracked, generated corpus and crashes are ignored,
+5. Check that any reviewed seeds are tracked, generated corpus and crashes are ignored,
    and no sensitive data is present.
 6. Run `composer validate --strict --no-check-publish`, the normal unit suite, and
    every bounded fuzz Composer command.

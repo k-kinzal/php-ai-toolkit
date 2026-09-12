@@ -113,7 +113,13 @@ Do not add broad excludes just to make violations pass. Fix the source or report
 
 ## Multiple Policies
 
-When code has a structurally different but legitimate source shape, define a named policy and assign the exact files. Do not create a second config file or exclude the source:
+When code has a structurally different but legitimate source shape, define a named
+policy and assign the exact files. First distinguish unavoidable API or declaration
+volume from algorithmic complexity: extract shared behavior from an oversized plan
+catalog before granting it a larger class limit. A large public facade can justify
+more file/class lines while requiring much smaller, branch-free forwarding
+methods. Derive that method policy from its responsibility, not its current size.
+Do not create a second config file or exclude the source:
 
 ```yaml
 policies:
@@ -142,6 +148,11 @@ apply:
 ```
 
 Omitted child limits inherit the parent. An explicit `null` disables a limit. Prefer retaining method length and complexity limits when only an inherited native API surface makes a file or class larger.
+
+Executable PHPDoc can raise physical line counts without increasing code size.
+When that is the reason for an exception, keep NCLOC and behavior limits intact.
+Explain the matched files and reason in the delivery explanation; do not add a
+metrics tutorial to the product README or `docs/`.
 
 All path rules must be disjoint. LocGuard rejects overlapping rules, rules matching no scanned PHP files, unused policies, empty scans, inheritance cycles, missing policy references, and unknown configuration keys.
 

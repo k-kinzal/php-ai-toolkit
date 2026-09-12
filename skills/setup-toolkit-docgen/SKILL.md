@@ -80,14 +80,17 @@ Page content and design are fixed by the generator on purpose — only the scope
 ## Adapting to the Project
 
 - Single-package repositories need no `--packages`; the default `packages/*` glob simply matches nothing.
+- For one package in a monorepo, set `--packages` explicitly to that package.
+  Use one working directory for normal and diff runs, deriving the executable,
+  Deptrac, coverage, output, and cache paths from it. Confirm neither run discovers
+  sibling packages merely because it starts at the repository root.
 - Add `--exclude` globs for fixture directories that contain intentionally invalid PHP (for example
   `--exclude=tests/Fixture/*`).
-- To document key dependencies too, pass specific composer package name globs such as `--vendor=acme/*` rather than
-  `--vendor`; a glob that documents no installed package of that kind is reported as a warning, so typos surface at
-  once. Dev tooling is excluded unless a `--vendor-dev` glob asks for it.
-- Documenting a dependency is what makes its classes link targets in signatures and type expressions, so add the
-  packages whose types appear in the public API. Packages that ship only a phar cannot be documented and say so in a
-  warning.
+- Leave `--vendor` and `--vendor-dev` off for a product-only site, even when
+  dependency types occur in public signatures. When dependency documentation is
+  requested, select specific package-name globs such as `--vendor=acme/*`; bare
+  `--vendor` adds every runtime dependency. Unmatched globs and packages shipping
+  only a PHAR produce warnings.
 - Documenting many vendor packages needs memory: the run raises a limit below 512M automatically, and
   `--memory-limit=1G` handles very large dependency trees.
 - When the project runs deptrac, keep `deptrac.yaml` at the root so the architecture graph appears automatically.
@@ -222,6 +225,11 @@ Exit codes:
 - `2`: configuration or runtime error
 
 Then preview locally with `vendor/bin/docgen --serve` and spot-check the index page, one class page, and search.
+
+Check the generated package list and source links in normal and diff output. After
+narrowing scope, regenerate with the existing cache and verify removed package
+pages disappear; publishing must delete stale output too while preserving the
+preview directories owned by the other workflow.
 
 When a workflow was installed, check it too, and say plainly that the publishing itself is only observable after the
 workflow runs on the default branch:

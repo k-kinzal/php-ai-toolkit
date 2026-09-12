@@ -40,21 +40,31 @@ repository's historical multi-line constraint.
 If root development dependencies install on every supported PHP minor, derive the
 smallest constraint that lets each real graph resolve its newest compatible
 Infection release. Prefer one current line; add an older line only for a supported
-leg that proves it is necessary. If Infection runs from an isolated tool manifest,
-container, or job, constrain it for that runtime instead of burdening every product
-runtime. Verify every relevant lock or CI leg and diagnose an unexpected resolution
-with `composer why-not`:
+leg that proves it is necessary. If the package graph forces an unsuitable tool
+release, prefer a pinned Infection PHAR on the mutation job's supported runtime.
+Do not create a nested `tools/infection/composer.json` and lock just to isolate one
+executable. Preserve an established separate toolchain only when the project
+deliberately maintains it. Verify every relevant lock or CI leg and diagnose an
+unexpected resolution with `composer why-not`:
 
 ```bash
 composer require --dev "infection/infection:<target-derived-constraint>" --dry-run
 composer why-not infection/infection <newest-compatible-version>
-composer config allow-plugins.infection/extension-installer true
 ```
 
 Run the confirmed requirement without `--dry-run`, then enable the plugin only if
 the resolved package requires it. Do not assume the minimum PHP version or supported
 Infection line from this repository; those are release properties to verify at
 application time.
+
+For a PHAR installation, `setup-php` can install `infection:<exact-version>` in
+its `tools` input. Resolve that version from the mutation runtime, verify
+`infection --version`, use the matching published `resources/schema.json` URL,
+and replace `vendor/bin/infection` in every command with the installed executable.
+When passing PHP options, invoke `php -d memory_limit=4G "$(command -v infection)"`.
+The product still installs its own locked dependencies and PHPUnit; a PHAR does not
+make an incompatible test graph supported. No Infection Composer plugin permission
+is needed for this installation mode.
 
 ## Templates
 
@@ -104,9 +114,10 @@ lock resolution is not evidence about the target.
 
 Infection reports two scores:
 
-- **MSI** — killed mutants over all mutants, including mutants in code no test
-  covers. It answers "how much of the source is verified".
-- **Covered MSI** — killed mutants over the mutants in covered code only. It answers
+- **MSI** — detected mutants over all mutants, including mutants in code no test
+  covers. Infection's default detected count includes killed, errored, and
+  timed-out mutants. It answers "how much of the source is verified".
+- **Covered MSI** — detected mutants over the mutants in covered code only. It answers
   "where tests do run, do they assert anything".
 
 A measured score describes the current suite; it does not define an acceptable
@@ -179,23 +190,33 @@ Mutate production source only:
 `source.excludes` entries are relative to each source directory, not to the project
 root. Resolve every path from the target's selected source directories.
 
-Exclude a directory only when its tests cannot run in the same job as the gate — for
-example code exercised exclusively by a legacy PHPUnit configuration on an older PHP
-version. Do not exclude code because its mutants survive.
+An exclusion needs a specific scope reason: for example, code tested only under a
+different supported runtime, or reference declarations whose correctness is
+established against an independent native parser and whose unit tests would merely
+duplicate the declarations. Keep algorithms that interpret that data in scope.
+Identify the exact files and independent check; a large array or surviving mutants
+alone do not justify exclusion. Preserve an already authorized exception and ask
+only when a new mutation-scope decision remains unresolved.
 
 ## Timeouts
 
-`timeout` is an operational starting point, not a quality threshold. Measure the
-slowest relevant mutant test and set it above that duration with enough runner
-headroom; do not keep `10` merely because the first run was green. A timeout must
-not count as a killed mutant:
+Keep Infection's default timeout classification: timed-out mutants count as
+detected. Loop-condition mutations can create infinite loops. Do not add
+`timeoutsAsEscaped`, `maxTimeouts`, or a zero-timeout post-check unless the project
+explicitly chooses that different policy.
 
-- Infection 0.32.3 and later must set `timeoutsAsEscaped: true` and
-  `maxTimeouts: 0`.
-- Older supported Infection lines cannot express that policy. Prefer running the
-  isolated mutation job on a current Infection line. If the target is genuinely
-  pinned older, report the limitation and choose a timeout above the measured test
-  duration; do not pretend timeout classification is enforced.
+`timeout` is an operational value. Measure the covered initial suite and the
+largest selected test set, then allow runner headroom. Infection may skip mutants
+before execution when their estimated test duration exceeds the timeout; those
+skips are distinct from mutants that ran and timed out. A green score with skipped
+whole-tree mutants does not establish the baseline. Check `stats.skippedCount` in
+the JSON report and fail the whole-tree gate when it is non-zero. Re-measure after
+suite growth rather than retaining the first working timeout.
+
+Bound the PHP memory available to mutant test processes so warning floods or
+runaway allocation terminate. Setting `php -d` on Infection's controller alone
+does not establish the worker limit; configure the job's PHP INI and verify the
+child processes. Size the controller/report reader separately for large reports.
 
 ## Coverage Collection
 
@@ -207,6 +228,9 @@ With pcov or Xdebug enabled, no separate PHPUnit coverage command is required.
 `--coverage` means reuse an existing XML and JUnit report; it is not a prerequisite
 for mutation testing. `--skip-initial-tests` is only valid when that existing report
 is supplied and the suite was already proved green.
+
+Use `--only-covering-test-cases` for both gates when the installed release supports
+it. This selects the tests covering each mutant without narrowing mutation scope.
 
 Do not add a `Generate coverage for mutation testing` step solely for Infection,
 and do not pass `--coverage` or `--skip-initial-tests` in the standard job. Reuse a
@@ -255,6 +279,15 @@ requirements and the commands in the job, require the selected lock file to exis
 and run `composer check-platform-reqs` after installation. Treat job timeout,
 memory limits, and `--threads` as measured operational values: size them from the
 observed run and runner capacity without altering mutation scope or thresholds.
+
+In a monorepo, set the package working directory and verify a known changed source
+line is selected. Set artifact upload paths relative to the repository root;
+`defaults.run.working-directory` does not change an action's paths. Consult the
+installed Infection release's Git diff path handling;
+do not carry an old `diff.relative` workaround into a release that handles
+repository-relative paths natively. Upload mutation reports even when a gate fails.
+If manual whole-tree runs are provided, include the event name in concurrency keys
+so dispatching one does not cancel a PR check on the same branch.
 
 Take the base branch from `origin/${GITHUB_BASE_REF}` rather than hardcoding the
 default branch. GitHub sets that variable on pull request events, so a pull request

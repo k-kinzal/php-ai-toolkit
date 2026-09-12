@@ -130,6 +130,17 @@ The suite reports nothing until docblocks carry examples, so adoption is the wor
 
 Report the surface found and confirm the first few examples run before writing more. An example that cannot be executed is worse than no example: it is a claim nothing checks.
 
+Each example must establish its own state. For random APIs, construct providers
+and other collaborators before seeding if their bootstrap can consume randomness;
+check examples both in isolation and in the full suite. Assert promised output
+properties rather than incidental seeded spellings across dependency versions.
+
+Keep setup focused on PHPDoc and its runner. Do not add a developer guide or
+rewrite the README as a side effect. When product documentation is explicitly in
+scope, describe the consumer API and preserve unrelated sections. Markdown examples
+are not covered by the PHPDoc suite: execute them separately before claiming that
+all documentation examples pass.
+
 ## Notation
 
 ```php

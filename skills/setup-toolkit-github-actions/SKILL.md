@@ -128,16 +128,17 @@ remain separate from `ci.yml` so publishing permissions do not leak into CI.
 
 Do not write a mutation testing job from scratch. `/setup-toolkit-infection` ships
 the job together with the configuration it depends on, because the job needs a
-coverage driver, `fetch-depth: 0`, and a different Composer script per event. Point
-the user there when they ask for an Infection job.
+coverage driver, `fetch-depth: 0`, and different direct Infection arguments per
+event. Use that skill when an Infection job is in scope.
 
 ## Out of Scope: Performance Benchmarks
 
 Do not add PHPBench to the normal test or lint matrix. `/setup-toolkit-phpbench`
 owns the benchmark contract, stable runner settings, paired merge-target and
-candidate measurements, relative gate, job summary, and evidence Artifact. A
-benchmark command run once on one matrix leg is neither a comparison nor a useful
-performance gate.
+candidate measurements, and any requested comparison gate. Preserve an existing
+standalone benchmark job when applying CI conventions; do not replace it with a
+new comparison workflow unless that capability is requested. A single execution
+is not evidence of performance relative to the base revision.
 
 ## Out of Scope: Fuzzing
 
@@ -180,6 +181,13 @@ bad Composer constraint by narrowing the workflow matrix.
 Never use `--ignore-platform-reqs` to make a lower PHP job pass. That hides a
 real compatibility problem.
 
+Check upper PHP bounds in the locked dev graph as well as minimum versions.
+`composer check-platform-reqs --no-dev` verifies product requirements only; it
+cannot establish that ParaTest or another development tool supports that runtime.
+If resolving the mismatch requires changing an intentional dependency policy
+outside the CI request, report that limitation explicitly instead of claiming the
+green test job proves full platform compatibility.
+
 The workflow template is deliberately incomplete until its PHP values, test command,
 extensions, branches, and lock steps are derived from the target. Never retain a
 literal merely because it matches php-ai-toolkit's own CI. In particular, do not
@@ -217,6 +225,8 @@ Apply these rules to every workflow created by this skill:
   permissions for a step that truly needs them.
 - Use `pull_request`, not `pull_request_target`, for untrusted PR code.
 - Use `concurrency` with PR number or ref and `cancel-in-progress: true`.
+  Include the event name so a manual whole-tree mutation run cannot cancel the PR
+  checks on the same branch.
 - Set `fail-fast: false` for version matrices so all supported minors report.
 - Add `timeout-minutes` to jobs.
 - Give every job and every step a clear `name`.

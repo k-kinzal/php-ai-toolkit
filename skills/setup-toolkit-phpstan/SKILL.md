@@ -158,6 +158,13 @@ Introducing the toolkit is not permission to change a released public API,
 product documentation, or `AGENTS.md`. Preserve public facades and refactor
 their internals when a rule exposes a design problem.
 
+When refactoring tests, keep important inputs and expected results visible in the
+test. Do not replace forbidden private helpers with a fixture-builder layer or a
+scripted Faker subclass that asserts random-call order and bounds. Exercise real
+collaborators; extract deterministic production transformations for explicit
+input/output cases and test random output against its observable contract. Preserve
+parameter names and defaults as well as types when moving public facade internals.
+
 ## Verification
 
 Run the exact Composer script that CI will run:

@@ -72,6 +72,10 @@ For Laravel or Symfony projects, their rule sets can be added alongside toolkit 
 
 The first run will likely fix many files. Run `composer format` and commit all changes in a single "Apply strict coding standards" commit before doing other work.
 
+Configure the formatter and its existing lint/CI entry points without adding a
+formatting tutorial to the product README or `docs/`. Setup rationale belongs in
+the delivery explanation unless a documentation change is requested.
+
 ## Recommended Composer Scripts
 
 Add to the target project's `composer.json`:

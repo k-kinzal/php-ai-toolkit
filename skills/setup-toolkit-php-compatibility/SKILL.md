@@ -147,6 +147,10 @@ Add `@compat` to the existing gate sequence without removing other steps. If the
 first run finds violations, fix the code or resolve the declared support-policy
 conflict; do not weaken the range or leave the configured gate unwired.
 
+Keep compatibility tooling behind the existing `lint` development entry point.
+Do not add a compatibility tutorial or a separate command catalogue to the product
+README or `docs/` unless that documentation is requested.
+
 ## Relationship to PHPStan
 
 PHPStan can also flag version drift when the installed release supports declaring

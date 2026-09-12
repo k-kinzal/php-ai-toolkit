@@ -2,8 +2,8 @@
 name: setup-toolkit-phpbench
 description: >-
   Set up reproducible PHPBench benchmarks in a PHP project, including benchmark
-  design, shared Composer commands, PHPBench configuration, and a pull-request
-  workflow that compares the merge target with the candidate on one runner.
+  design, shared Composer commands, PHPBench configuration, and optional
+  pull-request comparisons on one runner.
   Use when adding, standardizing, or gating PHP performance benchmarks.
 ---
 
@@ -34,6 +34,11 @@ Read before editing:
 Preserve an established valid layout when standardizing an existing suite. For a
 new suite, use the top-level `bench/` layout from this skill. Preserve unrelated
 changes.
+
+Keep existing benchmark CI wiring when the request is to apply toolkit settings.
+A dedicated comparison workflow is a separate capability, not a prerequisite for
+PHPBench setup. Do not add benchmark guides to the product README or `docs/` as a
+side effect.
 
 ## Define the Performance Contract
 
@@ -164,6 +169,9 @@ Replace every example symbol and value. Then apply these rules:
 - Use fixed representative data and fixed seeds. Never call unseeded Faker,
   depend on wall-clock time, or discover a changing source tree inside the
   measured operation.
+- Isolate setup per subject or dialect. A shared hook must not reseed global random
+  state after another subject's provider has been initialized; seed the relevant
+  generator after bootstrap and select explicit resource/database versions.
 - Reset mutable state before each iteration. Do not let one revolution make later
   revolutions cheaper unless warmed state is the contract being named.
 - Make the result observable when the optimizer or underlying extension could
@@ -184,11 +192,12 @@ that threshold on every subject.
 
 ## Pull-Request Comparison and Gate
 
-Read `bench.yml` from
+When a PR comparison or regression gate is requested, read `bench.yml` from
 `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-phpbench/` and install it as
-the separate `.github/workflows/bench.yml`. Do not put benchmarks in the normal
-test matrix: compatibility tests answer a different question and concurrent jobs
-make timing noisier.
+the separate `.github/workflows/bench.yml`. For configuration-only adoption, keep
+the existing benchmark job and update it to invoke the shared Composer command.
+Label a standalone run as benchmark execution; a regression comparison requires
+both revisions. Keep measurements out of the normal test and lint matrix.
 
 Replace every `REPLACE_WITH_*` sentinel from target-project evidence. Select one
 production-representative supported PHP version rather than a version matrix.
@@ -250,12 +259,14 @@ Before completing setup:
    and parameter set appears and no unrelated test is discovered.
 3. Run the suite repeatedly and inspect `rstdev`. Stabilize noisy subjects before
    enabling the gate.
-4. Make a disposable subject slower by more than 10%, confirm the baseline
-   assertion exits non-zero, and remove the probe.
+4. If a comparison gate is installed, make a disposable subject slower by more than
+   10%, confirm the baseline assertion exits non-zero, and remove the probe.
 5. Confirm `build/phpbench/` and `phpbench.json` are ignored while
    `phpbench.json.dist` and benchmark sources are tracked.
-6. Run `git diff --check` and validate `.github/workflows/bench.yml` with
-   actionlint.
+6. Run `git diff --check` and validate the changed workflow with actionlint.
+   For comparisons, capture both stdout and stderr from `phpbench --version`;
+   PHPBench can print its version on stderr. Two empty strings do not establish
+   matching tool versions.
 7. Search installed files for `REPLACE_WITH`; a remaining sentinel is a failed
    setup.
 

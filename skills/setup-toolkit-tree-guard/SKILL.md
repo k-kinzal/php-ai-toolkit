@@ -105,7 +105,10 @@ Introducing TreeGuard does not authorize a public API change.
 
 Do not invent incidental buckets such as `Common`, `Shared`, `Helpers`, or a
 numbered split. The new directories must express stable ownership or dependency
-boundaries that Deptrac can enforce.
+boundaries. Subdirectories within one responsibility can remain in the same
+Deptrac layer; file-count limits do not require a layer for every new directory.
+Keep the restructuring rationale out of the product README and `docs/` unless
+their documentation is part of the user's request.
 
 ## Reporter
 

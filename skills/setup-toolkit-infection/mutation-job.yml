@@ -14,6 +14,7 @@ mutation:
         php-version: 'REPLACE_WITH_MUTATION_JOB_PHP'
         extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
         coverage: pcov
+        ini-values: memory_limit=1G
 
     - name: Install dependencies
       uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
@@ -31,6 +32,7 @@ mutation:
         php -d memory_limit=4G vendor/bin/infection
         --configuration=infection.json5
         --threads=max
+        --only-covering-test-cases
         --git-diff-lines
         --git-diff-base="origin/${GITHUB_BASE_REF}"
         --ignore-msi-with-no-mutations
@@ -45,5 +47,25 @@ mutation:
         php -d memory_limit=4G vendor/bin/infection
         --configuration=infection.json5
         --threads=max
+        --only-covering-test-cases
         --no-progress
         --logger-github
+
+    - name: Reject skipped whole-tree mutants
+      if: github.event_name != 'pull_request'
+      run: |
+        php -d memory_limit=1G -r '
+          $report = json_decode(file_get_contents("build/infection/infection.json"), true, 512, JSON_THROW_ON_ERROR);
+          if (($report["stats"]["skippedCount"] ?? null) !== 0) {
+              fwrite(STDERR, "Infection did not report zero skipped mutants; check the report and timeout against test durations.\n");
+              exit(1);
+          }
+        '
+
+    - name: Upload mutation reports
+      if: always()
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      with:
+        name: mutation-reports
+        path: build/infection/
+        if-no-files-found: ignore

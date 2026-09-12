@@ -14,6 +14,9 @@ This skill configures Deptrac around the architecture the project should have.
 Current directories and dependencies are evidence, not the model: a configuration
 that merely permits the existing graph makes a poor design permanently green.
 
+Keep the architecture rationale in the delivery explanation. Configuring Deptrac
+does not include adding an architecture page to product `docs/` or the README.
+
 ## Prerequisites
 
 Inspect `composer.json` before installing:
@@ -75,6 +78,10 @@ Work in this order:
    and namespaces.
 3. For each candidate, write why it is a boundary. A directory is not automatically a layer; it needs a responsibility boundary or dependency rule worth enforcing.
 4. Drop candidates that are too small, purely incidental, generated, or only exist to hold exceptions/types with no useful dependency policy.
+   Prefer architectural stages or capabilities over algorithm details. Tokens,
+   values, plans, output, and coverage can be subdirectories of one generation
+   stage without becoming five layers. A TreeGuard directory split does not
+   automatically introduce a new dependency boundary.
 5. Define the dependency direction that keeps policy and core behavior independent
    of entry points and infrastructure. Current dependencies are never automatic
    permission.
@@ -103,6 +110,13 @@ and move implementation behind responsibility-based internal namespaces. A long
 is an allowlist of the current accident. Prefer directory collectors after the
 structure has been repaired.
 
+Give each internal layer a coherent directory subtree; its implementation
+subdirectories normally belong to that same layer. Do not assemble one internal
+stage from unrelated directory fragments or make every leaf directory a layer.
+Existing public facades can need narrow additional collectors. Preserve the
+consumer API, but migrate internal callers instead of retaining redundant internal
+forwarders and inventing `Compatibility` or `Tooling` layers to house them.
+
 ## Examples
 
 Examples live under `vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-deptrac/examples/`.
@@ -128,6 +142,11 @@ Prefer collectors in this order:
 Every production class-like token should belong to one intentional layer. A thin
 public facade can have its own layer; leaving it unassigned hides dependencies.
 Fix the structure or collectors until `debug:unassigned` is empty.
+
+Assign PHPDoc and class aliases to the layer that owns their declaration when the
+installed analyzer exposes them as tokens. Do not build a `PhpRuntime` layer with
+an edge from every application layer: retain Deptrac's default handling of built-in
+classes unless a real project policy restricts a particular runtime capability.
 
 ## Ruleset Strategy
 
@@ -230,6 +249,10 @@ Fix configuration in this order:
 2. Unassigned production tokens.
 3. Unused rulesets caused by stale layer assumptions.
 4. Real architecture violations.
+
+Use disposable dependencies to verify the important forbidden directions really
+fail, including a shared stage referring to a concrete adapter. A zero-violation
+report alone does not prove that collectors enforce the intended boundaries.
 
 ## References
 

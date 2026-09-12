@@ -138,8 +138,13 @@ jobs:
 
           baseline_phpbench="baseline/$BENCH_PROJECT_DIR/vendor/bin/phpbench"
           candidate_phpbench="candidate/$BENCH_PROJECT_DIR/vendor/bin/phpbench"
-          baseline_version=$("$baseline_phpbench" --version)
-          candidate_version=$("$candidate_phpbench" --version)
+          baseline_version=$("$baseline_phpbench" --version 2>&1)
+          candidate_version=$("$candidate_phpbench" --version 2>&1)
+
+          if [ -z "$baseline_version" ] || [ -z "$candidate_version" ]; then
+            echo 'Could not read the PHPBench version for both revisions.' >&2
+            exit 1
+          fi
 
           if [ "$baseline_version" != "$candidate_version" ]; then
             echo 'BENCH_COMPARISON_KIND=toolchain-changed' >> "$GITHUB_ENV"
@@ -235,7 +240,7 @@ jobs:
             uname -a
             php -v
             if [ -x vendor/bin/phpbench ]; then
-              vendor/bin/phpbench --version
+              vendor/bin/phpbench --version 2>&1
             fi
           } > build/phpbench/metadata.txt
 

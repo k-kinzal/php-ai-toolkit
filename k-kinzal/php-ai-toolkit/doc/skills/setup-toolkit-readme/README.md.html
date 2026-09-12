@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Set Up php-ai-toolkit — k-kinzal/php-ai-toolkit</title>
-<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/php-ai-toolkit/doc/skills/setup-php-ai-toolkit/SKILL.md.html">
-<meta name="description" content="Set Up php-ai-toolkit, a document of the k-kinzal/php-ai-toolkit package.">
+<title>{{PROJECT_NAME}} — k-kinzal/php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/php-ai-toolkit/doc/skills/setup-toolkit-readme/README.md.html">
+<meta name="description" content="{{PROJECT_NAME}}, a document of the k-kinzal/php-ai-toolkit package.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="k-kinzal/php-ai-toolkit">
-<meta property="og:title" content="Set Up php-ai-toolkit — k-kinzal/php-ai-toolkit">
-<meta property="og:description" content="Set Up php-ai-toolkit, a document of the k-kinzal/php-ai-toolkit package.">
-<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/php-ai-toolkit/doc/skills/setup-php-ai-toolkit/SKILL.md.html">
+<meta property="og:title" content="{{PROJECT_NAME}} — k-kinzal/php-ai-toolkit">
+<meta property="og:description" content="{{PROJECT_NAME}}, a document of the k-kinzal/php-ai-toolkit package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/php-ai-toolkit/doc/skills/setup-toolkit-readme/README.md.html">
 <meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 <div class="page">
 <header class="topbar">
 <button class="nav-toggle" id="nav-toggle" title="Toggle navigation">☰</button>
-<nav class="crumbs"><a href="../../../../../k-kinzal/php-ai-toolkit/index.html">k-kinzal/php-ai-toolkit</a><span class="crumb-sep">::</span><span class="crumb-current">skills/setup-php-ai-toolkit/SKILL.md</span></nav>
+<nav class="crumbs"><a href="../../../../../k-kinzal/php-ai-toolkit/index.html">k-kinzal/php-ai-toolkit</a><span class="crumb-sep">::</span><span class="crumb-current">skills/setup-toolkit-readme/README.md</span></nav>
 <div class="topbar-tools">
 <input type="search" id="search" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
 <a class="repo-link" href="https://github.com/k-kinzal/php-ai-toolkit" title="Repository: https://github.com/k-kinzal/php-ai-toolkit" rel="noreferrer">github.com</a>
@@ -33,29 +33,18 @@
 </header>
 <div class="search-results" id="search-results" hidden></div>
 <main class="content">
-<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Set Up php-ai-toolkit</h1><div class="symbol-meta"><span class="src-link">skills/setup-php-ai-toolkit/SKILL.md</span></div></div>
-<section class="readme"><hr>
-<p>name: setup-php-ai-toolkit description: &gt;- Set up php-ai-toolkit end to end in a PHP project by selecting and applying the relevant setup-toolkit component skills. Use for a complete toolkit setup; use the named component skill directly when the request concerns one tool only. ---</p>
-<h2>Set Up php-ai-toolkit</h2>
-<p>This skill is the entry point for applying php-ai-toolkit to a user&#039;s project. It coordinates the component setup skills; the component skills own the detailed requirements, templates, and verification steps.</p>
-<h3>Inspect the Project</h3>
-<p>Before selecting components, read:</p>
-<ul><li><code>composer.json</code>, including PHP constraints, autoload roots, dependencies, and scripts;</li><li>the source and test directory layout;</li><li>existing tool configuration and GitHub Actions workflows; and</li><li>the project&#039;s current diff so unrelated changes are preserved.</li></ul>
-<p>Use values derived from the target project. Do not copy PHP versions, paths, namespaces, dependency constraints, or CI settings from the php-ai-toolkit repository.</p>
-<p>In a monorepo, identify the requested package and its owning workflows before editing. Keep package commands, autoload changes, generated output, and tool dependencies within that scope; update shared callers only where the change requires it.</p>
-<p>Setup does not include rewriting the product README, adding architecture or tooling pages under <code>docs/</code>, or creating <code>CONTRIBUTING.md</code>. Keep setup rationale in the delivery explanation and operational settings in their tool files. If the user requests a documentation edit, preserve content outside that request; removing a section does not authorize replacing the rest of the README or moving the removed material into a new guide.</p>
-<p>Preserve established tool and workflow layouts. Standardizing a component&#039;s configuration does not by itself call for a new workflow or a nested Composer project under <code>tools/</code>.</p>
-<h3>Apply Component Skills</h3>
-<p>Read and follow the component skills in this order:</p>
-<ol><li><code>/setup-toolkit-phpstan</code></li><li><code>/setup-toolkit-phpunit</code> and <code>/setup-toolkit-doctest</code></li><li>Assess performance-sensitive public operations and use <code>/setup-toolkit-phpbench</code> only when a stable representative workload can support a useful local benchmark or pull-request comparison</li><li>Assess the project&#039;s contracts and use <code>/setup-toolkit-pbt</code> and/or <code>/setup-toolkit-fuzzing</code> only where structured properties or coverage-guided exploration provide a meaningful oracle</li><li><code>/setup-toolkit-php-cs-fixer</code> and <code>/setup-toolkit-php-compatibility</code></li><li><code>/setup-toolkit-loc-guard</code> and <code>/setup-toolkit-tree-guard</code></li><li><code>/setup-toolkit-deptrac</code></li><li><code>/setup-toolkit-infection</code></li><li><code>/setup-toolkit-docgen</code></li><li><code>/setup-toolkit-github-actions</code></li></ol>
-<p>Use <code>/setup-toolkit-agents-md</code> only when the user explicitly asks to create or change <code>AGENTS.md</code>, and <code>/setup-toolkit-readme</code> only when the user explicitly asks to create or change <code>README.md</code>.</p>
-<p>When multiple component skills update the same target file, combine their requirements into that file. GitHub Actions is applied last so its jobs invoke the commands and configuration selected by the other component skills.</p>
-<p>PHPBench, fuzzing, and PBT are not checkbox gates. Skip PHPBench when no stable representative workload exists. Skip either fuzzing or PBT when no contract has a generator and oracle strong enough to justify it, and report those decisions.</p>
-<p>The core adoption is incomplete until PHPStan, PHPUnit, PHP-CS-Fixer, PHPCompatibility, LocGuard, TreeGuard, Deptrac, Infection, and GitHub Actions are installed, configured, wired into Composer, and exercised. Doctest and DocGen are also part of a complete adoption when the project has maintained PHPDoc examples or published API documentation.</p>
-<p>Do not silently classify a core component as inapplicable. LocGuard and TreeGuard apply to every project with maintained production PHP source. PHPCompatibility applies whenever the project declares a PHP support range. Deptrac applies even to a flat library: discover or create a meaningful responsibility boundary, and stop for the project&#039;s architecture decision if one cannot be derived without guessing. If a core component is genuinely blocked by the target&#039;s runtime or dependency graph, report the exact blocker and leave the overall setup incomplete.</p>
-<p>Before applying GitHub Actions, verify this completion table against files and Composer scripts rather than against work already attempted:</p>
-<div class="table-wrap"><table><thead><tr><th>Component</th><th>Required evidence</th></tr></thead><tbody><tr><td>PHPStan</td><td><code>phpstan.neon</code> or <code>.dist</code>, and <code>composer phpstan</code></td></tr><tr><td>PHPUnit</td><td>version-correct configuration, and <code>composer test:unit</code></td></tr><tr><td>PHP-CS-Fixer</td><td><code>.php-cs-fixer.dist.php</code>, and <code>composer format:check</code></td></tr><tr><td>PHPCompatibility</td><td><code>phpcs.xml.dist</code>, and <code>composer compat</code></td></tr><tr><td>LocGuard</td><td><code>loc.yaml</code>, and <code>composer loc-guard</code></td></tr><tr><td>TreeGuard</td><td><code>tree.yaml</code>, and <code>composer tree-guard</code></td></tr><tr><td>Deptrac</td><td><code>deptrac.yaml</code>, and <code>composer deptrac</code></td></tr><tr><td>Infection</td><td><code>infection.json5</code>, and a mutation CI job</td></tr></tbody></table></div>
-<p>Every configured fast gate must also appear in the aggregate <code>lint</code> script. Re-open the generated workflow after GitHub Actions is applied and confirm that every row is invoked. Missing evidence is a setup failure, not an optional follow-up.</p>
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>{{PROJECT_NAME}}</h1><div class="symbol-meta"><span class="src-link">skills/setup-toolkit-readme/README.md</span></div></div>
+<section class="readme"><h2>{{PROJECT_NAME}}</h2>
+<p>{{BADGES}}</p>
+<p>{{OVERVIEW}}</p>
+<h3>Requirements</h3>
+<ul><li>PHP {{PHP_CONSTRAINT}}</li></ul>
+<p>{{ADDITIONAL_REQUIREMENTS}}</p>
+<h3>Getting Started</h3>
+<pre class="code-block"><code>{{INSTALL_COMMAND}}</code></pre>
+<p>{{GETTING_STARTED_EXAMPLE}}</p>
+<h3>License</h3>
+<p>{{LICENSE_NAME}}. See <span class="md-target" title="LICENSE">LICENSE</span> for details.</p>
 </section>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

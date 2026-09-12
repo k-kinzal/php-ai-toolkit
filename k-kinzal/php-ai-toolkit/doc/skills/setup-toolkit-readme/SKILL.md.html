@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Set Up php-ai-toolkit — k-kinzal/php-ai-toolkit</title>
-<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/php-ai-toolkit/doc/skills/setup-php-ai-toolkit/SKILL.md.html">
-<meta name="description" content="Set Up php-ai-toolkit, a document of the k-kinzal/php-ai-toolkit package.">
+<title>Setup README — k-kinzal/php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/php-ai-toolkit/doc/skills/setup-toolkit-readme/SKILL.md.html">
+<meta name="description" content="Setup README, a document of the k-kinzal/php-ai-toolkit package.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="k-kinzal/php-ai-toolkit">
-<meta property="og:title" content="Set Up php-ai-toolkit — k-kinzal/php-ai-toolkit">
-<meta property="og:description" content="Set Up php-ai-toolkit, a document of the k-kinzal/php-ai-toolkit package.">
-<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/php-ai-toolkit/doc/skills/setup-php-ai-toolkit/SKILL.md.html">
+<meta property="og:title" content="Setup README — k-kinzal/php-ai-toolkit">
+<meta property="og:description" content="Setup README, a document of the k-kinzal/php-ai-toolkit package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/php-ai-toolkit/doc/skills/setup-toolkit-readme/SKILL.md.html">
 <meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 <div class="page">
 <header class="topbar">
 <button class="nav-toggle" id="nav-toggle" title="Toggle navigation">☰</button>
-<nav class="crumbs"><a href="../../../../../k-kinzal/php-ai-toolkit/index.html">k-kinzal/php-ai-toolkit</a><span class="crumb-sep">::</span><span class="crumb-current">skills/setup-php-ai-toolkit/SKILL.md</span></nav>
+<nav class="crumbs"><a href="../../../../../k-kinzal/php-ai-toolkit/index.html">k-kinzal/php-ai-toolkit</a><span class="crumb-sep">::</span><span class="crumb-current">skills/setup-toolkit-readme/SKILL.md</span></nav>
 <div class="topbar-tools">
 <input type="search" id="search" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
 <a class="repo-link" href="https://github.com/k-kinzal/php-ai-toolkit" title="Repository: https://github.com/k-kinzal/php-ai-toolkit" rel="noreferrer">github.com</a>
@@ -33,29 +33,43 @@
 </header>
 <div class="search-results" id="search-results" hidden></div>
 <main class="content">
-<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Set Up php-ai-toolkit</h1><div class="symbol-meta"><span class="src-link">skills/setup-php-ai-toolkit/SKILL.md</span></div></div>
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Setup README</h1><div class="symbol-meta"><span class="src-link">skills/setup-toolkit-readme/SKILL.md</span></div></div>
 <section class="readme"><hr>
-<p>name: setup-php-ai-toolkit description: &gt;- Set up php-ai-toolkit end to end in a PHP project by selecting and applying the relevant setup-toolkit component skills. Use for a complete toolkit setup; use the named component skill directly when the request concerns one tool only. ---</p>
-<h2>Set Up php-ai-toolkit</h2>
-<p>This skill is the entry point for applying php-ai-toolkit to a user&#039;s project. It coordinates the component setup skills; the component skills own the detailed requirements, templates, and verification steps.</p>
-<h3>Inspect the Project</h3>
-<p>Before selecting components, read:</p>
-<ul><li><code>composer.json</code>, including PHP constraints, autoload roots, dependencies, and scripts;</li><li>the source and test directory layout;</li><li>existing tool configuration and GitHub Actions workflows; and</li><li>the project&#039;s current diff so unrelated changes are preserved.</li></ul>
-<p>Use values derived from the target project. Do not copy PHP versions, paths, namespaces, dependency constraints, or CI settings from the php-ai-toolkit repository.</p>
-<p>In a monorepo, identify the requested package and its owning workflows before editing. Keep package commands, autoload changes, generated output, and tool dependencies within that scope; update shared callers only where the change requires it.</p>
-<p>Setup does not include rewriting the product README, adding architecture or tooling pages under <code>docs/</code>, or creating <code>CONTRIBUTING.md</code>. Keep setup rationale in the delivery explanation and operational settings in their tool files. If the user requests a documentation edit, preserve content outside that request; removing a section does not authorize replacing the rest of the README or moving the removed material into a new guide.</p>
-<p>Preserve established tool and workflow layouts. Standardizing a component&#039;s configuration does not by itself call for a new workflow or a nested Composer project under <code>tools/</code>.</p>
-<h3>Apply Component Skills</h3>
-<p>Read and follow the component skills in this order:</p>
-<ol><li><code>/setup-toolkit-phpstan</code></li><li><code>/setup-toolkit-phpunit</code> and <code>/setup-toolkit-doctest</code></li><li>Assess performance-sensitive public operations and use <code>/setup-toolkit-phpbench</code> only when a stable representative workload can support a useful local benchmark or pull-request comparison</li><li>Assess the project&#039;s contracts and use <code>/setup-toolkit-pbt</code> and/or <code>/setup-toolkit-fuzzing</code> only where structured properties or coverage-guided exploration provide a meaningful oracle</li><li><code>/setup-toolkit-php-cs-fixer</code> and <code>/setup-toolkit-php-compatibility</code></li><li><code>/setup-toolkit-loc-guard</code> and <code>/setup-toolkit-tree-guard</code></li><li><code>/setup-toolkit-deptrac</code></li><li><code>/setup-toolkit-infection</code></li><li><code>/setup-toolkit-docgen</code></li><li><code>/setup-toolkit-github-actions</code></li></ol>
-<p>Use <code>/setup-toolkit-agents-md</code> only when the user explicitly asks to create or change <code>AGENTS.md</code>, and <code>/setup-toolkit-readme</code> only when the user explicitly asks to create or change <code>README.md</code>.</p>
-<p>When multiple component skills update the same target file, combine their requirements into that file. GitHub Actions is applied last so its jobs invoke the commands and configuration selected by the other component skills.</p>
-<p>PHPBench, fuzzing, and PBT are not checkbox gates. Skip PHPBench when no stable representative workload exists. Skip either fuzzing or PBT when no contract has a generator and oracle strong enough to justify it, and report those decisions.</p>
-<p>The core adoption is incomplete until PHPStan, PHPUnit, PHP-CS-Fixer, PHPCompatibility, LocGuard, TreeGuard, Deptrac, Infection, and GitHub Actions are installed, configured, wired into Composer, and exercised. Doctest and DocGen are also part of a complete adoption when the project has maintained PHPDoc examples or published API documentation.</p>
-<p>Do not silently classify a core component as inapplicable. LocGuard and TreeGuard apply to every project with maintained production PHP source. PHPCompatibility applies whenever the project declares a PHP support range. Deptrac applies even to a flat library: discover or create a meaningful responsibility boundary, and stop for the project&#039;s architecture decision if one cannot be derived without guessing. If a core component is genuinely blocked by the target&#039;s runtime or dependency graph, report the exact blocker and leave the overall setup incomplete.</p>
-<p>Before applying GitHub Actions, verify this completion table against files and Composer scripts rather than against work already attempted:</p>
-<div class="table-wrap"><table><thead><tr><th>Component</th><th>Required evidence</th></tr></thead><tbody><tr><td>PHPStan</td><td><code>phpstan.neon</code> or <code>.dist</code>, and <code>composer phpstan</code></td></tr><tr><td>PHPUnit</td><td>version-correct configuration, and <code>composer test:unit</code></td></tr><tr><td>PHP-CS-Fixer</td><td><code>.php-cs-fixer.dist.php</code>, and <code>composer format:check</code></td></tr><tr><td>PHPCompatibility</td><td><code>phpcs.xml.dist</code>, and <code>composer compat</code></td></tr><tr><td>LocGuard</td><td><code>loc.yaml</code>, and <code>composer loc-guard</code></td></tr><tr><td>TreeGuard</td><td><code>tree.yaml</code>, and <code>composer tree-guard</code></td></tr><tr><td>Deptrac</td><td><code>deptrac.yaml</code>, and <code>composer deptrac</code></td></tr><tr><td>Infection</td><td><code>infection.json5</code>, and a mutation CI job</td></tr></tbody></table></div>
-<p>Every configured fast gate must also appear in the aggregate <code>lint</code> script. Re-open the generated workflow after GitHub Actions is applied and confirm that every row is invoked. Missing evidence is a setup failure, not an optional follow-up.</p>
+<p>name: setup-toolkit-readme description: &gt;- Set up a minimal README.md for a PHP project: badges, a one-paragraph overview, Requirements, Getting Started, and License. Use when asked to create, trim, or restructure README.md, add badges for CI workflows, a docs site, PHP versions, license, Packagist, or DeepWiki, or link the repository&#039;s DeepWiki page. ---</p>
+<h2>Setup README</h2>
+<p>This skill writes the product README the way php-ai-toolkit projects keep it: the least a reader needs to decide whether to install the package and to run it once. Everything else lives in <code>docs/</code> or the generated documentation site.</p>
+<p>Use this skill only when the user explicitly asks to create or change <code>README.md</code>. Applying the toolkit, adding a workflow, or publishing documentation is not permission to rewrite the product README; the other setup skills say the same. If <code>README.md</code> already exists, treat it as product-owned: keep the facts and prose in it, add or change only what the request names, and ask before removing a section the user did not mention.</p>
+<h3>Discover Project Facts</h3>
+<p>Read these before writing:</p>
+<ul><li><code>composer.json</code>: <code>name</code>, <code>description</code>, <code>require.php</code>, the <code>require</code> entries a user must provide themselves (extensions, external tools, framework peers), <code>license</code>, <code>homepage</code>, and <code>support.docs</code>.</li><li><code>LICENSE</code>: the license named by the badge and the closing section.</li><li><code>.github/workflows/*.yml</code>: every workflow that runs on the default branch is a status badge candidate.</li><li>The docs workflow, the <code>gh-pages</code> branch, or <code>support.docs</code>: whether a documentation site is published and at which address.</li><li>Packagist: whether <code>composer require</code> works without a <code>repositories</code> entry. Check <code>https://packagist.org/packages/&lt;vendor&gt;/&lt;package&gt;</code> rather than assuming; a package that is not there needs the VCS repository entry in Getting Started.</li><li>The default branch name, for <code>?branch=</code> on workflow badges.</li><li>In a monorepo, the package directory: badges link to the repository&#039;s workflows and to the package&#039;s own documentation path.</li></ul>
+<h3>Template</h3>
+<p>Read the template from <code>vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-readme/README.md</code> and replace every <code>{{PLACEHOLDER}}</code> from project evidence. Do not copy this repository&#039;s badges, versions, or wording.</p>
+<div class="table-wrap"><table><thead><tr><th>Placeholder</th><th>Value</th></tr></thead><tbody><tr><td><code>{{PROJECT_NAME}}</code></td><td>The package or repository name.</td></tr><tr><td><code>{{BADGES}}</code></td><td>The badge block from the Badges section, one badge per line.</td></tr><tr><td><code>{{OVERVIEW}}</code></td><td>One paragraph: what the package is, who it is for, and the one thing that distinguishes it.</td></tr><tr><td><code>{{PHP_CONSTRAINT}}</code></td><td><code>require.php</code> written for people, such as <code>8.1 or higher</code>.</td></tr><tr><td><code>{{ADDITIONAL_REQUIREMENTS}}</code></td><td>One bullet per extension, external tool, or peer the package cannot install itself; remove the line when there are none.</td></tr><tr><td><code>{{INSTALL_COMMAND}}</code></td><td>The <code>composer require</code> line, with <code>--dev</code> for development tools and the <code>repositories</code> entry first when the package is not on Packagist.</td></tr><tr><td><code>{{GETTING_STARTED_EXAMPLE}}</code></td><td>The shortest complete example that does something useful: a code block for a library, the command and its output for a CLI.</td></tr><tr><td><code>{{LICENSE_NAME}}</code></td><td>The license name, such as <code>MIT License</code>.</td></tr></tbody></table></div>
+<h3>Structure</h3>
+<p>The README has a title, a badge block, one paragraph, and three sections: Requirements, Getting Started, and License. The overview is prose, not a feature list.</p>
+<p>Add a further section only when the reader cannot use the package without it: a table of supported syntaxes or drivers, a CLI&#039;s <code>--help</code> output, or the shape of a configuration file. Name that section for its content and keep it between Getting Started and License. Do not add Features, Architecture, Contributing, Changelog, Roadmap, or Acknowledgements sections; architecture and tooling belong to <code>docs/</code> and the generated site, and the docs badge is the link to them.</p>
+<p>Prefer leaving information out over compressing it. A reader who needs more follows the docs badge.</p>
+<h3>Badges</h3>
+<p>Add every badge the project can back with a real target, in this order:</p>
+<ol><li>The documentation site, when DocGen or another generator publishes one: ``<code>markdown [![docs](https://img.shields.io/badge/docs-&lt;package&gt;-0969da?logo=php&amp;logoColor=white)](https://&lt;owner&gt;.github.io/&lt;repository&gt;/) </code>``</li><li>One status badge per workflow that runs on the default branch (CI, docs, Context7, and so on), pinned to that branch: ``<code>markdown [![CI](https://github.com/&lt;owner&gt;/&lt;repository&gt;/actions/workflows/ci.yml/badge.svg?branch=&lt;default-branch&gt;)](https://github.com/&lt;owner&gt;/&lt;repository&gt;/actions/workflows/ci.yml) </code>``</li><li>The Packagist version, only when the package is published there: ``<code>markdown [![Packagist](https://img.shields.io/packagist/v/&lt;vendor&gt;/&lt;package&gt;)](https://packagist.org/packages/&lt;vendor&gt;/&lt;package&gt;) </code>``</li><li>The supported PHP versions, derived from <code>require.php</code> and the CI matrix: ``<code>markdown [![PHP](https://img.shields.io/badge/php-8.1%20%7C%208.2%20%7C%208.3-777bb4?logo=php&amp;logoColor=white)](https://www.php.net/) </code>``</li><li>The license, from <code>composer.json</code> and <code>LICENSE</code>: ``<code>markdown [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE) </code>``</li><li>DeepWiki, for every public repository, as described below.</li></ol>
+<p>A badge must point at something that exists: no workflow badge for a workflow the project does not have, no Packagist badge for a VCS-only package, no coverage badge without a coverage service. Add a badge in the same change that adds its target, never ahead of it.</p>
+<h3>DeepWiki</h3>
+<p>DeepWiki (https://deepwiki.com) generates a browsable wiki and a question interface for a public GitHub repository. Add its badge to every public repository:</p>
+<pre class="code-block"><code>[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/&lt;owner&gt;/&lt;repository&gt;)</code></pre>
+<p>The link is the repository, not a package path: DeepWiki indexes repositories, so a package inside a monorepo links to the monorepo&#039;s page.</p>
+<p>Indexing is free for public repositories but does not happen by itself. Open <code>https://deepwiki.com/&lt;owner&gt;/&lt;repository&gt;</code>; if the page offers to index the repository instead of showing a wiki, ask the user to submit it there. The badge renders before indexing finishes, but the link shows nothing useful until then, so say so in the delivery. DeepWiki for private repositories is a paid Devin feature; report that instead of adding a badge that leads to a sign-in page.</p>
+<h3>Verification</h3>
+<p>After editing:</p>
+<pre class="code-block"><code>git diff --check</code></pre>
+<p>Then check that every absolute link and badge in the README resolves:</p>
+<pre class="code-block"><code>grep -o &#039;https://[^)&quot;]*&#039; README.md | sort -u | while read -r url; do
+  if curl --silent --fail --head --location --output /dev/null &quot;$url&quot;; then
+    echo &quot;ok   $url&quot;
+  else
+    echo &quot;FAIL $url&quot;
+  fi
+done</code></pre>
+<p>Confirm the install command works as written from an empty directory when the package is public, and that the Getting Started example runs against the installed package. Report anything that could not be executed locally.</p>
 </section>
 </main>
 <footer class="site-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

@@ -1,0 +1,71 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M2B4AB4ACK0EH56141HTESHB",
+  "session_id": "01a09625-d77f-7711-86f3-fca16d252774",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-12T15:38:40.787524Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "skills/setup-php-ai-toolkit/SKILL.md",
+    "skills/setup-toolkit-deptrac/SKILL.md",
+    "skills/setup-toolkit-docgen/SKILL.md",
+    "skills/setup-toolkit-doctest/SKILL.md",
+    "skills/setup-toolkit-fuzzing/SKILL.md",
+    "skills/setup-toolkit-github-actions/SKILL.md",
+    "skills/setup-toolkit-github-actions/ci.yml",
+    "skills/setup-toolkit-infection/SKILL.md",
+    "skills/setup-toolkit-infection/infection.json5",
+    "skills/setup-toolkit-infection/mutation-job.yml",
+    "skills/setup-toolkit-loc-guard/SKILL.md",
+    "skills/setup-toolkit-php-compatibility/SKILL.md",
+    "skills/setup-toolkit-php-cs-fixer/SKILL.md",
+    "skills/setup-toolkit-phpbench/SKILL.md",
+    "skills/setup-toolkit-phpbench/bench.yml",
+    "skills/setup-toolkit-phpstan/SKILL.md",
+    "skills/setup-toolkit-tree-guard/SKILL.md"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "480d76a4e76f",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 160560,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 3450112,
+    "output_tokens": 19716,
+    "api_call_count": 31
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-12T15:38:39.942617Z",
+    "agent_lines": 266,
+    "agent_removed": 63,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 266,
+    "total_lines_changed": 329,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 266,
+      "agent_lines_removed": 63
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M2B4AB4ACK0EH56141HTESHB",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "skills/setup-php-ai-toolkit/SKILL.md",
+    "skills/setup-toolkit-deptrac/SKILL.md",
+    "skills/setup-toolkit-docgen/SKILL.md",
+    "skills/setup-toolkit-doctest/SKILL.md",
+    "skills/setup-toolkit-fuzzing/SKILL.md",
+    "skills/setup-toolkit-github-actions/SKILL.md",
+    "skills/setup-toolkit-github-actions/ci.yml",
+    "skills/setup-toolkit-infection/SKILL.md",
+    "skills/setup-toolkit-infection/infection.json5",
+    "skills/setup-toolkit-infection/mutation-job.yml",
+    "skills/setup-toolkit-loc-guard/SKILL.md",
+    "skills/setup-toolkit-php-compatibility/SKILL.md",
+    "skills/setup-toolkit-php-cs-fixer/SKILL.md",
+    "skills/setup-toolkit-phpbench/SKILL.md",
+    "skills/setup-toolkit-phpbench/bench.yml",
+    "skills/setup-toolkit-phpstan/SKILL.md",
+    "skills/setup-toolkit-tree-guard/SKILL.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 160560,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 3450112,
+    "output_tokens": 19716,
+    "api_call_count": 31
+  }
+}

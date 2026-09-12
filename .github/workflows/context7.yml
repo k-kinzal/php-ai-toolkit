@@ -1,0 +1,39 @@
+name: Context7
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Refresh the Context7 library
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Request a refresh of the indexed documentation
+        env:
+          CONTEXT7_API_KEY: ${{ secrets.CONTEXT7_API_KEY }}
+          LIBRARY_NAME: /${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${CONTEXT7_API_KEY}" ]; then
+            echo '::error::The CONTEXT7_API_KEY repository secret is not set. Copy the key from https://context7.com/dashboard into Settings > Secrets and variables > Actions.'
+            exit 1
+          fi
+
+          curl --fail-with-body --silent --show-error \
+            --request POST https://context7.com/api/v1/refresh \
+            --header 'Content-Type: application/json' \
+            --header "Authorization: Bearer ${CONTEXT7_API_KEY}" \
+            --data "{\"libraryName\": \"${LIBRARY_NAME}\"}"
+          echo

@@ -3,9 +3,11 @@ name: setup-toolkit-github-actions
 description: >-
   Set up GitHub Actions CI for php-ai-toolkit PHP projects. Use when asked to
   create or update .github/workflows/ci.yml, run toolkit checks in CI, pin
-  GitHub Actions to full commit SHAs, align CI with supported PHP versions, or
+  GitHub Actions to full commit SHAs, align CI with supported PHP versions,
   harden workflow permissions and concurrency for Composer, PHPUnit, ParaTest,
-  PHPStan, PHP-CS-Fixer, PHPCompatibility, LocGuard, TreeGuard, and Deptrac.
+  PHPStan, PHP-CS-Fixer, PHPCompatibility, LocGuard, TreeGuard, and Deptrac, or
+  refresh the Context7 documentation index when the default branch, a tag, or
+  a release changes.
 ---
 
 # Setup GitHub Actions CI
@@ -123,6 +125,87 @@ workflow. Ask the user to choose one of the three supported outcomes: local only
 publish the default branch, or publish the default branch plus pull-request diff
 previews. Then use `/setup-toolkit-docgen` for the chosen workflows. The workflows
 remain separate from `ci.yml` so publishing permissions do not leak into CI.
+
+## Separate Decision: Context7 Documentation Refresh
+
+Context7 (https://context7.com) indexes a repository's documentation and serves
+it to AI coding agents. It re-indexes public libraries on its own schedule, so a
+project that wants agents to read current documentation asks for a refresh from
+a workflow. Keep that workflow separate from `ci.yml`: the API key is a secret,
+and `ci.yml` runs untrusted pull-request code.
+
+Do not install it unasked. When the target publishes documentation that agents
+are expected to consume, ask the user whether the library is registered on
+Context7 and which event should refresh it. Two things must exist before the
+workflow can succeed, and neither can be created from the repository:
+
+1. The library page at `https://context7.com/<owner>/<repository>`. If it does
+   not exist, the user adds the repository at https://context7.com/add-library.
+2. The `CONTEXT7_API_KEY` repository secret, copied from
+   https://context7.com/dashboard into Settings > Secrets and variables >
+   Actions.
+
+Read the template from
+`vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-github-actions/context7.yml`
+and apply it as `.github/workflows/context7.yml`. It sends one request to
+`POST https://context7.com/api/v1/refresh` and needs no checkout, PHP, or
+Composer step; do not add them, and do not replace the request with a
+third-party action.
+
+Choose the trigger from the lifecycle the documentation follows. The template
+refreshes on every push to the default branch; replace
+`REPLACE_WITH_DEFAULT_BRANCH` for that case and swap the `on` block for the
+others. Keep `workflow_dispatch` in every variant so a refresh can be requested
+by hand.
+
+| Consumers read | Trigger |
+|----------------|---------|
+| The default branch: trunk-based development, VCS installs, or a documentation site built from it | `push` to the default branch, as in the template |
+| Tagged versions | `push` on tags matching the project's version pattern |
+| GitHub releases | `release` with type `published` |
+
+```yaml
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+```
+
+```yaml
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+```
+
+The request re-indexes the branch Context7 tracks, which is the default branch
+unless the library was registered otherwise. A tag or release trigger therefore
+publishes whatever that branch holds when the event fires; it does not index the
+tag itself. Add `branch` to the request body only when Context7 already tracks
+that branch, because the API answers `branch_not_found` otherwise.
+
+`libraryName` is `/<owner>/<repository>`, which the template derives from
+`github.repository`. Replace it with a literal only when the Context7 library id
+differs from the GitHub name, such as after a repository rename. Private
+repositories need a paid Context7 plan and a `gitToken` in the request; report
+that requirement instead of adding a second secret unprompted.
+
+Context7 indexes markdown-family files from the tracked branch and falls back to
+source files when a repository has no documentation. If generated output,
+fixtures, or vendored documentation would pollute the index, a `context7.json`
+at the repository root narrows the scope; see
+https://context7.com/docs/adding-libraries for the current fields.
+
+After installing the workflow, validate it with actionlint. Once the secret
+exists, run it through `workflow_dispatch` and read the job log:
+
+- `{"message":"Refresh started successfully"}`: the refresh is queued.
+- `401`: the secret is missing or wrong.
+- `404`: the library is not registered, or `libraryName` differs from its id.
+- `429`: refreshes are rate limited; do not add retries or a schedule to work
+  around it.
 
 ## Out of Scope: Mutation Testing
 
@@ -273,6 +356,9 @@ git diff --check
 go run github.com/rhysd/actionlint/cmd/actionlint@latest .github/workflows/ci.yml
 ```
 
+Include `.github/workflows/context7.yml` in that command when the Context7
+workflow was installed.
+
 Run local Composer checks that are reasonably available:
 
 ```bash
@@ -304,3 +390,5 @@ state that clearly and rely on the CI job that covers it.
 - [GitHub Actions security hardening](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions)
 - [GitHub Actions workflow syntax](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)
 - [Composer Install action](https://github.com/ramsey/composer-install)
+- [Context7 GitHub Actions integration](https://context7.com/docs/integrations/github-actions)
+- [Context7 refresh API](https://context7.com/docs/api-reference/refresh/refresh-a-library)

@@ -3,8 +3,10 @@
 [![docs](https://img.shields.io/badge/docs-php--ai--toolkit-0969da?logo=php&logoColor=white)](https://k-kinzal.github.io/php-ai-toolkit/)
 [![CI](https://github.com/k-kinzal/php-ai-toolkit/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/k-kinzal/php-ai-toolkit/actions/workflows/ci.yml)
 [![Docs](https://github.com/k-kinzal/php-ai-toolkit/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/k-kinzal/php-ai-toolkit/actions/workflows/docs.yml)
+[![Context7](https://github.com/k-kinzal/php-ai-toolkit/actions/workflows/context7.yml/badge.svg?branch=main)](https://github.com/k-kinzal/php-ai-toolkit/actions/workflows/context7.yml)
 [![PHP](https://img.shields.io/badge/php-8.0%20%7C%208.1%20%7C%208.2%20%7C%208.3%20%7C%208.4%20%7C%208.5-777bb4?logo=php&logoColor=white)](https://www.php.net/)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/k-kinzal/php-ai-toolkit)
 
 A PHPStan extension that detects anti-patterns commonly introduced by AI code generation, plus output formatters optimized for both AI agents and humans.
 
@@ -63,7 +65,7 @@ The component skills are also available for focused setup or maintenance:
 - `/setup-toolkit-deptrac` — Deptrac architecture dependency rules for web apps, CLI apps, libraries, and modular projects
 - `/setup-toolkit-doctest` — Doctest, the port of k-kinzal/doctest-php that runs PHPDoc examples as PHPUnit test cases
 - `/setup-toolkit-docgen` — DocGen static documentation site with full types, relations, layers, doctest examples, and a two-revision diff mode
-- `/setup-toolkit-github-actions` — GitHub Actions CI for tests, lint gates, PHP compatibility, and pinned actions
+- `/setup-toolkit-github-actions` — GitHub Actions CI for tests, lint gates, PHP compatibility, pinned actions, and Context7 refresh
 - `/setup-toolkit-fuzzing` — contract-driven, domain-aware fuzzing with reproducible corpora, crash artifacts, and scheduled CI
 - `/setup-toolkit-infection` — Infection mutation testing with a whole-tree threshold and a stricter one for pull requests
 - `/setup-toolkit-loc-guard` — LocGuard metrics checks for production source complexity and length limits
@@ -73,6 +75,7 @@ The component skills are also available for focused setup or maintenance:
 - `/setup-toolkit-phpstan` — PHPStan at level max with strict rules and AI error formatter
 - `/setup-toolkit-phpunit` — PHPUnit with strict configuration and AI test reporter
 - `/setup-toolkit-pbt` — Eris property-based testing in an isolated PHPUnit group and dedicated CI workflow
+- `/setup-toolkit-readme` — minimal README with badges, an overview, Requirements, Getting Started, License, and the DeepWiki link
 - `/setup-toolkit-tree-guard` — TreeGuard directory and file structure constraints
 
 Component skills share fixed toolkit defaults. They adapt project facts such as

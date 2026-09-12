@@ -62,7 +62,8 @@ Read and follow the component skills in this order:
 10. `/setup-toolkit-github-actions`
 
 Use `/setup-toolkit-agents-md` only when the user explicitly asks to create or
-change `AGENTS.md`.
+change `AGENTS.md`, and `/setup-toolkit-readme` only when the user explicitly
+asks to create or change `README.md`.
 
 When multiple component skills update the same target file, combine their
 requirements into that file. GitHub Actions is applied last so its jobs invoke the

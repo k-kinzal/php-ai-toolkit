@@ -3,6 +3,7 @@
 /vendor/
 /composer.lock
 /build/
+/projects/
 /.phpunit.cache/
 /.phpunit.result.cache
 /.php-cs-fixer.cache

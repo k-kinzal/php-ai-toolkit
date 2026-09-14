@@ -1,0 +1,2 @@
+projects（gitigrnore対象）の下にphp-ai-toolkitを入れているプロジェクトのsymlinkを追加したいです。~/Projectsのztd-query-php、storybook-php、magix-cache-php、peqへの参照を入れてください。
+これはphp-ai-toolkitの内容反映をしやすくするためのものになります。何と言うか導入作業をしていますが一貫性が大変取りにくいと思ってまして。

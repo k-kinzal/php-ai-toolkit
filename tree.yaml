@@ -10,6 +10,7 @@ exclude:
   - '.phpunit.cache'
   - 'build'
   - 'node_modules'
+  - 'projects'
   - 'vendor'
 
 rules:

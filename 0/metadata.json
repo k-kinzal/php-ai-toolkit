@@ -1,0 +1,57 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M2N4PYNNW3PJ3KN3E8EEW8MV",
+  "session_id": "f5c090c4-d033-4c1a-a160-a53de7722c53",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-16T12:57:50.256276Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 1,
+  "files_touched": [
+    ".tree-projects-check.yaml"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5-1",
+  "turn_id": "30a17712aa5b",
+  "checkpoint_transcript_start": 126,
+  "transcript_lines_at_start": 126,
+  "compact_transcript_start": 21,
+  "token_usage": {
+    "input_tokens": 418,
+    "cache_creation_tokens": 53489,
+    "cache_read_tokens": 691884,
+    "output_tokens": 7902,
+    "api_call_count": 14
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-16T12:57:50.147861Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "total_lines_changed": 0,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

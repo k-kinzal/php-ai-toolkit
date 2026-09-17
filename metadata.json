@@ -3,7 +3,7 @@
   "checkpoint_id": "01M2QMF0Q5ZJJ5591H4XG9M9CW",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "tree.yaml"
   ],
@@ -14,13 +14,20 @@
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
       "prompt": "/0/prompt.txt"
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
+      "prompt": "/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 4794,
+    "input_tokens": 17160,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 11904,
-    "output_tokens": 14,
-    "api_call_count": 1
+    "cache_read_tokens": 737024,
+    "output_tokens": 2816,
+    "api_call_count": 8
   }
 }

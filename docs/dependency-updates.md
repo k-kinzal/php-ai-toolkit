@@ -5,6 +5,7 @@ and GitHub Actions. Its repository configuration is in [`renovate.json`](../reno
 Dependency updates, including major versions, merge automatically after CI passes.
 Composer ranges are widened instead of
 replacing older supported major versions, and the PHP minimum remains unchanged.
+The Dependency Dashboard is disabled because this repository does not use GitHub Issues.
 
 ## GitHub Apps
 
@@ -18,6 +19,7 @@ when choosing repository access):
 
 App installation is an account setting; merging the configuration PR does not
 install either app. No personal access token or new repository secret is needed.
+Keep the repository's Pull requests feature enabled so Renovate can open its PRs.
 
 `platformAutomerge` is disabled deliberately: Renovate waits for all checks on the
 current revision and an up-to-date branch before merging. This works with the

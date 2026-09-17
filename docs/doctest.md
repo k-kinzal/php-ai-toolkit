@@ -54,28 +54,54 @@ with `composer config vendor-dir` and use the resulting directory instead. A mis
 an empty suite is a configuration problem: correct the installed-package path, extension class, or
 scan roots instead of creating another suite class.
 
-PHPUnit 9 is the sole exception because it does not provide the extension API used to read these
-parameters. The setup skill keeps that compatibility path separate; it must not be applied merely
-because a package declares PHPUnit 9 in a wider support constraint.
+PHPUnit 9 is configured the same way through the legacy suite the toolkit ships for it. That version
+reads test metadata from doc-comments rather than attributes, so the suite above cannot run there,
+and it instantiates its hook extensions only after the test suite — and with it every data provider
+— has been built, so no extension can hand a suite its parameters. The legacy suite therefore takes
+the same parameters from environment variables, which the `<php>` element sets before PHPUnit 9
+builds the suite:
+
+```xml
+<phpunit>
+    <testsuites>
+        <testsuite name="doctest">
+            <file>vendor/k-kinzal/php-ai-toolkit/src/Doctest/Legacy/LegacyDoctestSuite.php</file>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <env name="DOCTEST_DIRECTORIES" value="src"/>
+    </php>
+</phpunit>
+```
+
+Each variable is a parameter name in upper case behind `DOCTEST_`. Do not subclass
+`LegacyDoctestRunner` for an ordinary setup either. The setup skill keeps this path separate; it
+must not be applied merely because a package declares PHPUnit 9 in a wider support constraint.
 
 ## Runtime Model
 
-`Toolkit\Doctest\DoctestExtension` and the shipped doctest suite provide the PHPUnit 10-or-later
-integration. PHPUnit 9 is supported through
+`Toolkit\Doctest\DoctestExtension` and the shipped `Toolkit\Doctest\DoctestSuite` provide the
+PHPUnit 10-or-later integration. PHPUnit 9 is supported through the shipped
+`Toolkit\Doctest\Legacy\LegacyDoctestSuite`, which extends
 `Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner`; the modern runner is
 `Toolkit\Doctest\TestCase\DoctestRunner`. All integrations execute the same extracted examples.
 
 Each example becomes one test case named `<target> example #<n>: <description>`.
 
-| Parameter | Meaning |
-|-----------|---------|
-| `directories` | Comma-separated list of directories to scan |
-| `files` | Comma-separated list of individual files to scan |
-| `exclude` | Comma-separated fnmatch patterns to leave unscanned |
-| `bootstrap` | A file to include once before the first example runs |
-| `enabled` | `false` switches doctest off without removing the configuration |
+| Parameter | Environment variable | Meaning |
+|-----------|----------------------|---------|
+| `directories` | `DOCTEST_DIRECTORIES` | Comma-separated list of directories to scan |
+| `files` | `DOCTEST_FILES` | Comma-separated list of individual files to scan |
+| `exclude` | `DOCTEST_EXCLUDE` | Comma-separated fnmatch patterns to leave unscanned |
+| `bootstrap` | `DOCTEST_BOOTSTRAP` | A file to include once before the first example runs |
+| `enabled` | `DOCTEST_ENABLED` | `false` switches doctest off without removing the configuration |
 
-Relative paths supplied by PHPUnit resolve against the directory holding `phpunit.xml`.
+Relative paths supplied by PHPUnit resolve against the directory holding `phpunit.xml`. Relative
+paths in the environment variables resolve against the working directory PHPUnit was started from,
+because PHPUnit 9 does not expose where its configuration file is; running PHPUnit from the
+directory holding its configuration, as the toolkit's test runner and Composer scripts do, makes the
+two the same.
 
 ### When the extension has not bootstrapped
 
@@ -85,7 +111,8 @@ need that. `--no-extensions` bootstraps nothing, and mutation testing usually pa
 builds the test suite before it bootstraps extensions, so on that version the suite is always asked
 first. Either way the examples run.
 
-Switching them off is `enabled="false"`, or selecting a test suite that does not contain doctest.
+Switching them off is `enabled="false"` — `DOCTEST_ENABLED` set to `false` on PHPUnit 9 — or
+selecting a test suite that does not contain doctest.
 
 ## Where Examples Are Written
 
@@ -207,7 +234,11 @@ package supports:
   `createForNewestSupportedVersion()` only exists in major 5, and the AST walk is written out instead
   of using a `NodeVisitor`, whose signature differs between the two majors.
 - **PHPUnit 9 through 13.** `DoctestRunner` binds its provider with an attribute and
-  `LegacyDoctestRunner` with an annotation.
+  `LegacyDoctestRunner` with an annotation. `LegacyDoctestSuite` reads the parameters
+  `DoctestExtension` would be handed from `DOCTEST_*` environment variables, because PHPUnit 9
+  instantiates its hook extensions only after the suite, and with it every data provider, is built.
+  Both runners yield one passing placeholder when no example is found, since PHPUnit 9 reports an
+  empty data provider as a skipped test and the strict configuration fails the run on a skip.
 - **`DoctestCase` is not carried over.** Upstream ships it, uses it nowhere, and it cannot work here:
   it names itself through the PHPUnit constructor, which PHPUnit 10 made `final`.
 - **File-level docblocks after `declare`.** The upstream pattern only matches a docblock directly

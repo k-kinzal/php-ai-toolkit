@@ -11,6 +11,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
+use Tests\Fixture\Doctest\LegacyEmptyDoctestSuite;
 use Tests\Fixture\Doctest\LegacyFixtureDoctestSuite;
 use Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner;
 
@@ -41,6 +42,22 @@ final class LegacyDoctestRunnerTest extends TestCase
             ],
             array_keys($provided),
         );
+    }
+
+    public function testDoctestProviderReturnsSkipCaseWhenNoExamplesExist(): void
+    {
+        self::assertSame(
+            ['No doctest examples found' => [null]],
+            iterator_to_array(LegacyEmptyDoctestSuite::doctestProvider()),
+        );
+    }
+
+    public function testTestDocblockExamplePassesWhenNoExamplesExist(): void
+    {
+        $this->expectNotToPerformAssertions();
+        $case = new LegacyEmptyDoctestSuite('testDocblockExample');
+
+        $case->testDocblockExample(null);
     }
 
     public function testTestDocblockExamplePassesForAnExampleThatHolds(): void

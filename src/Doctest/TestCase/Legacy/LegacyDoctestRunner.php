@@ -21,8 +21,12 @@ use Toolkit\Doctest\Scanner\SourceScanner;
  * DoctestRunner. Projects on PHPUnit 10 or later should extend that class:
  * doc-comment metadata was removed in PHPUnit 12.
  *
- * PHPUnit 9 also has no extension API, so a suite on that version implements
- * configure() itself rather than reading parameters from phpunit.xml.
+ * PHPUnit 9 also instantiates its hook extensions only after the test suite,
+ * and with it every data provider, has been built, so no extension can hand a
+ * suite its parameters there. LegacyDoctestSuite, the concrete suite the
+ * package ships for PHPUnit 9, reads them from the environment variables the
+ * php element of phpunit.xml sets instead. Extending this class directly is a
+ * custom integration point, not the setup path.
  */
 abstract class LegacyDoctestRunner extends TestCase
 {
@@ -38,7 +42,12 @@ abstract class LegacyDoctestRunner extends TestCase
     /**
      * Provides examples as test data.
      *
-     * @return Generator<string, array{Example}>
+     * A source set without examples yields one placeholder instead of nothing,
+     * the way DoctestRunner does: PHPUnit 9 reports a provider that returns no
+     * data as a skipped test, and a strict configuration fails the run on a
+     * skip.
+     *
+     * @return Generator<string, array{?Example}>
      */
     public static function doctestProvider(): Generator
     {
@@ -46,13 +55,19 @@ abstract class LegacyDoctestRunner extends TestCase
         $fileScanner = new FileScanner($config);
         $sourceScanner = new SourceScanner();
         $extractor = new ExampleExtractor();
+        $found = false;
 
         foreach ($fileScanner->scan() as $filePath) {
             foreach ($sourceScanner->scanFile($filePath) as $target) {
                 foreach ($extractor->extract($target) as $example) {
+                    $found = true;
                     yield $example->getName() => [$example];
                 }
             }
+        }
+
+        if (!$found) {
+            yield 'No doctest examples found' => [null];
         }
     }
 
@@ -63,7 +78,7 @@ abstract class LegacyDoctestRunner extends TestCase
      * coverage target of its own: it is a check on the documentation, not a
      * unit test of one class.
      *
-     * @param Example $example the example to test
+     * @param ?Example $example the example to test, or null when none were discovered
      *
      * @dataProvider doctestProvider
      *
@@ -71,8 +86,14 @@ abstract class LegacyDoctestRunner extends TestCase
      *
      * @medium
      */
-    public function testDocblockExample(Example $example): void
+    public function testDocblockExample(?Example $example): void
     {
+        if ($example === null) {
+            $this->addToAssertionCount(1);
+
+            return;
+        }
+
         if (self::$executor === null) {
             self::$executor = new ExampleExecutor(static::configure()->getBootstrap());
         }

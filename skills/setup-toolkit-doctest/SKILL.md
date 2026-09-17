@@ -23,7 +23,7 @@ Inspect the project before configuring:
 - Confirm it requires `k-kinzal/php-ai-toolkit`.
 - Read the installed PHPUnit version and available extension API. Use the modern
   extension path when the resolved target version supports it; use the legacy
-  runner only when the actual graph resolves the legacy PHPUnit line.
+  suite only when the actual graph resolves the legacy PHPUnit line.
 - Read `phpunit.xml` (or `phpunit.xml.dist`) and its existing `<testsuites>` and `<extensions>`.
 - Read Composer production autoload roots. Usually this is `src/`, not `tests/`.
 - Check whether the project autoloads everything it ships. A project with non-autoloadable function files needs a bootstrap.
@@ -81,30 +81,36 @@ that installed-package path instead of scaffolding a local suite.
 
 Set `directories` from the discovered autoload roots. Leave `bootstrap` unset unless the project has code an autoloader cannot resolve.
 
-Only when the resolved test graph actually runs PHPUnit 9 is a local compatibility
-class required: that version has no extension API to read those parameters. Copy
-`LegacyDoctestSuiteTest.php` from this skill to
-`tests/Doctest/LegacyDoctestSuiteTest.php`, adapt its namespace and production
-autoload roots, and register that directory as the doctest suite in the PHPUnit 9
-configuration:
+Only when the resolved test graph actually runs PHPUnit 9 does the configuration
+differ. That version reads test metadata from doc-comments, so `DoctestSuite.php`
+cannot run there, and it instantiates its hook extensions only after the test
+suite and its data providers are built, so no extension can hand a suite its
+parameters. Point the PHPUnit 9 configuration at the toolkit's installed legacy
+suite and export the same parameters through the `<php>` element, each named
+after the parameter in upper case behind `DOCTEST_`:
 
 ```xml
-<testsuite name="doctest">
-    <directory>tests/Doctest</directory>
-</testsuite>
+<testsuites>
+    <testsuite name="doctest">
+        <file>vendor/k-kinzal/php-ai-toolkit/src/Doctest/Legacy/LegacyDoctestSuite.php</file>
+    </testsuite>
+</testsuites>
+
+<php>
+    <env name="DOCTEST_DIRECTORIES" value="REPLACE_WITH_PRODUCTION_ROOTS"/>
+</php>
 ```
 
-Replace both `REPLACE_WITH_TEST_NAMESPACE` and
-`REPLACE_WITH_PRODUCTION_ROOT` in the copied class. They are deliberate sentinels;
-do not infer either from this repository's `Tests` namespace or `src` layout.
-
-The template extends
-`Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner` and returns the exact
-`Configuration` from `configure()`. Do not merely add the suite name: a PHPUnit 9
-matrix leg with no concrete legacy runner discovers zero doctests and is not a
-completed setup. Keep this directory out of the modern configuration because its
-PHPDoc data-provider metadata is deliberately for PHPUnit 9; the modern suite uses
-`DoctestSuite.php` and the extension parameters above.
+This is configuration only as well: do not copy a `LegacyDoctestSuiteTest.php`
+into the project and do not subclass `LegacyDoctestRunner` for an ordinary setup.
+A relative path in a variable resolves against the working directory PHPUnit is
+started from, so run PHPUnit 9 from the directory holding its configuration; the
+toolkit's `tests/run.php` and the Composer scripts already do. Do not merely add
+the suite: a PHPUnit 9 configuration that names it without `DOCTEST_DIRECTORIES`
+discovers zero doctests and is not a completed setup. Keep the legacy suite out of
+the modern configuration, because PHPUnit 12 or later no longer reads the
+doc-comment metadata it relies on; the modern suite uses `DoctestSuite.php` and
+the extension parameters above.
 
 ### Runs that disable extensions
 
@@ -218,9 +224,10 @@ report the same expected examples (apart from explicitly documented version-only
 sources), then write one example, confirm it passes, break it on purpose, and
 confirm the failure names the example.
 
-If the modern suite reports no tests, do not create a local suite class. Check the
+If either suite reports no tests, do not create a local suite class. Check the
 installed path reported by `composer config vendor-dir`, the `<bootstrap>` class
-name, the `directories` parameter, and that `enabled` is not `false`.
+name and its `directories` parameter or, on PHPUnit 9, the `DOCTEST_DIRECTORIES`
+variable, and that `enabled` is not `false`.
 
 ## Fixing Failures
 

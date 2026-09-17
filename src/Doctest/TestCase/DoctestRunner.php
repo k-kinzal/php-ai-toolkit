@@ -25,9 +25,10 @@ use Toolkit\Doctest\Scanner\SourceScanner;
  * PHPUnit test case.
  *
  * This class binds its data provider with a PHPUnit attribute and therefore
- * needs PHPUnit 10 or later. On PHPUnit 9 extend
- * Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner, which binds the
- * same provider with a doc-comment annotation.
+ * needs PHPUnit 10 or later. On PHPUnit 9 the configuration points at
+ * Toolkit\Doctest\Legacy\LegacyDoctestSuite instead, whose base class
+ * Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner binds the same
+ * provider with a doc-comment annotation.
  *
  * An example exercises whatever code it documents, so a suite declares no
  * coverage target of its own: mark the subclass #[CoversNothing], the way

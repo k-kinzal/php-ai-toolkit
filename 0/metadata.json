@@ -1,0 +1,86 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M2QTB7DV0TZ1E4FXQ3T55WST",
+  "session_id": "1c3aeeff-f8b5-4ffc-b2e1-7010889138c4",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-17T13:54:22.82723Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "docs/doctest.md",
+    "skills/setup-toolkit-doctest/LegacyDoctestSuiteTest.php",
+    "skills/setup-toolkit-doctest/SKILL.md",
+    "src/Doctest/Configuration/ConfigurationLoader.php",
+    "src/Doctest/Legacy/LegacyDoctestSuite.php",
+    "src/Doctest/TestCase/DoctestRunner.php",
+    "src/Doctest/TestCase/Legacy/LegacyDoctestRunner.php",
+    "tests/Fixture/Doctest/LegacyEmptyDoctestSuite.php",
+    "tests/Unit/Doctest/Configuration/ConfigurationLoaderTest.php",
+    "tests/Unit/Doctest/Legacy/LegacyDoctestSuiteTest.php",
+    "tests/Unit/Doctest/TestCase/Legacy/LegacyDoctestRunnerTest.php"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5-1",
+  "turn_id": "32e8150bab7e",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 840,
+    "cache_creation_tokens": 264365,
+    "cache_read_tokens": 4878103,
+    "output_tokens": 132816,
+    "api_call_count": 30
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-17T13:54:22.764945Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 95,
+    "total_committed": 0,
+    "total_lines_changed": 95,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 500,
+      "user_lines_removed": 95,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "docs/doctest.md": 46,
+        "skills/setup-toolkit-doctest/SKILL.md": 30,
+        "src/Doctest/Configuration/ConfigurationLoader.php": 89,
+        "src/Doctest/Legacy/LegacyDoctestSuite.php": 63,
+        "src/Doctest/TestCase/DoctestRunner.php": 4,
+        "src/Doctest/TestCase/Legacy/LegacyDoctestRunner.php": 26,
+        "tests/Fixture/Doctest/LegacyEmptyDoctestSuite.php": 24,
+        "tests/Unit/Doctest/Configuration/ConfigurationLoaderTest.php": 89,
+        "tests/Unit/Doctest/Legacy/LegacyDoctestSuiteTest.php": 112,
+        "tests/Unit/Doctest/TestCase/Legacy/LegacyDoctestRunnerTest.php": 17
+      },
+      "user_removed_per_file": {
+        "docs/doctest.md": 15,
+        "skills/setup-toolkit-doctest/LegacyDoctestSuiteTest.php": 28,
+        "skills/setup-toolkit-doctest/SKILL.md": 23,
+        "src/Doctest/Configuration/ConfigurationLoader.php": 18,
+        "src/Doctest/TestCase/DoctestRunner.php": 3,
+        "src/Doctest/TestCase/Legacy/LegacyDoctestRunner.php": 5,
+        "tests/Unit/Doctest/Configuration/ConfigurationLoaderTest.php": 3
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 500,
+      "agent_lines_removed": 95
+    }
+  ]
+}

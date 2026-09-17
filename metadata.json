@@ -1,0 +1,36 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M2QTB7DV0TZ1E4FXQ3T55WST",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/doctest.md",
+    "skills/setup-toolkit-doctest/LegacyDoctestSuiteTest.php",
+    "skills/setup-toolkit-doctest/SKILL.md",
+    "src/Doctest/Configuration/ConfigurationLoader.php",
+    "src/Doctest/Legacy/LegacyDoctestSuite.php",
+    "src/Doctest/TestCase/DoctestRunner.php",
+    "src/Doctest/TestCase/Legacy/LegacyDoctestRunner.php",
+    "tests/Fixture/Doctest/LegacyEmptyDoctestSuite.php",
+    "tests/Unit/Doctest/Configuration/ConfigurationLoaderTest.php",
+    "tests/Unit/Doctest/Legacy/LegacyDoctestSuiteTest.php",
+    "tests/Unit/Doctest/TestCase/Legacy/LegacyDoctestRunnerTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 840,
+    "cache_creation_tokens": 264365,
+    "cache_read_tokens": 4878103,
+    "output_tokens": 132816,
+    "api_call_count": 30
+  }
+}

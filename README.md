@@ -94,6 +94,7 @@ and published on every push to `main`.
 - [PHPStan Rules](docs/phpstan-rules.md): Custom rules and their error identifiers
 - [PHPUnit AI Reporter](docs/phpunit-ai-reporter.md): The failure reporter for PHPUnit 9.6 and 10.5 or later
 - [TreeGuard](docs/tree-guard.md): TreeGuard directory and file structure constraints
+- [Dependency updates](docs/dependency-updates.md): Renovate, automatic approval, and PHP compatibility lock maintenance
 
 ## License
 

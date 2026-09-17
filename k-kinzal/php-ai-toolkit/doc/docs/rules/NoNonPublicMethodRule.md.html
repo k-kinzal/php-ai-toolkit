@@ -35,9 +35,9 @@
 <main class="content">
 <div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>NoNonPublicMethodRule</h1><div class="symbol-meta"><span class="src-link">docs/rules/NoNonPublicMethodRule.md</span></div></div>
 <section class="readme"><h2>NoNonPublicMethodRule</h2>
-<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifier</td><td><code>customRules.nonPublicMethod</code></td></tr><tr><td>Scope</td><td>All class-like methods</td></tr><tr><td>Configurable</td><td>No</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifier</td><td><code>customRules.nonPublicMethod</code></td></tr><tr><td>Scope</td><td>All class-like methods except constructors</td></tr><tr><td>Configurable</td><td>No</td></tr></tbody></table></div>
 <h3>What It Detects</h3>
-<p>Reports private methods everywhere, and protected methods except in abstract classes, traits, and override methods.</p>
+<p>Reports private methods everywhere, and protected methods except in abstract classes, traits, and override methods. Constructors are never reported, whatever their visibility.</p>
 <pre class="code-block"><code><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">InvoiceService</span>
 {
     <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">issue</span>(<span class="tok-id">Invoice</span> <span class="tok-var">$invoice</span>): <span class="tok-id">Receipt</span>
@@ -63,6 +63,20 @@
     <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">parse</span>(<span class="tok-id">File</span> <span class="tok-var">$file</span>): <span class="tok-id">Result</span>
     {
         <span class="tok-com">// ...</span>
+    }
+}</code></pre>
+<p>A private or protected constructor is allowed. Restricting construction is how PHP expresses singletons, named constructors, and other controlled-instantiation designs, so it is an API decision rather than a hidden responsibility:</p>
+<pre class="code-block"><code><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">Registry</span>
+{
+    <span class="tok-kw">private</span> <span class="tok-kw">static</span> ?<span class="tok-id">self</span> <span class="tok-var">$instance</span> = <span class="tok-id">null</span>;
+
+    <span class="tok-kw">private</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>()
+    {
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">instance</span>(): <span class="tok-id">self</span>
+    {
+        <span class="tok-kw">return</span> <span class="tok-id">self</span>::<span class="tok-var">$instance</span> ??= <span class="tok-kw">new</span> <span class="tok-id">self</span>();
     }
 }</code></pre>
 <h3>Why This Is an Error</h3>

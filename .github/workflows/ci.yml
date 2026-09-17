@@ -5,6 +5,12 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: Base branch for mutation testing after a Renovate lock refresh
+        type: string
+        default: main
 
 permissions:
   contents: read
@@ -43,7 +49,11 @@ jobs:
           coverage: none
 
       - name: Select the matching lock file
+        if: matrix.php != '8.5'
         run: cp "composer.lock.php-${{ matrix.php }}" composer.lock
+
+      - name: Validate the Composer manifest against the lock file
+        run: composer validate --strict --no-check-publish
 
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
@@ -72,9 +82,6 @@ jobs:
           php-version: '8.5'
           extensions: mbstring, gd
           coverage: none
-
-      - name: Select the matching lock file
-        run: cp composer.lock.php-8.5 composer.lock
 
       - name: Validate the Composer manifest against the lock file
         run: composer validate --strict --no-check-publish
@@ -124,9 +131,6 @@ jobs:
           extensions: mbstring, pcntl, gd
           coverage: pcov
 
-      - name: Select the matching lock file
-        run: cp composer.lock.php-8.5 composer.lock
-
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
         with:
@@ -138,13 +142,15 @@ jobs:
         run: composer check-platform-reqs
 
       - name: Mutation testing on changed lines
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+        env:
+          MUTATION_BASE_REF: ${{ github.base_ref || inputs.base_ref }}
         run: >-
           php -d memory_limit=4G vendor/bin/infection
           --configuration=infection.json5
           --threads=max
           --git-diff-lines
-          --git-diff-base="origin/${GITHUB_BASE_REF}"
+          --git-diff-base="origin/${MUTATION_BASE_REF}"
           --ignore-msi-with-no-mutations
           --min-msi=85
           --min-covered-msi=85
@@ -152,7 +158,7 @@ jobs:
           --logger-github
 
       - name: Mutation testing on the whole source tree
-        if: github.event_name != 'pull_request'
+        if: github.event_name == 'push'
         run: >-
           php -d memory_limit=4G vendor/bin/infection
           --configuration=infection.json5

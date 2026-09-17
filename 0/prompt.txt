@@ -1,0 +1,1 @@
+renovateとrenovateのauto approverを導入して自動アップデート＆自動適用できるようにしてください。変更PRを作成ください。

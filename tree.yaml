@@ -4,12 +4,10 @@ paths:
 
 exclude:
   - '.claude'
-  - '.deptrac.cache'
   - '.git'
   - '.idea'
   - '.phpunit.cache'
   - 'build'
-  - 'node_modules'
   - 'projects'
   - 'vendor'
 

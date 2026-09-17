@@ -21,7 +21,7 @@ Rules applied to all code.
 | [ForbidNonDocCommentRule](rules/ForbidNonDocCommentRule.md) | Forbids `/* */` and `#` comments everywhere, and `//` comments outside `catch` blocks and array literals; `/** */` PHPDoc is allowed | `customRules.forbidNonDocComment` |
 | [ForbidSingleLinePhpDocRule](rules/ForbidSingleLinePhpDocRule.md) | Forbids single-line PHPDoc on public elements; requires multi-line format | `customRules.forbidSingleLinePhpDoc` |
 | [ForbidClassLikeNameSuffixRule](rules/ForbidClassLikeNameSuffixRule.md) | Forbids configured suffixes on class, interface, trait, and enum names | `customRules.forbiddenClassLikeNameSuffix` |
-| [NoNonPublicMethodRule](rules/NoNonPublicMethodRule.md) | Forbids private methods and forbids protected methods outside abstract classes, traits, and override methods | `customRules.nonPublicMethod` |
+| [NoNonPublicMethodRule](rules/NoNonPublicMethodRule.md) | Forbids private methods and forbids protected methods outside abstract classes, traits, and override methods; constructors are exempt | `customRules.nonPublicMethod` |
 | [ForbidEmptyCatchRule](rules/ForbidEmptyCatchRule.md) | Forbids catch blocks with an empty body | `customRules.emptyCatch` |
 | [RequireThrowsTagOnDirectThrowRule](rules/RequireThrowsTagOnDirectThrowRule.md) | Requires `@throws` for exceptions thrown directly in a method and not caught within it | `customRules.missingThrowsTag` |
 | [RequireExceptionChainingRule](rules/RequireExceptionChainingRule.md) | Requires new exceptions thrown inside catch blocks to chain the caught exception | `customRules.unchainedRethrow` |
@@ -76,7 +76,7 @@ the single instruction for fixing the prohibited construct:
 
 | Enabled toolkit rule | Suppressed diagnostic | Scope |
 |----------------------|-----------------------|-------|
-| `noNonPublicMethod` | `method.unused`, `method.finalPrivate`, `consistentConstructor.private` | Private method declarations |
+| `noNonPublicMethod` | `method.unused`, `method.finalPrivate` | Private method declarations; PHPStan does not emit either for constructors, and `consistentConstructor.private` stays visible because the rule exempts constructors |
 | `noPrivateMethodInTestClass` | The same private-method diagnostics | Restricted test classes |
 | `noPropertyInTestClass` | `property.unused`, `property.neverRead`, `property.neverWritten`, `property.onlyRead`, `property.onlyWritten` | Restricted test classes |
 | `noClassConstantInTestClass` | `classConstant.unused` | Restricted test classes |

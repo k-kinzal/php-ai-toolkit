@@ -11,9 +11,13 @@ use function in_array;
  */
 final class MemberDiagnosticPolicy
 {
-    /** @var list<string> */
+    /**
+     * PHPStan never emits these for constructors, which the toolkit method rules
+     * leave alone, so every remaining hit is a private method the rules forbid.
+     *
+     * @var list<string>
+     */
     private const PRIVATE_METHOD_IDENTIFIERS = [
-        'consistentConstructor.private',
         'method.finalPrivate',
         'method.unused',
     ];

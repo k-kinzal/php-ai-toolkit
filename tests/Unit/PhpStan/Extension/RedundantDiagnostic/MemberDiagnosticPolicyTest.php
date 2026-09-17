@@ -20,8 +20,14 @@ final class MemberDiagnosticPolicyTest extends TestCase
 
         self::assertTrue($policy->isRedundant('method.unused', false, true, false, false, false));
         self::assertTrue($policy->isRedundant('method.finalPrivate', true, false, true, false, false));
-        self::assertTrue($policy->isRedundant('consistentConstructor.private', true, true, true, false, false));
         self::assertFalse($policy->isRedundant('method.unused', false, false, true, false, false));
+    }
+
+    public function testPrivateConstructorDiagnosticStaysVisibleBecauseConstructorsAreExempt(): void
+    {
+        $policy = new MemberDiagnosticPolicy();
+
+        self::assertFalse($policy->isRedundant('consistentConstructor.private', true, true, true, true, true));
     }
 
     public function testTestMemberDiagnosticsAreScopedToTheirDeclarationRules(): void

@@ -3,12 +3,12 @@
 | Property | Value |
 |----------|-------|
 | Identifier | `customRules.nonPublicMethod` |
-| Scope | All class-like methods |
+| Scope | All class-like methods except constructors |
 | Configurable | No |
 
 ## What It Detects
 
-Reports private methods everywhere, and protected methods except in abstract classes, traits, and override methods.
+Reports private methods everywhere, and protected methods except in abstract classes, traits, and override methods. Constructors are never reported, whatever their visibility.
 
 ```php
 final class InvoiceService
@@ -40,6 +40,24 @@ abstract class ImportTemplate
     protected function parse(File $file): Result
     {
         // ...
+    }
+}
+```
+
+A private or protected constructor is allowed. Restricting construction is how PHP expresses singletons, named constructors, and other controlled-instantiation designs, so it is an API decision rather than a hidden responsibility:
+
+```php
+final class Registry
+{
+    private static ?self $instance = null;
+
+    private function __construct()
+    {
+    }
+
+    public static function instance(): self
+    {
+        return self::$instance ??= new self();
     }
 }
 ```

@@ -11,6 +11,11 @@ use PHPStan\Rules\Rule;
 /**
  * Reports private methods and non-extension protected methods.
  *
+ * Constructors are exempt: a private or protected constructor is how PHP
+ * expresses singletons, named constructors, and other controlled-instantiation
+ * designs, so restricting it is a deliberate API decision rather than a hidden
+ * responsibility.
+ *
  * @implements Rule<\PhpParser\Node\Stmt\ClassLike>
  */
 final class NoNonPublicMethodRule implements Rule
@@ -49,6 +54,10 @@ final class NoNonPublicMethodRule implements Rule
         $errors = [];
 
         foreach ($node->getMethods() as $method) {
+            if ($method->name->toLowerString() === '__construct') {
+                continue;
+            }
+
             if ($method->isPrivate()) {
                 $errors[] = $this->errorBuilder->privateMethod($method, $node, $scope);
                 continue;

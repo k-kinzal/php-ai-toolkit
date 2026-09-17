@@ -51,6 +51,16 @@ final class NoNonPublicMethodRuleTest extends RuleTestCase
         ]);
     }
 
+    public function testPrivateConstructorIsNotReported(): void
+    {
+        $this->analyse([__DIR__ . '/../../../../Fixture/NoNonPublicMethod/WithPrivateConstructor.php'], []);
+    }
+
+    public function testProtectedConstructorInConcreteClassIsNotReported(): void
+    {
+        $this->analyse([__DIR__ . '/../../../../Fixture/NoNonPublicMethod/WithProtectedConstructor.php'], []);
+    }
+
     public function testAllowsProtectedMethodInAbstractClass(): void
     {
         $this->analyse([__DIR__ . '/../../../../Fixture/NoNonPublicMethod/AbstractClassWithProtectedMethod.php'], []);

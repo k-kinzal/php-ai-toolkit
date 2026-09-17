@@ -1,0 +1,1 @@
+private/protectedの禁止ルールがありますが、__constructに関しては除外にしたいです。これはSingletonなどでやりたいケースがあるためです。mainで修正してコミットしてください。

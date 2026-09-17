@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M2QPC36Q1XX6VYRA6NN12YHG",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/phpstan-rules.md",
+    "docs/rules/NoNonPublicMethodRule.md",
+    "src/PhpStan/Extension/RedundantDiagnostic/MemberDiagnosticPolicy.php",
+    "src/PhpStan/Rule/ClassDesign/NoNonPublicMethodRule.php",
+    "tests/Fixture/NoNonPublicMethod/WithPrivateConstructor.php",
+    "tests/Fixture/NoNonPublicMethod/WithProtectedConstructor.php",
+    "tests/Unit/PhpStan/Extension/RedundantDiagnostic/MemberDiagnosticPolicyTest.php",
+    "tests/Unit/PhpStan/Rule/ClassDesign/NoNonPublicMethodRuleTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 578,
+    "cache_creation_tokens": 64229,
+    "cache_read_tokens": 940633,
+    "output_tokens": 17274,
+    "api_call_count": 19
+  }
+}

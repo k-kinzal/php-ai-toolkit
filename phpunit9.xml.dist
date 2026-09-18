@@ -39,9 +39,13 @@
             <exclude>tests/Unit/PhpUnit/TestReporter/Subscriber</exclude>
         </testsuite>
         <testsuite name="doctest">
-            <directory>tests/Doctest</directory>
+            <file>src/Doctest/Legacy/LegacyDoctestSuite.php</file>
         </testsuite>
     </testsuites>
+    <php>
+        <env name="DOCTEST_DIRECTORIES" value="src"/>
+        <env name="DOCTEST_EXCLUDE" value="*/Doctest/DoctestExtension.php,*/Doctest/Configuration/ConfigurationLoader.php"/>
+    </php>
     <listeners>
         <listener class="Toolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener"/>
     </listeners>

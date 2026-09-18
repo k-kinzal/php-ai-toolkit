@@ -1,0 +1,35 @@
+You are working in the repository at /Users/ab/Projects/php-ai-toolkit (branch main). Make exactly the following two changes and nothing else. Do not commit. Do not run tests. Do not touch any other file.
+
+## Change 1: phpunit9.xml.dist
+
+In the root file `phpunit9.xml.dist`, the `doctest` test suite currently reads:
+
+```xml
+        <testsuite name="doctest">
+            <directory>tests/Doctest</directory>
+        </testsuite>
+    </testsuites>
+    <listeners>
+```
+
+Replace that block so it reads:
+
+```xml
+        <testsuite name="doctest">
+            <file>src/Doctest/Legacy/LegacyDoctestSuite.php</file>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="DOCTEST_DIRECTORIES" value="src"/>
+        <env name="DOCTEST_EXCLUDE" value="*/Doctest/DoctestExtension.php,*/Doctest/Configuration/ConfigurationLoader.php"/>
+    </php>
+    <listeners>
+```
+
+Keep every other line of the file byte-for-byte identical, including the NOTE comment on line 2, the indentation (4 spaces), and the `<listeners>` and `<coverage>` sections.
+
+## Change 2: delete the project-local legacy suite
+
+Delete the file `tests/Doctest/LegacyDoctestSuiteTest.php`, and then delete the now-empty directory `tests/Doctest`. It is replaced by the shipped suite `src/Doctest/Legacy/LegacyDoctestSuite.php`, which the configuration above now points at.
+
+When done, print `git status --short` and the diff of `phpunit9.xml.dist`.

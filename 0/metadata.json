@@ -1,0 +1,45 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M338J4VMWV7HN9VWNNTV2XN8",
+  "session_id": "fd597cc8-3d37-46ed-a349-86bd78023e49",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-22T00:34:29.134531Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "skills/setup-toolkit-docgen/SKILL.md",
+    "skills/setup-toolkit-github-actions/SKILL.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5-1",
+  "turn_id": "a61e28caed48",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 226,
+    "cache_creation_tokens": 27412,
+    "cache_read_tokens": 227222,
+    "output_tokens": 2896,
+    "api_call_count": 8
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-22T00:34:29.123392Z",
+    "agent_lines": 3,
+    "agent_removed": 4,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 3,
+    "total_lines_changed": 7,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

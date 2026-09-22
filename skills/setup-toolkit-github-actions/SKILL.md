@@ -309,8 +309,7 @@ cp "$lock_tmp_dir/composer.lock" "composer.lock.php-$target_php"
 Apply these rules to every workflow created by this skill:
 
 - Pin every external action with the full 40-character commit SHA.
-- Keep workflow YAML free of explanatory comments, including release-tag comments
-  after action SHAs. Use clear job and step names.
+- Keep workflow YAML free of explanatory comments. Use clear job and step names.
 - Verify each SHA from the action's original repository:
   ```bash
   gh release view --repo actions/checkout --json tagName,publishedAt,url
@@ -357,7 +356,7 @@ git ls-remote --tags https://github.com/ramsey/composer-install.git 'refs/tags/<
 ```
 
 Use the SHA returned for the exact tag. Do not use a moving branch, a major tag,
-or an abbreviated SHA. Do not append the tag as a YAML comment.
+or an abbreviated SHA.
 
 ## Verification
 

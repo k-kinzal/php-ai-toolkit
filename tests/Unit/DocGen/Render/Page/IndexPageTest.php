@@ -276,7 +276,7 @@ final class IndexPageTest extends TestCase
         self::assertStringStartsWith('<!DOCTYPE html>', $html);
         self::assertStringContainsString('<title>Overview — Demo Docs</title>', $html);
         self::assertStringContainsString('<div class="symbol-head"><h1>Demo Docs</h1></div>', $html);
-        self::assertStringContainsString('<span class="crumb-current">Overview</span>', $html);
+        self::assertStringContainsString('<span class="breadcrumb-current">Overview</span>', $html);
         self::assertStringContainsString('<h2 id="packages">Packages<a class="anchor" href="#packages">§</a></h2>', $html);
     }
 
@@ -318,7 +318,7 @@ final class IndexPageTest extends TestCase
         $html = (new IndexPage())->content($services);
 
         self::assertStringContainsString(
-            '<details class="notice notice-warn"><summary>Analysis warnings <span class="count">1</span></summary>'
+            '<details class="notice tone-warn"><summary>Analysis warnings <span class="count">1</span></summary>'
             . '<ul><li>Something odd happened</li></ul></details>',
             $html,
         );
@@ -363,7 +363,7 @@ PHP, 'src/Demo/Client.php');
         $expected = <<<'HTML'
 <div class="symbol-head"><h1>Demo Docs</h1></div>
 <section><h2 id="packages">Packages<a class="anchor" href="#packages">§</a></h2><div class="table-wrap"><table class="symbol-table"><tr><td><a href="demo/app/index.html">demo/app</a></td><td class="pkg-count">0 symbols</td><td>Demo application</td></tr></table></div></section>
-<details class="notice notice-warn"><summary>Analysis warnings <span class="count">1</span></summary><ul><li>Something odd happened</li></ul></details>
+<details class="notice tone-warn"><summary>Analysis warnings <span class="count">1</span></summary><ul><li>Something odd happened</li></ul></details>
 HTML;
 
         self::assertSame($expected . "\n", (new IndexPage())->content((new SiteRenderer())->services($model)));
@@ -440,7 +440,7 @@ HTML;
         $graph = new PackageGraph([new PackageDependency('demo/app', 'demo/lib', 'require')]);
         $model = new ProjectModel('Demo Docs', '/tmp/none', [$app, $lib], $graph, [], [], new SymbolTable(), $hierarchy, $usages, new TestCaseIndex(), null, [], null, []);
         $expected = <<<'HTML'
-<section><h2 id="package-graph">Package Dependencies<a class="anchor" href="#package-graph">§</a></h2><div class="graph-wrap"><svg class="graph" viewBox="0 0 114 176" role="img" style="max-width:114px"><path class="edge edge-require" d="M 53.0 42.0 C 53.0 72.0, 53.0 62.0, 53.0 89.0"/><circle class="edge-tip edge-require" cx="53.0" cy="90.0" r="2.6"/><a href="demo/app/index.html"><rect class="node node-pkg" x="8" y="8" width="90" height="34" rx="7"/><text x="53" y="30">demo/app</text></a><a href="demo/lib/index.html"><rect class="node node-vendor" x="8" y="92" width="90" height="34" rx="7"/><text x="53" y="114">demo/lib</text></a></svg></div><div class="legend"><span class="legend-item legend-require">require</span><span class="legend-item legend-require-dev">require-dev</span><span class="legend-item legend-suggest">suggest</span></div></section>
+<section><h2 id="package-graph">Package Dependencies<a class="anchor" href="#package-graph">§</a></h2><div class="graph-wrap"><svg class="graph" viewBox="0 0 114 176" role="img" style="--dd-draw-width:114px"><path class="edge edge-require" d="M 53.0 42.0 C 53.0 72.0, 53.0 62.0, 53.0 89.0"/><circle class="edge-tip edge-require" cx="53.0" cy="90.0" r="2.6"/><a href="demo/app/index.html"><rect class="node node-pkg" x="8" y="8" width="90" height="34" rx="7"/><text x="53" y="25" text-anchor="middle" dominant-baseline="middle">demo/app</text></a><a href="demo/lib/index.html"><rect class="node node-vendor" x="8" y="92" width="90" height="34" rx="7"/><text x="53" y="109" text-anchor="middle" dominant-baseline="middle">demo/lib</text></a></svg></div><div class="legend graph-legend"><span class="legend-item legend-require">require</span><span class="legend-item legend-require-dev">require-dev</span><span class="legend-item legend-suggest">suggest</span></div></section>
 HTML;
 
         self::assertSame($expected . "\n", (new IndexPage())->packageGraph((new SiteRenderer())->services($model)));

@@ -213,13 +213,13 @@ final class PackagePage
             ->withLinks($this->documents->links($services, $pagePath, $packageName, ''))
             ->render($readme, static function (string $code, string $language) use ($services): ?string {
                 if ($language === 'php') {
-                    return '<pre class="code-block"><code>' . $services->highlighter->highlightSnippet($code) . '</code></pre>' . "\n";
+                    return '<pre class="code"><code>' . $services->highlighter->highlightSnippet($code) . '</code></pre>' . "\n";
                 }
 
                 return null;
             });
 
-        return '<section class="readme"' . $services->diff->unchanged() . '><h2 id="readme">README<a class="anchor" href="#readme">§</a></h2>' . $markdown . '</section>' . "\n";
+        return '<section class="readme prose"' . $services->diff->unchanged() . '><h2 id="readme">README<a class="anchor" href="#readme">§</a></h2>' . $markdown . '</section>' . "\n";
     }
 
     /**

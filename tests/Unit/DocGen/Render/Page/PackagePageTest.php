@@ -286,7 +286,7 @@ final class PackagePageTest extends TestCase
         self::assertStringStartsWith('<!DOCTYPE html>', $html);
         self::assertStringContainsString('<title>demo/app — Demo Docs</title>', $html);
         self::assertStringContainsString('<h1><span class="chip chip-kind k-package">package</span>demo/app</h1>', $html);
-        self::assertStringContainsString('<span class="crumb-current">demo/app</span>', $html);
+        self::assertStringContainsString('<span class="breadcrumb-current">demo/app</span>', $html);
         self::assertStringContainsString('<p class="lede">Demo application</p>', $html);
         self::assertStringNotContainsString('README', $html);
         self::assertStringNotContainsString('href="#namespaces"', $html);
@@ -317,7 +317,7 @@ final class PackagePageTest extends TestCase
         $html = (new PackagePage())->render($services, $app, null);
 
         self::assertStringContainsString(
-            '<div class="sb-title">On this page</div><ul class="sb-list">'
+            '<div class="sidebar-title">On this page</div><ul class="sidebar-list">'
             . '<li><a href="#layers">Architecture layers</a></li><li><a href="#namespaces">Namespaces</a></li></ul>',
             $html,
         );
@@ -356,7 +356,7 @@ final class PackagePageTest extends TestCase
 
         $html = (new PackagePage())->readmeSection($services, 'demo/app/index.html', 'demo/app', 'See [the guide](docs/guide.md) and [the tree](tree.yaml).');
 
-        self::assertStringStartsWith('<section class="readme"><h2 id="readme">README<a class="anchor" href="#readme">§</a></h2>', $html);
+        self::assertStringStartsWith('<section class="readme prose"><h2 id="readme">README<a class="anchor" href="#readme">§</a></h2>', $html);
         self::assertStringContainsString('<a href="../../demo/app/doc/docs/guide.md.html">the guide</a>', $html);
         self::assertStringContainsString('<span class="md-target" title="tree.yaml">the tree</span>', $html);
         self::assertSame('', (new PackagePage())->readmeSection($services, 'demo/app/index.html', 'demo/app', null));

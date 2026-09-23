@@ -264,6 +264,18 @@ themes, and a `.nojekyll` marker, so publishing the output directory with GitHub
 top level contains `index.html`, one directory per package (with its `doc/` documents), `src/` (highlighted sources
 with line anchors), and `assets/`.
 
+The page design uses [document-design's doc-ui](https://k-kinzal.github.io/document-design/) **v1.0.0**.
+The exact [v1.0.0 stylesheet](https://k-kinzal.github.io/document-design/v1.0.0/document-design.css) is bundled
+unchanged as `assets/document-design-v1.0.0.css`, alongside its MIT license and source/checksum notice. Generation
+and viewing need no network access; neither `/latest/` nor a floating major/minor version URL is loaded.
+
+Generated HTML follows doc-ui's `.doc` catalog layout, `.main`/`.content` frame, sidebar, breadcrumbs, controls,
+prose, code and symbol components. `assets/style.css` contains only DocGen-specific extensions such as PHP symbol
+kinds, doctest assertions, graph relationships and comparison modes, using doc-ui's `--dd-*` tokens. The local
+script retains DocGen search, copy/run controls and diff modes, and applies themes through `data-dd-theme`.
+Without JavaScript, the document and mobile navigation remain readable. Upgrading the design requires replacing
+the bundled stylesheet deliberately and updating its filename, provenance and checksum test.
+
 ## Back to the Repository
 
 A generated site is the read side of a repository, so every page carries the way back to it: the page shell links the

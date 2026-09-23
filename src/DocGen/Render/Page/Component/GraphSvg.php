@@ -59,18 +59,18 @@ final class GraphSvg
         }
 
         $height = ($maxLayer + 1) * 84 + 8;
-        $svg = sprintf('<svg class="graph" viewBox="0 0 %d %d" role="img" style="max-width:%dpx">', $width, $height, $width);
+        $svg = sprintf('<svg class="graph" viewBox="0 0 %d %d" role="img" style="--dd-draw-width:%dpx">', $width, $height, $width);
         $svg .= $this->edgesSvg($edges, $positions);
         foreach ($nodes as $node) {
             $box = $positions[$node['id']];
             $inner = sprintf(
-                '<rect class="node node-%s" x="%d" y="%d" width="%d" height="34" rx="7"/><text x="%d" y="%d">%s</text>',
+                '<rect class="node node-%s" x="%d" y="%d" width="%d" height="34" rx="7"/><text x="%d" y="%d" text-anchor="middle" dominant-baseline="middle">%s</text>',
                 $this->escaper->e($node['kind']),
                 $box['x'],
                 $box['y'],
                 $box['w'],
                 $box['x'] + $box['w'] / 2,
-                $box['y'] + 22,
+                $box['y'] + 17,
                 $this->escaper->e($node['label']),
             );
             $svg .= $node['href'] !== null ? sprintf('<a href="%s">%s</a>', $this->escaper->e($node['href']), $inner) : $inner;

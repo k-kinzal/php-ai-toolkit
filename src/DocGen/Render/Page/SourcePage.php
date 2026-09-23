@@ -89,7 +89,7 @@ final class SourcePage
         $status = $this->statusOf($services, $code, $baseCode);
         $html = sprintf('<div class="symbol-head"><h1 class="source-title">%s</h1></div>', $services->escaper->e($relativeFile)) . "\n";
         $html .= $this->banner->render($services, $status);
-        $html .= '<pre class="source"' . $services->diff->mark($status) . '><code>';
+        $html .= '<pre class="code code-scroll source"' . $services->diff->mark($status) . '><code>';
 
         return $html . ($services->diff->isActive()
             ? $this->diffHtml->listing($services, $baseCode, $code)

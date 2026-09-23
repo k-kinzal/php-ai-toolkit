@@ -307,10 +307,10 @@ PHP;
             . '<pre class="member-sig private-sig"><code>',
             $html,
         );
-        self::assertStringContainsString('<span class="sig-name">SECRET</span>', $html);
+        self::assertStringContainsString('<span class="signature-name">SECRET</span>', $html);
         self::assertStringContainsString('<span class="t-var">$token</span>', $html);
-        self::assertStringContainsString('<span class="sig-name">seed</span>', $html);
-        self::assertStringNotContainsString('<span class="sig-name">LIMIT</span>', $html);
+        self::assertStringContainsString('<span class="signature-name">seed</span>', $html);
+        self::assertStringNotContainsString('<span class="signature-name">LIMIT</span>', $html);
         self::assertSame('', (new PrivateSurfaceHtml())->section($services, $symbols->classLikes[1], $context));
     }
 
@@ -375,10 +375,10 @@ PHP;
         $rows = (new PrivateSurfaceHtml())->rows($services, $symbols->classLikes[0], $context);
 
         self::assertCount(3, $rows);
-        self::assertStringContainsString('<span class="sig-name">SECRET</span>', $rows[0]['html']);
+        self::assertStringContainsString('<span class="signature-name">SECRET</span>', $rows[0]['html']);
         self::assertSame(DiffStatus::SAME, $rows[0]['status']);
         self::assertStringContainsString('<span class="t-var">$token</span>', $rows[1]['html']);
-        self::assertStringContainsString('<span class="sig-name">seed</span>', $rows[2]['html']);
+        self::assertStringContainsString('<span class="signature-name">seed</span>', $rows[2]['html']);
         self::assertSame(DiffStatus::ADDED, $rows[2]['status']);
     }
 }

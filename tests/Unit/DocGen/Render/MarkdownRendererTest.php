@@ -57,7 +57,7 @@ HTML;
     public function testRenderEscapesFencedCodeByDefault(): void
     {
         self::assertSame(
-            '<pre class="code-block"><code>&lt;code&gt; &amp; stuff</code></pre>' . "\n",
+            '<pre class="code"><code>&lt;code&gt; &amp; stuff</code></pre>' . "\n",
             (new MarkdownRenderer())->render("```\n<code> & stuff\n```\n"),
         );
     }
@@ -79,7 +79,7 @@ HTML;
             static fn (string $code, string $language): ?string => $language === 'php' ? '<x>' . $code . '</x>' : null,
         );
 
-        self::assertSame('<pre class="code-block"><code>&lt;x&gt;</code></pre>' . "\n", $html);
+        self::assertSame('<pre class="code"><code>&lt;x&gt;</code></pre>' . "\n", $html);
     }
 
     public function testRenderBuildsBlockquoteAfterParagraph(): void
@@ -117,7 +117,7 @@ HTML;
     public function testFenceBlockEscapesCodeByDefault(): void
     {
         self::assertSame(
-            ['<pre class="code-block"><code>&lt;x&gt;</code></pre>' . "\n", 3],
+            ['<pre class="code"><code>&lt;x&gt;</code></pre>' . "\n", 3],
             (new MarkdownRenderer())->fenceBlock(['```', '<x>', '```'], 0, null),
         );
     }

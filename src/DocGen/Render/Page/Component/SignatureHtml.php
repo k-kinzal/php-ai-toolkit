@@ -54,7 +54,7 @@ final class SignatureHtml
 
         $keywords[] = $classLike->kind === ClassLikeKind::CLASS_ ? 'class' : $classLike->kind;
         $html = '<span class="t-key">' . implode('</span> <span class="t-key">', $keywords) . '</span> ';
-        $html .= '<span class="sig-name">' . $escaper->e($classLike->shortName) . '</span>';
+        $html .= '<span class="signature-name">' . $escaper->e($classLike->shortName) . '</span>';
         $html .= $this->templateList($services, $classLike->docBlock !== null ? $classLike->docBlock->templates : [], $context);
         if ($classLike->backingType !== null) {
             $html .= ': <span class="t-key">' . $escaper->e($classLike->backingType) . '</span>';
@@ -156,7 +156,7 @@ final class SignatureHtml
 
         $keywords[] = 'function';
         $head = '<span class="t-key">' . implode('</span> <span class="t-key">', $keywords) . '</span> '
-            . '<span class="sig-name">' . $services->escaper->e($method->name) . '</span>'
+            . '<span class="signature-name">' . $services->escaper->e($method->name) . '</span>'
             . $this->templateList($services, $method->docBlock !== null ? $method->docBlock->templates : [], $context);
         $return = $services->typeHtml->render(
             $method->returnType->annotated !== null ? $method->returnType->annotated->type : null,
@@ -174,7 +174,7 @@ final class SignatureHtml
      */
     public function functionSignature(RenderKit $services, FunctionDoc $function, TypeRenderContext $context, string $ownerKey = ''): string
     {
-        $head = '<span class="t-key">function</span> <span class="sig-name">' . $services->escaper->e($function->shortName) . '</span>'
+        $head = '<span class="t-key">function</span> <span class="signature-name">' . $services->escaper->e($function->shortName) . '</span>'
             . $this->templateList($services, $function->docBlock !== null ? $function->docBlock->templates : [], $context);
         $return = $services->typeHtml->render(
             $function->returnType->annotated !== null ? $function->returnType->annotated->type : null,
@@ -350,7 +350,7 @@ final class SignatureHtml
 
         return '<span class="t-key">' . $constant->visibility . '</span> <span class="t-key">const</span> '
             . $type
-            . '<span class="sig-name">' . $services->escaper->e($constant->name) . '</span>'
+            . '<span class="signature-name">' . $services->escaper->e($constant->name) . '</span>'
             . ($constant->valueText !== null ? ' = <span class="t-lit">' . $services->escaper->e($constant->valueText) . '</span>' : '');
     }
 
@@ -359,7 +359,7 @@ final class SignatureHtml
      */
     public function caseSignature(RenderKit $services, EnumCaseDoc $case): string
     {
-        return '<span class="t-key">case</span> <span class="sig-name">' . $services->escaper->e($case->name) . '</span>'
+        return '<span class="t-key">case</span> <span class="signature-name">' . $services->escaper->e($case->name) . '</span>'
             . ($case->valueText !== null ? ' = <span class="t-lit">' . $services->escaper->e($case->valueText) . '</span>' : '');
     }
 }

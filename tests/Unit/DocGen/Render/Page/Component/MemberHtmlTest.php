@@ -335,8 +335,8 @@ PHP;
 
         self::assertStringContainsString('<div class="member" id="method.run">', $html);
         self::assertStringContainsString('<pre class="member-sig"><code>', $html);
-        self::assertStringContainsString('<span class="sig-name">run</span>', $html);
-        self::assertStringContainsString('<a class="src-link" href="../../../src/src/Demo/Widget.php.html#L' . $method->startLine . '">source</a>', $html);
+        self::assertStringContainsString('<span class="signature-name">run</span>', $html);
+        self::assertStringContainsString('<a class="source-link" href="../../../src/src/Demo/Widget.php.html#L' . $method->startLine . '">source</a>', $html);
         self::assertStringContainsString('<a class="anchor" href="#method.run">§</a>', $html);
         self::assertStringContainsString('Called from <span class="count">1</span>', $html);
         self::assertStringContainsString('>Demo\Caller::boot()</a>', $html);
@@ -447,7 +447,7 @@ PHP;
         $html = (new MemberHtml())->constant($services, $pagePath, $widget, $constant, $context);
 
         self::assertStringContainsString('<div class="member" id="constant.LIMIT">', $html);
-        self::assertStringContainsString('<span class="sig-name">LIMIT</span> = <span class="t-lit">3</span>', $html);
+        self::assertStringContainsString('<span class="signature-name">LIMIT</span> = <span class="t-lit">3</span>', $html);
         self::assertStringContainsString('#L' . $constant->line . '">source</a>', $html);
     }
 
@@ -482,7 +482,7 @@ PHP;
         $html = (new MemberHtml())->enumCase($services, $pagePath, $status, $case, $context);
 
         self::assertStringContainsString('<div class="member" id="case.Active">', $html);
-        self::assertStringContainsString('<span class="t-key">case</span> <span class="sig-name">Active</span> = <span class="t-lit">&#039;active&#039;</span>', $html);
+        self::assertStringContainsString('<span class="t-key">case</span> <span class="signature-name">Active</span> = <span class="t-lit">&#039;active&#039;</span>', $html);
         self::assertStringContainsString('#L' . $case->line . '">source</a>', $html);
     }
 
@@ -508,7 +508,7 @@ PHP;
             '<span class="chip chip-sm chip-cov-high" title="19 of 20 executable lines executed by the test suite">95%</span>',
             $html,
         );
-        self::assertStringContainsString('<a class="src-link" href="../../../src/src/Demo/Widget.php.html#L7">source</a><a class="anchor" href="#method.run">§</a>', $html);
+        self::assertStringContainsString('<a class="source-link" href="../../../src/src/Demo/Widget.php.html#L7">source</a><a class="anchor" href="#method.run">§</a>', $html);
         self::assertStringContainsString('chip-cov-mid', (new MemberHtml())->meta($services, $pagePath, 'src/Demo/Mid.php', 3, 5, 'm'));
         self::assertStringContainsString('chip-cov-low', (new MemberHtml())->meta($services, $pagePath, 'src/Demo/Low.php', 3, 5, 'm'));
         self::assertStringNotContainsString('chip-cov', (new MemberHtml())->meta($services, $pagePath, 'src/Demo/None.php', 1, 2, 'm'));
@@ -867,7 +867,7 @@ PHP;
 
         $html = (new MemberHtml())->tagExamples($services, $widget->methods[0]->docBlock);
 
-        self::assertSame(2, substr_count($html, '<figure class="example">'));
+        self::assertSame(2, substr_count($html, '<figure class="example code-block">'));
         self::assertStringContainsString('<span class="example-title">Doubling a count</span>', $html);
         self::assertStringContainsString('<span class="doct doct-return">// =&gt; 4</span>', $html);
         self::assertStringContainsString('<span class="example-title">Example</span>', $html);

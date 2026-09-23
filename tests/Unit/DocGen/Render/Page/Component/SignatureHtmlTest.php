@@ -308,7 +308,7 @@ PHP;
         $html = (new SignatureHtml())->classSignature($services, $widget, $context);
 
         self::assertSame(
-            '<pre class="signature"><code><span class="t-key">final</span> <span class="t-key">class</span> <span class="sig-name">Widget</span>' . "\n"
+            '<pre class="signature"><code><span class="t-key">final</span> <span class="t-key">class</span> <span class="signature-name">Widget</span>' . "\n"
             . '    <span class="t-key">implements</span> <a class="t-name k-interface" href="../../../demo/pkg/Demo/interface.Renderer.html" title="Demo\Renderer">Renderer</a></code></pre>' . "\n",
             $html,
         );
@@ -345,7 +345,7 @@ PHP;
 
         $html = (new SignatureHtml())->classSignature($services, $bag, $context);
 
-        self::assertStringContainsString('<span class="t-key">abstract</span> <span class="t-key">class</span> <span class="sig-name">Bag</span>&lt;<span class="t-gen">T</span> <span class="t-key">of</span> <span class="t-key">object</span>&gt;', $html);
+        self::assertStringContainsString('<span class="t-key">abstract</span> <span class="t-key">class</span> <span class="signature-name">Bag</span>&lt;<span class="t-gen">T</span> <span class="t-key">of</span> <span class="t-key">object</span>&gt;', $html);
         self::assertStringContainsString('<span class="t-key">implements</span> <span class="t-ext" title="ArrayAccess">ArrayAccess</span>&lt;<span class="t-key">int</span>, <span class="t-gen">T</span>&gt;', $html);
         self::assertSame(1, substr_count($html, 'title="ArrayAccess"'));
     }
@@ -456,7 +456,7 @@ PHP;
 
         self::assertSame(
             '<span class="t-key">final</span> <span class="t-key">public</span> <span class="t-key">static</span> <span class="t-key">function</span> '
-            . '<span class="sig-name">run</span>(<span class="t-key">int</span> <span class="t-var">$count</span>): <span class="t-key">string</span>',
+            . '<span class="signature-name">run</span>(<span class="t-key">int</span> <span class="t-var">$count</span>): <span class="t-key">string</span>',
             $html,
         );
     }
@@ -491,7 +491,7 @@ PHP;
 
         $html = (new SignatureHtml())->methodSignature($services, $widget->methods[0], $context);
 
-        self::assertStringContainsString('<span class="sig-name">configure</span>(' . "\n" . '    <span class="t-key">string</span>', $html);
+        self::assertStringContainsString('<span class="signature-name">configure</span>(' . "\n" . '    <span class="t-key">string</span>', $html);
         self::assertStringContainsString(',' . "\n" . '): <span class="t-key">void</span>', $html);
         self::assertStringContainsString('<span class="t-var">$firstVeryLongParameterName</span>', $html);
         self::assertStringContainsString('<span class="t-var">$secondVeryLongParameterName</span>', $html);
@@ -524,7 +524,7 @@ PHP;
         $html = (new SignatureHtml())->functionSignature($services, $symbols->functions[0], $context);
 
         self::assertSame(
-            '<span class="t-key">function</span> <span class="sig-name">make</span>(<span class="t-key">int</span> <span class="t-var">$count</span>): <span class="t-key">string</span>',
+            '<span class="t-key">function</span> <span class="signature-name">make</span>(<span class="t-key">int</span> <span class="t-var">$count</span>): <span class="t-key">string</span>',
             $html,
         );
     }
@@ -680,7 +680,7 @@ PHP;
 
         self::assertSame(
             '<span class="t-key">public</span> <span class="t-key">const</span> <span class="t-key">non-empty-string</span> '
-            . '<span class="sig-name">NAME</span> = <span class="t-lit">&#039;demo&#039;</span>',
+            . '<span class="signature-name">NAME</span> = <span class="t-lit">&#039;demo&#039;</span>',
             $html,
         );
     }
@@ -713,7 +713,7 @@ PHP;
         $html = (new SignatureHtml())->caseSignature($services, $status->enumCases[0]);
 
         self::assertSame(
-            '<span class="t-key">case</span> <span class="sig-name">Active</span> = <span class="t-lit">&#039;active&#039;</span>',
+            '<span class="t-key">case</span> <span class="signature-name">Active</span> = <span class="t-lit">&#039;active&#039;</span>',
             $html,
         );
     }

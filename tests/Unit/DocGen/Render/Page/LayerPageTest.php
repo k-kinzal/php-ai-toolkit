@@ -134,7 +134,7 @@ final class LayerPageTest extends TestCase
         self::assertStringStartsWith('<!DOCTYPE html>', $html);
         self::assertStringContainsString('<title>Layer Domain — Demo Docs</title>', $html);
         self::assertStringContainsString(
-            '<a href="../../demo/pkg/index.html">demo/pkg</a><span class="crumb-sep">::</span><span class="crumb-current">Layer Domain</span>',
+            '<a href="../../demo/pkg/index.html">demo/pkg</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">Layer Domain</span>',
             $html,
         );
         self::assertStringContainsString('<h1><span class="chip chip-layer">layer</span>Domain <span class="count">1</span></h1>', $html);

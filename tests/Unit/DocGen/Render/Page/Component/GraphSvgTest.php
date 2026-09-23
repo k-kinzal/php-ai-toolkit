@@ -28,9 +28,9 @@ final class GraphSvgTest extends TestCase
 
         $svg = (new GraphSvg())->render($nodes, $edges);
 
-        self::assertStringStartsWith('<svg class="graph" viewBox="0 0 88 176" role="img" style="max-width:88px">', $svg);
-        self::assertStringContainsString('<a href="app/index.html"><rect class="node node-pkg" x="8" y="8" width="64" height="34" rx="7"/><text x="40" y="30">app</text></a>', $svg);
-        self::assertStringContainsString('<rect class="node node-pkg" x="8" y="92" width="64" height="34" rx="7"/><text x="40" y="114">lib</text>', $svg);
+        self::assertStringStartsWith('<svg class="graph" viewBox="0 0 88 176" role="img" style="--dd-draw-width:88px">', $svg);
+        self::assertStringContainsString('<a href="app/index.html"><rect class="node node-pkg" x="8" y="8" width="64" height="34" rx="7"/><text x="40" y="25" text-anchor="middle" dominant-baseline="middle">app</text></a>', $svg);
+        self::assertStringContainsString('<rect class="node node-pkg" x="8" y="92" width="64" height="34" rx="7"/><text x="40" y="109" text-anchor="middle" dominant-baseline="middle">lib</text>', $svg);
         self::assertStringContainsString('<path class="edge edge-require"', $svg);
         self::assertStringContainsString('<circle class="edge-tip edge-require"', $svg);
         self::assertSame(1, substr_count($svg, '<a href='));

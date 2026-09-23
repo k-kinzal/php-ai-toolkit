@@ -59,7 +59,7 @@ final class DocTextHtml
         }
 
         if ($docBlock->description !== '') {
-            $html .= '<div class="doc-body">' . $services->markdown->render(
+            $html .= '<div class="prose">' . $services->markdown->render(
                 $docBlock->description,
                 $this->fenceRenderer($services, $symbol, $this->fenceIndexBase($services, $docBlock)),
             ) . '</div>' . "\n";
@@ -117,7 +117,7 @@ final class DocTextHtml
 
         $note = $docBlock->deprecated !== '' ? ': ' . $services->escaper->e($docBlock->deprecated) : '.';
 
-        return sprintf('<div class="notice notice-deprecated"><strong>Deprecated</strong>%s</div>', $note) . "\n";
+        return sprintf('<div class="notice tone-danger"><strong>Deprecated</strong>%s</div>', $note) . "\n";
     }
 
     /**
@@ -137,13 +137,13 @@ final class DocTextHtml
 
         if ($scopes !== []) {
             return sprintf(
-                '<div class="notice notice-visibility"><strong>Restricted visibility</strong>: declared %s. Code outside that scope must not name this declaration.</div>',
+                '<div class="notice tone-warn"><strong>Restricted visibility</strong>: declared %s. Code outside that scope must not name this declaration.</div>',
                 implode(' and ', $scopes)
             ) . "\n";
         }
 
         return $docBlock->isPublicApi()
-            ? '<div class="notice notice-public"><strong>Public API</strong>: explicitly declared with <code>@visibility public</code>.</div>' . "\n"
+            ? '<div class="notice tone-ok"><strong>Public API</strong>: explicitly declared with <code>@visibility public</code>.</div>' . "\n"
             : '';
     }
 }

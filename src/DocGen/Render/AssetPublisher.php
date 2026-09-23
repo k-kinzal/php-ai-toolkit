@@ -39,7 +39,7 @@ final class AssetPublisher
      */
     public function publish(string $outputRoot): void
     {
-        foreach (['style.css', 'app.js'] as $asset) {
+        foreach (['document-design-v1.0.0.css', 'document-design-LICENSE.txt', 'style.css', 'app.js'] as $asset) {
             $this->writer->write($outputRoot, 'assets/' . $asset, $this->assetContents($asset));
         }
 

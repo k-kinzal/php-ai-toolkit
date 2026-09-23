@@ -46,7 +46,7 @@ final class SidebarHtml
     {
         $escaper = $services->escaper;
         $html = sprintf(
-            '<div class="sb-head"><a class="sb-site" href="%s">%s</a></div>',
+            '<div class="sidebar-header"><a class="sidebar-site" href="%s">%s</a></div>',
             $escaper->e($services->url->href($pagePath, 'index.html')),
             $escaper->e($services->model->title),
         );
@@ -56,7 +56,7 @@ final class SidebarHtml
         }
 
         $html .= sprintf(
-            '<div class="sb-pkg"><a href="%s">%s</a></div>',
+            '<div class="sidebar-header sidebar-package"><a href="%s">%s</a></div>',
             $escaper->e($services->url->href($pagePath, $services->url->packagePage($scope->packageName))),
             $escaper->e($scope->packageName),
         );
@@ -74,14 +74,14 @@ final class SidebarHtml
     public function packageList(RenderKit $services, string $pagePath): string
     {
         $escaper = $services->escaper;
-        $html = '<nav class="sb-block"><div class="sb-title">Packages</div><ul class="sb-list">';
+        $html = '<nav class="sidebar-section"><div class="sidebar-title">Packages</div><ul class="sidebar-list">';
         foreach ($services->model->packages as $package) {
             $html .= sprintf(
                 '<li%s><a href="%s">%s</a>%s</li>',
                 $services->diff->mark($services->diff->packageStatus($package->manifest->name)),
                 $escaper->e($services->url->href($pagePath, $services->url->packagePage($package->manifest->name))),
                 $escaper->e($package->manifest->name),
-                $package->isVendor ? sprintf('<span class="sb-note">%s</span>', $package->isDevDependency ? 'dev' : 'vendor') : '',
+                $package->isVendor ? sprintf('<span class="sidebar-count">%s</span>', $package->isDevDependency ? 'dev' : 'vendor') : '',
             );
         }
 
@@ -97,7 +97,7 @@ final class SidebarHtml
             return '';
         }
 
-        $html = '<nav class="sb-block"><div class="sb-title">On this page</div><ul class="sb-list">';
+        $html = '<nav class="sidebar-section"><div class="sidebar-title">On this page</div><ul class="sidebar-list">';
         foreach ($scope->sections as $section) {
             $html .= sprintf(
                 '<li%s><a href="#%s">%s</a></li>',
@@ -119,13 +119,13 @@ final class SidebarHtml
         $packageName = (string) $scope->packageName;
         $namespace = (string) $scope->namespace;
         $html = sprintf(
-            '<nav class="sb-block"><div class="sb-title"><a href="%s">In %s</a></div>',
+            '<nav class="sidebar-section"><div class="sidebar-title"><a href="%s">In %s</a></div>',
             $escaper->e($services->url->href($pagePath, $services->url->namespacePage($packageName, $namespace))),
             $escaper->e($namespace === '' ? 'global namespace' : $namespace),
         );
         $children = $this->symbols->childNamespaces($services, $packageName, $namespace);
         if ($children !== []) {
-            $html .= '<div class="sb-kind">Namespaces</div><ul class="sb-list">';
+            $html .= '<div class="sidebar-title">Namespaces</div><ul class="sidebar-list">';
             foreach ($children as $child) {
                 $html .= sprintf(
                     '<li%s><a href="%s">%s</a></li>',
@@ -154,7 +154,7 @@ final class SidebarHtml
             return '';
         }
 
-        $html = '<nav class="sb-block"><div class="sb-title">Namespaces</div><ul class="sb-list">';
+        $html = '<nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list">';
         foreach ($namespaces as $namespace) {
             $html .= sprintf(
                 '<li%s><a href="%s" title="%s">%s</a></li>',
@@ -182,7 +182,7 @@ final class SidebarHtml
             }
 
             $html .= sprintf(
-                '<div class="sb-kind"%s>%s</div><ul class="sb-list">',
+                '<div class="sidebar-title"%s>%s</div><ul class="sidebar-list">',
                 $services->diff->combined($statuses),
                 $services->escaper->e(SymbolIndex::KIND_LABELS[$kind]),
             );
@@ -217,7 +217,7 @@ final class SidebarHtml
         }
 
         $html = sprintf(
-            '<nav class="sb-block"><div class="sb-title">Package</div><ul class="sb-list"><li%s><a href="%s">All items</a></li>%s</ul>',
+            '<nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li%s><a href="%s">All items</a></li>%s</ul>',
             $services->diff->mark($services->diff->packageStatus($packageName)),
             $escaper->e($services->url->href($pagePath, $services->url->allItemsPage($packageName))),
             $documents === [] ? '' : sprintf(
@@ -250,7 +250,7 @@ final class SidebarHtml
             $combined[] = $statuses[$layer] ?? DiffStatus::SAME;
         }
 
-        $html = sprintf('<div class="sb-kind"%s>Layers</div><ul class="sb-list">', $services->diff->combined($combined));
+        $html = sprintf('<div class="sidebar-title"%s>Layers</div><ul class="sidebar-list">', $services->diff->combined($combined));
         foreach ($layers as $layer) {
             $html .= sprintf(
                 '<li%s><a href="%s">%s</a></li>',

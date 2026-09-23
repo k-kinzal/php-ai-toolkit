@@ -33,12 +33,12 @@ final class ExampleHtml
     {
         $escaper = $services->escaper;
 
-        return '<figure class="example">'
-            . '<figcaption>'
+        return '<figure class="example code-block">'
+            . '<figcaption class="code-head">'
             . sprintf('<span class="example-title">%s</span>', $escaper->e($description ?? 'Example'))
             . ($runnable ? $this->doctestChip($services, $id) : '')
             . ($runnable && $id !== '' ? $this->runButton($services, $id) : '')
-            . '<button class="copy-btn" type="button" title="Copy example">copy</button>'
+            . '<button class="btn copy-btn" type="button" title="Copy example">copy</button>'
             . '</figcaption>'
             . $this->codeBlock($services, $code)
             . '</figure>' . "\n";
@@ -60,7 +60,7 @@ final class ExampleHtml
     public function runButton(RenderKit $services, string $id): string
     {
         return sprintf(
-            '<button class="copy-btn" type="button" data-copy="%s" title="Copy the command that runs this example on its own">run</button>',
+            '<button class="btn copy-btn" type="button" data-copy="%s" title="Copy the command that runs this example on its own">run</button>',
             $services->escaper->e($this->runCommand($id)),
         );
     }
@@ -114,7 +114,7 @@ final class ExampleHtml
                 . ' <span class="doct doct-' . $line->marker . '">' . $services->escaper->e($this->markerText($line->marker, $line->expected ?? '', $line->exceptionMessage)) . '</span>';
         }
 
-        return '<pre class="code-block doctest"><code>' . implode("\n", $lines) . '</code></pre>';
+        return '<pre class="code doctest"><code>' . implode("\n", $lines) . '</code></pre>';
     }
 
     /**

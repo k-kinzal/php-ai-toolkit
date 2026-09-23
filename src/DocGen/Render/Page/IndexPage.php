@@ -54,7 +54,7 @@ final class IndexPage
             'index.html',
             'Overview',
             $this->description($services),
-            '<span class="crumb-current">Overview</span>',
+            '<span class="breadcrumb-current">Overview</span>',
             $this->sidebar->build($services, 'index.html', new SidebarScope(null, null, null, [])),
             $this->content($services),
         );
@@ -86,13 +86,13 @@ final class IndexPage
         $escaper = $services->escaper;
         $html = sprintf('<div class="symbol-head"><h1>%s</h1></div>', $escaper->e($services->model->title)) . "\n";
         if ($services->model->publicApi) {
-            $html .= '<div class="notice notice-public"><strong>Public API documentation</strong>: navigation, listings, counts, and search include only declarations marked <code>@visibility public</code>.</div>' . "\n";
+            $html .= '<div class="notice tone-ok"><strong>Public API documentation</strong>: navigation, listings, counts, and search include only declarations marked <code>@visibility public</code>.</div>' . "\n";
         }
 
         $html .= $this->packageTable($services);
         $html .= $this->packageGraph($services);
         if ($services->model->warnings !== []) {
-            $html .= '<details class="notice notice-warn"><summary>Analysis warnings <span class="count">' . count($services->model->warnings) . '</span></summary><ul>';
+            $html .= '<details class="notice tone-warn"><summary>Analysis warnings <span class="count">' . count($services->model->warnings) . '</span></summary><ul>';
             foreach ($services->model->warnings as $warning) {
                 $html .= '<li>' . $escaper->e($warning) . '</li>';
             }
@@ -157,7 +157,7 @@ final class IndexPage
 
         return '<section' . $services->diff->unchanged() . '><h2 id="package-graph">Package Dependencies<a class="anchor" href="#package-graph">§</a></h2>'
             . '<div class="graph-wrap">' . $this->graph->render($nodes, $edges) . '</div>'
-            . '<div class="legend"><span class="legend-item legend-require">require</span><span class="legend-item legend-require-dev">require-dev</span><span class="legend-item legend-suggest">suggest</span></div>'
+            . '<div class="legend graph-legend"><span class="legend-item legend-require">require</span><span class="legend-item legend-require-dev">require-dev</span><span class="legend-item legend-suggest">suggest</span></div>'
             . '</section>' . "\n";
     }
 }

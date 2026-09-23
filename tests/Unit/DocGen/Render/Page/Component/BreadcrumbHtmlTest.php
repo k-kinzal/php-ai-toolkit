@@ -194,7 +194,7 @@ final class BreadcrumbHtmlTest extends TestCase
         ]);
 
         self::assertSame(
-            '<a href="../../demo/pkg/index.html">demo/pkg</a><span class="crumb-sep">::</span><span class="crumb-current">Widget</span>',
+            '<a href="../../demo/pkg/index.html">demo/pkg</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">Widget</span>',
             $html,
         );
     }
@@ -212,6 +212,6 @@ final class BreadcrumbHtmlTest extends TestCase
 
         $html = (new BreadcrumbHtml())->build($services, 'index.html', [['label' => 'A&B', 'path' => null]]);
 
-        self::assertSame('<span class="crumb-current">A&amp;B</span>', $html);
+        self::assertSame('<span class="breadcrumb-current">A&amp;B</span>', $html);
     }
 }

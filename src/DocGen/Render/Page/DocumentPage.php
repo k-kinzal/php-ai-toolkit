@@ -100,13 +100,13 @@ final class DocumentPage
         $status = $services->diff->documentStatus($document->packageName, $document->path);
         $html = sprintf(
             '<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>%s</h1>'
-            . '<div class="symbol-meta"><span class="src-link">%s</span></div></div>',
+            . '<div class="symbol-meta"><span class="source-link">%s</span></div></div>',
             $services->escaper->e($document->title),
             $services->escaper->e($document->path),
         ) . "\n";
         $html .= $this->banner->render($services, $status);
 
-        return $html . '<section class="readme"' . $services->diff->mark($status) . '>'
+        return $html . '<section class="readme prose"' . $services->diff->mark($status) . '>'
             . $this->body($services, $pagePath, $document, $markdown, $baseMarkdown) . '</section>' . "\n";
     }
 
@@ -141,7 +141,7 @@ final class DocumentPage
     {
         return static function (string $code, string $language) use ($services): ?string {
             if ($language === 'php') {
-                return '<pre class="code-block"><code>' . $services->highlighter->highlightSnippet($code) . '</code></pre>' . "\n";
+                return '<pre class="code"><code>' . $services->highlighter->highlightSnippet($code) . '</code></pre>' . "\n";
             }
 
             return null;

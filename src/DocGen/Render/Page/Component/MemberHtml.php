@@ -184,7 +184,7 @@ final class MemberHtml
         }
 
         $html .= sprintf(
-            '<a class="src-link" href="%s">source</a><a class="anchor" href="#%s">§</a>',
+            '<a class="source-link" href="%s">source</a><a class="anchor" href="#%s">§</a>',
             $services->escaper->e($services->url->href($pagePath, $services->url->sourcePage($file)) . '#L' . $startLine),
             $services->escaper->e($anchor),
         );

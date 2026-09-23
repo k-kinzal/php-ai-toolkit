@@ -207,7 +207,7 @@ final class DocumentPageTest extends TestCase
         self::assertStringStartsWith('<!DOCTYPE html>', $html);
         self::assertStringContainsString('<title>Guide — Demo Docs</title>', $html);
         self::assertStringContainsString(
-            '<a href="../../../../demo/pkg/index.html">demo/pkg</a><span class="crumb-sep">::</span><span class="crumb-current">docs/guide.md</span>',
+            '<a href="../../../../demo/pkg/index.html">demo/pkg</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/guide.md</span>',
             $html,
         );
         self::assertStringContainsString('<h1><span class="chip chip-kind k-document">document</span>Guide</h1>', $html);
@@ -224,8 +224,8 @@ final class DocumentPageTest extends TestCase
 
         self::assertStringStartsWith(
             '<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Guide</h1>'
-            . '<div class="symbol-meta"><span class="src-link">docs/guide.md</span></div></div>' . "\n"
-            . '<section class="readme"><p>Intro text.</p>',
+            . '<div class="symbol-meta"><span class="source-link">docs/guide.md</span></div></div>' . "\n"
+            . '<section class="readme prose"><p>Intro text.</p>',
             $html,
         );
         self::assertStringEndsWith("</section>\n", $html);
@@ -243,7 +243,7 @@ final class DocumentPageTest extends TestCase
 
         self::assertStringContainsString('<a href="../../../../demo/pkg/doc/docs/rules/Rule.md.html">the rule</a>', $html);
         self::assertStringContainsString('<span class="md-target" title="tree.yaml">the tree</span>', $html);
-        self::assertStringContainsString('<pre class="code-block"><code>&lt;?<span class="tok-id">php</span> <span class="tok-kw">echo</span>', $html);
+        self::assertStringContainsString('<pre class="code"><code>&lt;?<span class="tok-id">php</span> <span class="tok-kw">echo</span>', $html);
     }
 
     public function testBodyMarksTheChangedBlocksOfAComparedDocument(): void
@@ -265,6 +265,6 @@ final class DocumentPageTest extends TestCase
         $fence = (new DocumentPage())->fence($services);
 
         self::assertNull($fence('echo 1;', 'bash'));
-        self::assertStringContainsString('<pre class="code-block"><code><span class="tok-kw">echo</span>', (string) $fence('echo 1;', 'php'));
+        self::assertStringContainsString('<pre class="code"><code><span class="tok-kw">echo</span>', (string) $fence('echo 1;', 'php'));
     }
 }

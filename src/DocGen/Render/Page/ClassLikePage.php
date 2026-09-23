@@ -236,7 +236,7 @@ final class ClassLikePage
         }
 
         $html .= sprintf(
-            '<a class="src-link" href="%s">%s:%d</a>',
+            '<a class="source-link" href="%s">%s:%d</a>',
             $escaper->e($services->url->href($pagePath, $services->url->sourcePage($classLike->file)) . '#L' . $classLike->startLine),
             $escaper->e($classLike->file),
             $classLike->startLine,

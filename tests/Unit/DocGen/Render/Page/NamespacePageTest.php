@@ -138,12 +138,12 @@ final class NamespacePageTest extends TestCase
         self::assertStringContainsString('<title>Demo\Core — Demo Docs</title>', $html);
         self::assertStringContainsString('<h1><span class="chip chip-kind k-namespace">namespace</span>Demo\Core</h1>', $html);
         self::assertStringContainsString(
-            '<a href="../../../../demo/pkg/index.html">demo/pkg</a><span class="crumb-sep">::</span>'
-            . '<a href="../../../../demo/pkg/Demo/index.html">Demo</a><span class="crumb-sep">::</span>'
-            . '<span class="crumb-current">Core</span>',
+            '<a href="../../../../demo/pkg/index.html">demo/pkg</a><span class="breadcrumb-sep">::</span>'
+            . '<a href="../../../../demo/pkg/Demo/index.html">Demo</a><span class="breadcrumb-sep">::</span>'
+            . '<span class="breadcrumb-current">Core</span>',
             $html,
         );
-        self::assertStringContainsString('<div class="sb-title">On this page</div>', $html);
+        self::assertStringContainsString('<div class="sidebar-title">On this page</div>', $html);
         self::assertStringContainsString('<li><a href="#namespaces">Namespaces</a></li>', $html);
         self::assertStringContainsString('<li><a href="#interfaces">Interfaces</a></li>', $html);
         self::assertStringContainsString('<li><a href="#classes">Classes</a></li>', $html);

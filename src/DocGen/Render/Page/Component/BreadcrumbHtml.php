@@ -31,10 +31,10 @@ final class BreadcrumbHtml
                     $escaper->e($crumb['label']),
                 );
             } else {
-                $parts[] = sprintf('<span class="crumb-current">%s</span>', $escaper->e($crumb['label']));
+                $parts[] = sprintf('<span class="breadcrumb-current">%s</span>', $escaper->e($crumb['label']));
             }
         }
 
-        return implode('<span class="crumb-sep">::</span>', $parts);
+        return implode('<span class="breadcrumb-sep">::</span>', $parts);
     }
 }

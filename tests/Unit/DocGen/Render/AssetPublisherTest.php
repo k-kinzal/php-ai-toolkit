@@ -34,6 +34,11 @@ final class AssetPublisherTest extends TestCase
         (new AssetPublisher())->publish($dir);
 
         self::assertFileExists($dir . '/assets/style.css');
+        self::assertSame(
+            '05f312d9faf6de35a0995cfa9434df1cab3a93c836a533307f9e23338a527793',
+            hash_file('sha256', $dir . '/assets/document-design-v1.0.0.css'),
+        );
+        self::assertFileExists($dir . '/assets/document-design-LICENSE.txt');
         self::assertFileExists($dir . '/assets/app.js');
         self::assertFileExists($dir . '/.nojekyll');
         self::assertSame('', (string) file_get_contents($dir . '/.nojekyll'));

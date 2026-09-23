@@ -315,9 +315,9 @@ PHP;
         self::assertStringContainsString('<title>make — Demo Docs</title>', $html);
         self::assertStringContainsString('<h1><span class="chip chip-kind k-function">function</span>make</h1>', $html);
         self::assertStringContainsString(
-            '<a href="../../../demo/pkg/index.html">demo/pkg</a><span class="crumb-sep">::</span>'
-            . '<a href="../../../demo/pkg/Demo/index.html">Demo</a><span class="crumb-sep">::</span>'
-            . '<span class="crumb-current">make()</span>',
+            '<a href="../../../demo/pkg/index.html">demo/pkg</a><span class="breadcrumb-sep">::</span>'
+            . '<a href="../../../demo/pkg/Demo/index.html">Demo</a><span class="breadcrumb-sep">::</span>'
+            . '<span class="breadcrumb-current">make()</span>',
             $html,
         );
         self::assertStringContainsString('<p class="lede">Makes a widget count.</p>', $html);
@@ -360,10 +360,10 @@ PHP;
         $html = (new FunctionPage())->content($services, $pagePath, $function, $context);
 
         self::assertStringContainsString(
-            '<a class="src-link" href="../../../src/src/Demo/functions.php.html#L' . $function->startLine . '">src/Demo/functions.php:' . $function->startLine . '</a>',
+            '<a class="source-link" href="../../../src/src/Demo/functions.php.html#L' . $function->startLine . '">src/Demo/functions.php:' . $function->startLine . '</a>',
             $html,
         );
-        self::assertStringContainsString('<span class="t-key">function</span> <span class="sig-name">make</span>', $html);
+        self::assertStringContainsString('<span class="t-key">function</span> <span class="signature-name">make</span>', $html);
         self::assertStringContainsString('<p class="lede">Makes a widget count.</p>', $html);
         self::assertStringContainsString('<div class="member-block"><h4>Parameters</h4>', $html);
         self::assertStringContainsString('<code class="t-var">$count</code>', $html);

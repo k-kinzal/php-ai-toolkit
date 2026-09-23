@@ -216,7 +216,7 @@ PHP);
         $html = (new DocTextHtml())->render($services, $docBlock, $context);
 
         self::assertStringContainsString('<p class="lede">Widget summary line.</p>', $html);
-        self::assertStringContainsString('<div class="doc-body"><p>Body with <strong>bold</strong> text.</p>', $html);
+        self::assertStringContainsString('<div class="prose"><p>Body with <strong>bold</strong> text.</p>', $html);
         self::assertSame('', (new DocTextHtml())->render($services, null, $context));
     }
 
@@ -243,7 +243,7 @@ PHP);
 
         $html = (new DocTextHtml())->render($services, $docBlock, $context);
 
-        self::assertStringContainsString('<pre class="code-block doctest"><code>', $html);
+        self::assertStringContainsString('<pre class="code doctest"><code>', $html);
         self::assertStringContainsString('<span class="doct doct-return">// =&gt; 4</span>', $html);
     }
 
@@ -263,11 +263,11 @@ PHP);
         $untagged = new DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '', []);
 
         self::assertSame(
-            '<div class="notice notice-visibility"><strong>Restricted visibility</strong>: declared "@visibility namespace". Code outside that scope must not name this declaration.</div>' . "\n",
+            '<div class="notice tone-warn"><strong>Restricted visibility</strong>: declared "@visibility namespace". Code outside that scope must not name this declaration.</div>' . "\n",
             (new DocTextHtml())->visibilityBox($services, $scoped),
         );
         self::assertSame(
-            '<div class="notice notice-public"><strong>Public API</strong>: explicitly declared with <code>@visibility public</code>.</div>' . "\n",
+            '<div class="notice tone-ok"><strong>Public API</strong>: explicitly declared with <code>@visibility public</code>.</div>' . "\n",
             (new DocTextHtml())->visibilityBox($services, $public),
         );
         self::assertSame('', (new DocTextHtml())->visibilityBox($services, $untagged));
@@ -289,11 +289,11 @@ PHP);
         $active = new DocBlock('', '', [], null, null, [], [], [], [], [], [], null, false, '');
 
         self::assertSame(
-            '<div class="notice notice-deprecated"><strong>Deprecated</strong>: Use NewWidget instead.</div>' . "\n",
+            '<div class="notice tone-danger"><strong>Deprecated</strong>: Use NewWidget instead.</div>' . "\n",
             (new DocTextHtml())->deprecationBox($services, $noted),
         );
         self::assertSame(
-            '<div class="notice notice-deprecated"><strong>Deprecated</strong>.</div>' . "\n",
+            '<div class="notice tone-danger"><strong>Deprecated</strong>.</div>' . "\n",
             (new DocTextHtml())->deprecationBox($services, $bare),
         );
         self::assertSame('', (new DocTextHtml())->deprecationBox($services, $active));
@@ -332,9 +332,9 @@ PHP);
 
         $renderer = (new DocTextHtml())->fenceRenderer($services, 'Widget', 0);
 
-        self::assertStringStartsWith('<pre class="code-block doctest">', (string) $renderer('render();', ''));
+        self::assertStringStartsWith('<pre class="code doctest">', (string) $renderer('render();', ''));
         self::assertNull($renderer('SELECT 1', 'sql'));
-        self::assertStringStartsWith('<pre class="code-block doctest">', (string) (new DocTextHtml())->fenceRenderer($services, '', 0)('render();', 'php'));
+        self::assertStringStartsWith('<pre class="code doctest">', (string) (new DocTextHtml())->fenceRenderer($services, '', 0)('render();', 'php'));
     }
 
     public function testFenceIndexBaseCountsTheAtExampleBlocksTheFencesAreNumberedAfter(): void

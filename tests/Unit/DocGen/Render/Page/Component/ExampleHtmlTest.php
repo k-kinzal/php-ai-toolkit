@@ -193,11 +193,11 @@ final class ExampleHtmlTest extends TestCase
 
         $html = (new ExampleHtml())->figure($services, 'Adding numbers', '$sum = 1; // => 1', true, 'Sum::of() example #1: Adding numbers');
 
-        self::assertStringStartsWith('<figure class="example">', $html);
+        self::assertStringStartsWith('<figure class="example code-block">', $html);
         self::assertStringContainsString('<span class="example-title">Adding numbers</span>', $html);
         self::assertStringContainsString('title="Runs as the doctest Sum::of() example #1: Adding numbers">doctest</span>', $html);
         self::assertStringContainsString('data-copy="vendor/bin/phpunit --filter &#039;/Sum\:\:of\(\) example \#1\: Adding numbers/&#039;"', $html);
-        self::assertStringContainsString('<button class="copy-btn" type="button" title="Copy example">copy</button>', $html);
+        self::assertStringContainsString('<button class="btn copy-btn" type="button" title="Copy example">copy</button>', $html);
         self::assertStringEndsWith('</figure>' . "\n", $html);
     }
 
@@ -304,7 +304,7 @@ PHP;
 
         $html = (new ExampleHtml())->codeBlock($services, $code);
 
-        self::assertStringStartsWith('<pre class="code-block doctest"><code>', $html);
+        self::assertStringStartsWith('<pre class="code doctest"><code>', $html);
         self::assertStringContainsString(' <span class="doct doct-return">// =&gt; 3</span>', $html);
         self::assertStringContainsString(' <span class="doct doct-output">// Output: 3</span>', $html);
         self::assertStringContainsString(' <span class="doct doct-throws">// throws RuntimeException: bad</span>', $html);

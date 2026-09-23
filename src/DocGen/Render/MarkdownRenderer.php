@@ -112,7 +112,7 @@ final class MarkdownRenderer
 
         $codeText = implode("\n", $code);
         $custom = $fence !== null ? $fence($codeText, $language) : null;
-        $html = is_string($custom) ? $custom : '<pre class="code-block"><code>' . $this->escaper->e($codeText) . '</code></pre>' . "\n";
+        $html = is_string($custom) ? $custom : '<pre class="code"><code>' . $this->escaper->e($codeText) . '</code></pre>' . "\n";
 
         return [$html, min($index + 1, count($lines))];
     }

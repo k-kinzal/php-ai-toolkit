@@ -121,7 +121,7 @@ final class FunctionPage
         $html = '<div class="symbol-head">';
         $html .= sprintf('<h1><span class="chip chip-kind k-function">function</span>%s</h1>', $escaper->e($function->shortName));
         $html .= sprintf(
-            '<div class="symbol-meta"><a class="src-link" href="%s">%s:%d</a></div>',
+            '<div class="symbol-meta"><a class="source-link" href="%s">%s:%d</a></div>',
             $escaper->e($services->url->href($pagePath, $services->url->sourcePage($function->file)) . '#L' . $function->startLine),
             $escaper->e($function->file),
             $function->startLine,

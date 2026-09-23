@@ -342,9 +342,9 @@ PHP;
         self::assertStringContainsString('<title>Widget — Demo Docs</title>', $html);
         self::assertStringContainsString('<h1><span class="chip chip-kind k-class">class</span>Widget</h1>', $html);
         self::assertStringContainsString(
-            '<a href="../../../demo/pkg/index.html">demo/pkg</a><span class="crumb-sep">::</span>'
-            . '<a href="../../../demo/pkg/Demo/index.html">Demo</a><span class="crumb-sep">::</span>'
-            . '<span class="crumb-current">Widget</span>',
+            '<a href="../../../demo/pkg/index.html">demo/pkg</a><span class="breadcrumb-sep">::</span>'
+            . '<a href="../../../demo/pkg/Demo/index.html">Demo</a><span class="breadcrumb-sep">::</span>'
+            . '<span class="breadcrumb-current">Widget</span>',
             $html,
         );
         self::assertStringContainsString('<p class="lede">Widget summary line.</p>', $html);
@@ -436,7 +436,7 @@ PHP;
             $html,
         );
         self::assertStringContainsString(
-            '<a class="src-link" href="../../../src/src/Demo/Widget.php.html#L' . $widget->startLine . '">src/Demo/Widget.php:' . $widget->startLine . '</a>',
+            '<a class="source-link" href="../../../src/src/Demo/Widget.php.html#L' . $widget->startLine . '">src/Demo/Widget.php:' . $widget->startLine . '</a>',
             $html,
         );
         self::assertStringContainsString('<pre class="signature"><code>', $html);

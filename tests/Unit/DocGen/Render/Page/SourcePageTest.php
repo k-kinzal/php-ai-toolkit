@@ -217,9 +217,9 @@ PHP;
 
         self::assertStringStartsWith('<!DOCTYPE html>', $html);
         self::assertStringContainsString('<title>src/Demo/Widget.php — Demo Docs</title>', $html);
-        self::assertStringContainsString('<a href="../../../index.html">src</a><span class="crumb-sep">::</span><span class="crumb-current">src/Demo/Widget.php</span>', $html);
-        self::assertStringContainsString('<div class="sb-head"><a class="sb-site" href="../../../index.html">Demo Docs</a></div>', $html);
-        self::assertStringContainsString('<div class="sb-title">Packages</div><ul class="sb-list"><li><a href="../../../demo/pkg/index.html">demo/pkg</a></li></ul>', $html);
+        self::assertStringContainsString('<a href="../../../index.html">src</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">src/Demo/Widget.php</span>', $html);
+        self::assertStringContainsString('<div class="sidebar-header"><a class="sidebar-site" href="../../../index.html">Demo Docs</a></div>', $html);
+        self::assertStringContainsString('<div class="sidebar-title">Packages</div><ul class="sidebar-list"><li><a href="../../../demo/pkg/index.html">demo/pkg</a></li></ul>', $html);
         self::assertStringContainsString('<h1 class="source-title">src/Demo/Widget.php</h1>', $html);
     }
 
@@ -240,7 +240,7 @@ PHP;
 
         $html = (new SourcePage())->content($services, 'src/Demo/Widget.php', $code);
 
-        self::assertStringContainsString('<pre class="source"><code>', $html);
+        self::assertStringContainsString('<pre class="code code-scroll source"><code>', $html);
         self::assertStringContainsString('<span class="src-line" id="L1"><a class="ln" href="#L1">1</a>&lt;?php</span>', $html);
         self::assertStringContainsString('<span class="src-line" id="L2"><a class="ln" href="#L2">2</a>', $html);
         self::assertStringContainsString('<span class="tok-var">$count</span> = <span class="tok-num">1</span>;', $html);
@@ -253,7 +253,7 @@ PHP;
 
         $html = (new SourcePage())->content($services, 'src/Demo/Widget.php', "<?php\n\$fresh = 1;\n", "<?php\n\$gone = 1;\n");
 
-        self::assertStringContainsString('<pre class="source" data-diff="modified"><code>', $html);
+        self::assertStringContainsString('<pre class="code code-scroll source" data-diff="modified"><code>', $html);
         self::assertStringContainsString('data-diff="removed"', $html);
         self::assertStringContainsString('data-diff="added"', $html);
     }
@@ -266,7 +266,7 @@ PHP;
         $html = (new SourcePage())->content($services, 'src/Demo/Widget.php', null, "<?php\n");
 
         self::assertStringContainsString('<div class="notice diff-banner" data-diff="removed">Removed in feature, compared to main.</div>', $html);
-        self::assertStringContainsString('<pre class="source" data-diff="removed"><code>', $html);
+        self::assertStringContainsString('<pre class="code code-scroll source" data-diff="removed"><code>', $html);
     }
 
     public function testListingNumbersEveryLineOfOneRevision(): void

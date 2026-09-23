@@ -136,15 +136,15 @@ final class AllItemsPageTest extends TestCase
         self::assertStringStartsWith('<!DOCTYPE html>', $html);
         self::assertStringContainsString('<title>All items — Demo Docs</title>', $html);
         self::assertStringContainsString(
-            '<a href="../../demo/pkg/index.html">demo/pkg</a><span class="crumb-sep">::</span><span class="crumb-current">All items</span>',
+            '<a href="../../demo/pkg/index.html">demo/pkg</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">All items</span>',
             $html,
         );
         self::assertStringContainsString('<div class="symbol-head"><h1>All items <span class="count">3</span></h1></div>', $html);
-        self::assertStringContainsString('<div class="sb-title">On this page</div>', $html);
+        self::assertStringContainsString('<div class="sidebar-title">On this page</div>', $html);
         self::assertStringContainsString('<li><a href="#interfaces">Interfaces</a></li>', $html);
         self::assertStringContainsString('<li><a href="#classes">Classes</a></li>', $html);
         self::assertStringContainsString(
-            '<div class="sb-title">Namespaces</div><ul class="sb-list">'
+            '<div class="sidebar-title">Namespaces</div><ul class="sidebar-list">'
             . '<li><a href="../../demo/pkg/Demo/Core/index.html" title="Demo\Core">Demo\Core</a></li>'
             . '<li><a href="../../demo/pkg/Demo/Core/Util/index.html" title="Demo\Core\Util">Demo\Core\Util</a></li>',
             $html,

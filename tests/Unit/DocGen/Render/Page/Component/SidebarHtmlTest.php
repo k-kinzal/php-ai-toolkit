@@ -221,16 +221,16 @@ final class SidebarHtmlTest extends TestCase
 
         $html = (new SidebarHtml())->build($services, 'demo/pkg/Demo/Core/class.Engine.html', $scope);
 
-        self::assertStringStartsWith('<div class="sb-head"><a class="sb-site" href="../../../../index.html">Demo Docs</a></div>', $html);
-        self::assertStringContainsString('<div class="sb-pkg"><a href="../../../../demo/pkg/index.html">demo/pkg</a></div>', $html);
-        self::assertStringContainsString('<div class="sb-title">On this page</div><ul class="sb-list"><li><a href="#methods">Methods</a></li></ul>', $html);
-        self::assertStringContainsString('<div class="sb-title">Package</div><ul class="sb-list"><li><a href="../../../../demo/pkg/all-items.html">All items</a></li></ul>', $html);
+        self::assertStringStartsWith('<div class="sidebar-header"><a class="sidebar-site" href="../../../../index.html">Demo Docs</a></div>', $html);
+        self::assertStringContainsString('<div class="sidebar-header sidebar-package"><a href="../../../../demo/pkg/index.html">demo/pkg</a></div>', $html);
+        self::assertStringContainsString('<div class="sidebar-title">On this page</div><ul class="sidebar-list"><li><a href="#methods">Methods</a></li></ul>', $html);
+        self::assertStringContainsString('<div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../demo/pkg/all-items.html">All items</a></li></ul>', $html);
         self::assertStringContainsString(
-            '<div class="sb-kind">Layers</div><ul class="sb-list"><li><a href="../../../../demo/pkg/layer.Domain.html">Domain</a></li></ul></nav>'
-            . '<nav class="sb-block"><div class="sb-title"><a href="../../../../demo/pkg/Demo/Core/index.html">In Demo\Core</a></div>',
+            '<div class="sidebar-title">Layers</div><ul class="sidebar-list"><li><a href="../../../../demo/pkg/layer.Domain.html">Domain</a></li></ul></nav>'
+            . '<nav class="sidebar-section"><div class="sidebar-title"><a href="../../../../demo/pkg/Demo/Core/index.html">In Demo\Core</a></div>',
             $html,
         );
-        self::assertStringContainsString('<div class="sb-kind">Namespaces</div><ul class="sb-list"><li><a href="../../../../demo/pkg/Demo/Core/Util/index.html">Util</a></li></ul>', $html);
+        self::assertStringContainsString('<div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../demo/pkg/Demo/Core/Util/index.html">Util</a></li></ul>', $html);
         self::assertStringContainsString('<li class="is-active"><a class="k-class" href="../../../../demo/pkg/Demo/Core/class.Engine.html">Engine</a></li>', $html);
     }
 
@@ -245,8 +245,8 @@ final class SidebarHtmlTest extends TestCase
 
         $html = (new SidebarHtml())->build($services, 'index.html', new SidebarScope(null, null, null, []));
 
-        self::assertStringContainsString('<div class="sb-title">Packages</div>', $html);
-        self::assertStringNotContainsString('sb-pkg', $html);
+        self::assertStringContainsString('<div class="sidebar-title">Packages</div>', $html);
+        self::assertStringNotContainsString('sidebar-header sidebar-package', $html);
         self::assertStringNotContainsString('On this page', $html);
     }
 
@@ -261,9 +261,9 @@ final class SidebarHtmlTest extends TestCase
 
         self::assertStringNotContainsString('In Demo', $html);
         self::assertStringContainsString(
-            '<nav class="sb-block"><div class="sb-title">Package</div><ul class="sb-list">'
+            '<nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list">'
             . '<li><a href="../../demo/pkg/all-items.html">All items</a></li></ul></nav>'
-            . '<nav class="sb-block"><div class="sb-title">Namespaces</div><ul class="sb-list">'
+            . '<nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list">'
             . '<li><a href="../../demo/pkg/Demo/Core/index.html" title="Demo\Core">Demo\Core</a></li></ul></nav>',
             $html,
         );
@@ -281,9 +281,9 @@ final class SidebarHtmlTest extends TestCase
         $html = (new SidebarHtml())->packageList($services, 'index.html');
 
         self::assertSame(
-            '<nav class="sb-block"><div class="sb-title">Packages</div><ul class="sb-list">'
+            '<nav class="sidebar-section"><div class="sidebar-title">Packages</div><ul class="sidebar-list">'
             . '<li><a href="demo/pkg/index.html">demo/pkg</a></li>'
-            . '<li><a href="acme/lib/index.html">acme/lib</a><span class="sb-note">vendor</span></li>'
+            . '<li><a href="acme/lib/index.html">acme/lib</a><span class="sidebar-count">vendor</span></li>'
             . '</ul></nav>',
             $html,
         );
@@ -295,7 +295,7 @@ final class SidebarHtmlTest extends TestCase
         $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
 
         self::assertSame(
-            '<nav class="sb-block"><div class="sb-title">On this page</div><ul class="sb-list">'
+            '<nav class="sidebar-section"><div class="sidebar-title">On this page</div><ul class="sidebar-list">'
             . '<li><a href="#methods">Methods</a></li><li><a href="#relations">Relations</a></li></ul></nav>',
             (new SidebarHtml())->pageSections($services, new SidebarScope('demo/pkg', null, null, [
                 ['id' => 'methods', 'label' => 'Methods'],
@@ -315,8 +315,8 @@ final class SidebarHtmlTest extends TestCase
 
         $html = (new SidebarHtml())->namespaceBlock($services, 'demo/pkg/index.html', new SidebarScope('demo/pkg', '', null, []));
 
-        self::assertStringStartsWith('<nav class="sb-block"><div class="sb-title"><a href="../../demo/pkg/index.html">In global namespace</a></div>', $html);
-        self::assertStringContainsString('<div class="sb-kind">Namespaces</div><ul class="sb-list"><li><a href="../../demo/pkg/Util/index.html">Util</a></li></ul>', $html);
+        self::assertStringStartsWith('<nav class="sidebar-section"><div class="sidebar-title"><a href="../../demo/pkg/index.html">In global namespace</a></div>', $html);
+        self::assertStringContainsString('<div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../demo/pkg/Util/index.html">Util</a></li></ul>', $html);
         self::assertStringContainsString('<li><a class="k-class" href="../../demo/pkg/class.Engine.html">Engine</a></li>', $html);
         self::assertStringContainsString('</nav>', $html);
     }
@@ -330,7 +330,7 @@ final class SidebarHtmlTest extends TestCase
         $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
 
         self::assertSame(
-            '<nav class="sb-block"><div class="sb-title">Namespaces</div><ul class="sb-list">'
+            '<nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list">'
             . '<li><a href="../../demo/pkg/index.html" title="global namespace">(global)</a></li>'
             . '<li><a href="../../demo/pkg/Demo/Core/index.html" title="Demo\Core">Demo\Core</a></li>'
             . '</ul></nav>',
@@ -361,11 +361,11 @@ final class SidebarHtmlTest extends TestCase
         $html = (new SidebarHtml())->kindLists($services, 'demo/pkg/Demo/Core/index.html', $scope);
 
         self::assertSame(
-            '<div class="sb-kind">Interfaces</div><ul class="sb-list">'
+            '<div class="sidebar-title">Interfaces</div><ul class="sidebar-list">'
             . '<li><a class="k-interface" href="../../../../demo/pkg/Demo/Core/interface.Runner.html">Runner</a></li></ul>'
-            . '<div class="sb-kind">Classes</div><ul class="sb-list">'
+            . '<div class="sidebar-title">Classes</div><ul class="sidebar-list">'
             . '<li class="is-active"><a class="k-class" href="../../../../demo/pkg/Demo/Core/class.Engine.html">Engine</a></li></ul>'
-            . '<div class="sb-kind">Functions</div><ul class="sb-list">'
+            . '<div class="sidebar-title">Functions</div><ul class="sidebar-list">'
             . '<li><a class="k-function" href="../../../../demo/pkg/Demo/Core/function.make.html">make</a></li></ul>',
             $html,
         );
@@ -380,7 +380,7 @@ final class SidebarHtmlTest extends TestCase
         $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
 
         self::assertSame(
-            '<nav class="sb-block"><div class="sb-title">Package</div><ul class="sb-list">'
+            '<nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list">'
             . '<li><a href="demo/pkg/all-items.html">All items</a></li></ul></nav>',
             (new SidebarHtml())->packageBlock($services, 'index.html', 'demo/pkg'),
         );
@@ -412,7 +412,7 @@ final class SidebarHtmlTest extends TestCase
 
         $html = (new SidebarHtml())->layerBlock($services, 'index.html', 'demo/pkg');
 
-        self::assertStringContainsString('<div class="sb-kind" data-diff="modified">Layers</div>', $html);
+        self::assertStringContainsString('<div class="sidebar-title" data-diff="modified">Layers</div>', $html);
         self::assertStringContainsString('<li data-diff="same"><a href="demo/pkg/layer.Domain.html">Domain</a></li>', $html);
         self::assertStringContainsString('<li data-diff="added"><a href="demo/pkg/layer.Infrastructure.html">Infrastructure</a></li>', $html);
         self::assertSame('', (new SidebarHtml())->layerBlock($services, 'index.html', 'other/pkg'));

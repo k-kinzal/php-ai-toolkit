@@ -1,0 +1,4 @@
+DocGenの生成で使うCSSをhttps://k-kinzal.github.io/document-design/のものにしてください。v1.0.0ものを固定で使うようにしてください。
+使い方は調査の上で生成するHTMLどdoc-uiベースのものにしてください。
+
+修正内容はmainにコミットください。

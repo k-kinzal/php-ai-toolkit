@@ -20,6 +20,12 @@ final class UtilizationFixture
 {
 }
 
+namespace Tests\Unit\Fixture;
+
+final class UnitFixtureTest
+{
+}
+
 namespace App\Tests\Support;
 
 final class AppTestSupportFixture

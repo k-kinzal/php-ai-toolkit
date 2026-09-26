@@ -22,6 +22,8 @@ parameters:
             - 'Tests\Utils'
             - 'Tests\Utility'
             - 'Tests\Utilities'
+            - 'Tests\Fixture'
+            - 'Tests\Fixtures'
 ```
 
 ## What It Detects
@@ -74,9 +76,9 @@ namespace Tests\Supporting;
 
 ## Why This Is an Error
 
-Generic test support, helper, and utility namespaces become dumping grounds for reusable setup code. They hide what each test actually needs, encourage cross-test coupling, and create a second test framework that AI agents tend to expand instead of simplifying.
+Generic test support, helper, utility, and fixture namespaces become dumping grounds for reusable setup code. They hide what each test actually needs, encourage cross-test coupling, and create a second test framework that AI agents tend to expand instead of simplifying.
 
-Tests should prefer explicit setup in the test method. When reuse is genuinely valuable, it should be provided by a real dependency with a clear API boundary, not by a generic `Tests\Support`, `Tests\Helper`, or `Tests\Util` bucket.
+Tests should prefer explicit setup in the test method. When reuse is genuinely valuable, it should be provided by a real dependency with a clear API boundary, not by a generic `Tests\Support`, `Tests\Helper`, `Tests\Util`, or `Tests\Fixture` bucket.
 
 ## How to Fix
 

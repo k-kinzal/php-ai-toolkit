@@ -49,3 +49,15 @@ namespace Tests\Utilities\Fixture;
 final class UtilitiesFixture
 {
 }
+
+namespace Tests\Fixture;
+
+final class FixtureFixture
+{
+}
+
+namespace Tests\Fixtures\User;
+
+final class FixturesFixture
+{
+}

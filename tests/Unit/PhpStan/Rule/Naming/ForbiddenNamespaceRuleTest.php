@@ -38,6 +38,8 @@ final class ForbiddenNamespaceRuleTest extends RuleTestCase
             'Tests\\Utils',
             'Tests\\Utility',
             'Tests\\Utilities',
+            'Tests\\Fixture',
+            'Tests\\Fixtures',
         ]);
     }
 
@@ -80,6 +82,14 @@ final class ForbiddenNamespaceRuleTest extends RuleTestCase
             [
                 'Move code out of namespace "Tests\Utilities\Fixture". Use a namespace outside forbidden test prefix "Tests\Utilities", or inline setup in each test.',
                 47,
+            ],
+            [
+                'Move code out of namespace "Tests\Fixture". Use a namespace outside forbidden test prefix "Tests\Fixture", or inline setup in each test.',
+                53,
+            ],
+            [
+                'Move code out of namespace "Tests\Fixtures\User". Use a namespace outside forbidden test prefix "Tests\Fixtures", or inline setup in each test.',
+                59,
             ],
         ]);
     }

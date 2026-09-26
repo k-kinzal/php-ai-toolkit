@@ -1,0 +1,5 @@
+tests/Fixture、tests/Fixturesが作られて困るのでSupportなどと同じように禁止設定を行なってください。
+
+---
+
+コミットいただけますか？DocGentのものも別途コミットをお願いします。mainへの直接のコミットでOKです。

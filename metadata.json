@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M3F6KG5JMXR4ETY55T8KNGD1",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/phpstan-rules.md",
+    "docs/rules/ForbiddenNamespaceRule.md",
+    "tests/Fixture/ForbiddenNamespace/WithForbiddenNamespaces.php",
+    "tests/Fixture/ForbiddenNamespace/WithoutForbiddenNamespaces.php",
+    "tests/Unit/PhpStan/Rule/Naming/ForbiddenNamespaceRuleTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 1028,
+    "cache_creation_tokens": 107308,
+    "cache_read_tokens": 1577546,
+    "output_tokens": 15463,
+    "api_call_count": 34
+  }
+}

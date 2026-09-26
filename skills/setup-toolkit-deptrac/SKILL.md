@@ -219,7 +219,7 @@ Then call the launcher from Composer:
 {
     "scripts": {
         "phpstan": "phpstan analyse --memory-limit=512M",
-        "deptrac": "@php deptrac.php analyse --config-file=deptrac.yaml",
+        "deptrac": "@php deptrac.php analyse --config-file=deptrac.yaml --fail-on-uncovered --report-uncovered",
         "lint": [
             "@format:check",
             "@phpstan",
@@ -228,6 +228,13 @@ Then call the launcher from Composer:
     }
 }
 ```
+
+Keep `--fail-on-uncovered --report-uncovered` on the command. A dependency whose
+source layer has no ruleset entry is "uncovered", and Deptrac reports it as
+informational by default, so a new layer that nobody added to the ruleset passes
+until someone reads the output. With the flags, every dependency must be one the
+ruleset allows or forbids, which is the state `debug:unassigned` is verifying
+below.
 
 If the project already has `lint` or `check`, merge `@deptrac` into it after PHPStan unless runtime constraints require Deptrac to run in a separate CI job. Do not remove existing lint steps.
 

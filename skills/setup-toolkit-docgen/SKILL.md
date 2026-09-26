@@ -152,8 +152,12 @@ policy, and branch values. Replace every sentinel before installing either
 workflow; do not substitute values from this repository merely to make the YAML
 complete.
 
-- `docs.yml` runs on pushes to the default branch: it generates the site and syncs it to the root of the `gh-pages`
-  branch, keeping `pr/` and `CNAME`.
+- `docs.yml` runs on pushes to the default branch in two jobs: `build` installs the project, runs the tests for
+  coverage, and generates the site under `contents: read`, then uploads it; `publish` downloads it and syncs it to
+  the root of the `gh-pages` branch, keeping `pr/` and `CNAME`, under the only job that holds `contents: write`.
+  The split keeps the write token away from the job that executes the project's code. `publish` then requests a
+  Pages build and waits until Pages serves the pushed commit, so a green run means the site is live, not merely
+  that the branch moved.
 - `docs-preview.yml` runs on pull requests: it generates the site in diff mode against the base commit, publishes it
   to `pr/<number>/`, comments the link on the pull request, and removes that directory when the pull request closes.
   Pull requests from forks are skipped, because their token cannot write to the branch.
@@ -171,8 +175,12 @@ Adapt both to the project before applying:
 - Match the generation command to the project: the Composer script, or `vendor/bin/docgen` with the project's own
   options spelled out.
 - Match the `on.push.branches` entry to the default branch, and `DOCS_BRANCH` to the branch Pages serves.
-- Keep the action pins as full commit SHAs, the per-job `contents: write`
-  permission, and `pull_request` (never `pull_request_target`) as the preview trigger.
+- Keep the action pins as full commit SHAs, `contents: write` on the publishing
+  job only, and `pull_request` (never `pull_request_target`) as the preview trigger.
+- In a monorepo that publishes one site for every package, run both workflows from
+  the repository root with the root `docgen` script, and trigger them on
+  `packages/**`, the root manifest and lock, and the two workflow files, so a
+  change outside the packages does not rebuild the site.
 
 The default-branch and pull-request workflows must generate the same product site.
 Use the same project Composer coverage and DocGen scripts in both, adding only the

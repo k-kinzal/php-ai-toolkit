@@ -61,6 +61,24 @@ a version list from this repository. Shape example:
 - **PHP**: <versions guaranteed by this project>
 ```
 
+### Development Rules
+Replace `{{DEVELOPMENT_RULES}}` with the handful of workflow rules an agent
+cannot infer from the code and would otherwise get wrong: where to work and how
+to deliver a change (a branch and a pull request, or commits on the default
+branch), the language every artifact is written in, and who documentation is
+written for. State each as one imperative bullet. Example:
+
+```markdown
+- Work in a dedicated git worktree branched from `main`; do not work in the main checkout.
+- Deliver every change through a pull request.
+- This is an English project: write every artifact in English, including code, comments, commit messages, pull requests, and documentation.
+- Write documentation for the users of the libraries. `AGENTS.md` is the only exception.
+```
+
+Leave out anything a tool already enforces: the linters, the PHPStan rules, and
+the CI workflows state their own rules, and repeating them here is a second copy
+that drifts. If the project has no rule of this kind, remove the section.
+
 ### Architecture
 Replace `{{ARCHITECTURE}}` with a description of the project's layering and responsibility boundaries. This is NOT a directory listing — it describes how the layers relate to each other and what each layer is responsible for.
 
@@ -96,6 +114,12 @@ pages should be linked from the relevant top-level document instead. Example:
 If the project has no documentation directly under `docs/`, remove this section
 entirely.
 
+In a monorepo, the root `AGENTS.md` is the index of every package: list each
+package's README and the pages directly under its `docs/`, grouped by package
+and each with a one-line description of what the page covers, so an agent can
+find the right document without opening every package. The per-package Architecture
+description then belongs to the package's own documentation, not to the root file.
+
 ## Adaptation Workflow
 
 When applying this template to a project, follow these steps:
@@ -103,9 +127,11 @@ When applying this template to a project, follow these steps:
 1. **Read `composer.json`** to determine the primary supported runtimes and tools
 2. **Scan the directory structure** to understand project layout
 3. **Look for top-level documentation** directly under `docs/`
-4. **Fill in all `{{PLACEHOLDER}}` values** with real project information
-5. **Remove unused placeholders and sections**
-6. **Place as `AGENTS.md`** in the project root only after confirming that no
+4. **Ask for the development rules** the user wants agents to follow when they
+   are not already written down
+5. **Fill in all `{{PLACEHOLDER}}` values** with real project information
+6. **Remove unused placeholders and sections**
+7. **Place as `AGENTS.md`** in the project root only after confirming that no
    existing file will be overwritten
 
 ## Protecting AGENTS.md

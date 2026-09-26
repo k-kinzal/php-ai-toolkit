@@ -5,9 +5,9 @@ description: >-
   create or update .github/workflows/ci.yml, run toolkit checks in CI, pin
   GitHub Actions to full commit SHAs, align CI with supported PHP versions,
   harden workflow permissions and concurrency for Composer, PHPUnit, ParaTest,
-  PHPStan, PHP-CS-Fixer, PHPCompatibility, LocGuard, TreeGuard, and Deptrac, or
-  refresh the Context7 documentation index when the default branch, a tag, or
-  a release changes.
+  PHPStan, PHP-CS-Fixer, PHPCompatibility, LocGuard, TreeGuard, and Deptrac,
+  lay out one workflow per package in a monorepo, or refresh the Context7
+  documentation index when the default branch, a tag, or a release changes.
 ---
 
 # Setup GitHub Actions CI
@@ -71,6 +71,24 @@ Do not hide all lint gates behind a single unnamed `composer lint` step.
 
 Required gates when the corresponding script/config exists:
 
+- `composer autoload:check` for the PSR-4 mapping. The script is Composer itself,
+  so add it when it is missing:
+
+  ```json
+  {
+      "scripts": {
+          "autoload:check": "composer dump-autoload --optimize --strict-psr --strict-ambiguous"
+      }
+  }
+  ```
+
+  It fails on a class whose file path or case does not match its namespace and
+  on two files declaring the same class, which PHPStan does not report because
+  it analyses the files it is given rather than the mapping. Run it first in
+  `lint`: the other gates assume the mapping is right. When the only ambiguity
+  is between stub files of two vendor packages, exclude one stub path through
+  `autoload.exclude-from-classmap`, as Composer's message suggests; do not drop
+  the flag.
 - `composer format:check` for PHP-CS-Fixer.
 - `composer phpstan` for PHPStan and toolkit PHPStan rules.
 - `composer compat` for PHPCompatibility.
@@ -221,10 +239,11 @@ exists, run it through `workflow_dispatch` and read the job log:
 
 ## Out of Scope: Mutation Testing
 
-Do not write a mutation testing job from scratch. `/setup-toolkit-infection` ships
-the job together with the configuration it depends on, because the job needs a
-coverage driver, `fetch-depth: 0`, and different direct Infection arguments per
-event. Use that skill when an Infection job is in scope.
+Do not write a mutation testing job into `ci.yml`, and remove one that is there.
+Mutation testing is not a pull-request gate: `/setup-toolkit-infection` ships a
+separate scheduled workflow that measures the default branch and reports a low
+score as an issue, together with the configuration it depends on. Use that skill
+when Infection is in scope.
 
 ## Out of Scope: Performance Benchmarks
 
@@ -239,8 +258,34 @@ is not evidence of performance relative to the base revision.
 
 Do not write a generic fuzz job in `ci.yml`. `/setup-toolkit-fuzzing` derives the
 input generator and oracle from a specific contract and ships a separate scheduled
-workflow with corpus caching and crash artifacts. A random-input loop without that
-contract design is not a CI gate.
+workflow that runs on the default branch only, caches the corpus, and reports a
+finding as an issue. A random-input loop without that contract design is not a CI
+gate. What `ci.yml` does for a fuzz harness is analyse it: the `fuzz/` tree is in
+the PHPStan paths and the PHP-CS-Fixer finder, so the lint job checks the entry
+points and targets on every pull request.
+
+## Monorepo Workflows
+
+A repository with `packages/*/composer.json` gets one CI workflow per package
+rather than one workflow that loops over packages, so a failure names the package
+in the run title and a package can be re-run alone:
+
+- Name the workflow `CI (<package>)` and set `defaults.run.working-directory` to
+  the package directory. Pass the same directory to `ramsey/composer-install`
+  through `working-directory`, and write artifact paths from the repository root,
+  because an action's inputs ignore the shell default.
+- Trigger `pull_request` with `paths` naming the package, every sibling package it
+  depends on through a `path` repository entry, and the package's own workflow
+  files, including its scheduled fuzz and mutation workflows so a change to them
+  at least runs the lint job. Exclude the package's README and `docs/` so a
+  documentation edit does not run the suite.
+- Trigger `push` on the default branch without a path filter, so the branch
+  always has a current run of every package.
+- Keep the concurrency group as in the template; the workflow name already
+  separates packages.
+
+Scheduled fuzz and mutation workflows follow the same one-per-package rule, with
+their schedule minutes staggered across packages.
 
 ## PHP Version Coverage
 
@@ -279,9 +324,16 @@ real compatibility problem.
 Check upper PHP bounds in the locked dev graph as well as minimum versions.
 `composer check-platform-reqs --no-dev` verifies product requirements only; it
 cannot establish that ParaTest or another development tool supports that runtime.
-If resolving the mismatch requires changing an intentional dependency policy
-outside the CI request, report that limitation explicitly instead of claiming the
-green test job proves full platform compatibility.
+When a project keeps one lock resolved for its PHP floor and a development tool in
+that lock declares an exact-minor PHP range, the newer supported runtimes fail the
+full platform check even though the tool runs there. Keep those runtimes in the
+matrix, run `composer check-platform-reqs` on the runtimes inside the declared
+range and `composer check-platform-reqs --no-dev` on the ones above it, and name
+the second step for what it checks, such as "Check library requirements outside
+the locked ParaTest PHP range". Do not solve it with `--ignore-platform-reqs`. If
+resolving the mismatch requires changing an intentional dependency policy outside
+the CI request, report that limitation explicitly instead of claiming the green
+test job proves full platform compatibility.
 
 The workflow template is deliberately incomplete until its PHP values, test command,
 extensions, branches, and lock steps are derived from the target. Never retain a
@@ -310,6 +362,10 @@ Apply these rules to every workflow created by this skill:
 
 - Pin every external action with the full 40-character commit SHA.
 - Keep workflow YAML free of explanatory comments. Use clear job and step names.
+- Set `defaults.run.shell: bash` so every `run` step gets the same shell with
+  `pipefail`, instead of the default shell whose options differ per runner.
+- Keep `workflow_dispatch` on `ci.yml` so the default branch can be re-checked
+  without an empty commit.
 - Verify each SHA from the action's original repository:
   ```bash
   gh release view --repo actions/checkout --json tagName,publishedAt,url
@@ -375,6 +431,7 @@ Run local Composer checks that are reasonably available:
 ```bash
 composer validate --strict --no-check-publish
 # Repeat validation with each target-project lock when versioned locks exist.
+composer autoload:check
 composer format:check
 composer phpstan
 composer compat

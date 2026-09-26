@@ -99,8 +99,33 @@ Composer scripts rather than against work already attempted:
 | LocGuard | `loc.yaml`, and `composer loc-guard` |
 | TreeGuard | `tree.yaml`, and `composer tree-guard` |
 | Deptrac | `deptrac.yaml`, and `composer deptrac` |
-| Infection | `infection.json5`, and a mutation CI job |
+| Infection | `infection.json5`, and a scheduled `mutation.yml` workflow separate from `ci.yml` |
+| Composer autoload | `composer autoload:check`, first in `lint` |
 
 Every configured fast gate must also appear in the aggregate `lint` script. Re-open
 the generated workflow after GitHub Actions is applied and confirm that every row
 is invoked. Missing evidence is a setup failure, not an optional follow-up.
+
+Give every Composer script a `scripts-descriptions` entry that says what it runs
+and when to use it. `composer list` and `composer run-script --list` show those
+descriptions, and an agent reading them can pick `fuzz:smoke` over `fuzz:mysql`
+or `test` over `test:unit` without opening `composer.json`.
+
+## Fast Gates and Scheduled Campaigns
+
+The gates in `lint` and `test` answer in seconds to minutes and run on every pull
+request. Fuzzing and mutation testing are campaigns: they take minutes to an hour,
+they explore rather than check, and their result is a finding to investigate, not
+a pass or fail of the change under review. They therefore run on the default
+branch only, on a schedule and on demand, and they report through issues:
+
+| Campaign | Runs on | Green means | Red means | A finding becomes |
+|----------|---------|-------------|-----------|-------------------|
+| Fuzzing | The default branch, per package | The campaign ran | The campaign could not run: a dead service, a broken harness | An issue per crash input, with the artifact and the replay command |
+| Mutation testing | The default branch, per package | Infection measured the whole tree | Infection could not measure: failed initial tests, skipped mutants | One issue per package while the score stays below the threshold |
+
+Do not turn either into a pull-request gate, and do not make a finding red. A red
+campaign must always mean "fix the campaign", so that it is never ignored as one
+more crash. This is a frequent point of drift when an agent applies the toolkit:
+the pull-request habit of "a check that can fail must fail the build" does not
+apply to these two.

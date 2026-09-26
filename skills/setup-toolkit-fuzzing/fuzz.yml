@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       max_runs:
-        description: Maximum inputs evaluated by each fuzz target
+        description: Maximum inputs evaluated by each fuzz target after the corpus is replayed
         required: true
-        default: '10000'
+        default: 'REPLACE_WITH_FUZZ_MAX_RUNS'
         type: string
 
 permissions:
@@ -20,22 +20,28 @@ concurrency:
 
 env:
   COMPOSER_NO_INTERACTION: '1'
+  FUZZ_MAX_RUNS: ${{ inputs.max_runs || 'REPLACE_WITH_FUZZ_MAX_RUNS' }}
 
 jobs:
   fuzz:
+    if: github.ref == 'refs/heads/REPLACE_WITH_DEFAULT_BRANCH'
     name: Fuzz ${{ matrix.target.name }}
     runs-on: ubuntu-latest
     timeout-minutes: REPLACE_WITH_FUZZ_TIMEOUT_MINUTES
+    permissions:
+      contents: read
+      issues: write
     strategy:
       fail-fast: false
       matrix:
         target:
           - name: REPLACE_WITH_CONTRACT_NAME
-            script: fuzz/REPLACE_WITH_TARGET.php
-            corpus: fuzz/corpus/REPLACE_WITH_CORPUS
+            script: fuzz/fuzz_REPLACE_WITH_CONTRACT_NAME.php
+            corpus: fuzz/corpus/REPLACE_WITH_CONTRACT_NAME
             extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
     defaults:
       run:
+        shell: bash
         working-directory: REPLACE_WITH_WORKING_DIRECTORY
     steps:
       - name: Check out the repository
@@ -48,6 +54,9 @@ jobs:
           extensions: ${{ matrix.target.extensions }}
           coverage: none
 
+      - name: Validate the Composer manifest and lock file
+        run: composer validate --strict --no-check-publish
+
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
         with:
@@ -59,51 +68,95 @@ jobs:
       - name: Check installed platform requirements
         run: composer check-platform-reqs
 
-      - name: Restore the evolved corpus
-        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
-        with:
-          path: REPLACE_WITH_WORKING_DIRECTORY/${{ matrix.target.corpus }}
-          key: fuzz-${{ matrix.target.name }}-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_DEPENDENCY_HASH_FILES') }}-${{ hashFiles('REPLACE_WITH_FUZZ_INPUT_HASH_FILES') }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: |
-            fuzz-${{ matrix.target.name }}-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_DEPENDENCY_HASH_FILES') }}-${{ hashFiles('REPLACE_WITH_FUZZ_INPUT_HASH_FILES') }}-
-            fuzz-${{ matrix.target.name }}-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_DEPENDENCY_HASH_FILES') }}-
-            fuzz-${{ matrix.target.name }}-${{ runner.os }}-
-
-      - name: Run the fuzz target
-        env:
-          FUZZ_MAX_RUNS: ${{ inputs.max_runs || '10000' }}
+      - name: Validate the manual run budget
         run: |
-          set -euo pipefail
-
           case "$FUZZ_MAX_RUNS" in
-            ''|*[!0-9]*)
-              echo 'max_runs must be a positive integer.' >&2
-              exit 2
-              ;;
+            ''|*[!0-9]*) echo 'max_runs must be a positive integer.' >&2; exit 2 ;;
           esac
-          if [ "$FUZZ_MAX_RUNS" -lt 1 ]; then
-            echo 'max_runs must be a positive integer.' >&2
+          if [ "${#FUZZ_MAX_RUNS}" -gt 8 ] || [ "$FUZZ_MAX_RUNS" -lt 1 ]; then
+            echo 'max_runs must be between 1 and 99999999.' >&2
             exit 2
           fi
 
-          mkdir -p "${{ matrix.target.corpus }}"
-          vendor/bin/php-fuzzer fuzz \
-            "${{ matrix.target.script }}" \
-            "${{ matrix.target.corpus }}/" \
-            "--max-runs=$FUZZ_MAX_RUNS"
+      - name: Restore the evolving corpus
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: REPLACE_WITH_WORKING_DIRECTORY/${{ matrix.target.corpus }}
+          key: fuzz-corpus-v1-${{ matrix.target.name }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: fuzz-corpus-v1-${{ matrix.target.name }}-
 
-      - name: Save the evolved corpus
+      - name: Run PHP-Fuzzer
+        env:
+          FUZZ_SCRIPT: ${{ matrix.target.script }}
+          FUZZ_CORPUS: ${{ matrix.target.corpus }}
+          FUZZ_TARGET: ${{ matrix.target.name }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/fuzz "$FUZZ_CORPUS"
+          vendor/bin/php-fuzzer fuzz \
+            "$FUZZ_SCRIPT" \
+            "$FUZZ_CORPUS/" \
+            "--max-runs=$FUZZ_MAX_RUNS" 2>&1 | tee "build/fuzz/$FUZZ_TARGET.log"
+
+      - name: Open an issue for a finding
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd
+        env:
+          FUZZ_SCRIPT: ${{ matrix.target.script }}
+          FUZZ_TARGET: ${{ matrix.target.name }}
+        with:
+          script: |
+            const fs = require('node:fs');
+            const path = require('node:path');
+            const crypto = require('node:crypto');
+            const target = process.env.FUZZ_TARGET;
+            const script = process.env.FUZZ_SCRIPT;
+            const root = path.resolve('REPLACE_WITH_WORKING_DIRECTORY');
+            const log = fs.readFileSync(path.join(root, `build/fuzz/${target}.log`), 'utf8');
+            const finding = log.match(/^(?:CORPUS )?CRASH in (.+)!$/m);
+            if (!finding) return;
+            const crash = path.relative(root, path.resolve(root, finding[1]));
+            const input = fs.readFileSync(path.resolve(root, crash));
+            const hash = crypto.createHash('sha256').update(input).digest('hex');
+            const marker = `<!-- ${context.workflow}:${target}:${hash} -->`;
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              ...context.repo, state: 'open', per_page: 100
+            });
+            if (issues.some(issue => !issue.pull_request && issue.body?.includes(marker))) return;
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = [
+              marker,
+              `PHP-Fuzzer found a contract violation in the ${target} target.`,
+              `Commit: ${context.sha}`,
+              `Workflow and input artifact: ${run} (fuzz-${target})`,
+              'Run from REPLACE_WITH_WORKING_DIRECTORY after extracting the artifact:',
+              '```sh',
+              `vendor/bin/php-fuzzer run-single ${script} '${crash}'`,
+              '```',
+              `Input SHA-256: ${hash}`,
+              '<details><summary>PHP-Fuzzer output</summary>',
+              '', '```text', log.slice(-45000), '```', '</details>'
+            ].join('\n\n');
+            await github.rest.issues.create({
+              ...context.repo,
+              title: `[${context.workflow}] ${target}: ${hash.slice(0, 12)}`,
+              body
+            });
+
+      - name: Save the evolving corpus
         if: always()
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: REPLACE_WITH_WORKING_DIRECTORY/${{ matrix.target.corpus }}
-          key: fuzz-${{ matrix.target.name }}-${{ runner.os }}-${{ hashFiles('REPLACE_WITH_DEPENDENCY_HASH_FILES') }}-${{ hashFiles('REPLACE_WITH_FUZZ_INPUT_HASH_FILES') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          key: fuzz-corpus-v1-${{ matrix.target.name }}-${{ github.run_id }}-${{ github.run_attempt }}
 
-      - name: Upload crash inputs
+      - name: Upload PHP-Fuzzer inputs and output
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: fuzz-crashes-${{ matrix.target.name }}
-          path: REPLACE_WITH_WORKING_DIRECTORY/crash-*
+          name: fuzz-${{ matrix.target.name }}
+          path: |
+            REPLACE_WITH_WORKING_DIRECTORY/crash-*
+            REPLACE_WITH_WORKING_DIRECTORY/build/fuzz/${{ matrix.target.name }}.log
+            REPLACE_WITH_WORKING_DIRECTORY/${{ matrix.target.corpus }}/
           if-no-files-found: ignore
           retention-days: REPLACE_WITH_CRASH_RETENTION_DAYS

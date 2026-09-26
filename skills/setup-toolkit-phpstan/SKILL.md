@@ -90,7 +90,12 @@ parameters:
 Replace `REPLACE_WITH_VENDOR_DIR` with `composer config vendor-dir` before use. A
 remaining sentinel is a configuration error, not a literal directory name. Replace
 `REPLACE_WITH_ANALYSIS_PATH` with every production and test autoload root derived
-from `composer.json`; repeat the list item for multiple roots.
+from `composer.json`; repeat the list item for multiple roots. Development roots
+that hold executable PHP, such as a `fuzz/` harness or a `bench/` suite mapped in
+`autoload-dev`, belong in `paths` as well, so that code which only runs on a
+schedule is still analysed on every pull request. List their namespace prefixes
+beside the test namespaces in `visibilityExemptNamespacePrefixes`, because they
+sit outside the ownership contract the same way tests do.
 
 Analysis scope belongs in PHPStan configuration so direct invocations, editor
 integrations, Composer, and CI all analyse the same paths. Do not put the paths only

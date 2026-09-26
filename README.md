@@ -66,8 +66,8 @@ The component skills are also available for focused setup or maintenance:
 - `/setup-toolkit-doctest` — Doctest, the port of k-kinzal/doctest-php that runs PHPDoc examples as PHPUnit test cases
 - `/setup-toolkit-docgen` — DocGen static documentation site with full types, relations, layers, doctest examples, and a two-revision diff mode
 - `/setup-toolkit-github-actions` — GitHub Actions CI for tests, lint gates, PHP compatibility, pinned actions, and Context7 refresh
-- `/setup-toolkit-fuzzing` — contract-driven, domain-aware fuzzing with reproducible corpora, crash artifacts, and scheduled CI
-- `/setup-toolkit-infection` — Infection mutation testing with a whole-tree threshold and a stricter one for pull requests
+- `/setup-toolkit-fuzzing` — contract-driven, domain-aware fuzzing with reproducible corpora, a scheduled campaign on the default branch, and findings reported as issues
+- `/setup-toolkit-infection` — Infection mutation testing measured daily on the default branch, with a score below the whole-tree threshold reported as an issue
 - `/setup-toolkit-loc-guard` — LocGuard metrics checks for production source complexity and length limits
 - `/setup-toolkit-phpbench` — PHPBench subjects, consistent local commands, and same-runner pull-request comparisons with artifacts
 - `/setup-toolkit-php-compatibility` — PHPCompatibility gate that keeps the code runnable on the declared minimum PHP

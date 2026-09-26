@@ -3,17 +3,18 @@ name: setup-toolkit-infection
 description: >-
   Set up Infection mutation testing for a PHP project. Use when asked to configure
   Infection, infection.json5, mutation testing, mutation score (MSI) or covered MSI
-  thresholds, a mutation score gate that differs between the default branch and pull
-  requests, mutation testing of changed lines only, Composer scripts for Infection,
-  CI jobs for mutation testing, or when asked why a test suite with high coverage
-  still lets mutants escape.
+  thresholds, a scheduled mutation workflow on the default branch that reports a
+  low score as an issue, Composer scripts for Infection, CI jobs for mutation
+  testing, or when asked why a test suite with high coverage still lets mutants
+  escape.
 ---
 
 # Setup Infection (Mutation Testing)
 
-This skill configures Infection, the PHP mutation testing framework, as a quality
-gate with two thresholds: one for the whole source tree and a stricter one for the
-lines a pull request changes.
+This skill configures Infection, the PHP mutation testing framework, as a
+scheduled measurement of the default branch: the whole source tree is mutated
+every day, the score is compared with a fixed threshold, and a score below it is
+reported as an issue rather than as a red build.
 
 Line coverage says a line ran. Mutation testing says the tests noticed what the line
 did. It is the check that catches the failure mode this toolkit exists for:
@@ -27,6 +28,8 @@ Inspect the project before configuring:
   setup (`/setup-toolkit-phpunit`).
 - Read `composer.json`: production autoload roots, the PHP floor, existing test and
   coverage scripts, and `config.allow-plugins`.
+- Read `phpunit.xml.dist`: which test suites hold behavioral tests and which hold
+  documentation examples or other suites that must not score mutants.
 - Check for existing mutation config: `infection.json`, `infection.json5`, or either
   with a `.dist` suffix.
 - Check that a coverage driver is available. Infection needs pcov or Xdebug.
@@ -59,49 +62,49 @@ application time.
 
 For a PHAR installation, `setup-php` can install `infection:<exact-version>` in
 its `tools` input. Resolve that version from the mutation runtime, verify
-`infection --version`, use the matching published `resources/schema.json` URL,
-and replace `vendor/bin/infection` in every command with the installed executable.
-When passing PHP options, invoke `php -d memory_limit=4G "$(command -v infection)"`.
-The product still installs its own locked dependencies and PHPUnit; a PHAR does not
-make an incompatible test graph supported. No Infection Composer plugin permission
-is needed for this installation mode.
+`infection --version`, point `$schema` at the published `resources/schema.json`
+URL of that exact release, and replace `vendor/bin/infection` in every command
+with the installed executable. When passing PHP options, invoke
+`php -d memory_limit=4G "$(command -v infection)"`. The product still installs
+its own locked dependencies and PHPUnit, which is why the shipped configuration
+names `vendor/bin/phpunit` explicitly; a PHAR does not make an incompatible test
+graph supported. No Infection Composer plugin permission is needed for this
+installation mode.
 
 ## Templates
 
 Read the templates from
-`vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-infection/` and apply them to
-the project root:
+`vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-infection/` and apply them:
 
 | Template | Target | Scope |
 |----------|--------|-------|
-| `infection.json5` | `infection.json5` | The only configuration file |
-| `mutation-job.yml` | merge into `.github/workflows/ci.yml` | CI job for both gates |
+| `infection.json5` | `infection.json5` at the project or package root | The only configuration file |
+| `mutation.yml` | `.github/workflows/mutation.yml` | The scheduled workflow, separate from `ci.yml` |
 
-Write one configuration file, not one per gate. Infection reads a single file and
-takes per-run thresholds from `--min-msi` and `--min-covered-msi`, which is how its
-own documentation drives CI. A second file duplicates the scope, the mutators, and
-the exclusions, and the day one copy is edited the two gates start measuring
-different things.
+Write one configuration file. Infection reads a single file and takes per-run
+thresholds from `--min-msi` and `--min-covered-msi`, which is how the workflow
+neutralises the gate while the file keeps the policy. A second file duplicates the
+scope, the mutators, and the exclusions, and the day one copy is edited the two
+start measuring different things.
 
 Pass the configuration file explicitly on every invocation
 (`--configuration=infection.json5`). Infection otherwise picks the first file it
 finds from `infection.json5`, `infection.json`, `infection.json5.dist`,
 `infection.json.dist`, so an unrelated file dropped into the project root can
-silently take over the gate.
+silently take over the measurement.
 
-`mutation-job.yml` contains `REPLACE_WITH_*` sentinels for the target's selected
-tool runtime, extensions, and lock policy. Replace all of them before merging the
-job; none is a default supplied by this repository.
+Both templates contain `REPLACE_WITH_*` sentinels. Replace all of them from the
+target before installing; none is a default supplied by this repository:
 
-Replace `REPLACE_WITH_PRODUCTION_SOURCE_ROOT` in `infection.json5` with all target
-production roots that should be mutated. Confirm the run generates mutants from
-each root.
-
-Put the whole-tree baseline in the file and the changed-lines bar on the command
-line. Pass `--ignore-msi-with-no-mutations` with the changed-lines flags rather than
-setting `ignoreMsiWithNoMutations` in the file: a change that mutates nothing must
-not score 0%, but a whole-tree run that generates nothing is a misconfiguration and
-should fail rather than pass silently.
+- `REPLACE_WITH_PRODUCTION_SOURCE_ROOT`: every production root that should be
+  mutated. Confirm the run generates mutants from each root.
+- `REPLACE_WITH_BEHAVIORAL_TEST_SUITES`: the comma-separated names of the PHPUnit
+  suites whose tests are meant to kill mutants, normally `unit`, or
+  `unit,integration` when integration tests run in the mutation job. Never
+  include the doctest suite: documentation examples demonstrate usage, they do
+  not object to a changed line, and counting them flatters the score.
+- The workflow's runtime, extensions, lock policy, working directory, default
+  branch, schedule, and timeout.
 
 Check `vendor/bin/infection --version` and validate the shipped configuration
 against that installed release before copying version-specific keys. Configure the
@@ -110,7 +113,7 @@ that line's schema and apply its documented spelling or limitation deliberately;
 schema-invalid file is not a cross-version configuration, and the template's own
 lock resolution is not evidence about the target.
 
-## Why Two Thresholds
+## Why a Scheduled Measurement and Not a Pull-Request Gate
 
 Infection reports two scores:
 
@@ -120,30 +123,47 @@ Infection reports two scores:
 - **Covered MSI** — detected mutants over the mutants in covered code only. It answers
   "where tests do run, do they assert anything".
 
-A measured score describes the current suite; it does not define an acceptable
-suite. The toolkit therefore supplies fixed minimums. Adoption includes paying
-down enough weak tests and design debt to reach them rather than lowering the gate
-to the score that happened to be measured.
+A whole-tree run takes minutes to an hour, and a changed-lines run on a pull
+request is only as fast as the slowest covering test set. Neither belongs in the
+feedback loop of a pull request, where the other gates answer in seconds. The
+score also moves for reasons a pull request cannot see: a timeout tuned for one
+suite size, a mutator release, a test that became slow. A red pull request for a
+score is exactly the situation in which an agent lowers the threshold, disables a
+mutator, or widens an exclusion to get green.
 
-| Scope | Where the numbers live | `minMsi` | `minCoveredMsi` | Why |
-|-------|------------------------|----------|-----------------|-----|
-| Whole source tree | `infection.json5` | 80 | 80 | Fixed toolkit policy for the complete production tree |
-| Changed lines | `--min-msi` / `--min-covered-msi` in CI | 85 | 85 | Fixed toolkit policy for new code |
+So the measurement runs on the default branch, on a schedule and on demand, and
+it never fails on the score. The workflow passes `--min-msi=0 --min-covered-msi=0`
+so Infection exits zero after any complete run, then compares the reported score
+with the thresholds and creates or updates one issue while the score stays below
+them. The run is red only when Infection could not measure: the initial test run
+failed, mutants were skipped before execution, or the report is missing or
+invalid. A red mutation run therefore always means "fix the measurement", the
+same rule the fuzz workflow follows, and the issue is the queue of weak tests.
+
+| Scope | Where the numbers live | `minMsi` | `minCoveredMsi` | Role |
+|-------|------------------------|----------|-----------------|------|
+| Whole source tree | `infection.json5` | 80 | 80 | Fixed toolkit policy; the file documents it and local runs enforce it |
+| Whole source tree | `MIN_MSI` and `MIN_COVERED_MSI` in `mutation.yml` | 80 | 80 | The same policy, read by the issue step |
+
+Keep the two places aligned. A measured score describes the current suite; it does
+not define an acceptable suite, so adoption includes paying down enough weak tests
+and design debt to reach the threshold rather than lowering it to the score that
+happened to be measured.
 
 ## Setting the Thresholds
 
-The shipped 80/80 whole-tree and 85/85 changed-lines values are fixed policy, not
-placeholders or measurements.
+The shipped 80/80 values are fixed policy, not placeholders or measurements.
 
-1. Run the gate with the thresholds neutralised:
+1. Run the measurement locally with the thresholds neutralised:
 
    ```bash
-   vendor/bin/infection --configuration=infection.json5 --threads=max --min-msi=0 --min-covered-msi=0
+   vendor/bin/infection --configuration=infection.json5 --with-uncovered --threads=max --only-covering-test-cases --min-msi=0 --min-covered-msi=0
    ```
 
 2. If either whole-tree score is below 80, keep the template unchanged and fix the
    suite and production design until both pass. The adoption is incomplete while
-   the default branch cannot meet the baseline.
+   the default branch cannot meet the baseline, and the scheduled run will say so
+   in an issue until it does.
 3. Read `build/infection/per-mutator.md` and
    `build/infection/escaped.log`. Add assertions for observable behavior first.
    When equivalent mutants cluster around an implementation idiom, improve that
@@ -155,15 +175,12 @@ placeholders or measurements.
    measured result as evidence that the gate is feasible, not as a new policy.
    Tighten a threshold only when a human explicitly chooses that quality policy;
    do not derive it by rounding a single run.
-5. Pass `--ignore-msi-with-no-mutations` on the changed-lines run. A pull request
-   that touches only documentation, tests, or configuration produces no mutants, and
-   a scoreless run must not be reported as 0%.
-6. Re-measure after changes, but never rewrite policy from the measurement. A
+5. Re-measure after changes, but never rewrite policy from the measurement. A
    later threshold change remains an explicit human decision.
 
-Lowering a threshold to make a red build green defeats the gate. So does disabling a
-mutator, widening `source.excludes`, or pointing the gate at fewer directories. Fix
-the tests, and ask a human operator when an exception is genuinely justified.
+Lowering a threshold to close the issue defeats the measurement. So does disabling
+a mutator, widening `source.excludes`, or pointing the run at fewer directories.
+Fix the tests, and ask a human operator when an exception is genuinely justified.
 
 ## Mutators
 
@@ -200,18 +217,21 @@ only when a new mutation-scope decision remains unresolved.
 
 ## Timeouts
 
-Keep Infection's default timeout classification: timed-out mutants count as
-detected. Loop-condition mutations can create infinite loops. Do not add
-`timeoutsAsEscaped`, `maxTimeouts`, or a zero-timeout post-check unless the project
-explicitly chooses that different policy.
+Keep Infection's default timeout classification, which the shipped file states
+explicitly as `"timeoutsAsEscaped": false`: timed-out mutants count as detected,
+because loop-condition mutations can create infinite loops. Switch it to `true`
+only when the project explicitly chooses that policy for a suite whose covering
+tests can legitimately exceed the timeout, such as tests that start database
+containers, and say why beside the setting. Do not add `maxTimeouts` or a
+zero-timeout post-check without that decision.
 
 `timeout` is an operational value. Measure the covered initial suite and the
 largest selected test set, then allow runner headroom. Infection may skip mutants
 before execution when their estimated test duration exceeds the timeout; those
 skips are distinct from mutants that ran and timed out. A green score with skipped
-whole-tree mutants does not establish the baseline. Check `stats.skippedCount` in
-the JSON report and fail the whole-tree gate when it is non-zero. Re-measure after
-suite growth rather than retaining the first working timeout.
+whole-tree mutants does not establish the baseline, so the workflow reads
+`stats.skippedCount` from the JSON report and fails when it is non-zero.
+Re-measure after suite growth rather than retaining the first working timeout.
 
 Bound the PHP memory available to mutant test processes so warning floods or
 runaway allocation terminate. Setting `php -d` on Infection's controller alone
@@ -229,18 +249,21 @@ With pcov or Xdebug enabled, no separate PHPUnit coverage command is required.
 for mutation testing. `--skip-initial-tests` is only valid when that existing report
 is supplied and the suite was already proved green.
 
-Use `--only-covering-test-cases` for both gates when the installed release supports
-it. This selects the tests covering each mutant without narrowing mutation scope.
+Use `--only-covering-test-cases` when the installed release supports it. This
+selects the tests covering each mutant without narrowing mutation scope. Pass
+`--with-uncovered` so the uncovered mutants that MSI already counts are listed in
+the logs; a score below threshold is then diagnosable from the artifact alone.
 
 Do not add a `Generate coverage for mutation testing` step solely for Infection,
-and do not pass `--coverage` or `--skip-initial-tests` in the standard job. Reuse a
-pre-generated report only when the workflow already creates it for another
+and do not pass `--coverage` or `--skip-initial-tests` in the standard workflow.
+Reuse a pre-generated report only when the workflow already creates it for another
 independent consumer and the saved runtime justifies the extra coupling.
 
-Keep `"testFrameworkExtraArgs": "--no-extensions"` so the toolkit's AI reporter
+Keep `--no-extensions` in `testFrameworkExtraArgs` so the toolkit's AI reporter
 cannot replace the PHPUnit result output Infection reads to distinguish killed from
-escaped mutants. A risky or failing initial test should fail the mutation job; do
-not weaken PHPUnit with `--do-not-fail-on-risky`.
+escaped mutants, and keep `--testsuite=` beside it so only behavioral suites
+score. A risky or failing initial test should fail the mutation run; do not
+weaken PHPUnit with `--do-not-fail-on-risky`.
 
 `testFrameworkExtraArgs` arrived in Infection 0.34. On an older line the same value
 goes under `testFrameworkOptions`, which every version from 0.26 accepts and 0.34
@@ -248,11 +271,11 @@ and later still honour; setting both is an error.
 
 ## Do Not Wrap It in Composer Scripts
 
-Write the commands into the workflow. This gate runs in CI, so a Composer script
-would add a layer to look through, a second place for the flags to drift from the
-job that actually runs them, and Composer's 300-second process timeout to work
-around — a mutation run on a suite of any size takes longer than that, and the
-script dies partway through with a process timeout instead of a score.
+Write the commands into the workflow. This measurement runs in CI, so a Composer
+script would add a layer to look through, a second place for the flags to drift
+from the job that actually runs them, and Composer's 300-second process timeout
+to work around — a mutation run on a suite of any size takes longer than that,
+and the script dies partway through with a process timeout instead of a score.
 
 Composer scripts earn their place when a command is run by hand on every save, like
 `composer lint`. Mutation testing is not that command, and it does not belong inside
@@ -262,44 +285,51 @@ Do not explain this tooling in the target project's product `docs/` or rewrite i
 README or `AGENTS.md`. The workflow and this vendor skill are the development
 documentation unless the user explicitly names another developer-owned location.
 
-## CI Wiring
+## The Scheduled Workflow
 
-Merge `mutation-job.yml` into `.github/workflows/ci.yml` as a separate job. It needs
-three things the other jobs do not:
+Install `mutation.yml` as its own workflow, never as a job of `ci.yml`. In a
+monorepo, install one workflow per package, named `Mutation (<package>)`, with
+`defaults.run.working-directory` set to the package; the issue marker and title
+derive from the workflow name, so each package gets its own issue.
 
-- `fetch-depth: 0` on checkout, so the pull request can be diffed against its base.
-- A coverage driver: `coverage: pcov` in `setup-php`.
-- A branch on the event: a changed-lines step guarded by
-  `if: github.event_name == 'pull_request'`, a whole-tree step guarded by the
-  negation.
+The workflow:
 
-Use the highest PHP version in the target's supported matrix for this one-off job,
-not the template's literal version. Derive its extensions from Composer platform
-requirements and the commands in the job, require the selected lock file to exist,
-and run `composer check-platform-reqs` after installation. Treat job timeout,
-memory limits, and `--threads` as measured operational values: size them from the
-observed run and runner capacity without altering mutation scope or thresholds.
+- runs on a schedule and on `workflow_dispatch`, and its job carries
+  `if: github.ref == 'refs/heads/<default>'` so a dispatch from another branch
+  does nothing;
+- checks out `github.sha` explicitly, so a rerun measures the commit the run was
+  created for even after the branch moved;
+- uses a concurrency group without `cancel-in-progress`, so a dispatch queues
+  behind the scheduled run instead of killing it;
+- uses the highest PHP version in the target's supported matrix, `coverage: pcov`,
+  the extensions the test job needs, a worker memory limit in `ini-values`, and a
+  controller limit on the `php -d` invocation;
+- validates the manifest, installs the locked graph, checks platform
+  requirements, and prints `infection --version`;
+- runs the whole-tree measurement with the thresholds neutralised, then rejects
+  skipped mutants;
+- creates or updates the score issue with `if: success()` and
+  `continue-on-error: true`, writes the score to the job summary on every
+  successful run, and needs `issues: write` for that step alone; and
+- uploads `build/infection/` whether the run succeeded or not.
 
-In a monorepo, set the package working directory and verify a known changed source
-line is selected. Set artifact upload paths relative to the repository root;
-`defaults.run.working-directory` does not change an action's paths. Consult the
-installed Infection release's Git diff path handling;
-do not carry an old `diff.relative` workaround into a release that handles
-repository-relative paths natively. Upload mutation reports even when a gate fails.
-If manual whole-tree runs are provided, include the event name in concurrency keys
-so dispatching one does not cancel a PR check on the same branch.
+Treat job timeout, memory limits, and `--threads` as measured operational values:
+size them from the observed run and runner capacity without altering mutation
+scope or thresholds. Set artifact and report paths relative to the repository
+root; `defaults.run.working-directory` does not change an action's paths.
+Choose a schedule minute away from the start of the hour, and stagger the
+packages of a monorepo so their runs do not compete for runners.
 
-Take the base branch from `origin/${GITHUB_BASE_REF}` rather than hardcoding the
-default branch. GitHub sets that variable on pull request events, so a pull request
-against a release branch is scored against that branch. Read it as a shell
-environment variable rather than through `${{ github.event.pull_request.base.ref }}`
-interpolation: a branch name pasted into the shell as literal text is a script
-injection waiting to happen.
+The issue step looks for an existing issue by marker or title in every state.
+When the score recovers, close the issue by hand or with the fixing pull request;
+the next run below threshold updates the closed issue's body rather than opening
+a second one, so the history of the score stays in one place.
 
 ## Protecting the Configuration
 
-Mutation thresholds are the first thing an agent lowers when a build goes red, so
-treat these files the way the project treats its other non-negotiable configuration:
+Mutation thresholds are the first thing an agent lowers when an issue stays open,
+so treat these files the way the project treats its other non-negotiable
+configuration:
 
 - Recommend protecting `infection.json5` in the agent permission system. Do not
   edit `.claude/settings.json`, `AGENTS.md`, or another agent-owned policy file
@@ -311,15 +341,25 @@ treat these files the way the project treats its other non-negotiable configurat
 
 ## Verification
 
-Run the two local commands above, or push the branch and read the job. Exit codes:
+Run the local command from Setting the Thresholds, or dispatch the workflow on
+the default branch and read the run. Exit codes of the local command:
 
-- `0`: every threshold met
-- Non-zero: a threshold was missed, or Infection could not run
+- `0`: Infection measured the whole tree; the score is in the summary log
+- Non-zero: Infection could not run, or the initial test suite failed
+
+In the workflow, a green run with the score in the job summary is the normal
+outcome. Confirm that a score below threshold produces the issue by reading the
+step against `build/infection/infection.json` from the artifact; a red run must
+point at a measurement failure, never at the score.
 
 Read `build/infection/escaped.log` for the mutants that survived and
 `build/infection/per-mutator.md` for the mutators they came from. Each escaped
 mutant is a diff showing a change to production code that no test objected to;
 write the test that objects.
+
+Run `git diff --check` and validate `.github/workflows/mutation.yml` with
+actionlint. Search installed files for `REPLACE_WITH`; a remaining sentinel is a
+failed setup.
 
 ## References
 

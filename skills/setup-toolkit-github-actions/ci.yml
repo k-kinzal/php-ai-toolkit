@@ -1,6 +1,7 @@
 name: CI
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - REPLACE_WITH_DEFAULT_BRANCH
@@ -15,6 +16,10 @@ concurrency:
 
 env:
   COMPOSER_NO_INTERACTION: '1'
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   tests:
@@ -36,6 +41,9 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
           coverage: none
+
+      - name: Validate the Composer manifest against the lock file
+        run: composer validate --strict --no-check-publish
 
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
@@ -77,6 +85,9 @@ jobs:
 
       - name: Check installed platform requirements
         run: composer check-platform-reqs
+
+      - name: Check PSR-4 paths and ambiguous classes
+        run: composer autoload:check
 
       - name: Check the formatting
         run: composer format:check

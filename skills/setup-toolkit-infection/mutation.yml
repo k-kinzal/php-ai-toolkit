@@ -1,0 +1,145 @@
+name: Mutation
+
+on:
+  schedule:
+    - cron: 'REPLACE_WITH_MUTATION_CRON'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+env:
+  COMPOSER_NO_INTERACTION: '1'
+
+defaults:
+  run:
+    shell: bash
+    working-directory: REPLACE_WITH_WORKING_DIRECTORY
+
+jobs:
+  mutation:
+    name: Mutation testing
+    if: github.ref == 'refs/heads/REPLACE_WITH_DEFAULT_BRANCH'
+    runs-on: ubuntu-latest
+    timeout-minutes: REPLACE_WITH_MUTATION_TIMEOUT_MINUTES
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: 'REPLACE_WITH_MUTATION_JOB_PHP'
+          extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
+          coverage: pcov
+          ini-values: memory_limit=1G
+
+      - name: Validate the Composer manifest and lock file
+        run: composer validate --strict --no-check-publish
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
+        with:
+          working-directory: REPLACE_WITH_WORKING_DIRECTORY
+          dependency-versions: REPLACE_WITH_DEPENDENCY_MODE
+          composer-options: --prefer-dist
+          require-lock-file: REPLACE_WITH_LOCK_REQUIREMENT
+
+      - name: Check installed platform requirements
+        run: |
+          composer check-platform-reqs
+          vendor/bin/infection --version
+
+      - name: Mutation testing on the whole source tree
+        run: >-
+          php -d memory_limit=4G vendor/bin/infection
+          --configuration=infection.json5
+          --with-uncovered
+          --threads=max
+          --only-covering-test-cases
+          --min-msi=0
+          --min-covered-msi=0
+          --no-progress
+          --logger-github
+
+      - name: Reject skipped whole-tree mutants
+        run: |
+          php -d memory_limit=1G -r '
+            $report = json_decode(file_get_contents("build/infection/infection.json"), true, 512, JSON_THROW_ON_ERROR);
+            if (($report["stats"]["skippedCount"] ?? null) !== 0) {
+                fwrite(STDERR, "Infection skipped mutants before execution; review the timeout against test durations.\n");
+                exit(1);
+            }
+          '
+
+      - name: Create or update the mutation score issue
+        if: success()
+        continue-on-error: true
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd
+        env:
+          MIN_MSI: '80'
+          MIN_COVERED_MSI: '80'
+        with:
+          script: |
+            const fs = require('node:fs');
+            const stats = JSON.parse(fs.readFileSync('REPLACE_WITH_WORKING_DIRECTORY/build/infection/infection.json', 'utf8')).stats;
+            const minMsi = Number(process.env.MIN_MSI);
+            const minCoveredMsi = Number(process.env.MIN_COVERED_MSI);
+            for (const value of [stats.msi, stats.coveredCodeMsi, minMsi, minCoveredMsi]) {
+              if (!Number.isFinite(value) || value < 0 || value > 100) {
+                throw new Error('Infection must report valid MSI percentages and thresholds.');
+              }
+            }
+            const belowThreshold = stats.msi < minMsi || stats.coveredCodeMsi < minCoveredMsi;
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const marker = `<!-- ${context.workflow}:msi -->`;
+            const title = `[${context.workflow}] Mutation score below threshold`;
+            const body = [
+              marker,
+              `Scheduled mutation testing on the default branch is below the required score.`,
+              '',
+              '| Metric | Actual | Required |',
+              '| --- | ---: | ---: |',
+              `| MSI | ${stats.msi}% | ${minMsi}% |`,
+              `| Covered MSI | ${stats.coveredCodeMsi}% | ${minCoveredMsi}% |`,
+              '',
+              `Commit: ${context.sha}`,
+              `Run and mutation reports: ${run}`,
+              `Run attempt: ${process.env.GITHUB_RUN_ATTEMPT}`,
+              '',
+              'The score is reported here without failing the workflow. Read build/infection/escaped.log in the run artifact for the mutants no test objected to.'
+            ].join('\n');
+            await core.summary
+              .addHeading(`Mutation testing: ${context.workflow}`)
+              .addRaw(`MSI: ${stats.msi}% (required: ${minMsi}%). Covered MSI: ${stats.coveredCodeMsi}% (required: ${minCoveredMsi}%).`)
+              .write();
+            if (!belowThreshold) return;
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              ...context.repo, state: 'all', per_page: 100
+            });
+            const existing = issues.find(issue => !issue.pull_request && (
+              issue.body?.includes(marker) || issue.title === title
+            ));
+            if (existing) {
+              await github.rest.issues.update({ ...context.repo, issue_number: existing.number, body });
+            } else {
+              await github.rest.issues.create({ ...context.repo, title, body });
+            }
+
+      - name: Upload mutation reports
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: mutation-reports
+          path: REPLACE_WITH_WORKING_DIRECTORY/build/infection/
+          if-no-files-found: ignore

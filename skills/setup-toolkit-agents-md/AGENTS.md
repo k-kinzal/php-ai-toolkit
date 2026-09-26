@@ -11,6 +11,10 @@
 
 {{SUPPORTED_VERSIONS}}
 
+## Development Rules
+
+{{DEVELOPMENT_RULES}}
+
 ## Architecture
 
 {{ARCHITECTURE}}

@@ -76,6 +76,15 @@ them.
 Prefer leaving information out over compressing it. A reader who needs more
 follows the docs badge.
 
+In a monorepo, every package has its own README in this shape, and the root
+README is different: its overview says what the repository as a whole is, and
+its one further section is a `Packages` table with a link to each package
+directory and a one-line description, in place of Requirements and Getting
+Started, which belong to the packages. A `Related Projects` list is acceptable
+there when sibling repositories exist. The root badges are the repository's:
+the license and PHP badges, and the DeepWiki link, not a docs badge for one
+package.
+
 ## Badges
 
 Add every badge the project can back with a real target, in this order:

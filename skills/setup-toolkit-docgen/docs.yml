@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: docs-publish
   cancel-in-progress: false
 
 env:
@@ -18,12 +18,10 @@ env:
   DOCS_BRANCH: REPLACE_WITH_DOCS_BRANCH
 
 jobs:
-  publish:
-    name: Generate and publish the documentation site
+  build:
+    name: Generate the documentation site
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-    permissions:
-      contents: write
+    timeout-minutes: 15
     steps:
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -34,6 +32,9 @@ jobs:
           php-version: 'REPLACE_WITH_DOCGEN_JOB_PHP'
           extensions: REPLACE_WITH_REQUIRED_EXTENSIONS
           coverage: pcov
+
+      - name: Validate the Composer manifest against the lock file
+        run: composer validate --strict --no-check-publish
 
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
@@ -65,6 +66,29 @@ jobs:
           vendor/bin/docgen --coverage=build/coverage-xml \
             --base-url="https://${repository%%/*}.github.io/${repository#*/}"
 
+      - name: Upload the documentation site
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: documentation-site
+          path: build/docs/
+          include-hidden-files: true
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    name: Publish the documentation site
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - name: Download the documentation site
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: documentation-site
+          path: build/docs
+
       - name: Check out the documentation branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -77,6 +101,7 @@ jobs:
           set -euo pipefail
 
           rsync -a --checksum --delete --exclude '/.git/' --exclude '/pr/' --exclude '/CNAME' ../build/docs/ ./
+          touch .nojekyll
 
           git add --all
           if git diff --cached --quiet; then
@@ -88,3 +113,24 @@ jobs:
             -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
             commit --message "docs: generate from ${GITHUB_SHA}"
           git push origin "HEAD:${DOCS_BRANCH}"
+
+      - name: Build GitHub Pages and wait for publication
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          expected_sha="$(git -C .docs-branch rev-parse HEAD)"
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds" > /dev/null
+          for attempt in {1..60}; do
+            build="$(gh api "repos/${GITHUB_REPOSITORY}/pages/builds/latest")"
+            if [ "$(jq -r .commit <<< "$build")" = "$expected_sha" ]; then
+              case "$(jq -r .status <<< "$build")" in
+                built) exit 0 ;;
+                errored) jq .error <<< "$build" >&2 ;;
+              esac
+            fi
+            sleep 10
+          done
+          echo 'Timed out waiting for GitHub Pages publication.' >&2
+          exit 1

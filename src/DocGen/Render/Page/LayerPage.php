@@ -19,9 +19,8 @@ use Toolkit\DocGen\Render\RenderKit;
  * Renders the symbols of one architecture layer.
  *
  * Layers come from the project's deptrac configuration, so the page also
- * states which layers this one may depend on. The namespaces the layer
- * spans are listed before its symbols: a layer is usually recognised by
- * the namespaces it owns rather than by the individual classes in it.
+ * states which layers this one may depend on. The public API table comes
+ * first, followed by the namespaces and the complete symbol listing.
  */
 final class LayerPage
 {
@@ -69,6 +68,8 @@ final class LayerPage
             array_unshift($sections, ['id' => 'namespaces', 'label' => 'Namespaces']);
         }
 
+        array_unshift($sections, $this->symbolList->publicApiAnchor($services, $rows));
+
         $crumbs = [
             ['label' => $packageName, 'path' => $services->url->packagePage($packageName)],
             ['label' => 'Layer ' . $layer, 'path' => null],
@@ -98,6 +99,7 @@ final class LayerPage
             $escaper->e($layer),
             count($rows),
         ) . "\n";
+        $html .= $this->symbolList->publicApiSection($services, $pagePath, $rows, true);
         $html .= $this->dependencyRow($services, $pagePath, $layer);
         $html .= $this->symbolList->namespaceOverview($services, $pagePath, $rows);
 

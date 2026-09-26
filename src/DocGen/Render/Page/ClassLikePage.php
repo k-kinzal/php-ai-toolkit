@@ -215,7 +215,7 @@ final class ClassLikePage
             $aliases[$alias->name] = '#alias.' . $alias->name;
         }
 
-        return new TypeRenderContext($pagePath, $classLike->namespace, $classLike->useMap, $templates, $aliases, $services->model->symbolTable);
+        return new TypeRenderContext($pagePath, $classLike->namespace, $classLike->useMap, $templates, $aliases, $services->model->symbolTable, $services->model);
     }
 
     /**

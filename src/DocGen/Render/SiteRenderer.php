@@ -198,7 +198,7 @@ final class SiteRenderer
     {
         $documented = [];
         foreach ($model->classLikes as $classLike) {
-            if (!$classLike->isDev) {
+            if (!$classLike->isDev && (!$model->publicApi || $model->isPublicApiClassLike($classLike->fqcn))) {
                 $documented[] = $classLike;
             }
         }
@@ -232,7 +232,7 @@ final class SiteRenderer
     {
         $records = [];
         foreach ($model->functions as $function) {
-            if (!$function->isDev) {
+            if (!$function->isDev && (!$model->publicApi || $model->isPublicApiFunction($function->fqn))) {
                 $records[] = $writer->write(
                     $outputRoot,
                     $this->url->functionPage($function),

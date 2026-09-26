@@ -203,7 +203,8 @@ final class TypeHtml
         $target = $context->symbolTable->classLike($fqcn);
         $separator = strrpos($fqcn, '\\');
         $short = $separator === false ? $fqcn : substr($fqcn, $separator + 1);
-        if ($target instanceof ClassLikeDoc) {
+        if ($target instanceof ClassLikeDoc && !$target->isDev
+            && ($context->model === null || !$context->model->publicApi || $context->model->isPublicApiClassLike($target->fqcn))) {
             return sprintf(
                 '<a class="t-name k-%s" href="%s" title="%s">%s</a>',
                 $target->kind,

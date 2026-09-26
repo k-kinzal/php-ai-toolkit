@@ -25,7 +25,7 @@ Without options, the project root and `packages/*` are documented into `build/do
 `--output=DIR`, `--title=TEXT`, `--deptrac=FILE`, `--coverage=DIR` (PHPUnit `--coverage-xml` report),
 `--base-url=URL` (the address the site is published at), `--repository=URL` (the repository every page links back
 to), `--diff=RANGE` / `--base=REVISION` / `--head=REVISION` (compare two git revisions),
-`--serve[=HOST:PORT]` (preview the generated site locally), `--memory-limit=VALUE`, `--jobs=N`,
+`--public-api` (generate only explicitly public API), `--serve[=HOST:PORT]` (preview the generated site locally), `--memory-limit=VALUE`, `--jobs=N`,
 `--cache-dir=DIR`, `--no-cache`, and `--clear-cache`.
 
 Documenting a large dependency tree needs more memory than the common 128M default, so the limit is raised to 512M
@@ -172,6 +172,14 @@ member pages repeat that status in a notice before the prose, so package, layer,
 same boundary statement. Scope resolution and enforcement remain PHPStan's responsibility; DocGen does not maintain
 a second implementation of those rules.
 
+Package, architecture-layer, and namespace pages open with a **Public API** table for review. It lists declarations
+marked `@visibility public` with their kind, linked name, and summary; package and layer tables also show each
+declaration's namespace. Package tables cover the whole package, layer tables cover that package's symbols assigned
+to the layer, and namespace tables cover declarations directly in that namespace. Child namespaces have their own
+tables. An empty scope explicitly states that it has no public API declarations. The sidebar links straight to the
+table, and the table appears in both complete and public API sites. In diff mode it also includes declarations that
+were public in the base revision, so removed or narrowed contracts remain visible during review.
+
 `--public-api` publishes a consumer-facing view:
 
 ```bash
@@ -184,10 +192,12 @@ vendor/bin/docgen --public-api
 - A listed class-like page includes its public and protected PHP members unless a member narrows its own scope with a
   non-public `@visibility` tag. Private members, restricted members, test cases, call sites, and relation indexes are
   omitted as implementation detail.
-- Non-listed production symbol pages and highlighted sources are still generated. A public signature can therefore
-  link to a support type without creating a broken link or promoting that type into navigation or search. This is
-  documentation curation, not an access-control or secrecy boundary; generated URLs and the source repository remain
-  readable.
+- Only the selected declarations get symbol pages. Namespaces containing them and their parent namespaces get index
+  pages; namespaces containing only non-public declarations are omitted unless needed as a parent. References to
+  non-public support types keep their type names without links to absent pages.
+- Highlighted source pages are generated only for files declaring selected public API. These show the whole file,
+  including any implementation details in that file. Package README and Markdown documents are still included.
+  This option selects documentation; it does not redact source files or prose.
 
 The default remains the complete internal view so adding `@visibility` cannot silently remove existing documentation.
 Use that view while developing and `--public-api` for a library's published site. Diff mode applies the same selection

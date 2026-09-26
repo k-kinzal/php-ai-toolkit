@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\DocGen\Render;
 
+use Toolkit\DocGen\Analysis\ProjectModel;
 use Toolkit\DocGen\Analysis\Reference\SymbolTable;
 
 /**
@@ -18,6 +19,7 @@ use Toolkit\DocGen\Analysis\Reference\SymbolTable;
  * @property-read list<string> $templates
  * @property-read array<string, string> $aliases
  * @property-read SymbolTable $symbolTable
+ * @property-read ?ProjectModel $model
  */
 final class TypeRenderContext
 {
@@ -39,6 +41,8 @@ final class TypeRenderContext
         private array $aliases,
         /** @readonly */
         private SymbolTable $symbolTable,
+        /** @readonly */
+        private ?ProjectModel $model = null,
     ) {
     }
 
@@ -56,6 +60,7 @@ final class TypeRenderContext
             'templates' => $this->templates,
             'aliases' => $this->aliases,
             'symbolTable' => $this->symbolTable,
+            'model' => $this->model,
             default => null,
         };
     }

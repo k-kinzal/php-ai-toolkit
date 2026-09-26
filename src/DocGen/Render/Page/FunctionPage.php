@@ -93,7 +93,7 @@ final class FunctionPage
             $templates[] = $template->name;
         }
 
-        $context = new TypeRenderContext($pagePath, $function->namespace, $function->useMap, $templates, [], $services->model->symbolTable);
+        $context = new TypeRenderContext($pagePath, $function->namespace, $function->useMap, $templates, [], $services->model->symbolTable, $services->model);
         $crumbs = [['label' => $function->packageName, 'path' => $services->url->packagePage($function->packageName)]];
         if ($function->namespace !== '') {
             $crumbs[] = ['label' => $function->namespace, 'path' => $services->url->namespacePage($function->packageName, $function->namespace)];

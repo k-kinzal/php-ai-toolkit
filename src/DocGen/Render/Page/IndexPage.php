@@ -86,7 +86,7 @@ final class IndexPage
         $escaper = $services->escaper;
         $html = sprintf('<div class="symbol-head"><h1>%s</h1></div>', $escaper->e($services->model->title)) . "\n";
         if ($services->model->publicApi) {
-            $html .= '<div class="notice tone-ok"><strong>Public API documentation</strong>: navigation, listings, counts, and search include only declarations marked <code>@visibility public</code>.</div>' . "\n";
+            $html .= '<div class="notice tone-ok"><strong>Public API documentation</strong>: symbol pages, navigation, listings, counts, and search include only declarations marked <code>@visibility public</code>.</div>' . "\n";
         }
 
         $html .= $this->packageTable($services);

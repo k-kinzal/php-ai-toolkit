@@ -22,9 +22,8 @@ use Toolkit\DocGen\Render\RepositoryLink;
 /**
  * Renders the overview page of one package.
  *
- * The page reads from the widest scope to the narrowest: what the package
- * depends on, the architecture layers its symbols fall into, the namespaces
- * inside those layers, and finally the README.
+ * The public API table comes first for review, followed by dependencies,
+ * architecture layers, namespaces, and the README.
  */
 final class PackagePage
 {
@@ -81,7 +80,7 @@ final class PackagePage
     public function render(RenderKit $services, DiscoveredPackage $package, ?string $readme): string
     {
         $pagePath = $services->url->packagePage($package->manifest->name);
-        $sections = [];
+        $sections = [$this->symbolList->publicApiAnchor($services, $this->symbols->inPackage($services, $package->manifest->name))];
         if ($this->layerCounts($services, $package->manifest->name) !== []) {
             $sections[] = ['id' => 'layers', 'label' => 'Architecture layers'];
         }
@@ -192,6 +191,7 @@ final class PackagePage
             $html .= '<p class="lede">' . $escaper->e($package->manifest->description) . '</p>' . "\n";
         }
 
+        $html .= $this->symbolList->publicApiSection($services, $pagePath, $this->symbols->inPackage($services, $package->manifest->name), true);
         $html .= $this->dependencyRows($services, $pagePath, $package);
         $html .= $this->layerSection($services, $pagePath, $package->manifest->name);
         $html .= $this->namespaceOverview($services, $pagePath, $package->manifest->name);

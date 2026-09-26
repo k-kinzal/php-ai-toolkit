@@ -60,8 +60,8 @@ TEXT;
   --title=TEXT       Site title (default: the name of the root package, else
                      the name of the project directory)
   --public-api       Publish only declarations explicitly marked
-                     @visibility public in listings, navigation, counts, and
-                     search; linked support-type pages remain available
+                     @visibility public; omit other symbol pages and sources
+                     that contain no public API declarations
 
 TEXT;
     }

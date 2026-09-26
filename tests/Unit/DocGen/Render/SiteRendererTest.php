@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\DocGen\Render;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Tests\Fixture\DocGen\PublicApiFixture;
 use Toolkit\DocGen\Analysis\Diff\DiffIndex;
 use Toolkit\DocGen\Analysis\Diff\DiffKey;
 use Toolkit\DocGen\Analysis\Diff\DiffLine;
@@ -329,7 +331,7 @@ final class SiteRendererTest extends TestCase
         self::assertFileExists($out . '/.nojekyll');
     }
 
-    public function testRenderPublicApiModeCuratesDiscoveryWithoutBreakingSupportTypeLinks(): void
+    public function testRenderPublicApiModeOmitsSupportPagesAndKeepsUnlinkedTypeNames(): void
     {
         $dir = sys_get_temp_dir() . '/docgen-public-render-' . uniqid('', true);
         mkdir($dir . '/src', 0777, true);
@@ -357,11 +359,14 @@ final class SiteRendererTest extends TestCase
         self::assertStringContainsString('Public API documentation', $index);
         self::assertStringContainsString('>Client</a>', $allItems);
         self::assertStringNotContainsString('>Helper</a>', $allItems);
-        self::assertStringContainsString('class.Helper.html', $clientPage);
+        self::assertStringNotContainsString('class.Helper.html', $clientPage);
+        self::assertStringContainsString('<span class="t-ext" title="Demo\\Helper">Helper</span>', $clientPage);
         self::assertStringNotContainsString('<h2 id="relations">', $clientPage);
         self::assertStringContainsString('Client', $search);
         self::assertStringNotContainsString('Helper', $search);
-        self::assertFileExists($out . '/demo/pkg/Demo/class.Helper.html');
+        self::assertFileDoesNotExist($out . '/demo/pkg/Demo/class.Helper.html');
+        self::assertFileDoesNotExist($out . '/src/src/Helper.php.html');
+        self::assertFileExists($out . '/src/src/Client.php.html');
     }
 
     public function testRenderPackagePagesWritesPackageAndNamespaceIndexes(): void
@@ -380,6 +385,93 @@ final class SiteRendererTest extends TestCase
         self::assertFileExists($out . '/demo/pkg/all-items.html');
         self::assertFileExists($out . '/demo/pkg/layer.Domain.html');
         self::assertFileExists($out . '/demo/pkg/Demo/index.html');
+    }
+
+    /**
+     * @dataProvider providerPublicApiScopes
+     * @param 'package'|'layer'|'namespace' $scope
+     * @param list<string> $expected
+     */
+    #[DataProvider('providerPublicApiScopes')]
+    public function testRenderPublicApiTablesMatchEachPageScopeInBothModes(bool $publicApi, string $scope, array $expected): void
+    {
+        $model = PublicApiFixture::model('/tmp/none', $publicApi);
+        $services = (new SiteRenderer())->services($model);
+        $pages = [
+            'package' => (new PackagePage())->render($services, $model->packages[0], null),
+            'layer' => (new LayerPage())->render($services, 'demo/pkg', 'Domain'),
+            'namespace' => (new NamespacePage())->render($services, 'demo/pkg', 'Demo\\Api'),
+        ];
+        $html = $pages[$scope];
+        self::assertStringContainsString('href="#public-api">Public API</a>', $html);
+        preg_match('/<section[^>]*id="public-api">(.*?)<\/section>/s', $html, $section);
+        $sectionHtml = $section[1] ?? '';
+        self::assertNotSame('', $sectionHtml);
+        preg_match_all('/class="item-name [^"]+" href="[^"]+">([^<]+)<\/a>/', $sectionHtml, $names);
+        sort($expected);
+        $actual = $names[1];
+        sort($actual);
+        self::assertSame($expected, $actual);
+        self::assertStringContainsString('<table', $sectionHtml);
+        self::assertStringNotContainsString('Helper', $sectionHtml);
+        self::assertStringNotContainsString('Foreign', $sectionHtml);
+        self::assertStringNotContainsString('ApiTest', $sectionHtml);
+    }
+
+    /**
+     * @return iterable<string, array{bool, 'package'|'layer'|'namespace', list<string>}>
+     */
+    public static function providerPublicApiScopes(): iterable
+    {
+        foreach ([false, true] as $publicApi) {
+            $mode = $publicApi ? 'public' : 'complete';
+            yield $mode . ' package' => [$publicApi, 'package', ['Client', 'Contract', 'Extension', 'Status', 'Service', 'connect']];
+            yield $mode . ' layer' => [$publicApi, 'layer', ['Client', 'Contract', 'Extension', 'Status']];
+            yield $mode . ' namespace' => [$publicApi, 'namespace', ['Client', 'Contract', 'Extension', 'Status', 'connect']];
+        }
+    }
+
+    public function testRenderSwitchingToPublicApiRemovesPrivatePagesAndReusesTheFilteredSite(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-public-cache-' . bin2hex(random_bytes(4));
+        mkdir($dir . '/src', 0777, true);
+        $full = PublicApiFixture::model($dir, false);
+        PublicApiFixture::writeSources($full);
+        $renderer = new SiteRenderer();
+        $out = $dir . '/site';
+        $cache = new RenderCache($dir . '/cache', $out);
+        $renderer->render($full, $out, null, 1, $cache);
+        self::assertFileExists($out . '/demo/pkg/Demo/Internal/class.Helper.html');
+        $public = PublicApiFixture::model($dir, true);
+        $again = new RenderCache($dir . '/cache', $out);
+        $again->load();
+        $count = $renderer->render($public, $out, null, 1, $again);
+
+        self::assertFileDoesNotExist($out . '/demo/pkg/Demo/Internal/class.Helper.html');
+        self::assertFileDoesNotExist($out . '/demo/pkg/Demo/Internal/index.html');
+        self::assertFileDoesNotExist($out . '/demo/pkg/Demo/Internal/function.hidden.html');
+        self::assertFileDoesNotExist($out . '/demo/pkg/layer.Internal.html');
+        self::assertFileDoesNotExist($out . '/src/src/Helper.php.html');
+        self::assertFileDoesNotExist($out . '/src/src/ApiTest.php.html');
+        self::assertFileDoesNotExist($out . '/src/src/hidden.php.html');
+        self::assertFileExists($out . '/demo/pkg/Demo/index.html');
+        self::assertFileExists($out . '/demo/pkg/Demo/Api/function.connect.html');
+        $functionPage = (string) file_get_contents($out . '/demo/pkg/Demo/Api/function.connect.html');
+        self::assertStringContainsString('>Helper</span>', $functionPage);
+        self::assertStringNotContainsString('class.Helper.html', $functionPage);
+        $cached = new RenderCache($dir . '/cache', $out);
+        $cached->load();
+        self::assertSame($count, $renderer->render($public, $out, null, 1, $cached));
+        self::assertSame($count, $cached->reused());
+        self::assertSame(0, $cached->rendered());
+        $fresh = $dir . '/fresh';
+        self::assertSame($count, $renderer->render($public, $fresh, null, 1));
+        self::assertSame(file_get_contents($fresh . '/index.html'), file_get_contents($out . '/index.html'));
+        self::assertSame(file_get_contents($fresh . '/demo/pkg/index.html'), file_get_contents($out . '/demo/pkg/index.html'));
+        self::assertSame(file_get_contents($fresh . '/demo/pkg/layer.Domain.html'), file_get_contents($out . '/demo/pkg/layer.Domain.html'));
+        self::assertSame(file_get_contents($fresh . '/demo/pkg/Demo/Api/index.html'), file_get_contents($out . '/demo/pkg/Demo/Api/index.html'));
+        self::assertSame(file_get_contents($fresh . '/demo/pkg/Demo/Api/function.connect.html'), file_get_contents($out . '/demo/pkg/Demo/Api/function.connect.html'));
+        self::assertSame(file_get_contents($fresh . '/assets/search-index.js'), file_get_contents($out . '/assets/search-index.js'));
     }
 
     public function testRenderDocumentPagesWritesOnePagePerReadableDocument(): void

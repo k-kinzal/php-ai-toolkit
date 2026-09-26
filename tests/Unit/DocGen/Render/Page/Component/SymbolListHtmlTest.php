@@ -82,6 +82,48 @@ use Toolkit\DocGen\Render\TypeHtml;
 #[UsesClass(UsageIndex::class)]
 final class SymbolListHtmlTest extends TestCase
 {
+    public function testPublicApiRowsKeepsHistoricalContractsAndSortsByKind(): void
+    {
+        $model = new ProjectModel('Demo', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, false, ['Demo\\Client', 'Demo\\Contract'], ['Demo\\connect']);
+        $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+        $client = new SymbolRow('class', 'Client', 'Demo\\Client', 'client.html', '', [], 'Demo', DiffStatus::MODIFIED, ['namespace']);
+        $contract = new SymbolRow('interface', 'Contract', 'Demo\\Contract', 'contract.html', '', [], 'Demo', DiffStatus::REMOVED, ['public']);
+        $connect = new SymbolRow('function', 'connect', 'Demo\\connect', 'connect.html', '', [], 'Demo', DiffStatus::REMOVED, ['public']);
+        $internal = new SymbolRow('class', 'Internal', 'Demo\\Internal', 'internal.html', '', [], 'Demo');
+
+        self::assertSame([$contract, $client, $connect], (new SymbolListHtml())->publicApiRows($services, [$connect, $internal, $client, $contract]));
+    }
+
+    public function testPublicApiSectionShowsHeadersEscapedSummaryAndAnExplicitEmptyState(): void
+    {
+        $model = new ProjectModel('Demo', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, false, ['Demo\\Client']);
+        $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+        $rows = [new SymbolRow('class', 'Client', 'Demo\\Client', 'client.html', 'Use `<client>` safely.', [], 'Demo')];
+        $listing = new SymbolListHtml();
+
+        $html = $listing->publicApiSection($services, 'index.html', $rows, true);
+
+        self::assertStringContainsString('id="public-api"><h2>Public API <span class="count">1</span>', $html);
+        self::assertStringContainsString('<th scope="col">Kind</th><th scope="col">Symbol</th><th scope="col">Namespace</th><th scope="col">Summary</th>', $html);
+        self::assertStringContainsString('<td>class</td>', $html);
+        self::assertStringContainsString('href="client.html">Client</a>', $html);
+        self::assertStringContainsString('Use <code>&lt;client&gt;</code> safely.', $html);
+        self::assertStringNotContainsString('<th scope="col">Namespace</th>', $listing->publicApiSection($services, 'index.html', $rows));
+        self::assertStringContainsString('No declarations in this scope are marked as public API.', $listing->publicApiSection($services, 'index.html', []));
+    }
+
+    public function testPublicApiAnchorIgnoresInternalChangesAndKeepsPublicChangesVisible(): void
+    {
+        $model = new ProjectModel('Demo', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, [], [], null, null, false, ['Demo\\Client']);
+        $services = new RenderKit($model, new SiteUrl(), new HtmlText(), new PhpHighlighter(), new MarkdownRenderer(), new TypeHtml(), new DoctestExtractor(), new AssertionScanner());
+        $public = new SymbolRow('class', 'Client', 'Demo\\Client', 'client.html', '', [], 'Demo', DiffStatus::REMOVED);
+        $internal = new SymbolRow('class', 'Internal', 'Demo\\Internal', 'internal.html', '', [], 'Demo', DiffStatus::ADDED);
+        $listing = new SymbolListHtml();
+
+        self::assertSame(['id' => 'public-api', 'label' => 'Public API', 'status' => DiffStatus::REMOVED], $listing->publicApiAnchor($services, [$public, $internal]));
+        self::assertSame(DiffStatus::SAME, $listing->publicApiAnchor($services, [$internal])['status']);
+    }
+
     public function testGroupsRendersOneAnchoredSectionPerKindInKindOrder(): void
     {
         $model = new ProjectModel('Demo Docs', '/tmp/none', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, []);

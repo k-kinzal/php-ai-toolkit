@@ -159,10 +159,11 @@ final class LayerPageTest extends TestCase
         $html = (new LayerPage())->content($services, 'demo/pkg/layer.Domain.html', 'Domain', $rows);
 
         self::assertStringStartsWith(
-            "<div class=\"symbol-head\"><h1><span class=\"chip chip-layer\">layer</span>Domain <span class=\"count\">1</span></h1></div>\n"
-            . "<p class=\"section-note\">This layer may not depend on any other layer.</p>\n",
+            "<div class=\"symbol-head\"><h1><span class=\"chip chip-layer\">layer</span>Domain <span class=\"count\">1</span></h1></div>\n",
             $html,
         );
+        self::assertStringContainsString('<p class="section-note">This layer may not depend on any other layer.</p>', $html);
+        self::assertLessThan(strpos($html, 'This layer may not depend'), strpos($html, 'id="public-api"'));
         self::assertStringContainsString(
             '<h2 id="namespaces">Namespaces<a class="anchor" href="#namespaces">§</a></h2>'
             . '<div class="table-wrap"><table class="symbol-table">'

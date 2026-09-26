@@ -828,6 +828,6 @@ PHP);
         $output = '';
         $runner->run($arguments);
 
-        self::assertStringContainsString('Cache: 1 of 1 sources and 6 of 6 pages reused', $output);
+        self::assertStringContainsString('Cache: 1 of 1 sources and 7 of 7 pages reused', $output);
     }
 }

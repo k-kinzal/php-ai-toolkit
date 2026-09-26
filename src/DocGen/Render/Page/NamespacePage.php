@@ -66,6 +66,8 @@ final class NamespacePage
             $sections = array_merge([['id' => 'namespaces', 'label' => 'Namespaces']], $sections);
         }
 
+        $sections = array_merge([$this->symbolList->publicApiAnchor($services, $rows)], $sections);
+
         return $this->chrome->page(
             $services,
             $pagePath,
@@ -108,6 +110,7 @@ final class NamespacePage
             '<div class="symbol-head"><h1><span class="chip chip-kind k-namespace">namespace</span>%s</h1></div>',
             $services->escaper->e($namespace),
         ) . "\n";
+        $html .= $this->symbolList->publicApiSection($services, $pagePath, $rows);
         $html .= $this->childSection($services, $pagePath, $packageName, $namespace);
 
         return $html . $this->symbolList->groups($services, $pagePath, $rows);

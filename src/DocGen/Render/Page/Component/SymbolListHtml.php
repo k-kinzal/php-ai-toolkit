@@ -61,6 +61,67 @@ final class SymbolListHtml
     }
 
     /**
+     * Lists explicit public API in this page's scope, including the base revision.
+     *
+     * @param list<SymbolRow> $rows
+     *
+     * @return list<SymbolRow>
+     */
+    public function publicApiRows(RenderKit $services, array $rows): array
+    {
+        $public = [];
+        foreach ($rows as $row) {
+            $included = $row->kind === 'function'
+                ? $services->model->isPublicApiFunction($row->fqcn)
+                : $services->model->isPublicApiClassLike($row->fqcn);
+            if ($included) {
+                $public[] = $row;
+            }
+        }
+
+        return $this->symbols->sorted($public);
+    }
+
+    /**
+     * Builds the public API sidebar anchor with the status of its declarations.
+     *
+     * @param list<SymbolRow> $rows
+     *
+     * @return array{id: string, label: string, status: string}
+     */
+    public function publicApiAnchor(RenderKit $services, array $rows): array
+    {
+        return [
+            'id' => 'public-api',
+            'label' => 'Public API',
+            'status' => $services->diff->combine($this->statuses($this->publicApiRows($services, $rows))),
+        ];
+    }
+
+    /**
+     * Renders the public API table before the rest of a scope's documentation.
+     *
+     * An empty section makes the absence of an explicit public contract visible.
+     *
+     * @param list<SymbolRow> $rows
+     */
+    public function publicApiSection(RenderKit $services, string $pagePath, array $rows, bool $withNamespace = false): string
+    {
+        $public = $this->publicApiRows($services, $rows);
+        $html = sprintf(
+            '<section class="items"%s id="public-api"><h2>Public API <span class="count">%d</span><a class="anchor" href="#public-api">§</a></h2>',
+            $services->diff->combined($this->statuses($public)),
+            count($public),
+        );
+        $html .= '<p class="section-note">Declarations explicitly marked <code>@visibility public</code> in this scope.</p>';
+        $html .= $public === []
+            ? '<p class="section-note">No declarations in this scope are marked as public API.</p>'
+            : $this->table($services, $pagePath, $public, $withNamespace, true);
+
+        return $html . '</section>' . "\n";
+    }
+
+    /**
      * Renders one table of symbol rows.
      *
      * Listings that span namespaces show the namespace of every row, so a
@@ -68,13 +129,20 @@ final class SymbolListHtml
      *
      * @param list<SymbolRow> $rows
      */
-    public function table(RenderKit $services, string $pagePath, array $rows, bool $withNamespace = false): string
+    public function table(RenderKit $services, string $pagePath, array $rows, bool $withNamespace = false, bool $withKind = false): string
     {
         $html = '<div class="table-wrap"><table class="item-table">';
+        if ($withKind) {
+            $html .= '<thead><tr><th scope="col">Kind</th><th scope="col">Symbol</th>'
+                . ($withNamespace ? '<th scope="col">Namespace</th>' : '')
+                . '<th scope="col">Summary</th></tr></thead><tbody>';
+        }
+
         foreach ($rows as $row) {
             $html .= sprintf(
-                '<tr%s><td><a class="item-name k-%s" href="%s">%s</a>%s</td>%s<td class="item-summary">%s</td></tr>',
+                '<tr%s>%s<td><a class="item-name k-%s" href="%s">%s</a>%s</td>%s<td class="item-summary">%s</td></tr>',
                 $services->diff->mark($row->status),
+                $withKind ? '<td>' . $services->escaper->e($row->kind) . '</td>' : '',
                 $services->escaper->e($row->kind),
                 $services->escaper->e($services->url->href($pagePath, $row->page)),
                 $services->escaper->e($row->name),
@@ -84,7 +152,7 @@ final class SymbolListHtml
             );
         }
 
-        return $html . '</table></div>';
+        return $html . ($withKind ? '</tbody>' : '') . '</table></div>';
     }
 
     /**

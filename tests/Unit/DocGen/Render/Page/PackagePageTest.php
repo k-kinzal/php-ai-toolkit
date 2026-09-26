@@ -318,10 +318,12 @@ final class PackagePageTest extends TestCase
 
         self::assertStringContainsString(
             '<div class="sidebar-title">On this page</div><ul class="sidebar-list">'
+            . '<li><a href="#public-api">Public API</a></li>'
             . '<li><a href="#layers">Architecture layers</a></li><li><a href="#namespaces">Namespaces</a></li></ul>',
             $html,
         );
         self::assertLessThan(strpos($html, '<h2 id="namespaces">'), strpos($html, '<h2 id="layers">'));
+        self::assertLessThan(strpos($html, '<h2 id="layers">'), strpos($html, 'id="public-api"'));
     }
 
     public function testContentRendersDescriptionDependenciesAndReadme(): void

@@ -1,0 +1,5 @@
+infection設定の変更は許可します。
+
+> ztd 側で sql-fixture と sql-catalog の fuzz ワークフローだけが旧型（notify ジョブ + fuzz ラベル、PHP 8.3）のまま残っています。toolkit のテンプレートは新型（sql-parser / ztd-query-* の形）を基準にしました。
+
+こちらに関してよくわかっていないので詳細をいただけますか？

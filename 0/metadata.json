@@ -1,0 +1,75 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M3F6KEB6MNBY6998KNCMKSZD",
+  "session_id": "3428f6cd-32e8-40c6-8d90-7c2eea9ec95e",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-26T15:51:06.439612Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 2,
+  "files_touched": [
+    "docs/docgen.md",
+    "resources/docgen/style.css",
+    "src/DocGen/Cli/DocGenHelpText.php",
+    "src/DocGen/Render/Page/ClassLikePage.php",
+    "src/DocGen/Render/Page/Component/SymbolListHtml.php",
+    "src/DocGen/Render/Page/FunctionPage.php",
+    "src/DocGen/Render/Page/IndexPage.php",
+    "src/DocGen/Render/Page/LayerPage.php",
+    "src/DocGen/Render/Page/NamespacePage.php",
+    "src/DocGen/Render/Page/PackagePage.php",
+    "src/DocGen/Render/SitePages.php",
+    "src/DocGen/Render/SiteRenderer.php",
+    "src/DocGen/Render/TypeHtml.php",
+    "src/DocGen/Render/TypeRenderContext.php",
+    "tests/Unit/DocGen/Cli/DocGenGenerationRunnerTest.php",
+    "tests/Unit/DocGen/Render/Page/Component/SymbolListHtmlTest.php",
+    "tests/Unit/DocGen/Render/Page/LayerPageTest.php",
+    "tests/Unit/DocGen/Render/Page/PackagePageTest.php",
+    "tests/Unit/DocGen/Render/SiteRendererTest.php"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5-1",
+  "turn_id": "25850749e7e5",
+  "checkpoint_transcript_start": 547,
+  "transcript_lines_at_start": 547,
+  "compact_transcript_start": 187,
+  "token_usage": {
+    "input_tokens": 258,
+    "cache_creation_tokens": 352449,
+    "cache_read_tokens": 2865490,
+    "output_tokens": 10555,
+    "api_call_count": 9
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-26T15:51:06.332732Z",
+    "agent_lines": 280,
+    "agent_removed": 34,
+    "human_added": 68,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 348,
+    "total_lines_changed": 382,
+    "agent_percentage": 82.19895287958116,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 348,
+      "agent_lines_removed": 34
+    }
+  ]
+}

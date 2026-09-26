@@ -1,10 +1,9 @@
 {
-  "cli_version": "0.10.3",
-  "checkpoint_id": "01M3F6KEB6MNBY6998KNCMKSZD",
-  "strategy": "manual-commit",
-  "branch": "main",
-  "checkpoints_count": 3,
-  "files_touched": [
+  "tool_use_id": "toolu_01Tu3yZRwqQmKQQFypGQsGU2",
+  "agent_id": "a29c62cb7a77cd7f8",
+  "subagent_type": "Explore",
+  "task_description": "Find all listings of Tests\\Supports default",
+  "files": [
     "docs/docgen.md",
     "resources/docgen/style.css",
     "src/DocGen/Cli/DocGenHelpText.php",
@@ -25,27 +24,6 @@
     "tests/Unit/DocGen/Render/Page/PackagePageTest.php",
     "tests/Unit/DocGen/Render/SiteRendererTest.php"
   ],
-  "sessions": [
-    {
-      "metadata": "/0/metadata.json",
-      "transcript": "/0/full.jsonl",
-      "compact_transcript": "/0/transcript.jsonl",
-      "content_hash": "/0/content_hash.txt",
-      "prompt": "/0/prompt.txt"
-    },
-    {
-      "metadata": "/1/metadata.json",
-      "transcript": "/1/full.jsonl",
-      "compact_transcript": "/1/transcript.jsonl",
-      "content_hash": "/1/content_hash.txt",
-      "prompt": "/1/prompt.txt"
-    }
-  ],
-  "token_usage": {
-    "input_tokens": 1286,
-    "cache_creation_tokens": 459757,
-    "cache_read_tokens": 4443036,
-    "output_tokens": 26018,
-    "api_call_count": 43
-  }
+  "started_at": "2026-09-26T22:50:06.378266+09:00",
+  "completed_at": "2026-09-26T22:50:06.387878+09:00"
 }

@@ -1,0 +1,111 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M3F6KEB6MNBY6998KNCMKSZD",
+  "session_id": "ac8e0bbd-51a3-4a6b-9000-1096f5ca7adc",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-26T15:51:07.38011Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "docs/docgen.md",
+    "resources/docgen/style.css",
+    "src/DocGen/Cli/DocGenHelpText.php",
+    "src/DocGen/Render/Page/ClassLikePage.php",
+    "src/DocGen/Render/Page/Component/SymbolListHtml.php",
+    "src/DocGen/Render/Page/FunctionPage.php",
+    "src/DocGen/Render/Page/IndexPage.php",
+    "src/DocGen/Render/Page/LayerPage.php",
+    "src/DocGen/Render/Page/NamespacePage.php",
+    "src/DocGen/Render/Page/PackagePage.php",
+    "src/DocGen/Render/SitePages.php",
+    "src/DocGen/Render/SiteRenderer.php",
+    "src/DocGen/Render/TypeHtml.php",
+    "src/DocGen/Render/TypeRenderContext.php",
+    "tests/Unit/DocGen/Cli/DocGenGenerationRunnerTest.php",
+    "tests/Unit/DocGen/Render/Page/Component/SymbolListHtmlTest.php",
+    "tests/Unit/DocGen/Render/Page/LayerPageTest.php",
+    "tests/Unit/DocGen/Render/Page/PackagePageTest.php",
+    "tests/Unit/DocGen/Render/SiteRendererTest.php"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5-1",
+  "turn_id": "00a7765dc03f",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 1028,
+    "cache_creation_tokens": 107308,
+    "cache_read_tokens": 1577546,
+    "output_tokens": 15463,
+    "api_call_count": 34
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-26T15:51:07.351724Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 34,
+    "total_committed": 0,
+    "total_lines_changed": 34,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 348,
+      "user_lines_removed": 34,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "docs/docgen.md": 15,
+        "resources/docgen/style.css": 3,
+        "src/DocGen/Cli/DocGenHelpText.php": 2,
+        "src/DocGen/Render/Page/ClassLikePage.php": 1,
+        "src/DocGen/Render/Page/Component/SymbolListHtml.php": 71,
+        "src/DocGen/Render/Page/FunctionPage.php": 1,
+        "src/DocGen/Render/Page/IndexPage.php": 1,
+        "src/DocGen/Render/Page/LayerPage.php": 5,
+        "src/DocGen/Render/Page/NamespacePage.php": 3,
+        "src/DocGen/Render/Page/PackagePage.php": 4,
+        "src/DocGen/Render/SitePages.php": 22,
+        "src/DocGen/Render/SiteRenderer.php": 2,
+        "src/DocGen/Render/TypeHtml.php": 2,
+        "src/DocGen/Render/TypeRenderContext.php": 5,
+        "tests/Fixture/DocGen/PublicApiFixture.php": 68,
+        "tests/Unit/DocGen/Cli/DocGenGenerationRunnerTest.php": 1,
+        "tests/Unit/DocGen/Render/Page/Component/SymbolListHtmlTest.php": 42,
+        "tests/Unit/DocGen/Render/Page/LayerPageTest.php": 3,
+        "tests/Unit/DocGen/Render/Page/PackagePageTest.php": 2,
+        "tests/Unit/DocGen/Render/SiteRendererTest.php": 95
+      },
+      "user_removed_per_file": {
+        "docs/docgen.md": 5,
+        "src/DocGen/Cli/DocGenHelpText.php": 2,
+        "src/DocGen/Render/Page/ClassLikePage.php": 1,
+        "src/DocGen/Render/Page/Component/SymbolListHtml.php": 3,
+        "src/DocGen/Render/Page/FunctionPage.php": 1,
+        "src/DocGen/Render/Page/IndexPage.php": 1,
+        "src/DocGen/Render/Page/LayerPage.php": 3,
+        "src/DocGen/Render/Page/PackagePage.php": 4,
+        "src/DocGen/Render/SitePages.php": 5,
+        "src/DocGen/Render/SiteRenderer.php": 2,
+        "src/DocGen/Render/TypeHtml.php": 1,
+        "tests/Unit/DocGen/Cli/DocGenGenerationRunnerTest.php": 1,
+        "tests/Unit/DocGen/Render/Page/LayerPageTest.php": 2,
+        "tests/Unit/DocGen/Render/SiteRendererTest.php": 3
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 382,
+      "agent_lines_removed": 38
+    }
+  ]
+}

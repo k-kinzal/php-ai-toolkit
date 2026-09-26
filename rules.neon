@@ -142,6 +142,8 @@ parameters:
         unitTestMarker: '/tests/Unit/'
         forbiddenTermsByPath: []
         forbiddenNamespacePrefixes:
+            - 'Tests\Fixture'
+            - 'Tests\Fixtures'
             - 'Tests\Support'
             - 'Tests\Supports'
             - 'Tests\Helper'

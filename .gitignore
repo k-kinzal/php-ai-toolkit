@@ -1,7 +1,6 @@
 /.claude/
 /.idea/
 /vendor/
-/composer.lock
 /build/
 /projects/
 /.phpunit.cache/

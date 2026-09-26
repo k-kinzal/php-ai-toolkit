@@ -1,0 +1,96 @@
+name: Renovate lock files
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - composer.json
+      - composer.lock
+
+permissions:
+  contents: read
+
+concurrency:
+  group: renovate-lockfiles-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    name: Refresh the PHP compatibility lock files
+    if: >-
+      (github.event.pull_request.user.login == 'renovate[bot]' ||
+       github.event.pull_request.user.login == 'mend-for-github-com[bot]') &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.head_ref, 'renovate/') &&
+      github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      pull-requests: read
+      actions: write
+    env:
+      COMPOSER_NO_INTERACTION: '1'
+    steps:
+      - name: Check out the Renovate revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: '8.5'
+          extensions: mbstring, pcntl, gd
+          coverage: none
+
+      - name: Resolve dependencies for each supported PHP version
+        run: |
+          set -euo pipefail
+
+          # Global platform overrides preserve the shared manifest's content hash.
+          # No packages are installed and no repository or dependency scripts run.
+          original_lock="$(mktemp)"
+          cp composer.lock "${original_lock}"
+          trap 'cp "${original_lock}" composer.lock; rm -f "${original_lock}"' EXIT
+
+          for php_version in 8.0 8.1 8.2 8.3 8.4; do
+            cp "composer.lock.php-${php_version}" composer.lock
+            composer --no-plugins config --global platform.php "${php_version}.0"
+            composer update --no-install --no-scripts --no-plugins --prefer-dist
+            composer validate --strict --no-check-publish
+            cp composer.lock "composer.lock.php-${php_version}"
+          done
+
+      - name: Commit the lock files and run CI on the new revision
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha }}
+          HEAD_BRANCH: ${{ github.head_ref }}
+          BASE_BRANCH: ${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+
+          git add composer.lock.php-8.0 composer.lock.php-8.1 composer.lock.php-8.2 composer.lock.php-8.3 composer.lock.php-8.4
+          if git diff --cached --quiet; then
+            echo 'The compatibility lock files are already current.'
+            exit 0
+          fi
+
+          current_pr="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}")"
+          if [ "$(jq -r '.state' <<< "${current_pr}")" != 'open' ] ||
+             [ "$(jq -r '.head.sha' <<< "${current_pr}")" != "${EXPECTED_SHA}" ]; then
+            echo 'The PR changed while dependencies were resolving; leaving the new revision untouched.'
+            exit 0
+          fi
+
+          git -c user.name='github-actions[bot]' \
+            -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit --message 'chore(deps): refresh PHP compatibility lock files'
+          git push origin "HEAD:${HEAD_BRANCH}"
+
+          # GITHUB_TOKEN pushes do not start CI automatically. Dispatch explicitly
+          # so Renovate sees checks for the commit containing the refreshed locks.
+          gh workflow run ci.yml --repo "${GITHUB_REPOSITORY}" \
+            --ref "${HEAD_BRANCH}" --field "base_ref=${BASE_BRANCH}"

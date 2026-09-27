@@ -1,0 +1,32 @@
+php-ai-toolkit に新しいガードツール「DocGuard」を追加してください。TreeGuard / LocGuard と同じ位置づけのツールで、Markdown 文書（README.md、AGENTS.md、docs/*.md）のセクション構造を管理します。
+
+## 背景
+
+利用側の ztd-query-php では、AI エージェントが README.md、AGENTS.md、docs に無断でセクションを追加することが繰り返し起きています（開発者向け情報、ツールの説明、Development / Public API / Limitation などのセクション）。レビューで何度も指摘してきましたが止まらないので、機械的に止めたいという意図です。
+
+方針は次のとおりです。
+- 既存セクションの中身の修正は許可する。
+- セクションの追加は許可しない。構造を変えてよいのは、人間が設定を更新したときだけとする。
+- 正となる構造は、現時点で各文書にある見出し構造とする。
+
+## 要件
+
+- 対象文書ごとに見出しの構造（レベル、見出しテキスト、順序）を設定ファイルで宣言し、実ファイルと照合する。
+- 宣言にないセクションの追加は違反とする。削除、改名、順序の変更、レベルの変更も構造の変更なので、原則は違反とする。緩めたほうがよいケースがあれば、設計時に理由を添えて提示してください。
+- 設定ファイルは既存ツールと同じく人間が管理するものとし、NOTE ヘッダ（"You do not have permission to overwrite this file..."）を付ける。
+- 現在の文書から設定を生成する手段を用意する。既存の構造をそのまま正として取り込むために使う。
+- 見出しを正しく解析する。フェンスドコードブロック（``` と ~~~ の両方）の中の `#` は見出しとして扱わない。setext 見出しも考慮する。
+- CLI、終了コード（0: 違反なし、1: 違反あり、2: 設定・実行エラー）、reporter（ai / text / json）、未知の設定キーの拒否は、TreeGuard / LocGuard と同じ作りにする。AI reporter の action には「セクションを追加せず既存セクション内に書く。構造変更が必要なら人間に設定の更新を依頼する」という趣旨を含める。
+- モノレポで使える形にする。ztd-query-php ではパッケージごとに tree.yaml などを置き、各パッケージの composer lint から呼んでいます。パッケージ単位の設定と、ルートの README.md / AGENTS.md の両方を扱えるようにしてください。
+- 対象に宣言したディレクトリ（例: docs/）に、設定にない Markdown ファイルが追加されたときの扱いを検討してください。検出するのか、TreeGuard に任せるのかを判断し、理由とあわせて結論を出してください。
+
+## 作り方
+
+- TreeGuard を追加したコミット（2f2e2377）と同じ一式をそろえる。対象は bin、composer.json の bin と scripts（lint への組み込み）、deptrac のレイヤー、CI、docs/doc-guard.md、skills/setup-toolkit-doc-guard、README と AGENTS.md の参照、skills/setup-php-ai-toolkit と setup-toolkit-github-actions への追記です。
+- deptrac では各ツールのレイヤーが独立しているので、DocGen の Markdown 処理には直接依存できません。独自の最小パーサを持つか、共通化するかは、ルールセットが人間管理であることを踏まえて判断し、提示してください。
+- 作業は、このリポジトリの AGENTS.md の開発ルールに従って進めてください。成果物（コード、docs、コミットメッセージ）はすべて英語で書いてください。
+
+## 完了条件
+
+- composer test と composer lint が通る。
+- 利用例として、ztd-query-php（/Users/ab/Projects/ztd-query-php）の packages/sql-faker と、ルートの README.md / AGENTS.md に対して設定を生成し、ローカルで実行して現状 PASS になることを確認する。ztd-query-php 側への導入（設定ファイルの追加）はこのタスクには含めません。

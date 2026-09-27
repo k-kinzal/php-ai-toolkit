@@ -5,6 +5,7 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -43,7 +44,11 @@ jobs:
           coverage: none
 
       - name: Select the matching lock file
+        if: matrix.php != '8.5'
         run: cp "composer.lock.php-${{ matrix.php }}" composer.lock
+
+      - name: Validate the Composer manifest against the lock file
+        run: composer validate --strict --no-check-publish
 
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
@@ -72,9 +77,6 @@ jobs:
           php-version: '8.5'
           extensions: mbstring, gd
           coverage: none
-
-      - name: Select the matching lock file
-        run: cp composer.lock.php-8.5 composer.lock
 
       - name: Validate the Composer manifest against the lock file
         run: composer validate --strict --no-check-publish

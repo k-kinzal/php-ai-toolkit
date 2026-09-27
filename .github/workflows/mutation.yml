@@ -42,9 +42,6 @@ jobs:
           coverage: pcov
           ini-values: memory_limit=1G
 
-      - name: Select the matching lock file
-        run: cp composer.lock.php-8.5 composer.lock
-
       - name: Validate the Composer manifest and lock file
         run: composer validate --strict --no-check-publish
 

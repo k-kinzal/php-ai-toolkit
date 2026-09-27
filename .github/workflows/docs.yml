@@ -35,9 +35,6 @@ jobs:
           extensions: mbstring, pcntl, gd
           coverage: pcov
 
-      - name: Select the matching lock file
-        run: cp composer.lock.php-8.5 composer.lock
-
       - name: Install dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
         with:
@@ -52,9 +49,9 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: build/docgen-cache
-          key: docgen-${{ runner.os }}-${{ hashFiles('composer.lock.php-8.5') }}-${{ github.sha }}
+          key: docgen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-${{ github.sha }}
           restore-keys: |
-            docgen-${{ runner.os }}-${{ hashFiles('composer.lock.php-8.5') }}-
+            docgen-${{ runner.os }}-${{ hashFiles('composer.lock') }}-
             docgen-${{ runner.os }}-
 
       - name: Generate the coverage report the site reads

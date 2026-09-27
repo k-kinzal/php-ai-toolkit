@@ -50,7 +50,9 @@
             - &#039;Tests\Util&#039;
             - &#039;Tests\Utils&#039;
             - &#039;Tests\Utility&#039;
-            - &#039;Tests\Utilities&#039;</code></pre>
+            - &#039;Tests\Utilities&#039;
+            - &#039;Tests\Fixture&#039;
+            - &#039;Tests\Fixtures&#039;</code></pre>
 <h3>What It Detects</h3>
 <p>Reports namespace declarations that exactly match a configured prefix or live under it:</p>
 <pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">Tests\Support</span>;
@@ -74,8 +76,8 @@
 <p>is also reported. This namespace is allowed because it is only a partial text match:</p>
 <pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">Tests\Supporting</span>;</code></pre>
 <h3>Why This Is an Error</h3>
-<p>Generic test support, helper, and utility namespaces become dumping grounds for reusable setup code. They hide what each test actually needs, encourage cross-test coupling, and create a second test framework that AI agents tend to expand instead of simplifying.</p>
-<p>Tests should prefer explicit setup in the test method. When reuse is genuinely valuable, it should be provided by a real dependency with a clear API boundary, not by a generic <code>Tests\Support</code>, <code>Tests\Helper</code>, or <code>Tests\Util</code> bucket.</p>
+<p>Generic test support, helper, utility, and fixture namespaces become dumping grounds for reusable setup code. They hide what each test actually needs, encourage cross-test coupling, and create a second test framework that AI agents tend to expand instead of simplifying.</p>
+<p>Tests should prefer explicit setup in the test method. When reuse is genuinely valuable, it should be provided by a real dependency with a clear API boundary, not by a generic <code>Tests\Support</code>, <code>Tests\Helper</code>, <code>Tests\Util</code>, or <code>Tests\Fixture</code> bucket.</p>
 <h3>How to Fix</h3>
 <p>Use an existing library when the behavior is already solved by a maintained dependency.</p>
 <p>For reusable project-specific behavior, create an independent internal library outside the <code>Tests</code> namespace. Give it a domain-specific namespace and API so it can be analyzed and maintained like production support code.</p>

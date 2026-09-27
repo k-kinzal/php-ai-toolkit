@@ -236,7 +236,7 @@
 <span class="src-line" id="L198"><a class="ln" href="#L198">198</a>    {</span>
 <span class="src-line" id="L199"><a class="ln" href="#L199">199</a>        <span class="tok-var">$documented</span> = [];</span>
 <span class="src-line" id="L200"><a class="ln" href="#L200">200</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$model</span>-&gt;<span class="tok-id">classLikes</span> <span class="tok-kw">as</span> <span class="tok-var">$classLike</span>) {</span>
-<span class="src-line" id="L201"><a class="ln" href="#L201">201</a>            <span class="tok-kw">if</span> (!<span class="tok-var">$classLike</span>-&gt;<span class="tok-id">isDev</span>) {</span>
+<span class="src-line" id="L201"><a class="ln" href="#L201">201</a>            <span class="tok-kw">if</span> (!<span class="tok-var">$classLike</span>-&gt;<span class="tok-id">isDev</span> &amp;&amp; (!<span class="tok-var">$model</span>-&gt;<span class="tok-id">publicApi</span> || <span class="tok-var">$model</span>-&gt;<span class="tok-id">isPublicApiClassLike</span>(<span class="tok-var">$classLike</span>-&gt;<span class="tok-id">fqcn</span>))) {</span>
 <span class="src-line" id="L202"><a class="ln" href="#L202">202</a>                <span class="tok-var">$documented</span>[] = <span class="tok-var">$classLike</span>;</span>
 <span class="src-line" id="L203"><a class="ln" href="#L203">203</a>            }</span>
 <span class="src-line" id="L204"><a class="ln" href="#L204">204</a>        }</span>
@@ -270,7 +270,7 @@
 <span class="src-line" id="L232"><a class="ln" href="#L232">232</a>    {</span>
 <span class="src-line" id="L233"><a class="ln" href="#L233">233</a>        <span class="tok-var">$records</span> = [];</span>
 <span class="src-line" id="L234"><a class="ln" href="#L234">234</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$model</span>-&gt;<span class="tok-id">functions</span> <span class="tok-kw">as</span> <span class="tok-var">$function</span>) {</span>
-<span class="src-line" id="L235"><a class="ln" href="#L235">235</a>            <span class="tok-kw">if</span> (!<span class="tok-var">$function</span>-&gt;<span class="tok-id">isDev</span>) {</span>
+<span class="src-line" id="L235"><a class="ln" href="#L235">235</a>            <span class="tok-kw">if</span> (!<span class="tok-var">$function</span>-&gt;<span class="tok-id">isDev</span> &amp;&amp; (!<span class="tok-var">$model</span>-&gt;<span class="tok-id">publicApi</span> || <span class="tok-var">$model</span>-&gt;<span class="tok-id">isPublicApiFunction</span>(<span class="tok-var">$function</span>-&gt;<span class="tok-id">fqn</span>))) {</span>
 <span class="src-line" id="L236"><a class="ln" href="#L236">236</a>                <span class="tok-var">$records</span>[] = <span class="tok-var">$writer</span>-&gt;<span class="tok-id">write</span>(</span>
 <span class="src-line" id="L237"><a class="ln" href="#L237">237</a>                    <span class="tok-var">$outputRoot</span>,</span>
 <span class="src-line" id="L238"><a class="ln" href="#L238">238</a>                    <span class="tok-var">$this</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">functionPage</span>(<span class="tok-var">$function</span>),</span>

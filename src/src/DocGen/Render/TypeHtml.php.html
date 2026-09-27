@@ -241,178 +241,179 @@
 <span class="src-line" id="L203"><a class="ln" href="#L203">203</a>        <span class="tok-var">$target</span> = <span class="tok-var">$context</span>-&gt;<span class="tok-id">symbolTable</span>-&gt;<span class="tok-id">classLike</span>(<span class="tok-var">$fqcn</span>);</span>
 <span class="src-line" id="L204"><a class="ln" href="#L204">204</a>        <span class="tok-var">$separator</span> = <span class="tok-id">strrpos</span>(<span class="tok-var">$fqcn</span>, <span class="tok-str">&#039;\\&#039;</span>);</span>
 <span class="src-line" id="L205"><a class="ln" href="#L205">205</a>        <span class="tok-var">$short</span> = <span class="tok-var">$separator</span> === <span class="tok-id">false</span> ? <span class="tok-var">$fqcn</span> : <span class="tok-id">substr</span>(<span class="tok-var">$fqcn</span>, <span class="tok-var">$separator</span> + <span class="tok-num">1</span>);</span>
-<span class="src-line" id="L206"><a class="ln" href="#L206">206</a>        <span class="tok-kw">if</span> (<span class="tok-var">$target</span> <span class="tok-kw">instanceof</span> <span class="tok-id">ClassLikeDoc</span>) {</span>
-<span class="src-line" id="L207"><a class="ln" href="#L207">207</a>            <span class="tok-kw">return</span> <span class="tok-id">sprintf</span>(</span>
-<span class="src-line" id="L208"><a class="ln" href="#L208">208</a>                <span class="tok-str">&#039;&lt;a class=&quot;t-name k-%s&quot; href=&quot;%s&quot; title=&quot;%s&quot;&gt;%s&lt;/a&gt;&#039;</span>,</span>
-<span class="src-line" id="L209"><a class="ln" href="#L209">209</a>                <span class="tok-var">$target</span>-&gt;<span class="tok-id">kind</span>,</span>
-<span class="src-line" id="L210"><a class="ln" href="#L210">210</a>                <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">href</span>(<span class="tok-var">$context</span>-&gt;<span class="tok-id">pagePath</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">classLikePage</span>(<span class="tok-var">$target</span>))),</span>
-<span class="src-line" id="L211"><a class="ln" href="#L211">211</a>                <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$target</span>-&gt;<span class="tok-id">fqcn</span>),</span>
-<span class="src-line" id="L212"><a class="ln" href="#L212">212</a>                <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$short</span>),</span>
-<span class="src-line" id="L213"><a class="ln" href="#L213">213</a>            );</span>
-<span class="src-line" id="L214"><a class="ln" href="#L214">214</a>        }</span>
-<span class="src-line" id="L215"><a class="ln" href="#L215">215</a></span>
-<span class="src-line" id="L216"><a class="ln" href="#L216">216</a>        <span class="tok-kw">return</span> <span class="tok-id">sprintf</span>(<span class="tok-str">&#039;&lt;span class=&quot;t-ext&quot; title=&quot;%s&quot;&gt;%s&lt;/span&gt;&#039;</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$fqcn</span>), <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$short</span>));</span>
-<span class="src-line" id="L217"><a class="ln" href="#L217">217</a>    }</span>
-<span class="src-line" id="L218"><a class="ln" href="#L218">218</a></span>
-<span class="src-line" id="L219"><a class="ln" href="#L219">219</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L220"><a class="ln" href="#L220">220</a><span class="tok-com">     * Resolves a written type name to its fully qualified form.</span></span>
-<span class="src-line" id="L221"><a class="ln" href="#L221">221</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L222"><a class="ln" href="#L222">222</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">resolve</span>(<span class="tok-id">string</span> <span class="tok-var">$written</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
-<span class="src-line" id="L223"><a class="ln" href="#L223">223</a>    {</span>
-<span class="src-line" id="L224"><a class="ln" href="#L224">224</a>        <span class="tok-kw">if</span> (<span class="tok-id">str_starts_with</span>(<span class="tok-var">$written</span>, <span class="tok-str">&#039;\\&#039;</span>)) {</span>
-<span class="src-line" id="L225"><a class="ln" href="#L225">225</a>            <span class="tok-kw">return</span> <span class="tok-id">substr</span>(<span class="tok-var">$written</span>, <span class="tok-num">1</span>);</span>
-<span class="src-line" id="L226"><a class="ln" href="#L226">226</a>        }</span>
-<span class="src-line" id="L227"><a class="ln" href="#L227">227</a></span>
-<span class="src-line" id="L228"><a class="ln" href="#L228">228</a>        <span class="tok-var">$first</span> = <span class="tok-var">$written</span>;</span>
-<span class="src-line" id="L229"><a class="ln" href="#L229">229</a>        <span class="tok-var">$rest</span> = <span class="tok-str">&#039;&#039;</span>;</span>
-<span class="src-line" id="L230"><a class="ln" href="#L230">230</a>        <span class="tok-kw">if</span> (<span class="tok-id">str_contains</span>(<span class="tok-var">$written</span>, <span class="tok-str">&#039;\\&#039;</span>)) {</span>
-<span class="src-line" id="L231"><a class="ln" href="#L231">231</a>            [<span class="tok-var">$first</span>, <span class="tok-var">$rest</span>] = <span class="tok-id">explode</span>(<span class="tok-str">&#039;\\&#039;</span>, <span class="tok-var">$written</span>, <span class="tok-num">2</span>);</span>
-<span class="src-line" id="L232"><a class="ln" href="#L232">232</a>            <span class="tok-var">$rest</span> = <span class="tok-str">&#039;\\&#039;</span> . <span class="tok-var">$rest</span>;</span>
-<span class="src-line" id="L233"><a class="ln" href="#L233">233</a>        }</span>
-<span class="src-line" id="L234"><a class="ln" href="#L234">234</a></span>
-<span class="src-line" id="L235"><a class="ln" href="#L235">235</a>        <span class="tok-var">$imported</span> = <span class="tok-var">$context</span>-&gt;<span class="tok-id">useMap</span>[<span class="tok-id">strtolower</span>(<span class="tok-var">$first</span>)] ?? <span class="tok-id">null</span>;</span>
-<span class="src-line" id="L236"><a class="ln" href="#L236">236</a>        <span class="tok-kw">if</span> (<span class="tok-var">$imported</span> !== <span class="tok-id">null</span>) {</span>
-<span class="src-line" id="L237"><a class="ln" href="#L237">237</a>            <span class="tok-kw">return</span> <span class="tok-var">$imported</span> . <span class="tok-var">$rest</span>;</span>
-<span class="src-line" id="L238"><a class="ln" href="#L238">238</a>        }</span>
-<span class="src-line" id="L239"><a class="ln" href="#L239">239</a></span>
-<span class="src-line" id="L240"><a class="ln" href="#L240">240</a>        <span class="tok-kw">if</span> (<span class="tok-var">$context</span>-&gt;<span class="tok-id">namespace</span> !== <span class="tok-str">&#039;&#039;</span> &amp;&amp; <span class="tok-var">$context</span>-&gt;<span class="tok-id">symbolTable</span>-&gt;<span class="tok-id">classLike</span>(<span class="tok-var">$context</span>-&gt;<span class="tok-id">namespace</span> . <span class="tok-str">&#039;\\&#039;</span> . <span class="tok-var">$written</span>) !== <span class="tok-id">null</span>) {</span>
-<span class="src-line" id="L241"><a class="ln" href="#L241">241</a>            <span class="tok-kw">return</span> <span class="tok-var">$context</span>-&gt;<span class="tok-id">namespace</span> . <span class="tok-str">&#039;\\&#039;</span> . <span class="tok-var">$written</span>;</span>
-<span class="src-line" id="L242"><a class="ln" href="#L242">242</a>        }</span>
-<span class="src-line" id="L243"><a class="ln" href="#L243">243</a></span>
-<span class="src-line" id="L244"><a class="ln" href="#L244">244</a>        <span class="tok-kw">if</span> (<span class="tok-var">$context</span>-&gt;<span class="tok-id">symbolTable</span>-&gt;<span class="tok-id">classLike</span>(<span class="tok-var">$written</span>) !== <span class="tok-id">null</span>) {</span>
-<span class="src-line" id="L245"><a class="ln" href="#L245">245</a>            <span class="tok-kw">return</span> <span class="tok-var">$written</span>;</span>
-<span class="src-line" id="L246"><a class="ln" href="#L246">246</a>        }</span>
-<span class="src-line" id="L247"><a class="ln" href="#L247">247</a></span>
-<span class="src-line" id="L248"><a class="ln" href="#L248">248</a>        <span class="tok-kw">return</span> <span class="tok-var">$context</span>-&gt;<span class="tok-id">namespace</span> !== <span class="tok-str">&#039;&#039;</span> ? <span class="tok-var">$context</span>-&gt;<span class="tok-id">namespace</span> . <span class="tok-str">&#039;\\&#039;</span> . <span class="tok-var">$written</span> : <span class="tok-var">$written</span>;</span>
-<span class="src-line" id="L249"><a class="ln" href="#L249">249</a>    }</span>
-<span class="src-line" id="L250"><a class="ln" href="#L250">250</a></span>
-<span class="src-line" id="L251"><a class="ln" href="#L251">251</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L252"><a class="ln" href="#L252">252</a><span class="tok-com">     * Renders a generic type such as list of T or class-string of T.</span></span>
-<span class="src-line" id="L253"><a class="ln" href="#L253">253</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L254"><a class="ln" href="#L254">254</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">generic</span>(<span class="tok-id">GenericTypeNode</span> <span class="tok-var">$type</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
-<span class="src-line" id="L255"><a class="ln" href="#L255">255</a>    {</span>
-<span class="src-line" id="L256"><a class="ln" href="#L256">256</a>        <span class="tok-var">$arguments</span> = [];</span>
-<span class="src-line" id="L257"><a class="ln" href="#L257">257</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$type</span>-&gt;<span class="tok-id">genericTypes</span> <span class="tok-kw">as</span> <span class="tok-var">$position</span> =&gt; <span class="tok-var">$argument</span>) {</span>
-<span class="src-line" id="L258"><a class="ln" href="#L258">258</a>            <span class="tok-var">$variance</span> = <span class="tok-var">$type</span>-&gt;<span class="tok-id">variances</span>[<span class="tok-var">$position</span>] ?? <span class="tok-id">GenericTypeNode</span>::<span class="tok-id">VARIANCE_INVARIANT</span>;</span>
-<span class="src-line" id="L259"><a class="ln" href="#L259">259</a>            <span class="tok-var">$prefix</span> = <span class="tok-var">$variance</span> !== <span class="tok-id">GenericTypeNode</span>::<span class="tok-id">VARIANCE_INVARIANT</span> ? <span class="tok-str">&#039;&lt;span class=&quot;t-key&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$variance</span>) . <span class="tok-str">&#039;&lt;/span&gt; &#039;</span> : <span class="tok-str">&#039;&#039;</span>;</span>
-<span class="src-line" id="L260"><a class="ln" href="#L260">260</a>            <span class="tok-var">$arguments</span>[] = <span class="tok-var">$prefix</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$argument</span>, <span class="tok-var">$context</span>);</span>
-<span class="src-line" id="L261"><a class="ln" href="#L261">261</a>        }</span>
-<span class="src-line" id="L262"><a class="ln" href="#L262">262</a></span>
-<span class="src-line" id="L263"><a class="ln" href="#L263">263</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">identifier</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">type</span>, <span class="tok-var">$context</span>) . <span class="tok-str">&#039;&amp;lt;&#039;</span> . <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, <span class="tok-var">$arguments</span>) . <span class="tok-str">&#039;&amp;gt;&#039;</span>;</span>
-<span class="src-line" id="L264"><a class="ln" href="#L264">264</a>    }</span>
-<span class="src-line" id="L265"><a class="ln" href="#L265">265</a></span>
-<span class="src-line" id="L266"><a class="ln" href="#L266">266</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L267"><a class="ln" href="#L267">267</a><span class="tok-com">     * Renders an array shape with its keyed items.</span></span>
-<span class="src-line" id="L268"><a class="ln" href="#L268">268</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L269"><a class="ln" href="#L269">269</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">arrayShape</span>(<span class="tok-id">ArrayShapeNode</span> <span class="tok-var">$type</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
-<span class="src-line" id="L270"><a class="ln" href="#L270">270</a>    {</span>
-<span class="src-line" id="L271"><a class="ln" href="#L271">271</a>        <span class="tok-var">$items</span> = [];</span>
-<span class="src-line" id="L272"><a class="ln" href="#L272">272</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$type</span>-&gt;<span class="tok-id">items</span> <span class="tok-kw">as</span> <span class="tok-var">$item</span>) {</span>
-<span class="src-line" id="L273"><a class="ln" href="#L273">273</a>            <span class="tok-var">$prefix</span> = <span class="tok-str">&#039;&#039;</span>;</span>
-<span class="src-line" id="L274"><a class="ln" href="#L274">274</a>            <span class="tok-kw">if</span> (<span class="tok-var">$item</span>-&gt;<span class="tok-id">keyName</span> !== <span class="tok-id">null</span>) {</span>
-<span class="src-line" id="L275"><a class="ln" href="#L275">275</a>                <span class="tok-var">$prefix</span> = <span class="tok-str">&#039;&lt;span class=&quot;t-shape-key&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>((string) <span class="tok-var">$item</span>-&gt;<span class="tok-id">keyName</span>) . <span class="tok-str">&#039;&lt;/span&gt;&#039;</span> . (<span class="tok-var">$item</span>-&gt;<span class="tok-id">optional</span> ? <span class="tok-str">&#039;?&#039;</span> : <span class="tok-str">&#039;&#039;</span>) . <span class="tok-str">&#039;: &#039;</span>;</span>
-<span class="src-line" id="L276"><a class="ln" href="#L276">276</a>            }</span>
-<span class="src-line" id="L277"><a class="ln" href="#L277">277</a></span>
-<span class="src-line" id="L278"><a class="ln" href="#L278">278</a>            <span class="tok-var">$items</span>[] = <span class="tok-var">$prefix</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$item</span>-&gt;<span class="tok-id">valueType</span>, <span class="tok-var">$context</span>);</span>
-<span class="src-line" id="L279"><a class="ln" href="#L279">279</a>        }</span>
-<span class="src-line" id="L280"><a class="ln" href="#L280">280</a></span>
-<span class="src-line" id="L281"><a class="ln" href="#L281">281</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$type</span>-&gt;<span class="tok-id">sealed</span>) {</span>
-<span class="src-line" id="L282"><a class="ln" href="#L282">282</a>            <span class="tok-var">$items</span>[] = <span class="tok-str">&#039;...&#039;</span>;</span>
-<span class="src-line" id="L283"><a class="ln" href="#L283">283</a>        }</span>
-<span class="src-line" id="L284"><a class="ln" href="#L284">284</a></span>
-<span class="src-line" id="L285"><a class="ln" href="#L285">285</a>        <span class="tok-kw">return</span> <span class="tok-str">&#039;&lt;span class=&quot;t-key&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">kind</span>) . <span class="tok-str">&#039;&lt;/span&gt;{&#039;</span> . <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, <span class="tok-var">$items</span>) . <span class="tok-str">&#039;}&#039;</span>;</span>
-<span class="src-line" id="L286"><a class="ln" href="#L286">286</a>    }</span>
-<span class="src-line" id="L287"><a class="ln" href="#L287">287</a></span>
-<span class="src-line" id="L288"><a class="ln" href="#L288">288</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L289"><a class="ln" href="#L289">289</a><span class="tok-com">     * Renders an object shape with its keyed properties.</span></span>
-<span class="src-line" id="L290"><a class="ln" href="#L290">290</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L291"><a class="ln" href="#L291">291</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">objectShape</span>(<span class="tok-id">ObjectShapeNode</span> <span class="tok-var">$type</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
-<span class="src-line" id="L292"><a class="ln" href="#L292">292</a>    {</span>
-<span class="src-line" id="L293"><a class="ln" href="#L293">293</a>        <span class="tok-var">$items</span> = [];</span>
-<span class="src-line" id="L294"><a class="ln" href="#L294">294</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$type</span>-&gt;<span class="tok-id">items</span> <span class="tok-kw">as</span> <span class="tok-var">$item</span>) {</span>
-<span class="src-line" id="L295"><a class="ln" href="#L295">295</a>            <span class="tok-var">$items</span>[] = <span class="tok-str">&#039;&lt;span class=&quot;t-shape-key&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>((string) <span class="tok-var">$item</span>-&gt;<span class="tok-id">keyName</span>) . <span class="tok-str">&#039;&lt;/span&gt;&#039;</span></span>
-<span class="src-line" id="L296"><a class="ln" href="#L296">296</a>                . (<span class="tok-var">$item</span>-&gt;<span class="tok-id">optional</span> ? <span class="tok-str">&#039;?&#039;</span> : <span class="tok-str">&#039;&#039;</span>) . <span class="tok-str">&#039;: &#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$item</span>-&gt;<span class="tok-id">valueType</span>, <span class="tok-var">$context</span>);</span>
-<span class="src-line" id="L297"><a class="ln" href="#L297">297</a>        }</span>
-<span class="src-line" id="L298"><a class="ln" href="#L298">298</a></span>
-<span class="src-line" id="L299"><a class="ln" href="#L299">299</a>        <span class="tok-kw">return</span> <span class="tok-str">&#039;&lt;span class=&quot;t-key&quot;&gt;object&lt;/span&gt;{&#039;</span> . <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, <span class="tok-var">$items</span>) . <span class="tok-str">&#039;}&#039;</span>;</span>
-<span class="src-line" id="L300"><a class="ln" href="#L300">300</a>    }</span>
-<span class="src-line" id="L301"><a class="ln" href="#L301">301</a></span>
-<span class="src-line" id="L302"><a class="ln" href="#L302">302</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L303"><a class="ln" href="#L303">303</a><span class="tok-com">     * Renders a callable type with parameters and return type.</span></span>
-<span class="src-line" id="L304"><a class="ln" href="#L304">304</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L305"><a class="ln" href="#L305">305</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">callableType</span>(<span class="tok-id">CallableTypeNode</span> <span class="tok-var">$type</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
-<span class="src-line" id="L306"><a class="ln" href="#L306">306</a>    {</span>
-<span class="src-line" id="L307"><a class="ln" href="#L307">307</a>        <span class="tok-var">$parameters</span> = [];</span>
-<span class="src-line" id="L308"><a class="ln" href="#L308">308</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$type</span>-&gt;<span class="tok-id">parameters</span> <span class="tok-kw">as</span> <span class="tok-var">$parameter</span>) {</span>
-<span class="src-line" id="L309"><a class="ln" href="#L309">309</a>            <span class="tok-var">$text</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$parameter</span>-&gt;<span class="tok-id">type</span>, <span class="tok-var">$context</span>);</span>
-<span class="src-line" id="L310"><a class="ln" href="#L310">310</a>            <span class="tok-kw">if</span> (<span class="tok-var">$parameter</span>-&gt;<span class="tok-id">isReference</span>) {</span>
-<span class="src-line" id="L311"><a class="ln" href="#L311">311</a>                <span class="tok-var">$text</span> .= <span class="tok-str">&#039;&amp;amp;&#039;</span>;</span>
-<span class="src-line" id="L312"><a class="ln" href="#L312">312</a>            }</span>
-<span class="src-line" id="L313"><a class="ln" href="#L313">313</a></span>
-<span class="src-line" id="L314"><a class="ln" href="#L314">314</a>            <span class="tok-kw">if</span> (<span class="tok-var">$parameter</span>-&gt;<span class="tok-id">isVariadic</span>) {</span>
-<span class="src-line" id="L315"><a class="ln" href="#L315">315</a>                <span class="tok-var">$text</span> .= <span class="tok-str">&#039;...&#039;</span>;</span>
-<span class="src-line" id="L316"><a class="ln" href="#L316">316</a>            }</span>
-<span class="src-line" id="L317"><a class="ln" href="#L317">317</a></span>
-<span class="src-line" id="L318"><a class="ln" href="#L318">318</a>            <span class="tok-kw">if</span> (<span class="tok-var">$parameter</span>-&gt;<span class="tok-id">parameterName</span> !== <span class="tok-str">&#039;&#039;</span>) {</span>
-<span class="src-line" id="L319"><a class="ln" href="#L319">319</a>                <span class="tok-var">$text</span> .= <span class="tok-str">&#039; &#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$parameter</span>-&gt;<span class="tok-id">parameterName</span>);</span>
-<span class="src-line" id="L320"><a class="ln" href="#L320">320</a>            }</span>
-<span class="src-line" id="L321"><a class="ln" href="#L321">321</a></span>
-<span class="src-line" id="L322"><a class="ln" href="#L322">322</a>            <span class="tok-kw">if</span> (<span class="tok-var">$parameter</span>-&gt;<span class="tok-id">isOptional</span>) {</span>
-<span class="src-line" id="L323"><a class="ln" href="#L323">323</a>                <span class="tok-var">$text</span> .= <span class="tok-str">&#039;=&#039;</span>;</span>
-<span class="src-line" id="L324"><a class="ln" href="#L324">324</a>            }</span>
-<span class="src-line" id="L325"><a class="ln" href="#L325">325</a></span>
-<span class="src-line" id="L326"><a class="ln" href="#L326">326</a>            <span class="tok-var">$parameters</span>[] = <span class="tok-var">$text</span>;</span>
-<span class="src-line" id="L327"><a class="ln" href="#L327">327</a>        }</span>
-<span class="src-line" id="L328"><a class="ln" href="#L328">328</a></span>
-<span class="src-line" id="L329"><a class="ln" href="#L329">329</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">identifier</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">identifier</span>, <span class="tok-var">$context</span>)</span>
-<span class="src-line" id="L330"><a class="ln" href="#L330">330</a>            . <span class="tok-str">&#039;(&#039;</span> . <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, <span class="tok-var">$parameters</span>) . <span class="tok-str">&#039;): &#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">returnType</span>, <span class="tok-var">$context</span>);</span>
-<span class="src-line" id="L331"><a class="ln" href="#L331">331</a>    }</span>
-<span class="src-line" id="L332"><a class="ln" href="#L332">332</a></span>
-<span class="src-line" id="L333"><a class="ln" href="#L333">333</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L334"><a class="ln" href="#L334">334</a><span class="tok-com">     * Renders a conditional type expression.</span></span>
-<span class="src-line" id="L335"><a class="ln" href="#L335">335</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L336"><a class="ln" href="#L336">336</a><span class="tok-com">     * @param ConditionalTypeNode|ConditionalTypeForParameterNode $type</span></span>
-<span class="src-line" id="L337"><a class="ln" href="#L337">337</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L338"><a class="ln" href="#L338">338</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">conditional</span>(<span class="tok-id">TypeNode</span> <span class="tok-var">$type</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
-<span class="src-line" id="L339"><a class="ln" href="#L339">339</a>    {</span>
-<span class="src-line" id="L340"><a class="ln" href="#L340">340</a>        <span class="tok-var">$subject</span> = <span class="tok-var">$type</span> <span class="tok-kw">instanceof</span> <span class="tok-id">ConditionalTypeNode</span></span>
-<span class="src-line" id="L341"><a class="ln" href="#L341">341</a>            ? <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">subjectType</span>, <span class="tok-var">$context</span>)</span>
-<span class="src-line" id="L342"><a class="ln" href="#L342">342</a>            : <span class="tok-str">&#039;&lt;span class=&quot;t-var&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">parameterName</span>) . <span class="tok-str">&#039;&lt;/span&gt;&#039;</span>;</span>
-<span class="src-line" id="L343"><a class="ln" href="#L343">343</a></span>
-<span class="src-line" id="L344"><a class="ln" href="#L344">344</a>        <span class="tok-kw">return</span> <span class="tok-str">&#039;(&#039;</span> . <span class="tok-var">$subject</span> . <span class="tok-str">&#039; &lt;span class=&quot;t-key&quot;&gt;is&lt;/span&gt; &#039;</span></span>
-<span class="src-line" id="L345"><a class="ln" href="#L345">345</a>            . (<span class="tok-var">$type</span>-&gt;<span class="tok-id">negated</span> ? <span class="tok-str">&#039;&lt;span class=&quot;t-key&quot;&gt;not&lt;/span&gt; &#039;</span> : <span class="tok-str">&#039;&#039;</span>)</span>
-<span class="src-line" id="L346"><a class="ln" href="#L346">346</a>            . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">targetType</span>, <span class="tok-var">$context</span>)</span>
-<span class="src-line" id="L347"><a class="ln" href="#L347">347</a>            . <span class="tok-str">&#039; ? &#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">if</span>, <span class="tok-var">$context</span>)</span>
-<span class="src-line" id="L348"><a class="ln" href="#L348">348</a>            . <span class="tok-str">&#039; : &#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">else</span>, <span class="tok-var">$context</span>) . <span class="tok-str">&#039;)&#039;</span>;</span>
-<span class="src-line" id="L349"><a class="ln" href="#L349">349</a>    }</span>
-<span class="src-line" id="L350"><a class="ln" href="#L350">350</a></span>
-<span class="src-line" id="L351"><a class="ln" href="#L351">351</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L352"><a class="ln" href="#L352">352</a><span class="tok-com">     * Renders a native type declaration string with linked class names.</span></span>
-<span class="src-line" id="L353"><a class="ln" href="#L353">353</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L354"><a class="ln" href="#L354">354</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">nativeString</span>(<span class="tok-id">string</span> <span class="tok-var">$native</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
-<span class="src-line" id="L355"><a class="ln" href="#L355">355</a>    {</span>
-<span class="src-line" id="L356"><a class="ln" href="#L356">356</a>        <span class="tok-var">$nullable</span> = <span class="tok-id">str_starts_with</span>(<span class="tok-var">$native</span>, <span class="tok-str">&#039;?&#039;</span>);</span>
-<span class="src-line" id="L357"><a class="ln" href="#L357">357</a>        <span class="tok-var">$bare</span> = <span class="tok-var">$nullable</span> ? <span class="tok-id">substr</span>(<span class="tok-var">$native</span>, <span class="tok-num">1</span>) : <span class="tok-var">$native</span>;</span>
-<span class="src-line" id="L358"><a class="ln" href="#L358">358</a>        <span class="tok-var">$unionParts</span> = [];</span>
-<span class="src-line" id="L359"><a class="ln" href="#L359">359</a>        <span class="tok-kw">foreach</span> (<span class="tok-id">explode</span>(<span class="tok-str">&#039;|&#039;</span>, <span class="tok-var">$bare</span>) <span class="tok-kw">as</span> <span class="tok-var">$unionPart</span>) {</span>
-<span class="src-line" id="L360"><a class="ln" href="#L360">360</a>            <span class="tok-var">$intersectionParts</span> = [];</span>
-<span class="src-line" id="L361"><a class="ln" href="#L361">361</a>            <span class="tok-kw">foreach</span> (<span class="tok-id">explode</span>(<span class="tok-str">&#039;&amp;&#039;</span>, <span class="tok-var">$unionPart</span>) <span class="tok-kw">as</span> <span class="tok-var">$piece</span>) {</span>
-<span class="src-line" id="L362"><a class="ln" href="#L362">362</a>                <span class="tok-kw">if</span> (<span class="tok-var">$piece</span> === <span class="tok-str">&#039;&#039;</span>) {</span>
-<span class="src-line" id="L363"><a class="ln" href="#L363">363</a>                    <span class="tok-kw">continue</span>;</span>
-<span class="src-line" id="L364"><a class="ln" href="#L364">364</a>                }</span>
-<span class="src-line" id="L365"><a class="ln" href="#L365">365</a></span>
-<span class="src-line" id="L366"><a class="ln" href="#L366">366</a>                <span class="tok-var">$intersectionParts</span>[] = <span class="tok-id">in_array</span>(<span class="tok-id">strtolower</span>(<span class="tok-var">$piece</span>), <span class="tok-id">self</span>::<span class="tok-id">KEYWORDS</span>, <span class="tok-id">true</span>)</span>
-<span class="src-line" id="L367"><a class="ln" href="#L367">367</a>                    ? <span class="tok-str">&#039;&lt;span class=&quot;t-key&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$piece</span>) . <span class="tok-str">&#039;&lt;/span&gt;&#039;</span></span>
-<span class="src-line" id="L368"><a class="ln" href="#L368">368</a>                    : <span class="tok-var">$this</span>-&gt;<span class="tok-id">className</span>(<span class="tok-var">$piece</span>, <span class="tok-var">$context</span>);</span>
-<span class="src-line" id="L369"><a class="ln" href="#L369">369</a>            }</span>
-<span class="src-line" id="L370"><a class="ln" href="#L370">370</a></span>
-<span class="src-line" id="L371"><a class="ln" href="#L371">371</a>            <span class="tok-var">$unionParts</span>[] = <span class="tok-id">implode</span>(<span class="tok-str">&#039;&amp;amp;&#039;</span>, <span class="tok-var">$intersectionParts</span>);</span>
-<span class="src-line" id="L372"><a class="ln" href="#L372">372</a>        }</span>
-<span class="src-line" id="L373"><a class="ln" href="#L373">373</a></span>
-<span class="src-line" id="L374"><a class="ln" href="#L374">374</a>        <span class="tok-kw">return</span> (<span class="tok-var">$nullable</span> ? <span class="tok-str">&#039;?&#039;</span> : <span class="tok-str">&#039;&#039;</span>) . <span class="tok-id">implode</span>(<span class="tok-str">&#039;|&#039;</span>, <span class="tok-var">$unionParts</span>);</span>
-<span class="src-line" id="L375"><a class="ln" href="#L375">375</a>    }</span>
-<span class="src-line" id="L376"><a class="ln" href="#L376">376</a>}</span>
-<span class="src-line" id="L377"><a class="ln" href="#L377">377</a></span>
+<span class="src-line" id="L206"><a class="ln" href="#L206">206</a>        <span class="tok-kw">if</span> (<span class="tok-var">$target</span> <span class="tok-kw">instanceof</span> <span class="tok-id">ClassLikeDoc</span> &amp;&amp; !<span class="tok-var">$target</span>-&gt;<span class="tok-id">isDev</span></span>
+<span class="src-line" id="L207"><a class="ln" href="#L207">207</a>            &amp;&amp; (<span class="tok-var">$context</span>-&gt;<span class="tok-id">model</span> === <span class="tok-id">null</span> || !<span class="tok-var">$context</span>-&gt;<span class="tok-id">model</span>-&gt;<span class="tok-id">publicApi</span> || <span class="tok-var">$context</span>-&gt;<span class="tok-id">model</span>-&gt;<span class="tok-id">isPublicApiClassLike</span>(<span class="tok-var">$target</span>-&gt;<span class="tok-id">fqcn</span>))) {</span>
+<span class="src-line" id="L208"><a class="ln" href="#L208">208</a>            <span class="tok-kw">return</span> <span class="tok-id">sprintf</span>(</span>
+<span class="src-line" id="L209"><a class="ln" href="#L209">209</a>                <span class="tok-str">&#039;&lt;a class=&quot;t-name k-%s&quot; href=&quot;%s&quot; title=&quot;%s&quot;&gt;%s&lt;/a&gt;&#039;</span>,</span>
+<span class="src-line" id="L210"><a class="ln" href="#L210">210</a>                <span class="tok-var">$target</span>-&gt;<span class="tok-id">kind</span>,</span>
+<span class="src-line" id="L211"><a class="ln" href="#L211">211</a>                <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">href</span>(<span class="tok-var">$context</span>-&gt;<span class="tok-id">pagePath</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">url</span>-&gt;<span class="tok-id">classLikePage</span>(<span class="tok-var">$target</span>))),</span>
+<span class="src-line" id="L212"><a class="ln" href="#L212">212</a>                <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$target</span>-&gt;<span class="tok-id">fqcn</span>),</span>
+<span class="src-line" id="L213"><a class="ln" href="#L213">213</a>                <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$short</span>),</span>
+<span class="src-line" id="L214"><a class="ln" href="#L214">214</a>            );</span>
+<span class="src-line" id="L215"><a class="ln" href="#L215">215</a>        }</span>
+<span class="src-line" id="L216"><a class="ln" href="#L216">216</a></span>
+<span class="src-line" id="L217"><a class="ln" href="#L217">217</a>        <span class="tok-kw">return</span> <span class="tok-id">sprintf</span>(<span class="tok-str">&#039;&lt;span class=&quot;t-ext&quot; title=&quot;%s&quot;&gt;%s&lt;/span&gt;&#039;</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$fqcn</span>), <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$short</span>));</span>
+<span class="src-line" id="L218"><a class="ln" href="#L218">218</a>    }</span>
+<span class="src-line" id="L219"><a class="ln" href="#L219">219</a></span>
+<span class="src-line" id="L220"><a class="ln" href="#L220">220</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L221"><a class="ln" href="#L221">221</a><span class="tok-com">     * Resolves a written type name to its fully qualified form.</span></span>
+<span class="src-line" id="L222"><a class="ln" href="#L222">222</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L223"><a class="ln" href="#L223">223</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">resolve</span>(<span class="tok-id">string</span> <span class="tok-var">$written</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L224"><a class="ln" href="#L224">224</a>    {</span>
+<span class="src-line" id="L225"><a class="ln" href="#L225">225</a>        <span class="tok-kw">if</span> (<span class="tok-id">str_starts_with</span>(<span class="tok-var">$written</span>, <span class="tok-str">&#039;\\&#039;</span>)) {</span>
+<span class="src-line" id="L226"><a class="ln" href="#L226">226</a>            <span class="tok-kw">return</span> <span class="tok-id">substr</span>(<span class="tok-var">$written</span>, <span class="tok-num">1</span>);</span>
+<span class="src-line" id="L227"><a class="ln" href="#L227">227</a>        }</span>
+<span class="src-line" id="L228"><a class="ln" href="#L228">228</a></span>
+<span class="src-line" id="L229"><a class="ln" href="#L229">229</a>        <span class="tok-var">$first</span> = <span class="tok-var">$written</span>;</span>
+<span class="src-line" id="L230"><a class="ln" href="#L230">230</a>        <span class="tok-var">$rest</span> = <span class="tok-str">&#039;&#039;</span>;</span>
+<span class="src-line" id="L231"><a class="ln" href="#L231">231</a>        <span class="tok-kw">if</span> (<span class="tok-id">str_contains</span>(<span class="tok-var">$written</span>, <span class="tok-str">&#039;\\&#039;</span>)) {</span>
+<span class="src-line" id="L232"><a class="ln" href="#L232">232</a>            [<span class="tok-var">$first</span>, <span class="tok-var">$rest</span>] = <span class="tok-id">explode</span>(<span class="tok-str">&#039;\\&#039;</span>, <span class="tok-var">$written</span>, <span class="tok-num">2</span>);</span>
+<span class="src-line" id="L233"><a class="ln" href="#L233">233</a>            <span class="tok-var">$rest</span> = <span class="tok-str">&#039;\\&#039;</span> . <span class="tok-var">$rest</span>;</span>
+<span class="src-line" id="L234"><a class="ln" href="#L234">234</a>        }</span>
+<span class="src-line" id="L235"><a class="ln" href="#L235">235</a></span>
+<span class="src-line" id="L236"><a class="ln" href="#L236">236</a>        <span class="tok-var">$imported</span> = <span class="tok-var">$context</span>-&gt;<span class="tok-id">useMap</span>[<span class="tok-id">strtolower</span>(<span class="tok-var">$first</span>)] ?? <span class="tok-id">null</span>;</span>
+<span class="src-line" id="L237"><a class="ln" href="#L237">237</a>        <span class="tok-kw">if</span> (<span class="tok-var">$imported</span> !== <span class="tok-id">null</span>) {</span>
+<span class="src-line" id="L238"><a class="ln" href="#L238">238</a>            <span class="tok-kw">return</span> <span class="tok-var">$imported</span> . <span class="tok-var">$rest</span>;</span>
+<span class="src-line" id="L239"><a class="ln" href="#L239">239</a>        }</span>
+<span class="src-line" id="L240"><a class="ln" href="#L240">240</a></span>
+<span class="src-line" id="L241"><a class="ln" href="#L241">241</a>        <span class="tok-kw">if</span> (<span class="tok-var">$context</span>-&gt;<span class="tok-id">namespace</span> !== <span class="tok-str">&#039;&#039;</span> &amp;&amp; <span class="tok-var">$context</span>-&gt;<span class="tok-id">symbolTable</span>-&gt;<span class="tok-id">classLike</span>(<span class="tok-var">$context</span>-&gt;<span class="tok-id">namespace</span> . <span class="tok-str">&#039;\\&#039;</span> . <span class="tok-var">$written</span>) !== <span class="tok-id">null</span>) {</span>
+<span class="src-line" id="L242"><a class="ln" href="#L242">242</a>            <span class="tok-kw">return</span> <span class="tok-var">$context</span>-&gt;<span class="tok-id">namespace</span> . <span class="tok-str">&#039;\\&#039;</span> . <span class="tok-var">$written</span>;</span>
+<span class="src-line" id="L243"><a class="ln" href="#L243">243</a>        }</span>
+<span class="src-line" id="L244"><a class="ln" href="#L244">244</a></span>
+<span class="src-line" id="L245"><a class="ln" href="#L245">245</a>        <span class="tok-kw">if</span> (<span class="tok-var">$context</span>-&gt;<span class="tok-id">symbolTable</span>-&gt;<span class="tok-id">classLike</span>(<span class="tok-var">$written</span>) !== <span class="tok-id">null</span>) {</span>
+<span class="src-line" id="L246"><a class="ln" href="#L246">246</a>            <span class="tok-kw">return</span> <span class="tok-var">$written</span>;</span>
+<span class="src-line" id="L247"><a class="ln" href="#L247">247</a>        }</span>
+<span class="src-line" id="L248"><a class="ln" href="#L248">248</a></span>
+<span class="src-line" id="L249"><a class="ln" href="#L249">249</a>        <span class="tok-kw">return</span> <span class="tok-var">$context</span>-&gt;<span class="tok-id">namespace</span> !== <span class="tok-str">&#039;&#039;</span> ? <span class="tok-var">$context</span>-&gt;<span class="tok-id">namespace</span> . <span class="tok-str">&#039;\\&#039;</span> . <span class="tok-var">$written</span> : <span class="tok-var">$written</span>;</span>
+<span class="src-line" id="L250"><a class="ln" href="#L250">250</a>    }</span>
+<span class="src-line" id="L251"><a class="ln" href="#L251">251</a></span>
+<span class="src-line" id="L252"><a class="ln" href="#L252">252</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L253"><a class="ln" href="#L253">253</a><span class="tok-com">     * Renders a generic type such as list of T or class-string of T.</span></span>
+<span class="src-line" id="L254"><a class="ln" href="#L254">254</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L255"><a class="ln" href="#L255">255</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">generic</span>(<span class="tok-id">GenericTypeNode</span> <span class="tok-var">$type</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L256"><a class="ln" href="#L256">256</a>    {</span>
+<span class="src-line" id="L257"><a class="ln" href="#L257">257</a>        <span class="tok-var">$arguments</span> = [];</span>
+<span class="src-line" id="L258"><a class="ln" href="#L258">258</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$type</span>-&gt;<span class="tok-id">genericTypes</span> <span class="tok-kw">as</span> <span class="tok-var">$position</span> =&gt; <span class="tok-var">$argument</span>) {</span>
+<span class="src-line" id="L259"><a class="ln" href="#L259">259</a>            <span class="tok-var">$variance</span> = <span class="tok-var">$type</span>-&gt;<span class="tok-id">variances</span>[<span class="tok-var">$position</span>] ?? <span class="tok-id">GenericTypeNode</span>::<span class="tok-id">VARIANCE_INVARIANT</span>;</span>
+<span class="src-line" id="L260"><a class="ln" href="#L260">260</a>            <span class="tok-var">$prefix</span> = <span class="tok-var">$variance</span> !== <span class="tok-id">GenericTypeNode</span>::<span class="tok-id">VARIANCE_INVARIANT</span> ? <span class="tok-str">&#039;&lt;span class=&quot;t-key&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$variance</span>) . <span class="tok-str">&#039;&lt;/span&gt; &#039;</span> : <span class="tok-str">&#039;&#039;</span>;</span>
+<span class="src-line" id="L261"><a class="ln" href="#L261">261</a>            <span class="tok-var">$arguments</span>[] = <span class="tok-var">$prefix</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$argument</span>, <span class="tok-var">$context</span>);</span>
+<span class="src-line" id="L262"><a class="ln" href="#L262">262</a>        }</span>
+<span class="src-line" id="L263"><a class="ln" href="#L263">263</a></span>
+<span class="src-line" id="L264"><a class="ln" href="#L264">264</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">identifier</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">type</span>, <span class="tok-var">$context</span>) . <span class="tok-str">&#039;&amp;lt;&#039;</span> . <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, <span class="tok-var">$arguments</span>) . <span class="tok-str">&#039;&amp;gt;&#039;</span>;</span>
+<span class="src-line" id="L265"><a class="ln" href="#L265">265</a>    }</span>
+<span class="src-line" id="L266"><a class="ln" href="#L266">266</a></span>
+<span class="src-line" id="L267"><a class="ln" href="#L267">267</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L268"><a class="ln" href="#L268">268</a><span class="tok-com">     * Renders an array shape with its keyed items.</span></span>
+<span class="src-line" id="L269"><a class="ln" href="#L269">269</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L270"><a class="ln" href="#L270">270</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">arrayShape</span>(<span class="tok-id">ArrayShapeNode</span> <span class="tok-var">$type</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L271"><a class="ln" href="#L271">271</a>    {</span>
+<span class="src-line" id="L272"><a class="ln" href="#L272">272</a>        <span class="tok-var">$items</span> = [];</span>
+<span class="src-line" id="L273"><a class="ln" href="#L273">273</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$type</span>-&gt;<span class="tok-id">items</span> <span class="tok-kw">as</span> <span class="tok-var">$item</span>) {</span>
+<span class="src-line" id="L274"><a class="ln" href="#L274">274</a>            <span class="tok-var">$prefix</span> = <span class="tok-str">&#039;&#039;</span>;</span>
+<span class="src-line" id="L275"><a class="ln" href="#L275">275</a>            <span class="tok-kw">if</span> (<span class="tok-var">$item</span>-&gt;<span class="tok-id">keyName</span> !== <span class="tok-id">null</span>) {</span>
+<span class="src-line" id="L276"><a class="ln" href="#L276">276</a>                <span class="tok-var">$prefix</span> = <span class="tok-str">&#039;&lt;span class=&quot;t-shape-key&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>((string) <span class="tok-var">$item</span>-&gt;<span class="tok-id">keyName</span>) . <span class="tok-str">&#039;&lt;/span&gt;&#039;</span> . (<span class="tok-var">$item</span>-&gt;<span class="tok-id">optional</span> ? <span class="tok-str">&#039;?&#039;</span> : <span class="tok-str">&#039;&#039;</span>) . <span class="tok-str">&#039;: &#039;</span>;</span>
+<span class="src-line" id="L277"><a class="ln" href="#L277">277</a>            }</span>
+<span class="src-line" id="L278"><a class="ln" href="#L278">278</a></span>
+<span class="src-line" id="L279"><a class="ln" href="#L279">279</a>            <span class="tok-var">$items</span>[] = <span class="tok-var">$prefix</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$item</span>-&gt;<span class="tok-id">valueType</span>, <span class="tok-var">$context</span>);</span>
+<span class="src-line" id="L280"><a class="ln" href="#L280">280</a>        }</span>
+<span class="src-line" id="L281"><a class="ln" href="#L281">281</a></span>
+<span class="src-line" id="L282"><a class="ln" href="#L282">282</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$type</span>-&gt;<span class="tok-id">sealed</span>) {</span>
+<span class="src-line" id="L283"><a class="ln" href="#L283">283</a>            <span class="tok-var">$items</span>[] = <span class="tok-str">&#039;...&#039;</span>;</span>
+<span class="src-line" id="L284"><a class="ln" href="#L284">284</a>        }</span>
+<span class="src-line" id="L285"><a class="ln" href="#L285">285</a></span>
+<span class="src-line" id="L286"><a class="ln" href="#L286">286</a>        <span class="tok-kw">return</span> <span class="tok-str">&#039;&lt;span class=&quot;t-key&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">kind</span>) . <span class="tok-str">&#039;&lt;/span&gt;{&#039;</span> . <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, <span class="tok-var">$items</span>) . <span class="tok-str">&#039;}&#039;</span>;</span>
+<span class="src-line" id="L287"><a class="ln" href="#L287">287</a>    }</span>
+<span class="src-line" id="L288"><a class="ln" href="#L288">288</a></span>
+<span class="src-line" id="L289"><a class="ln" href="#L289">289</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L290"><a class="ln" href="#L290">290</a><span class="tok-com">     * Renders an object shape with its keyed properties.</span></span>
+<span class="src-line" id="L291"><a class="ln" href="#L291">291</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L292"><a class="ln" href="#L292">292</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">objectShape</span>(<span class="tok-id">ObjectShapeNode</span> <span class="tok-var">$type</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L293"><a class="ln" href="#L293">293</a>    {</span>
+<span class="src-line" id="L294"><a class="ln" href="#L294">294</a>        <span class="tok-var">$items</span> = [];</span>
+<span class="src-line" id="L295"><a class="ln" href="#L295">295</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$type</span>-&gt;<span class="tok-id">items</span> <span class="tok-kw">as</span> <span class="tok-var">$item</span>) {</span>
+<span class="src-line" id="L296"><a class="ln" href="#L296">296</a>            <span class="tok-var">$items</span>[] = <span class="tok-str">&#039;&lt;span class=&quot;t-shape-key&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>((string) <span class="tok-var">$item</span>-&gt;<span class="tok-id">keyName</span>) . <span class="tok-str">&#039;&lt;/span&gt;&#039;</span></span>
+<span class="src-line" id="L297"><a class="ln" href="#L297">297</a>                . (<span class="tok-var">$item</span>-&gt;<span class="tok-id">optional</span> ? <span class="tok-str">&#039;?&#039;</span> : <span class="tok-str">&#039;&#039;</span>) . <span class="tok-str">&#039;: &#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$item</span>-&gt;<span class="tok-id">valueType</span>, <span class="tok-var">$context</span>);</span>
+<span class="src-line" id="L298"><a class="ln" href="#L298">298</a>        }</span>
+<span class="src-line" id="L299"><a class="ln" href="#L299">299</a></span>
+<span class="src-line" id="L300"><a class="ln" href="#L300">300</a>        <span class="tok-kw">return</span> <span class="tok-str">&#039;&lt;span class=&quot;t-key&quot;&gt;object&lt;/span&gt;{&#039;</span> . <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, <span class="tok-var">$items</span>) . <span class="tok-str">&#039;}&#039;</span>;</span>
+<span class="src-line" id="L301"><a class="ln" href="#L301">301</a>    }</span>
+<span class="src-line" id="L302"><a class="ln" href="#L302">302</a></span>
+<span class="src-line" id="L303"><a class="ln" href="#L303">303</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L304"><a class="ln" href="#L304">304</a><span class="tok-com">     * Renders a callable type with parameters and return type.</span></span>
+<span class="src-line" id="L305"><a class="ln" href="#L305">305</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L306"><a class="ln" href="#L306">306</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">callableType</span>(<span class="tok-id">CallableTypeNode</span> <span class="tok-var">$type</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L307"><a class="ln" href="#L307">307</a>    {</span>
+<span class="src-line" id="L308"><a class="ln" href="#L308">308</a>        <span class="tok-var">$parameters</span> = [];</span>
+<span class="src-line" id="L309"><a class="ln" href="#L309">309</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$type</span>-&gt;<span class="tok-id">parameters</span> <span class="tok-kw">as</span> <span class="tok-var">$parameter</span>) {</span>
+<span class="src-line" id="L310"><a class="ln" href="#L310">310</a>            <span class="tok-var">$text</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$parameter</span>-&gt;<span class="tok-id">type</span>, <span class="tok-var">$context</span>);</span>
+<span class="src-line" id="L311"><a class="ln" href="#L311">311</a>            <span class="tok-kw">if</span> (<span class="tok-var">$parameter</span>-&gt;<span class="tok-id">isReference</span>) {</span>
+<span class="src-line" id="L312"><a class="ln" href="#L312">312</a>                <span class="tok-var">$text</span> .= <span class="tok-str">&#039;&amp;amp;&#039;</span>;</span>
+<span class="src-line" id="L313"><a class="ln" href="#L313">313</a>            }</span>
+<span class="src-line" id="L314"><a class="ln" href="#L314">314</a></span>
+<span class="src-line" id="L315"><a class="ln" href="#L315">315</a>            <span class="tok-kw">if</span> (<span class="tok-var">$parameter</span>-&gt;<span class="tok-id">isVariadic</span>) {</span>
+<span class="src-line" id="L316"><a class="ln" href="#L316">316</a>                <span class="tok-var">$text</span> .= <span class="tok-str">&#039;...&#039;</span>;</span>
+<span class="src-line" id="L317"><a class="ln" href="#L317">317</a>            }</span>
+<span class="src-line" id="L318"><a class="ln" href="#L318">318</a></span>
+<span class="src-line" id="L319"><a class="ln" href="#L319">319</a>            <span class="tok-kw">if</span> (<span class="tok-var">$parameter</span>-&gt;<span class="tok-id">parameterName</span> !== <span class="tok-str">&#039;&#039;</span>) {</span>
+<span class="src-line" id="L320"><a class="ln" href="#L320">320</a>                <span class="tok-var">$text</span> .= <span class="tok-str">&#039; &#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$parameter</span>-&gt;<span class="tok-id">parameterName</span>);</span>
+<span class="src-line" id="L321"><a class="ln" href="#L321">321</a>            }</span>
+<span class="src-line" id="L322"><a class="ln" href="#L322">322</a></span>
+<span class="src-line" id="L323"><a class="ln" href="#L323">323</a>            <span class="tok-kw">if</span> (<span class="tok-var">$parameter</span>-&gt;<span class="tok-id">isOptional</span>) {</span>
+<span class="src-line" id="L324"><a class="ln" href="#L324">324</a>                <span class="tok-var">$text</span> .= <span class="tok-str">&#039;=&#039;</span>;</span>
+<span class="src-line" id="L325"><a class="ln" href="#L325">325</a>            }</span>
+<span class="src-line" id="L326"><a class="ln" href="#L326">326</a></span>
+<span class="src-line" id="L327"><a class="ln" href="#L327">327</a>            <span class="tok-var">$parameters</span>[] = <span class="tok-var">$text</span>;</span>
+<span class="src-line" id="L328"><a class="ln" href="#L328">328</a>        }</span>
+<span class="src-line" id="L329"><a class="ln" href="#L329">329</a></span>
+<span class="src-line" id="L330"><a class="ln" href="#L330">330</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">identifier</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">identifier</span>, <span class="tok-var">$context</span>)</span>
+<span class="src-line" id="L331"><a class="ln" href="#L331">331</a>            . <span class="tok-str">&#039;(&#039;</span> . <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, <span class="tok-var">$parameters</span>) . <span class="tok-str">&#039;): &#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">returnType</span>, <span class="tok-var">$context</span>);</span>
+<span class="src-line" id="L332"><a class="ln" href="#L332">332</a>    }</span>
+<span class="src-line" id="L333"><a class="ln" href="#L333">333</a></span>
+<span class="src-line" id="L334"><a class="ln" href="#L334">334</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L335"><a class="ln" href="#L335">335</a><span class="tok-com">     * Renders a conditional type expression.</span></span>
+<span class="src-line" id="L336"><a class="ln" href="#L336">336</a><span class="tok-com">     *</span></span>
+<span class="src-line" id="L337"><a class="ln" href="#L337">337</a><span class="tok-com">     * @param ConditionalTypeNode|ConditionalTypeForParameterNode $type</span></span>
+<span class="src-line" id="L338"><a class="ln" href="#L338">338</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L339"><a class="ln" href="#L339">339</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">conditional</span>(<span class="tok-id">TypeNode</span> <span class="tok-var">$type</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L340"><a class="ln" href="#L340">340</a>    {</span>
+<span class="src-line" id="L341"><a class="ln" href="#L341">341</a>        <span class="tok-var">$subject</span> = <span class="tok-var">$type</span> <span class="tok-kw">instanceof</span> <span class="tok-id">ConditionalTypeNode</span></span>
+<span class="src-line" id="L342"><a class="ln" href="#L342">342</a>            ? <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">subjectType</span>, <span class="tok-var">$context</span>)</span>
+<span class="src-line" id="L343"><a class="ln" href="#L343">343</a>            : <span class="tok-str">&#039;&lt;span class=&quot;t-var&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">parameterName</span>) . <span class="tok-str">&#039;&lt;/span&gt;&#039;</span>;</span>
+<span class="src-line" id="L344"><a class="ln" href="#L344">344</a></span>
+<span class="src-line" id="L345"><a class="ln" href="#L345">345</a>        <span class="tok-kw">return</span> <span class="tok-str">&#039;(&#039;</span> . <span class="tok-var">$subject</span> . <span class="tok-str">&#039; &lt;span class=&quot;t-key&quot;&gt;is&lt;/span&gt; &#039;</span></span>
+<span class="src-line" id="L346"><a class="ln" href="#L346">346</a>            . (<span class="tok-var">$type</span>-&gt;<span class="tok-id">negated</span> ? <span class="tok-str">&#039;&lt;span class=&quot;t-key&quot;&gt;not&lt;/span&gt; &#039;</span> : <span class="tok-str">&#039;&#039;</span>)</span>
+<span class="src-line" id="L347"><a class="ln" href="#L347">347</a>            . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">targetType</span>, <span class="tok-var">$context</span>)</span>
+<span class="src-line" id="L348"><a class="ln" href="#L348">348</a>            . <span class="tok-str">&#039; ? &#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">if</span>, <span class="tok-var">$context</span>)</span>
+<span class="src-line" id="L349"><a class="ln" href="#L349">349</a>            . <span class="tok-str">&#039; : &#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">node</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">else</span>, <span class="tok-var">$context</span>) . <span class="tok-str">&#039;)&#039;</span>;</span>
+<span class="src-line" id="L350"><a class="ln" href="#L350">350</a>    }</span>
+<span class="src-line" id="L351"><a class="ln" href="#L351">351</a></span>
+<span class="src-line" id="L352"><a class="ln" href="#L352">352</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L353"><a class="ln" href="#L353">353</a><span class="tok-com">     * Renders a native type declaration string with linked class names.</span></span>
+<span class="src-line" id="L354"><a class="ln" href="#L354">354</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L355"><a class="ln" href="#L355">355</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">nativeString</span>(<span class="tok-id">string</span> <span class="tok-var">$native</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L356"><a class="ln" href="#L356">356</a>    {</span>
+<span class="src-line" id="L357"><a class="ln" href="#L357">357</a>        <span class="tok-var">$nullable</span> = <span class="tok-id">str_starts_with</span>(<span class="tok-var">$native</span>, <span class="tok-str">&#039;?&#039;</span>);</span>
+<span class="src-line" id="L358"><a class="ln" href="#L358">358</a>        <span class="tok-var">$bare</span> = <span class="tok-var">$nullable</span> ? <span class="tok-id">substr</span>(<span class="tok-var">$native</span>, <span class="tok-num">1</span>) : <span class="tok-var">$native</span>;</span>
+<span class="src-line" id="L359"><a class="ln" href="#L359">359</a>        <span class="tok-var">$unionParts</span> = [];</span>
+<span class="src-line" id="L360"><a class="ln" href="#L360">360</a>        <span class="tok-kw">foreach</span> (<span class="tok-id">explode</span>(<span class="tok-str">&#039;|&#039;</span>, <span class="tok-var">$bare</span>) <span class="tok-kw">as</span> <span class="tok-var">$unionPart</span>) {</span>
+<span class="src-line" id="L361"><a class="ln" href="#L361">361</a>            <span class="tok-var">$intersectionParts</span> = [];</span>
+<span class="src-line" id="L362"><a class="ln" href="#L362">362</a>            <span class="tok-kw">foreach</span> (<span class="tok-id">explode</span>(<span class="tok-str">&#039;&amp;&#039;</span>, <span class="tok-var">$unionPart</span>) <span class="tok-kw">as</span> <span class="tok-var">$piece</span>) {</span>
+<span class="src-line" id="L363"><a class="ln" href="#L363">363</a>                <span class="tok-kw">if</span> (<span class="tok-var">$piece</span> === <span class="tok-str">&#039;&#039;</span>) {</span>
+<span class="src-line" id="L364"><a class="ln" href="#L364">364</a>                    <span class="tok-kw">continue</span>;</span>
+<span class="src-line" id="L365"><a class="ln" href="#L365">365</a>                }</span>
+<span class="src-line" id="L366"><a class="ln" href="#L366">366</a></span>
+<span class="src-line" id="L367"><a class="ln" href="#L367">367</a>                <span class="tok-var">$intersectionParts</span>[] = <span class="tok-id">in_array</span>(<span class="tok-id">strtolower</span>(<span class="tok-var">$piece</span>), <span class="tok-id">self</span>::<span class="tok-id">KEYWORDS</span>, <span class="tok-id">true</span>)</span>
+<span class="src-line" id="L368"><a class="ln" href="#L368">368</a>                    ? <span class="tok-str">&#039;&lt;span class=&quot;t-key&quot;&gt;&#039;</span> . <span class="tok-var">$this</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$piece</span>) . <span class="tok-str">&#039;&lt;/span&gt;&#039;</span></span>
+<span class="src-line" id="L369"><a class="ln" href="#L369">369</a>                    : <span class="tok-var">$this</span>-&gt;<span class="tok-id">className</span>(<span class="tok-var">$piece</span>, <span class="tok-var">$context</span>);</span>
+<span class="src-line" id="L370"><a class="ln" href="#L370">370</a>            }</span>
+<span class="src-line" id="L371"><a class="ln" href="#L371">371</a></span>
+<span class="src-line" id="L372"><a class="ln" href="#L372">372</a>            <span class="tok-var">$unionParts</span>[] = <span class="tok-id">implode</span>(<span class="tok-str">&#039;&amp;amp;&#039;</span>, <span class="tok-var">$intersectionParts</span>);</span>
+<span class="src-line" id="L373"><a class="ln" href="#L373">373</a>        }</span>
+<span class="src-line" id="L374"><a class="ln" href="#L374">374</a></span>
+<span class="src-line" id="L375"><a class="ln" href="#L375">375</a>        <span class="tok-kw">return</span> (<span class="tok-var">$nullable</span> ? <span class="tok-str">&#039;?&#039;</span> : <span class="tok-str">&#039;&#039;</span>) . <span class="tok-id">implode</span>(<span class="tok-str">&#039;|&#039;</span>, <span class="tok-var">$unionParts</span>);</span>
+<span class="src-line" id="L376"><a class="ln" href="#L376">376</a>    }</span>
+<span class="src-line" id="L377"><a class="ln" href="#L377">377</a>}</span>
+<span class="src-line" id="L378"><a class="ln" href="#L378">378</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

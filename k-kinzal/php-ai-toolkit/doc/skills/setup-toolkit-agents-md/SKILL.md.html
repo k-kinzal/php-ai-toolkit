@@ -60,6 +60,13 @@
 <p>Keep this section focused on the primary runtimes, platforms, frameworks, and development tools whose versions materially affect project-wide changes. Do not copy every direct or transitive package constraint from <code>composer.json</code>, and do not list internal parser, adapter, or helper libraries merely because the project supports multiple versions of them. Composer remains the source of truth for those implementation dependencies.</p>
 <p>Write the target&#039;s real constraint or enumerated CI-supported minors. Do not copy a version list from this repository. Shape example:</p>
 <pre class="code"><code>- **PHP**: &lt;versions guaranteed by this project&gt;</code></pre>
+<h4>Development Rules</h4>
+<p>Replace <code>{{DEVELOPMENT_RULES}}</code> with the handful of workflow rules an agent cannot infer from the code and would otherwise get wrong: where to work and how to deliver a change (a branch and a pull request, or commits on the default branch), the language every artifact is written in, and who documentation is written for. State each as one imperative bullet. Example:</p>
+<pre class="code"><code>- Work in a dedicated git worktree branched from `main`; do not work in the main checkout.
+- Deliver every change through a pull request.
+- This is an English project: write every artifact in English, including code, comments, commit messages, pull requests, and documentation.
+- Write documentation for the users of the libraries. `AGENTS.md` is the only exception.</code></pre>
+<p>Leave out anything a tool already enforces: the linters, the PHPStan rules, and the CI workflows state their own rules, and repeating them here is a second copy that drifts. If the project has no rule of this kind, remove the section.</p>
 <h4>Architecture</h4>
 <p>Replace <code>{{ARCHITECTURE}}</code> with a description of the project&#039;s layering and responsibility boundaries. This is NOT a directory listing — it describes how the layers relate to each other and what each layer is responsible for.</p>
 <p>Include:</p>
@@ -81,9 +88,10 @@ Dependencies between layers flow top-down only. Command never calls Analyzer dir
 <pre class="code"><code>- [API Specification](docs/api-spec.md)
 - [Database Schema](docs/schema.md)</code></pre>
 <p>If the project has no documentation directly under <code>docs/</code>, remove this section entirely.</p>
+<p>In a monorepo, the root <code>AGENTS.md</code> is the index of every package: list each package&#039;s README and the pages directly under its <code>docs/</code>, grouped by package and each with a one-line description of what the page covers, so an agent can find the right document without opening every package. The per-package Architecture description then belongs to the package&#039;s own documentation, not to the root file.</p>
 <h3>Adaptation Workflow</h3>
 <p>When applying this template to a project, follow these steps:</p>
-<ol><li><strong>Read <code>composer.json</code></strong> to determine the primary supported runtimes and tools</li><li><strong>Scan the directory structure</strong> to understand project layout</li><li><strong>Look for top-level documentation</strong> directly under <code>docs/</code></li><li><strong>Fill in all <code>{{PLACEHOLDER}}</code> values</strong> with real project information</li><li><strong>Remove unused placeholders and sections</strong></li><li><strong>Place as <code>AGENTS.md</code></strong> in the project root only after confirming that no existing file will be overwritten</li></ol>
+<ol><li><strong>Read <code>composer.json</code></strong> to determine the primary supported runtimes and tools</li><li><strong>Scan the directory structure</strong> to understand project layout</li><li><strong>Look for top-level documentation</strong> directly under <code>docs/</code></li><li><strong>Ask for the development rules</strong> the user wants agents to follow when they are not already written down</li><li><strong>Fill in all <code>{{PLACEHOLDER}}</code> values</strong> with real project information</li><li><strong>Remove unused placeholders and sections</strong></li><li><strong>Place as <code>AGENTS.md</code></strong> in the project root only after confirming that no existing file will be overwritten</li></ol>
 <h3>Protecting AGENTS.md</h3>
 <p>After creating AGENTS.md, recommend setting up <code>.claude/settings.json</code> to prevent AI agents from modifying it. Do not edit an existing settings file unless the user explicitly asks:</p>
 <pre class="code"><code>{

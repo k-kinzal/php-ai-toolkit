@@ -120,7 +120,7 @@ rg -n &#039;^namespace |^use &#039; src app lib packages modules 2&gt;/dev/null<
 <pre class="code"><code>{
     &quot;scripts&quot;: {
         &quot;phpstan&quot;: &quot;phpstan analyse --memory-limit=512M&quot;,
-        &quot;deptrac&quot;: &quot;@php deptrac.php analyse --config-file=deptrac.yaml&quot;,
+        &quot;deptrac&quot;: &quot;@php deptrac.php analyse --config-file=deptrac.yaml --fail-on-uncovered --report-uncovered&quot;,
         &quot;lint&quot;: [
             &quot;@format:check&quot;,
             &quot;@phpstan&quot;,
@@ -128,6 +128,7 @@ rg -n &#039;^namespace |^use &#039; src app lib packages modules 2&gt;/dev/null<
         ]
     }
 }</code></pre>
+<p>Keep <code>--fail-on-uncovered --report-uncovered</code> on the command. A dependency whose source layer has no ruleset entry is &quot;uncovered&quot;, and Deptrac reports it as informational by default, so a new layer that nobody added to the ruleset passes until someone reads the output. With the flags, every dependency must be one the ruleset allows or forbids, which is the state <code>debug:unassigned</code> is verifying below.</p>
 <p>If the project already has <code>lint</code> or <code>check</code>, merge <code>@deptrac</code> into it after PHPStan unless runtime constraints require Deptrac to run in a separate CI job. Do not remove existing lint steps.</p>
 <h3>Verification</h3>
 <p>After applying:</p>

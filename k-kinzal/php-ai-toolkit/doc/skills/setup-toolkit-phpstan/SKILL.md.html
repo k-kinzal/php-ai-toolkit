@@ -66,7 +66,7 @@ parameters:
     level: max
     paths:
         - REPLACE_WITH_ANALYSIS_PATH</code></pre>
-<p>Replace <code>REPLACE_WITH_VENDOR_DIR</code> with <code>composer config vendor-dir</code> before use. A remaining sentinel is a configuration error, not a literal directory name. Replace <code>REPLACE_WITH_ANALYSIS_PATH</code> with every production and test autoload root derived from <code>composer.json</code>; repeat the list item for multiple roots.</p>
+<p>Replace <code>REPLACE_WITH_VENDOR_DIR</code> with <code>composer config vendor-dir</code> before use. A remaining sentinel is a configuration error, not a literal directory name. Replace <code>REPLACE_WITH_ANALYSIS_PATH</code> with every production and test autoload root derived from <code>composer.json</code>; repeat the list item for multiple roots. Development roots that hold executable PHP, such as a <code>fuzz/</code> harness or a <code>bench/</code> suite mapped in <code>autoload-dev</code>, belong in <code>paths</code> as well, so that code which only runs on a schedule is still analysed on every pull request. List their namespace prefixes beside the test namespaces in <code>visibilityExemptNamespacePrefixes</code>, because they sit outside the ownership contract the same way tests do.</p>
 <p>Analysis scope belongs in PHPStan configuration so direct invocations, editor integrations, Composer, and CI all analyse the same paths. Do not put the paths only on the Composer command. Keep that command independent of project layout:</p>
 <pre class="code"><code>{
     &quot;scripts&quot;: {

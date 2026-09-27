@@ -37,6 +37,9 @@ html { scroll-padding-top: calc(var(--docgen-topbar-height, var(--dd-topbar-heig
 .t-shape-key { color: var(--dd-syn-var); }
 .type-note, .section-note, .pkg-count, .ns-counts, .dep-constraint { color: var(--dd-fg-muted); font-size: var(--dd-text-sm); }
 .section-note { margin-bottom: var(--dd-sp-4); }
+@container dd-content (width <= 40rem) {
+  .items thead { display: none; }
+}
 .pkg-count, .ns-counts { white-space: nowrap; }
 .ns-count { margin-right: var(--dd-sp-3); }
 .md-target { border-bottom: 1px dotted var(--dd-border); cursor: help; }

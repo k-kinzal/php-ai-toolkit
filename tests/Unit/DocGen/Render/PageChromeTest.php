@@ -93,7 +93,7 @@ final class PageChromeTest extends TestCase
 
         self::assertStringStartsWith("<!DOCTYPE html>\n<html lang=\"en\">\n", $html);
         self::assertStringContainsString('<title>Widget — Demo Docs</title>', $html);
-        self::assertStringContainsString('<link rel="stylesheet" href="../../../assets/document-design-v1.0.0.css">', $html);
+        self::assertStringContainsString('<link rel="stylesheet" href="../../../assets/document-design-v1.1.0.css">', $html);
         self::assertStringContainsString('<link rel="stylesheet" href="../../../assets/style.css">', $html);
         self::assertStringContainsString('<body data-root="../../../">', $html);
         self::assertStringContainsString('<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><ul>SIDEBAR</ul></aside>', $html);
@@ -114,7 +114,7 @@ final class PageChromeTest extends TestCase
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Overview — Demo Docs</title>
-<link rel="stylesheet" href="assets/document-design-v1.0.0.css">
+<link rel="stylesheet" href="assets/document-design-v1.1.0.css">
 <link rel="stylesheet" href="assets/style.css">
 <script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
 </head>

@@ -1,4 +1,4 @@
-/* DocGen-specific extensions to the bundled doc-ui v1.0.0 stylesheet.
+/* DocGen-specific extensions to the bundled doc-ui v1.1.0 stylesheet.
  * Layout, typography, controls, prose, code, tables and themes come from doc-ui.
  * Keep domain semantics here, using its public --dd-* tokens.
  */
@@ -20,6 +20,8 @@ a:is(.k-class, .k-interface, .k-trait, .k-enum, .k-function, .k-namespace) { col
 /* The topbar can wrap search and comparison controls onto another row. */
 html { scroll-padding-top: calc(var(--docgen-topbar-height, var(--dd-topbar-height)) + var(--dd-sp-4)); }
 .search-results { top: calc(var(--docgen-topbar-height, var(--dd-topbar-height)) + var(--dd-sp-1)); }
+/* Long source paths must share the breadcrumb row with links and separators. */
+.breadcrumbs > .breadcrumb-current { flex-shrink: 1; min-width: 0; }
 
 .sidebar-package a { color: var(--dd-teal); font-weight: var(--dd-weight-label); overflow-wrap: anywhere; }
 .sidebar-title a { color: inherit; }
@@ -54,6 +56,11 @@ html { scroll-padding-top: calc(var(--docgen-topbar-height, var(--dd-topbar-heig
 .usage-kind { display: inline-block; min-width: 84px; margin: 0; }
 .usage-loc { color: var(--dd-fg-subtle); margin-left: var(--dd-sp-3); }
 .test-cases summary { color: var(--dd-ok); }
+
+/* Printed parameter names and types wrap, so release their compact screen widths. */
+@media print {
+  .param-table :is(td, th):first-child, .param-table :is(td, th):nth-child(2) { width: auto; }
+}
 
 /* Source anchors retain physical line numbers and horizontal scrolling. */
 pre.source { padding: var(--dd-sp-3) 0; }

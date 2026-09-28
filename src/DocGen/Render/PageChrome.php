@@ -55,7 +55,7 @@ final class PageChrome
             . '<meta name="viewport" content="width=device-width, initial-scale=1">' . "\n"
             . sprintf('<title>%s — %s</title>', $escaper->e($title), $escaper->e($services->model->title)) . "\n"
             . $this->social->render($services, $pagePath, $title, $description)
-            . sprintf('<link rel="stylesheet" href="%sassets/document-design-v1.0.0.css">', $escaper->e($prefix)) . "\n"
+            . sprintf('<link rel="stylesheet" href="%sassets/document-design-v1.1.0.css">', $escaper->e($prefix)) . "\n"
             . sprintf('<link rel="stylesheet" href="%sassets/style.css">', $escaper->e($prefix)) . "\n"
             . $this->bootstrap($services) . "\n"
             . '</head>' . "\n"

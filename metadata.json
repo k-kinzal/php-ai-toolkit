@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M3JXW59CGZ359XN1M8ZMMCBM",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/docgen.md",
+    "resources/docgen/document-design-LICENSE.txt",
+    "resources/docgen/document-design-v1.1.0.css",
+    "resources/docgen/style.css",
+    "src/DocGen/Render/AssetPublisher.php",
+    "src/DocGen/Render/PageChrome.php",
+    "tests/Unit/DocGen/Render/AssetPublisherTest.php",
+    "tests/Unit/DocGen/Render/PageChromeTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 136697,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 3452800,
+    "output_tokens": 24358,
+    "api_call_count": 37
+  }
+}

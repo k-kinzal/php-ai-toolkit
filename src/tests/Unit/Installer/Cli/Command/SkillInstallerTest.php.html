@@ -16,7 +16,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="k-kinzal/php-ai-toolkit">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../../../../../../assets/document-design-v1.0.0.css">
+<link rel="stylesheet" href="../../../../../../assets/document-design-v1.1.0.css">
 <link rel="stylesheet" href="../../../../../../assets/style.css">
 <script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
 </head>
@@ -78,7 +78,7 @@
 <span class="src-line" id="L40"><a class="ln" href="#L40">40</a>{</span>
 <span class="src-line" id="L41"><a class="ln" href="#L41">41</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testInstallCreatesSymlink</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L42"><a class="ln" href="#L42">42</a>    {</span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/source/test-skill&#039;</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/target&#039;</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/source/test-skill/SKILL.md&#039;</span>, <span class="tok-str">&#039;content&#039;</span>);</span>
@@ -101,7 +101,7 @@
 <span class="src-line" id="L63"><a class="ln" href="#L63">63</a></span>
 <span class="src-line" id="L64"><a class="ln" href="#L64">64</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testInstallCopiesSkillWhenCopyModeEnabled</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L65"><a class="ln" href="#L65">65</a>    {</span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L67"><a class="ln" href="#L67">67</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/source/test-skill&#039;</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L68"><a class="ln" href="#L68">68</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/target&#039;</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/source/test-skill/SKILL.md&#039;</span>, <span class="tok-str">&#039;content&#039;</span>);</span>
@@ -125,7 +125,7 @@
 <span class="src-line" id="L87"><a class="ln" href="#L87">87</a></span>
 <span class="src-line" id="L88"><a class="ln" href="#L88">88</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testInstallSkipsExistingSkillWithoutForce</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L89"><a class="ln" href="#L89">89</a>    {</span>
-<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L91"><a class="ln" href="#L91">91</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/source/test-skill&#039;</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L92"><a class="ln" href="#L92">92</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/target/test-skill&#039;</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L93"><a class="ln" href="#L93">93</a>        <span class="tok-var">$output</span> = [];</span>
@@ -146,7 +146,7 @@
 <span class="src-line" id="L108"><a class="ln" href="#L108">108</a></span>
 <span class="src-line" id="L109"><a class="ln" href="#L109">109</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testInstallOverwritesExistingWithForce</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L110"><a class="ln" href="#L110">110</a>    {</span>
-<span class="src-line" id="L111"><a class="ln" href="#L111">111</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L111"><a class="ln" href="#L111">111</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L112"><a class="ln" href="#L112">112</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/source/test-skill&#039;</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L113"><a class="ln" href="#L113">113</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/target/test-skill&#039;</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L114"><a class="ln" href="#L114">114</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/source/test-skill/SKILL.md&#039;</span>, <span class="tok-str">&#039;content&#039;</span>);</span>

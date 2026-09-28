@@ -16,7 +16,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="k-kinzal/php-ai-toolkit">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../../../../../../assets/document-design-v1.0.0.css">
+<link rel="stylesheet" href="../../../../../../assets/document-design-v1.1.0.css">
 <link rel="stylesheet" href="../../../../../../assets/style.css">
 <script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
 </head>
@@ -66,7 +66,7 @@
 <span class="src-line" id="L28"><a class="ln" href="#L28">28</a>{</span>
 <span class="src-line" id="L29"><a class="ln" href="#L29">29</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testScanReturnsSkillDirectoriesAndIgnoresGitkeep</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L30"><a class="ln" href="#L30">30</a>    {</span>
-<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L32"><a class="ln" href="#L32">32</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/skill-a&#039;</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/skill-b&#039;</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-id">file_put_contents</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/.gitkeep&#039;</span>, <span class="tok-str">&#039;&#039;</span>);</span>

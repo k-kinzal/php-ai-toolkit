@@ -16,7 +16,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="k-kinzal/php-ai-toolkit">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../../../../../assets/document-design-v1.0.0.css">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
 <link rel="stylesheet" href="../../../../../assets/style.css">
 <script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
 </head>
@@ -111,7 +111,7 @@
 <span class="src-line" id="L73"><a class="ln" href="#L73">73</a>{</span>
 <span class="src-line" id="L74"><a class="ln" href="#L74">74</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunHelpFlag</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L75"><a class="ln" href="#L75">75</a>    {</span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L77"><a class="ln" href="#L77">77</a>        <span class="tok-var">$projectRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/project&#039;</span>;</span>
 <span class="src-line" id="L78"><a class="ln" href="#L78">78</a>        <span class="tok-var">$packageRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/package&#039;</span>;</span>
 <span class="src-line" id="L79"><a class="ln" href="#L79">79</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$projectRoot</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
@@ -155,7 +155,7 @@
 <span class="src-line" id="L117"><a class="ln" href="#L117">117</a></span>
 <span class="src-line" id="L118"><a class="ln" href="#L118">118</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunHelpShortFlag</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L119"><a class="ln" href="#L119">119</a>    {</span>
-<span class="src-line" id="L120"><a class="ln" href="#L120">120</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L120"><a class="ln" href="#L120">120</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L121"><a class="ln" href="#L121">121</a>        <span class="tok-var">$projectRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/project&#039;</span>;</span>
 <span class="src-line" id="L122"><a class="ln" href="#L122">122</a>        <span class="tok-var">$packageRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/package&#039;</span>;</span>
 <span class="src-line" id="L123"><a class="ln" href="#L123">123</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$projectRoot</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
@@ -199,7 +199,7 @@
 <span class="src-line" id="L161"><a class="ln" href="#L161">161</a></span>
 <span class="src-line" id="L162"><a class="ln" href="#L162">162</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunVersionFlag</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L163"><a class="ln" href="#L163">163</a>    {</span>
-<span class="src-line" id="L164"><a class="ln" href="#L164">164</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L164"><a class="ln" href="#L164">164</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L165"><a class="ln" href="#L165">165</a>        <span class="tok-var">$projectRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/project&#039;</span>;</span>
 <span class="src-line" id="L166"><a class="ln" href="#L166">166</a>        <span class="tok-var">$packageRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/package&#039;</span>;</span>
 <span class="src-line" id="L167"><a class="ln" href="#L167">167</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$projectRoot</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
@@ -243,7 +243,7 @@
 <span class="src-line" id="L205"><a class="ln" href="#L205">205</a></span>
 <span class="src-line" id="L206"><a class="ln" href="#L206">206</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunUnknownCommand</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L207"><a class="ln" href="#L207">207</a>    {</span>
-<span class="src-line" id="L208"><a class="ln" href="#L208">208</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L208"><a class="ln" href="#L208">208</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L209"><a class="ln" href="#L209">209</a>        <span class="tok-var">$projectRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/project&#039;</span>;</span>
 <span class="src-line" id="L210"><a class="ln" href="#L210">210</a>        <span class="tok-var">$packageRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/package&#039;</span>;</span>
 <span class="src-line" id="L211"><a class="ln" href="#L211">211</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$projectRoot</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
@@ -287,7 +287,7 @@
 <span class="src-line" id="L249"><a class="ln" href="#L249">249</a></span>
 <span class="src-line" id="L250"><a class="ln" href="#L250">250</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunDefaultsToInstall</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L251"><a class="ln" href="#L251">251</a>    {</span>
-<span class="src-line" id="L252"><a class="ln" href="#L252">252</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L252"><a class="ln" href="#L252">252</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L253"><a class="ln" href="#L253">253</a>        <span class="tok-var">$projectRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/project&#039;</span>;</span>
 <span class="src-line" id="L254"><a class="ln" href="#L254">254</a>        <span class="tok-var">$packageRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/package&#039;</span>;</span>
 <span class="src-line" id="L255"><a class="ln" href="#L255">255</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$projectRoot</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
@@ -334,7 +334,7 @@
 <span class="src-line" id="L296"><a class="ln" href="#L296">296</a></span>
 <span class="src-line" id="L297"><a class="ln" href="#L297">297</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunExplicitInstallCommand</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L298"><a class="ln" href="#L298">298</a>    {</span>
-<span class="src-line" id="L299"><a class="ln" href="#L299">299</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L299"><a class="ln" href="#L299">299</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L300"><a class="ln" href="#L300">300</a>        <span class="tok-var">$projectRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/project&#039;</span>;</span>
 <span class="src-line" id="L301"><a class="ln" href="#L301">301</a>        <span class="tok-var">$packageRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/package&#039;</span>;</span>
 <span class="src-line" id="L302"><a class="ln" href="#L302">302</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$projectRoot</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
@@ -383,7 +383,7 @@
 <span class="src-line" id="L345"><a class="ln" href="#L345">345</a></span>
 <span class="src-line" id="L346"><a class="ln" href="#L346">346</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunInstallWithForceFlag</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L347"><a class="ln" href="#L347">347</a>    {</span>
-<span class="src-line" id="L348"><a class="ln" href="#L348">348</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L348"><a class="ln" href="#L348">348</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L349"><a class="ln" href="#L349">349</a>        <span class="tok-var">$projectRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/project&#039;</span>;</span>
 <span class="src-line" id="L350"><a class="ln" href="#L350">350</a>        <span class="tok-var">$packageRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/package&#039;</span>;</span>
 <span class="src-line" id="L351"><a class="ln" href="#L351">351</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$projectRoot</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
@@ -431,7 +431,7 @@
 <span class="src-line" id="L393"><a class="ln" href="#L393">393</a></span>
 <span class="src-line" id="L394"><a class="ln" href="#L394">394</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRunInstallWithCopyFlag</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L395"><a class="ln" href="#L395">395</a>    {</span>
-<span class="src-line" id="L396"><a class="ln" href="#L396">396</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L396"><a class="ln" href="#L396">396</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L397"><a class="ln" href="#L397">397</a>        <span class="tok-var">$projectRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/project&#039;</span>;</span>
 <span class="src-line" id="L398"><a class="ln" href="#L398">398</a>        <span class="tok-var">$packageRoot</span> = <span class="tok-var">$path</span> . <span class="tok-str">&#039;/package&#039;</span>;</span>
 <span class="src-line" id="L399"><a class="ln" href="#L399">399</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$projectRoot</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>

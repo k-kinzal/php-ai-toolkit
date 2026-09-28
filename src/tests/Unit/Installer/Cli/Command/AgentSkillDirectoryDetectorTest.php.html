@@ -16,7 +16,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="k-kinzal/php-ai-toolkit">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../../../../../../assets/document-design-v1.0.0.css">
+<link rel="stylesheet" href="../../../../../../assets/document-design-v1.1.0.css">
 <link rel="stylesheet" href="../../../../../../assets/style.css">
 <script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
 </head>
@@ -65,7 +65,7 @@
 <span class="src-line" id="L27"><a class="ln" href="#L27">27</a>{</span>
 <span class="src-line" id="L28"><a class="ln" href="#L28">28</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testDetectReturnsDefaultClaudeWhenNoAgentsExist</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L29"><a class="ln" href="#L29">29</a>    {</span>
-<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L31"><a class="ln" href="#L31">31</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$path</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L32"><a class="ln" href="#L32">32</a></span>
 <span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-kw">try</span> {</span>
@@ -77,7 +77,7 @@
 <span class="src-line" id="L39"><a class="ln" href="#L39">39</a></span>
 <span class="src-line" id="L40"><a class="ln" href="#L40">40</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testDetectReturnsDetectedAgentDirectories</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L41"><a class="ln" href="#L41">41</a>    {</span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        <span class="tok-var">$path</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/php-ai-toolkit-test-&#039;</span> . <span class="tok-id">uniqid</span>(<span class="tok-str">&#039;&#039;</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/.claude&#039;</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$path</span> . <span class="tok-str">&#039;/.agents&#039;</span>, <span class="tok-num">0755</span>, <span class="tok-id">true</span>);</span>
 <span class="src-line" id="L45"><a class="ln" href="#L45">45</a></span>

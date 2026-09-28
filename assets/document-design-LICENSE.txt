@@ -1,12 +1,29 @@
-document-design / @k-kinzal/doc-ui v1.0.0
-https://github.com/k-kinzal/document-design/tree/v1.0.0/packages/doc-ui
-Upstream stylesheet (unmodified):
+document-design / @k-kinzal/doc-ui v1.1.0
+Release: https://github.com/k-kinzal/document-design/releases/tag/v1.1.0
+Tag commit: ee789d04fb775b735c3217d74019642485c9a297
+Source: https://github.com/k-kinzal/document-design/tree/v1.1.0/packages/doc-ui
+
+Upstream stylesheet (unmodified): document-design-v1.1.0.css
+https://k-kinzal.github.io/document-design/v1.1.0/document-design.css
+SHA-256: 8874255e9deb2d159016522e985015be6a5d7a88c90c077704b5d762567b7ebd
+
+Upstream MIT license (verbatim below):
+https://k-kinzal.github.io/document-design/v1.1.0/LICENSE
+SHA-256: 390aeb080eabe1cf8c276d6c32e0520649301bbee2126c1647f7e409f47225ad
+
+Design reference:
+https://k-kinzal.github.io/document-design/v1.1.0/DESIGN.md
+SHA-256: d0a45aace62c11f2fca8092687eb90452d675c9b3f6de34e9816337c578cde45
+Component documentation: https://k-kinzal.github.io/document-design/components/
+
+Retained stylesheet for archived documents (unmodified): document-design-v1.0.0.css
 https://k-kinzal.github.io/document-design/v1.0.0/document-design.css
 SHA-256: 05f312d9faf6de35a0995cfa9434df1cab3a93c836a533307f9e23338a527793
-
-The upstream package declares the MIT license. Attribution: k-kinzal.
+License: MIT. Attribution: k-kinzal.
 
 MIT License
+
+Copyright (c) 2026 k-kinzal
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -15,13 +32,13 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

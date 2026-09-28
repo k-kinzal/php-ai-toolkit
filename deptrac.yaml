@@ -26,6 +26,10 @@ deptrac:
       collectors:
         - type: directory
           value: src/TreeGuard/.*
+    - name: DocGuard
+      collectors:
+        - type: directory
+          value: src/DocGuard/.*
     - name: PhpStanRule
       collectors:
         - type: directory
@@ -60,6 +64,7 @@ deptrac:
     Doctest: ~
     LocGuard: ~
     TreeGuard: ~
+    DocGuard: ~
     PhpStanRule:
       - PhpStanSupport
       - Doctest

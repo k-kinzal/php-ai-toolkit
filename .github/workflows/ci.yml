@@ -106,5 +106,8 @@ jobs:
       - name: Check the directory structure
         run: composer tree-guard
 
+      - name: Check the document structure
+        run: composer doc-guard
+
       - name: Check the architecture layers
         run: composer deptrac

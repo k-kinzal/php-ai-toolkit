@@ -62,6 +62,7 @@ Run the end-to-end adoption skill:
 The component skills are also available for focused setup or maintenance:
 
 - `/setup-toolkit-agents-md` — AGENTS.md with project conventions and AI agent guidelines
+- `/setup-toolkit-doc-guard` — DocGuard fixed section structure for README.md, AGENTS.md, and docs/
 - `/setup-toolkit-deptrac` — Deptrac architecture dependency rules for web apps, CLI apps, libraries, and modular projects
 - `/setup-toolkit-doctest` — Doctest, the port of k-kinzal/doctest-php that runs PHPDoc examples as PHPUnit test cases
 - `/setup-toolkit-docgen` — DocGen static documentation site with full types, relations, layers, doctest examples, and a two-revision diff mode
@@ -88,6 +89,7 @@ The [API documentation site](https://k-kinzal.github.io/php-ai-toolkit/) is gene
 and published on every push to `main`.
 
 - [DocGen](docs/docgen.md): DocGen documentation scope, caching, and generated site behavior
+- [DocGuard](docs/doc-guard.md): DocGuard Markdown document structure constraints
 - [Doctest](docs/doctest.md): Running the examples written in PHPDoc blocks as PHPUnit tests, the assertion notation, and how the port differs from upstream
 - [LocGuard](docs/loc-guard.md): LocGuard source metric limits and reporting
 - [PHPStan AI Formatter](docs/phpstan-ai-formatter.md): The `ai` error formatter, its mode detection, and its output

@@ -40,7 +40,7 @@ final class SkillInstallerTest extends TestCase
 {
     public function testInstallCreatesSymlink(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         mkdir($path . '/source/test-skill', 0755, true);
         mkdir($path . '/target', 0755, true);
         file_put_contents($path . '/source/test-skill/SKILL.md', 'content');
@@ -63,7 +63,7 @@ final class SkillInstallerTest extends TestCase
 
     public function testInstallCopiesSkillWhenCopyModeEnabled(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         mkdir($path . '/source/test-skill', 0755, true);
         mkdir($path . '/target', 0755, true);
         file_put_contents($path . '/source/test-skill/SKILL.md', 'content');
@@ -87,7 +87,7 @@ final class SkillInstallerTest extends TestCase
 
     public function testInstallSkipsExistingSkillWithoutForce(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         mkdir($path . '/source/test-skill', 0755, true);
         mkdir($path . '/target/test-skill', 0755, true);
         $output = [];
@@ -108,7 +108,7 @@ final class SkillInstallerTest extends TestCase
 
     public function testInstallOverwritesExistingWithForce(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         mkdir($path . '/source/test-skill', 0755, true);
         mkdir($path . '/target/test-skill', 0755, true);
         file_put_contents($path . '/source/test-skill/SKILL.md', 'content');

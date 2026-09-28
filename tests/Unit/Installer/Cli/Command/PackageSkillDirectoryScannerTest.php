@@ -28,7 +28,7 @@ final class PackageSkillDirectoryScannerTest extends TestCase
 {
     public function testScanReturnsSkillDirectoriesAndIgnoresGitkeep(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         mkdir($path . '/skill-a', 0755, true);
         mkdir($path . '/skill-b', 0755, true);
         file_put_contents($path . '/.gitkeep', '');

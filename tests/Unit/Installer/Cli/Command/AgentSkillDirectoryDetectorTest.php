@@ -27,7 +27,7 @@ final class AgentSkillDirectoryDetectorTest extends TestCase
 {
     public function testDetectReturnsDefaultClaudeWhenNoAgentsExist(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         mkdir($path, 0755, true);
 
         try {
@@ -39,7 +39,7 @@ final class AgentSkillDirectoryDetectorTest extends TestCase
 
     public function testDetectReturnsDetectedAgentDirectories(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         mkdir($path . '/.claude', 0755, true);
         mkdir($path . '/.agents', 0755, true);
 

@@ -73,7 +73,7 @@ final class ApplicationTest extends TestCase
 {
     public function testRunHelpFlag(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -117,7 +117,7 @@ final class ApplicationTest extends TestCase
 
     public function testRunHelpShortFlag(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -161,7 +161,7 @@ final class ApplicationTest extends TestCase
 
     public function testRunVersionFlag(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -205,7 +205,7 @@ final class ApplicationTest extends TestCase
 
     public function testRunUnknownCommand(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -249,7 +249,7 @@ final class ApplicationTest extends TestCase
 
     public function testRunDefaultsToInstall(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -296,7 +296,7 @@ final class ApplicationTest extends TestCase
 
     public function testRunExplicitInstallCommand(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -345,7 +345,7 @@ final class ApplicationTest extends TestCase
 
     public function testRunInstallWithForceFlag(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -393,7 +393,7 @@ final class ApplicationTest extends TestCase
 
     public function testRunInstallWithCopyFlag(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);

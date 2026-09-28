@@ -27,7 +27,7 @@ final class SkillFilesystemOperatorTest extends TestCase
 {
     public function testEnsureDirectoryCreatesNestedDirectory(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $target = $path . '/nested/skills';
 
         try {
@@ -41,7 +41,7 @@ final class SkillFilesystemOperatorTest extends TestCase
 
     public function testRemoveDeletesDirectoryTree(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         mkdir($path . '/nested', 0755, true);
         file_put_contents($path . '/nested/file.txt', 'content');
 
@@ -52,7 +52,7 @@ final class SkillFilesystemOperatorTest extends TestCase
 
     public function testCopyDirectoryCopiesNestedFiles(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $source = $path . '/source';
         $target = $path . '/target';
         mkdir($source . '/nested', 0755, true);
@@ -68,7 +68,7 @@ final class SkillFilesystemOperatorTest extends TestCase
 
     public function testSymlinkCreatesSymlink(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         mkdir($path . '/source', 0755, true);
 
         try {

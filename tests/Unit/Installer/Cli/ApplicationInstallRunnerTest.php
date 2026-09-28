@@ -53,7 +53,7 @@ final class ApplicationInstallRunnerTest extends TestCase
 {
     public function testRunWritesHeaderAndRunsInstallCommand(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($packageRoot . '/skills/test-skill', 0755, true);

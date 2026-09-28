@@ -35,7 +35,7 @@ final class SkillInstallationRunnerTest extends TestCase
 {
     public function testInstallInstallsSkillsIntoEachTargetDirectory(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         mkdir($path . '/package/skills/test-skill', 0755, true);
         mkdir($path . '/project', 0755, true);
         file_put_contents($path . '/package/skills/test-skill/SKILL.md', 'content');

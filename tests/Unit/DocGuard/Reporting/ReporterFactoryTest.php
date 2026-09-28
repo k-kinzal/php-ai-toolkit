@@ -17,7 +17,6 @@ use Toolkit\DocGuard\Reporting\AiReportSummary;
 use Toolkit\DocGuard\Reporting\AiViolationAction;
 use Toolkit\DocGuard\Reporting\AiViolationFormatter;
 use Toolkit\DocGuard\Reporting\JsonReporter;
-use Toolkit\DocGuard\Reporting\Reporter;
 use Toolkit\DocGuard\Reporting\ReporterFactory;
 use Toolkit\DocGuard\Reporting\TextReporter;
 use Toolkit\DocGuard\Reporting\ViolationFieldComparator;
@@ -34,7 +33,6 @@ use Toolkit\DocGuard\Reporting\ViolationSorter;
  * @uses \Toolkit\DocGuard\DocGuardException
  * @uses \Toolkit\DocGuard\Reporting\JsonReporter
  * @uses \Toolkit\DocGuard\Config\ReportConfig
- * @uses \Toolkit\DocGuard\Reporting\Reporter
  * @uses \Toolkit\DocGuard\Reporting\TextReporter
  * @uses \Toolkit\DocGuard\Analysis\Violation
  * @uses \Toolkit\DocGuard\Reporting\ViolationFieldComparator
@@ -50,7 +48,6 @@ use Toolkit\DocGuard\Reporting\ViolationSorter;
 #[UsesClass(DocGuardException::class)]
 #[UsesClass(JsonReporter::class)]
 #[UsesClass(ReportConfig::class)]
-#[UsesClass(Reporter::class)]
 #[UsesClass(TextReporter::class)]
 #[UsesClass(Violation::class)]
 #[UsesClass(ViolationFieldComparator::class)]

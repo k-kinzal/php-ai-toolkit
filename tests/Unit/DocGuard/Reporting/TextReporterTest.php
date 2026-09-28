@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Toolkit\DocGuard\Analysis\AnalysisResult;
 use Toolkit\DocGuard\Analysis\Violation;
 use Toolkit\DocGuard\Config\ReportConfig;
-use Toolkit\DocGuard\Reporting\Reporter;
 use Toolkit\DocGuard\Reporting\TextReporter;
 use Toolkit\DocGuard\Reporting\ViolationFieldComparator;
 use Toolkit\DocGuard\Reporting\ViolationSorter;
@@ -19,7 +18,6 @@ use Toolkit\DocGuard\Reporting\ViolationSorter;
  * @covers \Toolkit\DocGuard\Reporting\TextReporter
  * @uses \Toolkit\DocGuard\Analysis\AnalysisResult
  * @uses \Toolkit\DocGuard\Config\ReportConfig
- * @uses \Toolkit\DocGuard\Reporting\Reporter
  * @uses \Toolkit\DocGuard\Analysis\Violation
  * @uses \Toolkit\DocGuard\Reporting\ViolationFieldComparator
  * @uses \Toolkit\DocGuard\Reporting\ViolationSorter
@@ -27,7 +25,6 @@ use Toolkit\DocGuard\Reporting\ViolationSorter;
 #[CoversClass(TextReporter::class)]
 #[UsesClass(AnalysisResult::class)]
 #[UsesClass(ReportConfig::class)]
-#[UsesClass(Reporter::class)]
 #[UsesClass(Violation::class)]
 #[UsesClass(ViolationFieldComparator::class)]
 #[UsesClass(ViolationSorter::class)]

@@ -61,7 +61,6 @@ use Toolkit\DocGuard\Reporting\AiReportSummary;
 use Toolkit\DocGuard\Reporting\AiViolationAction;
 use Toolkit\DocGuard\Reporting\AiViolationFormatter;
 use Toolkit\DocGuard\Reporting\JsonReporter;
-use Toolkit\DocGuard\Reporting\Reporter;
 use Toolkit\DocGuard\Reporting\ReporterFactory;
 use Toolkit\DocGuard\Reporting\TextReporter;
 use Toolkit\DocGuard\Reporting\ViolationFieldComparator;
@@ -118,7 +117,6 @@ use Toolkit\DocGuard\Reporting\ViolationSorter;
  * @uses \Toolkit\DocGuard\Markdown\ParserState
  * @uses \Toolkit\DocGuard\Config\ReportConfig
  * @uses \Toolkit\DocGuard\Config\ReportConfigReader
- * @uses \Toolkit\DocGuard\Reporting\Reporter
  * @uses \Toolkit\DocGuard\Reporting\ReporterFactory
  * @uses \Toolkit\DocGuard\Markdown\SetextUnderlineMatcher
  * @uses \Toolkit\DocGuard\Reporting\TextReporter
@@ -178,7 +176,6 @@ use Toolkit\DocGuard\Reporting\ViolationSorter;
 #[UsesClass(ParserState::class)]
 #[UsesClass(ReportConfig::class)]
 #[UsesClass(ReportConfigReader::class)]
-#[UsesClass(Reporter::class)]
 #[UsesClass(ReporterFactory::class)]
 #[UsesClass(SetextUnderlineMatcher::class)]
 #[UsesClass(TextReporter::class)]

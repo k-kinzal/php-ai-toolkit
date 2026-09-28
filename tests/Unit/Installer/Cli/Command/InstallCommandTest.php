@@ -61,7 +61,7 @@ final class InstallCommandTest extends TestCase
 {
     public function testExecuteNoSkillsDirectoryOutputsInfo(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -105,7 +105,7 @@ final class InstallCommandTest extends TestCase
 
     public function testExecuteEmptySkillsDirectoryOutputsInfo(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -151,7 +151,7 @@ final class InstallCommandTest extends TestCase
 
     public function testExecuteGitkeepIsIgnored(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -198,7 +198,7 @@ final class InstallCommandTest extends TestCase
 
     public function testExecuteCreatesSymlinksDefaultsToClaudeDir(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -248,7 +248,7 @@ final class InstallCommandTest extends TestCase
 
     public function testExecuteCopyMode(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -300,7 +300,7 @@ final class InstallCommandTest extends TestCase
 
     public function testExecuteSkipsExistingSkill(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -348,7 +348,7 @@ final class InstallCommandTest extends TestCase
 
     public function testExecuteForceOverwritesExisting(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -400,7 +400,7 @@ final class InstallCommandTest extends TestCase
 
     public function testExecuteForceOverwritesExistingSymlink(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -450,7 +450,7 @@ final class InstallCommandTest extends TestCase
 
     public function testExecuteInstallsMultipleSkills(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -501,7 +501,7 @@ final class InstallCommandTest extends TestCase
 
     public function testExecuteCreatesTargetDirectory(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -548,7 +548,7 @@ final class InstallCommandTest extends TestCase
 
     public function testExecuteDetectsMultipleAgentDirectories(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -599,7 +599,7 @@ final class InstallCommandTest extends TestCase
 
     public function testExecuteInstallsOnlyToDetectedAgents(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);
@@ -648,7 +648,7 @@ final class InstallCommandTest extends TestCase
 
     public function testExecuteOutputIncludesAgentHeaders(): void
     {
-        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid();
+        $path = sys_get_temp_dir() . '/php-ai-toolkit-test-' . uniqid('', true);
         $projectRoot = $path . '/project';
         $packageRoot = $path . '/package';
         mkdir($projectRoot, 0755, true);

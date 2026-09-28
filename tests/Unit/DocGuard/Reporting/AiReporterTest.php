@@ -15,7 +15,6 @@ use Toolkit\DocGuard\Reporting\AiReportGuidance;
 use Toolkit\DocGuard\Reporting\AiReportSummary;
 use Toolkit\DocGuard\Reporting\AiViolationAction;
 use Toolkit\DocGuard\Reporting\AiViolationFormatter;
-use Toolkit\DocGuard\Reporting\Reporter;
 use Toolkit\DocGuard\Reporting\ViolationFieldComparator;
 use Toolkit\DocGuard\Reporting\ViolationSorter;
 
@@ -27,7 +26,6 @@ use Toolkit\DocGuard\Reporting\ViolationSorter;
  * @uses \Toolkit\DocGuard\Reporting\AiViolationFormatter
  * @uses \Toolkit\DocGuard\Analysis\AnalysisResult
  * @uses \Toolkit\DocGuard\Config\ReportConfig
- * @uses \Toolkit\DocGuard\Reporting\Reporter
  * @uses \Toolkit\DocGuard\Analysis\Violation
  * @uses \Toolkit\DocGuard\Reporting\ViolationFieldComparator
  * @uses \Toolkit\DocGuard\Reporting\ViolationSorter
@@ -39,7 +37,6 @@ use Toolkit\DocGuard\Reporting\ViolationSorter;
 #[UsesClass(AiViolationFormatter::class)]
 #[UsesClass(AnalysisResult::class)]
 #[UsesClass(ReportConfig::class)]
-#[UsesClass(Reporter::class)]
 #[UsesClass(Violation::class)]
 #[UsesClass(ViolationFieldComparator::class)]
 #[UsesClass(ViolationSorter::class)]

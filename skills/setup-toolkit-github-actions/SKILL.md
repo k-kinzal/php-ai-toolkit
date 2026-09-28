@@ -5,8 +5,8 @@ description: >-
   create or update .github/workflows/ci.yml, run toolkit checks in CI, pin
   GitHub Actions to full commit SHAs, align CI with supported PHP versions,
   harden workflow permissions and concurrency for Composer, PHPUnit, ParaTest,
-  PHPStan, PHP-CS-Fixer, PHPCompatibility, LocGuard, TreeGuard, and Deptrac,
-  lay out one workflow per package in a monorepo, or refresh the Context7
+  PHPStan, PHP-CS-Fixer, PHPCompatibility, LocGuard, TreeGuard, DocGuard, and
+  Deptrac, lay out one workflow per package in a monorepo, or refresh the Context7
   documentation index when the default branch, a tag, or a release changes.
 ---
 
@@ -22,8 +22,8 @@ Read these files before editing CI:
 - `composer.json`: `require.php`, `config.platform.php`, and Composer scripts.
 - Existing `.github/workflows/*.yml` or `.yaml`.
 - Toolkit configs that imply CI gates: `.php-cs-fixer.dist.php`,
-  `phpstan.neon`, `phpcs.xml.dist`, `loc.yaml`, `tree.yaml`, `deptrac.yaml`,
-  `phpunit.xml.dist`.
+  `phpstan.neon`, `phpcs.xml.dist`, `loc.yaml`, `tree.yaml`, `doc-guard.yaml`,
+  `deptrac.yaml`, `phpunit.xml.dist`.
 - Project docs that declare supported PHP versions.
 - Composer lock policy: one normal `composer.lock`, no committed lock, or
   PHP-versioned locks such as `composer.lock.php-<minor>`.
@@ -94,6 +94,7 @@ Required gates when the corresponding script/config exists:
 - `composer compat` for PHPCompatibility.
 - `composer loc-guard` for LocGuard.
 - `composer tree-guard` for TreeGuard.
+- `composer doc-guard` for DocGuard.
 - `composer deptrac` for Deptrac.
 - `composer test` for the PHPUnit suite when ParaTest is installed, otherwise
   `composer test:unit`.
@@ -110,7 +111,7 @@ and drifts from then on. When a config file exists and its Composer script does
 not run anywhere in CI, that is the finding to report, not a detail to leave.
 
 Keep `compat` inside the `lint` job alongside formatting, PHPStan, LocGuard,
-TreeGuard, and Deptrac. It may be a separate step for visibility, but it should
+TreeGuard, DocGuard, and Deptrac. It may be a separate step for visibility, but it should
 not be a separate CI job unless the project has an explicit reason. Namespace
 visibility is enforced by the toolkit's PHPStan rules and needs no separate CI
 step.
@@ -312,8 +313,8 @@ bad Composer constraint by narrowing the workflow matrix.
    an older line only when Composer proves the target matrix needs it.
 7. Run the lint gates as named steps in one `lint` job on the highest supported
    runtime compatible with the tooling. PHPCompatibility checks the declared PHP
-   range; repeating formatting, PHPStan, LocGuard, TreeGuard, and Deptrac on every
-   runtime adds no distinct gate.
+   range; repeating formatting, PHPStan, LocGuard, TreeGuard, DocGuard, and Deptrac
+   on every runtime adds no distinct gate.
 8. Use the highest matrix minor for one-off mutation, documentation, and benchmark
    jobs unless the tool cannot run there. Record that limitation rather than
    copying the template's PHP literal.
@@ -437,6 +438,7 @@ composer phpstan
 composer compat
 composer loc-guard
 composer tree-guard
+composer doc-guard
 composer deptrac
 composer test:unit
 composer test

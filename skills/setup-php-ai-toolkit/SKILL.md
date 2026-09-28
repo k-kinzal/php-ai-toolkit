@@ -55,7 +55,7 @@ Read and follow the component skills in this order:
    `/setup-toolkit-fuzzing` only where structured properties or coverage-guided
    exploration provide a meaningful oracle
 5. `/setup-toolkit-php-cs-fixer` and `/setup-toolkit-php-compatibility`
-6. `/setup-toolkit-loc-guard` and `/setup-toolkit-tree-guard`
+6. `/setup-toolkit-loc-guard`, `/setup-toolkit-tree-guard`, and `/setup-toolkit-doc-guard`
 7. `/setup-toolkit-deptrac`
 8. `/setup-toolkit-infection`
 9. `/setup-toolkit-docgen`
@@ -74,13 +74,14 @@ representative workload exists. Skip either fuzzing or PBT when no contract has 
 generator and oracle strong enough to justify it, and report those decisions.
 
 The core adoption is incomplete until PHPStan, PHPUnit, PHP-CS-Fixer,
-PHPCompatibility, LocGuard, TreeGuard, Deptrac, Infection, and GitHub Actions are
-installed, configured, wired into Composer, and exercised. Doctest and DocGen are
+PHPCompatibility, LocGuard, TreeGuard, DocGuard, Deptrac, Infection, and GitHub
+Actions are installed, configured, wired into Composer, and exercised. Doctest and DocGen are
 also part of a complete adoption when the project has maintained PHPDoc examples or
 published API documentation.
 
 Do not silently classify a core component as inapplicable. LocGuard and TreeGuard
-apply to every project with maintained production PHP source. PHPCompatibility
+apply to every project with maintained production PHP source, and DocGuard applies
+to every project with a README.md, AGENTS.md, or docs/. PHPCompatibility
 applies whenever the project declares a PHP support range. Deptrac applies even to
 a flat library: discover or create a meaningful responsibility boundary, and stop
 for the project's architecture decision if one cannot be derived without guessing.
@@ -98,6 +99,7 @@ Composer scripts rather than against work already attempted:
 | PHPCompatibility | `phpcs.xml.dist`, and `composer compat` |
 | LocGuard | `loc.yaml`, and `composer loc-guard` |
 | TreeGuard | `tree.yaml`, and `composer tree-guard` |
+| DocGuard | `doc-guard.yaml`, and `composer doc-guard` |
 | Deptrac | `deptrac.yaml`, and `composer deptrac` |
 | Infection | `infection.json5`, and a scheduled `mutation.yml` workflow separate from `ci.yml` |
 | Composer autoload | `composer autoload:check`, first in `lint` |

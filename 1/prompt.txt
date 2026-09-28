@@ -1,0 +1,21 @@
+document-design / doc-ui v1.1.0 がリリースされました。現在の v1.0.0 から v1.1.0 へ更新してください。プロジェクトの AGENTS.md と既存の更新方式に従って実装・検証してください。
+
+確認済みの配布元:
+- Release: https://github.com/k-kinzal/document-design/releases/tag/v1.1.0
+- Tag commit: ee789d04fb775b735c3217d74019642485c9a297
+- CSS: https://k-kinzal.github.io/document-design/v1.1.0/document-design.css
+- CSS SHA-256: 8874255e9deb2d159016522e985015be6a5d7a88c90c077704b5d762567b7ebd
+- MIT license: https://k-kinzal.github.io/document-design/v1.1.0/LICENSE
+- Design reference: https://k-kinzal.github.io/document-design/v1.1.0/DESIGN.md
+- Docs: https://k-kinzal.github.io/document-design/components/
+
+主な変更は、A4/Letter とページ番号の印刷設定、引用 .cite と出典 .sources、印刷URL設定、レポート用タイムライン、.hero > .figures、狭いコンテナとレポートの段組み・余白・改ページの改善です。既存の利用箇所に関連する新APIと互換性を確認してください。
+
+配布CSSは改変せずに取り込み、取得したファイルの SHA-256、タグのコミット、MITライセンスと出典を記録してください。実行時のネットワーク取得を増やさず、file:// とオフラインでの表示を維持してください。既存のアーカイブ文書が参照する旧版資産の名前や内容は維持し、新規生成物を v1.1.0 に切り替えてください。
+
+php-ai-toolkit の更新対象:
+- resources/docgen/ の固定CSSを document-design-v1.1.0.css として取り込み、document-design-LICENSE.txt の出典・版・チェックサムとライセンス本文を更新する。
+- src/DocGen/Render/AssetPublisher.php と PageChrome.php の配布資産名・HTML参照を新版へ切り替える。
+- docs/docgen.md、AssetPublisherTest.php、PageChromeTest.php と関連するスナップショット・フィクスチャを更新する。
+- 既存の style.css と生成HTMLが新版の公開APIと整合するか確認する。変更が必要なら既存の doc-ui コンポーネントとトークンに沿って修正する。
+- 代表的なDocGen出力を生成し、カタログ・ナビゲーション・長文・図表・狭幅・日本語・ダークテーマ・印刷・オフライン表示を確認する。関連テストと必要な品質チェックを実行し、変更内容と検証結果を報告する。

@@ -8,6 +8,7 @@ $finder = (new PhpCsFixer\Finder())
     ->exclude('build')
     ->exclude('node_modules')
     ->exclude('tests/Fixture')
+    ->notPath('*/tests/Fixture/*')
     ->exclude('var')
     ->exclude('vendor');
 

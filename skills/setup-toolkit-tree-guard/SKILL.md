@@ -11,6 +11,13 @@ description: >-
 
 # Setup TreeGuard (Directory Structure Guardrails)
 
+## Unified Guard entry point
+
+The current package is `k-kinzal/guard-php`, which exposes `vendor/bin/guard`. For a new project, run `guard init`, then configure the `structure` section of `guard.yaml`. Preserve the fixed constraints documented below. Run `guard check` from Composer and CI; use `guard apply --dry-run` to inspect configuration-value repairs and `guard apply` for authorized changes. Source and structural violations still require code/document edits.
+
+The legacy workflow below is retained for migration. When starting with these legacy templates, run `guard init` after adaptation to import them without changing constraints, then retire the separate legacy policies. Do not replace an existing `guard.yaml` or reduce constraints to pass a check. See `vendor/k-kinzal/php-ai-toolkit/docs/guard.md`. Legacy generation/explanation executables are available as `php vendor/k-kinzal/guard-php/bin/tree-guard`.
+
+
 This skill configures `tree-guard`, the php-ai-toolkit CLI for directory file counts, subdirectory counts, subtree totals, nesting depth, naming conventions, required files, empty directories, and reporter output.
 
 ## Prerequisites
@@ -142,7 +149,7 @@ If the project already has `lint` or `check`, merge `@tree-guard` into it after 
 After applying:
 
 ```bash
-vendor/bin/tree-guard --config=tree.yaml
+php vendor/k-kinzal/guard-php/bin/tree-guard --config=tree.yaml
 ```
 
 Exit codes:

@@ -22,7 +22,7 @@ Read these files before editing CI:
 - `composer.json`: `require.php`, `config.platform.php`, and Composer scripts.
 - Existing `.github/workflows/*.yml` or `.yaml`.
 - Toolkit configs that imply CI gates: `.php-cs-fixer.dist.php`,
-  `phpstan.neon`, `phpcs.xml.dist`, `loc.yaml`, `tree.yaml`, `doc-guard.yaml`,
+  `phpstan.neon`, `phpcs.xml.dist`, `guard.yaml`,
   `deptrac.yaml`, `phpunit.xml.dist`.
 - Project docs that declare supported PHP versions.
 - Composer lock policy: one normal `composer.lock`, no committed lock, or

@@ -1,0 +1,24 @@
+<?php
+
+namespace Nette\Neon;
+
+class Exception extends \Exception
+{
+}
+
+class Neon
+{
+    /**
+     * @throws Exception
+     */
+    public static function decode(string $input): mixed
+    {
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function encode(mixed $value, bool $blockMode = false, string $indentation = "\t"): string
+    {
+    }
+}

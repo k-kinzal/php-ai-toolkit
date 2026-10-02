@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - composer.json
+      - packages/*/composer.json
       - composer.lock
 
 permissions:

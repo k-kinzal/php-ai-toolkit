@@ -3,7 +3,12 @@
     "$schema": "vendor/infection/infection/resources/schema.json",
     "source": {
         "directories": [
-            "src"
+            "src",
+            "packages/guard-php/src",
+            "packages/docgen-php/src",
+            "packages/phpstan-guard-rules/src",
+            "packages/phpunit-ai-reporter/src",
+            "packages/phpstan-ai-formatter/src"
         ],
         "excludes": [
             "PhpUnit/TestReporter/Legacy",

@@ -1,0 +1,28 @@
+{
+    "name": "k-kinzal/phpunit-ai-reporter",
+    "description": "AI-readable PHPUnit reporting and PHPDoc example tests",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "nikic/php-parser": "^4.19 || ^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Toolkit\\PhpUnit\\": "src/PhpUnit/",
+            "Toolkit\\Doctest\\": "src/Doctest/",
+            "Toolkit\\Shared\\": "src/Shared/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        },
+        "classmap": [
+            "tests/Fixture/"
+        ]
+    },
+    "suggest": {
+        "phpunit/phpunit": "^9.6 || ^10.5 || ^11 || ^12 || ^13 to run tests and report failures"
+    }
+}

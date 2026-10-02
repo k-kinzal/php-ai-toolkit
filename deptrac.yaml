@@ -2,6 +2,7 @@
 deptrac:
   paths:
     - ./src
+    - ./packages
   exclude_files:
     - '#.*/tests?/.*#'
     - '#.*/vendor/.*#'
@@ -13,52 +14,60 @@ deptrac:
     - name: DocGen
       collectors:
         - type: directory
-          value: src/DocGen/.*
+          value: packages/docgen-php/src/DocGen/.*
     - name: Doctest
       collectors:
         - type: directory
-          value: src/Doctest/.*
+          value: packages/phpunit-ai-reporter/src/Doctest/.*
     - name: LocGuard
       collectors:
         - type: directory
-          value: src/LocGuard/.*
+          value: packages/guard-php/src/LocGuard/.*
     - name: TreeGuard
       collectors:
         - type: directory
-          value: src/TreeGuard/.*
+          value: packages/guard-php/src/TreeGuard/.*
     - name: DocGuard
       collectors:
         - type: directory
-          value: src/DocGuard/.*
+          value: packages/guard-php/src/DocGuard/.*
     - name: PhpStanRule
       collectors:
         - type: directory
-          value: src/PhpStan/Rule/.*
+          value: packages/phpstan-guard-rules/src/PhpStan/Rule/.*
     - name: PhpStanExtension
       collectors:
         - type: directory
-          value: src/PhpStan/Extension/.*
+          value: packages/phpstan-guard-rules/src/PhpStan/Extension/.*
     - name: PhpStanSupport
       collectors:
         - type: directory
-          value: src/PhpStan/Support/.*
+          value: packages/phpstan-guard-rules/src/PhpStan/Support/.*
     - name: PhpStanThrowType
       collectors:
         - type: directory
-          value: src/PhpStan/ThrowType/.*
+          value: packages/phpstan-guard-rules/src/PhpStan/ThrowType/.*
     - name: PhpStanErrorFormatter
       collectors:
         - type: directory
-          value: src/PhpStan/ErrorFormatter/.*
+          value: packages/phpstan-ai-formatter/src/PhpStan/ErrorFormatter/.*
     - name: PhpUnitTestReporter
       collectors:
         - type: directory
-          value: src/PhpUnit/TestReporter/.*
+          value: packages/phpunit-ai-reporter/src/PhpUnit/TestReporter/.*
     - name: Shared
       collectors:
         - type: directory
-          value: src/Shared/.*
+          value: packages/phpunit-ai-reporter/src/Shared/.*
+    - name: Guard
+      collectors:
+        - type: directory
+          value: packages/guard-php/src/Guard/.*
   ruleset:
+    Guard:
+      - LocGuard
+      - TreeGuard
+      - DocGuard
     Installer: ~
     DocGen: ~
     Doctest: ~

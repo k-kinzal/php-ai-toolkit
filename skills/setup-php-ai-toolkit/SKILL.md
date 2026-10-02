@@ -97,9 +97,9 @@ Composer scripts rather than against work already attempted:
 | PHPUnit | version-correct configuration, and `composer test:unit` |
 | PHP-CS-Fixer | `.php-cs-fixer.dist.php`, and `composer format:check` |
 | PHPCompatibility | `phpcs.xml.dist`, and `composer compat` |
-| LocGuard | `loc.yaml`, and `composer loc-guard` |
-| TreeGuard | `tree.yaml`, and `composer tree-guard` |
-| DocGuard | `doc-guard.yaml`, and `composer doc-guard` |
+| Source metrics | `guard.yaml` → `quality`, and `composer guard` |
+| Directory structure | `guard.yaml` → `structure`, and `composer guard` |
+| Document structure | `guard.yaml` → `documentation`, and `composer guard` |
 | Deptrac | `deptrac.yaml`, and `composer deptrac` |
 | Infection | `infection.json5`, and a scheduled `mutation.yml` workflow separate from `ci.yml` |
 | Composer autoload | `composer autoload:check`, first in `lint` |

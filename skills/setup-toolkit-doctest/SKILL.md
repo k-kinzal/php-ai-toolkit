@@ -53,7 +53,7 @@ configuration-only integration: no test file is written.
         <directory>REPLACE_WITH_UNIT_TEST_PATH</directory>
     </testsuite>
     <testsuite name="doctest">
-        <file>vendor/k-kinzal/php-ai-toolkit/src/Doctest/DoctestSuite.php</file>
+        <file>vendor/k-kinzal/phpunit-ai-reporter/src/Doctest/DoctestSuite.php</file>
     </testsuite>
 </testsuites>
 
@@ -92,7 +92,7 @@ after the parameter in upper case behind `DOCTEST_`:
 ```xml
 <testsuites>
     <testsuite name="doctest">
-        <file>vendor/k-kinzal/php-ai-toolkit/src/Doctest/Legacy/LegacyDoctestSuite.php</file>
+        <file>vendor/k-kinzal/phpunit-ai-reporter/src/Doctest/Legacy/LegacyDoctestSuite.php</file>
     </testsuite>
 </testsuites>
 

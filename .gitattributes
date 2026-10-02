@@ -9,8 +9,8 @@
 /.gitignore       export-ignore
 /.php-cs-fixer.dist.php export-ignore
 /infection.json5  export-ignore
-/loc.yaml         export-ignore
-/tree.yaml        export-ignore
+/guard.yaml       export-ignore
+/packages/*/tests/ export-ignore
 /deptrac.yaml     export-ignore
 /deptrac.php      export-ignore
 /phpcs.xml.dist   export-ignore

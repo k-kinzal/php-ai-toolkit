@@ -1,0 +1,11 @@
+parameters:
+    errorFormat: ai
+
+services:
+    toolkit.agentDetector:
+        class: Toolkit\Shared\AgentDetector
+
+    errorFormatter.ai:
+        class: Toolkit\PhpStan\ErrorFormatter\AiErrorFormatter
+        arguments:
+            relativePathHelper: @simpleRelativePathHelper

@@ -1,11 +1,2 @@
-parameters:
-    errorFormat: ai
-
-services:
-    toolkit.agentDetector:
-        class: Toolkit\Shared\AgentDetector
-
-    errorFormatter.ai:
-        class: Toolkit\PhpStan\ErrorFormatter\AiErrorFormatter
-        arguments:
-            relativePathHelper: @simpleRelativePathHelper
+includes:
+    - packages/phpstan-ai-formatter/extension.neon

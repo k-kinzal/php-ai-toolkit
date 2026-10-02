@@ -12,6 +12,13 @@ description: >-
 
 # Setup DocGuard (Document Structure Guardrails)
 
+## Unified Guard entry point
+
+The current package is `k-kinzal/guard-php`, which exposes `vendor/bin/guard`. For a new project, run `guard init`, then configure the `documentation` section of `guard.yaml`. Preserve the fixed constraints documented below. Run `guard check` from Composer and CI; use `guard apply --dry-run` to inspect configuration-value repairs and `guard apply` for authorized changes. Source and structural violations still require code/document edits.
+
+The legacy workflow below is retained for migration. When starting with these legacy templates, run `guard init` after adaptation to import them without changing constraints, then retire the separate legacy policies. Do not replace an existing `guard.yaml` or reduce constraints to pass a check. See `vendor/k-kinzal/php-ai-toolkit/docs/guard.md`. Legacy generation/explanation executables are available as `php vendor/k-kinzal/guard-php/bin/doc-guard`.
+
+
 This skill configures `doc-guard`, the php-ai-toolkit CLI that fixes the heading structure of Markdown documents. A human-managed `doc-guard.yaml` declares each document's headings — level, text, and order — and lists the patterns under which no undeclared document may appear. Content inside sections stays free to edit.
 
 ## Prerequisites
@@ -41,13 +48,13 @@ repository's root constraint or lock resolution.
 The reference structure is the structure the documents have now. Generate it instead of writing it by hand:
 
 ```bash
-vendor/bin/doc-guard --generate > doc-guard.yaml
+php vendor/k-kinzal/guard-php/bin/doc-guard --generate > doc-guard.yaml
 ```
 
 Without paths, the generator declares every `*.md` file in the working directory and every Markdown file below `docs/`, and scans the same patterns. Pass files and directories to choose the set explicitly:
 
 ```bash
-vendor/bin/doc-guard --generate README.md AGENTS.md docs > doc-guard.yaml
+php vendor/k-kinzal/guard-php/bin/doc-guard --generate README.md AGENTS.md docs > doc-guard.yaml
 ```
 
 Review the generated file before keeping it:
@@ -80,7 +87,7 @@ Do not add `max_level` to `README.md` or `AGENTS.md`, and do not drop a document
 Configuration paths are relative to the configuration file, so each file describes the documents next to it:
 
 - Each package gets its own `doc-guard.yaml`, generated in the package directory, declaring its `README.md` and `docs/` and scanning `*.md` and `docs/**/*.md`. Run it from the package's `lint` script next to `tree-guard`.
-- The repository root gets a `doc-guard.yaml` for the root `README.md`, `AGENTS.md`, and `CLAUDE.md`, scanning `*.md` only. Generate it from the root with `vendor/bin/doc-guard --generate README.md AGENTS.md CLAUDE.md`, then add `scan: ['*.md']` if new root documents should fail.
+- The repository root gets a `doc-guard.yaml` for the root `README.md`, `AGENTS.md`, and `CLAUDE.md`, scanning `*.md` only. Generate it from the root with `php vendor/k-kinzal/guard-php/bin/doc-guard --generate README.md AGENTS.md CLAUDE.md`, then add `scan: ['*.md']` if new root documents should fail.
 
 Run the root configuration where the root is checked, such as a root Composer script invoked by a root CI job. If the repository has no root-level CI, run it from the package workflow that owns repository-wide checks with `doc-guard --config=../../doc-guard.yaml`; do not copy the root documents into a package configuration.
 
@@ -121,7 +128,7 @@ A structure change is a human decision. When one is approved, edit the documents
 After applying:
 
 ```bash
-vendor/bin/doc-guard --config=doc-guard.yaml
+php vendor/k-kinzal/guard-php/bin/doc-guard --config=doc-guard.yaml
 ```
 
 Exit codes:

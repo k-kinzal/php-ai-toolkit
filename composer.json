@@ -1,9 +1,17 @@
 {
     "name": "k-kinzal/php-ai-toolkit",
     "description": "A comprehensive toolkit for AI-assisted PHP development — PHPStan rules, PHPUnit reporters, config templates, and more",
-    "type": "phpstan-extension",
+    "type": "library",
     "license": "MIT",
-    "keywords": ["phpstan", "phpunit", "ai", "toolkit", "static analysis", "custom rules", "templates"],
+    "keywords": [
+        "phpstan",
+        "phpunit",
+        "ai",
+        "toolkit",
+        "static analysis",
+        "custom rules",
+        "templates"
+    ],
     "homepage": "https://k-kinzal.github.io/php-ai-toolkit/",
     "support": {
         "source": "https://github.com/k-kinzal/php-ai-toolkit",
@@ -12,11 +20,11 @@
     },
     "require": {
         "php": "^8.0",
-        "nikic/php-parser": "^4.19 || ^5.0",
-        "phpstan/phpdoc-parser": "^1.33 || ^2.0",
-        "phpstan/phpstan": "^1.12 || ^2.0",
-        "phpstan/phpstan-strict-rules": "^1.6 || ^2.0",
-        "symfony/yaml": "^5.4 || ^6.4 || ^7.4 || ^8.0"
+        "k-kinzal/guard-php": "dev-main",
+        "k-kinzal/docgen-php": "dev-main",
+        "k-kinzal/phpstan-guard-rules": "dev-main",
+        "k-kinzal/phpunit-ai-reporter": "dev-main",
+        "k-kinzal/phpstan-ai-formatter": "dev-main"
     },
     "require-dev": {
         "brianium/paratest": "^6.11 || ^7",
@@ -32,23 +40,26 @@
     },
     "autoload": {
         "psr-4": {
-            "Toolkit\\": "src/"
-        },
-        "files": ["src/Compatibility/ClassAliases.php"]
+            "Toolkit\\Installer\\": "src/Installer/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
-        },
-        "classmap": ["tests/Fixture/"]
-    },
-    "extra": {
-        "phpstan": {
-            "includes": [
-                "extension.neon",
-                "rules.neon"
+            "Tests\\": [
+                "tests/",
+                "packages/guard-php/tests/",
+                "packages/docgen-php/tests/",
+                "packages/phpstan-guard-rules/tests/",
+                "packages/phpunit-ai-reporter/tests/",
+                "packages/phpstan-ai-formatter/tests/"
             ]
-        }
+        },
+        "classmap": [
+            "packages/docgen-php/tests/Fixture/",
+            "packages/phpstan-guard-rules/tests/Fixture/",
+            "packages/phpunit-ai-reporter/tests/Fixture/",
+            "packages/phpstan-ai-formatter/tests/Fixture/"
+        ]
     },
     "scripts": {
         "test": "@php -d memory_limit=512M tests/run.php --parallel --processes=auto",
@@ -64,28 +75,47 @@
             "@format:check",
             "@phpstan",
             "@compat",
-            "@loc-guard",
-            "@tree-guard",
-            "@doc-guard",
+            "@guard",
             "@deptrac"
         ],
         "phpstan": "phpstan analyse --memory-limit=512M",
         "compat": "phpcs",
-        "loc-guard": "@php bin/loc-guard --config=loc.yaml",
-        "tree-guard": "@php bin/tree-guard --config=tree.yaml",
-        "doc-guard": "@php bin/doc-guard --config=doc-guard.yaml",
-        "docgen": "@php bin/docgen --packages=. --exclude='tests/Fixture/*' --coverage=build/coverage-xml",
+        "loc-guard": "@guard",
+        "tree-guard": "@guard",
+        "doc-guard": "@guard",
+        "docgen": "@php packages/docgen-php/bin/docgen --packages=.,packages/* --exclude='tests/Fixture/*,packages/*/tests/Fixture/*' --coverage=build/coverage-xml",
         "doctest": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite doctest",
         "deptrac": "@php deptrac.php analyse --config-file=deptrac.yaml",
         "format": "php-cs-fixer fix --allow-risky=yes",
-        "format:check": "php-cs-fixer fix --dry-run --diff --allow-risky=yes"
+        "format:check": "php-cs-fixer fix --dry-run --diff --allow-risky=yes",
+        "guard": "@php packages/guard-php/bin/guard check",
+        "guard:apply": "@php packages/guard-php/bin/guard apply"
     },
-    "bin": ["bin/php-ai-toolkit", "bin/loc-guard", "bin/tree-guard", "bin/doc-guard", "bin/docgen"],
+    "bin": [
+        "bin/php-ai-toolkit"
+    ],
     "config": {
         "sort-packages": true,
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "infection/extension-installer": true
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/*",
+            "options": {
+                "symlink": true,
+                "versions": {
+                    "k-kinzal/guard-php": "dev-main",
+                    "k-kinzal/docgen-php": "dev-main",
+                    "k-kinzal/phpstan-guard-rules": "dev-main",
+                    "k-kinzal/phpunit-ai-reporter": "dev-main",
+                    "k-kinzal/phpstan-ai-formatter": "dev-main"
+                },
+                "reference": "config"
+            }
+        }
+    ]
 }

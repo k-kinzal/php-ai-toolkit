@@ -30,20 +30,25 @@
     <testsuites>
         <testsuite name="unit">
             <directory>tests/Unit</directory>
-            <exclude>tests/Unit/Doctest/DoctestExtensionTest.php</exclude>
-            <exclude>tests/Unit/Doctest/DoctestSuiteTest.php</exclude>
-            <exclude>tests/Unit/Doctest/Configuration/ConfigurationLoaderTest.php</exclude>
-            <exclude>tests/Unit/PhpUnit/TestReporter/AiTestReporterExtensionTest.php</exclude>
-            <exclude>tests/Unit/PhpUnit/TestReporter/EventTestIssueFactoryTest.php</exclude>
-            <exclude>tests/Unit/PhpUnit/TestReporter/EventTestNameResolverTest.php</exclude>
-            <exclude>tests/Unit/PhpUnit/TestReporter/Subscriber</exclude>
+            <directory>packages/guard-php/tests/Unit</directory>
+            <directory>packages/docgen-php/tests/Unit</directory>
+            <directory>packages/phpstan-guard-rules/tests/Unit</directory>
+            <directory>packages/phpunit-ai-reporter/tests/Unit</directory>
+            <directory>packages/phpstan-ai-formatter/tests/Unit</directory>
+            <exclude>packages/phpunit-ai-reporter/tests/Unit/Doctest/DoctestExtensionTest.php</exclude>
+            <exclude>packages/phpunit-ai-reporter/tests/Unit/Doctest/DoctestSuiteTest.php</exclude>
+            <exclude>packages/phpunit-ai-reporter/tests/Unit/Doctest/Configuration/ConfigurationLoaderTest.php</exclude>
+            <exclude>packages/phpunit-ai-reporter/tests/Unit/PhpUnit/TestReporter/AiTestReporterExtensionTest.php</exclude>
+            <exclude>packages/phpunit-ai-reporter/tests/Unit/PhpUnit/TestReporter/EventTestIssueFactoryTest.php</exclude>
+            <exclude>packages/phpunit-ai-reporter/tests/Unit/PhpUnit/TestReporter/EventTestNameResolverTest.php</exclude>
+            <exclude>packages/phpunit-ai-reporter/tests/Unit/PhpUnit/TestReporter/Subscriber</exclude>
         </testsuite>
         <testsuite name="doctest">
-            <file>src/Doctest/Legacy/LegacyDoctestSuite.php</file>
+            <file>packages/phpunit-ai-reporter/src/Doctest/Legacy/LegacyDoctestSuite.php</file>
         </testsuite>
     </testsuites>
     <php>
-        <env name="DOCTEST_DIRECTORIES" value="src"/>
+        <env name="DOCTEST_DIRECTORIES" value="src,packages/guard-php/src,packages/docgen-php/src,packages/phpstan-guard-rules/src,packages/phpunit-ai-reporter/src,packages/phpstan-ai-formatter/src"/>
         <env name="DOCTEST_EXCLUDE" value="*/Doctest/DoctestExtension.php,*/Doctest/Configuration/ConfigurationLoader.php"/>
     </php>
     <listeners>
@@ -53,9 +58,14 @@
               disableCodeCoverageIgnore="true">
         <include>
             <directory>src</directory>
+            <directory>packages/guard-php/src</directory>
+            <directory>packages/docgen-php/src</directory>
+            <directory>packages/phpstan-guard-rules/src</directory>
+            <directory>packages/phpunit-ai-reporter/src</directory>
+            <directory>packages/phpstan-ai-formatter/src</directory>
         </include>
         <exclude>
-            <file>src/Compatibility/ClassAliases.php</file>
+            <file>packages/phpstan-guard-rules/src/Compatibility/ClassAliases.php</file>
         </exclude>
     </coverage>
 </phpunit>

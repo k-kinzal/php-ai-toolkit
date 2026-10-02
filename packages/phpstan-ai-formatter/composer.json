@@ -1,0 +1,31 @@
+{
+    "name": "k-kinzal/phpstan-ai-formatter",
+    "description": "AI-readable PHPStan error formatting",
+    "type": "phpstan-extension",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "phpstan/phpstan": "^1.12 || ^2.0",
+        "k-kinzal/phpunit-ai-reporter": "^1.0 || dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "Toolkit\\PhpStan\\ErrorFormatter\\": "src/PhpStan/ErrorFormatter/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        },
+        "classmap": [
+            "tests/Fixture/"
+        ]
+    },
+    "extra": {
+        "phpstan": {
+            "includes": [
+                "extension.neon"
+            ]
+        }
+    }
+}

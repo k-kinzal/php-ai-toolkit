@@ -1,0 +1,42 @@
+{
+    "name": "k-kinzal/phpstan-guard-rules",
+    "description": "Strict PHPStan rules for AI-assisted PHP development",
+    "type": "phpstan-extension",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "nikic/php-parser": "^4.19 || ^5.0",
+        "phpstan/phpdoc-parser": "^1.33 || ^2.0",
+        "phpstan/phpstan": "^1.12 || ^2.0",
+        "k-kinzal/phpunit-ai-reporter": "^1.0 || dev-main",
+        "phpstan/phpstan-strict-rules": "^1.6 || ^2.0",
+        "k-kinzal/docgen-php": "^1.0 || dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "Toolkit\\PhpStan\\Rule\\": "src/PhpStan/Rule/",
+            "Toolkit\\PhpStan\\Extension\\": "src/PhpStan/Extension/",
+            "Toolkit\\PhpStan\\Support\\": "src/PhpStan/Support/",
+            "Toolkit\\PhpStan\\ThrowType\\": "src/PhpStan/ThrowType/",
+            "Toolkit\\Compatibility\\": "src/Compatibility/"
+        },
+        "files": [
+            "src/Compatibility/ClassAliases.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        },
+        "classmap": [
+            "tests/Fixture/"
+        ]
+    },
+    "extra": {
+        "phpstan": {
+            "includes": [
+                "rules.neon"
+            ]
+        }
+    }
+}

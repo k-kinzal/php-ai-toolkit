@@ -1,5 +1,8 @@
 # LocGuard
 
+New projects use [Guard](guard.md), published by `k-kinzal/guard-php`. Run `guard init` to import an existing legacy policy, then use `guard check` and `guard apply`. The schemas below describe the preserved legacy analyzers; their commands are available under `packages/guard-php/bin/` in the monorepo.
+
+
 ## Purpose
 
 LocGuard is a first-party CLI for enforcing source metrics without PHPMD. It checks PHP files for physical file length, file NCLOC, class-like length, function length, method length, and cyclomatic complexity.

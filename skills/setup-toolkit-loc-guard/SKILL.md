@@ -10,6 +10,13 @@ description: >-
 
 # Setup LocGuard (Source Metrics Guardrails)
 
+## Unified Guard entry point
+
+The current package is `k-kinzal/guard-php`, which exposes `vendor/bin/guard`. For a new project, run `guard init`, then configure the `quality` section of `guard.yaml`. Preserve the fixed constraints documented below. Run `guard check` from Composer and CI; use `guard apply --dry-run` to inspect configuration-value repairs and `guard apply` for authorized changes. Source and structural violations still require code/document edits.
+
+The legacy workflow below is retained for migration. When starting with these legacy templates, run `guard init` after adaptation to import them without changing constraints, then retire the separate legacy policies. Do not replace an existing `guard.yaml` or reduce constraints to pass a check. See `vendor/k-kinzal/php-ai-toolkit/docs/guard.md`. Legacy generation/explanation executables are available as `php vendor/k-kinzal/guard-php/bin/loc-guard`.
+
+
 This skill configures `loc-guard`, the php-ai-toolkit CLI for source LOC, NCLOC, class-like length, function length, method length, cyclomatic complexity, and reporter output.
 
 ## Prerequisites
@@ -181,13 +188,13 @@ If the project already has `lint` or `check`, merge `@loc-guard` into it after P
 After applying:
 
 ```bash
-vendor/bin/loc-guard --config=loc.yaml
+php vendor/k-kinzal/guard-php/bin/loc-guard --config=loc.yaml
 ```
 
 For every non-default policy rule, explain at least one matched file and verify its effective limits:
 
 ```bash
-vendor/bin/loc-guard --config=loc.yaml --explain=src/ZtdMysqli.php
+php vendor/k-kinzal/guard-php/bin/loc-guard --config=loc.yaml --explain=src/ZtdMysqli.php
 ```
 
 Exit codes:

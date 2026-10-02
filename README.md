@@ -24,24 +24,34 @@ PHPUnit 9.6 uses the legacy listener API.
 
 ### 1. Install
 
-This package is not published on Packagist. Install it from the VCS repository by adding the repository to your `composer.json`:
+The repository contains five Composer packages:
+
+| Directory | Composer package | Responsibility |
+| --- | --- | --- |
+| `packages/guard-php` | `k-kinzal/guard-php` | `guard check`, `guard apply`, `guard init` |
+| `packages/docgen-php` | `k-kinzal/docgen-php` | `docgen` and site assets |
+| `packages/phpstan-guard-rules` | `k-kinzal/phpstan-guard-rules` | PHPStan rules and strict configuration |
+| `packages/phpunit-ai-reporter` | `k-kinzal/phpunit-ai-reporter` | PHPUnit reporting, Doctest and shared output detection |
+| `packages/phpstan-ai-formatter` | `k-kinzal/phpstan-ai-formatter` | PHPStan's `ai` formatter |
+
+For monorepo development, clone this repository and run `composer install`.
+The root manifest installs the packages through Composer path repositories.
+Package releases are not published to Packagist yet. To use a component from a
+local checkout, add a path repository to the consuming project's `composer.json`:
 
 ```json
 {
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/k-kinzal/php-ai-toolkit.git"
-        }
-    ]
+    "repositories": [{"type": "path", "url": "../php-ai-toolkit/packages/*"}],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {"k-kinzal/guard-php": "dev-main"}
 }
 ```
 
-Then require it as a dev dependency:
-
-```bash
-composer require --dev k-kinzal/php-ai-toolkit
-```
+Run `composer update`, then `vendor/bin/guard init`. To install all components and
+the skill installer from a checkout, also add a path repository for
+`../php-ai-toolkit` and require `k-kinzal/php-ai-toolkit:dev-main`. Composer only reads
+repository declarations from the consuming project's root manifest.
 
 ### 2. Install AI Agent Skills
 
@@ -52,6 +62,20 @@ vendor/bin/php-ai-toolkit install
 Auto-detects AI agent directories (`.claude`, `.agents`, `.continue`, etc.) in your project root and installs skills. Use `--force` to overwrite, `--copy` to copy instead of symlinking.
 
 ### 3. Apply the toolkit
+
+Generate and verify the unified project policy:
+
+```sh
+vendor/bin/guard init
+vendor/bin/guard check
+vendor/bin/guard apply --dry-run
+vendor/bin/guard apply
+```
+
+`guard.yaml` configures source metrics, directory rules, Markdown structure and
+JSON/YAML/XML/TOML/NEON field constraints. Required violations fail; recommendations
+warn. Existing guard limits are retained when importing older policies. See the
+[Guard guide](docs/guard.md) for repair behavior and format limitations.
 
 Run the end-to-end adoption skill:
 
@@ -88,6 +112,7 @@ the first measured result.
 The [API documentation site](https://k-kinzal.github.io/php-ai-toolkit/) is generated from the source by `docgen`
 and published on every push to `main`.
 
+- [Guard](docs/guard.md): Unified checks, configuration policies, staged repairs and migration
 - [DocGen](docs/docgen.md): DocGen documentation scope, caching, and generated site behavior
 - [DocGuard](docs/doc-guard.md): DocGuard Markdown document structure constraints
 - [Doctest](docs/doctest.md): Running the examples written in PHPDoc blocks as PHPUnit tests, the assertion notation, and how the port differs from upstream

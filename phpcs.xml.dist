@@ -5,8 +5,9 @@
 
     <file>src</file>
     <file>tests</file>
+    <file>packages</file>
 
-    <exclude-pattern>tests/Fixture/*</exclude-pattern>
+    <exclude-pattern>*/tests/Fixture/*</exclude-pattern>
 
     <config name="testVersion" value="8.0-"/>
 

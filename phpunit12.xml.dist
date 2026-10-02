@@ -21,16 +21,21 @@
     <testsuites>
         <testsuite name="unit">
             <directory>tests/Unit</directory>
-            <exclude>tests/Unit/PhpUnit/TestReporter/Legacy</exclude>
+            <directory>packages/guard-php/tests/Unit</directory>
+            <directory>packages/docgen-php/tests/Unit</directory>
+            <directory>packages/phpstan-guard-rules/tests/Unit</directory>
+            <directory>packages/phpunit-ai-reporter/tests/Unit</directory>
+            <directory>packages/phpstan-ai-formatter/tests/Unit</directory>
+            <exclude>packages/phpunit-ai-reporter/tests/Unit/PhpUnit/TestReporter/Legacy</exclude>
         </testsuite>
         <testsuite name="doctest">
-            <file>src/Doctest/DoctestSuite.php</file>
+            <file>packages/phpunit-ai-reporter/src/Doctest/DoctestSuite.php</file>
         </testsuite>
     </testsuites>
     <extensions>
         <bootstrap class="Toolkit\PhpUnit\TestReporter\AiTestReporterExtension"/>
         <bootstrap class="Toolkit\Doctest\DoctestExtension">
-            <parameter name="directories" value="src"/>
+            <parameter name="directories" value="src,packages/guard-php/src,packages/docgen-php/src,packages/phpstan-guard-rules/src,packages/phpunit-ai-reporter/src,packages/phpstan-ai-formatter/src"/>
         </bootstrap>
     </extensions>
     <source ignoreIndirectDeprecations="true"
@@ -45,9 +50,14 @@
             ignoreSuppressionOfPhpWarnings="true">
         <include>
             <directory>src</directory>
+            <directory>packages/guard-php/src</directory>
+            <directory>packages/docgen-php/src</directory>
+            <directory>packages/phpstan-guard-rules/src</directory>
+            <directory>packages/phpunit-ai-reporter/src</directory>
+            <directory>packages/phpstan-ai-formatter/src</directory>
         </include>
         <exclude>
-            <file>src/Compatibility/ClassAliases.php</file>
+            <file>packages/phpstan-guard-rules/src/Compatibility/ClassAliases.php</file>
         </exclude>
     </source>
     <coverage includeUncoveredFiles="true"

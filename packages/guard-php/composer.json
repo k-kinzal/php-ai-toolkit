@@ -1,0 +1,29 @@
+{
+    "name": "k-kinzal/guard-php",
+    "description": "Source, structure, documentation and configuration policy checks and repairs",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "ext-dom": "*",
+        "symfony/yaml": "^5.4 || ^6.4 || ^7.4 || ^8.0",
+        "nette/neon": "^3.4",
+        "yosymfony/toml": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Toolkit\\LocGuard\\": "src/LocGuard/",
+            "Toolkit\\TreeGuard\\": "src/TreeGuard/",
+            "Toolkit\\DocGuard\\": "src/DocGuard/",
+            "Toolkit\\Guard\\": "src/Guard/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "bin": [
+        "bin/guard"
+    ]
+}

@@ -37,7 +37,7 @@ by the installed toolkit and register its extension:
             <directory>tests/Unit</directory>
         </testsuite>
         <testsuite name="doctest">
-            <file>vendor/k-kinzal/php-ai-toolkit/src/Doctest/DoctestSuite.php</file>
+            <file>vendor/k-kinzal/phpunit-ai-reporter/src/Doctest/DoctestSuite.php</file>
         </testsuite>
     </testsuites>
 
@@ -65,7 +65,7 @@ builds the suite:
 <phpunit>
     <testsuites>
         <testsuite name="doctest">
-            <file>vendor/k-kinzal/php-ai-toolkit/src/Doctest/Legacy/LegacyDoctestSuite.php</file>
+            <file>vendor/k-kinzal/phpunit-ai-reporter/src/Doctest/Legacy/LegacyDoctestSuite.php</file>
         </testsuite>
     </testsuites>
 

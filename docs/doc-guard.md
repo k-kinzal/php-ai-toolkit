@@ -1,5 +1,8 @@
 # DocGuard
 
+New projects use [Guard](guard.md), published by `k-kinzal/guard-php`. Run `guard init` to import an existing legacy policy, then use `guard check` and `guard apply`. The schemas below describe the preserved legacy analyzers; their commands are available under `packages/guard-php/bin/` in the monorepo.
+
+
 ## Purpose
 
 DocGuard is a first-party CLI for fixing the section structure of Markdown documents such as `README.md`, `AGENTS.md`, and `docs/*.md`. A human declares the headings of each document in `doc-guard.yaml`: their levels, their text, and their order. DocGuard fails when a document deviates from that declaration, and it fails when a new Markdown document appears where documents are scanned.

@@ -1,5 +1,8 @@
 # TreeGuard
 
+New projects use [Guard](guard.md), published by `k-kinzal/guard-php`. Run `guard init` to import an existing legacy policy, then use `guard check` and `guard apply`. The schemas below describe the preserved legacy analyzers; their commands are available under `packages/guard-php/bin/` in the monorepo.
+
+
 ## Purpose
 
 TreeGuard is a first-party CLI for enforcing directory and file structure constraints. It checks directory file counts, subdirectory counts, recursive subtree totals, nesting depth, file and directory naming (globs and case conventions), required files, and empty directories. It catches the structural drift AI agents tend to introduce — bloated directories, naming deviations, missing required files, deep nesting, and leftover empty directories — before it accumulates.

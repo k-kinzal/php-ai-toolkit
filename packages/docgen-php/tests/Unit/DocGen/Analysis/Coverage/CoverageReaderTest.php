@@ -89,16 +89,17 @@ XML);
         $dir = sys_get_temp_dir() . '/docgen-coverage-' . uniqid('', true);
         mkdir($dir, 0777, true);
         $reader = new CoverageReader();
-
-        self::assertSame('', $reader->sourcePrefix($dir, $dir));
+        $withoutIndex = $reader->sourcePrefix($dir, $dir);
 
         file_put_contents($dir . '/index.xml', 'not xml at all');
-
-        self::assertSame('', $reader->sourcePrefix($dir, $dir));
+        $invalid = $reader->sourcePrefix($dir, $dir);
 
         file_put_contents($dir . '/index.xml', '<?xml version="1.0"?><phpunit><project source="/elsewhere/src"><tests/></project></phpunit>');
+        $outside = $reader->sourcePrefix($dir, $dir);
 
-        self::assertSame('', $reader->sourcePrefix($dir, $dir));
+        self::assertSame($withoutIndex, $invalid);
+        self::assertSame($invalid, $outside);
+        self::assertSame('', $withoutIndex);
     }
 
     public function testReadReportFileReadsBothFileNameFormats(): void

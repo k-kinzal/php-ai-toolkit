@@ -364,4 +364,4 @@ failed setup.
 ## References
 
 - [Infection documentation](https://infection.github.io/guide/) — Mutators, loggers, and CLI options.
-- [ForbiddenCommentRule](vendor/k-kinzal/php-ai-toolkit/docs/rules/ForbiddenCommentRule.md) — Why `@infection-ignore-all` is rejected.
+- [ForbiddenCommentRule](vendor/k-kinzal/phpstan-guard-rules/docs/rules/ForbiddenCommentRule.md) — Why `@infection-ignore-all` is rejected.

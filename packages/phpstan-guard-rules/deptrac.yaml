@@ -1,0 +1,30 @@
+deptrac:
+  paths:
+    - ./src
+  exclude_files:
+    - '#.*/tests?/.*#'
+    - '#.*/vendor/.*#'
+  layers:
+    - name: PhpStanRule
+      collectors:
+        - type: directory
+          value: src/PhpStan/Rule/.*
+    - name: PhpStanExtension
+      collectors:
+        - type: directory
+          value: src/PhpStan/Extension/.*
+    - name: PhpStanSupport
+      collectors:
+        - type: directory
+          value: src/PhpStan/Support/.*
+    - name: PhpStanThrowType
+      collectors:
+        - type: directory
+          value: src/PhpStan/ThrowType/.*
+  ruleset:
+    PhpStanRule:
+      - PhpStanSupport
+    PhpStanExtension:
+      - PhpStanRule
+    PhpStanSupport: ~
+    PhpStanThrowType: ~

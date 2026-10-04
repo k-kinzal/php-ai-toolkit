@@ -10,7 +10,7 @@ namespace Toolkit\PhpStan\Rule\Shared;
 final class CallArgumentResolver
 {
     /**
-     * @param array<array-key, \PhpParser\Node\Arg|\PhpParser\Node\VariadicPlaceholder> $args
+     * @param array<array-key, \PhpParser\Node\Arg|\PhpParser\Node\ArgPlaceholder|\PhpParser\Node\VariadicPlaceholder> $args
      */
     public function valueAt(array $args, int $position): ?\PhpParser\Node\Expr
     {
@@ -20,7 +20,7 @@ final class CallArgumentResolver
     }
 
     /**
-     * @param array<array-key, \PhpParser\Node\Arg|\PhpParser\Node\VariadicPlaceholder> $args
+     * @param array<array-key, \PhpParser\Node\Arg|\PhpParser\Node\ArgPlaceholder|\PhpParser\Node\VariadicPlaceholder> $args
      */
     public function firstValue(array $args): ?\PhpParser\Node\Expr
     {

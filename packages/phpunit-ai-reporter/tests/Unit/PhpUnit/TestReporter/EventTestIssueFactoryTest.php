@@ -5,22 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpUnit\TestReporter;
 
 use function array_merge;
-use function dirname;
-use function fclose;
 use function getenv;
 use function interface_exists;
 
 use Override;
-
-use const PHP_BINARY;
-
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
-
-use function proc_close;
-use function proc_open;
-use function stream_get_contents;
+use Tests\Fixture\TestReporter\PhpUnitFixtureProcess;
 
 /**
  * @coversNothing
@@ -45,40 +37,11 @@ final class EventTestIssueFactoryTest extends TestCase
         unset($environment['PARATEST']);
         $environment = array_merge($environment, ['AI_AGENT' => '1']);
 
-        $pipes = [];
-        $process = proc_open(
-            [
-                PHP_BINARY,
-                'vendor/bin/phpunit',
-                '--configuration',
-                'packages/phpunit-ai-reporter/tests/Fixture/TestReporter/phpunit-extension.xml.dist',
-                '--colors=never',
-            ],
-            [
-                0 => ['pipe', 'r'],
-                1 => ['pipe', 'w'],
-                2 => ['pipe', 'w'],
-            ],
-            $pipes,
-            dirname(__DIR__, 6),
-            $environment,
-        );
+        $result = PhpUnitFixtureProcess::runExtension($environment);
 
-        self::assertIsResource($process);
-
-        fclose($pipes[0]);
-        $stdout = stream_get_contents($pipes[1]);
-        $stderr = stream_get_contents($pipes[2]);
-        fclose($pipes[1]);
-        fclose($pipes[2]);
-
-        $exitCode = proc_close($process);
-
-        self::assertIsString($stdout);
-        self::assertIsString($stderr);
-        self::assertNotSame(0, $exitCode);
-        self::assertStringContainsString('[FAILED]', $stdout . $stderr);
-        self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testFails', $stdout . $stderr);
+        self::assertNotSame(0, $result->exitCode());
+        self::assertStringContainsString('[FAILED]', $result->output());
+        self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testFails', $result->output());
     }
 
     public function testFromErrorConvertsErroredEventThroughPhpUnitRunner(): void
@@ -87,41 +50,12 @@ final class EventTestIssueFactoryTest extends TestCase
         unset($environment['PARATEST']);
         $environment = array_merge($environment, ['AI_AGENT' => '1']);
 
-        $pipes = [];
-        $process = proc_open(
-            [
-                PHP_BINARY,
-                'vendor/bin/phpunit',
-                '--configuration',
-                'packages/phpunit-ai-reporter/tests/Fixture/TestReporter/phpunit-extension.xml.dist',
-                '--colors=never',
-            ],
-            [
-                0 => ['pipe', 'r'],
-                1 => ['pipe', 'w'],
-                2 => ['pipe', 'w'],
-            ],
-            $pipes,
-            dirname(__DIR__, 6),
-            $environment,
-        );
+        $result = PhpUnitFixtureProcess::runExtension($environment);
 
-        self::assertIsResource($process);
-
-        fclose($pipes[0]);
-        $stdout = stream_get_contents($pipes[1]);
-        $stderr = stream_get_contents($pipes[2]);
-        fclose($pipes[1]);
-        fclose($pipes[2]);
-
-        $exitCode = proc_close($process);
-
-        self::assertIsString($stdout);
-        self::assertIsString($stderr);
-        self::assertNotSame(0, $exitCode);
-        self::assertStringContainsString('[ERROR]', $stdout . $stderr);
-        self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testErrors', $stdout . $stderr);
-        self::assertStringContainsString('fixture error', $stdout . $stderr);
+        self::assertNotSame(0, $result->exitCode());
+        self::assertStringContainsString('[ERROR]', $result->output());
+        self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testErrors', $result->output());
+        self::assertStringContainsString('fixture error', $result->output());
     }
 
     public function testFromRiskyConvertsRiskyEventThroughPhpUnitRunner(): void
@@ -130,39 +64,10 @@ final class EventTestIssueFactoryTest extends TestCase
         unset($environment['PARATEST']);
         $environment = array_merge($environment, ['AI_AGENT' => '1']);
 
-        $pipes = [];
-        $process = proc_open(
-            [
-                PHP_BINARY,
-                'vendor/bin/phpunit',
-                '--configuration',
-                'packages/phpunit-ai-reporter/tests/Fixture/TestReporter/phpunit-extension.xml.dist',
-                '--colors=never',
-            ],
-            [
-                0 => ['pipe', 'r'],
-                1 => ['pipe', 'w'],
-                2 => ['pipe', 'w'],
-            ],
-            $pipes,
-            dirname(__DIR__, 6),
-            $environment,
-        );
+        $result = PhpUnitFixtureProcess::runExtension($environment);
 
-        self::assertIsResource($process);
-
-        fclose($pipes[0]);
-        $stdout = stream_get_contents($pipes[1]);
-        $stderr = stream_get_contents($pipes[2]);
-        fclose($pipes[1]);
-        fclose($pipes[2]);
-
-        $exitCode = proc_close($process);
-
-        self::assertIsString($stdout);
-        self::assertIsString($stderr);
-        self::assertNotSame(0, $exitCode);
-        self::assertStringContainsString('[RISKY]', $stdout . $stderr);
-        self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testIsRisky', $stdout . $stderr);
+        self::assertNotSame(0, $result->exitCode());
+        self::assertStringContainsString('[RISKY]', $result->output());
+        self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testIsRisky', $result->output());
     }
 }

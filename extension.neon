@@ -1,2 +1,0 @@
-includes:
-    - packages/phpstan-ai-formatter/extension.neon

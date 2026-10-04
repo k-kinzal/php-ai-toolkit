@@ -42,40 +42,55 @@ jobs:
           coverage: pcov
           ini-values: memory_limit=1G
 
-      - name: Validate the Composer manifest and lock file
-        run: composer validate --strict --no-check-publish
+      - name: Validate the Composer manifests and lock files
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer validate --working-dir="$dir" --strict --no-check-publish
+          done
 
       - name: Install dependencies
-        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
-        with:
-          dependency-versions: locked
-          composer-options: --prefer-dist
-          require-lock-file: true
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer install --working-dir="$dir" --no-interaction --prefer-dist
+          done
 
       - name: Check installed platform requirements
         run: |
-          composer check-platform-reqs
-          vendor/bin/infection --version
+          set -euo pipefail
+          for dir in packages/*; do
+            composer check-platform-reqs --working-dir="$dir"
+            "$dir/vendor/bin/infection" --version
+          done
 
-      - name: Mutation testing on the whole source tree
-        run: >-
-          php -d memory_limit=4G vendor/bin/infection
-          --configuration=infection.json5
-          --with-uncovered
-          --threads=max
-          --only-covering-test-cases
-          --min-msi=0
-          --min-covered-msi=0
-          --no-progress
-          --logger-github
+      - name: Mutation testing in each package
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            (
+              cd "$dir"
+              php -d memory_limit=4G vendor/bin/infection \
+                --configuration=infection.json5 \
+                --with-uncovered \
+                --threads=max \
+                --only-covering-test-cases \
+                --min-msi=0 \
+                --min-covered-msi=0 \
+                --no-progress \
+                --logger-github
+            )
+          done
 
-      - name: Reject skipped whole-tree mutants
+      - name: Reject skipped mutants
         run: |
           php -d memory_limit=1G -r '
-            $report = json_decode(file_get_contents("build/infection/infection.json"), true, 512, JSON_THROW_ON_ERROR);
-            if (($report["stats"]["skippedCount"] ?? null) !== 0) {
-                fwrite(STDERR, "Infection skipped mutants before execution; review the timeout against test durations.\n");
-                exit(1);
+            foreach (glob("packages/*/build/infection/infection.json") as $path) {
+                $report = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
+                if (($report["stats"]["skippedCount"] ?? null) !== 0) {
+                    fwrite(STDERR, $path . " skipped mutants before execution; review the timeout against test durations.\n");
+                    exit(1);
+                }
             }
           '
 
@@ -89,38 +104,48 @@ jobs:
         with:
           script: |
             const fs = require('node:fs');
-            const stats = JSON.parse(fs.readFileSync('build/infection/infection.json', 'utf8')).stats;
+            const path = require('node:path');
             const minMsi = Number(process.env.MIN_MSI);
             const minCoveredMsi = Number(process.env.MIN_COVERED_MSI);
-            for (const value of [stats.msi, stats.coveredCodeMsi, minMsi, minCoveredMsi]) {
-              if (!Number.isFinite(value) || value < 0 || value > 100) {
-                throw new Error('Infection must report valid MSI percentages and thresholds.');
+            const reports = fs.readdirSync('packages').flatMap(name => {
+              const file = path.join('packages', name, 'build/infection/infection.json');
+              if (!fs.existsSync(file)) return [];
+              return [{ name, stats: JSON.parse(fs.readFileSync(file, 'utf8')).stats }];
+            });
+            if (reports.length === 0) {
+              throw new Error('Infection did not write a package report.');
+            }
+            for (const report of reports) {
+              for (const value of [report.stats.msi, report.stats.coveredCodeMsi, minMsi, minCoveredMsi]) {
+                if (!Number.isFinite(value) || value < 0 || value > 100) {
+                  throw new Error('Infection must report valid MSI percentages and thresholds.');
+                }
               }
             }
-            const belowThreshold = stats.msi < minMsi || stats.coveredCodeMsi < minCoveredMsi;
+            const below = reports.filter(report => report.stats.msi < minMsi || report.stats.coveredCodeMsi < minCoveredMsi);
             const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const marker = `<!-- ${context.workflow}:msi -->`;
             const title = `[${context.workflow}] Mutation score below threshold`;
+            const rows = reports.map(report => `| ${report.name} | ${report.stats.msi}% | ${report.stats.coveredCodeMsi}% | ${minMsi}% | ${minCoveredMsi}% |`);
             const body = [
               marker,
               `Scheduled mutation testing on the default branch is below the required score.`,
               '',
-              '| Metric | Actual | Required |',
-              '| --- | ---: | ---: |',
-              `| MSI | ${stats.msi}% | ${minMsi}% |`,
-              `| Covered MSI | ${stats.coveredCodeMsi}% | ${minCoveredMsi}% |`,
+              '| Package | MSI | Covered MSI | Required MSI | Required covered MSI |',
+              '| --- | ---: | ---: | ---: | ---: |',
+              ...rows,
               '',
               `Commit: ${context.sha}`,
               `Run and mutation reports: ${run}`,
               `Run attempt: ${process.env.GITHUB_RUN_ATTEMPT}`,
               '',
-              'The score is reported here without failing the workflow. Read build/infection/escaped.log in the run artifact for the mutants no test objected to.'
+              'The score is reported here without failing the workflow. Read packages/*/build/infection/escaped.log in the run artifact for the mutants no test objected to.'
             ].join('\n');
             await core.summary
               .addHeading(`Mutation testing: ${context.workflow}`)
-              .addRaw(`MSI: ${stats.msi}% (required: ${minMsi}%). Covered MSI: ${stats.coveredCodeMsi}% (required: ${minCoveredMsi}%).`)
+              .addRaw(reports.map(report => `${report.name}: MSI ${report.stats.msi}% (required: ${minMsi}%), covered MSI ${report.stats.coveredCodeMsi}% (required: ${minCoveredMsi}%).`).join(' '))
               .write();
-            if (!belowThreshold) return;
+            if (below.length === 0) return;
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               ...context.repo, state: 'all', per_page: 100
             });
@@ -139,5 +164,5 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: mutation-reports
-          path: build/infection/
+          path: packages/*/build/infection/
           if-no-files-found: ignore

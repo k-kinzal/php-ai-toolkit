@@ -10,7 +10,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Toolkit\\PhpStan\\ErrorFormatter\\": "src/PhpStan/ErrorFormatter/"
+            "Toolkit\\": "src/"
         }
     },
     "autoload-dev": {
@@ -27,5 +27,97 @@
                 "extension.neon"
             ]
         }
-    }
+    },
+    "require-dev": {
+        "brianium/paratest": "^6.11 || ^7",
+        "deptrac/deptrac": "^0.24 || ^1.0 || ^2.0 || ^3.0 || ^4.6",
+        "friendsofphp/php-cs-fixer": "^3.4",
+        "infection/infection": "^0.26.19 || ^0.27 || ^0.28 || ^0.29 || ^0.30 || ^0.31 || ^0.32 || ^0.33 || ^0.34 || ^0.35",
+        "k-kinzal/docgen-php": "^1.0 || dev-main",
+        "k-kinzal/guard-php": "^1.0 || dev-main",
+        "k-kinzal/phpstan-guard-rules": "^1.0 || dev-main",
+        "phpcompatibility/php-compatibility": "^10.0@alpha",
+        "phpunit/phpunit": "^9.6 || ^10.5 || ^11 || ^12 || ^13",
+        "squizlabs/php_codesniffer": "^4.0"
+    },
+    "scripts": {
+        "test": "@php -d memory_limit=512M tests/run.php --parallel --processes=auto",
+        "test:unit": "@php -d memory_limit=512M tests/run.php",
+        "test:unit:9": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit9.xml.dist",
+        "test:unit:10": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit10.xml.dist",
+        "test:unit:11": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit11.xml.dist",
+        "test:unit:12": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit12.xml.dist",
+        "test:unit:13": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist",
+        "test:unit:legacy": "@test:unit:9",
+        "test:coverage": "@php -d memory_limit=1G -d xdebug.mode=coverage tests/run.php --coverage-xml build/coverage-xml",
+        "doctest": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite doctest",
+        "lint": [
+            "@format:check",
+            "@phpstan",
+            "@compat",
+            "@guard",
+            "@deptrac"
+        ],
+        "phpstan": "phpstan analyse --memory-limit=512M",
+        "compat": "phpcs",
+        "format": "php-cs-fixer fix --allow-risky=yes",
+        "format:check": "php-cs-fixer fix --dry-run --diff --allow-risky=yes",
+        "deptrac": "deptrac analyse --config-file=deptrac.yaml",
+        "infection": "infection --threads=max",
+        "guard": "guard check",
+        "guard:apply": "guard apply"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "infection/extension-installer": true
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../guard-php",
+            "options": {
+                "symlink": true,
+                "versions": {
+                    "k-kinzal/guard-php": "dev-main"
+                },
+                "reference": "config"
+            }
+        },
+        {
+            "type": "path",
+            "url": "../docgen-php",
+            "options": {
+                "symlink": true,
+                "versions": {
+                    "k-kinzal/docgen-php": "dev-main"
+                },
+                "reference": "config"
+            }
+        },
+        {
+            "type": "path",
+            "url": "../phpstan-guard-rules",
+            "options": {
+                "symlink": true,
+                "versions": {
+                    "k-kinzal/phpstan-guard-rules": "dev-main"
+                },
+                "reference": "config"
+            }
+        },
+        {
+            "type": "path",
+            "url": "../phpunit-ai-reporter",
+            "options": {
+                "symlink": true,
+                "versions": {
+                    "k-kinzal/phpunit-ai-reporter": "dev-main"
+                },
+                "reference": "config"
+            }
+        }
+    ]
 }

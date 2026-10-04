@@ -35,7 +35,7 @@ final class ToolkitFingerprintTest extends TestCase
 
     public function testPackagesNameTheToolkitAndTheLibrariesItReadsWith(): void
     {
-        self::assertContains('k-kinzal/php-ai-toolkit', ToolkitFingerprint::PACKAGES);
+        self::assertContains('k-kinzal/docgen-php', ToolkitFingerprint::PACKAGES);
         self::assertContains('nikic/php-parser', ToolkitFingerprint::PACKAGES);
         self::assertContains('phpstan/phpdoc-parser', ToolkitFingerprint::PACKAGES);
     }

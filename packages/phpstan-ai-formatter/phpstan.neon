@@ -1,0 +1,57 @@
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/k-kinzal/phpstan-guard-rules/rules.neon
+    - extension.neon
+
+parameters:
+    level: max
+    paths:
+        - src
+        - tests/Unit
+    excludePaths:
+        - tests/Fixture
+    toolkit:
+        allRules: true
+    ignoreErrors:
+        -
+            identifier: phpstanApi.class
+            path: tests/Unit/PhpStan/ErrorFormatter/AiErrorRendererTest.php
+        -
+            identifier: phpstanApi.method
+            path: tests/Unit/PhpStan/ErrorFormatter/AiErrorRendererTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/AiErrorRendererTest.php
+        -
+            identifier: phpstanApi.class
+            path: tests/Unit/PhpStan/ErrorFormatter/AiErrorFormatterTest.php
+        -
+            identifier: phpstanApi.method
+            path: tests/Unit/PhpStan/ErrorFormatter/AiErrorFormatterTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/AiErrorFormatterTest.php
+        -
+            identifier: phpstanApi.class
+            path: tests/Unit/PhpStan/ErrorFormatter/HumanErrorRendererTest.php
+        -
+            identifier: phpstanApi.method
+            path: tests/Unit/PhpStan/ErrorFormatter/HumanErrorRendererTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/HumanErrorRendererTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/ErrorCollectionSummaryTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/ErrorGroupingTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/ErrorGutterTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/HumanErrorPrinterTest.php
+        -
+            identifier: phpstanApi.constructor
+            path: tests/Unit/PhpStan/ErrorFormatter/HumanFileErrorPrinterTest.php

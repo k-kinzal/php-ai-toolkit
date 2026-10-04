@@ -1,0 +1,24 @@
+deptrac:
+  paths:
+    - ./src
+  exclude_files:
+    - '#.*/tests?/.*#'
+    - '#.*/vendor/.*#'
+  layers:
+    - name: Doctest
+      collectors:
+        - type: directory
+          value: src/Doctest/.*
+    - name: PhpUnitTestReporter
+      collectors:
+        - type: directory
+          value: src/PhpUnit/TestReporter/.*
+    - name: Shared
+      collectors:
+        - type: directory
+          value: src/Shared/.*
+  ruleset:
+    Doctest: ~
+    PhpUnitTestReporter:
+      - Shared
+    Shared: ~

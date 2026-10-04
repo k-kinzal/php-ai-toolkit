@@ -1,0 +1,13 @@
+deptrac:
+  paths:
+    - ./src
+  exclude_files:
+    - '#.*/tests?/.*#'
+    - '#.*/vendor/.*#'
+  layers:
+    - name: PhpStanErrorFormatter
+      collectors:
+        - type: directory
+          value: src/PhpStan/ErrorFormatter/.*
+  ruleset:
+    PhpStanErrorFormatter: ~

@@ -1,0 +1,14 @@
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - rules.neon
+    - vendor/k-kinzal/phpstan-ai-formatter/extension.neon
+
+parameters:
+    level: max
+    paths:
+        - src
+        - tests/Unit
+    excludePaths:
+        - tests/Fixture
+    toolkit:
+        allRules: true

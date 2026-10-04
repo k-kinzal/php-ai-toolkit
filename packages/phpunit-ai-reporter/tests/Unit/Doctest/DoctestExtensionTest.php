@@ -26,48 +26,67 @@ final class DoctestExtensionTest extends TestCase
 {
     public function testBootstrapStoresTheConfigurationReadFromTheParameters(): void
     {
-        $parameters = ParameterCollection::fromArray(['directories' => 'src,packages/guard-php/src,packages/docgen-php/src,packages/phpstan-guard-rules/src,packages/phpunit-ai-reporter/src,packages/phpstan-ai-formatter/src']);
+        $configuration = Registry::get();
+        $parameters = ParameterCollection::fromArray(['directories' => 'src']);
 
-        (new DoctestExtension())->bootstrap(Registry::get(), PhpUnitExtensionFacade::create(), $parameters);
+        (new DoctestExtension())->bootstrap($configuration, PhpUnitExtensionFacade::create(), $parameters);
 
         $config = DoctestExtension::getConfiguration();
 
         self::assertNotNull($config);
-        self::assertSame([dirname(__DIR__, 5) . '/src', dirname(__DIR__, 5) . '/packages/guard-php/src', dirname(__DIR__, 5) . '/packages/docgen-php/src', dirname(__DIR__, 5) . '/packages/phpstan-guard-rules/src', dirname(__DIR__, 5) . '/packages/phpunit-ai-reporter/src', dirname(__DIR__, 5) . '/packages/phpstan-ai-formatter/src'], $config->getDirectories());
+        self::assertSame([DoctestExtension::basePath($configuration) . '/src'], $config->getDirectories());
     }
 
     public function testBootstrapKeepsADisabledConfigurationOutOfTheRun(): void
     {
-        $parameters = ParameterCollection::fromArray(['directories' => 'ignored', 'enabled' => 'false']);
+        $configuration = Registry::get();
+        (new DoctestExtension())->bootstrap(
+            $configuration,
+            PhpUnitExtensionFacade::create(),
+            ParameterCollection::fromArray(['directories' => 'src']),
+        );
+        $before = DoctestExtension::getConfiguration();
 
-        (new DoctestExtension())->bootstrap(Registry::get(), PhpUnitExtensionFacade::create(), $parameters);
+        (new DoctestExtension())->bootstrap(
+            $configuration,
+            PhpUnitExtensionFacade::create(),
+            ParameterCollection::fromArray(['directories' => 'ignored', 'enabled' => 'false']),
+        );
 
-        $config = DoctestExtension::getConfiguration();
-
-        self::assertNotNull($config);
-        self::assertSame([dirname(__DIR__, 5) . '/src', dirname(__DIR__, 5) . '/packages/guard-php/src', dirname(__DIR__, 5) . '/packages/docgen-php/src', dirname(__DIR__, 5) . '/packages/phpstan-guard-rules/src', dirname(__DIR__, 5) . '/packages/phpunit-ai-reporter/src', dirname(__DIR__, 5) . '/packages/phpstan-ai-formatter/src'], $config->getDirectories());
+        self::assertNotNull($before);
+        self::assertSame($before->getDirectories(), DoctestExtension::getConfiguration()?->getDirectories());
     }
 
     public function testGetConfigurationHandsBackWhatTheRunIsWorkingFrom(): void
     {
+        $configuration = Registry::get();
+        (new DoctestExtension())->bootstrap(
+            $configuration,
+            PhpUnitExtensionFacade::create(),
+            ParameterCollection::fromArray(['directories' => 'src']),
+        );
+
         $config = DoctestExtension::getConfiguration();
 
         self::assertNotNull($config);
-        self::assertSame([dirname(__DIR__, 5) . '/src', dirname(__DIR__, 5) . '/packages/guard-php/src', dirname(__DIR__, 5) . '/packages/docgen-php/src', dirname(__DIR__, 5) . '/packages/phpstan-guard-rules/src', dirname(__DIR__, 5) . '/packages/phpunit-ai-reporter/src', dirname(__DIR__, 5) . '/packages/phpstan-ai-formatter/src'], $config->getDirectories());
+        self::assertSame([DoctestExtension::basePath($configuration) . '/src'], $config->getDirectories());
     }
 
     public function testDeclaredConfigurationReadsTheParametersPhpUnitXmlCarries(): void
     {
-        $config = DoctestExtension::declaredConfiguration(Registry::get());
+        $configuration = Registry::get();
+        $config = DoctestExtension::declaredConfiguration($configuration);
 
         self::assertNotNull($config);
-        self::assertSame([dirname(__DIR__, 5) . '/src', dirname(__DIR__, 5) . '/packages/guard-php/src', dirname(__DIR__, 5) . '/packages/docgen-php/src', dirname(__DIR__, 5) . '/packages/phpstan-guard-rules/src', dirname(__DIR__, 5) . '/packages/phpunit-ai-reporter/src', dirname(__DIR__, 5) . '/packages/phpstan-ai-formatter/src'], $config->getDirectories());
+        self::assertNotSame([], $config->getDirectories());
+        self::assertStringStartsWith(DoctestExtension::basePath($configuration) . '/', $config->getDirectories()[0]);
     }
 
     public function testBasePathIsTheDirectoryHoldingThePhpUnitConfiguration(): void
     {
-        $basePath = DoctestExtension::basePath(Registry::get());
+        $configuration = Registry::get();
 
-        self::assertSame(dirname(__DIR__, 5), $basePath);
+        self::assertTrue($configuration->hasConfigurationFile());
+        self::assertSame(dirname($configuration->configurationFile()), DoctestExtension::basePath($configuration));
     }
 }

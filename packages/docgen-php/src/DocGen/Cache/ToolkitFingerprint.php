@@ -17,7 +17,7 @@ use function implode;
  * A cache may only be read back by the generator that wrote it: a changed
  * parser or a changed page renderer turns the same sources into different
  * output. The fingerprint is therefore the installed version of this
- * toolkit and of the libraries it parses and prints with, so upgrading any
+ * package and of the libraries it parses and prints with, so upgrading any
  * of them leaves nothing of the previous cache to be read.
  *
  * A generator that changed without being installed again — a checkout of
@@ -34,7 +34,7 @@ final class ToolkitFingerprint
      *
      * @var list<string>
      */
-    public const PACKAGES = ['k-kinzal/php-ai-toolkit', 'nikic/php-parser', 'phpstan/phpdoc-parser'];
+    public const PACKAGES = ['k-kinzal/docgen-php', 'nikic/php-parser', 'phpstan/phpdoc-parser'];
 
     private ?string $value = null;
 

@@ -1,0 +1,183 @@
+# Project policy. Required rules fail; recommendations warn.
+version: 1
+scope:
+  source:
+    - src
+  exclude: []
+quality:
+  profiles:
+    standard:
+      limits:
+        file:
+          lines: 500
+          ncloc: 350
+        class:
+          lines: 400
+        trait:
+          lines: 300
+        interface:
+          lines: 200
+        enum:
+          lines: 200
+        function:
+          lines: 50
+          cyclomatic_complexity: 20
+        method:
+          lines: 50
+          cyclomatic_complexity: 20
+  default: standard
+  assignments: []
+structure:
+  paths:
+    - .
+  exclude:
+    - .git
+    - .idea
+    - .claude
+    - .agents
+    - .codex
+    - .cursor
+    - .gemini
+    - .entire
+    - .entrie
+    - .phpunit.cache
+    - build
+    - projects
+    - vendor
+  directories:
+    -
+      path: '**'
+      deny_dirs:
+        - scripts
+        - Scripts
+    -
+      path: src
+      allow: []
+      max_dirs: 20
+    -
+      path: 'src/**'
+      forbid_empty: true
+      allow:
+        - '*.php'
+      deny:
+        - '*Helper.php'
+        - '*Helpers.php'
+        - '*Manager.php'
+        - '*Util.php'
+        - '*Utils.php'
+        - '*Service.php'
+        - '*Evidence.php'
+        - '*Evidences.php'
+        - '*Outcome.php'
+        - '*Outcomes.php'
+        - '*Probe.php'
+        - '*Probes.php'
+      file_case: pascal
+      dir_case: pascal
+      max_files: 15
+      max_dirs: 20
+    -
+      path: tests/Unit
+      allow: []
+    -
+      path: 'tests/Unit/**'
+      forbid_empty: true
+      allow:
+        - '*Test.php'
+      file_case: pascal
+      dir_case: pascal
+      max_files: 15
+      max_dirs: 20
+    -
+      path: 'skills/*'
+      require:
+        - SKILL.md
+      forbid_empty: true
+documentation:
+  files:
+    README.md:
+      headings:
+        - '# guard-php'
+  scan:
+    - README.md
+configuration:
+  -
+    id: phpstan.level
+    file: phpstan.neon
+    format: neon
+    select: /parameters/level
+    level: required
+    assert:
+      equals: max
+  -
+    id: phpstan.all-rules
+    file: phpstan.neon
+    format: neon
+    select: /parameters/toolkit/allRules
+    level: required
+    assert:
+      equals: true
+  -
+    id: phpunit.beStrictAboutChangesToGlobalState
+    file: phpunit.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutChangesToGlobalState
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit.beStrictAboutOutputDuringTests
+    file: phpunit.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutOutputDuringTests
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit.beStrictAboutTestsThatDoNotTestAnything
+    file: phpunit.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutTestsThatDoNotTestAnything
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit.enforceTimeLimit
+    file: phpunit.xml.dist
+    format: xml
+    select: /phpunit/@enforceTimeLimit
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit.failOnAllIssues
+    file: phpunit.xml.dist
+    format: xml
+    select: /phpunit/@failOnAllIssues
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit.requireCoverageMetadata
+    file: phpunit.xml.dist
+    format: xml
+    select: /phpunit/@requireCoverageMetadata
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit.beStrictAboutCoverageMetadata
+    file: phpunit.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutCoverageMetadata
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: composer.sort-packages
+    file: composer.json
+    format: json
+    select: /config/sort-packages
+    level: recommended
+    assert:
+      equals: true

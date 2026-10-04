@@ -4,9 +4,8 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
-      - composer.json
       - packages/*/composer.json
-      - composer.lock
+      - packages/*/composer.lock
 
 permissions:
   contents: read
@@ -49,18 +48,33 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Global platform overrides preserve the shared manifest's content hash.
+          # Global platform overrides preserve each manifest's content hash.
           # No packages are installed and no repository or dependency scripts run.
-          original_lock="$(mktemp)"
-          cp composer.lock "${original_lock}"
-          trap 'cp "${original_lock}" composer.lock; rm -f "${original_lock}"' EXIT
+          originals=()
+          for dir in packages/*; do
+            original="$(mktemp)"
+            cp "$dir/composer.lock" "${original}"
+            originals+=("${dir}|${original}")
+          done
+          restore_locks() {
+            local entry dir original
+            for entry in "${originals[@]}"; do
+              dir="${entry%%|*}"
+              original="${entry#*|}"
+              cp "${original}" "$dir/composer.lock"
+              rm -f "${original}"
+            done
+          }
+          trap restore_locks EXIT
 
           for php_version in 8.0 8.1 8.2 8.3 8.4; do
-            cp "composer.lock.php-${php_version}" composer.lock
             composer --no-plugins config --global platform.php "${php_version}.0"
-            composer update --no-install --no-scripts --no-plugins --prefer-dist
-            composer validate --strict --no-check-publish
-            cp composer.lock "composer.lock.php-${php_version}"
+            for dir in packages/*; do
+              cp "$dir/composer.lock.php-${php_version}" "$dir/composer.lock"
+              composer update --no-install --no-scripts --no-plugins --prefer-dist --working-dir="$dir"
+              composer validate --strict --no-check-publish --working-dir="$dir"
+              cp "$dir/composer.lock" "$dir/composer.lock.php-${php_version}"
+            done
           done
 
       - name: Commit the lock files and run CI on the new revision
@@ -72,7 +86,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          git add composer.lock.php-8.0 composer.lock.php-8.1 composer.lock.php-8.2 composer.lock.php-8.3 composer.lock.php-8.4
+          git add packages/*/composer.lock.php-*
           if git diff --cached --quiet; then
             echo 'The compatibility lock files are already current.'
             exit 0

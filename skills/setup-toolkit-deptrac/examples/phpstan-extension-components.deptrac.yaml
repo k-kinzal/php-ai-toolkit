@@ -5,10 +5,6 @@ deptrac:
     - '#.*/tests?/.*#'
     - '#.*/vendor/.*#'
   layers:
-    - name: Installer
-      collectors:
-        - type: directory
-          value: src/Installer/.*
     - name: LocGuard
       collectors:
         - type: directory
@@ -34,7 +30,6 @@ deptrac:
         - type: directory
           value: src/Shared/.*
   ruleset:
-    Installer: ~
     LocGuard: ~
     PhpStanRule:
       - PhpStanSupport

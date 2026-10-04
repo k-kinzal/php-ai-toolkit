@@ -24,7 +24,7 @@ PHPUnit 9.6 uses the legacy listener API.
 
 ### 1. Install
 
-The repository contains five Composer packages:
+The repository contains five Composer packages. Each one carries its own analysis, test, and formatting configuration, and is installed on its own with `composer install` inside that package.
 
 | Directory | Composer package | Responsibility |
 | --- | --- | --- |
@@ -34,36 +34,24 @@ The repository contains five Composer packages:
 | `packages/phpunit-ai-reporter` | `k-kinzal/phpunit-ai-reporter` | PHPUnit reporting, Doctest and shared output detection |
 | `packages/phpstan-ai-formatter` | `k-kinzal/phpstan-ai-formatter` | PHPStan's `ai` formatter |
 
-For monorepo development, clone this repository and run `composer install`.
-The root manifest installs the packages through Composer path repositories.
 Package releases are not published to Packagist yet. To use a component from a
 local checkout, add a path repository to the consuming project's `composer.json`:
 
 ```json
 {
-    "repositories": [{"type": "path", "url": "../php-ai-toolkit/packages/*"}],
+    "repositories": [{"type": "path", "url": "../php-ai-toolkit/packages/guard-php"}],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require-dev": {"k-kinzal/guard-php": "dev-main"}
 }
 ```
 
-Run `composer update`, then `vendor/bin/guard init`. To install all components and
-the skill installer from a checkout, also add a path repository for
-`../php-ai-toolkit` and require `k-kinzal/php-ai-toolkit:dev-main`. Composer only reads
+Run `composer update`, then `vendor/bin/guard init`. Composer only reads
 repository declarations from the consuming project's root manifest.
 
-### 2. Install AI Agent Skills
+### 2. Apply the toolkit
 
-```bash
-vendor/bin/php-ai-toolkit install
-```
-
-Auto-detects AI agent directories (`.claude`, `.agents`, `.continue`, etc.) in your project root and installs skills. Use `--force` to overwrite, `--copy` to copy instead of symlinking.
-
-### 3. Apply the toolkit
-
-Generate and verify the unified project policy:
+Generate and verify the project policy. A project is configured correctly when `guard check` passes the policy `guard init` wrote:
 
 ```sh
 vendor/bin/guard init
@@ -75,7 +63,7 @@ vendor/bin/guard apply
 `guard.yaml` configures source metrics, directory rules, Markdown structure and
 JSON/YAML/XML/TOML/NEON field constraints. Required violations fail; recommendations
 warn. Existing guard limits are retained when importing older policies. See the
-[Guard guide](docs/guard.md) for repair behavior and format limitations.
+[Guard guide](packages/guard-php/docs/guard.md) for repair behavior and format limitations.
 
 Run the end-to-end adoption skill:
 
@@ -112,15 +100,15 @@ the first measured result.
 The [API documentation site](https://k-kinzal.github.io/php-ai-toolkit/) is generated from the source by `docgen`
 and published on every push to `main`.
 
-- [Guard](docs/guard.md): Unified checks, configuration policies, staged repairs and migration
-- [DocGen](docs/docgen.md): DocGen documentation scope, caching, and generated site behavior
-- [DocGuard](docs/doc-guard.md): DocGuard Markdown document structure constraints
-- [Doctest](docs/doctest.md): Running the examples written in PHPDoc blocks as PHPUnit tests, the assertion notation, and how the port differs from upstream
-- [LocGuard](docs/loc-guard.md): LocGuard source metric limits and reporting
-- [PHPStan AI Formatter](docs/phpstan-ai-formatter.md): The `ai` error formatter, its mode detection, and its output
-- [PHPStan Rules](docs/phpstan-rules.md): Custom rules and their error identifiers
-- [PHPUnit AI Reporter](docs/phpunit-ai-reporter.md): The failure reporter for PHPUnit 9.6 and 10.5 or later
-- [TreeGuard](docs/tree-guard.md): TreeGuard directory and file structure constraints
+- [Guard](packages/guard-php/docs/guard.md): Unified checks, configuration policies, staged repairs and migration
+- [DocGen](packages/docgen-php/docs/docgen.md): DocGen documentation scope, caching, and generated site behavior
+- [DocGuard](packages/guard-php/docs/doc-guard.md): DocGuard Markdown document structure constraints
+- [Doctest](packages/phpunit-ai-reporter/docs/doctest.md): Running the examples written in PHPDoc blocks as PHPUnit tests, the assertion notation, and how the port differs from upstream
+- [LocGuard](packages/guard-php/docs/loc-guard.md): LocGuard source metric limits and reporting
+- [PHPStan AI Formatter](packages/phpstan-ai-formatter/docs/phpstan-ai-formatter.md): The `ai` error formatter, its mode detection, and its output
+- [PHPStan Rules](packages/phpstan-guard-rules/docs/phpstan-rules.md): Custom rules and their error identifiers
+- [PHPUnit AI Reporter](packages/phpunit-ai-reporter/docs/phpunit-ai-reporter.md): The failure reporter for PHPUnit 9.6 and 10.5 or later
+- [TreeGuard](packages/guard-php/docs/tree-guard.md): TreeGuard directory and file structure constraints
 ## License
 
 MIT

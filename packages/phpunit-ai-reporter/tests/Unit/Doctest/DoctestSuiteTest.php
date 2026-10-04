@@ -27,8 +27,9 @@ final class DoctestSuiteTest extends TestCase
     public function testConfigureHandsBackWhatTheExtensionRead(): void
     {
         $config = DoctestSuite::configure();
+        $extensionConfig = DoctestExtension::getConfiguration();
 
-        self::assertSame([dirname(__DIR__, 5) . '/src', dirname(__DIR__, 5) . '/packages/guard-php/src', dirname(__DIR__, 5) . '/packages/docgen-php/src', dirname(__DIR__, 5) . '/packages/phpstan-guard-rules/src', dirname(__DIR__, 5) . '/packages/phpunit-ai-reporter/src', dirname(__DIR__, 5) . '/packages/phpstan-ai-formatter/src'], $config->getDirectories());
-        self::assertSame(DoctestExtension::getConfiguration()?->getDirectories(), $config->getDirectories());
+        self::assertNotNull($extensionConfig);
+        self::assertSame($extensionConfig->getDirectories(), $config->getDirectories());
     }
 }

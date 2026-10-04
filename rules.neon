@@ -1,2 +1,0 @@
-includes:
-    - packages/phpstan-guard-rules/rules.neon

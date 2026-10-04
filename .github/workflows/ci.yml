@@ -45,23 +45,39 @@ jobs:
 
       - name: Select the matching lock file
         if: matrix.php != '8.5'
-        run: cp "composer.lock.php-${{ matrix.php }}" composer.lock
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            cp "$dir/composer.lock.php-${{ matrix.php }}" "$dir/composer.lock"
+          done
 
-      - name: Validate the Composer manifest against the lock file
-        run: composer validate --strict --no-check-publish
+      - name: Validate the Composer manifests against their lock files
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer validate --working-dir="$dir" --strict --no-check-publish
+          done
 
       - name: Install dependencies
-        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
-        with:
-          dependency-versions: locked
-          composer-options: --prefer-dist
-          require-lock-file: true
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer install --working-dir="$dir" --no-interaction --prefer-dist
+          done
 
       - name: Check installed platform requirements
-        run: composer check-platform-reqs
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer check-platform-reqs --working-dir="$dir"
+          done
 
       - name: Run the tests
-        run: composer test
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer --working-dir="$dir" test
+          done
 
   lint:
     name: Lint
@@ -78,30 +94,58 @@ jobs:
           extensions: mbstring, gd, dom
           coverage: none
 
-      - name: Validate the Composer manifest against the lock file
-        run: composer validate --strict --no-check-publish
+      - name: Validate the Composer manifests against their lock files
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer validate --working-dir="$dir" --strict --no-check-publish
+          done
 
       - name: Install dependencies
-        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
-        with:
-          dependency-versions: locked
-          composer-options: --prefer-dist
-          require-lock-file: true
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer install --working-dir="$dir" --no-interaction --prefer-dist
+          done
 
       - name: Check installed platform requirements
-        run: composer check-platform-reqs
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer check-platform-reqs --working-dir="$dir"
+          done
 
       - name: Check the formatting
-        run: composer format:check
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer --working-dir="$dir" format:check
+          done
 
       - name: Analyse with PHPStan
-        run: composer phpstan
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer --working-dir="$dir" phpstan
+          done
 
       - name: Check PHP compatibility
-        run: composer compat
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer --working-dir="$dir" compat
+          done
 
       - name: Check all guard policies
-        run: composer guard
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer --working-dir="$dir" guard
+          done
 
       - name: Check the architecture layers
-        run: composer deptrac
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            composer --working-dir="$dir" deptrac
+          done

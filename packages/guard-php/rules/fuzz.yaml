@@ -1,0 +1,25 @@
+configuration:
+  -
+    id: fuzz.smoke
+    file: composer.json
+    format: json
+    select: /scripts/fuzz:smoke
+    level: required
+    assert:
+      contains: '--max-runs=100'
+  -
+    id: fuzz.lint
+    file: composer.json
+    format: json
+    select: /scripts/lint
+    level: required
+    assert:
+      not_contains: php-fuzzer
+  -
+    id: fuzz.workflow
+    file: .github/workflows/fuzz.yml
+    format: yaml
+    select: /jobs
+    level: required
+    assert:
+      present: true

@@ -1,0 +1,66 @@
+structure:
+  paths:
+    - .
+  exclude:
+    - .git
+    - .idea
+    - .claude
+    - .agents
+    - .codex
+    - .cursor
+    - .gemini
+    - .entire
+    - .entrie
+    - .phpunit.cache
+    - build
+    - projects
+    - vendor
+  directories:
+    -
+      path: '**'
+      deny_dirs:
+        - scripts
+        - Scripts
+    -
+      path: src
+      allow: []
+      max_dirs: 20
+    -
+      path: 'src/**'
+      forbid_empty: true
+      allow:
+        - '*.php'
+      deny:
+        - '*Helper.php'
+        - '*Helpers.php'
+        - '*Manager.php'
+        - '*Util.php'
+        - '*Utils.php'
+        - '*Service.php'
+        - '*Evidence.php'
+        - '*Evidences.php'
+        - '*Outcome.php'
+        - '*Outcomes.php'
+        - '*Probe.php'
+        - '*Probes.php'
+      file_case: pascal
+      dir_case: pascal
+      max_files: 15
+      max_dirs: 20
+    -
+      path: tests/Unit
+      allow: []
+    -
+      path: 'tests/Unit/**'
+      forbid_empty: true
+      allow:
+        - '*Test.php'
+      file_case: pascal
+      dir_case: pascal
+      max_files: 15
+      max_dirs: 20
+    -
+      path: 'skills/*'
+      require:
+        - SKILL.md
+      forbid_empty: true

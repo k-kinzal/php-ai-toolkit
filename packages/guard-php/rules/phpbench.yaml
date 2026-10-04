@@ -1,0 +1,17 @@
+configuration:
+  -
+    id: phpbench.script
+    file: composer.json
+    format: json
+    select: /scripts/bench
+    level: required
+    assert:
+      present: true
+  -
+    id: phpbench.file
+    file: phpbench.json.dist
+    format: json
+    select: /runner.path
+    level: required
+    assert:
+      present: true

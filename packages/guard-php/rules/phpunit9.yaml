@@ -1,0 +1,201 @@
+configuration:
+  -
+    id: phpunit9.executionOrder
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@executionOrder
+    level: required
+    assert:
+      equals: 'depends,random'
+  -
+    id: phpunit9.verbose
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@verbose
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.forceCoversAnnotation
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@forceCoversAnnotation
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.beStrictAboutCoversAnnotation
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutCoversAnnotation
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.convertDeprecationsToExceptions
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@convertDeprecationsToExceptions
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.convertErrorsToExceptions
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@convertErrorsToExceptions
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.convertNoticesToExceptions
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@convertNoticesToExceptions
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.convertWarningsToExceptions
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@convertWarningsToExceptions
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.beStrictAboutResourceUsageDuringSmallTests
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutResourceUsageDuringSmallTests
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.failOnEmptyTestSuite
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@failOnEmptyTestSuite
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.failOnIncomplete
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@failOnIncomplete
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.failOnRisky
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@failOnRisky
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.failOnSkipped
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@failOnSkipped
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.failOnWarning
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@failOnWarning
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.beStrictAboutTodoAnnotatedTests
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutTodoAnnotatedTests
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.beStrictAboutChangesToGlobalState
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutChangesToGlobalState
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.beStrictAboutOutputDuringTests
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutOutputDuringTests
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.beStrictAboutTestsThatDoNotTestAnything
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutTestsThatDoNotTestAnything
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.enforceTimeLimit
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@enforceTimeLimit
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.timeoutForSmallTests
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@timeoutForSmallTests
+    level: required
+    assert:
+      equals: '1'
+  -
+    id: phpunit9.timeoutForMediumTests
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@timeoutForMediumTests
+    level: required
+    assert:
+      equals: '10'
+  -
+    id: phpunit9.timeoutForLargeTests
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/@timeoutForLargeTests
+    level: required
+    assert:
+      equals: '60'
+  -
+    id: phpunit9.reporter
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/listeners/listener/@class
+    level: required
+    assert:
+      equals: 'Toolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener'
+  -
+    id: phpunit9.includeUncoveredFiles
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/coverage/@includeUncoveredFiles
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit9.disableCodeCoverageIgnore
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/coverage/@disableCodeCoverageIgnore
+    level: required
+    assert:
+      equals: 'true'

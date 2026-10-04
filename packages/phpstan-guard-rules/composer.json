@@ -47,6 +47,7 @@
         "squizlabs/php_codesniffer": "^4.0"
     },
     "scripts": {
+        "autoload:check": "composer dump-autoload --optimize --strict-psr --strict-ambiguous",
         "test": "@php -d memory_limit=512M tests/run.php --parallel --processes=auto",
         "test:unit": "@php -d memory_limit=512M tests/run.php",
         "test:unit:9": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit9.xml.dist",
@@ -58,6 +59,7 @@
         "test:coverage": "@php -d memory_limit=1G -d xdebug.mode=coverage tests/run.php --coverage-xml build/coverage-xml",
         "doctest": "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite doctest",
         "lint": [
+            "@autoload:check",
             "@format:check",
             "@phpstan",
             "@compat",
@@ -71,7 +73,19 @@
         "deptrac": "deptrac analyse --config-file=deptrac.yaml",
         "infection": "infection --threads=max",
         "guard": "guard check",
-        "guard:apply": "guard apply"
+        "guard:apply": "guard apply",
+        "docgen": "docgen"
+    },
+    "scripts-descriptions": {
+        "autoload:check": "Check that the PSR-4 mapping is unambiguous before the other lint gates.",
+        "format:check": "Check PHP-CS-Fixer formatting without writing files.",
+        "phpstan": "Run PHPStan with the toolkit rules.",
+        "compat": "Check PHP syntax against the declared version range.",
+        "guard": "Check source metrics, structure, documents, and tool configuration.",
+        "deptrac": "Check architecture layer dependencies.",
+        "test:unit": "Run the unit test suite.",
+        "lint": "Run the fast gates, starting with the autoload check.",
+        "docgen": "Generate the API documentation site."
     },
     "config": {
         "sort-packages": true,

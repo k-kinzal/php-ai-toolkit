@@ -1,0 +1,17 @@
+configuration:
+  -
+    id: phpcs.ruleset
+    file: phpcs.xml.dist
+    format: xml
+    select: /ruleset/rule/@ref
+    level: required
+    assert:
+      equals: PHPCompatibility
+  -
+    id: phpcs.test-version
+    file: phpcs.xml.dist
+    format: xml
+    select: /ruleset/config[@name="testVersion"]/@name
+    level: required
+    assert:
+      equals: testVersion

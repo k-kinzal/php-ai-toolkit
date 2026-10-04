@@ -1,0 +1,39 @@
+configuration:
+  -
+    id: phpstan.level
+    file: phpstan.neon
+    format: neon
+    select: /parameters/level
+    level: required
+    assert:
+      equals: max
+  -
+    id: phpstan.strict-rules
+    file: phpstan.neon
+    format: neon
+    select: /includes
+    level: required
+    assert:
+      contains: phpstan/phpstan-strict-rules/rules.neon
+  -
+    id: phpstan.rules
+    file: phpstan.neon
+    format: neon
+    select: /includes
+    level: required
+    assert:
+      contains_any:
+        - k-kinzal/php-ai-toolkit/rules.neon
+        - k-kinzal/phpstan-guard-rules/rules.neon
+        - rules.neon
+  -
+    id: phpstan.extension
+    file: phpstan.neon
+    format: neon
+    select: /includes
+    level: required
+    assert:
+      contains_any:
+        - k-kinzal/php-ai-toolkit/extension.neon
+        - k-kinzal/phpstan-ai-formatter/extension.neon
+        - extension.neon

@@ -12,7 +12,7 @@ description: >-
 
 ## Unified Guard entry point
 
-The current package is `k-kinzal/guard-php`, which exposes `vendor/bin/guard`. For a new project, run `guard init`, then configure the `quality` section of `guard.yaml`. Preserve the fixed constraints documented below. Run `guard check` from Composer and CI; use `guard apply --dry-run` to inspect configuration-value repairs and `guard apply` for authorized changes. Source and structural violations still require code/document edits.
+The current package is `k-kinzal/guard-php`, which exposes `vendor/bin/guard`. For a new project, run `guard init`, which imports the shipped `quality` preset into `guard.yaml`. Override individual limits in the `quality` section when the project needs a different threshold. Omit that import only when the project defines the whole metric policy itself. Preserve the fixed constraints documented below. Run `guard check` from Composer and CI; use `guard apply --dry-run` to inspect configuration-value repairs and `guard apply` for authorized changes. Source and structural violations still require code/document edits.
 
 The legacy workflow below is retained for migration. When starting with these legacy templates, run `guard init` after adaptation to import them without changing constraints, then retire the separate legacy policies. Do not replace an existing `guard.yaml` or reduce constraints to pass a check. See `vendor/k-kinzal/guard-php/docs/guard.md`. Legacy generation/explanation executables are available as `php vendor/k-kinzal/guard-php/bin/loc-guard`.
 

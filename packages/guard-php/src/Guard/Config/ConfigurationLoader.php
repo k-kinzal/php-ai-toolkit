@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Toolkit\Guard\Config;
 
 use JsonException;
-use Symfony\Component\Yaml\Yaml;
 use Toolkit\Guard\Policy\PolicyException;
 
 /**
@@ -19,13 +18,7 @@ final class ConfigurationLoader
      */
     public function load(string $path): Configuration
     {
-        if (!is_file($path)) {
-            throw new PolicyException('Guard configuration not found: ' . $path . '. Run guard init first.');
-        }
-        $data = (new Schema())->mapping(Yaml::parseFile($path), ['version', 'scope', 'quality', 'structure', 'documentation', 'configuration'], 'guard.yaml');
-        if (($data['version'] ?? null) !== 1) {
-            throw new PolicyException('guard.yaml.version must be 1. Use guard init to generate the current schema.');
-        }
+        $data = (new ImportResolver())->resolve($path);
         $scope = (new Schema())->mapping($data['scope'] ?? [], ['source', 'exclude'], 'scope');
         $root = dirname($path);
         return new Configuration(

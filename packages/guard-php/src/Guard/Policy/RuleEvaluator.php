@@ -6,6 +6,7 @@ namespace Toolkit\Guard\Policy;
 
 use JsonException;
 use Toolkit\Guard\Document\DataDocument;
+use Toolkit\Guard\Document\PhpDocument;
 use Toolkit\Guard\Document\Selection;
 use Toolkit\Guard\Document\XmlDocument;
 use Toolkit\Guard\Reporting\Finding;
@@ -20,7 +21,7 @@ final class RuleEvaluator
      * @throws JsonException
      * @throws \Nette\Neon\Exception
      */
-    public function accepts(Rule $rule, DataDocument|XmlDocument $document): bool
+    public function accepts(Rule $rule, DataDocument|XmlDocument|PhpDocument $document): bool
     {
         $selection = $document->read($rule->select);
         if ($document instanceof XmlDocument && $selection->exists && is_string($selection->value)

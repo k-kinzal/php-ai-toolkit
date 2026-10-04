@@ -1,0 +1,9 @@
+configuration:
+  -
+    id: github-actions.permissions
+    file: .github/workflows/ci.yml
+    format: yaml
+    select: /permissions/contents
+    level: required
+    assert:
+      equals: read

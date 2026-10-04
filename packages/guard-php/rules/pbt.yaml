@@ -1,0 +1,17 @@
+configuration:
+  -
+    id: pbt.test-unit
+    file: composer.json
+    format: json
+    select: /scripts/test:unit
+    level: required
+    assert:
+      contains: '--exclude-group=pbt'
+  -
+    id: pbt.test-pbt
+    file: composer.json
+    format: json
+    select: /scripts/test:pbt
+    level: required
+    assert:
+      contains: '--group=pbt'

@@ -1,0 +1,41 @@
+configuration:
+  -
+    id: mutation.permissions
+    file: .github/workflows/mutation.yml
+    format: yaml
+    select: /permissions/contents
+    level: required
+    assert:
+      equals: read
+  -
+    id: mutation.min-msi
+    file: .github/workflows/mutation.yml
+    format: yaml
+    select: /jobs/mutation
+    level: required
+    assert:
+      contains: '--min-msi=0'
+  -
+    id: mutation.min-covered-msi
+    file: .github/workflows/mutation.yml
+    format: yaml
+    select: /jobs/mutation
+    level: required
+    assert:
+      contains: '--min-covered-msi=0'
+  -
+    id: mutation.threshold
+    file: .github/workflows/mutation.yml
+    format: yaml
+    select: /jobs/mutation
+    level: required
+    assert:
+      contains: MIN_MSI=80
+  -
+    id: mutation.covered-threshold
+    file: .github/workflows/mutation.yml
+    format: yaml
+    select: /jobs/mutation
+    level: required
+    assert:
+      contains: MIN_COVERED_MSI=80

@@ -39,26 +39,26 @@ final class Application
         }
     }
     /**
-     * @param array{command: string, config: string, format: string, dryRun: bool} $arguments
+     * @param array{command: string, config: string, format: string, dryRun: bool, imports: ?list<string>} $arguments
      * @throws JsonException
      * @throws NeonException
      */
     public function execute(array $arguments): int
     {
         if ($arguments['command'] === '--help' || $arguments['command'] === '-h') {
-            ($this->output)("Usage: guard check|apply|init [--config=guard.yaml] [--format=text|json]\nApply accepts --dry-run. Required violations exit 1; warnings exit 0; invalid input exits 2.\n");
+            ($this->output)("Usage: guard check|apply|init [--config=guard.yaml] [--format=text|json]\ninit accepts --import=NAME[,NAME]. Apply accepts --dry-run. Required violations exit 1; warnings exit 0; invalid input exits 2.\n");
             return 0;
         }
         $path = str_starts_with($arguments['config'], '/') ? $arguments['config'] : $this->directory . '/' . $arguments['config'];
         if ($arguments['command'] === 'init') {
-            (new Initializer())->write($path);
+            (new Initializer())->write($path, $arguments['imports']);
             ($this->output)('Created ' . $path . ". Review the detected recommendations, then run guard check.\n");
             return 0;
         }
         return $this->check($path, $arguments);
     }
     /**
-     * @param array{command: string, config: string, format: string, dryRun: bool} $arguments
+     * @param array{command: string, config: string, format: string, dryRun: bool, imports: ?list<string>} $arguments
      * @throws JsonException
      * @throws NeonException
      */

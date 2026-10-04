@@ -1,0 +1,137 @@
+configuration:
+  -
+    id: composer.sort-packages
+    file: composer.json
+    format: json
+    select: /config/sort-packages
+    level: recommended
+    assert:
+      equals: true
+  -
+    id: composer.autoload-check
+    file: composer.json
+    format: json
+    select: /scripts/autoload:check
+    level: required
+    assert:
+      equals: composer dump-autoload --optimize --strict-psr --strict-ambiguous
+  -
+    id: composer.format-check
+    file: composer.json
+    format: json
+    select: /scripts/format:check
+    level: required
+    assert:
+      contains: --allow-risky=yes
+  -
+    id: composer.phpstan
+    file: composer.json
+    format: json
+    select: /scripts/phpstan
+    level: required
+    assert:
+      present: true
+  -
+    id: composer.compat
+    file: composer.json
+    format: json
+    select: /scripts/compat
+    level: required
+    assert:
+      present: true
+  -
+    id: composer.guard
+    file: composer.json
+    format: json
+    select: /scripts/guard
+    level: required
+    assert:
+      present: true
+  -
+    id: composer.deptrac
+    file: composer.json
+    format: json
+    select: /scripts/deptrac
+    level: required
+    assert:
+      present: true
+  -
+    id: composer.test-unit
+    file: composer.json
+    format: json
+    select: /scripts/test:unit
+    level: required
+    assert:
+      present: true
+  -
+    id: composer.lint-starts-with-autoload
+    file: composer.json
+    format: json
+    select: /scripts/lint/0
+    level: required
+    assert:
+      equals: '@autoload:check'
+  -
+    id: composer.describe-autoload-check
+    file: composer.json
+    format: json
+    select: /scripts-descriptions/autoload:check
+    level: required
+    assert:
+      present: true
+  -
+    id: composer.describe-format-check
+    file: composer.json
+    format: json
+    select: /scripts-descriptions/format:check
+    level: required
+    assert:
+      present: true
+  -
+    id: composer.describe-phpstan
+    file: composer.json
+    format: json
+    select: /scripts-descriptions/phpstan
+    level: required
+    assert:
+      present: true
+  -
+    id: composer.describe-compat
+    file: composer.json
+    format: json
+    select: /scripts-descriptions/compat
+    level: required
+    assert:
+      present: true
+  -
+    id: composer.describe-guard
+    file: composer.json
+    format: json
+    select: /scripts-descriptions/guard
+    level: required
+    assert:
+      present: true
+  -
+    id: composer.describe-deptrac
+    file: composer.json
+    format: json
+    select: /scripts-descriptions/deptrac
+    level: required
+    assert:
+      present: true
+  -
+    id: composer.describe-test-unit
+    file: composer.json
+    format: json
+    select: /scripts-descriptions/test:unit
+    level: required
+    assert:
+      present: true
+  -
+    id: composer.describe-lint
+    file: composer.json
+    format: json
+    select: /scripts-descriptions/lint
+    level: required
+    assert:
+      present: true

@@ -51,6 +51,8 @@ use PHPUnit\Framework\TestCase;
  * @uses \Toolkit\Guard\Cli\Arguments
  * @uses \Toolkit\Guard\Config\Configuration
  * @uses \Toolkit\Guard\Config\ConfigurationLoader
+ * @uses \Toolkit\Guard\Config\DocumentMerger
+ * @uses \Toolkit\Guard\Config\ImportResolver
  * @uses \Toolkit\Guard\Config\DocumentationReader
  * @uses \Toolkit\Guard\Config\QualityReader
  * @uses \Toolkit\Guard\Config\RuleReader
@@ -212,6 +214,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Toolkit\Guard\Cli\Arguments::class)]
 #[UsesClass(\Toolkit\Guard\Config\Configuration::class)]
 #[UsesClass(\Toolkit\Guard\Config\ConfigurationLoader::class)]
+#[UsesClass(\Toolkit\Guard\Config\DocumentMerger::class)]
+#[UsesClass(\Toolkit\Guard\Config\ImportResolver::class)]
 #[UsesClass(\Toolkit\Guard\Config\DocumentationReader::class)]
 #[UsesClass(\Toolkit\Guard\Config\QualityReader::class)]
 #[UsesClass(\Toolkit\Guard\Config\RuleReader::class)]
@@ -404,8 +408,9 @@ final class ApplicationTest extends TestCase
         $app = new \Toolkit\Guard\Cli\Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
             $output .= $text;
         });
-        self::assertSame(0, $app->execute(['command' => '--help', 'config' => 'guard.yaml', 'format' => 'text', 'dryRun' => false]));
+        self::assertSame(0, $app->execute(['command' => '--help', 'config' => 'guard.yaml', 'format' => 'text', 'dryRun' => false, 'imports' => null]));
         self::assertStringContainsString('check|apply|init', $output);
+        self::assertStringContainsString('--import', $output);
     }
     public function testRunMalformedInputPreventsEarlierPlannedWrites(): void
     {

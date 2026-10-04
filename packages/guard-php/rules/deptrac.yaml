@@ -1,0 +1,17 @@
+configuration:
+  -
+    id: deptrac.config
+    file: deptrac.yaml
+    format: yaml
+    select: /deptrac
+    level: required
+    assert:
+      present: true
+  -
+    id: deptrac.script
+    file: composer.json
+    format: json
+    select: /scripts/deptrac
+    level: required
+    assert:
+      present: true

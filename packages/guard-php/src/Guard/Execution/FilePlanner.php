@@ -8,6 +8,7 @@ use JsonException;
 use Nette\Neon\Exception as NeonException;
 use RuntimeException;
 use Toolkit\Guard\Document\DataDocument;
+use Toolkit\Guard\Document\PhpDocument;
 use Toolkit\Guard\Document\XmlDocument;
 use Toolkit\Guard\Policy\PolicyException;
 use Toolkit\Guard\Policy\Rule;
@@ -35,7 +36,11 @@ final class FilePlanner
                 throw new PolicyException('Cannot read ' . $path . '. Check file permissions.');
             }
             $format = $rules[0]->format;
-            $document = $format === 'xml' ? new XmlDocument($source) : new DataDocument($format, $source);
+            $document = match ($format) {
+                'xml' => new XmlDocument($source),
+                'php' => new PhpDocument($source),
+                default => new DataDocument($format, $source),
+            };
             $evaluator = new RuleEvaluator();
             $changed = false;
             foreach ($rules as $rule) {

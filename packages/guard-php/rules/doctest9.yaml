@@ -1,0 +1,17 @@
+configuration:
+  -
+    id: doctest9.suite
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/testsuites/testsuite[@name="doctest"]/file
+    level: required
+    assert:
+      contains: src/Doctest/Legacy/LegacyDoctestSuite.php
+  -
+    id: doctest9.directories
+    file: phpunit9.xml.dist
+    format: xml
+    select: /phpunit/php/env[@name="DOCTEST_DIRECTORIES"]/@value
+    level: required
+    assert:
+      present: true

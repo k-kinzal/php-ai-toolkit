@@ -1,0 +1,17 @@
+configuration:
+  -
+    id: doctest10.suite
+    file: phpunit10.xml.dist
+    format: xml
+    select: /phpunit/testsuites/testsuite[@name="doctest"]/file
+    level: required
+    assert:
+      contains: src/Doctest/DoctestSuite.php
+  -
+    id: doctest10.extension
+    file: phpunit10.xml.dist
+    format: xml
+    select: '/phpunit/extensions/bootstrap[@class="Toolkit\Doctest\DoctestExtension"]/@class'
+    level: required
+    assert:
+      equals: 'Toolkit\Doctest\DoctestExtension'

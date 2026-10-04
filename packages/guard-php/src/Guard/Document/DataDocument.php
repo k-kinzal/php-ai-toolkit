@@ -11,7 +11,7 @@ use Toolkit\Guard\Policy\PolicyException;
 use Yosymfony\Toml\Toml;
 
 /**
- * Parses and edits JSON, YAML, NEON and TOML configuration documents.
+ * Parses and edits JSON, JSON5, YAML, NEON and TOML configuration documents.
  */
 final class DataDocument
 {
@@ -34,6 +34,7 @@ final class DataDocument
     {
         return match ($this->format) {
             'json' => json_decode($source, false, 512, JSON_THROW_ON_ERROR),
+            'json5' => (new Json5Reader())->decode($source),
             'yaml', 'yml' => Yaml::parse($source, Yaml::PARSE_OBJECT_FOR_MAP | Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE),
             'neon' => Neon::decode($source),
             'toml' => Toml::parse($source, true),

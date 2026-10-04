@@ -1,0 +1,23 @@
+quality:
+  profiles:
+    standard:
+      limits:
+        file:
+          lines: 500
+          ncloc: 350
+        class:
+          lines: 400
+        trait:
+          lines: 300
+        interface:
+          lines: 200
+        enum:
+          lines: 200
+        function:
+          lines: 50
+          cyclomatic_complexity: 20
+        method:
+          lines: 50
+          cyclomatic_complexity: 20
+  default: standard
+  assignments: []

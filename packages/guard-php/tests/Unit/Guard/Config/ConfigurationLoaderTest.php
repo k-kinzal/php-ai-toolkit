@@ -25,6 +25,8 @@ use PHPUnit\Framework\TestCase;
  * @uses \Toolkit\DocGuard\Markdown\Heading
  * @uses \Toolkit\DocGuard\Markdown\HeadingTextNormalizer
  * @uses \Toolkit\Guard\Config\Configuration
+ * @uses \Toolkit\Guard\Config\DocumentMerger
+ * @uses \Toolkit\Guard\Config\ImportResolver
  * @uses \Toolkit\Guard\Config\DocumentationReader
  * @uses \Toolkit\Guard\Config\QualityReader
  * @uses \Toolkit\Guard\Config\RuleReader
@@ -78,6 +80,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Toolkit\DocGuard\Markdown\Heading::class)]
 #[UsesClass(\Toolkit\DocGuard\Markdown\HeadingTextNormalizer::class)]
 #[UsesClass(\Toolkit\Guard\Config\Configuration::class)]
+#[UsesClass(\Toolkit\Guard\Config\DocumentMerger::class)]
+#[UsesClass(\Toolkit\Guard\Config\ImportResolver::class)]
 #[UsesClass(\Toolkit\Guard\Config\DocumentationReader::class)]
 #[UsesClass(\Toolkit\Guard\Config\QualityReader::class)]
 #[UsesClass(\Toolkit\Guard\Config\RuleReader::class)]
@@ -140,6 +144,20 @@ final class ConfigurationLoaderTest extends TestCase
         $config = (new \Toolkit\Guard\Config\ConfigurationLoader())->load($path);
         self::assertCount(1, $config->rules);
         self::assertSame(1, $config->rules[0]->repair);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testLoadsImportedRulesAndProjectOverrides(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-import-load-' . uniqid();
+        mkdir($root);
+        file_put_contents($root . '/preset.yaml', "configuration:\n  - {id: mode, file: app.json, select: /mode, assert: {equals: A}}\n");
+        file_put_contents($root . '/guard.yaml', "version: 1\nimports: [preset.yaml]\nconfiguration:\n  - {id: mode, file: settings.json}\n");
+        $config = (new \Toolkit\Guard\Config\ConfigurationLoader())->load($root . '/guard.yaml');
+        self::assertSame('settings.json', $config->rules[0]->file);
+        self::assertSame(['equals' => 'A'], $config->rules[0]->assertions);
     }
 
 }

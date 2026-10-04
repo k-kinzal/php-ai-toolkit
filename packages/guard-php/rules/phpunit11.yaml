@@ -1,0 +1,209 @@
+configuration:
+  -
+    id: phpunit11.beStrictAboutChangesToGlobalState
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutChangesToGlobalState
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.beStrictAboutOutputDuringTests
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutOutputDuringTests
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.beStrictAboutTestsThatDoNotTestAnything
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutTestsThatDoNotTestAnything
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.enforceTimeLimit
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/@enforceTimeLimit
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.timeoutForSmallTests
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/@timeoutForSmallTests
+    level: required
+    assert:
+      equals: '1'
+  -
+    id: phpunit11.timeoutForMediumTests
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/@timeoutForMediumTests
+    level: required
+    assert:
+      equals: '10'
+  -
+    id: phpunit11.timeoutForLargeTests
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/@timeoutForLargeTests
+    level: required
+    assert:
+      equals: '60'
+  -
+    id: phpunit11.executionOrder
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/@executionOrder
+    level: required
+    assert:
+      equals: 'depends,random'
+  -
+    id: phpunit11.requireCoverageMetadata
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/@requireCoverageMetadata
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.beStrictAboutCoverageMetadata
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutCoverageMetadata
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.failOnAllIssues
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/@failOnAllIssues
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.displayDetailsOnAllIssues
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/@displayDetailsOnAllIssues
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.shortenArraysForExportThreshold
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/@shortenArraysForExportThreshold
+    level: required
+    assert:
+      equals: '0'
+  -
+    id: phpunit11.reporter
+    file: phpunit11.xml.dist
+    format: xml
+    select: '/phpunit/extensions/bootstrap[@class="Toolkit\PhpUnit\TestReporter\AiTestReporterExtension"]/@class'
+    level: required
+    assert:
+      equals: 'Toolkit\PhpUnit\TestReporter\AiTestReporterExtension'
+  -
+    id: phpunit11.ignoreIndirectDeprecations
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/source/@ignoreIndirectDeprecations
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.restrictNotices
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/source/@restrictNotices
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.restrictWarnings
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/source/@restrictWarnings
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.ignoreSuppressionOfDeprecations
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/source/@ignoreSuppressionOfDeprecations
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.ignoreSuppressionOfPhpDeprecations
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/source/@ignoreSuppressionOfPhpDeprecations
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.ignoreSuppressionOfErrors
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/source/@ignoreSuppressionOfErrors
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.ignoreSuppressionOfNotices
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/source/@ignoreSuppressionOfNotices
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.ignoreSuppressionOfPhpNotices
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/source/@ignoreSuppressionOfPhpNotices
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.ignoreSuppressionOfWarnings
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/source/@ignoreSuppressionOfWarnings
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.ignoreSuppressionOfPhpWarnings
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/source/@ignoreSuppressionOfPhpWarnings
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.includeUncoveredFiles
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/coverage/@includeUncoveredFiles
+    level: required
+    assert:
+      equals: 'true'
+  -
+    id: phpunit11.disableCodeCoverageIgnore
+    file: phpunit11.xml.dist
+    format: xml
+    select: /phpunit/coverage/@disableCodeCoverageIgnore
+    level: required
+    assert:
+      equals: 'true'

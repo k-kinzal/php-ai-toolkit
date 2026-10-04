@@ -15,15 +15,16 @@ use Toolkit\Guard\Policy\PolicyException;
 final class Initializer
 {
     /**
-     * @throws PolicyException when guard.yaml exists or cannot be created
-     * @throws JsonException
+     * @param ?list<string> $imports null selects presets from the project; a list imports only those names
+     * @throws PolicyException when guard.yaml exists, cannot be created, or names an unknown preset
+     * @throws JsonException when composer.json or composer.lock is malformed
      */
-    public function write(string $path): void
+    public function write(string $path, ?array $imports = null): void
     {
         if (file_exists($path) || is_link($path)) {
             throw new PolicyException('Cannot create ' . $path . ': it already exists. Review the existing policy instead of overwriting it.');
         }
-        $data = $this->configuration(dirname($path));
+        $data = $this->configuration(dirname($path), $imports);
         $source = "# Project policy. Required rules fail; recommendations warn.\n" . Yaml::dump($data, 12, 2, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE);
         $handle = @fopen($path, 'x');
         if ($handle === false) {
@@ -38,40 +39,59 @@ final class Initializer
         }
     }
     /**
+     * Builds a project policy that imports shipped presets and keeps project-specific sections inline.
+     *
+     * @param ?list<string> $imports null selects presets from the project; a list imports only those names
      * @return array<string, mixed>
-     * @throws JsonException
+     * @throws JsonException when composer.json or composer.lock is malformed
+     * @throws PolicyException when an import name is unknown or a preset cannot be read
      */
-    public function configuration(string $root): array
+    public function configuration(string $root, ?array $imports = null): array
     {
-        $sources = (new ToolDetector())->sources($root);
-        $defaults = ['version' => 1, 'scope' => ['source' => $sources, 'exclude' => []]];
-        if ($sources !== []) {
-            $defaults['quality'] = ['profiles' => ['standard' => ['limits' => $this->limits()]], 'default' => 'standard', 'assignments' => []];
-            $defaults['structure'] = $this->structure($sources, is_dir($root . '/tests/Unit'));
+        $names = (new PresetSelector())->select($root, $imports);
+        $document = ['version' => 1];
+        $paths = (new PresetCatalog())->imports($root, $names);
+        if ($paths !== []) {
+            $document['imports'] = $paths;
         }
-        if (is_file($root . '/README.md')) {
-            $source = file_get_contents($root . '/README.md');
-            $headings = [];
-            foreach ((new HeadingParser())->parse($source === false ? '' : $source) as $heading) {
-                $headings[] = $heading->notation();
-            }
-            $defaults['documentation'] = ['files' => ['README.md' => ['headings' => $headings]], 'scan' => ['README.md']];
+        $document['scope'] = ['source' => (new ToolDetector())->sources($root), 'exclude' => []];
+        $readme = $this->readme($root);
+        if ($readme !== null) {
+            $document['documentation'] = $readme;
         }
-        $defaults = (new LegacyMigration())->migrate($root, $defaults);
-        $defaults['configuration'] = (new Recommendations())->rules($root);
-        return $defaults;
+        $document = (new PresetOverrides())->apply($root, $names, $document);
+
+        return (new LegacyMigration())->migrate($root, $document);
     }
+
     /**
+     * Returns the current README headings when the project has a README.
+     *
+     * @return ?array<string, mixed>
+     */
+    public function readme(string $root): ?array
+    {
+        if (!is_file($root . '/README.md')) {
+            return null;
+        }
+        $source = file_get_contents($root . '/README.md');
+        $headings = [];
+        foreach ((new HeadingParser())->parse($source === false ? '' : $source) as $heading) {
+            $headings[] = $heading->notation();
+        }
+
+        return ['files' => ['README.md' => ['headings' => $headings]], 'scan' => ['README.md']];
+    }
+
+    /**
+     * Returns the standard metric limits shipped in rules/quality.yaml.
+     *
      * @return array<string, array<string, int>>
+     * @throws PolicyException when quality.yaml does not define integer limits
      */
     public function limits(): array
     {
-        return [
-            'file' => ['lines' => 500, 'ncloc' => 350], 'class' => ['lines' => 400],
-            'trait' => ['lines' => 300], 'interface' => ['lines' => 200], 'enum' => ['lines' => 200],
-            'function' => ['lines' => 50, 'cyclomatic_complexity' => 20],
-            'method' => ['lines' => 50, 'cyclomatic_complexity' => 20],
-        ];
+        return (new PresetCatalog())->limits();
     }
     /**
      * @param list<string> $sources

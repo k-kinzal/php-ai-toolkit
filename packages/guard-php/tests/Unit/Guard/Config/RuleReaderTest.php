@@ -62,4 +62,71 @@ final class RuleReaderTest extends TestCase
         $this->expectException(\Toolkit\Guard\Policy\PolicyException::class);
         (new \Toolkit\Guard\Config\RuleReader())->assertions(['min' => 3, 'max' => 1], 'workers');
     }
+
+    public function testFormatRejectsAnUnknownDocument(): void
+    {
+        $this->expectException(\Toolkit\Guard\Policy\PolicyException::class);
+        $this->expectExceptionMessage('unsupported format');
+        (new \Toolkit\Guard\Config\RuleReader())->format('csv', 'mode');
+    }
+
+    public function testLevelRejectsACustomSeverity(): void
+    {
+        $this->expectException(\Toolkit\Guard\Policy\PolicyException::class);
+        $this->expectExceptionMessage('level');
+        (new \Toolkit\Guard\Config\RuleReader())->level('strict', 'mode');
+    }
+
+    public function testRepairableLeavesPhpCheckOnly(): void
+    {
+        $reader = new \Toolkit\Guard\Config\RuleReader();
+        self::assertFalse($reader->repairable('php', ['assert' => ['equals' => true]], ['equals' => true]));
+        self::assertTrue($reader->repairable('json', [], ['equals' => true]));
+    }
+
+    public function testRepairValueCoercesNumericXmlBounds(): void
+    {
+        self::assertSame(1.0, (new \Toolkit\Guard\Config\RuleReader())->repairValue('xml', ['min' => 1], '1'));
+        self::assertSame('1', (new \Toolkit\Guard\Config\RuleReader())->repairValue('xml', ['equals' => '1'], '1'));
+    }
+
+    public function testBoundsRejectsANonNumericLimit(): void
+    {
+        $this->expectException(\Toolkit\Guard\Policy\PolicyException::class);
+        $this->expectExceptionMessage('must be a number');
+        (new \Toolkit\Guard\Config\RuleReader())->bounds(['min' => '1'], 'workers');
+    }
+
+    public function testChoicesRejectsAnEmptyList(): void
+    {
+        $this->expectException(\Toolkit\Guard\Policy\PolicyException::class);
+        $this->expectExceptionMessage('one_of');
+        (new \Toolkit\Guard\Config\RuleReader())->choices(['one_of' => []], 'mode');
+    }
+
+    public function testTextsRejectsAnEmptyNeedle(): void
+    {
+        $this->expectException(\Toolkit\Guard\Policy\PolicyException::class);
+        $this->expectExceptionMessage('contains_any');
+        (new \Toolkit\Guard\Config\RuleReader())->texts(['contains_any' => ['']], 'includes');
+    }
+
+    public function testFlagsRejectsAbsentCombinedWithAnotherAssertion(): void
+    {
+        $this->expectException(\Toolkit\Guard\Policy\PolicyException::class);
+        $this->expectExceptionMessage('absent');
+        (new \Toolkit\Guard\Config\RuleReader())->flags(['absent' => true, 'present' => true], 'group');
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testRuleLeavesPhpAndJson5CheckOnly(): void
+    {
+        $reader = new \Toolkit\Guard\Config\RuleReader();
+        $php = $reader->rule(['id' => 'risky', 'file' => '.php-cs-fixer.dist.php', 'format' => 'php', 'select' => '/riskyAllowed', 'assert' => ['equals' => true]]);
+        $json5 = $reader->rule(['id' => 'msi', 'file' => 'infection.json5', 'format' => 'json5', 'select' => '/minMsi', 'assert' => ['equals' => 80]]);
+        self::assertFalse($php->repairable);
+        self::assertFalse($json5->repairable);
+    }
 }

@@ -6,13 +6,14 @@ Guard combines source metrics, directory constraints, Markdown structure and con
 
 ```sh
 vendor/bin/guard init
+vendor/bin/guard init --import=quality,structure,phpstan
 vendor/bin/guard check
 vendor/bin/guard apply --dry-run
 vendor/bin/guard apply
 vendor/bin/guard check --format=json
 ```
 
-`--config=path/to/guard.yaml` selects another policy. All target paths are relative to that policy's directory, regardless of the working directory. `init` refuses to overwrite an existing policy and does not change tool settings. It detects Composer source roots and installed PHPStan/PHPUnit versions, includes the toolkit's current metric and naming defaults, and recommends Composer's sorted package settings. Existing `loc.yaml`, `tree.yaml` and `doc-guard.yaml` are imported with their thresholds and constraints intact.
+`--config=path/to/guard.yaml` selects another policy. All target paths are relative to that policy's directory, regardless of the working directory. `init` refuses to overwrite an existing policy and does not change tool settings. With no `--import`, it writes imports for the shipped presets that match the project. `--import` names presets explicitly and does not add the ones it omits. Existing `loc.yaml`, `tree.yaml` and `doc-guard.yaml` are copied into the project file. `loc.yaml` and `tree.yaml` suppress the `quality` and `structure` imports so those thresholds stay intact.
 
 Exit codes are `0` for success (including recommendations), `1` for required violations and `2` for invalid configuration, malformed documents or an operational failure. A successful dry run means the proposed changes would satisfy the configuration rules; it makes no writes.
 
@@ -25,6 +26,50 @@ The schema organizes responsibilities rather than nesting three old command conf
 - `structure.paths`, `structure.exclude` and `structure.directories` declare directory rules. Every matching rule is enforced.
 - `documentation.files` and `documentation.scan` declare Markdown headings and discover undeclared documents. `documentation.exclude` excludes specified paths from discovery, while explicitly declared documents are still checked.
 - `configuration` contains named field constraints, shared by `check` and `apply`.
+- `imports` lists other guard documents to load before the project file. Omit it to define the whole policy in the project file.
+
+## Imports
+
+Paths in `imports` are relative to the file that lists them. An imported file may import more files. Guard loads imports in order, then applies the current file. A later file overrides an earlier one, and the project file overrides all of them. A circular import is an error.
+
+Shipped presets live in `vendor/k-kinzal/guard-php/rules/`:
+
+- `quality.yaml` and `structure.yaml` are the generic metric and directory rules.
+- `phpstan.yaml` and `phpstan-guard-rules.yaml` check the PHPStan level, includes, and toolkit rules.
+- `phpunit9.yaml` through `phpunit13.yaml` check the PHPUnit major that each configuration file targets. `doctest9.yaml` through `doctest13.yaml` check executable PHPDoc examples.
+- `php-cs-fixer.yaml`, `phpcs.yaml`, `deptrac.yaml`, `infection.yaml`, and `composer.yaml` check the core toolkit setup.
+- `github-actions.yaml` and `mutation.yaml` check the pull-request workflow and the scheduled mutation workflow.
+- `pbt.yaml`, `fuzz.yaml`, `phpbench.yaml`, and `docgen.yaml` apply only when those tools are adopted.
+
+Import only the presets you want. A section that is neither imported nor written in the project file is not checked. Writing the rules in the project file and listing no imports is a complete custom policy.
+
+Overrides keep the imported values for every key you leave out:
+
+- A `configuration` entry with the same `id` replaces only the keys it sets. Point a shipped rule at `phpstan.neon.dist` without copying its assertion.
+- `quality.profiles` merges by profile name. A limit replaces only the metrics you set.
+- `structure.directories` merges by `path`. A directory rule replaces only the keys you set, and a new path is added.
+- `scope` replaces the imported scope when the project file sets it.
+- `documentation.files` replaces one document at a time. `scan` and `exclude` replace the imported lists when they are set.
+
+`guard init` writes imports for the presets that match the project. `quality` and `structure` are included when source roots exist. PHPStan, PHP-CS-Fixer, PHPCompatibility, Deptrac, Infection, and Composer are included when their configuration or package is present. Each PHPUnit major gets its own preset: versioned files such as `phpunit10.xml.dist` select that major, and `phpunit.xml.dist` is PHPUnit 13 when those versioned files exist. A project with only `phpunit.xml.dist` uses the lock version, or a constraint that names one major. Doctest presets are added when that PHPUnit file already contains a doctest suite, or when PHPStan requires public-API examples. Property-based tests, fuzzing, PHPBench, and DocGen are added only when those packages are installed. GitHub Actions presets are added when `.github/workflows/ci.yml` or `mutation.yml` exists. When the detected file is not the preset default, init writes an `id` and `file` override. Source roots other than `src` get extra `structure.directories` entries that use the same constraints.
+
+```yaml
+version: 1
+imports:
+  - vendor/k-kinzal/guard-php/rules/quality.yaml
+  - vendor/k-kinzal/guard-php/rules/phpstan.yaml
+scope:
+  source: [src]
+  exclude: []
+quality:
+  profiles:
+    standard:
+      limits:
+        file: {lines: 800}
+configuration:
+  - id: phpstan.level
+    file: phpstan.neon.dist
+```
 
 ```yaml
 version: 1
@@ -93,7 +138,7 @@ Sections other than `version` are optional so a policy can check only configurat
 
 `level: required` is the default and fails the check. `level: recommended` emits a warning and keeps exit code zero. `apply` can repair both levels.
 
-`equals` uses an exact, typed value. `one_of` permits any listed value. `min` and `max` constrain numbers, including both endpoints. Multiple assertions on a field must all pass. Missing fields violate a rule even when its expected value is null; explicit null remains distinct from absence.
+`equals` uses an exact, typed value. `one_of` permits any listed value. `min` and `max` constrain numbers, including both endpoints. `contains` matches text inside a string or anywhere in a nested document. `contains_any` matches one of several include names: a name that contains `/` matches a path fragment, and a bare name matches the whole entry. `not_contains` rejects text. `present` requires the field to exist. `absent` requires it to be missing, and it cannot be combined with another assertion. Multiple assertions on a field must all pass. Missing fields violate a rule even when its expected value is null; explicit null remains distinct from absence. `php` and `json5` rules are check-only: `json5` accepts comments and trailing commas, and `php` reads the literal `setRiskyAllowed` and `setRules` arguments without executing the file.
 
 An `equals` assertion supplies its own repair. Other assertions require an explicit `repair` before Guard can apply a change. The repair must satisfy all assertions. A compliant value is retained, so an allowed `B` is not replaced with the fallback `A`. Without a repair, Guard reports the required manual change. This follows Syncer's distinction between a fixed value and retaining any value that satisfies constraints.
 
@@ -117,6 +162,6 @@ Targets must be existing regular files inside the project; traversal and symlink
 
 ## Repository migration
 
-`guard init` writes the default policy for the project that contains `guard.yaml`: source thresholds, directory rules, the current README headings, and configuration checks for the tools that project has installed. A project is configured correctly when `guard check` passes that policy.
+`guard init` writes the project file that imports the matching shipped presets, records Composer source roots and the current README headings, and adds only the overrides the project needs. A project is configured correctly when `guard check` passes that policy.
 
 The legacy analyzer classes and `bin/loc-guard`, `bin/tree-guard` and `bin/doc-guard` remain available for existing callers supplying their old configuration files. New Composer installations expose the unified `guard` command.

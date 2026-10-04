@@ -1,0 +1,9 @@
+configuration:
+  -
+    id: phpstan.all-rules
+    file: phpstan.neon
+    format: neon
+    select: /parameters/toolkit/allRules
+    level: required
+    assert:
+      equals: true

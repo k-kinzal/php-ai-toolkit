@@ -1,0 +1,161 @@
+configuration:
+  -
+    id: php-cs-fixer.risky-allowed
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /riskyAllowed
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.psr12
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/@PSR12
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.declare-strict-types
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/declare_strict_types
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.strict-param
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/strict_param
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.strict-comparison
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/strict_comparison
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.array-syntax
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/array_syntax/syntax
+    level: required
+    assert:
+      equals: short
+  -
+    id: php-cs-fixer.no-unused-imports
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/no_unused_imports
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.ordered-imports
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/ordered_imports/sort_algorithm
+    level: required
+    assert:
+      equals: alpha
+  -
+    id: php-cs-fixer.single-quote
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/single_quote
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.trailing-comma
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/trailing_comma_in_multiline
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.no-empty-statement
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/no_empty_statement
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.no-superfluous-elseif
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/no_superfluous_elseif
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.no-useless-else
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/no_useless_else
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.void-return
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/void_return
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.no-alias-functions
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/no_alias_functions
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.no-mixed-echo-print
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/no_mixed_echo_print/use
+    level: required
+    assert:
+      equals: echo
+  -
+    id: php-cs-fixer.import-classes
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/global_namespace_import/import_classes
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.import-constants
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/global_namespace_import/import_constants
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.import-functions
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/global_namespace_import/import_functions
+    level: required
+    assert:
+      equals: true
+  -
+    id: php-cs-fixer.fully-qualified-strict-types
+    file: .php-cs-fixer.dist.php
+    format: php
+    select: /rules/fully_qualified_strict_types
+    level: required
+    assert:
+      equals: true

@@ -46,7 +46,12 @@ use PHPUnit\Framework\TestCase;
  * @uses \Toolkit\Guard\Config\Schema
  * @uses \Toolkit\Guard\Config\StructureReader
  * @uses \Toolkit\Guard\Document\Selection
+ * @uses \Toolkit\Guard\Config\DocumentMerger
+ * @uses \Toolkit\Guard\Config\ImportResolver
  * @uses \Toolkit\Guard\Init\LegacyMigration
+ * @uses \Toolkit\Guard\Init\PresetCatalog
+ * @uses \Toolkit\Guard\Init\PresetOverrides
+ * @uses \Toolkit\Guard\Init\PresetSelector
  * @uses \Toolkit\Guard\Init\Recommendations
  * @uses \Toolkit\Guard\Init\ToolDetector
  * @uses \Toolkit\Guard\Policy\Constraint
@@ -122,7 +127,12 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Toolkit\Guard\Config\Schema::class)]
 #[UsesClass(\Toolkit\Guard\Config\StructureReader::class)]
 #[UsesClass(\Toolkit\Guard\Document\Selection::class)]
+#[UsesClass(\Toolkit\Guard\Config\DocumentMerger::class)]
+#[UsesClass(\Toolkit\Guard\Config\ImportResolver::class)]
 #[UsesClass(\Toolkit\Guard\Init\LegacyMigration::class)]
+#[UsesClass(\Toolkit\Guard\Init\PresetCatalog::class)]
+#[UsesClass(\Toolkit\Guard\Init\PresetOverrides::class)]
+#[UsesClass(\Toolkit\Guard\Init\PresetSelector::class)]
 #[UsesClass(\Toolkit\Guard\Init\Recommendations::class)]
 #[UsesClass(\Toolkit\Guard\Init\ToolDetector::class)]
 #[UsesClass(\Toolkit\Guard\Policy\Constraint::class)]
@@ -187,8 +197,62 @@ final class InitializerTest extends TestCase
         $root = sys_get_temp_dir() . '/guard-empty-' . uniqid();
         mkdir($root);
         $config = (new \Toolkit\Guard\Init\Initializer())->configuration($root);
-        self::assertSame([], $config['configuration']);
+        self::assertArrayNotHasKey('configuration', $config);
+        self::assertArrayNotHasKey('imports', $config);
         self::assertArrayNotHasKey('quality', $config);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testConfigurationImportsOnlyRequestedPresets(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-requested-' . uniqid();
+        mkdir($root);
+        $config = (new \Toolkit\Guard\Init\Initializer())->configuration($root, ['composer', 'composer']);
+        self::assertStringContainsString('composer.yaml', json_encode($config['imports'], JSON_THROW_ON_ERROR));
+        self::assertStringNotContainsString('quality.yaml', json_encode($config['imports'], JSON_THROW_ON_ERROR));
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testConfigurationKeepsLegacyQualityOutOfImports(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-legacy-init-' . uniqid();
+        mkdir($root . '/src', 0777, true);
+        file_put_contents($root . '/loc.yaml', "scan: {roots: [lib], exclude: []}\npolicies:\n  strict:\n    limits: {file: {lines: 99}}\napply: {default: strict, rules: []}\n");
+        $config = (new \Toolkit\Guard\Init\Initializer())->configuration($root, ['quality', 'structure']);
+        self::assertStringNotContainsString('quality.yaml', json_encode($config['imports'], JSON_THROW_ON_ERROR));
+        self::assertSame(['profiles' => ['strict' => ['limits' => ['file' => ['lines' => 99]]]], 'default' => 'strict', 'assignments' => []], $config['quality']);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testConfigurationOverridesDetectedPhpStanFile(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-phpstan-init-' . uniqid();
+        mkdir($root);
+        file_put_contents($root . '/composer.json', '{"require-dev":{"phpstan/phpstan":"^2.0","k-kinzal/phpstan-guard-rules":"^1.0"}}');
+        file_put_contents($root . '/phpstan.neon.dist', "parameters:\n    level: 5\n");
+        $config = (new \Toolkit\Guard\Init\Initializer())->configuration($root);
+        self::assertSame([
+            ['id' => 'phpstan.level', 'file' => 'phpstan.neon.dist'],
+            ['id' => 'phpstan.strict-rules', 'file' => 'phpstan.neon.dist'],
+            ['id' => 'phpstan.rules', 'file' => 'phpstan.neon.dist'],
+            ['id' => 'phpstan.extension', 'file' => 'phpstan.neon.dist'],
+            ['id' => 'phpstan.all-rules', 'file' => 'phpstan.neon.dist'],
+        ], $config['configuration']);
+    }
+
+    public function testReadmeRecordsTheCurrentHeadings(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-readme-' . uniqid();
+        mkdir($root);
+        file_put_contents($root . '/README.md', "# Tool\n");
+        self::assertSame(['files' => ['README.md' => ['headings' => ['# Tool']]], 'scan' => ['README.md']], (new \Toolkit\Guard\Init\Initializer())->readme($root));
+        self::assertNull((new \Toolkit\Guard\Init\Initializer())->readme(sys_get_temp_dir() . '/guard-no-readme-' . uniqid()));
     }
     public function testLimitsPreservesTheCurrentStrictProfile(): void
     {

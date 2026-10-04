@@ -1,0 +1,17 @@
+configuration:
+  -
+    id: docgen.script
+    file: composer.json
+    format: json
+    select: /scripts/docgen
+    level: required
+    assert:
+      present: true
+  -
+    id: docgen.description
+    file: composer.json
+    format: json
+    select: /scripts-descriptions/docgen
+    level: required
+    assert:
+      present: true

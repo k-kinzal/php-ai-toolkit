@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M46HVJ41W96GZFKJQEW7AYW8",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/docgen-php/tests/Unit/Mutation/MutationContractReaderTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Mutation/EnforceMutationContractRuleTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 24228,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1220992,
+    "output_tokens": 5418,
+    "api_call_count": 11
+  }
+}

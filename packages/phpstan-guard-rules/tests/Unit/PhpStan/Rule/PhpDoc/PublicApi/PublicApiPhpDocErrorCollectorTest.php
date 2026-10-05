@@ -21,7 +21,6 @@ use Toolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 /**
  * @covers \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiPhpDocErrorCollector
  * @uses \Toolkit\PhpStan\Rule\Shared\LineOrderedErrors
- * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiClassPhpDocErrorCollector
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiConstantPhpDocErrorCollector
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiMethodPhpDocErrorCollector
@@ -29,7 +28,6 @@ use Toolkit\PhpStan\Rule\Shared\LineOrderedErrors;
  */
 #[CoversClass(PublicApiPhpDocErrorCollector::class)]
 #[UsesClass(LineOrderedErrors::class)]
-#[UsesClass(PhpParserBridge::class)]
 #[UsesClass(PublicApiClassPhpDocErrorCollector::class)]
 #[UsesClass(PublicApiConstantPhpDocErrorCollector::class)]
 #[UsesClass(PublicApiMethodPhpDocErrorCollector::class)]

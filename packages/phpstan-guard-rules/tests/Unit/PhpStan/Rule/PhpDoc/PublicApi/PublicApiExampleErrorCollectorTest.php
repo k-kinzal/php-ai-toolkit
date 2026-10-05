@@ -8,10 +8,6 @@ use PhpParser\Comment\Doc;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\Doctest\Parser\Example;
-use Toolkit\Doctest\Parser\ExampleExtractor;
-use Toolkit\Doctest\Scanner\Target;
-use Toolkit\Doctest\Scanner\TargetKind;
 use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\MissingExampleErrorBuilder;
 use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiExampleErrorCollector;
 use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiVisibilityDetector;
@@ -24,20 +20,12 @@ use Toolkit\PhpStan\Rule\Shared\LineOrderedErrors;
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\RunnableExampleDetector
  * @uses \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\MissingExampleErrorBuilder
  * @uses \Toolkit\PhpStan\Rule\Shared\LineOrderedErrors
- * @uses \Toolkit\Doctest\Parser\Example
- * @uses \Toolkit\Doctest\Parser\ExampleExtractor
- * @uses \Toolkit\Doctest\Scanner\Target
- * @uses \Toolkit\Doctest\Scanner\TargetKind
  */
 #[CoversClass(PublicApiExampleErrorCollector::class)]
 #[UsesClass(PublicApiVisibilityDetector::class)]
 #[UsesClass(RunnableExampleDetector::class)]
 #[UsesClass(MissingExampleErrorBuilder::class)]
 #[UsesClass(LineOrderedErrors::class)]
-#[UsesClass(Example::class)]
-#[UsesClass(ExampleExtractor::class)]
-#[UsesClass(Target::class)]
-#[UsesClass(TargetKind::class)]
 final class PublicApiExampleErrorCollectorTest extends TestCase
 {
     public function testErrorsCollectsClassAndMemberErrorsInLineOrder(): void

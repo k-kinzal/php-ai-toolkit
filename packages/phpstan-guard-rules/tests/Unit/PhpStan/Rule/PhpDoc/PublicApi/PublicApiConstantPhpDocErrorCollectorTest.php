@@ -7,7 +7,6 @@ namespace Tests\Unit\PhpStan\Rule\PhpDoc\PublicApi;
 use PhpParser\Node\Stmt\Class_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
@@ -15,10 +14,8 @@ use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiConstantPhpDocErrorCollector;
 
 /**
  * @covers \Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiConstantPhpDocErrorCollector
- * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  */
 #[CoversClass(PublicApiConstantPhpDocErrorCollector::class)]
-#[UsesClass(PhpParserBridge::class)]
 final class PublicApiConstantPhpDocErrorCollectorTest extends TestCase
 {
     /**

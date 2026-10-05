@@ -16,7 +16,6 @@ use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
  */
 #[CoversClass(MutationContractReader::class)]
 #[UsesClass(MutationContract::class)]
-#[UsesClass(RulePhpDocParser::class)]
 final class MutationContractReaderTest extends TestCase
 {
     public function testReadCollectsParameterReceiverAndGlobalEffects(): void

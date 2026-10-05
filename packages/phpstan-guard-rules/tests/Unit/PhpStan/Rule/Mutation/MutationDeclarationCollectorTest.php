@@ -8,8 +8,6 @@ use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\Mutation\MutationContract;
-use Toolkit\Mutation\MutationContractReader;
 use Toolkit\PhpStan\Rule\Mutation\CallableId;
 use Toolkit\PhpStan\Rule\Mutation\MutationDeclarationCollector;
 use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
@@ -19,8 +17,6 @@ use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
  */
 #[CoversClass(MutationDeclarationCollector::class)]
 #[UsesClass(CallableId::class)]
-#[UsesClass(MutationContract::class)]
-#[UsesClass(MutationContractReader::class)]
 #[UsesClass(RulePhpDocParser::class)]
 final class MutationDeclarationCollectorTest extends TestCase
 {

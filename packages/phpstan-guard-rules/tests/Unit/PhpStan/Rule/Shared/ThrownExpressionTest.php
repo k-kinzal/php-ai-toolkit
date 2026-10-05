@@ -12,7 +12,6 @@ use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\Expression;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
@@ -20,10 +19,8 @@ use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
 
 /**
  * @covers \Toolkit\PhpStan\Rule\Shared\ThrownExpression
- * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  */
 #[CoversClass(ThrownExpression::class)]
-#[UsesClass(PhpParserBridge::class)]
 final class ThrownExpressionTest extends TestCase
 {
     public function testOfReadsTheExpressionOfAThrowExpression(): void

@@ -1,0 +1,55 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M46H8J2P9ZJ0DDPDA5QFKWPJ",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/docgen-php/composer.lock",
+    "packages/docgen-php/composer.lock.php-8.0",
+    "packages/docgen-php/composer.lock.php-8.1",
+    "packages/docgen-php/composer.lock.php-8.2",
+    "packages/docgen-php/composer.lock.php-8.3",
+    "packages/docgen-php/composer.lock.php-8.4",
+    "packages/guard-php/composer.lock",
+    "packages/guard-php/composer.lock.php-8.0",
+    "packages/guard-php/composer.lock.php-8.1",
+    "packages/guard-php/composer.lock.php-8.2",
+    "packages/guard-php/composer.lock.php-8.3",
+    "packages/guard-php/composer.lock.php-8.4",
+    "packages/phpstan-ai-formatter/composer.lock",
+    "packages/phpstan-ai-formatter/composer.lock.php-8.0",
+    "packages/phpstan-ai-formatter/composer.lock.php-8.1",
+    "packages/phpstan-ai-formatter/composer.lock.php-8.2",
+    "packages/phpstan-ai-formatter/composer.lock.php-8.3",
+    "packages/phpstan-ai-formatter/composer.lock.php-8.4",
+    "packages/phpstan-guard-rules/composer.lock",
+    "packages/phpstan-guard-rules/composer.lock.php-8.0",
+    "packages/phpstan-guard-rules/composer.lock.php-8.1",
+    "packages/phpstan-guard-rules/composer.lock.php-8.2",
+    "packages/phpstan-guard-rules/composer.lock.php-8.3",
+    "packages/phpstan-guard-rules/composer.lock.php-8.4",
+    "packages/phpunit-ai-reporter/composer.lock",
+    "packages/phpunit-ai-reporter/composer.lock.php-8.0",
+    "packages/phpunit-ai-reporter/composer.lock.php-8.1",
+    "packages/phpunit-ai-reporter/composer.lock.php-8.2",
+    "packages/phpunit-ai-reporter/composer.lock.php-8.3",
+    "packages/phpunit-ai-reporter/composer.lock.php-8.4"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 71356,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 616320,
+    "output_tokens": 4816,
+    "api_call_count": 14
+  }
+}

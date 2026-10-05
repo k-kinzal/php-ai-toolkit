@@ -48,7 +48,7 @@
 <span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">CallArgumentResolver</span></span>
 <span class="src-line" id="L11"><a class="ln" href="#L11">11</a>{</span>
 <span class="src-line" id="L12"><a class="ln" href="#L12">12</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-com">     * @param array&lt;array-key, \PhpParser\Node\Arg|\PhpParser\Node\VariadicPlaceholder&gt; $args</span></span>
+<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-com">     * @param array&lt;array-key, \PhpParser\Node\Arg|\PhpParser\Node\ArgPlaceholder|\PhpParser\Node\VariadicPlaceholder&gt; $args</span></span>
 <span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">valueAt</span>(<span class="tok-kw">array</span> <span class="tok-var">$args</span>, <span class="tok-id">int</span> <span class="tok-var">$position</span>): ?<span class="tok-id">\PhpParser\Node\Expr</span></span>
 <span class="src-line" id="L16"><a class="ln" href="#L16">16</a>    {</span>
@@ -58,7 +58,7 @@
 <span class="src-line" id="L20"><a class="ln" href="#L20">20</a>    }</span>
 <span class="src-line" id="L21"><a class="ln" href="#L21">21</a></span>
 <span class="src-line" id="L22"><a class="ln" href="#L22">22</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-com">     * @param array&lt;array-key, \PhpParser\Node\Arg|\PhpParser\Node\VariadicPlaceholder&gt; $args</span></span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-com">     * @param array&lt;array-key, \PhpParser\Node\Arg|\PhpParser\Node\ArgPlaceholder|\PhpParser\Node\VariadicPlaceholder&gt; $args</span></span>
 <span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L25"><a class="ln" href="#L25">25</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">firstValue</span>(<span class="tok-kw">array</span> <span class="tok-var">$args</span>): ?<span class="tok-id">\PhpParser\Node\Expr</span></span>
 <span class="src-line" id="L26"><a class="ln" href="#L26">26</a>    {</span>

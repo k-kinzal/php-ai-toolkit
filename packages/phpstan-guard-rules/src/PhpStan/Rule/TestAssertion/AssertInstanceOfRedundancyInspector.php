@@ -90,7 +90,7 @@ final class AssertInstanceOfRedundancyInspector
     }
 
     /**
-     * @param array<array-key, \PhpParser\Node\Arg|\PhpParser\Node\VariadicPlaceholder> $args
+     * @param array<array-key, \PhpParser\Node\Arg|\PhpParser\Node\ArgPlaceholder|\PhpParser\Node\VariadicPlaceholder> $args
      * @return list<IdentifierRuleError>
      */
     public function errorsForCall(?string $methodName, array $args, int $line, Scope $scope): array

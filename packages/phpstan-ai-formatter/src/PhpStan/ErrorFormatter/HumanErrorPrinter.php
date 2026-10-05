@@ -43,7 +43,7 @@ final class HumanErrorPrinter
             $trimmedCode = ltrim($codeLine);
             $leadingSpaces = strlen($codeLine) - strlen($trimmedCode);
             $caretLength = max(1, strlen(rtrim($trimmedCode)));
-            $output->writeLineFormatted(sprintf('  <fg=blue>%s</> | %s', $this->gutter->line($line !== null ? (string) $line : '?', $gutterWidth), $codeLine));
+            $output->writeLineFormatted(sprintf('  <fg=blue>%s</> | %s', $this->gutter->line((string) $line, $gutterWidth), $codeLine));
             $output->writeLineFormatted(sprintf('  %s | <fg=red>%s</>', str_repeat(' ', $gutterWidth), str_repeat(' ', $leadingSpaces) . str_repeat('^', $caretLength)));
         }
 

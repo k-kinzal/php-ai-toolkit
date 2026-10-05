@@ -7,6 +7,7 @@ namespace Toolkit\Guard\Document;
 use DOMAttr;
 use DOMDocument;
 use DOMElement;
+use DOMException;
 use DOMNode;
 use DOMXPath;
 use JsonException;
@@ -81,7 +82,12 @@ final class XmlDocument
         if ($node === null && preg_match('~^(.*)/@([A-Za-z_][A-Za-z0-9_.-]*)$~', $selector, $match) === 1) {
             $parent = $this->node($match[1]);
             if ($parent instanceof DOMElement) {
-                $parent->setAttribute($match[2], $value);
+                try {
+                    $parent->setAttribute($match[2], $value);
+                } catch (DOMException $exception) {
+                    throw new PolicyException('Cannot set XML attribute "' . $match[2] . '". ' . $exception->getMessage(), 0, $exception);
+                }
+
                 return;
             }
         }
@@ -100,7 +106,11 @@ final class XmlDocument
      */
     public function encode(): string
     {
-        $source = $this->document->saveXML();
+        try {
+            $source = $this->document->saveXML();
+        } catch (DOMException $exception) {
+            throw new PolicyException('Cannot serialize XML. No changes were written.', 0, $exception);
+        }
         if ($source === false) {
             throw new PolicyException('Cannot serialize XML. No changes were written.');
         }

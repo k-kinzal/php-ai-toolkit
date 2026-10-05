@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AssertionKind — k-kinzal/php-ai-toolkit</title>
+<title>AssertionKind — php-ai-toolkit</title>
 <link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.AssertionKind.html">
 <meta name="description" content="Types of assertions that can be made in doctest examples.">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="k-kinzal/php-ai-toolkit">
-<meta property="og:title" content="AssertionKind — k-kinzal/php-ai-toolkit">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="AssertionKind — php-ai-toolkit">
 <meta property="og:description" content="Types of assertions that can be made in doctest examples.">
 <meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.AssertionKind.html">
 <meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="k-kinzal/php-ai-toolkit">
+<meta property="og:image:alt" content="php-ai-toolkit">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
 <link rel="stylesheet" href="../../../../../assets/style.css">
@@ -22,20 +22,19 @@
 </head>
 <body data-root="../../../../../">
 <a class="skip" href="#content">Skip to content</a><div class="doc">
-<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">k-kinzal/php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a></div><nav class="sidebar-section"><div class="sidebar-title">On this page</div><ul class="sidebar-list"><li><a href="#constants">Constants</a></li><li><a href="#test-cases">Test cases</a></li><li><a href="#relations">Relations</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/all-items.html">All items</a></li></ul><div class="sidebar-title">Layers</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/layer.Doctest.html">Doctest</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/layer.PhpUnitTestReporter.html">PhpUnitTestReporter</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/layer.Shared.html">Shared</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title"><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/index.html">In Toolkit\Doctest\Assertion</a></div><div class="sidebar-title">Classes</div><ul class="sidebar-list"><li><a class="k-class" href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.Assertion.html">Assertion</a></li><li class="is-active"><a class="k-class" href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.AssertionKind.html">AssertionKind</a></li><li><a class="k-class" href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.AssertionParser.html">AssertionParser</a></li><li><a class="k-class" href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.AssertionResult.html">AssertionResult</a></li><li><a class="k-class" href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.ParsedExample.html">ParsedExample</a></li><li><a class="k-class" href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.Statement.html">Statement</a></li></ul></nav></aside>
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a></div><nav class="sidebar-section"><div class="sidebar-title">On this page</div><ul class="sidebar-list"><li><a href="#constants">Constants</a></li><li><a href="#test-cases">Test cases</a></li><li><a href="#relations">Relations</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title"><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/index.html">In Toolkit\Doctest\Assertion</a></div><div class="sidebar-title">Classes</div><ul class="sidebar-list"><li><a class="k-class" href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.Assertion.html">Assertion</a></li><li class="is-active"><a class="k-class" href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.AssertionKind.html">AssertionKind</a></li><li><a class="k-class" href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.AssertionParser.html">AssertionParser</a></li><li><a class="k-class" href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.AssertionResult.html">AssertionResult</a></li><li><a class="k-class" href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.ParsedExample.html">ParsedExample</a></li><li><a class="k-class" href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/class.Statement.html">Statement</a></li></ul></nav></aside>
 <div class="main">
 <header class="topbar">
 <button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a><span class="breadcrumb-sep">::</span><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/index.html">Toolkit\Doctest\Assertion</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">AssertionKind</span></nav>
 <div class="topbar-tools">
 <input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
-<a class="repo-link" href="https://github.com/k-kinzal/php-ai-toolkit" title="Repository: https://github.com/k-kinzal/php-ai-toolkit" rel="noreferrer">github.com</a>
 <button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
 </div>
 </header>
 <div class="search-results" id="search-results" hidden></div>
 <main class="content" id="content">
-<div class="symbol-head"><h1><span class="chip chip-kind k-class">class</span>AssertionKind</h1><div class="symbol-meta"><a class="chip chip-layer" href="../../../../../k-kinzal/phpunit-ai-reporter/layer.Doctest.html" title="deptrac layer">Doctest</a><a class="source-link" href="../../../../../src/packages/phpunit-ai-reporter/src/Doctest/Assertion/AssertionKind.php.html#L15">packages/phpunit-ai-reporter/src/Doctest/Assertion/AssertionKind.php:15</a></div></div>
+<div class="symbol-head"><h1><span class="chip chip-kind k-class">class</span>AssertionKind</h1><div class="symbol-meta"><a class="source-link" href="../../../../../src/packages/phpunit-ai-reporter/src/Doctest/Assertion/AssertionKind.php.html#L15">packages/phpunit-ai-reporter/src/Doctest/Assertion/AssertionKind.php:15</a></div></div>
 <pre class="signature"><code><span class="t-key">final</span> <span class="t-key">class</span> <span class="signature-name">AssertionKind</span></code></pre>
 <p class="lede">Types of assertions that can be made in doctest examples.</p>
 <div class="prose"><p>Ported from the AssertionType enum of k-kinzal/doctest-php. This package supports PHP 8.0, which has no enums, so the cases are class constants carrying the same values the enum did. The name avoids the &quot;Type&quot; suffix the toolkit forbids on class-likes.</p>

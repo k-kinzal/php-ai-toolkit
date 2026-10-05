@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NoPrivateMethodInTestClassRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/NoPrivateMethodInTestClassRule.md.html">
+<meta name="description" content="NoPrivateMethodInTestClassRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="NoPrivateMethodInTestClassRule — php-ai-toolkit">
+<meta property="og:description" content="NoPrivateMethodInTestClassRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/NoPrivateMethodInTestClassRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/NoPrivateMethodInTestClassRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>NoPrivateMethodInTestClassRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/NoPrivateMethodInTestClassRule.md</span></div></div>
+<section class="readme prose"><h2>NoPrivateMethodInTestClassRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifier</td><td><code>customRules.testClassPrivateMethod</code></td></tr><tr><td>Scope</td><td>Test classes in restricted namespaces</td></tr><tr><td>Configurable</td><td>Yes (namespace prefixes)</td></tr></tbody></table></div>
+<h3>What It Detects</h3>
+<p>Reports private method declarations in test classes within <code>Tests\Unit</code> and <code>Tests\Integration</code> namespaces.</p>
+<pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">Tests\Unit\Service</span>;
+
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">PaymentServiceTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCharge</span>(): <span class="tok-id">void</span>
+    {
+        <span class="tok-var">$gateway</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createGatewayStub</span>(<span class="tok-id">willSucceed</span>: <span class="tok-id">true</span>);
+        <span class="tok-com">// ...</span>
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testChargeFailure</span>(): <span class="tok-id">void</span>
+    {
+        <span class="tok-var">$gateway</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createGatewayStub</span>(<span class="tok-id">willSucceed</span>: <span class="tok-id">false</span>);
+        <span class="tok-com">// ...</span>
+    }
+
+    <span class="tok-com">// ERROR: Inline private method createGatewayStub() into the test method or move it to a dedicated collaborator.</span>
+    <span class="tok-kw">private</span> <span class="tok-kw">function</span> <span class="tok-id">createGatewayStub</span>(<span class="tok-id">bool</span> <span class="tok-var">$willSucceed</span>): <span class="tok-id">GatewayInterface</span>
+    {
+        <span class="tok-var">$stub</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createStub</span>(<span class="tok-id">GatewayInterface</span>::<span class="tok-kw">class</span>);
+        <span class="tok-var">$stub</span>-&gt;<span class="tok-id">method</span>(<span class="tok-str">&#039;charge&#039;</span>)-&gt;<span class="tok-id">willReturn</span>(<span class="tok-var">$willSucceed</span> ? <span class="tok-kw">new</span> <span class="tok-id">Success</span>() : <span class="tok-kw">new</span> <span class="tok-id">Failure</span>());
+        <span class="tok-kw">return</span> <span class="tok-var">$stub</span>;
+    }
+}</code></pre>
+<h3>Why This Is an Error</h3>
+<p>Private helper methods in test classes obscure test intent:</p>
+<ol><li><strong>Indirection hides setup</strong>: When a test method delegates its setup to a private helper, the reader must jump between methods to understand what the test actually does. A test should read top-to-bottom as a complete specification.</li></ol>
+<ol><li><strong>Growing complexity</strong>: Private helpers tend to accumulate parameters and conditional logic over time, becoming &quot;mini factories&quot; that serve multiple tests with different configurations. This complexity belongs in a dedicated builder or factory class, not in the test class itself.</li></ol>
+<ol><li><strong>AI anti-pattern</strong>: AI code generators frequently extract private helpers to reduce apparent duplication in tests. While this looks cleaner, it trades explicitness for abstraction in a context where explicitness matters most.</li></ol>
+<h3>How to Fix</h3>
+<h4>Option 1: Inline the logic</h4>
+<p>For simple setup, inline the helper directly into each test method:</p>
+<pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">Tests\Unit\Service</span>;
+
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">PaymentServiceTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCharge</span>(): <span class="tok-id">void</span>
+    {
+        <span class="tok-var">$gateway</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createStub</span>(<span class="tok-id">GatewayInterface</span>::<span class="tok-kw">class</span>);
+        <span class="tok-var">$gateway</span>-&gt;<span class="tok-id">method</span>(<span class="tok-str">&#039;charge&#039;</span>)-&gt;<span class="tok-id">willReturn</span>(<span class="tok-kw">new</span> <span class="tok-id">Success</span>());
+
+        <span class="tok-var">$service</span> = <span class="tok-kw">new</span> <span class="tok-id">PaymentService</span>(<span class="tok-var">$gateway</span>);
+        <span class="tok-var">$result</span> = <span class="tok-var">$service</span>-&gt;<span class="tok-id">charge</span>(<span class="tok-num">1000</span>);
+
+        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>(<span class="tok-var">$result</span>-&gt;<span class="tok-id">isSuccessful</span>());
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testChargeFailure</span>(): <span class="tok-id">void</span>
+    {
+        <span class="tok-var">$gateway</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createStub</span>(<span class="tok-id">GatewayInterface</span>::<span class="tok-kw">class</span>);
+        <span class="tok-var">$gateway</span>-&gt;<span class="tok-id">method</span>(<span class="tok-str">&#039;charge&#039;</span>)-&gt;<span class="tok-id">willReturn</span>(<span class="tok-kw">new</span> <span class="tok-id">Failure</span>());
+
+        <span class="tok-var">$service</span> = <span class="tok-kw">new</span> <span class="tok-id">PaymentService</span>(<span class="tok-var">$gateway</span>);
+        <span class="tok-var">$result</span> = <span class="tok-var">$service</span>-&gt;<span class="tok-id">charge</span>(<span class="tok-num">1000</span>);
+
+        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>(<span class="tok-var">$result</span>-&gt;<span class="tok-id">isSuccessful</span>());
+    }
+}</code></pre>
+<h4>Option 2: Use a real library boundary</h4>
+<p>For complex setup logic that is genuinely reused, use an existing library or create an independent internal library outside the <code>Tests</code> namespace:</p>
+<pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">Acme\TestingFixtures\Payment</span>;
+
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">GatewayStub</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">succeeding</span>(<span class="tok-id">TestCase</span> <span class="tok-var">$test</span>): <span class="tok-id">GatewayInterface</span>
+    {
+        <span class="tok-var">$stub</span> = <span class="tok-var">$test</span>-&gt;<span class="tok-id">createStub</span>(<span class="tok-id">GatewayInterface</span>::<span class="tok-kw">class</span>);
+        <span class="tok-var">$stub</span>-&gt;<span class="tok-id">method</span>(<span class="tok-str">&#039;charge&#039;</span>)-&gt;<span class="tok-id">willReturn</span>(<span class="tok-kw">new</span> <span class="tok-id">Success</span>());
+        <span class="tok-kw">return</span> <span class="tok-var">$stub</span>;
+    }
+}</code></pre>
+<h3>Configuration</h3>
+<p>Customize which namespaces are considered restricted:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        restrictedTestNamespacePrefixes:
+            - &#039;Tests\Unit&#039;
+            - &#039;Tests\Integration&#039;</code></pre>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

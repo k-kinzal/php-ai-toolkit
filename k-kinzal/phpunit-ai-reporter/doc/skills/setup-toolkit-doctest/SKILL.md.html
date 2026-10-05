@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Setup Doctest (Executable PHPDoc Examples) — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpunit-ai-reporter/doc/skills/setup-toolkit-doctest/SKILL.md.html">
+<meta name="description" content="Setup Doctest (Executable PHPDoc Examples), a document of the k-kinzal/phpunit-ai-reporter package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Setup Doctest (Executable PHPDoc Examples) — php-ai-toolkit">
+<meta property="og:description" content="Setup Doctest (Executable PHPDoc Examples), a document of the k-kinzal/phpunit-ai-reporter package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpunit-ai-reporter/doc/skills/setup-toolkit-doctest/SKILL.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/index.html" title="Toolkit\Doctest">Toolkit\Doctest</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Assertion/index.html" title="Toolkit\Doctest\Assertion">Toolkit\Doctest\Assertion</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Configuration/index.html" title="Toolkit\Doctest\Configuration">Toolkit\Doctest\Configuration</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Executor/index.html" title="Toolkit\Doctest\Executor">Toolkit\Doctest\Executor</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Legacy/index.html" title="Toolkit\Doctest\Legacy">Toolkit\Doctest\Legacy</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Parser/index.html" title="Toolkit\Doctest\Parser">Toolkit\Doctest\Parser</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/Scanner/index.html" title="Toolkit\Doctest\Scanner">Toolkit\Doctest\Scanner</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/TestCase/index.html" title="Toolkit\Doctest\TestCase">Toolkit\Doctest\TestCase</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Doctest/TestCase/Legacy/index.html" title="Toolkit\Doctest\TestCase\Legacy">Toolkit\Doctest\TestCase\Legacy</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/PhpUnit/TestReporter/index.html" title="Toolkit\PhpUnit\TestReporter">Toolkit\PhpUnit\TestReporter</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/PhpUnit/TestReporter/Legacy/index.html" title="Toolkit\PhpUnit\TestReporter\Legacy">Toolkit\PhpUnit\TestReporter\Legacy</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/PhpUnit/TestReporter/Presentation/index.html" title="Toolkit\PhpUnit\TestReporter\Presentation">Toolkit\PhpUnit\TestReporter\Presentation</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/PhpUnit/TestReporter/Subscriber/index.html" title="Toolkit\PhpUnit\TestReporter\Subscriber">Toolkit\PhpUnit\TestReporter\Subscriber</a></li><li><a href="../../../../../k-kinzal/phpunit-ai-reporter/Toolkit/Shared/index.html" title="Toolkit\Shared">Toolkit\Shared</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">skills/setup-toolkit-doctest/SKILL.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Setup Doctest (Executable PHPDoc Examples)</h1><div class="symbol-meta"><span class="source-link">skills/setup-toolkit-doctest/SKILL.md</span></div></div>
+<section class="readme prose"><hr>
+<p>name: setup-toolkit-doctest description: &gt;- Set up doctest execution of PHPDoc examples for a PHP project. Use when asked to configure doctest, doctest-php, runnable examples in docblocks, @example blocks, executable documentation, testing code samples in comments, Python doctest or Rust doc tests for PHP, running docblock examples under PHPUnit, running one documented example on its own, requiring examples on public API, the RequireExampleOnPublicApiRule PHPStan rule, a doctest PHPUnit test suite, or CI that checks documentation examples still hold. ---</p>
+<h2>Setup Doctest (Executable PHPDoc Examples)</h2>
+<p>This skill configures doctest, the toolkit&#039;s port of <a href="https://github.com/k-kinzal/doctest-php">k-kinzal/doctest-php</a>. It runs the examples written in PHPDoc blocks as PHPUnit test cases. Prose in a docblock says what a symbol is for; an example says what calling it does, and because the example is executed, it cannot quietly stop being true.</p>
+<p>It is a PHPUnit extension plus a test suite. The project already has a runner, a reporter, and a CI job that reports through it, so a documented example that disagrees with the code is reported as a failing test.</p>
+<h3>Prerequisites</h3>
+<p>Inspect the project before configuring:</p>
+<ul><li>Confirm it requires <code>k-kinzal/php-ai-toolkit</code>.</li><li>Read the installed PHPUnit version and available extension API. Use the modern extension path when the resolved target version supports it; use the legacy suite only when the actual graph resolves the legacy PHPUnit line.</li><li>Read <code>phpunit.xml</code> (or <code>phpunit.xml.dist</code>) and its existing <code>&lt;testsuites&gt;</code> and <code>&lt;extensions&gt;</code>.</li><li>Read Composer production autoload roots. Usually this is <code>src/</code>, not <code>tests/</code>.</li><li>Check whether the project autoloads everything it ships. A project with non-autoloadable function files needs a bootstrap.</li><li>Check for a mutation testing config or CI step passing <code>--no-extensions</code>, and whether it should still run the examples.</li></ul>
+<p>Install the toolkit if missing:</p>
+<pre class="code"><code>composer require --dev k-kinzal/php-ai-toolkit</code></pre>
+<p>The unversioned requirement is intentional for a new install: Composer should select the newest stable toolkit release compatible with the target project. Check current package metadata and the target&#039;s PHP/PHPUnit graph first. If the toolkit is already constrained, update its lock to the newest admitted release and preserve an intentional pin unless changing that policy is in scope. Never copy this repository&#039;s root constraint or lock resolution.</p>
+<h3>Apply</h3>
+<p>For PHPUnit 10 or later, register the extension and add the suite. This is a configuration-only integration: no test file is written.</p>
+<pre class="code"><code>&lt;testsuites&gt;
+    &lt;testsuite name=&quot;unit&quot;&gt;
+        &lt;directory&gt;REPLACE_WITH_UNIT_TEST_PATH&lt;/directory&gt;
+    &lt;/testsuite&gt;
+    &lt;testsuite name=&quot;doctest&quot;&gt;
+        &lt;file&gt;vendor/k-kinzal/phpunit-ai-reporter/src/Doctest/DoctestSuite.php&lt;/file&gt;
+    &lt;/testsuite&gt;
+&lt;/testsuites&gt;
+
+&lt;extensions&gt;
+    &lt;bootstrap class=&quot;Toolkit\Doctest\DoctestExtension&quot;&gt;
+        &lt;parameter name=&quot;directories&quot; value=&quot;REPLACE_WITH_PRODUCTION_ROOTS&quot;/&gt;
+    &lt;/bootstrap&gt;
+&lt;/extensions&gt;</code></pre>
+<p>The <code>&lt;file&gt;</code> entry is the toolkit&#039;s installed, concrete suite, not a template. Do not create or copy a project-local <code>DoctestSuite.php</code>, and do not subclass <code>DoctestRunner</code> for an ordinary setup. The example uses Composer&#039;s default <code>vendor-dir</code>; read the target project&#039;s value with <code>composer config vendor-dir</code> and replace the leading <code>vendor</code> when it differs. If the file is not found, fix that installed-package path instead of scaffolding a local suite.</p>
+<div class="table-wrap"><table><thead><tr><th>Parameter</th><th>Meaning</th></tr></thead><tbody><tr><td><code>directories</code></td><td>Comma-separated directories to scan</td></tr><tr><td><code>files</code></td><td>Comma-separated individual files to scan</td></tr><tr><td><code>exclude</code></td><td>Comma-separated fnmatch patterns to leave unscanned</td></tr><tr><td><code>bootstrap</code></td><td>A file to include once before the first example runs</td></tr><tr><td><code>enabled</code></td><td><code>false</code> switches doctest off without removing the configuration</td></tr></tbody></table></div>
+<p>Set <code>directories</code> from the discovered autoload roots. Leave <code>bootstrap</code> unset unless the project has code an autoloader cannot resolve.</p>
+<p>Only when the resolved test graph actually runs PHPUnit 9 does the configuration differ. That version reads test metadata from doc-comments, so <code>DoctestSuite.php</code> cannot run there, and it instantiates its hook extensions only after the test suite and its data providers are built, so no extension can hand a suite its parameters. Point the PHPUnit 9 configuration at the toolkit&#039;s installed legacy suite and export the same parameters through the <code>&lt;php&gt;</code> element, each named after the parameter in upper case behind <code>DOCTEST_</code>:</p>
+<pre class="code"><code>&lt;testsuites&gt;
+    &lt;testsuite name=&quot;doctest&quot;&gt;
+        &lt;file&gt;vendor/k-kinzal/phpunit-ai-reporter/src/Doctest/Legacy/LegacyDoctestSuite.php&lt;/file&gt;
+    &lt;/testsuite&gt;
+&lt;/testsuites&gt;
+
+&lt;php&gt;
+    &lt;env name=&quot;DOCTEST_DIRECTORIES&quot; value=&quot;REPLACE_WITH_PRODUCTION_ROOTS&quot;/&gt;
+&lt;/php&gt;</code></pre>
+<p>This is configuration only as well: do not copy a <code>LegacyDoctestSuiteTest.php</code> into the project and do not subclass <code>LegacyDoctestRunner</code> for an ordinary setup. A relative path in a variable resolves against the working directory PHPUnit is started from, so run PHPUnit 9 from the directory holding its configuration; the toolkit&#039;s <code>tests/run.php</code> and the Composer scripts already do. Do not merely add the suite: a PHPUnit 9 configuration that names it without <code>DOCTEST_DIRECTORIES</code> discovers zero doctests and is not a completed setup. Keep the legacy suite out of the modern configuration, because PHPUnit 12 or later no longer reads the doc-comment metadata it relies on; the modern suite uses <code>DoctestSuite.php</code> and the extension parameters above.</p>
+<h4>Runs that disable extensions</h4>
+<p><code>--no-extensions</code> bootstraps nothing, and modern PHPUnit can build the test suite before extensions are bootstrapped. The suite covers both cases by reading the parameters the <code>&lt;bootstrap&gt;</code> element declares when the extension has not handed it a configuration, so the examples run either way — nothing to configure.</p>
+<p>Leaving them out of such a run is <code>enabled=&quot;false&quot;</code>, or selecting the other suites:</p>
+<pre class="code"><code>&quot;testFrameworkExtraArgs&quot;: &quot;--no-extensions --testsuite unit&quot;,</code></pre>
+<h3>Adapting to the Project</h3>
+<p>The suite reports nothing until docblocks carry examples, so adoption is the work, not the configuration. Do not add examples in bulk. Take the entry points first:</p>
+<ul><li>The types a consumer names to start using the package. An example there is the one readers look for.</li><li>Methods whose contract is easy to get wrong — an argument order, a unit, a nullable return.</li><li>Methods that throw. <code>// throws InvalidArgumentException: amount</code> documents the failure a caller has to handle and proves it still happens.</li><li>Anything whose prose already says &quot;for example&quot;. Turn it into a runnable one.</li></ul>
+<p>Report the surface found and confirm the first few examples run before writing more. An example that cannot be executed is worse than no example: it is a claim nothing checks.</p>
+<p>Each example must establish its own state. For random APIs, construct providers and other collaborators before seeding if their bootstrap can consume randomness; check examples both in isolation and in the full suite. Assert promised output properties rather than incidental seeded spellings across dependency versions.</p>
+<p>Keep setup focused on PHPDoc and its runner. Do not add a developer guide or rewrite the README as a side effect. When product documentation is explicitly in scope, describe the consumer API and preserve unrelated sections. Markdown examples are not covered by the PHPDoc suite: execute them separately before claiming that all documentation examples pass.</p>
+<h3>Notation</h3>
+<pre class="code"><code><span class="tok-com">/**</span>
+<span class="tok-com"> * @example Adding two numbers</span>
+<span class="tok-com"> *     (new \App\Calculator())-&gt;add(1, 2) // =&gt; 3</span>
+<span class="tok-com"> */</span></code></pre>
+<p>````php /**</p>
+<ul><li>```php</li><li>(new \App\Calculator())-&gt;add(1, 2) // =&gt; 3</li><li>```</li></ul>
+<p>*/</p>
+<p>````</p>
+<div class="table-wrap"><table><thead><tr><th>Marker</th><th>Checks</th></tr></thead><tbody><tr><td><code>// =&gt; value</code></td><td>The value of the expression is identical (<code>===</code>) to the value of <code>value</code></td></tr><tr><td><code>// Output: text</code></td><td>What the statement printed equals <code>text</code></td></tr><tr><td><code>// throws Class</code></td><td>The statement throws <code>Class</code>, or a subclass of it</td></tr><tr><td><code>// throws Class: fragment</code></td><td>It also throws with a message containing <code>fragment</code></td></tr><tr><td>none</td><td>The line runs without raising anything</td></tr></tbody></table></div>
+<p>Two rules decide whether an example a reader would write actually runs. State both when writing examples for a project:</p>
+<ol><li><strong>Names must be fully qualified.</strong> Evaluated code inherits no import table, so <code>new \App\Calculator()</code>, never <code>new Calculator()</code>.</li><li><strong>A continued line must end with an operator or an opening bracket.</strong> A multi-line call closes on the asserted line — <code>5) // =&gt; 15</code>, not a <code>)</code> on a line of its own.</li></ol>
+<p>A tag with no code under it, and a fence whose info string is not exactly <code>php</code>, are never run. Use one of those for a snippet that must not execute.</p>
+<h3>Running One Example</h3>
+<p>The test case is named after the example, so PHPUnit&#039;s filter selects it. Quote the name, because a filter is a regular expression:</p>
+<pre class="code"><code>vendor/bin/phpunit --testsuite doctest
+vendor/bin/phpunit --filter &#039;/Calculator\:\:add\(\) example \#1\: Adding two numbers/&#039;</code></pre>
+<p>The generated documentation site prints that command for every example.</p>
+<h3>Requiring Examples on Public API</h3>
+<p><code>RequireExampleOnPublicApiRule</code> is registered by the toolkit&#039;s PHPStan extension and reports a declaration marked <code>@visibility public</code> that has no runnable example. It reports nothing until declarations carry that tag, so it is adopted one boundary at a time alongside the toolkit&#039;s visibility-scope PHPStan rule.</p>
+<p>Tag a declaration <code>@visibility public</code> when the project means &quot;this is the surface other code is invited to use&quot;, then give it an example. Do not tag in bulk to make the rule look adopted, and do not remove a tag to silence it.</p>
+<h3>Recommended Composer Scripts</h3>
+<p>The examples already run with the rest of the suite. Add a script only for running them alone:</p>
+<pre class="code"><code>{
+    &quot;scripts&quot;: {
+        &quot;doctest&quot;: &quot;phpunit --testsuite doctest&quot;
+    }
+}</code></pre>
+<p>Do not add a separate CI job and do not chain <code>@doctest</code> into <code>test</code>: the suite runs the examples wherever it runs, on every PHP version the matrix covers.</p>
+<h3>Verification</h3>
+<p>After applying:</p>
+<pre class="code"><code>vendor/bin/phpunit --testsuite doctest
+vendor/bin/phpunit --configuration phpunit9.xml.dist --testsuite doctest</code></pre>
+<p>Run the second command when PHPUnit 9 is in the support matrix. Confirm both runs report the same expected examples (apart from explicitly documented version-only sources), then write one example, confirm it passes, break it on purpose, and confirm the failure names the example.</p>
+<p>If either suite reports no tests, do not create a local suite class. Check the installed path reported by <code>composer config vendor-dir</code>, the <code>&lt;bootstrap&gt;</code> class name and its <code>directories</code> parameter or, on PHPUnit 9, the <code>DOCTEST_DIRECTORIES</code> variable, and that <code>enabled</code> is not <code>false</code>.</p>
+<h3>Fixing Failures</h3>
+<p>A failing example means the documentation and the code disagree. Decide which one is wrong before editing either. Fix the code when the example documents what callers were promised; fix the example when the code is right and the documentation went stale.</p>
+<p>Deleting an example, or dropping its marker so the line becomes a bare smoke test, is not a fix. It removes the check instead of satisfying it.</p>
+<h3>References</h3>
+<ul><li><span class="md-target" title="vendor/k-kinzal/phpunit-ai-reporter/docs/doctest.md">Doctest Configuration</span> — Notation, configuration, execution model, and how the port differs from upstream.</li><li><span class="md-target" title="vendor/k-kinzal/phpstan-guard-rules/docs/rules/RequireExampleOnPublicApiRule.md">RequireExampleOnPublicApiRule</span> — The rule that requires examples on declared public API.</li><li><span class="md-target" title="vendor/k-kinzal/phpstan-guard-rules/docs/rules/EnforceVisibilityScopeRule.md">EnforceVisibilityScopeRule</span> — The <code>@visibility</code> tag the rule keys off.</li></ul>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

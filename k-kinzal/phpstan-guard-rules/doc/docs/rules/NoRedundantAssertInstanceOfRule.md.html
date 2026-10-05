@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NoRedundantAssertInstanceOfRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/NoRedundantAssertInstanceOfRule.md.html">
+<meta name="description" content="NoRedundantAssertInstanceOfRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="NoRedundantAssertInstanceOfRule — php-ai-toolkit">
+<meta property="og:description" content="NoRedundantAssertInstanceOfRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/NoRedundantAssertInstanceOfRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/NoRedundantAssertInstanceOfRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>NoRedundantAssertInstanceOfRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/NoRedundantAssertInstanceOfRule.md</span></div></div>
+<section class="readme prose"><h2>NoRedundantAssertInstanceOfRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifier</td><td><code>customRules.noRedundantAssertInstanceOf</code></td></tr><tr><td>Scope</td><td>All test classes (<code>Tests\</code> namespace)</td></tr><tr><td>Configurable</td><td>Yes (namespace prefixes)</td></tr></tbody></table></div>
+<h3>What It Detects</h3>
+<p>Reports PHPUnit <code>assertInstanceOf()</code> calls where the asserted value already has one statically-known object type and PHPStan can prove that type is guaranteed to be an instance of the expected class or interface.</p>
+<pre class="code"><code><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">AiTestReporterExtensionTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testImplementsExtensionInterface</span>(): <span class="tok-id">void</span>
+    {
+        <span class="tok-var">$extension</span> = <span class="tok-kw">new</span> <span class="tok-id">AiTestReporterExtension</span>();
+
+        <span class="tok-com">// ERROR: $extension is already known to be AiTestReporterExtension,</span>
+        <span class="tok-com">// and AiTestReporterExtension implements Extension.</span>
+        <span class="tok-id">self</span>::<span class="tok-id">assertInstanceOf</span>(<span class="tok-id">Extension</span>::<span class="tok-kw">class</span>, <span class="tok-var">$extension</span>);
+    }
+}</code></pre>
+<p>The rule applies to PHPUnit assertions called as <code>self::assertInstanceOf()</code>, <code>static::assertInstanceOf()</code>, <code>parent::assertInstanceOf()</code>, <code>$this-&gt;assertInstanceOf()</code>, <code>Assert::assertInstanceOf()</code>, and <code>TestCase::assertInstanceOf()</code>.</p>
+<p>It intentionally does not report cases where the assertion narrows an unknown value:</p>
+<pre class="code"><code><span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testFactoryResult</span>(<span class="tok-id">object</span> <span class="tok-var">$value</span>): <span class="tok-id">void</span>
+{
+    <span class="tok-id">self</span>::<span class="tok-id">assertInstanceOf</span>(<span class="tok-id">Extension</span>::<span class="tok-kw">class</span>, <span class="tok-var">$value</span>); <span class="tok-com">// OK: narrows object to Extension</span>
+}</code></pre>
+<h3>Why This Is an Error</h3>
+<p>An <code>assertInstanceOf()</code> against a freshly constructed object or another single known type does not test behavior. It only repeats information PHPStan already knows from the expression type.</p>
+<p>This creates low-value tests that make coverage look better without proving anything meaningful. AI-generated tests commonly include these assertions after <code>new Foo()</code> because they are easy to generate, but they do not catch regressions in the class&#039;s observable behavior.</p>
+<h3>How to Fix</h3>
+<p>Remove the redundant assertion and assert the behavior the object is responsible for:</p>
+<pre class="code"><code><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">ReportFormatterTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testFormatIncludesIssueLocation</span>(): <span class="tok-id">void</span>
+    {
+        <span class="tok-var">$formatter</span> = <span class="tok-kw">new</span> <span class="tok-id">ReportFormatter</span>();
+        <span class="tok-var">$issue</span> = <span class="tok-kw">new</span> <span class="tok-id">TestIssue</span>(<span class="tok-str">&#039;/project/tests/FooTest.php&#039;</span>, <span class="tok-num">42</span>, <span class="tok-str">&#039;Failed&#039;</span>);
+
+        <span class="tok-var">$output</span> = <span class="tok-var">$formatter</span>-&gt;<span class="tok-id">format</span>(<span class="tok-var">$issue</span>);
+
+        <span class="tok-id">self</span>::<span class="tok-id">assertStringContainsString</span>(<span class="tok-str">&#039;tests/FooTest.php:42&#039;</span>, <span class="tok-var">$output</span>);
+    }
+}</code></pre>
+<p>If the assertion is intended to narrow an unknown value, keep the value typed as <code>object</code>, <code>mixed</code>, or a union where the runtime check is meaningful. The rule only reports when the asserted value has exactly one statically-known object type.</p>
+<h3>Configuration</h3>
+<p>Customize which namespaces are considered test classes:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        testNamespacePrefixes:
+            - &#039;Tests&#039;</code></pre>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

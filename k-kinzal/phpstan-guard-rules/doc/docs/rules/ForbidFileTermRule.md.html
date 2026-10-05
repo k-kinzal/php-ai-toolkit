@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForbidFileTermRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/ForbidFileTermRule.md.html">
+<meta name="description" content="ForbidFileTermRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="ForbidFileTermRule — php-ai-toolkit">
+<meta property="og:description" content="ForbidFileTermRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/ForbidFileTermRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/ForbidFileTermRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>ForbidFileTermRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/ForbidFileTermRule.md</span></div></div>
+<section class="readme prose"><h2>ForbidFileTermRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifier</td><td><code>customRules.forbiddenFileTerm</code></td></tr><tr><td>Scope</td><td>All analyzed PHP files matching a configured path</td></tr><tr><td>Configurable</td><td>Yes (<code>forbiddenTermsByPath</code>)</td></tr></tbody></table></div>
+<h3>Configuration</h3>
+<p>Map each restricted file path pattern to the literal terms that cannot belong in that part of the design:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        forbiddenTermsByPath:
+            &#039;src/Query/Abstraction/*&#039;:
+                - mysql
+                - postgres
+                - sqlite</code></pre>
+<p>The default map is empty, so a project must declare its own architectural vocabulary boundaries. Path patterns use the same normalized <code>fnmatch</code> matching as the toolkit&#039;s other path-based PHPStan rules. A relative pattern matches the corresponding suffix of PHPStan&#039;s absolute analyzed file path.</p>
+<h3>What It Detects</h3>
+<p>The rule reads every line of a matching PHP file and checks its complete source text. A configured term is therefore forbidden in all of these locations:</p>
+<ul><li>identifiers and type names;</li><li>string literals;</li><li>comments and PHPDoc; and</li><li>any other source text on the line.</li></ul>
+<p>For this configuration:</p>
+<pre class="code"><code>forbiddenTermsByPath:
+    &#039;src/Query/Abstraction/*&#039;:
+        - mysql
+        - postgres
+        - sqlite</code></pre>
+<p>all of these are reported inside <code>src/Query/Abstraction/</code>:</p>
+<pre class="code"><code><span class="tok-com">/** PostgreSQL-specific behavior. */</span>
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">AbstractQuery</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">const</span> <span class="tok-id">DRIVER</span> = <span class="tok-str">&#039;MYSQL&#039;</span>;
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">sqliteQuery</span>(): <span class="tok-id">string</span>
+    {
+        <span class="tok-kw">return</span> <span class="tok-str">&#039;...&#039;</span>;
+    }
+}</code></pre>
+<p>Matching is case-insensitive literal substring matching. It deliberately has no word boundary, so <code>mysql</code> finds <code>MySqlCompiler</code>, and <code>postgres</code> finds both <code>Postgres</code> and <code>PostgreSQL</code>. Regular expressions are not interpreted. Empty terms and case-insensitive duplicate terms in one path policy are ignored.</p>
+<p>When overlapping path policies contain the same term, the rule reports that term only once on each affected line. The same forbidden term on another line is a separate, precisely located violation.</p>
+<h3>Why This Is an Error</h3>
+<p>A term that names a concept outside a layer&#039;s responsibility is evidence that the responsibility itself has leaked across the architectural boundary. For example, a database-independent query abstraction cannot contain branches, types, constants, comments, or documentation for individual database engines.</p>
+<p>Removing or disguising the word would leave the misplaced behavior intact. The rule therefore reports the occurrence as a design error and directs the author to redesign the responsibility boundary.</p>
+<h3>How to Fix</h3>
+<p>Move the concept and all behavior depending on it to the concrete layer that owns it. Keep only backend-independent contracts and behavior in the restricted abstraction.</p>
+<p>For example, replace a backend branch in an abstraction:</p>
+<pre class="code"><code><span class="tok-kw">if</span> (<span class="tok-var">$driver</span> === <span class="tok-str">&#039;mysql&#039;</span>) {
+    <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">compileMysqlLimit</span>(<span class="tok-var">$limit</span>);
+}</code></pre>
+<p>with a backend-neutral contract implemented by the appropriate concrete adapter. Do not satisfy the rule by renaming <code>mysql</code>, abbreviating it, building the word dynamically, or deleting a comment while retaining the branch.</p>
+<p>The reported error states this explicitly:</p>
+<pre class="code"><code>Forbidden term &quot;mysql&quot; appears in a file matched by path
+&quot;src/Query/Abstraction/*&quot;; this is a design error because the concept does not
+belong in this layer. Redesign the responsibility boundary and move the concept
+and its behavior to the appropriate layer. Renaming, abbreviating, or deleting
+only the term is not a fix.</code></pre>
+<p>Only PHP files included in PHPStan&#039;s analyzed paths are checked. Use a separate text-oriented check when the same policy must cover Markdown, YAML, JSON, or other non-PHP files.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Setup TreeGuard (Directory Structure Guardrails) — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/skills/setup-toolkit-tree-guard/SKILL.md.html">
+<meta name="description" content="Setup TreeGuard (Directory Structure Guardrails), a document of the k-kinzal/guard-php package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Setup TreeGuard (Directory Structure Guardrails) — php-ai-toolkit">
+<meta property="og:description" content="Setup TreeGuard (Directory Structure Guardrails), a document of the k-kinzal/guard-php package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/skills/setup-toolkit-tree-guard/SKILL.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/guard-php/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/guard-php/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/guard-php/Toolkit/DocGuard/index.html" title="Toolkit\DocGuard">Toolkit\DocGuard</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/DocGuard/Analysis/index.html" title="Toolkit\DocGuard\Analysis">Toolkit\DocGuard\Analysis</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/DocGuard/Cli/index.html" title="Toolkit\DocGuard\Cli">Toolkit\DocGuard\Cli</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/DocGuard/Config/index.html" title="Toolkit\DocGuard\Config">Toolkit\DocGuard\Config</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/DocGuard/Filesystem/index.html" title="Toolkit\DocGuard\Filesystem">Toolkit\DocGuard\Filesystem</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/DocGuard/Generation/index.html" title="Toolkit\DocGuard\Generation">Toolkit\DocGuard\Generation</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/DocGuard/Markdown/index.html" title="Toolkit\DocGuard\Markdown">Toolkit\DocGuard\Markdown</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/DocGuard/Reporting/index.html" title="Toolkit\DocGuard\Reporting">Toolkit\DocGuard\Reporting</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/Guard/Cli/index.html" title="Toolkit\Guard\Cli">Toolkit\Guard\Cli</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/Guard/Config/index.html" title="Toolkit\Guard\Config">Toolkit\Guard\Config</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/Guard/Document/index.html" title="Toolkit\Guard\Document">Toolkit\Guard\Document</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/Guard/Execution/index.html" title="Toolkit\Guard\Execution">Toolkit\Guard\Execution</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/Guard/Init/index.html" title="Toolkit\Guard\Init">Toolkit\Guard\Init</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/Guard/Policy/index.html" title="Toolkit\Guard\Policy">Toolkit\Guard\Policy</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/Guard/Reporting/index.html" title="Toolkit\Guard\Reporting">Toolkit\Guard\Reporting</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/LocGuard/index.html" title="Toolkit\LocGuard">Toolkit\LocGuard</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/LocGuard/Analysis/index.html" title="Toolkit\LocGuard\Analysis">Toolkit\LocGuard\Analysis</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/LocGuard/Analysis/ClassLikeMetric/index.html" title="Toolkit\LocGuard\Analysis\ClassLikeMetric">Toolkit\LocGuard\Analysis\ClassLikeMetric</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/LocGuard/Analysis/Complexity/index.html" title="Toolkit\LocGuard\Analysis\Complexity">Toolkit\LocGuard\Analysis\Complexity</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/LocGuard/Analysis/FileMetric/index.html" title="Toolkit\LocGuard\Analysis\FileMetric">Toolkit\LocGuard\Analysis\FileMetric</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/LocGuard/Analysis/FunctionMetric/index.html" title="Toolkit\LocGuard\Analysis\FunctionMetric">Toolkit\LocGuard\Analysis\FunctionMetric</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/LocGuard/Analysis/Token/index.html" title="Toolkit\LocGuard\Analysis\Token">Toolkit\LocGuard\Analysis\Token</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/LocGuard/Cli/index.html" title="Toolkit\LocGuard\Cli">Toolkit\LocGuard\Cli</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/LocGuard/Config/index.html" title="Toolkit\LocGuard\Config">Toolkit\LocGuard\Config</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/LocGuard/Config/Policy/index.html" title="Toolkit\LocGuard\Config\Policy">Toolkit\LocGuard\Config\Policy</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/LocGuard/Filesystem/index.html" title="Toolkit\LocGuard\Filesystem">Toolkit\LocGuard\Filesystem</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/LocGuard/Reporting/index.html" title="Toolkit\LocGuard\Reporting">Toolkit\LocGuard\Reporting</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/TreeGuard/index.html" title="Toolkit\TreeGuard">Toolkit\TreeGuard</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/TreeGuard/Analysis/index.html" title="Toolkit\TreeGuard\Analysis">Toolkit\TreeGuard\Analysis</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/TreeGuard/Cli/index.html" title="Toolkit\TreeGuard\Cli">Toolkit\TreeGuard\Cli</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/TreeGuard/Config/index.html" title="Toolkit\TreeGuard\Config">Toolkit\TreeGuard\Config</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/TreeGuard/Filesystem/index.html" title="Toolkit\TreeGuard\Filesystem">Toolkit\TreeGuard\Filesystem</a></li><li><a href="../../../../../k-kinzal/guard-php/Toolkit/TreeGuard/Reporting/index.html" title="Toolkit\TreeGuard\Reporting">Toolkit\TreeGuard\Reporting</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">skills/setup-toolkit-tree-guard/SKILL.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Setup TreeGuard (Directory Structure Guardrails)</h1><div class="symbol-meta"><span class="source-link">skills/setup-toolkit-tree-guard/SKILL.md</span></div></div>
+<section class="readme prose"><hr>
+<p>name: setup-toolkit-tree-guard description: &gt;- Set up TreeGuard directory and file structure checks for a PHP project. Use when asked to configure tree-guard, tree.yaml, directory file-count limits, subdirectory-count limits, nesting depth limits, file or directory naming conventions, allowed or denied file patterns, required files per directory, empty directory detection, TreeGuard reporters, Composer scripts for TreeGuard, or CI checks for PHP project structure. ---</p>
+<h2>Setup TreeGuard (Directory Structure Guardrails)</h2>
+<h3>Unified Guard entry point</h3>
+<p>The current package is <code>k-kinzal/guard-php</code>, which exposes <code>vendor/bin/guard</code>. For a new project, run <code>guard init</code>, which imports the shipped <code>structure</code> preset into <code>guard.yaml</code>. Override individual directory rules in the <code>structure</code> section when the project needs a different constraint. Omit that import only when the project defines the whole directory policy itself. Preserve the fixed constraints documented below. Run <code>guard check</code> from Composer and CI; use <code>guard apply --dry-run</code> to inspect configuration-value repairs and <code>guard apply</code> for authorized changes. Source and structural violations still require code/document edits.</p>
+<p>The legacy workflow below is retained for migration. When starting with these legacy templates, run <code>guard init</code> after adaptation to import them without changing constraints, then retire the separate legacy policies. Do not replace an existing <code>guard.yaml</code> or reduce constraints to pass a check. See <code>vendor/k-kinzal/guard-php/docs/guard.md</code>. Legacy generation/explanation executables are available as <code>php vendor/k-kinzal/guard-php/bin/tree-guard</code>.</p>
+<p>This skill configures <code>tree-guard</code>, the php-ai-toolkit CLI for directory file counts, subdirectory counts, subtree totals, nesting depth, naming conventions, required files, empty directories, and reporter output.</p>
+<h3>Prerequisites</h3>
+<p>Inspect <code>composer.json</code> before configuring:</p>
+<ul><li>Confirm the target project requires <code>k-kinzal/php-ai-toolkit</code>.</li><li>Read Composer production autoload roots. Usually this is <code>src/</code>, not <code>tests/</code>.</li><li>Check for existing structure config such as <code>tree.yaml</code> or custom scripts.</li><li>Check existing Composer scripts and CI jobs.</li></ul>
+<p>Install the toolkit if missing:</p>
+<pre class="code"><code>composer require --dev k-kinzal/php-ai-toolkit</code></pre>
+<p>The unversioned requirement is intentional for a new install: Composer should select the newest stable toolkit release compatible with the target project. Check current package metadata and the target&#039;s PHP/dependency graph first. If the toolkit is already constrained, update its lock to the newest admitted release and preserve an intentional pin unless changing that policy is in scope. Never copy this repository&#039;s root constraint or lock resolution.</p>
+<h3>Template</h3>
+<p>Read the template from <code>vendor/k-kinzal/php-ai-toolkit/skills/setup-toolkit-tree-guard/tree.yaml</code> and apply it to the project root as <code>tree.yaml</code>.</p>
+<p>Replace <code>REPLACE_WITH_PRODUCTION_ROOT</code> and <code>REPLACE_WITH_UNIT_TEST_ROOT</code> with every maintained target-project root to which the corresponding policy applies. Remove a rule only when that category truly does not exist; never leave a sentinel or point it at an incidental example directory.</p>
+<p>The starter template scans the project root (<code>paths: [&#039;.&#039;]</code>) so the global forbidden-directory rule reaches the whole repository. The file and directory count limits apply to maintained production and unit-test roots, not to the repository root where conventional package manifests and tool configuration coexist. Keep <code>exclude</code> limited to generated and vendored directories, and add the ones the project actually has.</p>
+<p>The starter template forbids everywhere:</p>
+<div class="table-wrap"><table><thead><tr><th>Setting</th><th>Default</th><th>Meaning</th></tr></thead><tbody><tr><td><code>deny_dirs</code></td><td><code>[&#039;scripts&#039;, &#039;Scripts&#039;]</code></td><td>No directory named <code>scripts</code> anywhere, including the project root and <code>.github/</code>. Put automation in Composer scripts, a Makefile, or a workflow step instead of a loose script directory that AI agents fill with one-off files.</td></tr></tbody></table></div>
+<p>After its path sentinels are replaced, the starter template enforces on every selected production and unit-test root:</p>
+<div class="table-wrap"><table><thead><tr><th>Setting</th><th>Default</th><th>Meaning</th></tr></thead><tbody><tr><td><code>forbid_empty</code></td><td><code>true</code></td><td>Empty directories fail; delete leftovers or add intended contents.</td></tr><tr><td><code>allow</code></td><td><code>[&#039;*.php&#039;]</code></td><td>Only PHP files are allowed in source directories.</td></tr><tr><td><code>file_case</code></td><td><code>pascal</code></td><td>File stems must be PascalCase (PSR-4 class-per-file naming).</td></tr><tr><td><code>dir_case</code></td><td><code>pascal</code></td><td>Directory names must be PascalCase (PSR-4 namespace segments).</td></tr><tr><td><code>max_files</code></td><td><code>15</code></td><td>A maintained code or unit-test directory may contain at most 15 direct files. Split responsibilities before adding a sixteenth.</td></tr><tr><td><code>max_dirs</code></td><td><code>20</code></td><td>A maintained code or unit-test directory may contain at most 20 direct subdirectories. Introduce a meaningful grouping before adding a twenty-first.</td></tr></tbody></table></div>
+<p>The limit value itself is allowed. A directory with exactly 15 files passes.</p>
+<h3>Pattern Semantics</h3>
+<p><code>rules[].path</code> patterns match whole relative directory paths segment by segment. A <code>**</code> segment matches zero or more segments, so <code>&lt;root&gt;/**</code> also matches <code>&lt;root&gt;</code> itself. Other segments match exactly one path segment with fnmatch, so <code>*</code> never crosses <code>/</code>. The project root is the path <code>.</code> and carries no segment, so only <code>.</code> and <code>**</code> match it. See the reference documentation for details.</p>
+<h3>Adapting to the Project</h3>
+<p>Adapt paths and naming rules to the discovered layout; keep the limits on every maintained production and unit-test root:</p>
+<ul><li>Scan production roots discovered from Composer autoload and the maintained unit-test roots that exercise them. Replace the template&#039;s <code>src/**</code> and <code>tests/Unit/**</code> patterns when the project uses different roots; do not merely leave real code outside the limited paths.</li><li>Add <code>max_depth</code> (for example <code>3</code>) on the root rule when the project keeps namespaces shallow.</li><li>Add <code>deny</code> globs for forbidden name patterns such as <code>&#039;*Helper.php&#039;</code> when the project bans them, and <code>deny_dirs</code> globs on <code>path: &#039;**&#039;</code> for directory names the project bans everywhere.</li><li>Add <code>require: [&#039;README.md&#039;]</code> style rules for directories that must carry a specific file.</li><li>Use <code>exclude</code> for generated directories only. Do not add broad excludes just to make violations pass; fix the structure or report the exact directories that need a project-level decision.</li></ul>
+<p>Do not apply the count limits to the repository root simply to claim broader coverage: package manifests and independent tool configs do not form one source responsibility. Conversely, do not narrow the scan to a hand-picked subset of maintained code.</p>
+<p>Do not raise <code>max_files</code> above 15 or <code>max_dirs</code> above 20 to fit the existing production or unit-test tree. The existing tree is evidence to redesign, not the policy. Group files by responsibility, move internal implementation behind meaningful namespaces, and keep released public facades at their existing names. Introducing TreeGuard does not authorize a public API change.</p>
+<p>Do not invent incidental buckets such as <code>Common</code>, <code>Shared</code>, <code>Helpers</code>, or a numbered split. The new directories must express stable ownership or dependency boundaries. Subdirectories within one responsibility can remain in the same Deptrac layer; file-count limits do not require a layer for every new directory. Keep the restructuring rationale out of the product README and <code>docs/</code> unless their documentation is part of the user&#039;s request.</p>
+<h3>Reporter</h3>
+<p>Keep <code>report.reporter: ai</code> by default for this toolkit. The AI reporter prints structured remediation guidance intended for coding agents.</p>
+<p>Use <code>text</code> for concise human output and <code>json</code> for CI or machine consumers. Supported <code>order_by</code> fields are <code>path</code>, <code>rule</code>, <code>actual</code>, and <code>limit</code>.</p>
+<h3>Recommended Composer Scripts</h3>
+<p>Add scripts that match the project:</p>
+<pre class="code"><code>{
+    &quot;scripts&quot;: {
+        &quot;tree-guard&quot;: &quot;tree-guard --config=tree.yaml&quot;,
+        &quot;lint&quot;: [
+            &quot;@format:check&quot;,
+            &quot;@phpstan&quot;,
+            &quot;@loc-guard&quot;,
+            &quot;@tree-guard&quot;,
+            &quot;@deptrac&quot;
+        ]
+    }
+}</code></pre>
+<p>If the project already has <code>lint</code> or <code>check</code>, merge <code>@tree-guard</code> into it after LocGuard and before Deptrac when those scripts exist. Do not remove existing lint steps.</p>
+<h3>Verification</h3>
+<p>After applying:</p>
+<pre class="code"><code>php vendor/k-kinzal/guard-php/bin/tree-guard --config=tree.yaml</code></pre>
+<p>Exit codes:</p>
+<ul><li><code>0</code>: no violations</li><li><code>1</code>: structure violations found</li><li><code>2</code>: configuration or runtime error</li></ul>
+<h3>References</h3>
+<ul><li><span class="md-target" title="vendor/k-kinzal/guard-php/docs/tree-guard.md">TreeGuard Configuration</span> — Settings, pattern semantics, and CLI behavior.</li></ul>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

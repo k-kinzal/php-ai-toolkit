@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForbiddenNamespaceRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/ForbiddenNamespaceRule.md.html">
+<meta name="description" content="ForbiddenNamespaceRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="ForbiddenNamespaceRule — php-ai-toolkit">
+<meta property="og:description" content="ForbiddenNamespaceRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/ForbiddenNamespaceRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/ForbiddenNamespaceRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>ForbiddenNamespaceRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/ForbiddenNamespaceRule.md</span></div></div>
+<section class="readme prose"><h2>ForbiddenNamespaceRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifier</td><td><code>customRules.forbiddenNamespace</code></td></tr><tr><td>Scope</td><td>Namespace declarations</td></tr><tr><td>Configurable</td><td>Yes</td></tr></tbody></table></div>
+<h3>Configuration</h3>
+<p>The default forbidden namespace prefixes are defined in <span class="md-target" title="../../rules.neon"><code>rules.neon</code></span>. You can override the list under <code>toolkit.forbiddenNamespacePrefixes</code>:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        forbiddenNamespacePrefixes:
+            - &#039;Tests\Support&#039;
+            - &#039;Tests\Supports&#039;
+            - &#039;Tests\Helper&#039;
+            - &#039;Tests\Helpers&#039;
+            - &#039;Tests\Util&#039;
+            - &#039;Tests\Utils&#039;
+            - &#039;Tests\Utility&#039;
+            - &#039;Tests\Utilities&#039;
+            - &#039;Tests\Fixture&#039;
+            - &#039;Tests\Fixtures&#039;</code></pre>
+<h3>What It Detects</h3>
+<p>Reports namespace declarations that exactly match a configured prefix or live under it:</p>
+<pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">Tests\Support</span>;
+
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">UserFixture</span>
+{
+}</code></pre>
+<pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">Tests\Helpers\Database</span>;
+
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">DatabaseFixture</span>
+{
+}</code></pre>
+<h4>Not Reported</h4>
+<ul><li>Namespaces that only share a partial prefix, such as <code>Tests\Supporting</code></li><li>Namespaces outside the configured prefixes</li><li>The global namespace</li></ul>
+<h3>Matching Rules</h3>
+<p>Matching is case-sensitive. A namespace is reported only when it is an exact match or a child namespace.</p>
+<p>For example, with <code>Tests\Support</code> configured:</p>
+<pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">Tests\Support</span>;</code></pre>
+<p>is reported, and:</p>
+<pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">Tests\Support\Database</span>;</code></pre>
+<p>is also reported. This namespace is allowed because it is only a partial text match:</p>
+<pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">Tests\Supporting</span>;</code></pre>
+<h3>Why This Is an Error</h3>
+<p>Generic test support, helper, utility, and fixture namespaces become dumping grounds for reusable setup code. They hide what each test actually needs, encourage cross-test coupling, and create a second test framework that AI agents tend to expand instead of simplifying.</p>
+<p>Tests should prefer explicit setup in the test method. When reuse is genuinely valuable, it should be provided by a real dependency with a clear API boundary, not by a generic <code>Tests\Support</code>, <code>Tests\Helper</code>, <code>Tests\Util</code>, or <code>Tests\Fixture</code> bucket.</p>
+<h3>How to Fix</h3>
+<p>Use an existing library when the behavior is already solved by a maintained dependency.</p>
+<p>For reusable project-specific behavior, create an independent internal library outside the <code>Tests</code> namespace. Give it a domain-specific namespace and API so it can be analyzed and maintained like production support code.</p>
+<p>For simple setup, accept duplication and write the setup directly inside each test method:</p>
+<pre class="code"><code><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">UserServiceTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCreate</span>(): <span class="tok-id">void</span>
+    {
+        <span class="tok-var">$user</span> = <span class="tok-kw">new</span> <span class="tok-id">User</span>(<span class="tok-str">&#039;Alice&#039;</span>, <span class="tok-str">&#039;alice@example.com&#039;</span>, <span class="tok-num">30</span>);
+        <span class="tok-var">$service</span> = <span class="tok-kw">new</span> <span class="tok-id">UserService</span>();
+
+        <span class="tok-var">$service</span>-&gt;<span class="tok-id">create</span>(<span class="tok-var">$user</span>);
+
+        <span class="tok-id">self</span>::<span class="tok-id">assertNotEmpty</span>(<span class="tok-var">$user</span>-&gt;<span class="tok-id">name</span>());
+    }
+}</code></pre>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

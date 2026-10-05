@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OverrideMustHaveAttributeRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/OverrideMustHaveAttributeRule.md.html">
+<meta name="description" content="OverrideMustHaveAttributeRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="OverrideMustHaveAttributeRule — php-ai-toolkit">
+<meta property="og:description" content="OverrideMustHaveAttributeRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/OverrideMustHaveAttributeRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/OverrideMustHaveAttributeRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>OverrideMustHaveAttributeRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/OverrideMustHaveAttributeRule.md</span></div></div>
+<section class="readme prose"><h2>OverrideMustHaveAttributeRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifier</td><td><code>customRules.overrideMustHaveAttribute</code></td></tr><tr><td>Scope</td><td>All classes</td></tr><tr><td>Configurable</td><td>No</td></tr></tbody></table></div>
+<h3>What It Detects</h3>
+<p>Reports methods that override a non-abstract parent method without the <code>#[Override]</code> attribute.</p>
+<pre class="code"><code><span class="tok-kw">class</span> <span class="tok-id">BaseRepository</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">findAll</span>(): <span class="tok-kw">array</span>
+    {
+        <span class="tok-kw">return</span> [];
+    }
+}
+
+<span class="tok-kw">class</span> <span class="tok-id">UserRepository</span> <span class="tok-kw">extends</span> <span class="tok-id">BaseRepository</span>
+{
+    <span class="tok-com">// ERROR: Override method findAll() must have the #[\Override] attribute.</span>
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">findAll</span>(): <span class="tok-kw">array</span>
+    {
+        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">query</span>(<span class="tok-str">&#039;SELECT * FROM users&#039;</span>);
+    }
+}</code></pre>
+<h4>Not reported</h4>
+<ul><li>Methods that implement an abstract parent method (these are implementations, not overrides)</li><li>Methods that do not exist in the parent class</li><li>Methods already annotated with <code>#[Override]</code></li><li>Constructors, even when the parent declares one</li><li>Methods whose parent counterpart is <code>private</code></li></ul>
+<p>The last two are the cases PHP refuses the attribute on. A constructor never overrides the parent constructor, and a private parent method is invisible to the child, so a child method of the same name declares something new. Writing <code>#[\Override]</code> there is a fatal error from PHP 8.3 on:</p>
+<pre class="code"><code>PHP Fatal error: Child::__construct() has #[\Override] attribute,
+but no matching parent method exists</code></pre>
+<p>Reporting them would mean asking for code that does not run, so the rule stays quiet even though the method names line up.</p>
+<h3>Why This Is an Error</h3>
+<p>Without <code>#[Override]</code>, there is no explicit signal that a method intentionally overrides a parent. This creates two problems:</p>
+<ol><li><strong>Silent breakage on rename</strong>: If the parent method is renamed, the child method silently becomes a standalone method instead of an override. With <code>#[Override]</code>, PHP throws a fatal error, catching the mismatch immediately.</li></ol>
+<ol><li><strong>Unclear intent</strong>: When reading the code, it is not obvious whether a method overrides a parent or is a new method. AI code generators are especially prone to accidentally shadowing parent methods without realizing it.</li></ol>
+<p>The <code>#[Override]</code> attribute, introduced in PHP 8.3, serves as a contract: &quot;this method must exist in a parent.&quot; It turns silent failures into loud errors and makes the override relationship explicit in the source code.</p>
+<h3>How to Fix</h3>
+<p>Add the <code>#[Override]</code> attribute to the method:</p>
+<pre class="code"><code><span class="tok-kw">class</span> <span class="tok-id">UserRepository</span> <span class="tok-kw">extends</span> <span class="tok-id">BaseRepository</span>
+{
+    #[<span class="tok-id">\Override</span>]
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">findAll</span>(): <span class="tok-kw">array</span>
+    {
+        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">query</span>(<span class="tok-str">&#039;SELECT * FROM users&#039;</span>);
+    }
+}</code></pre>
+<p>Common places where this rule triggers:</p>
+<pre class="code"><code><span class="tok-kw">class</span> <span class="tok-id">AppTestCase</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span>
+{
+    <span class="tok-com">// Bad</span>
+    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">setUp</span>(): <span class="tok-id">void</span> { ... }
+    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">tearDown</span>(): <span class="tok-id">void</span> { ... }
+
+    <span class="tok-com">// Good</span>
+    #[<span class="tok-id">\Override</span>]
+    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">setUp</span>(): <span class="tok-id">void</span> { ... }
+
+    #[<span class="tok-id">\Override</span>]
+    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">tearDown</span>(): <span class="tok-id">void</span> { ... }
+}</code></pre>
+<p>If the method is not intended to override the parent, rename it to avoid the collision:</p>
+<pre class="code"><code><span class="tok-kw">class</span> <span class="tok-id">UserRepository</span> <span class="tok-kw">extends</span> <span class="tok-id">BaseRepository</span>
+{
+    <span class="tok-com">// If this is NOT meant to override BaseRepository::findAll()</span>
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">findAllActive</span>(): <span class="tok-kw">array</span>
+    {
+        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">query</span>(<span class="tok-str">&#039;SELECT * FROM users WHERE active = 1&#039;</span>);
+    }
+}</code></pre>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

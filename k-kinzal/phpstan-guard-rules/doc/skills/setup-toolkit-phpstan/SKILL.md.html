@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set Up PHPStan — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/skills/setup-toolkit-phpstan/SKILL.md.html">
+<meta name="description" content="Set Up PHPStan, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Set Up PHPStan — php-ai-toolkit">
+<meta property="og:description" content="Set Up PHPStan, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/skills/setup-toolkit-phpstan/SKILL.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">skills/setup-toolkit-phpstan/SKILL.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Set Up PHPStan</h1><div class="symbol-meta"><span class="source-link">skills/setup-toolkit-phpstan/SKILL.md</span></div></div>
+<section class="readme prose"><hr>
+<p>name: setup-toolkit-phpstan description: &gt;- Set up PHPStan with php-ai-toolkit&#039;s opinionated defaults and AI error formatter. Use when asked to configure PHPStan, static analysis, toolkit PHPStan rules, or the AI error formatter in a PHP project. ---</p>
+<h2>Set Up PHPStan</h2>
+<p>The target configuration assembles the baseline from PHPStan&#039;s strict rules and the toolkit&#039;s two public configuration files. Do not copy their contents into the target or tune the baseline until the current code passes.</p>
+<h3>Configuration Responsibilities</h3>
+<ul><li><code>phpstan/phpstan-strict-rules/rules.neon</code> registers the official strict rules;</li><li><code>php-ai-toolkit/extension.neon</code> registers the <code>ai</code> error formatter and its agent detector;</li><li><code>php-ai-toolkit/rules.neon</code> defines checked-exception policy and registers every toolkit rule through configurable conditional tags; and</li><li>the target <code>phpstan.neon</code> selects PHPStan level <code>max</code>.</li></ul>
+<p>Together these are one baseline. <code>toolkit.allRules</code> defaults to <code>true</code>, and every rule-specific <code>toolkit.&lt;rule&gt;.enabled</code> value inherits it. Do not disable or weaken them during adoption.</p>
+<h3>Installation</h3>
+<p>Choose PHPStan from the target project, not from this toolkit repository&#039;s development constraint. Read the target&#039;s PHP range, existing PHPStan/extensions, Composer locks, and the runtimes where analysis is installed and executed. Then inspect current Composer metadata and release notes and select the newest PHPStan release compatible with that complete graph.</p>
+<p>A single-runtime application will normally need one current release line. For a multi-version library or tool, prefer the newest line that installs throughout the matrix. Use a minimal union only when different supported runtimes genuinely need different lines, and verify every maintained lock or CI leg. Check the intended candidate with a dry run and explain an unexpected older resolution with <code>composer why-not</code>:</p>
+<pre class="code"><code>composer require --dev &quot;phpstan/phpstan:&lt;target-derived-constraint&gt;&quot; k-kinzal/php-ai-toolkit --dry-run
+composer why-not phpstan/phpstan &lt;newest-compatible-version&gt;</code></pre>
+<p>Run the confirmed <code>composer require</code> without <code>--dry-run</code>. Do not copy the toolkit&#039;s root constraint or lock resolution. If PHPStan already has an intentional direct constraint, preserve it and update to the newest release it admits unless changing that policy is in scope.</p>
+<p>The toolkit requirement is unversioned only for a new install so Composer can select its newest stable release compatible with the target graph. Preserve an intentional existing toolkit pin and update its lock within that constraint.</p>
+<p>Read <code>composer config vendor-dir</code> as well. Every include below is rooted at that project-derived directory (<code>vendor</code> is only Composer&#039;s default).</p>
+<p><code>phpstan/phpstan-strict-rules</code> is a runtime dependency of the toolkit; do not add a separately chosen version constraint to the target project.</p>
+<p>The default setup loads the toolkit explicitly and does not need <code>phpstan/extension-installer</code>. If that Composer plugin is present solely for the toolkit or strict-rules, remove it and its <code>allow-plugins</code> entry. If another PHPStan extension genuinely needs the plugin, keep it but add both <code>k-kinzal/php-ai-toolkit</code> and <code>phpstan/phpstan-strict-rules</code> to <code>extra.phpstan/extension-installer.ignore</code>; the target configuration loads both explicitly and PHPStan rejects a configuration file included twice.</p>
+<h3>Target Configuration</h3>
+<p>Copy the shipped template to the configuration name the project already uses (<code>phpstan.neon</code> or <code>phpstan.neon.dist</code>):</p>
+<pre class="code"><code># NOTE: You do not have permission to overwrite this file. Please ask a human operator to perform the changes for you.
+
+includes:
+    - REPLACE_WITH_VENDOR_DIR/phpstan/phpstan-strict-rules/rules.neon
+    - REPLACE_WITH_VENDOR_DIR/k-kinzal/php-ai-toolkit/extension.neon
+    - REPLACE_WITH_VENDOR_DIR/k-kinzal/php-ai-toolkit/rules.neon
+
+parameters:
+    level: max
+    paths:
+        - REPLACE_WITH_ANALYSIS_PATH</code></pre>
+<p>Replace <code>REPLACE_WITH_VENDOR_DIR</code> with <code>composer config vendor-dir</code> before use. A remaining sentinel is a configuration error, not a literal directory name. Replace <code>REPLACE_WITH_ANALYSIS_PATH</code> with every production and test autoload root derived from <code>composer.json</code>; repeat the list item for multiple roots. Development roots that hold executable PHP, such as a <code>fuzz/</code> harness or a <code>bench/</code> suite mapped in <code>autoload-dev</code>, belong in <code>paths</code> as well, so that code which only runs on a schedule is still analysed on every pull request. List their namespace prefixes beside the test namespaces in <code>visibilityExemptNamespacePrefixes</code>, because they sit outside the ownership contract the same way tests do.</p>
+<p>Analysis scope belongs in PHPStan configuration so direct invocations, editor integrations, Composer, and CI all analyse the same paths. Do not put the paths only on the Composer command. Keep that command independent of project layout:</p>
+<pre class="code"><code>{
+    &quot;scripts&quot;: {
+        &quot;phpstan&quot;: &quot;phpstan analyse --memory-limit=512M&quot;,
+        &quot;lint&quot;: [
+            &quot;@format:check&quot;,
+            &quot;@phpstan&quot;
+        ]
+    }
+}</code></pre>
+<h3>Existing Configuration</h3>
+<p>Reduce an existing configuration to the three baseline includes, <code>level: max</code>, the project&#039;s complete <code>paths</code>, and settings that are both project-specific and necessary. Remove copied rule definitions, the old error-formatter include, and copied exception defaults.</p>
+<p>The following additions can be legitimate:</p>
+<ul><li><code>bootstrapFiles</code> for runtime symbols PHPStan cannot otherwise discover;</li><li>narrow <code>excludePaths</code> for generated or deliberately invalid fixtures;</li><li>PHP version bounds derived from the declared support range; and</li><li><code>parameters.toolkit</code> when the project uses non-standard namespace or path conventions.</li></ul>
+<p>Custom rule parameters describe facts; they are not escape hatches. Examples:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        testNamespacePrefixes:
+            - &#039;App\Tests&#039;
+        restrictedTestNamespacePrefixes:
+            - &#039;App\Tests\Unit&#039;
+            - &#039;App\Tests\Integration&#039;
+        srcMarker: &#039;/app/&#039;
+        unitTestMarker: &#039;/tests/Unit/&#039;
+        visibilityExemptNamespacePrefixes:
+            - &#039;App\\Tests&#039;</code></pre>
+<p>The toolkit&#039;s visibility rule enforces <code>@visibility</code> declarations during the same analysis. PHPStan must analyse every production root that declares or references those symbols. Add only namespace prefixes that genuinely sit outside the ownership contract, normally test namespaces. Declarations marked <code>@visibility public</code> are also treated as public API by PHPStan&#039;s unused-symbol extensions, so do not add separate <code>ignoreErrors</code> entries for them.</p>
+<p>Only list a <code>broadCatchAllowedPaths</code> entry for a real process or protocol boundary that must translate every failure. Only list pairing exclusions for generated declarations or another evidenced non-source artifact.</p>
+<p>Do not add <code>ignoreErrors</code> to make adoption green. Fix the code. A narrow ignore for a demonstrated upstream type error needs the exact identifier and path and human approval.</p>
+<p>Introducing the toolkit is not permission to change a released public API, product documentation, or <code>AGENTS.md</code>. Preserve public facades and refactor their internals when a rule exposes a design problem.</p>
+<p>When refactoring tests, keep important inputs and expected results visible in the test. Do not replace forbidden private helpers with a fixture-builder layer or a scripted Faker subclass that asserts random-call order and bounds. Exercise real collaborators; extract deterministic production transformations for explicit input/output cases and test random output against its observable contract. Preserve parameter names and defaults as well as types when moving public facade internals.</p>
+<h3>Verification</h3>
+<p>Run the exact Composer script that CI will run:</p>
+<pre class="code"><code>composer phpstan</code></pre>
+<p>Confirm the output uses the <code>ai</code> formatter and intentionally introduce one known toolkit violation in a disposable local probe if there is any doubt that the extension loaded. Remove the probe immediately after verification.</p>
+<h3>References</h3>
+<ul><li><span class="md-target" title="vendor/k-kinzal/phpstan-ai-formatter/docs/phpstan-ai-formatter.md">PHPStan AI Formatter</span></li><li><span class="md-target" title="vendor/k-kinzal/phpstan-guard-rules/docs/phpstan-rules.md">PHPStan Rules</span></li></ul>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

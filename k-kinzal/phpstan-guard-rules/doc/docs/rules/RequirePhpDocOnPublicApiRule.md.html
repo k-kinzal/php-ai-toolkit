@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RequirePhpDocOnPublicApiRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/RequirePhpDocOnPublicApiRule.md.html">
+<meta name="description" content="RequirePhpDocOnPublicApiRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="RequirePhpDocOnPublicApiRule — php-ai-toolkit">
+<meta property="og:description" content="RequirePhpDocOnPublicApiRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/RequirePhpDocOnPublicApiRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/RequirePhpDocOnPublicApiRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>RequirePhpDocOnPublicApiRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/RequirePhpDocOnPublicApiRule.md</span></div></div>
+<section class="readme prose"><h2>RequirePhpDocOnPublicApiRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifiers</td><td><code>customRules.requirePhpDocOnClass</code>, <code>customRules.requirePhpDocOnMethod</code>, <code>customRules.requirePhpDocOnProperty</code>, <code>customRules.requirePhpDocOnConstant</code></td></tr><tr><td>Scope</td><td>All classes, interfaces, traits, enums (excluding restricted test namespaces)</td></tr><tr><td>Configurable</td><td>Via <code>restrictedTestNamespacePrefixes</code></td></tr></tbody></table></div>
+<h3>What It Detects</h3>
+<p>Reports public API elements that are missing PHPDoc comments:</p>
+<pre class="code"><code><span class="tok-kw">class</span> <span class="tok-id">UserService</span>  <span class="tok-com">// ERROR: Add a multi-line PHPDoc block to class UserService describing its purpose.</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">const</span> <span class="tok-id">VERSION</span> = <span class="tok-str">&#039;1.0&#039;</span>;  <span class="tok-com">// ERROR: Add a multi-line PHPDoc block to public constant UserService::VERSION.</span>
+
+    <span class="tok-kw">public</span> <span class="tok-id">string</span> <span class="tok-var">$name</span> = <span class="tok-str">&#039;&#039;</span>;  <span class="tok-com">// ERROR: Add a multi-line PHPDoc block to public property UserService::$name.</span>
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">findUser</span>(<span class="tok-id">int</span> <span class="tok-var">$id</span>): ?<span class="tok-id">User</span>  <span class="tok-com">// ERROR: Add a multi-line PHPDoc block to public method UserService::findUser().</span>
+    {
+        <span class="tok-com">// ...</span>
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__toString</span>(): <span class="tok-id">string</span>  <span class="tok-com">// ERROR: Magic methods are also checked.</span>
+    {
+        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">name</span>;
+    }
+}</code></pre>
+<h4>Not reported</h4>
+<ul><li>Classes in restricted test namespaces (<code>Tests\Unit</code>, <code>Tests\Integration</code> by default)</li><li>Anonymous classes</li><li>Private and protected methods, properties, and constants</li><li>Constructor promoted properties (covered by the constructor&#039;s <code>@param</code> tags)</li><li>Enum cases</li></ul>
+<h3>Why This Is an Error</h3>
+<p>Public API elements form the contract between a class and its consumers. Without PHPDoc:</p>
+<ol><li><strong>IDE support degrades</strong>: Type hints, parameter descriptions, and return value documentation are unavailable in autocomplete and hover tooltips.</li></ol>
+<ol><li><strong>AI generators skip documentation</strong>: AI code generators frequently produce undocumented public APIs, creating technical debt that accumulates across the codebase.</li></ol>
+<ol><li><strong>Intent is unclear</strong>: Method names alone rarely communicate preconditions, postconditions, side effects, or the meaning of parameters and return values.</li></ol>
+<h3>How to Fix</h3>
+<p>Add a multi-line PHPDoc block to each public element:</p>
+<pre class="code"><code><span class="tok-com">/**</span>
+<span class="tok-com"> * Manages user lifecycle operations.</span>
+<span class="tok-com"> */</span>
+<span class="tok-kw">class</span> <span class="tok-id">UserService</span>
+{
+    <span class="tok-com">/**</span>
+<span class="tok-com">     * Current API version.</span>
+<span class="tok-com">     */</span>
+    <span class="tok-kw">public</span> <span class="tok-kw">const</span> <span class="tok-id">VERSION</span> = <span class="tok-str">&#039;1.0&#039;</span>;
+
+    <span class="tok-com">/**</span>
+<span class="tok-com">     * Display name of the service.</span>
+<span class="tok-com">     */</span>
+    <span class="tok-kw">public</span> <span class="tok-id">string</span> <span class="tok-var">$name</span> = <span class="tok-str">&#039;&#039;</span>;
+
+    <span class="tok-com">/**</span>
+<span class="tok-com">     * Finds a user by their unique identifier.</span>
+<span class="tok-com">     *</span>
+<span class="tok-com">     * @param int $id the user ID to search for</span>
+<span class="tok-com">     * @return User|null the user, or null if not found</span>
+<span class="tok-com">     */</span>
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">findUser</span>(<span class="tok-id">int</span> <span class="tok-var">$id</span>): ?<span class="tok-id">User</span>
+    {
+        <span class="tok-com">// ...</span>
+    }
+
+    <span class="tok-com">/**</span>
+<span class="tok-com">     * Returns a string representation of the service.</span>
+<span class="tok-com">     */</span>
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__toString</span>(): <span class="tok-id">string</span>
+    {
+        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">name</span>;
+    }
+}</code></pre>
+<p>For interfaces, all methods are implicitly public and require PHPDoc:</p>
+<pre class="code"><code><span class="tok-com">/**</span>
+<span class="tok-com"> * Contract for user repository implementations.</span>
+<span class="tok-com"> */</span>
+<span class="tok-kw">interface</span> <span class="tok-id">UserRepositoryInterface</span>
+{
+    <span class="tok-com">/**</span>
+<span class="tok-com">     * Finds a user by ID.</span>
+<span class="tok-com">     *</span>
+<span class="tok-com">     * @param int $id the user ID</span>
+<span class="tok-com">     * @return User|null the user, or null if not found</span>
+<span class="tok-com">     */</span>
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">find</span>(<span class="tok-id">int</span> <span class="tok-var">$id</span>): ?<span class="tok-id">User</span>;
+}</code></pre>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

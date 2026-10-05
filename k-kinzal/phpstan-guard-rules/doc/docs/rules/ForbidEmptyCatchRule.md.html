@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForbidEmptyCatchRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/ForbidEmptyCatchRule.md.html">
+<meta name="description" content="ForbidEmptyCatchRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="ForbidEmptyCatchRule — php-ai-toolkit">
+<meta property="og:description" content="ForbidEmptyCatchRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/ForbidEmptyCatchRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/ForbidEmptyCatchRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>ForbidEmptyCatchRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/ForbidEmptyCatchRule.md</span></div></div>
+<section class="readme prose"><h2>ForbidEmptyCatchRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifier</td><td><code>customRules.emptyCatch</code></td></tr><tr><td>Scope</td><td>All code</td></tr><tr><td>Configurable</td><td>No</td></tr></tbody></table></div>
+<h3>What It Detects</h3>
+<p>Reports every <code>catch</code> block whose body contains no statements. A comment inside the block does not count as handling.</p>
+<pre class="code"><code><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">ReportUploader</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">upload</span>(<span class="tok-id">Report</span> <span class="tok-var">$report</span>): <span class="tok-id">void</span>
+    {
+        <span class="tok-kw">try</span> {
+            <span class="tok-var">$this</span>-&gt;<span class="tok-id">client</span>-&gt;<span class="tok-id">send</span>(<span class="tok-var">$report</span>);
+        } <span class="tok-kw">catch</span> (<span class="tok-id">TransportException</span> <span class="tok-var">$exception</span>) {
+            <span class="tok-com">// ERROR: Handle the caught TransportException in this empty catch block: ...</span>
+        }
+    }
+}</code></pre>
+<p>Non-binding catches (<code>catch (Throwable)</code>) are reported the same way.</p>
+<h3>Why This Is an Error</h3>
+<ol><li><strong>Failures become invisible</strong>: The operation failed, but the program continues as if it succeeded. The bug surfaces later, far from its cause, with no trace of the original exception.</li></ol>
+<ol><li><strong>AI anti-pattern</strong>: When static analysis or a failing test complains about an exception, AI generators frequently &quot;fix&quot; the symptom by swallowing the exception instead of handling the failure. Combined with checked-exception analysis (<code>exceptions.check.missingCheckedExceptionInThrows</code>), an empty catch is the cheapest way to silence the analyzer — this rule closes that escape hatch.</li></ol>
+<ol><li><strong>Silent catch is almost never the intent</strong>: Even genuinely ignorable failures (best-effort cleanup, optional caches) deserve an explicit statement — a log call, a metric, or a deliberate fallback value — so a reader can tell the ignore is intentional.</li></ol>
+<h3>How to Fix</h3>
+<h4>Rethrow as a domain exception</h4>
+<pre class="code"><code><span class="tok-kw">try</span> {
+    <span class="tok-var">$data</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">parser</span>-&gt;<span class="tok-id">parse</span>(<span class="tok-var">$raw</span>);
+} <span class="tok-kw">catch</span> (<span class="tok-id">ParserException</span> <span class="tok-var">$exception</span>) {
+    <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">ImportFailedException</span>(<span class="tok-str">&#039;Import payload is not parsable.&#039;</span>, <span class="tok-num">0</span>, <span class="tok-var">$exception</span>);
+}</code></pre>
+<h4>Log and recover deliberately</h4>
+<pre class="code"><code><span class="tok-kw">try</span> {
+    <span class="tok-var">$this</span>-&gt;<span class="tok-id">cache</span>-&gt;<span class="tok-id">warm</span>(<span class="tok-var">$key</span>);
+} <span class="tok-kw">catch</span> (<span class="tok-id">CacheException</span> <span class="tok-var">$exception</span>) {
+    <span class="tok-var">$this</span>-&gt;<span class="tok-id">logger</span>-&gt;<span class="tok-id">warning</span>(<span class="tok-str">&#039;Cache warm-up failed.&#039;</span>, [<span class="tok-str">&#039;exception&#039;</span> =&gt; <span class="tok-var">$exception</span>]);
+}</code></pre>
+<h4>Fall back with an explicit value</h4>
+<pre class="code"><code><span class="tok-kw">try</span> {
+    <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">remote</span>-&gt;<span class="tok-id">fetchLimit</span>();
+} <span class="tok-kw">catch</span> (<span class="tok-id">TransportException</span> <span class="tok-var">$exception</span>) {
+    <span class="tok-var">$this</span>-&gt;<span class="tok-id">logger</span>-&gt;<span class="tok-id">info</span>(<span class="tok-str">&#039;Falling back to default limit.&#039;</span>, [<span class="tok-str">&#039;exception&#039;</span> =&gt; <span class="tok-var">$exception</span>]);
+
+    <span class="tok-kw">return</span> <span class="tok-id">self</span>::<span class="tok-id">DEFAULT_LIMIT</span>;
+}</code></pre>
+<p>If the exception genuinely cannot occur, remove the <code>try</code>/<code>catch</code> entirely instead of keeping a dead handler.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

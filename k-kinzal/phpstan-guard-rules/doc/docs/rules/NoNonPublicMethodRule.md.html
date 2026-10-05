@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NoNonPublicMethodRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/NoNonPublicMethodRule.md.html">
+<meta name="description" content="NoNonPublicMethodRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="NoNonPublicMethodRule — php-ai-toolkit">
+<meta property="og:description" content="NoNonPublicMethodRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/NoNonPublicMethodRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/NoNonPublicMethodRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>NoNonPublicMethodRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/NoNonPublicMethodRule.md</span></div></div>
+<section class="readme prose"><h2>NoNonPublicMethodRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifier</td><td><code>customRules.nonPublicMethod</code></td></tr><tr><td>Scope</td><td>All class-like methods except constructors</td></tr><tr><td>Configurable</td><td>No</td></tr></tbody></table></div>
+<h3>What It Detects</h3>
+<p>Reports private methods everywhere, and protected methods except in abstract classes, traits, and override methods. Constructors are never reported, whatever their visibility.</p>
+<pre class="code"><code><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">InvoiceService</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">issue</span>(<span class="tok-id">Invoice</span> <span class="tok-var">$invoice</span>): <span class="tok-id">Receipt</span>
+    {
+        <span class="tok-var">$this</span>-&gt;<span class="tok-id">validate</span>(<span class="tok-var">$invoice</span>);
+        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">createReceipt</span>(<span class="tok-var">$invoice</span>);
+    }
+
+    <span class="tok-com">// ERROR: Move private method validate() out of InvoiceService into a focused collaborator.</span>
+    <span class="tok-kw">private</span> <span class="tok-kw">function</span> <span class="tok-id">validate</span>(<span class="tok-id">Invoice</span> <span class="tok-var">$invoice</span>): <span class="tok-id">void</span>
+    {
+        <span class="tok-com">// ...</span>
+    }
+}</code></pre>
+<p>Protected methods are allowed when they are intentionally part of an inheritance boundary:</p>
+<pre class="code"><code><span class="tok-kw">abstract</span> <span class="tok-kw">class</span> <span class="tok-id">ImportTemplate</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">import</span>(<span class="tok-id">File</span> <span class="tok-var">$file</span>): <span class="tok-id">Result</span>
+    {
+        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">parse</span>(<span class="tok-var">$file</span>);
+    }
+
+    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">parse</span>(<span class="tok-id">File</span> <span class="tok-var">$file</span>): <span class="tok-id">Result</span>
+    {
+        <span class="tok-com">// ...</span>
+    }
+}</code></pre>
+<p>A private or protected constructor is allowed. Restricting construction is how PHP expresses singletons, named constructors, and other controlled-instantiation designs, so it is an API decision rather than a hidden responsibility:</p>
+<pre class="code"><code><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">Registry</span>
+{
+    <span class="tok-kw">private</span> <span class="tok-kw">static</span> ?<span class="tok-id">self</span> <span class="tok-var">$instance</span> = <span class="tok-id">null</span>;
+
+    <span class="tok-kw">private</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>()
+    {
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">instance</span>(): <span class="tok-id">self</span>
+    {
+        <span class="tok-kw">return</span> <span class="tok-id">self</span>::<span class="tok-var">$instance</span> ??= <span class="tok-kw">new</span> <span class="tok-id">self</span>();
+    }
+}</code></pre>
+<h3>Why This Is an Error</h3>
+<p>Private and non-override protected methods often hide additional responsibilities inside a class. The rule is not a visibility preference and should not be fixed by changing method access modifiers. If a behavior is complex enough to need its own named method, that behavior usually deserves one of these outcomes:</p>
+<ol><li><strong>It belongs to the type</strong>: Make it part of the public behavior and test it through that public API.</li></ol>
+<ol><li><strong>It is a separate responsibility</strong>: Extract it to a focused collaborator with its own public API.</li></ol>
+<ol><li><strong>It is an inheritance extension point</strong>: Keep it protected only on an abstract class, trait, or override method.</li></ol>
+<h3>How to Fix</h3>
+<p>Extract hidden behavior to a focused collaborator:</p>
+<pre class="code"><code><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">InvoiceService</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(
+        <span class="tok-kw">private</span> <span class="tok-kw">readonly</span> <span class="tok-id">InvoiceValidator</span> <span class="tok-var">$validator</span>,
+    ) {
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">issue</span>(<span class="tok-id">Invoice</span> <span class="tok-var">$invoice</span>): <span class="tok-id">Receipt</span>
+    {
+        <span class="tok-var">$this</span>-&gt;<span class="tok-id">validator</span>-&gt;<span class="tok-id">validate</span>(<span class="tok-var">$invoice</span>);
+        <span class="tok-kw">return</span> <span class="tok-id">Receipt</span>::<span class="tok-id">fromInvoice</span>(<span class="tok-var">$invoice</span>);
+    }
+}
+
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">InvoiceValidator</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">validate</span>(<span class="tok-id">Invoice</span> <span class="tok-var">$invoice</span>): <span class="tok-id">void</span>
+    {
+        <span class="tok-com">// ...</span>
+    }
+}</code></pre>
+<h3>Configuration</h3>
+<p>This rule is registered by <code>extension.neon</code>.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

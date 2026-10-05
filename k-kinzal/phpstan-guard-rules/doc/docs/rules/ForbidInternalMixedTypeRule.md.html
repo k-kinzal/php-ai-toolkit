@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForbidInternalMixedTypeRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/ForbidInternalMixedTypeRule.md.html">
+<meta name="description" content="ForbidInternalMixedTypeRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="ForbidInternalMixedTypeRule — php-ai-toolkit">
+<meta property="og:description" content="ForbidInternalMixedTypeRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/ForbidInternalMixedTypeRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/ForbidInternalMixedTypeRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>ForbidInternalMixedTypeRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/ForbidInternalMixedTypeRule.md</span></div></div>
+<section class="readme prose"><h2>ForbidInternalMixedTypeRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifier</td><td><code>customRules.internalMixedType</code></td></tr><tr><td>Scope</td><td>Resolved PHPStan declarations outside unrestricted public or inherited contracts</td></tr><tr><td>Configurable</td><td>No</td></tr></tbody></table></div>
+<h3>What It Detects</h3>
+<p>Reports explicit, concrete <code>mixed</code> in a declaration that is internal to the program. The check follows the resolved PHPStan type, so nested occurrences are included:</p>
+<pre class="code"><code><span class="tok-com">/**</span>
+<span class="tok-com"> * @visibility namespace</span>
+<span class="tok-com"> */</span>
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">PayloadDecoder</span>
+{
+    <span class="tok-com">/** @var array{payload: mixed} */</span>
+    <span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$payload</span>; <span class="tok-com">// ERROR</span>
+
+    <span class="tok-com">/**</span>
+<span class="tok-com">     * @param list&lt;array&lt;string, mixed&gt;&gt; $rows</span>
+<span class="tok-com">     */</span>
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">decode</span>(<span class="tok-kw">array</span> <span class="tok-var">$rows</span>): <span class="tok-id">string</span> <span class="tok-com">// ERROR</span>
+    {
+        <span class="tok-com">// ...</span>
+    }
+}</code></pre>
+<p>The rule covers:</p>
+<ul><li>Parameters and returns on scope-restricted classes, methods, and functions.</li><li>Private properties, including promoted properties, even when their constructor is public.</li><li>Properties on a scope-restricted class.</li><li>Closure and arrow-function signatures.</li><li>Explicit local <code>@var</code>, <code>@phpstan-var</code>, and <code>@psalm-var</code> declarations.</li><li>Restricted class-level <code>@property</code>, <code>@method</code>, <code>@phpstan-type</code>, and <code>@psalm-type</code> declarations.</li><li><code>mixed</code> nested inside arrays, lists, iterables, callables, unions, and array shapes.</li></ul>
+<p>An omitted type remains PHPStan&#039;s implicit <code>mixed</code> and is handled by PHPStan&#039;s ordinary missing-type checks. This rule targets an explicit type decision that discards information.</p>
+<h3>Public Boundary</h3>
+<p>Arbitrary values are valid at an unrestricted public boundary. The rule therefore permits <code>mixed</code> automatically when both the PHP API visibility and the effective <code>@visibility</code> scope expose the declaration:</p>
+<pre class="code"><code><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">Input</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">normalize</span>(<span class="tok-id">mixed</span> <span class="tok-var">$value</span>): <span class="tok-id">string</span>
+    {
+        <span class="tok-kw">if</span> (!<span class="tok-id">is_string</span>(<span class="tok-var">$value</span>)) {
+            <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">InvalidArgumentException</span>(<span class="tok-str">&#039;Expected a string.&#039;</span>);
+        }
+
+        <span class="tok-kw">return</span> <span class="tok-var">$value</span>;
+    }
+}</code></pre>
+<p>No <code>@visibility</code> tag and <code>@visibility public</code> both mean unrestricted for this rule. Public and protected members are contract surfaces. A private member remains internal, and a member can never be wider than a scope-restricted class containing it.</p>
+<p>The public boundary is allowed to accept or return any deliberate <code>mixed</code> contract. The architectural expectation is that arbitrary input is validated there and that the internal declarations receiving the result use the narrowed type.</p>
+<h3>Inherited Contracts</h3>
+<p>An implementation is allowed to declare <code>mixed</code> when the corresponding position is imposed by:</p>
+<ul><li>A parent method.</li><li>An implemented interface method.</li><li>An abstract method imported from a trait.</li></ul>
+<p>The exception is position-specific. An interface parameter declared as <code>mixed</code> permits that implementation parameter; it does not permit an unrelated return type or another method owned by the implementation.</p>
+<pre class="code"><code><span class="tok-kw">interface</span> <span class="tok-id">Decoder</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">decode</span>(<span class="tok-id">mixed</span> <span class="tok-var">$value</span>): <span class="tok-id">string</span>;
+}
+
+<span class="tok-com">/**</span>
+<span class="tok-com"> * @visibility namespace</span>
+<span class="tok-com"> */</span>
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">JsonDecoder</span> <span class="tok-kw">implements</span> <span class="tok-id">Decoder</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">decode</span>(<span class="tok-id">mixed</span> <span class="tok-var">$value</span>): <span class="tok-id">string</span> <span class="tok-com">// allowed by Decoder</span>
+    {
+        <span class="tok-com">// validate and normalize</span>
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">remember</span>(<span class="tok-id">mixed</span> <span class="tok-var">$value</span>): <span class="tok-id">void</span> <span class="tok-com">// ERROR: no inherited contract</span>
+    {
+    }
+}</code></pre>
+<p>This applies equally to vendor, built-in, and same-project public contracts.</p>
+<p>An ancestor parameter with no declared type is implicit <code>mixed</code>. Parameter contravariance therefore requires an override to continue accepting every value, so an explicit <code>mixed</code> in that child parameter is also allowed. This includes implicit <code>mixed</code> nested in an inherited type such as an unparameterized <code>array</code>.</p>
+<p>An omitted ancestor return type does not grant the same exception. Return types are covariant, so the child can and should declare the narrower type it actually returns unless the ancestor explicitly requires <code>mixed</code>.</p>
+<h3>PHP Magic Protocols</h3>
+<p>Recognized PHP magic methods are language-defined protocol methods and their signatures are permitted on restricted classes. Arbitrary names beginning with <code>__</code> are not magic protocols. <code>__construct</code>, <code>__destruct</code>, and <code>__clone</code> continue through the ordinary visibility and inherited-contract checks because they do not impose an arbitrary-value signature by themselves.</p>
+<h3>Templates Are Not Mixed</h3>
+<p>A template represents one type selected by a caller; it is not concrete <code>mixed</code>. Native PHP may need an untyped slot to carry it, but PHPStan still knows the slot as <code>T</code>:</p>
+<pre class="code"><code><span class="tok-com">/**</span>
+<span class="tok-com"> * @template T</span>
+<span class="tok-com"> * @visibility namespace</span>
+<span class="tok-com"> */</span>
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">Box</span>
+{
+    <span class="tok-com">/** @var T */</span>
+    <span class="tok-kw">private</span> <span class="tok-var">$value</span>;
+
+    <span class="tok-com">/** @param T $value */</span>
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(<span class="tok-var">$value</span>)
+    {
+        <span class="tok-var">$this</span>-&gt;<span class="tok-id">value</span> = <span class="tok-var">$value</span>;
+    }
+}</code></pre>
+<p><code>TemplateMixedType</code> and template occurrences nested inside another type are consequently not reported.</p>
+<h3>How to Fix</h3>
+<p>Choose the fix that describes the real boundary:</p>
+<ol><li>Validate the arbitrary value at an unrestricted public method and pass a narrowed union, shape, DTO, or domain object inward.</li><li>If consumers genuinely need an arbitrary-value contract, expose it as a public interface and implement that contract internally.</li><li>If the declaration is generic rather than arbitrary, declare a template such as <code>T</code> and use <code>T</code> at every corresponding position.</li><li>If the value set is closed, replace <code>mixed</code> with the complete union or array shape.</li></ol>
+<p>There is no path allowlist. Whether <code>mixed</code> is valid is a property of the type contract, not the file containing it.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

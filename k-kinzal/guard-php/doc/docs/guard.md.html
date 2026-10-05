@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guard — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/guard.md.html">
+<meta name="description" content="Guard, a document of the k-kinzal/guard-php package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Guard — php-ai-toolkit">
+<meta property="og:description" content="Guard, a document of the k-kinzal/guard-php package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/guard.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/all-items.html">All items</a></li><li><a href="../../../../k-kinzal/guard-php/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/Toolkit/DocGuard/index.html" title="Toolkit\DocGuard">Toolkit\DocGuard</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/DocGuard/Analysis/index.html" title="Toolkit\DocGuard\Analysis">Toolkit\DocGuard\Analysis</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/DocGuard/Cli/index.html" title="Toolkit\DocGuard\Cli">Toolkit\DocGuard\Cli</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/DocGuard/Config/index.html" title="Toolkit\DocGuard\Config">Toolkit\DocGuard\Config</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/DocGuard/Filesystem/index.html" title="Toolkit\DocGuard\Filesystem">Toolkit\DocGuard\Filesystem</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/DocGuard/Generation/index.html" title="Toolkit\DocGuard\Generation">Toolkit\DocGuard\Generation</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/DocGuard/Markdown/index.html" title="Toolkit\DocGuard\Markdown">Toolkit\DocGuard\Markdown</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/DocGuard/Reporting/index.html" title="Toolkit\DocGuard\Reporting">Toolkit\DocGuard\Reporting</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/Guard/Cli/index.html" title="Toolkit\Guard\Cli">Toolkit\Guard\Cli</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/Guard/Config/index.html" title="Toolkit\Guard\Config">Toolkit\Guard\Config</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/Guard/Document/index.html" title="Toolkit\Guard\Document">Toolkit\Guard\Document</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/Guard/Execution/index.html" title="Toolkit\Guard\Execution">Toolkit\Guard\Execution</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/Guard/Init/index.html" title="Toolkit\Guard\Init">Toolkit\Guard\Init</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/Guard/Policy/index.html" title="Toolkit\Guard\Policy">Toolkit\Guard\Policy</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/Guard/Reporting/index.html" title="Toolkit\Guard\Reporting">Toolkit\Guard\Reporting</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/LocGuard/index.html" title="Toolkit\LocGuard">Toolkit\LocGuard</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/LocGuard/Analysis/index.html" title="Toolkit\LocGuard\Analysis">Toolkit\LocGuard\Analysis</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/LocGuard/Analysis/ClassLikeMetric/index.html" title="Toolkit\LocGuard\Analysis\ClassLikeMetric">Toolkit\LocGuard\Analysis\ClassLikeMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/LocGuard/Analysis/Complexity/index.html" title="Toolkit\LocGuard\Analysis\Complexity">Toolkit\LocGuard\Analysis\Complexity</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/LocGuard/Analysis/FileMetric/index.html" title="Toolkit\LocGuard\Analysis\FileMetric">Toolkit\LocGuard\Analysis\FileMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/LocGuard/Analysis/FunctionMetric/index.html" title="Toolkit\LocGuard\Analysis\FunctionMetric">Toolkit\LocGuard\Analysis\FunctionMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/LocGuard/Analysis/Token/index.html" title="Toolkit\LocGuard\Analysis\Token">Toolkit\LocGuard\Analysis\Token</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/LocGuard/Cli/index.html" title="Toolkit\LocGuard\Cli">Toolkit\LocGuard\Cli</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/LocGuard/Config/index.html" title="Toolkit\LocGuard\Config">Toolkit\LocGuard\Config</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/LocGuard/Config/Policy/index.html" title="Toolkit\LocGuard\Config\Policy">Toolkit\LocGuard\Config\Policy</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/LocGuard/Filesystem/index.html" title="Toolkit\LocGuard\Filesystem">Toolkit\LocGuard\Filesystem</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/LocGuard/Reporting/index.html" title="Toolkit\LocGuard\Reporting">Toolkit\LocGuard\Reporting</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/TreeGuard/index.html" title="Toolkit\TreeGuard">Toolkit\TreeGuard</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/TreeGuard/Analysis/index.html" title="Toolkit\TreeGuard\Analysis">Toolkit\TreeGuard\Analysis</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/TreeGuard/Cli/index.html" title="Toolkit\TreeGuard\Cli">Toolkit\TreeGuard\Cli</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/TreeGuard/Config/index.html" title="Toolkit\TreeGuard\Config">Toolkit\TreeGuard\Config</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/TreeGuard/Filesystem/index.html" title="Toolkit\TreeGuard\Filesystem">Toolkit\TreeGuard\Filesystem</a></li><li><a href="../../../../k-kinzal/guard-php/Toolkit/TreeGuard/Reporting/index.html" title="Toolkit\TreeGuard\Reporting">Toolkit\TreeGuard\Reporting</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/guard.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Guard</h1><div class="symbol-meta"><span class="source-link">docs/guard.md</span></div></div>
+<section class="readme prose"><h2>Guard</h2>
+<p>Guard combines source metrics, directory constraints, Markdown structure and configuration-value policies in <code>guard.yaml</code>. Install <code>k-kinzal/guard-php</code> to publish <code>vendor/bin/guard</code>. PHP 8.0 or newer and the DOM extension are required.</p>
+<h3>Commands</h3>
+<pre class="code"><code>vendor/bin/guard init
+vendor/bin/guard init --import=quality,structure,phpstan
+vendor/bin/guard check
+vendor/bin/guard apply --dry-run
+vendor/bin/guard apply
+vendor/bin/guard check --format=json</code></pre>
+<p><code>--config=path/to/guard.yaml</code> selects another policy. All target paths are relative to that policy&#039;s directory, regardless of the working directory. <code>init</code> refuses to overwrite an existing policy and does not change tool settings. With no <code>--import</code>, it writes imports for the shipped presets that match the project. <code>--import</code> names presets explicitly and does not add the ones it omits. Existing <code>loc.yaml</code>, <code>tree.yaml</code> and <code>doc-guard.yaml</code> are copied into the project file. <code>loc.yaml</code> and <code>tree.yaml</code> suppress the <code>quality</code> and <code>structure</code> imports so those thresholds stay intact.</p>
+<p>Exit codes are <code>0</code> for success (including recommendations), <code>1</code> for required violations and <code>2</code> for invalid configuration, malformed documents or an operational failure. A successful dry run means the proposed changes would satisfy the configuration rules; it makes no writes.</p>
+<h3>Project policy</h3>
+<p>The schema organizes responsibilities rather than nesting three old command configurations:</p>
+<ul><li><code>scope.source</code> and <code>scope.exclude</code> select PHP files for metric checks.</li><li><code>quality.profiles</code>, <code>quality.default</code> and <code>quality.assignments</code> define metric policies and path-specific assignments. Profile <code>extends</code> and all existing limits keep their previous meaning.</li><li><code>structure.paths</code>, <code>structure.exclude</code> and <code>structure.directories</code> declare directory rules. Every matching rule is enforced.</li><li><code>documentation.files</code> and <code>documentation.scan</code> declare Markdown headings and discover undeclared documents. <code>documentation.exclude</code> excludes specified paths from discovery, while explicitly declared documents are still checked.</li><li><code>configuration</code> contains named field constraints, shared by <code>check</code> and <code>apply</code>.</li><li><code>imports</code> lists other guard documents to load before the project file. Omit it to define the whole policy in the project file.</li></ul>
+<h3>Imports</h3>
+<p>Paths in <code>imports</code> are relative to the file that lists them. An imported file may import more files. Guard loads imports in order, then applies the current file. A later file overrides an earlier one, and the project file overrides all of them. A circular import is an error.</p>
+<p>Shipped presets live in <code>vendor/k-kinzal/guard-php/rules/</code>:</p>
+<ul><li><code>quality.yaml</code> and <code>structure.yaml</code> are the generic metric and directory rules.</li><li><code>phpstan.yaml</code> and <code>phpstan-guard-rules.yaml</code> check the PHPStan level, includes, and toolkit rules.</li><li><code>phpunit9.yaml</code> through <code>phpunit13.yaml</code> check the PHPUnit major that each configuration file targets. <code>doctest9.yaml</code> through <code>doctest13.yaml</code> check executable PHPDoc examples.</li><li><code>php-cs-fixer.yaml</code>, <code>phpcs.yaml</code>, <code>deptrac.yaml</code>, <code>infection.yaml</code>, and <code>composer.yaml</code> check the core toolkit setup.</li><li><code>github-actions.yaml</code> and <code>mutation.yaml</code> check the pull-request workflow and the scheduled mutation workflow.</li><li><code>pbt.yaml</code>, <code>fuzz.yaml</code>, <code>phpbench.yaml</code>, and <code>docgen.yaml</code> apply only when those tools are adopted.</li></ul>
+<p>Import only the presets you want. A section that is neither imported nor written in the project file is not checked. Writing the rules in the project file and listing no imports is a complete custom policy.</p>
+<p>Overrides keep the imported values for every key you leave out:</p>
+<ul><li>A <code>configuration</code> entry with the same <code>id</code> replaces only the keys it sets. Point a shipped rule at <code>phpstan.neon.dist</code> without copying its assertion.</li><li><code>quality.profiles</code> merges by profile name. A limit replaces only the metrics you set.</li><li><code>structure.directories</code> merges by <code>path</code>. A directory rule replaces only the keys you set, and a new path is added.</li><li><code>scope</code> replaces the imported scope when the project file sets it.</li><li><code>documentation.files</code> replaces one document at a time. <code>scan</code> and <code>exclude</code> replace the imported lists when they are set.</li></ul>
+<p><code>guard init</code> writes imports for the presets that match the project. <code>quality</code> and <code>structure</code> are included when source roots exist. PHPStan, PHP-CS-Fixer, PHPCompatibility, Deptrac, Infection, and Composer are included when their configuration or package is present. Each PHPUnit major gets its own preset: versioned files such as <code>phpunit10.xml.dist</code> select that major, and <code>phpunit.xml.dist</code> is PHPUnit 13 when those versioned files exist. A project with only <code>phpunit.xml.dist</code> uses the lock version, or a constraint that names one major. Doctest presets are added when that PHPUnit file already contains a doctest suite, or when PHPStan requires public-API examples. Property-based tests, fuzzing, PHPBench, and DocGen are added only when those packages are installed. GitHub Actions presets are added when <code>.github/workflows/ci.yml</code> or <code>mutation.yml</code> exists. When the detected file is not the preset default, init writes an <code>id</code> and <code>file</code> override. Source roots other than <code>src</code> get extra <code>structure.directories</code> entries that use the same constraints.</p>
+<pre class="code"><code>version: 1
+imports:
+  - vendor/k-kinzal/guard-php/rules/quality.yaml
+  - vendor/k-kinzal/guard-php/rules/phpstan.yaml
+scope:
+  source: [src]
+  exclude: []
+quality:
+  profiles:
+    standard:
+      limits:
+        file: {lines: 800}
+configuration:
+  - id: phpstan.level
+    file: phpstan.neon.dist</code></pre>
+<pre class="code"><code>version: 1
+scope:
+  source: [src]
+  exclude: []
+quality:
+  profiles:
+    standard:
+      limits:
+        file: {lines: 500, ncloc: 350}
+        class: {lines: 400}
+        trait: {lines: 300}
+        interface: {lines: 200}
+        enum: {lines: 200}
+        function: {lines: 50, cyclomatic_complexity: 20}
+        method: {lines: 50, cyclomatic_complexity: 20}
+  default: standard
+  assignments: []
+structure:
+  paths: [src]
+  directories:
+    - path: &#039;src/**&#039;
+      allow: [&#039;*.php&#039;]
+      deny: [&#039;*Helper.php&#039;, &#039;*Manager.php&#039;, &#039;*Service.php&#039;]
+      forbid_empty: true
+      file_case: pascal
+      dir_case: pascal
+      max_files: 15
+      max_dirs: 20
+documentation:
+  files:
+    README.md:
+      headings: [&#039;# Product&#039;, &#039;## Usage&#039;]
+  scan: [README.md]
+configuration:
+  - id: application.mode
+    file: config.json
+    select: /mode
+    assert: {equals: A}
+  - id: application.driver
+    file: settings.yaml
+    select: /driver
+    assert: {one_of: [A, B]}
+    repair: A
+  - id: application.workers
+    file: settings.toml
+    select: /server/workers
+    assert: {min: 1}
+    repair: 1
+  - id: phpstan.level
+    file: phpstan.neon
+    select: /parameters/level
+    level: recommended
+    assert: {equals: max}
+  - id: phpunit.strict-output
+    file: phpunit.xml.dist
+    format: xml
+    select: /phpunit/@beStrictAboutOutputDuringTests
+    assert: {equals: &#039;true&#039;}</code></pre>
+<p>Sections other than <code>version</code> are optional so a policy can check only configuration data. Unknown keys, duplicate rule IDs, invalid types and contradictory bounds are errors. For the complete existing constraints, see <a href="../../../../k-kinzal/guard-php/doc/docs/loc-guard.md.html">source metrics</a>, <a href="../../../../k-kinzal/guard-php/doc/docs/tree-guard.md.html">directory structure</a> and <a href="../../../../k-kinzal/guard-php/doc/docs/doc-guard.md.html">Markdown structure</a>.</p>
+<h3>Required values and recommendations</h3>
+<p><code>level: required</code> is the default and fails the check. <code>level: recommended</code> emits a warning and keeps exit code zero. <code>apply</code> can repair both levels.</p>
+<p><code>equals</code> uses an exact, typed value. <code>one_of</code> permits any listed value. <code>min</code> and <code>max</code> constrain numbers, including both endpoints. <code>contains</code> matches text inside a string or anywhere in a nested document. <code>contains_any</code> matches one of several include names: a name that contains <code>/</code> matches a path fragment, and a bare name matches the whole entry. <code>not_contains</code> rejects text. <code>present</code> requires the field to exist. <code>absent</code> requires it to be missing, and it cannot be combined with another assertion. Multiple assertions on a field must all pass. Missing fields violate a rule even when its expected value is null; explicit null remains distinct from absence. <code>php</code> and <code>json5</code> rules are check-only: <code>json5</code> accepts comments and trailing commas, and <code>php</code> reads the literal <code>setRiskyAllowed</code> and <code>setRules</code> arguments without executing the file.</p>
+<p>An <code>equals</code> assertion supplies its own repair. Other assertions require an explicit <code>repair</code> before Guard can apply a change. The repair must satisfy all assertions. A compliant value is retained, so an allowed <code>B</code> is not replaced with the fallback <code>A</code>. Without a repair, Guard reports the required manual change. This follows Syncer&#039;s distinction between a fixed value and retaining any value that satisfies constraints.</p>
+<p>Guard plans every configuration file before writing. It rechecks overlapping rules against the proposed final document. An unresolved required configuration violation blocks all configuration writes, including changes in other files. Source size, naming and Markdown violations remain required failures after apply; these require code or document editing because deleting code, renaming arbitrary files or discarding document content is not a deterministic repair.</p>
+<h3>Formats and preservation</h3>
+<div class="table-wrap"><table><thead><tr><th>Format</th><th>Selector</th><th>Notes</th></tr></thead><tbody><tr><td>JSON</td><td>JSON Pointer, such as <code>/config/sort-packages</code></td><td>Object/list distinctions and scalar types are retained.</td></tr><tr><td>YAML</td><td>JSON Pointer</td><td>Uses Symfony YAML&#039;s data model; custom object tags are rejected.</td></tr><tr><td>NEON</td><td>JSON Pointer</td><td>Uses Nette NEON; ordinary maps/lists and scalar fields are editable.</td></tr><tr><td>TOML</td><td>JSON Pointer</td><td>Uses the PHP 8.0-compatible <code>yosymfony/toml</code> parser (TOML 0.4 syntax). Unsupported newer syntax fails without writing.</td></tr><tr><td>XML</td><td>XPath selecting one node</td><td>Existing leaf elements and attributes are supported; missing attributes can be created on an existing element.</td></tr></tbody></table></div>
+<p>Use <code>format</code> when the final filename extension is not the format, for example <code>phpunit.xml.dist</code>. JSON Pointer escapes <code>/</code> as <code>~1</code> and <code>~</code> as <code>~0</code>. Array selectors address existing indices; Guard does not silently extend lists or replace scalar parents. XML values are strings, so quote booleans in YAML. Numeric XML text can be checked with <code>min</code>/<code>max</code>. DTD/entity declarations and ambiguous XML selectors are rejected. Namespace-aware XML can be selected with XPath <code>local-name()</code> and <code>namespace-uri()</code> predicates.</p>
+<p>Unchanged files remain byte-for-byte identical. Changed JSON/YAML/NEON/TOML documents are serialized again: indentation and comments may change. XML comments and unrelated nodes are retained. Serialization is checked by parsing the result again; a change in unrelated data types prevents the write. TOML cannot represent null. Unsupported values must be corrected in the policy instead of being coerced.</p>
+<p>Targets must be existing regular files inside the project; traversal and symlink targets are rejected. A policy cannot edit itself. Guard checks for concurrent file changes and uses same-directory temporary files plus atomic replacement, retaining permissions. Each replacement is atomic; a filesystem failure partway through a multi-file commit can leave earlier replacements applied. Fix that failure and rerun <code>guard check</code>.</p>
+<h3>Repository migration</h3>
+<p><code>guard init</code> writes the project file that imports the matching shipped presets, records Composer source roots and the current README headings, and adds only the overrides the project needs. A project is configured correctly when <code>guard check</code> passes that policy.</p>
+<p>The legacy analyzer classes and <code>bin/loc-guard</code>, <code>bin/tree-guard</code> and <code>bin/doc-guard</code> remain available for existing callers supplying their old configuration files. New Composer installations expose the unified <code>guard</code> command.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../assets/search-index.js" defer></script>
+<script src="../../../../assets/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForbidBroadCatchRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/ForbidBroadCatchRule.md.html">
+<meta name="description" content="ForbidBroadCatchRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="ForbidBroadCatchRule — php-ai-toolkit">
+<meta property="og:description" content="ForbidBroadCatchRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/ForbidBroadCatchRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/ForbidBroadCatchRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>ForbidBroadCatchRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/ForbidBroadCatchRule.md</span></div></div>
+<section class="readme prose"><h2>ForbidBroadCatchRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifier</td><td><code>customRules.broadCatch</code></td></tr><tr><td>Scope</td><td>All code outside configured boundary paths</td></tr><tr><td>Configurable</td><td>Yes (<code>broadCatchAllowedPaths</code>)</td></tr></tbody></table></div>
+<h3>What It Detects</h3>
+<p>Reports <code>catch</code> clauses that intercept types too broad to handle meaningfully:</p>
+<ul><li><code>Throwable</code> and <code>Exception</code> — the roots that catch everything.</li><li><code>LogicException</code> and its subclasses (<code>InvalidArgumentException</code>, <code>DomainException</code>, <code>BadMethodCallException</code>, ...) — programmer errors.</li><li><code>Error</code> and its subclasses (<code>TypeError</code>, <code>ValueError</code>, <code>DivisionByZeroError</code>, ...) — engine failures.</li></ul>
+<pre class="code"><code><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">ReportImporter</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">import</span>(<span class="tok-id">string</span> <span class="tok-var">$raw</span>): <span class="tok-id">Report</span>
+    {
+        <span class="tok-kw">try</span> {
+            <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">parser</span>-&gt;<span class="tok-id">parse</span>(<span class="tok-var">$raw</span>);
+        } <span class="tok-kw">catch</span> (<span class="tok-id">Throwable</span> <span class="tok-var">$exception</span>) {
+            <span class="tok-com">// ERROR: Catch a specific exception type instead of &quot;Throwable&quot; ...</span>
+            <span class="tok-kw">return</span> <span class="tok-id">Report</span>::<span class="tok-kw">empty</span>();
+        }
+    }
+}</code></pre>
+<p>Union catch types are checked per member: <code>catch (DivisionByZeroError|TransportException)</code> reports only the <code>DivisionByZeroError</code> part.</p>
+<h4>Not reported</h4>
+<ul><li>Specific exception types: <code>RuntimeException</code> subclasses, <code>JsonException</code>, domain exceptions.</li><li>Any catch inside a file matching <code>broadCatchAllowedPaths</code> — the designated boundary layer.</li></ul>
+<h3>Why This Is an Error</h3>
+<ol><li><strong>Broad catches swallow bugs</strong>: <code>catch (Exception)</code> also catches <code>LogicException</code>; <code>catch (Throwable)</code> also catches <code>TypeError</code>. A precondition violation that should crash loudly in CI instead becomes a silent fallback in production.</li></ol>
+<ol><li><strong>LogicException / Error are not recoverable conditions</strong>: They mean the code itself is wrong. Catching them converts a fixable bug into undefined behavior. The fix belongs at the throw site, not in a handler.</li></ol>
+<ol><li><strong>AI anti-pattern</strong>: <code>try { ... } catch (\Exception $e) { return null; }</code> is one of the most common AI-generated constructs — it makes failing tests pass by making failures invisible. Combined with checked-exception analysis, broad catches are also the cheapest way to silence <code>missingCheckedExceptionInThrows</code>; this rule closes that escape hatch.</li></ol>
+<ol><li><strong>Boundaries are the exception, literally</strong>: A CLI entry point, HTTP middleware, or worker loop legitimately catches <code>Throwable</code> to log and convert it into an exit code or 500 response. That is a deliberate architectural role — so it is declared in configuration, not scattered ad hoc.</li></ol>
+<h3>How to Fix</h3>
+<h4>Catch the specific type you can actually handle</h4>
+<pre class="code"><code><span class="tok-kw">try</span> {
+    <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">parser</span>-&gt;<span class="tok-id">parse</span>(<span class="tok-var">$raw</span>);
+} <span class="tok-kw">catch</span> (<span class="tok-id">ParserException</span> <span class="tok-var">$exception</span>) {
+    <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">ImportFailedException</span>(<span class="tok-str">&#039;Import payload is not parsable.&#039;</span>, <span class="tok-num">0</span>, <span class="tok-var">$exception</span>);
+}</code></pre>
+<h4>For LogicException / Error catches: fix the cause instead</h4>
+<pre class="code"><code><span class="tok-com">// Bad: hides the bug</span>
+<span class="tok-kw">try</span> {
+    <span class="tok-var">$slice</span> = <span class="tok-id">array_slice</span>(<span class="tok-var">$items</span>, <span class="tok-var">$offset</span>, <span class="tok-var">$length</span>);
+} <span class="tok-kw">catch</span> (<span class="tok-id">ValueError</span>) {
+    <span class="tok-var">$slice</span> = [];
+}
+
+<span class="tok-com">// Good: enforce the precondition</span>
+<span class="tok-kw">if</span> (<span class="tok-var">$offset</span> &lt; <span class="tok-num">0</span>) {
+    <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">InvalidArgumentException</span>(<span class="tok-id">sprintf</span>(<span class="tok-str">&#039;Offset must be &gt;= 0, got %d.&#039;</span>, <span class="tok-var">$offset</span>));
+}
+<span class="tok-var">$slice</span> = <span class="tok-id">array_slice</span>(<span class="tok-var">$items</span>, <span class="tok-var">$offset</span>, <span class="tok-var">$length</span>);</code></pre>
+<h4>Declare genuine boundary handlers in configuration</h4>
+<pre class="code"><code>parameters:
+    toolkit:
+        broadCatchAllowedPaths:
+            - &#039;src/*/Cli/Application.php&#039;
+            - &#039;src/Http/Middleware/ErrorHandler.php&#039;</code></pre>
+<p>Patterns are <code>fnmatch</code> globs matched against the analyzed file path (also with a leading <code>*/</code>, so project-relative patterns work). Note that <code>*</code> crosses directory separators.</p>
+<h3>Configuration</h3>
+<div class="table-wrap"><table><thead><tr><th>Parameter</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>broadCatchAllowedPaths</code></td><td><code>[]</code></td><td>fnmatch patterns of files allowed to catch broad types</td></tr></tbody></table></div>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

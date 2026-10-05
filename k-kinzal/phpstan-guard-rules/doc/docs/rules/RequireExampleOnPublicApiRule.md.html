@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RequireExampleOnPublicApiRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/RequireExampleOnPublicApiRule.md.html">
+<meta name="description" content="RequireExampleOnPublicApiRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="RequireExampleOnPublicApiRule — php-ai-toolkit">
+<meta property="og:description" content="RequireExampleOnPublicApiRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/RequireExampleOnPublicApiRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/RequireExampleOnPublicApiRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>RequireExampleOnPublicApiRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/RequireExampleOnPublicApiRule.md</span></div></div>
+<section class="readme prose"><h2>RequireExampleOnPublicApiRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifiers</td><td><code>customRules.requireExampleOnClass</code>, <code>customRules.requireExampleOnMethod</code>, <code>customRules.requireExampleOnProperty</code>, <code>customRules.requireExampleOnConstant</code>, <code>customRules.requireExampleOnEnumCase</code></td></tr><tr><td>Scope</td><td>Declarations carrying <code>@visibility public</code> (excluding restricted test namespaces)</td></tr><tr><td>Configurable</td><td>Via <code>restrictedTestNamespacePrefixes</code></td></tr></tbody></table></div>
+<h3>What It Detects</h3>
+<p>Reports a declaration that states it is public API without documenting an example doctest can run:</p>
+<pre class="code"><code><span class="tok-com">/**</span>
+<span class="tok-com"> * Appends entries to the ledger.</span>
+<span class="tok-com"> *</span>
+<span class="tok-com"> * @visibility public</span>
+<span class="tok-com"> */</span>
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">Ledger</span>  <span class="tok-com">// ERROR: Add an @example block to class Ledger: it is declared public API with &quot;@visibility public&quot;, ...</span>
+{
+    <span class="tok-com">/**</span>
+<span class="tok-com">     * The ledger format version.</span>
+<span class="tok-com">     *</span>
+<span class="tok-com">     * @visibility public</span>
+<span class="tok-com">     */</span>
+    <span class="tok-kw">public</span> <span class="tok-kw">const</span> <span class="tok-id">VERSION</span> = <span class="tok-str">&#039;1.0&#039;</span>;  <span class="tok-com">// ERROR: constant Ledger::VERSION</span>
+
+    <span class="tok-com">/**</span>
+<span class="tok-com">     * Appends one entry.</span>
+<span class="tok-com">     *</span>
+<span class="tok-com">     * @visibility public</span>
+<span class="tok-com">     */</span>
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">append</span>(<span class="tok-id">Entry</span> <span class="tok-var">$entry</span>): <span class="tok-id">void</span>  <span class="tok-com">// ERROR: method Ledger::append()</span>
+    {
+        <span class="tok-com">// ...</span>
+    }
+}</code></pre>
+<h4>Not reported</h4>
+<ul><li>Declarations without a <code>@visibility</code> tag. Leaving the tag off also leaves a symbol reachable from everywhere, but it says nothing about intent — see <em>Why the tag decides</em> below.</li><li>Declarations whose <code>@visibility</code> narrows the scope: <code>namespace</code>, <code>parent</code>, <code>root</code>, or a named namespace.</li><li>Declarations that already carry a runnable example, in either notation doctest recognizes.</li><li>Classes in restricted test namespaces (<code>Tests\Unit</code>, <code>Tests\Integration</code> by default).</li><li>Anonymous classes.</li></ul>
+<h4>A tag with no code does not satisfy the rule</h4>
+<p>A single-line <code>@example</code> tag carries a description and no code, so the doctest extractor yields nothing for it:</p>
+<pre class="code"><code><span class="tok-com">/**</span>
+<span class="tok-com"> * @visibility public</span>
+<span class="tok-com"> *</span>
+<span class="tok-com"> * @example $ledger-&gt;append($entry)</span>
+<span class="tok-com"> */</span>
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">Ledger</span>  <span class="tok-com">// ERROR: still reported; nothing here can be executed.</span></code></pre>
+<h3>Why This Is an Error</h3>
+<ol><li><strong>Prose goes stale silently; an example cannot.</strong> A description of what a method does is checked by nobody. An example runs as a PHPUnit test case, so the moment the code stops behaving as documented, the build says so.</li></ol>
+<ol><li><strong>Public API is a promise, and a promise should be demonstrable.</strong> The declaration that a symbol is public is the moment to show what calling it looks like — the parameters that go together, the shape that comes back, the exception a caller has to expect.</li></ol>
+<ol><li><strong>AI-generated code documents types, not usage.</strong> Generated PHPDoc reliably restates the signature and rarely shows a call. An executable example is the part a generator skips and the part a reader needs.</li></ol>
+<h3>Why the tag decides</h3>
+<p>The rule keys off <code>@visibility public</code> rather than off &quot;everything public in PHP&quot;, because those are different statements. PHP&#039;s <code>public</code> keyword says a symbol is <em>reachable</em>; the toolkit&#039;s <code>@visibility public</code> says it is <em>intended for use by other code</em> — the tag exists to state that intent. Requiring an example on the first would put a demonstration on every internal collaborator a package happens to expose; requiring it on the second puts one on exactly the surface a project has declared it supports.</p>
+<p>That also makes the requirement adoptable: a project turns the rule on, reports nothing, and then tags one boundary at a time. See <a href="../../../../../k-kinzal/phpstan-guard-rules/doc/docs/rules/EnforceVisibilityScopeRule.md.html">EnforceVisibilityScopeRule</a> for the tag itself.</p>
+<h3>How to Fix</h3>
+<p>Add an example that runs. Either notation works.</p>
+<p>An <code>@example</code> tag with indented code under it:</p>
+<pre class="code"><code><span class="tok-com">/**</span>
+<span class="tok-com"> * Appends entries to the ledger.</span>
+<span class="tok-com"> *</span>
+<span class="tok-com"> * @visibility public</span>
+<span class="tok-com"> *</span>
+<span class="tok-com"> * @example Appending an entry</span>
+<span class="tok-com"> *     $ledger = new Ledger();</span>
+<span class="tok-com"> *     $ledger-&gt;append(new Entry(&#039;rent&#039;, 1200));</span>
+<span class="tok-com"> *     $ledger-&gt;count() // =&gt; 1</span>
+<span class="tok-com"> */</span>
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">Ledger</span>
+{
+    <span class="tok-com">/**</span>
+<span class="tok-com">     * Appends one entry.</span>
+<span class="tok-com">     *</span>
+<span class="tok-com">     * @visibility public</span>
+<span class="tok-com">     *</span>
+<span class="tok-com">     * @example Rejecting an entry with no amount</span>
+<span class="tok-com">     *     (new \App\Billing\Ledger())-&gt;append(new \App\Billing\Entry(&#039;rent&#039;, 0)) // throws InvalidArgumentException: amount</span>
+<span class="tok-com">     */</span>
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">append</span>(<span class="tok-id">Entry</span> <span class="tok-var">$entry</span>): <span class="tok-id">void</span>
+    {
+        <span class="tok-com">// ...</span>
+    }
+}</code></pre>
+<p>Or a fenced <code>php</code> block:</p>
+<p>````php /**</p>
+<ul><li>The ledger format version.</li></ul>
+<p>*</p>
+<ul><li>@visibility public</li></ul>
+<p>*</p>
+<ul><li>```php</li><li>\App\Billing\Ledger::VERSION // =&gt; &#039;1.0&#039;</li><li>```</li></ul>
+<p>*/ public const VERSION = &#039;1.0&#039;;</p>
+<p>````</p>
+<p>Assert on the example with <code>// =&gt; value</code>, <code>// Output: text</code>, or <code>// throws ExceptionClass</code>. A line without a marker still runs, and still fails the example if it raises — which is a real check, just a weaker one. Write class names fully qualified: evaluated example code inherits no import table. See <a href="https://github.com/k-kinzal/php-ai-toolkit/blob/main/packages/phpunit-ai-reporter/docs/doctest.md">Doctest Configuration</a> for the full notation.</p>
+<h4>Not fixes</h4>
+<ul><li>Removing the <code>@visibility public</code> tag. That drops the declaration of intent instead of documenting it, and it also drops the visibility-boundary statement the tag was written to make.</li><li>Narrowing the scope to <code>namespace</code> to silence the rule. If the symbol really is internal, narrowing is correct and the reference sites will say so; if it is not, this hides a design decision behind a lint fix.</li><li>Writing an example with no assertion when the behaviour is assertable. It passes, but it documents less than the prose above it.</li></ul>
+<h3>Relationship to doctest</h3>
+<p>The rule requires exactly what the doctest suite executes: extraction is delegated to the ported ExampleExtractor, so a block this rule accepts is a block that becomes a PHPUnit test case, and a tag the extractor skips does not satisfy the rule. Once the rule is green, running the suite keeps it honest.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

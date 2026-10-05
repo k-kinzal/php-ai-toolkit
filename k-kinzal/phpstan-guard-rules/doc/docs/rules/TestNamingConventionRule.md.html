@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TestNamingConventionRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/TestNamingConventionRule.md.html">
+<meta name="description" content="TestNamingConventionRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="TestNamingConventionRule — php-ai-toolkit">
+<meta property="og:description" content="TestNamingConventionRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/TestNamingConventionRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/TestNamingConventionRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>TestNamingConventionRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/TestNamingConventionRule.md</span></div></div>
+<section class="readme prose"><h2>TestNamingConventionRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifiers</td><td><code>customRules.testMethodNamingConvention</code>, <code>customRules.providerNamingConvention</code>, <code>customRules.testMethodProhibitedConstructorDestructor</code>, <code>customRules.publicMethodWithoutTest</code></td></tr><tr><td>Scope</td><td>Test classes in restricted namespaces; source classes in <code>src/</code></td></tr><tr><td>Configurable</td><td>Yes (namespace prefixes, path markers)</td></tr></tbody></table></div>
+<h3>What It Detects</h3>
+<p>This rule enforces naming conventions for test methods and data providers in restricted test classes, prohibits testing constructors/destructors directly, and ensures every public method in source classes has a corresponding test method.</p>
+<h4>1. Test method naming (<code>customRules.testMethodNamingConvention</code>)</h4>
+<p>Test methods starting with <code>test</code> must follow PascalCase after the prefix: <code>test[MethodName]</code> or <code>test[MethodName][Behavior]</code>.</p>
+<pre class="code"><code><span class="tok-com">// ERROR: The prefix &quot;test&quot; alone is not a valid name.</span>
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">test</span>(): <span class="tok-id">void</span> { ... }
+
+<span class="tok-com">// ERROR: After the &quot;test&quot; prefix, the next character must be an uppercase letter.</span>
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testsomething</span>(): <span class="tok-id">void</span> { ... }
+
+<span class="tok-com">// ERROR: Same — underscore is not uppercase.</span>
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">test_something</span>(): <span class="tok-id">void</span> { ... }
+
+<span class="tok-com">// OK</span>
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testSomething</span>(): <span class="tok-id">void</span> { ... }
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testUserCanLogin</span>(): <span class="tok-id">void</span> { ... }</code></pre>
+<h4>2. Data provider naming (<code>customRules.providerNamingConvention</code>)</h4>
+<p>Data provider methods starting with <code>provider</code> must follow PascalCase after the prefix: <code>provider[TestCaseName]</code>.</p>
+<pre class="code"><code><span class="tok-com">// ERROR: The prefix &quot;provider&quot; alone is not a valid name.</span>
+<span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">provider</span>(): <span class="tok-kw">array</span> { ... }
+
+<span class="tok-com">// ERROR: After the &quot;provider&quot; prefix, the next character must be an uppercase letter.</span>
+<span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">providerdata</span>(): <span class="tok-kw">array</span> { ... }
+
+<span class="tok-com">// ERROR: Same — underscore is not uppercase.</span>
+<span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">provider_data</span>(): <span class="tok-kw">array</span> { ... }
+
+<span class="tok-com">// OK</span>
+<span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">providerValidEmails</span>(): <span class="tok-kw">array</span> { ... }
+<span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">providerUserData</span>(): <span class="tok-kw">array</span> { ... }</code></pre>
+<h4>3. Prohibited constructor/destructor tests (<code>customRules.testMethodProhibitedConstructorDestructor</code>)</h4>
+<p>Test methods whose name after <code>test</code> starts with <code>Construct</code> or <code>Destruct</code> are prohibited:</p>
+<pre class="code"><code><span class="tok-com">// ERROR: Tests a constructor directly.</span>
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testConstruct</span>(): <span class="tok-id">void</span> { ... }
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testConstructor</span>(): <span class="tok-id">void</span> { ... }
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testConstructThrowsException</span>(): <span class="tok-id">void</span> { ... }
+
+<span class="tok-com">// ERROR: Tests a destructor directly.</span>
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testDestruct</span>(): <span class="tok-id">void</span> { ... }
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testDestructor</span>(): <span class="tok-id">void</span> { ... }
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testDestructorIsCalled</span>(): <span class="tok-id">void</span> { ... }
+
+<span class="tok-com">// OK — &quot;Reconstruct&quot; does not start with &quot;Construct&quot;</span>
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testReconstructData</span>(): <span class="tok-id">void</span> { ... }</code></pre>
+<h4>4. Public method test coverage (<code>customRules.publicMethodWithoutTest</code>)</h4>
+<p>Every public non-magic method in a source file (<code>src/</code>) must have at least one corresponding test method starting with <code>test[MethodName]</code> in the unit test file. Abstract methods, magic methods (<code>__construct</code>, <code>__toString</code>, etc.), and private/protected methods are excluded.</p>
+<pre class="code"><code><span class="tok-com">// src/Service/UserService.php</span>
+<span class="tok-kw">class</span> <span class="tok-id">UserService</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">create</span>(<span class="tok-id">User</span> <span class="tok-var">$user</span>): <span class="tok-id">void</span> { ... }
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">findById</span>(<span class="tok-id">int</span> <span class="tok-var">$id</span>): ?<span class="tok-id">User</span> { ... }
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(<span class="tok-kw">private</span> <span class="tok-id">Repository</span> <span class="tok-var">$repo</span>) {}
+    <span class="tok-kw">private</span> <span class="tok-kw">function</span> <span class="tok-id">validate</span>(<span class="tok-id">User</span> <span class="tok-var">$user</span>): <span class="tok-id">void</span> { ... }
+}</code></pre>
+<pre class="code"><code><span class="tok-com">// tests/Unit/Service/UserServiceTest.php</span>
+<span class="tok-kw">class</span> <span class="tok-id">UserServiceTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCreatePersistsUser</span>(): <span class="tok-id">void</span> { ... }      <span class="tok-com">// OK — covers create()</span>
+    <span class="tok-com">// ERROR: Add a unit test method starting with testFindById() for public method findById().</span>
+}</code></pre>
+<h3>Why This Is an Error</h3>
+<h4>Inconsistent naming reduces readability</h4>
+<p>When test methods use inconsistent casing (<code>testsomething</code>, <code>test_something</code>), it becomes harder to scan test files and understand what each test covers. PascalCase after the <code>test</code> prefix (<code>testSomething</code>) creates a consistent, readable pattern across the entire test suite.</p>
+<h4>Bare prefixes carry no information</h4>
+<p>A method named <code>test()</code> or <code>provider()</code> gives no indication of what it tests or what data it provides. Every test method and data provider should have a descriptive suffix that communicates its purpose.</p>
+<h4>Constructor/destructor testing couples tests to implementation</h4>
+<p>Constructors and destructors are implementation details. Testing them directly (<code>testConstructor</code>, <code>testConstruct</code>) couples the test to the object&#039;s lifecycle rather than its behavior. When the constructor signature changes, these tests break even though the object&#039;s public behavior may be unchanged.</p>
+<h4>Untested public methods are invisible risks</h4>
+<p>If a public method has no corresponding test, its behavior is unverified. The <code>test[MethodName]</code> naming convention makes it easy to see which methods are tested and which are not. When a test method must start with the source method name, missing coverage becomes immediately apparent.</p>
+<h4>AI anti-pattern</h4>
+<p>AI code generators frequently create <code>testConstructor()</code> methods that simply verify an object can be instantiated — a test with no behavioral value. They also produce snake_case test names (<code>test_it_works</code>) from Python conventions or bare <code>test()</code> methods as placeholders. They also tend to skip writing tests for methods they consider &quot;simple&quot;. This rule catches these patterns early.</p>
+<h3>How to Fix</h3>
+<h4>Rename to PascalCase</h4>
+<pre class="code"><code><span class="tok-com">// Before</span>
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testsomething</span>(): <span class="tok-id">void</span> { ... }
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">test_user_can_login</span>(): <span class="tok-id">void</span> { ... }
+
+<span class="tok-com">// After</span>
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testSomething</span>(): <span class="tok-id">void</span> { ... }
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testUserCanLogin</span>(): <span class="tok-id">void</span> { ... }</code></pre>
+<h4>Add descriptive suffixes</h4>
+<pre class="code"><code><span class="tok-com">// Before</span>
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">test</span>(): <span class="tok-id">void</span> { ... }
+<span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">provider</span>(): <span class="tok-kw">array</span> { ... }
+
+<span class="tok-com">// After</span>
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testUserIsCreated</span>(): <span class="tok-id">void</span> { ... }
+<span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">providerValidEmails</span>(): <span class="tok-kw">array</span> { ... }</code></pre>
+<h4>Replace constructor tests with behavioral tests</h4>
+<pre class="code"><code><span class="tok-com">// Before — testing the constructor directly</span>
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testConstructor</span>(): <span class="tok-id">void</span>
+{
+    <span class="tok-var">$user</span> = <span class="tok-kw">new</span> <span class="tok-id">User</span>(<span class="tok-str">&#039;Alice&#039;</span>, <span class="tok-num">30</span>);
+    <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;Alice&#039;</span>, <span class="tok-var">$user</span>-&gt;<span class="tok-id">name</span>());
+    <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">30</span>, <span class="tok-var">$user</span>-&gt;<span class="tok-id">age</span>());
+}
+
+<span class="tok-com">// After — testing the behavior that the constructor enables</span>
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testNameReturnsGivenName</span>(): <span class="tok-id">void</span>
+{
+    <span class="tok-var">$user</span> = <span class="tok-kw">new</span> <span class="tok-id">User</span>(<span class="tok-str">&#039;Alice&#039;</span>, <span class="tok-num">30</span>);
+    <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&#039;Alice&#039;</span>, <span class="tok-var">$user</span>-&gt;<span class="tok-id">name</span>());
+}
+
+<span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testAgeReturnsGivenAge</span>(): <span class="tok-id">void</span>
+{
+    <span class="tok-var">$user</span> = <span class="tok-kw">new</span> <span class="tok-id">User</span>(<span class="tok-str">&#039;Alice&#039;</span>, <span class="tok-num">30</span>);
+    <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-num">30</span>, <span class="tok-var">$user</span>-&gt;<span class="tok-id">age</span>());
+}</code></pre>
+<h4>Add tests for uncovered public methods</h4>
+<pre class="code"><code><span class="tok-com">// Before — findById() has no test</span>
+<span class="tok-kw">class</span> <span class="tok-id">UserServiceTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCreatePersistsUser</span>(): <span class="tok-id">void</span> { ... }
+}
+
+<span class="tok-com">// After — every public method has at least one test</span>
+<span class="tok-kw">class</span> <span class="tok-id">UserServiceTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCreatePersistsUser</span>(): <span class="tok-id">void</span> { ... }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testFindByIdReturnsUser</span>(): <span class="tok-id">void</span> { ... }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testFindByIdReturnsNullWhenNotFound</span>(): <span class="tok-id">void</span> { ... }
+}</code></pre>
+<h3>Configuration</h3>
+<p>Customize which namespaces are considered restricted and which path markers identify source/test directories:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        restrictedTestNamespacePrefixes:
+            - &#039;Tests\Unit&#039;
+            - &#039;Tests\Integration&#039;
+        srcMarker: &#039;/src/&#039;
+        unitTestMarker: &#039;/tests/Unit/&#039;</code></pre>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

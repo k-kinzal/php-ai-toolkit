@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>packages/guard-php/tests/Unit/Guard/Cli/ArgumentsTest.php — k-kinzal/php-ai-toolkit</title>
+<title>packages/guard-php/tests/Unit/Guard/Cli/ArgumentsTest.php — php-ai-toolkit</title>
 <link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/src/packages/guard-php/tests/Unit/Guard/Cli/ArgumentsTest.php.html">
 <meta name="description" content="The source of packages/guard-php/tests/Unit/Guard/Cli/ArgumentsTest.php.">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="k-kinzal/php-ai-toolkit">
-<meta property="og:title" content="packages/guard-php/tests/Unit/Guard/Cli/ArgumentsTest.php — k-kinzal/php-ai-toolkit">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="packages/guard-php/tests/Unit/Guard/Cli/ArgumentsTest.php — php-ai-toolkit">
 <meta property="og:description" content="The source of packages/guard-php/tests/Unit/Guard/Cli/ArgumentsTest.php.">
 <meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/src/packages/guard-php/tests/Unit/Guard/Cli/ArgumentsTest.php.html">
 <meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="k-kinzal/php-ai-toolkit">
+<meta property="og:image:alt" content="php-ai-toolkit">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="../../../../../../../assets/document-design-v1.1.0.css">
 <link rel="stylesheet" href="../../../../../../../assets/style.css">
@@ -22,14 +22,13 @@
 </head>
 <body data-root="../../../../../../../">
 <a class="skip" href="#content">Skip to content</a><div class="doc">
-<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../../../index.html">k-kinzal/php-ai-toolkit</a></div><nav class="sidebar-section"><div class="sidebar-title">Packages</div><ul class="sidebar-list"><li><a href="../../../../../../../k-kinzal/docgen-php/index.html">k-kinzal/docgen-php</a></li><li><a href="../../../../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a></li><li><a href="../../../../../../../k-kinzal/php-ai-toolkit/index.html">k-kinzal/php-ai-toolkit</a></li><li><a href="../../../../../../../k-kinzal/phpstan-ai-formatter/index.html">k-kinzal/phpstan-ai-formatter</a></li><li><a href="../../../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></li><li><a href="../../../../../../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a></li></ul></nav></aside>
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../../../index.html">php-ai-toolkit</a></div><nav class="sidebar-section"><div class="sidebar-title">Packages</div><ul class="sidebar-list"><li><a href="../../../../../../../k-kinzal/docgen-php/index.html">k-kinzal/docgen-php</a></li><li><a href="../../../../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a></li><li><a href="../../../../../../../k-kinzal/phpstan-ai-formatter/index.html">k-kinzal/phpstan-ai-formatter</a></li><li><a href="../../../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></li><li><a href="../../../../../../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a></li></ul></nav></aside>
 <div class="main">
 <header class="topbar">
 <button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../../../index.html">src</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">packages/guard-php/tests/Unit/Guard/Cli/ArgumentsTest.php</span></nav>
 <div class="topbar-tools">
 <input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
-<a class="repo-link" href="https://github.com/k-kinzal/php-ai-toolkit" title="Repository: https://github.com/k-kinzal/php-ai-toolkit" rel="noreferrer">github.com</a>
 <button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
 </div>
 </header>
@@ -67,8 +66,33 @@
 <span class="src-line" id="L29"><a class="ln" href="#L29">29</a>        (<span class="tok-kw">new</span> <span class="tok-id">\Toolkit\Guard\Cli\Arguments</span>())-&gt;<span class="tok-id">parse</span>([<span class="tok-str">&#039;check&#039;</span>, <span class="tok-str">&#039;--ignore-errors&#039;</span>]);</span>
 <span class="src-line" id="L30"><a class="ln" href="#L30">30</a>    }</span>
 <span class="src-line" id="L31"><a class="ln" href="#L31">31</a></span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>}</span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a></span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testParsesRepeatedAndCommaSeparatedImports</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>    {</span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-var">$arguments</span> = (<span class="tok-kw">new</span> <span class="tok-id">\Toolkit\Guard\Cli\Arguments</span>())-&gt;<span class="tok-id">parse</span>([<span class="tok-str">&#039;init&#039;</span>, <span class="tok-str">&#039;--import=quality,structure&#039;</span>, <span class="tok-str">&#039;--import&#039;</span>, <span class="tok-str">&#039;composer&#039;</span>]);</span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;quality&#039;</span>, <span class="tok-str">&#039;structure&#039;</span>, <span class="tok-str">&#039;composer&#039;</span>], <span class="tok-var">$arguments</span>[<span class="tok-str">&#039;imports&#039;</span>]);</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>    }</span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a></span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRejectsImportOnCheck</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>    {</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectException</span>(<span class="tok-id">\Toolkit\Guard\Policy\PolicyException</span>::<span class="tok-kw">class</span>);</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>        (<span class="tok-kw">new</span> <span class="tok-id">\Toolkit\Guard\Cli\Arguments</span>())-&gt;<span class="tok-id">parse</span>([<span class="tok-str">&#039;check&#039;</span>, <span class="tok-str">&#039;--import=quality&#039;</span>]);</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>    }</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a></span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testOptionsReadsInitImports</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>    {</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-var">$arguments</span> = (<span class="tok-kw">new</span> <span class="tok-id">\Toolkit\Guard\Cli\Arguments</span>())-&gt;<span class="tok-id">options</span>(<span class="tok-str">&#039;init&#039;</span>, [<span class="tok-str">&#039;--import=quality&#039;</span>]);</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;quality&#039;</span>], <span class="tok-var">$arguments</span>[<span class="tok-str">&#039;imports&#039;</span>]);</span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>    }</span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a></span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testImportNamesRejectsAnEmptyName</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>    {</span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectException</span>(<span class="tok-id">\Toolkit\Guard\Policy\PolicyException</span>::<span class="tok-kw">class</span>);</span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectExceptionMessage</span>(<span class="tok-str">&#039;Provide one or more preset names&#039;</span>);</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>        (<span class="tok-kw">new</span> <span class="tok-id">\Toolkit\Guard\Cli\Arguments</span>())-&gt;<span class="tok-id">importNames</span>(<span class="tok-str">&#039;quality,&#039;</span>, []);</span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>    }</span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a></span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>}</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

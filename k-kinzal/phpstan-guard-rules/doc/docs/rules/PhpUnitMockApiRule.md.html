@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PhpUnitMockApiRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/PhpUnitMockApiRule.md.html">
+<meta name="description" content="PhpUnitMockApiRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="PhpUnitMockApiRule — php-ai-toolkit">
+<meta property="og:description" content="PhpUnitMockApiRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/PhpUnitMockApiRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.1.0.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/PhpUnitMockApiRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>PhpUnitMockApiRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/PhpUnitMockApiRule.md</span></div></div>
+<section class="readme prose"><h2>PhpUnitMockApiRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifiers</td><td><code>customRules.testClassPhpUnitMockProhibitedApi</code>, <code>customRules.testClassPhpUnitMockRequiresInterface</code>, <code>customRules.testClassPhpUnitMockRequiresLiteralInterface</code>, <code>customRules.testClassPhpUnitMockProhibitedInstantiation</code></td></tr><tr><td>Scope</td><td>All test classes (<code>Tests\</code> namespace)</td></tr><tr><td>Configurable</td><td>Yes (namespace prefixes)</td></tr></tbody></table></div>
+<h3>What It Detects</h3>
+<p>This rule enforces interface-only mocking by restricting how PHPUnit&#039;s mock API is used.</p>
+<h4>1. Prohibited mock APIs (<code>customRules.testClassPhpUnitMockProhibitedApi</code>)</h4>
+<p>The following methods are always forbidden:</p>
+<ul><li><code>getMockBuilder()</code></li><li><code>createPartialMock()</code></li><li><code>createTestProxy()</code></li><li><code>getMockForAbstractClass()</code></li><li><code>getMockForTrait()</code></li><li><code>getMockFromWsdl()</code></li></ul>
+<pre class="code"><code><span class="tok-com">// ERROR: Use createMock(FooInterface::class) or createStub(FooInterface::class) instead of PHPUnit getMockBuilder().</span>
+<span class="tok-var">$mock</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">getMockBuilder</span>(<span class="tok-id">FooInterface</span>::<span class="tok-kw">class</span>)
+    -&gt;<span class="tok-id">disableOriginalConstructor</span>()
+    -&gt;<span class="tok-id">getMock</span>();
+
+<span class="tok-com">// ERROR: Use createMock(FooInterface::class) or createStub(FooInterface::class) instead of PHPUnit createPartialMock().</span>
+<span class="tok-var">$mock</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createPartialMock</span>(<span class="tok-id">ConcreteService</span>::<span class="tok-kw">class</span>, [<span class="tok-str">&#039;process&#039;</span>]);</code></pre>
+<h4>2. Interface-only enforcement (<code>customRules.testClassPhpUnitMockRequiresInterface</code>)</h4>
+<p><code>createMock()</code>, <code>createStub()</code>, <code>createConfiguredMock()</code>, and <code>createConfiguredStub()</code> must target an interface:</p>
+<pre class="code"><code><span class="tok-com">// ERROR: Pass an interface class-string to PHPUnit createMock(); &quot;App\Service\UserService&quot; is not an interface.</span>
+<span class="tok-var">$mock</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createMock</span>(<span class="tok-id">UserService</span>::<span class="tok-kw">class</span>);
+
+<span class="tok-com">// ERROR: Pass an interface class-string to PHPUnit createStub(); &quot;App\Repository\OrderRepository&quot; is not an interface.</span>
+<span class="tok-var">$stub</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createStub</span>(<span class="tok-id">OrderRepository</span>::<span class="tok-kw">class</span>);
+
+<span class="tok-com">// OK</span>
+<span class="tok-var">$mock</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createMock</span>(<span class="tok-id">UserServiceInterface</span>::<span class="tok-kw">class</span>);
+<span class="tok-var">$stub</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createStub</span>(<span class="tok-id">OrderRepositoryInterface</span>::<span class="tok-kw">class</span>);</code></pre>
+<h4>3. Literal class-string required (<code>customRules.testClassPhpUnitMockRequiresLiteralInterface</code>)</h4>
+<p>The first argument must be a direct <code>::class</code> constant fetch, not a variable or string:</p>
+<pre class="code"><code><span class="tok-com">// ERROR: Pass an interface class-string literal to PHPUnit createMock(), e.g. DependencyInterface::class.</span>
+<span class="tok-var">$mock</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createMock</span>(<span class="tok-var">$className</span>);
+
+<span class="tok-com">// ERROR: also reported</span>
+<span class="tok-var">$mock</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createMock</span>(<span class="tok-str">&#039;App\Service\FooInterface&#039;</span>);
+
+<span class="tok-com">// OK</span>
+<span class="tok-var">$mock</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createMock</span>(<span class="tok-id">FooInterface</span>::<span class="tok-kw">class</span>);</code></pre>
+<h4>4. Prohibited direct instantiation (<code>customRules.testClassPhpUnitMockProhibitedInstantiation</code>)</h4>
+<p>Direct instantiation of <code>MockBuilder</code> and <code>MockGenerator</code> is forbidden:</p>
+<pre class="code"><code><span class="tok-com">// ERROR: Use createMock(FooInterface::class) or createStub(FooInterface::class) instead of instantiating PHPUnit\Framework\MockObject\MockBuilder directly.</span>
+<span class="tok-var">$builder</span> = <span class="tok-kw">new</span> <span class="tok-id">MockBuilder</span>(<span class="tok-var">$this</span>, <span class="tok-id">FooInterface</span>::<span class="tok-kw">class</span>);</code></pre>
+<h3>Why This Is an Error</h3>
+<h4>Concrete class mocking couples tests to implementations</h4>
+<p>When you mock a concrete class, PHPUnit creates a subclass that overrides its methods. This means your test depends on the class&#039;s constructor signature, method visibility, and inheritance chain. Any refactoring of the concrete class can break tests that never intended to test that class.</p>
+<pre class="code"><code><span class="tok-com">// Fragile: breaks if UserService changes its constructor</span>
+<span class="tok-var">$mock</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createMock</span>(<span class="tok-id">UserService</span>::<span class="tok-kw">class</span>);
+
+<span class="tok-com">// Stable: only depends on the interface contract</span>
+<span class="tok-var">$mock</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createMock</span>(<span class="tok-id">UserServiceInterface</span>::<span class="tok-kw">class</span>);</code></pre>
+<h4>Partial mocks hide design problems</h4>
+<p><code>createPartialMock()</code> and <code>getMockBuilder()</code> allow mocking only some methods while keeping real implementations for others. This typically indicates the class has too many responsibilities. Instead of partially mocking, redesign the class to follow the Single Responsibility Principle.</p>
+<h4>Non-literal class strings prevent static verification</h4>
+<p>When the mock target is a variable or string literal, PHPStan cannot verify at analysis time that the target is an interface. This defeats the purpose of the rule.</p>
+<h4>AI anti-pattern</h4>
+<p>AI code generators frequently mock concrete classes because they copy the class name directly from the production code. They also tend to use <code>getMockBuilder()</code> chains because training data contains older PHPUnit patterns. This rule forces the cleaner, modern API.</p>
+<h3>How to Fix</h3>
+<h4>Replace concrete class mocking with interface mocking</h4>
+<p>If no interface exists, create one:</p>
+<pre class="code"><code><span class="tok-com">// Before</span>
+<span class="tok-kw">class</span> <span class="tok-id">UserService</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">findById</span>(<span class="tok-id">int</span> <span class="tok-var">$id</span>): ?<span class="tok-id">User</span> { ... }
+}
+
+<span class="tok-com">// Step 1: Extract interface</span>
+<span class="tok-kw">interface</span> <span class="tok-id">UserServiceInterface</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">findById</span>(<span class="tok-id">int</span> <span class="tok-var">$id</span>): ?<span class="tok-id">User</span>;
+}
+
+<span class="tok-kw">class</span> <span class="tok-id">UserService</span> <span class="tok-kw">implements</span> <span class="tok-id">UserServiceInterface</span> { ... }
+
+<span class="tok-com">// Step 2: Mock the interface</span>
+<span class="tok-var">$mock</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createMock</span>(<span class="tok-id">UserServiceInterface</span>::<span class="tok-kw">class</span>);</code></pre>
+<h4>Replace getMockBuilder with createMock/createStub</h4>
+<pre class="code"><code><span class="tok-com">// Bad</span>
+<span class="tok-var">$mock</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">getMockBuilder</span>(<span class="tok-id">FooInterface</span>::<span class="tok-kw">class</span>)
+    -&gt;<span class="tok-id">disableOriginalConstructor</span>()
+    -&gt;<span class="tok-id">getMock</span>();
+<span class="tok-var">$mock</span>-&gt;<span class="tok-id">method</span>(<span class="tok-str">&#039;bar&#039;</span>)-&gt;<span class="tok-id">willReturn</span>(<span class="tok-str">&#039;baz&#039;</span>);
+
+<span class="tok-com">// Good</span>
+<span class="tok-var">$mock</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createStub</span>(<span class="tok-id">FooInterface</span>::<span class="tok-kw">class</span>);
+<span class="tok-var">$mock</span>-&gt;<span class="tok-id">method</span>(<span class="tok-str">&#039;bar&#039;</span>)-&gt;<span class="tok-id">willReturn</span>(<span class="tok-str">&#039;baz&#039;</span>);</code></pre>
+<h4>Replace createPartialMock with proper design</h4>
+<pre class="code"><code><span class="tok-com">// Bad: partial mock indicates mixed responsibilities</span>
+<span class="tok-var">$service</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createPartialMock</span>(<span class="tok-id">ReportService</span>::<span class="tok-kw">class</span>, [<span class="tok-str">&#039;fetchData&#039;</span>]);
+<span class="tok-var">$service</span>-&gt;<span class="tok-id">method</span>(<span class="tok-str">&#039;fetchData&#039;</span>)-&gt;<span class="tok-id">willReturn</span>([...]);
+<span class="tok-var">$result</span> = <span class="tok-var">$service</span>-&gt;<span class="tok-id">generateReport</span>();
+
+<span class="tok-com">// Good: separate the responsibilities</span>
+<span class="tok-var">$fetcher</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createStub</span>(<span class="tok-id">DataFetcherInterface</span>::<span class="tok-kw">class</span>);
+<span class="tok-var">$fetcher</span>-&gt;<span class="tok-id">method</span>(<span class="tok-str">&#039;fetchData&#039;</span>)-&gt;<span class="tok-id">willReturn</span>([...]);
+
+<span class="tok-var">$service</span> = <span class="tok-kw">new</span> <span class="tok-id">ReportService</span>(<span class="tok-var">$fetcher</span>);
+<span class="tok-var">$result</span> = <span class="tok-var">$service</span>-&gt;<span class="tok-id">generateReport</span>();</code></pre>
+<h4>Use createMock vs createStub</h4>
+<ul><li><strong><code>createStub()</code></strong>: When you only need to control return values (no expectation on call count)</li><li><strong><code>createMock()</code></strong>: When you need to verify that methods are called with specific arguments</li></ul>
+<pre class="code"><code><span class="tok-com">// Stub: only controls behavior</span>
+<span class="tok-var">$repository</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createStub</span>(<span class="tok-id">UserRepositoryInterface</span>::<span class="tok-kw">class</span>);
+<span class="tok-var">$repository</span>-&gt;<span class="tok-id">method</span>(<span class="tok-str">&#039;findById&#039;</span>)-&gt;<span class="tok-id">willReturn</span>(<span class="tok-kw">new</span> <span class="tok-id">User</span>(<span class="tok-str">&#039;Alice&#039;</span>));
+
+<span class="tok-com">// Mock: also verifies interactions</span>
+<span class="tok-var">$logger</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">createMock</span>(<span class="tok-id">LoggerInterface</span>::<span class="tok-kw">class</span>);
+<span class="tok-var">$logger</span>-&gt;<span class="tok-id">expects</span>(<span class="tok-id">self</span>::<span class="tok-id">once</span>())
+    -&gt;<span class="tok-id">method</span>(<span class="tok-str">&#039;info&#039;</span>)
+    -&gt;<span class="tok-id">with</span>(<span class="tok-str">&#039;User created: Alice&#039;</span>);</code></pre>
+<h3>Configuration</h3>
+<p>Customize which namespaces are considered test classes:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        testNamespacePrefixes:
+            - &#039;Tests&#039;</code></pre>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

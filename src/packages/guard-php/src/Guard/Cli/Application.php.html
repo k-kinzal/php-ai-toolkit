@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>packages/guard-php/src/Guard/Cli/Application.php — k-kinzal/php-ai-toolkit</title>
+<title>packages/guard-php/src/Guard/Cli/Application.php — php-ai-toolkit</title>
 <link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/src/packages/guard-php/src/Guard/Cli/Application.php.html">
 <meta name="description" content="The source of packages/guard-php/src/Guard/Cli/Application.php.">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="k-kinzal/php-ai-toolkit">
-<meta property="og:title" content="packages/guard-php/src/Guard/Cli/Application.php — k-kinzal/php-ai-toolkit">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="packages/guard-php/src/Guard/Cli/Application.php — php-ai-toolkit">
 <meta property="og:description" content="The source of packages/guard-php/src/Guard/Cli/Application.php.">
 <meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/src/packages/guard-php/src/Guard/Cli/Application.php.html">
 <meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="k-kinzal/php-ai-toolkit">
+<meta property="og:image:alt" content="php-ai-toolkit">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="../../../../../../assets/document-design-v1.1.0.css">
 <link rel="stylesheet" href="../../../../../../assets/style.css">
@@ -22,14 +22,13 @@
 </head>
 <body data-root="../../../../../../">
 <a class="skip" href="#content">Skip to content</a><div class="doc">
-<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../../index.html">k-kinzal/php-ai-toolkit</a></div><nav class="sidebar-section"><div class="sidebar-title">Packages</div><ul class="sidebar-list"><li><a href="../../../../../../k-kinzal/docgen-php/index.html">k-kinzal/docgen-php</a></li><li><a href="../../../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a></li><li><a href="../../../../../../k-kinzal/php-ai-toolkit/index.html">k-kinzal/php-ai-toolkit</a></li><li><a href="../../../../../../k-kinzal/phpstan-ai-formatter/index.html">k-kinzal/phpstan-ai-formatter</a></li><li><a href="../../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></li><li><a href="../../../../../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a></li></ul></nav></aside>
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../../index.html">php-ai-toolkit</a></div><nav class="sidebar-section"><div class="sidebar-title">Packages</div><ul class="sidebar-list"><li><a href="../../../../../../k-kinzal/docgen-php/index.html">k-kinzal/docgen-php</a></li><li><a href="../../../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a></li><li><a href="../../../../../../k-kinzal/phpstan-ai-formatter/index.html">k-kinzal/phpstan-ai-formatter</a></li><li><a href="../../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></li><li><a href="../../../../../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a></li></ul></nav></aside>
 <div class="main">
 <header class="topbar">
 <button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../../index.html">src</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">packages/guard-php/src/Guard/Cli/Application.php</span></nav>
 <div class="topbar-tools">
 <input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
-<a class="repo-link" href="https://github.com/k-kinzal/php-ai-toolkit" title="Repository: https://github.com/k-kinzal/php-ai-toolkit" rel="noreferrer">github.com</a>
 <button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
 </div>
 </header>
@@ -77,26 +76,26 @@
 <span class="src-line" id="L39"><a class="ln" href="#L39">39</a>        }</span>
 <span class="src-line" id="L40"><a class="ln" href="#L40">40</a>    }</span>
 <span class="src-line" id="L41"><a class="ln" href="#L41">41</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a><span class="tok-com">     * @param array{command: string, config: string, format: string, dryRun: bool} $arguments</span></span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a><span class="tok-com">     * @param array{command: string, config: string, format: string, dryRun: bool, imports: ?list&lt;string&gt;} $arguments</span></span>
 <span class="src-line" id="L43"><a class="ln" href="#L43">43</a><span class="tok-com">     * @throws JsonException</span></span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a><span class="tok-com">     * @throws NeonException</span></span>
 <span class="src-line" id="L45"><a class="ln" href="#L45">45</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L46"><a class="ln" href="#L46">46</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">execute</span>(<span class="tok-kw">array</span> <span class="tok-var">$arguments</span>): <span class="tok-id">int</span></span>
 <span class="src-line" id="L47"><a class="ln" href="#L47">47</a>    {</span>
 <span class="src-line" id="L48"><a class="ln" href="#L48">48</a>        <span class="tok-kw">if</span> (<span class="tok-var">$arguments</span>[<span class="tok-str">&#039;command&#039;</span>] === <span class="tok-str">&#039;--help&#039;</span> || <span class="tok-var">$arguments</span>[<span class="tok-str">&#039;command&#039;</span>] === <span class="tok-str">&#039;-h&#039;</span>) {</span>
-<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>            (<span class="tok-var">$this</span>-&gt;<span class="tok-id">output</span>)(<span class="tok-str">&quot;Usage: guard check|apply|init [--config=guard.yaml] [--format=text|json]\nApply accepts --dry-run. Required violations exit 1; warnings exit 0; invalid input exits 2.\n&quot;</span>);</span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>            (<span class="tok-var">$this</span>-&gt;<span class="tok-id">output</span>)(<span class="tok-str">&quot;Usage: guard check|apply|init [--config=guard.yaml] [--format=text|json]\ninit accepts --import=NAME[,NAME]. Apply accepts --dry-run. Required violations exit 1; warnings exit 0; invalid input exits 2.\n&quot;</span>);</span>
 <span class="src-line" id="L50"><a class="ln" href="#L50">50</a>            <span class="tok-kw">return</span> <span class="tok-num">0</span>;</span>
 <span class="src-line" id="L51"><a class="ln" href="#L51">51</a>        }</span>
 <span class="src-line" id="L52"><a class="ln" href="#L52">52</a>        <span class="tok-var">$path</span> = <span class="tok-id">str_starts_with</span>(<span class="tok-var">$arguments</span>[<span class="tok-str">&#039;config&#039;</span>], <span class="tok-str">&#039;/&#039;</span>) ? <span class="tok-var">$arguments</span>[<span class="tok-str">&#039;config&#039;</span>] : <span class="tok-var">$this</span>-&gt;<span class="tok-id">directory</span> . <span class="tok-str">&#039;/&#039;</span> . <span class="tok-var">$arguments</span>[<span class="tok-str">&#039;config&#039;</span>];</span>
 <span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-kw">if</span> (<span class="tok-var">$arguments</span>[<span class="tok-str">&#039;command&#039;</span>] === <span class="tok-str">&#039;init&#039;</span>) {</span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>            (<span class="tok-kw">new</span> <span class="tok-id">Initializer</span>())-&gt;<span class="tok-id">write</span>(<span class="tok-var">$path</span>);</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>            (<span class="tok-kw">new</span> <span class="tok-id">Initializer</span>())-&gt;<span class="tok-id">write</span>(<span class="tok-var">$path</span>, <span class="tok-var">$arguments</span>[<span class="tok-str">&#039;imports&#039;</span>]);</span>
 <span class="src-line" id="L55"><a class="ln" href="#L55">55</a>            (<span class="tok-var">$this</span>-&gt;<span class="tok-id">output</span>)(<span class="tok-str">&#039;Created &#039;</span> . <span class="tok-var">$path</span> . <span class="tok-str">&quot;. Review the detected recommendations, then run guard check.\n&quot;</span>);</span>
 <span class="src-line" id="L56"><a class="ln" href="#L56">56</a>            <span class="tok-kw">return</span> <span class="tok-num">0</span>;</span>
 <span class="src-line" id="L57"><a class="ln" href="#L57">57</a>        }</span>
 <span class="src-line" id="L58"><a class="ln" href="#L58">58</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">check</span>(<span class="tok-var">$path</span>, <span class="tok-var">$arguments</span>);</span>
 <span class="src-line" id="L59"><a class="ln" href="#L59">59</a>    }</span>
 <span class="src-line" id="L60"><a class="ln" href="#L60">60</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a><span class="tok-com">     * @param array{command: string, config: string, format: string, dryRun: bool} $arguments</span></span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a><span class="tok-com">     * @param array{command: string, config: string, format: string, dryRun: bool, imports: ?list&lt;string&gt;} $arguments</span></span>
 <span class="src-line" id="L62"><a class="ln" href="#L62">62</a><span class="tok-com">     * @throws JsonException</span></span>
 <span class="src-line" id="L63"><a class="ln" href="#L63">63</a><span class="tok-com">     * @throws NeonException</span></span>
 <span class="src-line" id="L64"><a class="ln" href="#L64">64</a><span class="tok-com">     */</span></span>

@@ -1,0 +1,46 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M44W2G0639FRQ4JKH2FSGYJ4",
+  "session_id": "01a10291-c1de-7bf3-94cb-4ca70c5371b3",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-05T01:50:22.611272Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "composer.json",
+    "composer.lock",
+    "composer.lock.php-8.0",
+    "composer.lock.php-8.1",
+    "composer.lock.php-8.2",
+    "composer.lock.php-8.3",
+    "composer.lock.php-8.4",
+    "docs/dependency-updates.md"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "f67b4d6fc7a4",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 27526,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 42112,
+    "output_tokens": 768,
+    "api_call_count": 3
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-05T01:50:22.600251Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 5106,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 5106,
+    "total_lines_changed": 5970,
+    "agent_percentage": 0,
+    "metric_version": 2
+  }
+}

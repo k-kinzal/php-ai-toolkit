@@ -71,11 +71,14 @@ final class FileScanner
             new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
         );
 
-        /** @var RegexIterator<int, SplFileInfo, RecursiveIteratorIterator<RecursiveDirectoryIterator>> $phpFiles */
         $phpFiles = new RegexIterator($iterator, '/\.php$/');
 
         $paths = [];
         foreach ($phpFiles as $file) {
+            if (!$file instanceof SplFileInfo) {
+                continue;
+            }
+
             $path = $file->getPathname();
             if ($this->shouldInclude($path)) {
                 $paths[] = $path;

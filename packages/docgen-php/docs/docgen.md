@@ -274,12 +274,12 @@ themes, and a `.nojekyll` marker, so publishing the output directory with GitHub
 top level contains `index.html`, one directory per package (with its `doc/` documents), `src/` (highlighted sources
 with line anchors), and `assets/`.
 
-The page design uses [document-design's doc-ui](https://k-kinzal.github.io/document-design/) **v1.1.0**.
-The exact [v1.1.0 stylesheet](https://k-kinzal.github.io/document-design/v1.1.0/document-design.css) is bundled
-unchanged as `assets/document-design-v1.1.0.css` (SHA-256
-`8874255e9deb2d159016522e985015be6a5d7a88c90c077704b5d762567b7ebd`). The
-[release tag](https://github.com/k-kinzal/document-design/releases/tag/v1.1.0) resolves to commit
-`ee789d04fb775b735c3217d74019642485c9a297`. `assets/document-design-LICENSE.txt` records the source URLs,
+The page design uses [document-design's doc-ui](https://github.com/k-kinzal/document-design/tree/v1.2.1/packages/doc-ui) **v1.2.1**.
+The exact [v1.2.1 stylesheet](https://k-kinzal.github.io/document-design/v1.2.1/document-design.css) is bundled
+unchanged as `assets/document-design-v1.2.1.css` (SHA-256
+`17d7832ef632ad4c7101d479b3dbcc64beac0e7417c3ac51a66f99964f0bc918`). The
+[release tag](https://github.com/k-kinzal/document-design/releases/tag/v1.2.1) resolves to commit
+`8a9032c7546db6dd9c55e38f15e6c9e388987fab`. `assets/document-design-LICENSE.txt` records the source URLs,
 checksums, and the complete upstream MIT license, including its copyright notice. Generation and viewing need
 no network access, including when opened through `file://`; neither `/latest/` nor a floating major/minor
 version URL is loaded.
@@ -290,18 +290,21 @@ kinds, doctest assertions, graph relationships and comparison modes, using doc-u
 script retains DocGen search, copy/run controls and diff modes, and applies themes through `data-dd-theme`.
 Without JavaScript, the document and mobile navigation remain readable. Upgrading the design requires adding
 the exact versioned stylesheet and updating the publisher, HTML references, provenance and checksum test.
-The bundled `document-design-v1.0.0.css` retains its original name and bytes for archived documents. Publishing
-new assets also leaves an existing output directory's old versioned CSS in place; new pages reference v1.1.0.
+The bundled `document-design-v1.0.0.css` and `document-design-v1.1.0.css` retain their original names and bytes
+for archived documents. Publishing new assets leaves an existing output directory's old versioned CSS untouched;
+new pages reference v1.2.1.
 When developing from a checkout, use `--clear-cache` or `--no-cache` after changing the renderer so cached HTML
 is regenerated (see [Incremental Generation](#incremental-generation)).
 
-The [v1.1.0 design reference](https://k-kinzal.github.io/document-design/v1.1.0/DESIGN.md) adds an optional
+The [v1.2.1 design reference](https://k-kinzal.github.io/document-design/v1.2.1/DESIGN.md) describes an optional
 `data-dd-paper` root setting (`a4` or `letter`) for paper size and page numbers, and `data-dd-print-urls` settings
 (`inline`, the default; `sources`; or `none`). DocGen keeps automatic paper selection and inline printed URLs.
-Its catalog markup and extension tokens remain compatible. Numbered citations (`.cite`, `.sources`), report
-timelines and `.hero > .figures` are available in the bundled CSS; the generator does not emit these report
-structures or infer citations from ordinary links. Report column, spacing and pagination improvements therefore
-need no changes to DocGen's catalog templates.
+Since v1.1.0, upstream added research-paper and book layouts, optional palette overlays and controls, and a
+Markdown CLI, and fixed report alignment and print pagination across system fonts. DocGen's catalog markup and
+extension tokens remain compatible. Its existing CSS extensions for search placement, source lines, parameter
+tables and diff modes still apply. The bundled CSS includes the print fixes for explicit dark themes, disclosure
+headings, source URLs and code headers. The generator continues to use its own client script; the optional
+upstream JavaScript, palette overlays and CLI are not needed for this integration.
 
 ## Back to the Repository
 

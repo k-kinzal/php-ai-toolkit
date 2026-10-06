@@ -13,19 +13,19 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(\Toolkit\Guard\Config\DocumentMerger::class)]
 final class DocumentMergerTest extends TestCase
 {
-    public function testMergeReplacesScopeAndPatchesConfiguration(): void
+    public function testMergeReplacesMetricSourceAndPatchesConfiguration(): void
     {
         $merged = (new \Toolkit\Guard\Config\DocumentMerger())->merge(
             [
-                'scope' => ['source' => ['lib'], 'exclude' => ['vendor']],
+                'metrics' => ['source' => ['lib'], 'exclude' => ['vendor']],
                 'configuration' => [['id' => 'mode', 'file' => 'app.json', 'assert' => ['equals' => 'A']]],
             ],
             [
-                'scope' => ['source' => ['src']],
+                'metrics' => ['source' => ['src']],
                 'configuration' => [['id' => 'mode', 'file' => 'settings.json'], ['id' => 'workers', 'file' => 'app.json']],
             ],
         );
-        self::assertSame(['source' => ['src']], $merged['scope']);
+        self::assertSame(['source' => ['src'], 'exclude' => ['vendor']], $merged['metrics']);
         self::assertSame([
             ['id' => 'mode', 'file' => 'settings.json', 'assert' => ['equals' => 'A']],
             ['id' => 'workers', 'file' => 'app.json'],
@@ -34,19 +34,20 @@ final class DocumentMergerTest extends TestCase
 
     public function testMergeSectionReplacesANonMapping(): void
     {
-        self::assertSame(['quality' => 'bad'], (new \Toolkit\Guard\Config\DocumentMerger())->mergeSection([], ['quality' => 'bad'], 'quality'));
+        self::assertSame(['metrics' => 'bad'], (new \Toolkit\Guard\Config\DocumentMerger())->mergeSection([], ['metrics' => 'bad'], 'metrics'));
     }
 
-    public function testQualityOverrideReplacesOneMetric(): void
+    public function testMetricsOverrideReplacesOneMetric(): void
     {
-        $quality = (new \Toolkit\Guard\Config\DocumentMerger())->quality(
-            ['profiles' => ['standard' => ['limits' => ['file' => ['lines' => 500, 'ncloc' => 350]]]], 'default' => 'standard'],
-            ['profiles' => ['standard' => ['limits' => ['file' => ['lines' => 800]]]]],
+        $metrics = (new \Toolkit\Guard\Config\DocumentMerger())->metrics(
+            ['source' => ['lib'], 'profiles' => ['standard' => ['limits' => ['file' => ['lines' => 500, 'ncloc' => 350]]]], 'default' => 'standard'],
+            ['source' => ['src'], 'profiles' => ['standard' => ['limits' => ['file' => ['lines' => 800]]]]],
         );
         self::assertSame([
+            'source' => ['src'],
             'profiles' => ['standard' => ['limits' => ['file' => ['lines' => 800, 'ncloc' => 350]]]],
             'default' => 'standard',
-        ], $quality);
+        ], $metrics);
     }
 
     public function testProfilesAddsANamedProfile(): void

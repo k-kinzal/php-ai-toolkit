@@ -23,7 +23,7 @@ final class SourceChecks
         $findings = [];
         if ($configuration->metrics !== null) {
             foreach ((new LocGuardAnalyzer())->analyze($configuration->metrics)->violations as $violation) {
-                $findings[] = new Finding($violation->path, 'quality.' . $violation->rule, 'required', $violation->message);
+                $findings[] = new Finding($violation->path, 'metrics.' . $violation->rule, 'required', $violation->message);
             }
         }
         if ($configuration->structure !== null) {

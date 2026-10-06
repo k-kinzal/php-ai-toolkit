@@ -20,7 +20,7 @@ final class PresetCatalog
      */
     public function names(): array
     {
-        return array_merge(['quality', 'structure'], array_keys($this->defaults()));
+        return array_merge(['metrics', 'structure'], array_keys($this->defaults()));
     }
 
     /**
@@ -260,19 +260,19 @@ final class PresetCatalog
     }
 
     /**
-     * Returns the standard metric limits shipped in quality.yaml.
+     * Returns the standard metric limits shipped in metrics.yaml.
      *
      * @return array<string, array<string, int>>
-     * @throws PolicyException when quality.yaml does not define integer limits
+     * @throws PolicyException when metrics.yaml does not define integer limits
      */
     public function limits(): array
     {
-        $quality = $this->read('quality')['quality'] ?? null;
-        $profiles = is_array($quality) ? ($quality['profiles'] ?? null) : null;
+        $metrics = $this->read('metrics')['metrics'] ?? null;
+        $profiles = is_array($metrics) ? ($metrics['profiles'] ?? null) : null;
         $standard = is_array($profiles) ? ($profiles['standard'] ?? null) : null;
         $limits = is_array($standard) ? ($standard['limits'] ?? null) : null;
         if (!is_array($limits) || !$this->isMapping($limits)) {
-            throw new PolicyException('rules/quality.yaml must define quality.profiles.standard.limits.');
+            throw new PolicyException('rules/metrics.yaml must define metrics.profiles.standard.limits.');
         }
 
         return $this->metrics($limits);
@@ -290,13 +290,13 @@ final class PresetCatalog
         $result = [];
         foreach ($limits as $kind => $metrics) {
             if (!is_string($kind) || !is_array($metrics) || !$this->isMapping($metrics)) {
-                throw new PolicyException('rules/quality.yaml limits must map each kind to numeric metrics.');
+                throw new PolicyException('rules/metrics.yaml limits must map each kind to numeric metrics.');
             }
             $values = [];
             foreach ($metrics as $metric => $value) {
                 if (!is_string($metric) || !is_int($value)) {
                     $label = is_string($metric) ? $kind . '.' . $metric : $kind;
-                    throw new PolicyException('rules/quality.yaml limit "' . $label . '" must be an integer.');
+                    throw new PolicyException('rules/metrics.yaml limit "' . $label . '" must be an integer.');
                 }
                 $values[$metric] = $value;
             }

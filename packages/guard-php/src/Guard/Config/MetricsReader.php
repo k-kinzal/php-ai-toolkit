@@ -13,21 +13,20 @@ use Toolkit\LocGuard\Config\ScanConfig;
 /**
  * Adapts metric profiles to the unchanged source metric analyzer.
  */
-final class QualityReader
+final class MetricsReader
 {
     /**
      * @param mixed $value
-     * @param array<string, mixed> $scope
      */
-    public function read($value, array $scope, string $root): LocGuardConfig
+    public function read($value, string $root): LocGuardConfig
     {
         $schema = new Schema();
-        $data = $schema->mapping($value, ['profiles', 'default', 'assignments'], 'quality');
+        $data = $schema->mapping($value, ['source', 'exclude', 'profiles', 'default', 'assignments'], 'metrics');
         $policies = (new PolicyListConfigReader())->read($data['profiles'] ?? null);
         $apply = (new ApplyConfigReader())->read(['default' => $data['default'] ?? 'standard', 'rules' => $data['assignments'] ?? []], $policies);
         return new LocGuardConfig(
             $root,
-            new ScanConfig($schema->strings($scope['source'] ?? ['src'], 'scope.source'), $schema->strings($scope['exclude'] ?? [], 'scope.exclude')),
+            new ScanConfig($schema->strings($data['source'] ?? ['src'], 'metrics.source'), $schema->strings($data['exclude'] ?? [], 'metrics.exclude')),
             $policies,
             $apply,
             new ReportConfig('ai', ['path', 'line', 'rule']),

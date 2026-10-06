@@ -36,7 +36,7 @@ final class PresetSelectorTest extends TestCase
         file_put_contents($root . '/phpstan.neon', "parameters:\n    level: max\n");
         file_put_contents($root . '/phpunit.xml.dist', '<phpunit/>');
         $names = (new \Toolkit\Guard\Init\PresetSelector())->detect($root);
-        self::assertSame(['quality', 'structure', 'phpstan', 'phpstan-guard-rules', 'phpunit9', 'composer'], $names);
+        self::assertSame(['metrics', 'structure', 'phpstan', 'phpstan-guard-rules', 'phpunit9', 'composer'], $names);
     }
 
     /**
@@ -48,7 +48,7 @@ final class PresetSelectorTest extends TestCase
         mkdir($root);
         file_put_contents($root . '/loc.yaml', "scan: {roots: [lib]}\n");
         file_put_contents($root . '/tree.yaml', "paths: [src]\n");
-        $names = (new \Toolkit\Guard\Init\PresetSelector())->select($root, ['quality', 'structure', 'composer', 'quality']);
+        $names = (new \Toolkit\Guard\Init\PresetSelector())->select($root, ['metrics', 'structure', 'composer', 'metrics']);
         self::assertSame(['composer'], $names);
     }
 
@@ -144,11 +144,11 @@ final class PresetSelectorTest extends TestCase
 
     public function testUniqueDropsRepeatedNames(): void
     {
-        self::assertSame(['quality', 'composer'], (new \Toolkit\Guard\Init\PresetSelector())->unique(['quality', 'composer', 'quality']));
+        self::assertSame(['metrics', 'composer'], (new \Toolkit\Guard\Init\PresetSelector())->unique(['metrics', 'composer', 'metrics']));
     }
 
     public function testWithoutRemovesOnePreset(): void
     {
-        self::assertSame(['structure'], (new \Toolkit\Guard\Init\PresetSelector())->without(['quality', 'structure'], 'quality'));
+        self::assertSame(['structure'], (new \Toolkit\Guard\Init\PresetSelector())->without(['metrics', 'structure'], 'metrics'));
     }
 }

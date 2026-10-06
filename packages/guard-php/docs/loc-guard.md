@@ -1,13 +1,13 @@
 # LocGuard
 
-New projects use [Guard](guard.md), published by `k-kinzal/guard-php`. Run `guard init` to import the shipped quality preset, or to copy an existing `loc.yaml` into `guard.yaml` without that preset. Then use `guard check` and `guard apply`. The schemas below describe the preserved legacy analyzers; their commands are `bin/loc-guard`, `bin/tree-guard`, and `bin/doc-guard` in this package.
+New projects use [Guard](guard.md), published by `k-kinzal/guard-php`. Run `guard init` to import the shipped metrics preset, or to copy an existing `loc.yaml` into `guard.yaml` without that preset. Then use `guard check` and `guard apply`. The schemas below describe the preserved legacy analyzers; their commands are `bin/loc-guard`, `bin/tree-guard`, and `bin/doc-guard` in this package.
 
 
 ## Purpose
 
 LocGuard is a first-party CLI for enforcing source metrics without PHPMD. It checks PHP files for physical file length, file NCLOC, class-like length, function length, method length, and cyclomatic complexity.
 
-LocGuard separates source discovery, metric policies, and file-to-policy assignment. A project can therefore apply a different, named quality policy to code whose required shape differs, such as adapters that inherit large native APIs, without excluding that code from analysis.
+LocGuard separates source discovery, metric policies, and file-to-policy assignment. A project can therefore apply a different, named metric profile to code whose required shape differs, such as adapters that inherit large native APIs, without excluding that code from analysis.
 
 ## Command
 

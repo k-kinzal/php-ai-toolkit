@@ -1,4 +1,7 @@
-quality:
+metrics:
+  source:
+    - src
+  exclude: []
   profiles:
     standard:
       limits:

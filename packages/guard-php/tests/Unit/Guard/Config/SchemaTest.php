@@ -26,7 +26,7 @@ final class SchemaTest extends TestCase
     public function testStringsRejectsScalars(): void
     {
         $this->expectException(\Toolkit\Guard\Policy\PolicyException::class);
-        (new \Toolkit\Guard\Config\Schema())->strings('src', 'scope.source');
+        (new \Toolkit\Guard\Config\Schema())->strings('src', 'metrics.source');
     }
 
 }

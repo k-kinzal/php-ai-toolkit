@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Toolkit\Guard\Config\DocumentMerger
  * @uses \Toolkit\Guard\Config\ImportResolver
  * @uses \Toolkit\Guard\Config\DocumentationReader
- * @uses \Toolkit\Guard\Config\QualityReader
+ * @uses \Toolkit\Guard\Config\MetricsReader
  * @uses \Toolkit\Guard\Config\RuleReader
  * @uses \Toolkit\Guard\Config\Schema
  * @uses \Toolkit\Guard\Config\StructureReader
@@ -83,7 +83,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Toolkit\Guard\Config\DocumentMerger::class)]
 #[UsesClass(\Toolkit\Guard\Config\ImportResolver::class)]
 #[UsesClass(\Toolkit\Guard\Config\DocumentationReader::class)]
-#[UsesClass(\Toolkit\Guard\Config\QualityReader::class)]
+#[UsesClass(\Toolkit\Guard\Config\MetricsReader::class)]
 #[UsesClass(\Toolkit\Guard\Config\RuleReader::class)]
 #[UsesClass(\Toolkit\Guard\Config\Schema::class)]
 #[UsesClass(\Toolkit\Guard\Config\StructureReader::class)]

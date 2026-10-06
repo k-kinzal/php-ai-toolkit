@@ -25,8 +25,13 @@ final class LegacyMigration
             $data = $this->read($root . '/loc.yaml');
             $scan = is_array($data['scan'] ?? null) ? $data['scan'] : [];
             $apply = is_array($data['apply'] ?? null) ? $data['apply'] : [];
-            $defaults['scope'] = ['source' => $scan['roots'] ?? [], 'exclude' => $scan['exclude'] ?? []];
-            $defaults['quality'] = ['profiles' => $data['policies'], 'default' => $apply['default'], 'assignments' => $apply['rules'] ?? []];
+            $defaults['metrics'] = [
+                'source' => $scan['roots'] ?? [],
+                'exclude' => $scan['exclude'] ?? [],
+                'profiles' => $data['policies'],
+                'default' => $apply['default'],
+                'assignments' => $apply['rules'] ?? [],
+            ];
         }
         if (is_file($root . '/tree.yaml')) {
             (new TreeLoader())->load($root . '/tree.yaml');

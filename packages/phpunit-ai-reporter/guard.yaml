@@ -1,7 +1,7 @@
 # Project policy. Required rules fail; recommendations warn.
 version: 1
 imports:
-  - vendor/k-kinzal/guard-php/rules/quality.yaml
+  - vendor/k-kinzal/guard-php/rules/metrics.yaml
   - vendor/k-kinzal/guard-php/rules/structure.yaml
   - vendor/k-kinzal/guard-php/rules/phpstan.yaml
   - vendor/k-kinzal/guard-php/rules/phpstan-guard-rules.yaml
@@ -21,7 +21,7 @@ imports:
   - vendor/k-kinzal/guard-php/rules/infection.yaml
   - vendor/k-kinzal/guard-php/rules/composer.yaml
   - vendor/k-kinzal/guard-php/rules/docgen.yaml
-scope:
+metrics:
   source:
     - src
   exclude: []

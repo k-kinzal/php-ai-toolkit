@@ -19,7 +19,7 @@ final class PresetCatalogTest extends TestCase
     public function testNamesIncludeGenericAndToolPresets(): void
     {
         $names = (new \Toolkit\Guard\Init\PresetCatalog())->names();
-        self::assertContains('quality', $names);
+        self::assertContains('metrics', $names);
         self::assertContains('phpstan-guard-rules', $names);
         self::assertContains('phpunit9', $names);
         self::assertContains('phpunit13', $names);
@@ -45,7 +45,7 @@ final class PresetCatalogTest extends TestCase
     public function testImportPathUsesRulesInsideThePackage(): void
     {
         $root = dirname(__DIR__, 4);
-        self::assertSame('rules/quality.yaml', (new \Toolkit\Guard\Init\PresetCatalog())->importPath($root, 'quality'));
+        self::assertSame('rules/metrics.yaml', (new \Toolkit\Guard\Init\PresetCatalog())->importPath($root, 'metrics'));
     }
 
     public function testImportPathUsesTheInstalledVendorCopy(): void
@@ -77,19 +77,19 @@ final class PresetCatalogTest extends TestCase
 
     public function testFilePointsAtOnePreset(): void
     {
-        self::assertStringEndsWith('/rules/quality.yaml', (new \Toolkit\Guard\Init\PresetCatalog())->file('quality'));
+        self::assertStringEndsWith('/rules/metrics.yaml', (new \Toolkit\Guard\Init\PresetCatalog())->file('metrics'));
     }
 
     public function testImportsReturnsOneRelativePathPerName(): void
     {
-        $paths = (new \Toolkit\Guard\Init\PresetCatalog())->imports(dirname(__DIR__, 4), ['quality', 'composer']);
-        self::assertSame(['rules/quality.yaml', 'rules/composer.yaml'], $paths);
+        $paths = (new \Toolkit\Guard\Init\PresetCatalog())->imports(dirname(__DIR__, 4), ['metrics', 'composer']);
+        self::assertSame(['rules/metrics.yaml', 'rules/composer.yaml'], $paths);
     }
 
     public function testRelativePathStaysInsideThePackage(): void
     {
         $catalog = new \Toolkit\Guard\Init\PresetCatalog();
-        self::assertSame('rules/quality.yaml', $catalog->relative(dirname($catalog->directory()), $catalog->file('quality')));
+        self::assertSame('rules/metrics.yaml', $catalog->relative(dirname($catalog->directory()), $catalog->file('metrics')));
     }
 
     public function testAbsoluteReturnsTheGivenPathWhenItDoesNotExist(): void
@@ -100,7 +100,7 @@ final class PresetCatalogTest extends TestCase
 
     public function testPartsSplitsDirectories(): void
     {
-        self::assertSame(['rules', 'quality.yaml'], (new \Toolkit\Guard\Init\PresetCatalog())->parts('rules/quality.yaml'));
+        self::assertSame(['rules', 'metrics.yaml'], (new \Toolkit\Guard\Init\PresetCatalog())->parts('rules/metrics.yaml'));
     }
 
     public function testReadLoadsTheComposerPreset(): void
@@ -121,9 +121,9 @@ final class PresetCatalogTest extends TestCase
         (new \Toolkit\Guard\Init\PresetCatalog())->metrics(['file' => ['lines' => '500']]);
     }
 
-    public function testIsMappingAcceptsTheQualityDocument(): void
+    public function testIsMappingAcceptsADocument(): void
     {
-        self::assertTrue((new \Toolkit\Guard\Init\PresetCatalog())->isMapping(['quality' => []]));
-        self::assertFalse((new \Toolkit\Guard\Init\PresetCatalog())->isMapping(['quality']));
+        self::assertTrue((new \Toolkit\Guard\Init\PresetCatalog())->isMapping(['metrics' => []]));
+        self::assertFalse((new \Toolkit\Guard\Init\PresetCatalog())->isMapping(['metrics']));
     }
 }

@@ -40,7 +40,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Toolkit\DocGuard\Markdown\ParserState
  * @uses \Toolkit\DocGuard\Markdown\SetextUnderlineMatcher
  * @uses \Toolkit\Guard\Config\Configuration
- * @uses \Toolkit\Guard\Config\QualityReader
+ * @uses \Toolkit\Guard\Config\MetricsReader
  * @uses \Toolkit\Guard\Config\Schema
  * @uses \Toolkit\Guard\Policy\PolicyException
  * @uses \Toolkit\Guard\Policy\Rule
@@ -159,7 +159,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Toolkit\DocGuard\Markdown\ParserState::class)]
 #[UsesClass(\Toolkit\DocGuard\Markdown\SetextUnderlineMatcher::class)]
 #[UsesClass(\Toolkit\Guard\Config\Configuration::class)]
-#[UsesClass(\Toolkit\Guard\Config\QualityReader::class)]
+#[UsesClass(\Toolkit\Guard\Config\MetricsReader::class)]
 #[UsesClass(\Toolkit\Guard\Config\Schema::class)]
 #[UsesClass(\Toolkit\Guard\Policy\PolicyException::class)]
 #[UsesClass(\Toolkit\Guard\Policy\Rule::class)]
@@ -253,7 +253,7 @@ final class SourceChecksTest extends TestCase
         $root = sys_get_temp_dir() . '/guard-metrics-' . uniqid();
         mkdir($root);
         file_put_contents($root . '/Long.php', "<?php\n\n\n\n");
-        $metrics = (new \Toolkit\Guard\Config\QualityReader())->read(['profiles' => ['standard' => ['limits' => ['file' => ['lines' => 1]]]], 'default' => 'standard'], ['source' => ['.']], $root);
+        $metrics = (new \Toolkit\Guard\Config\MetricsReader())->read(['source' => ['.'], 'profiles' => ['standard' => ['limits' => ['file' => ['lines' => 1]]]], 'default' => 'standard'], $root);
         $config = new \Toolkit\Guard\Config\Configuration($root, $metrics, null, null, []);
         $findings = (new \Toolkit\Guard\Execution\SourceChecks())->check($config);
         self::assertNotEmpty($findings);

@@ -54,7 +54,9 @@ final class Initializer
         if ($paths !== []) {
             $document['imports'] = $paths;
         }
-        $document['scope'] = ['source' => (new ToolDetector())->sources($root), 'exclude' => []];
+        if (in_array('metrics', $names, true)) {
+            $document['metrics'] = ['source' => (new ToolDetector())->sources($root), 'exclude' => []];
+        }
         $readme = $this->readme($root);
         if ($readme !== null) {
             $document['documentation'] = $readme;
@@ -84,10 +86,10 @@ final class Initializer
     }
 
     /**
-     * Returns the standard metric limits shipped in rules/quality.yaml.
+     * Returns the standard metric limits shipped in rules/metrics.yaml.
      *
      * @return array<string, array<string, int>>
-     * @throws PolicyException when quality.yaml does not define integer limits
+     * @throws PolicyException when metrics.yaml does not define integer limits
      */
     public function limits(): array
     {

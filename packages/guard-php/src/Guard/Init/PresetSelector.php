@@ -15,7 +15,7 @@ final class PresetSelector
     /**
      * Uses an explicit name list, or the presets that match the project.
      *
-     * loc.yaml and tree.yaml suppress the quality and structure presets because those files are copied in full.
+     * loc.yaml and tree.yaml suppress the metrics and structure presets because those files are copied in full.
      *
      * @param ?list<string> $imports
      * @return list<string>
@@ -29,7 +29,7 @@ final class PresetSelector
             (new PresetCatalog())->assertKnown($name);
         }
         if (is_file($root . '/loc.yaml')) {
-            $names = $this->without($names, 'quality');
+            $names = $this->without($names, 'metrics');
         }
         if (is_file($root . '/tree.yaml')) {
             $names = $this->without($names, 'structure');
@@ -48,7 +48,7 @@ final class PresetSelector
     {
         $names = [];
         if ((new ToolDetector())->sources($root) !== []) {
-            $names[] = 'quality';
+            $names[] = 'metrics';
             $names[] = 'structure';
         }
         foreach ($this->phpstanPresets($root) as $name) {

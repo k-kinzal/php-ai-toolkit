@@ -1,7 +1,7 @@
 # Project policy. Required rules fail; recommendations warn.
 version: 1
 imports:
-  - rules/quality.yaml
+  - rules/metrics.yaml
   - rules/structure.yaml
   - rules/phpstan.yaml
   - rules/phpstan-guard-rules.yaml
@@ -21,7 +21,7 @@ imports:
   - rules/infection.yaml
   - rules/composer.yaml
   - rules/docgen.yaml
-scope:
+metrics:
   source:
     - src
   exclude: []

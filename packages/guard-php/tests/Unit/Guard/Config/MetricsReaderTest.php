@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Toolkit\Guard\Config\QualityReader
+ * @covers \Toolkit\Guard\Config\MetricsReader
  * @uses \Toolkit\Guard\Config\Schema
  * @uses \Toolkit\Guard\Policy\PolicyException
  * @uses \Toolkit\LocGuard\Config\ConfigKeyValidator
@@ -33,7 +33,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Toolkit\LocGuard\Config\ScanConfig
  * @uses \Toolkit\LocGuard\LocGuardException
  */
-#[CoversClass(\Toolkit\Guard\Config\QualityReader::class)]
+#[CoversClass(\Toolkit\Guard\Config\MetricsReader::class)]
 #[UsesClass(\Toolkit\Guard\Config\Schema::class)]
 #[UsesClass(\Toolkit\Guard\Policy\PolicyException::class)]
 #[UsesClass(\Toolkit\LocGuard\Config\ConfigKeyValidator::class)]
@@ -56,11 +56,11 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Toolkit\LocGuard\Config\ReportConfig::class)]
 #[UsesClass(\Toolkit\LocGuard\Config\ScanConfig::class)]
 #[UsesClass(\Toolkit\LocGuard\LocGuardException::class)]
-final class QualityReaderTest extends TestCase
+final class MetricsReaderTest extends TestCase
 {
     public function testReadPreservesConfiguredMetricThresholds(): void
     {
-        $config = (new \Toolkit\Guard\Config\QualityReader())->read(['profiles' => ['standard' => ['limits' => ['file' => ['lines' => 500]]]], 'default' => 'standard'], ['source' => ['lib']], '/project');
+        $config = (new \Toolkit\Guard\Config\MetricsReader())->read(['source' => ['lib'], 'profiles' => ['standard' => ['limits' => ['file' => ['lines' => 500]]]], 'default' => 'standard'], '/project');
         self::assertSame(500, $config->policies['standard']->limits->maxFileLines);
         self::assertSame(['lib'], $config->scan->roots);
     }

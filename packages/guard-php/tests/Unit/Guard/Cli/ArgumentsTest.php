@@ -31,27 +31,27 @@ final class ArgumentsTest extends TestCase
 
     public function testParsesRepeatedAndCommaSeparatedImports(): void
     {
-        $arguments = (new \Toolkit\Guard\Cli\Arguments())->parse(['init', '--import=quality,structure', '--import', 'composer']);
-        self::assertSame(['quality', 'structure', 'composer'], $arguments['imports']);
+        $arguments = (new \Toolkit\Guard\Cli\Arguments())->parse(['init', '--import=metrics,structure', '--import', 'composer']);
+        self::assertSame(['metrics', 'structure', 'composer'], $arguments['imports']);
     }
 
     public function testRejectsImportOnCheck(): void
     {
         $this->expectException(\Toolkit\Guard\Policy\PolicyException::class);
-        (new \Toolkit\Guard\Cli\Arguments())->parse(['check', '--import=quality']);
+        (new \Toolkit\Guard\Cli\Arguments())->parse(['check', '--import=metrics']);
     }
 
     public function testOptionsReadsInitImports(): void
     {
-        $arguments = (new \Toolkit\Guard\Cli\Arguments())->options('init', ['--import=quality']);
-        self::assertSame(['quality'], $arguments['imports']);
+        $arguments = (new \Toolkit\Guard\Cli\Arguments())->options('init', ['--import=metrics']);
+        self::assertSame(['metrics'], $arguments['imports']);
     }
 
     public function testImportNamesRejectsAnEmptyName(): void
     {
         $this->expectException(\Toolkit\Guard\Policy\PolicyException::class);
         $this->expectExceptionMessage('Provide one or more preset names');
-        (new \Toolkit\Guard\Cli\Arguments())->importNames('quality,', []);
+        (new \Toolkit\Guard\Cli\Arguments())->importNames('metrics,', []);
     }
 
 }

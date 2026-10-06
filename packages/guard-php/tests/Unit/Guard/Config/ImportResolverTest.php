@@ -24,10 +24,10 @@ final class ImportResolverTest extends TestCase
     {
         $root = sys_get_temp_dir() . '/guard-resolve-' . uniqid();
         mkdir($root);
-        file_put_contents($root . '/preset.yaml', "quality:\n  profiles:\n    standard:\n      limits:\n        file: {lines: 500, ncloc: 350}\n  default: standard\n");
-        file_put_contents($root . '/guard.yaml', "version: 1\nimports: [preset.yaml]\nquality:\n  profiles:\n    standard:\n      limits:\n        file: {lines: 800}\n");
+        file_put_contents($root . '/preset.yaml', "metrics:\n  source: [lib]\n  exclude: [vendor]\n  profiles:\n    standard:\n      limits:\n        file: {lines: 500, ncloc: 350}\n  default: standard\n");
+        file_put_contents($root . '/guard.yaml', "version: 1\nimports: [preset.yaml]\nmetrics:\n  source: [src]\n  profiles:\n    standard:\n      limits:\n        file: {lines: 800}\n");
         $data = (new \Toolkit\Guard\Config\ImportResolver())->resolve($root . '/guard.yaml');
-        self::assertSame(['profiles' => ['standard' => ['limits' => ['file' => ['lines' => 800, 'ncloc' => 350]]]], 'default' => 'standard'], $data['quality']);
+        self::assertSame(['source' => ['src'], 'exclude' => ['vendor'], 'profiles' => ['standard' => ['limits' => ['file' => ['lines' => 800, 'ncloc' => 350]]]], 'default' => 'standard'], $data['metrics']);
         self::assertArrayNotHasKey('imports', $data);
     }
 

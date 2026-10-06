@@ -7,7 +7,7 @@ namespace Toolkit\Guard\Config;
 /**
  * Overlays a later guard document onto an earlier one.
  *
- * Configuration rules and directory rules merge by identity. Quality limits merge by metric. Scope replaces the earlier scope.
+ * Configuration rules and directory rules merge by identity. Metric limits merge by metric. Metric source and exclude replace when a later file sets them.
  */
 final class DocumentMerger
 {
@@ -21,12 +21,10 @@ final class DocumentMerger
     public function merge(array $base, array $overlay): array
     {
         $merged = $base;
-        foreach (['version', 'scope'] as $key) {
-            if (array_key_exists($key, $overlay)) {
-                $merged[$key] = $overlay[$key];
-            }
+        if (array_key_exists('version', $overlay)) {
+            $merged['version'] = $overlay['version'];
         }
-        $merged = $this->mergeSection($merged, $overlay, 'quality');
+        $merged = $this->mergeSection($merged, $overlay, 'metrics');
         $merged = $this->mergeSection($merged, $overlay, 'structure');
         $merged = $this->mergeSection($merged, $overlay, 'documentation');
         if (!array_key_exists('configuration', $overlay)) {
@@ -61,8 +59,8 @@ final class DocumentMerger
             return $merged;
         }
         $base = is_array($current) && $this->isMapping($current) ? $current : [];
-        if ($name === 'quality') {
-            $merged[$name] = $this->quality($base, $section);
+        if ($name === 'metrics') {
+            $merged[$name] = $this->metrics($base, $section);
         } elseif ($name === 'structure') {
             $merged[$name] = $this->structure($base, $section);
         } else {
@@ -73,15 +71,20 @@ final class DocumentMerger
     }
 
     /**
-     * Merges quality profiles by name and replaces default or assignments when the overlay sets them.
+     * Merges metric profiles by name and replaces source, exclude, default, or assignments when the overlay sets them.
      *
      * @param array<mixed> $base
      * @param array<mixed> $overlay
      * @return array<mixed>
      */
-    public function quality(array $base, array $overlay): array
+    public function metrics(array $base, array $overlay): array
     {
         $merged = $base;
+        foreach (['source', 'exclude'] as $key) {
+            if (array_key_exists($key, $overlay)) {
+                $merged[$key] = $overlay[$key];
+            }
+        }
         if (isset($overlay['profiles']) && is_array($overlay['profiles']) && $this->isMapping($overlay['profiles'])) {
             $profiles = $merged['profiles'] ?? [];
             $merged['profiles'] = $this->profiles(is_array($profiles) ? $profiles : [], $overlay['profiles']);

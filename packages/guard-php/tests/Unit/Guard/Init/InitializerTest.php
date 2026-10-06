@@ -41,7 +41,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Toolkit\Guard\Config\Configuration
  * @uses \Toolkit\Guard\Config\ConfigurationLoader
  * @uses \Toolkit\Guard\Config\DocumentationReader
- * @uses \Toolkit\Guard\Config\QualityReader
+ * @uses \Toolkit\Guard\Config\MetricsReader
  * @uses \Toolkit\Guard\Config\RuleReader
  * @uses \Toolkit\Guard\Config\Schema
  * @uses \Toolkit\Guard\Config\StructureReader
@@ -122,7 +122,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Toolkit\Guard\Config\Configuration::class)]
 #[UsesClass(\Toolkit\Guard\Config\ConfigurationLoader::class)]
 #[UsesClass(\Toolkit\Guard\Config\DocumentationReader::class)]
-#[UsesClass(\Toolkit\Guard\Config\QualityReader::class)]
+#[UsesClass(\Toolkit\Guard\Config\MetricsReader::class)]
 #[UsesClass(\Toolkit\Guard\Config\RuleReader::class)]
 #[UsesClass(\Toolkit\Guard\Config\Schema::class)]
 #[UsesClass(\Toolkit\Guard\Config\StructureReader::class)]
@@ -199,7 +199,8 @@ final class InitializerTest extends TestCase
         $config = (new \Toolkit\Guard\Init\Initializer())->configuration($root);
         self::assertArrayNotHasKey('configuration', $config);
         self::assertArrayNotHasKey('imports', $config);
-        self::assertArrayNotHasKey('quality', $config);
+        self::assertArrayNotHasKey('metrics', $config);
+        self::assertArrayNotHasKey('scope', $config);
     }
 
     /**
@@ -211,20 +212,20 @@ final class InitializerTest extends TestCase
         mkdir($root);
         $config = (new \Toolkit\Guard\Init\Initializer())->configuration($root, ['composer', 'composer']);
         self::assertStringContainsString('composer.yaml', json_encode($config['imports'], JSON_THROW_ON_ERROR));
-        self::assertStringNotContainsString('quality.yaml', json_encode($config['imports'], JSON_THROW_ON_ERROR));
+        self::assertStringNotContainsString('metrics.yaml', json_encode($config['imports'], JSON_THROW_ON_ERROR));
     }
 
     /**
      * @throws JsonException
      */
-    public function testConfigurationKeepsLegacyQualityOutOfImports(): void
+    public function testConfigurationKeepsLegacyMetricsOutOfImports(): void
     {
         $root = sys_get_temp_dir() . '/guard-legacy-init-' . uniqid();
         mkdir($root . '/src', 0777, true);
         file_put_contents($root . '/loc.yaml', "scan: {roots: [lib], exclude: []}\npolicies:\n  strict:\n    limits: {file: {lines: 99}}\napply: {default: strict, rules: []}\n");
-        $config = (new \Toolkit\Guard\Init\Initializer())->configuration($root, ['quality', 'structure']);
-        self::assertStringNotContainsString('quality.yaml', json_encode($config['imports'], JSON_THROW_ON_ERROR));
-        self::assertSame(['profiles' => ['strict' => ['limits' => ['file' => ['lines' => 99]]]], 'default' => 'strict', 'assignments' => []], $config['quality']);
+        $config = (new \Toolkit\Guard\Init\Initializer())->configuration($root, ['metrics', 'structure']);
+        self::assertStringNotContainsString('metrics.yaml', json_encode($config['imports'], JSON_THROW_ON_ERROR));
+        self::assertSame(['source' => ['lib'], 'exclude' => [], 'profiles' => ['strict' => ['limits' => ['file' => ['lines' => 99]]]], 'default' => 'strict', 'assignments' => []], $config['metrics']);
     }
 
     /**

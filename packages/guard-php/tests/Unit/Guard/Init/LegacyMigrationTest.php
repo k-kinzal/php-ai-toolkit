@@ -118,8 +118,8 @@ final class LegacyMigrationTest extends TestCase
         mkdir($root);
         file_put_contents($root . '/loc.yaml', "scan: {roots: [lib], exclude: []}\npolicies:\n  strict:\n    limits: {file: {lines: 99}}\napply: {default: strict, rules: []}\n");
         $config = (new \Toolkit\Guard\Init\LegacyMigration())->migrate($root, ['version' => 1]);
-        self::assertSame(['source' => ['lib'], 'exclude' => []], $config['scope']);
-        self::assertSame(['profiles' => ['strict' => ['limits' => ['file' => ['lines' => 99]]]], 'default' => 'strict', 'assignments' => []], $config['quality']);
+        self::assertArrayNotHasKey('scope', $config);
+        self::assertSame(['source' => ['lib'], 'exclude' => [], 'profiles' => ['strict' => ['limits' => ['file' => ['lines' => 99]]]], 'default' => 'strict', 'assignments' => []], $config['metrics']);
     }
 
     public function testReadPreservesLegacyMappings(): void

@@ -19,11 +19,10 @@ final class ConfigurationLoader
     public function load(string $path): Configuration
     {
         $data = (new ImportResolver())->resolve($path);
-        $scope = (new Schema())->mapping($data['scope'] ?? [], ['source', 'exclude'], 'scope');
         $root = dirname($path);
         return new Configuration(
             $root,
-            array_key_exists('quality', $data) ? (new QualityReader())->read($data['quality'], $scope, $root) : null,
+            array_key_exists('metrics', $data) ? (new MetricsReader())->read($data['metrics'], $root) : null,
             array_key_exists('structure', $data) ? (new StructureReader())->read($data['structure'], $root) : null,
             array_key_exists('documentation', $data) ? (new DocumentationReader())->read($data['documentation'], $root, basename($path)) : null,
             (new RuleReader())->read($data['configuration'] ?? []),

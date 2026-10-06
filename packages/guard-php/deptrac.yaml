@@ -60,7 +60,7 @@ deptrac:
     - name: Extension
       collectors:
         - type: directory
-          value: 'src/Extension/(Registry|Extension|BuiltinExtension)\.php'
+          value: 'src/Extension/(Registry|Extension|BuiltinExtension|ConfigurableExtension|ExtensionLoader)\.php'
     - name: Execution
       collectors:
         - type: directory

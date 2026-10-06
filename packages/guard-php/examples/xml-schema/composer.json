@@ -1,0 +1,13 @@
+{
+    "name": "example/guard-xml-schema",
+    "description": "Example user-defined Guard extension for self-contained XSD 1.0 schemas",
+    "type": "library",
+    "require": {
+        "k-kinzal/guard-php": "^1.0 || dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "Example\\Guard\\": "src/"
+        }
+    }
+}

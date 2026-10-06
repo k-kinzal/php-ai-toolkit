@@ -25,6 +25,7 @@ The schema organizes responsibilities rather than nesting three old command conf
 - `structure.paths`, `structure.exclude` and `structure.directories` declare directory rules. Every matching rule is enforced.
 - `documentation.files` and `documentation.scan` declare Markdown headings and discover undeclared documents. `documentation.exclude` excludes specified paths from discovery, while explicitly declared documents are still checked.
 - `configuration` contains named field constraints, shared by `check` and `apply`.
+- `extensions` maps Composer-autoloadable extension class names to their option mappings.
 - `imports` lists other guard documents to load before the project file. Omit it to define the whole policy in the project file.
 
 ## Imports
@@ -48,6 +49,7 @@ Overrides keep the imported values for every key you leave out:
 - `metrics.profiles` merges by profile name. A limit replaces only the metrics you set. `metrics.source` and `metrics.exclude` replace the imported lists when the project file sets them.
 - `structure.directories` merges by `path`. A directory rule replaces only the keys you set, and a new path is added.
 - `documentation.files` replaces one document at a time. `scan` and `exclude` replace the imported lists when they are set.
+- `extensions` merges by class name. A later declaration replaces that class's entire option mapping, retaining its registration position; other extension classes remain registered. Options are owned by extensions and are not recursively merged.
 
 `guard init` writes imports for the presets that match the project. `metrics` and `structure` are included when source roots exist. PHPStan, PHP-CS-Fixer, PHPCompatibility, Deptrac, Infection, and Composer are included when their configuration or package is present. Each PHPUnit major gets its own preset: versioned files such as `phpunit10.xml.dist` select that major, and `phpunit.xml.dist` is PHPUnit 13 when those versioned files exist. A project with only `phpunit.xml.dist` uses the lock version, or a constraint that names one major. Doctest presets are added when that PHPUnit file already contains a doctest suite, or when PHPStan requires public-API examples. Property-based tests, fuzzing, PHPBench, and DocGen are added only when those packages are installed. GitHub Actions presets are added when `.github/workflows/ci.yml` or `mutation.yml` exists. When the detected file is not the preset default, init writes an `id` and `file` override. Source roots other than `src` get extra `structure.directories` entries that use the same constraints.
 
@@ -190,7 +192,24 @@ Policies execute in registration order. Selection and parsing errors are retaine
 
 ## Registering extensions
 
-`Guard\Extension\Registry` registers structures and policies. `BuiltinExtension` registers the built-in structurers and the policy bindings produced by the configuration loader. A supplied registry is complete: register `BuiltinExtension` first when extending the standard checks.
+`Guard\Extension\Registry` registers structures and policies. `BuiltinExtension` registers the built-in structurers and the policy bindings produced by the configuration loader. Declare external extensions in `guard.yaml`; the ordinary `vendor/bin/guard` command loads them through the project's Composer autoloader before collecting any policy inputs:
+
+```yaml
+version: 1
+extensions:
+  Example\Guard\XmlSchemaExtension:
+    files: ['**/*.xml']
+    exclude: ['vendor/**']
+    schema: schemas/catalog.xsd
+```
+
+Implement `Guard\Extension\Extension::register(Registry): void` to register policies and reusable structures. An extension with no options needs a public no-argument constructor and is configured with `Your\Extension: {}`. An extension with options implements `Guard\Extension\ConfigurableExtension`, which adds `public static function fromOptions(array $options): self`. The factory validates its own option names and values, returns an extension instance, and reports invalid options with `PolicyException`. Its constructor may take any dependencies; Guard calls the factory. Registration and factories declare work, while collection and evaluation perform it.
+
+Only explicitly configured classes are loaded; Guard does not scan installed packages for extensions or require arbitrary PHP files from YAML. Add project extensions to Composer's `autoload` or `autoload-dev` and run `composer dump-autoload`. Install third-party extensions with Composer and use their documented class names. Classes must implement the interface; missing classes, unsupported options and duplicate registry ids produce a named configuration error and exit code 2. Extension code runs as trusted project code.
+
+Configured extensions register in configuration order after the built-in registrations. Namespace policy and structure ids, for example `company.xml-schema`, to avoid collisions. Each run constructs optionless extensions or invokes each configured factory again, using a registry scoped to that run. All policy input requirements then enter the same Collector: an extension adds neither another directory scan nor another read or parse of an already-requested file and structure.
+
+Programmatic registration is also supported. A supplied registry contains the caller's base registrations: register `BuiltinExtension` first when extending the standard checks. Guard clones this registry and appends configured extensions for each run, so repeated runs do not accumulate registrations.
 
 ```php
 use Guard\Cli\Application;
@@ -232,7 +251,34 @@ Register an additional representation with `addStructure($id, $structurer)` and 
 
 Register a policy with `addPolicy($id, $policy, $reportOrder = 0)`. Multiple policies can request the same files and structures; collection and structuring are shared without requiring an extension to implement its own scanner. Identical proposed file replacements are combined, while conflicting replacements fail before writes. Implement `Extension::register(Registry): void` to package registrations.
 
-`Context` supplies the project configuration, policy-file path and repair mode. Policy-specific options belong in policy constructors. Extension discovery through Composer and additional YAML extension keys are not enabled. `Pipeline::run(Context): Plan` also runs a registry without CLI output or writes. Collection caches are scoped to one invocation, so subsequent checks observe file changes.
+`Context` supplies the project configuration, policy-file path and repair mode. Policy-specific options belong in policy constructors. Paths declared by a policy are relative to the main configuration file's directory, including when its extension declaration is imported. `Pipeline::run(Context): Plan` also runs configured extensions without CLI output or writes. Collection caches are scoped to one invocation, so subsequent checks observe file changes.
+
+### XML Schema extension example
+
+The complete, integration-tested [XML Schema extension](../examples/xml-schema/src/XmlSchemaExtension.php), [policy](../examples/xml-schema/src/XmlSchemaPolicy.php) and [validator](../examples/xml-schema/src/SchemaValidation.php) live outside Guard's production namespace and autoload map. Copy these three files into your project's `tools/guard/` directory and add this entry to your existing Composer configuration, then run `composer dump-autoload`:
+
+```json
+{
+  "autoload-dev": {
+    "psr-4": {"Example\\Guard\\": "tools/guard/"}
+  }
+}
+```
+
+Use the `extensions` configuration above and provide `schemas/catalog.xsd`. Run `vendor/bin/guard check` normally. The example defaults to `**/*.xml` and excludes `vendor/**`; its options can change both. Its policy declares two inputs:
+
+```php
+return [
+    'documents' => new Input(new Selection('patterns', $this->files, $this->exclude, '', true), 'xml'),
+    'schema' => new Input(new Selection('files', [$this->schema], [], '', true), 'xml'),
+];
+```
+
+Both request the existing `xml` structure. The extension reuses `ParsedDocument`, takes an isolated `copy()` of its `XmlDocument`, and accesses `dom()` to validate the parsed DOM. It does not reread or reparse the target XML. XSD bytes are also collected once, and an existing XML field policy shares the same parsed input. Extensions needing another representation can register a `Structurer` instead of adding a collector.
+
+The example uses PHP's [`DOMDocument::schemaValidateSource()`](https://www.php.net/manual/en/domdocument.schemavalidatesource.php), which supports XSD 1.0. Validation compiles the supplied schema for each DOM validation; PHP's DOM API does not expose a reusable compiled schema. The example accepts self-contained XSD and rejects `xs:include`, `xs:import` and `xs:redefine`, so libxml cannot read undeclared schema dependencies. Supporting multi-file schemas would require declaring those dependencies as inputs and supplying them to a suitable validator.
+
+Schema violations return required findings with the target path, schema path and validation details, producing exit code 1 in text and JSON reports. They also block proposed repairs. Malformed XML, missing inputs and invalid schemas produce exit code 2. The example proposes no repairs; it checks the collected snapshot. `ParsedDocument::copy()` keeps DOM mutations and validation side effects isolated from other policies.
 
 ## Refactoring compatibility
 

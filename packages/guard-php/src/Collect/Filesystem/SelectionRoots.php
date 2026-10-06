@@ -28,7 +28,7 @@ final class SelectionRoots
         $paths = new Path();
         foreach ($selection->paths as $path) {
             if ($selection->mode === 'patterns') {
-                (new PatternRoots($this->snapshot))->seed($root, $id, $path, $queue, $result);
+                (new PatternRoots($this->snapshot))->seed($root, $id, $path, $queue, $result, $selection);
                 continue;
             }
             $absolute = $selection->confined ? (new TargetPath($this->snapshot))->resolve($root, $path) : $paths->absolute($root, $path);

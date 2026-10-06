@@ -55,6 +55,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Config\Reader\DirectoryRuleListConfigReader
  * @uses \Guard\Config\Reader\DocumentConfigReader
  * @uses \Guard\Config\Reader\DocumentListConfigReader
+ * @uses \Guard\Config\Reader\ExtensionConfigReader
  * @uses \Guard\Config\Reader\HeadingPolicyReader
  * @uses \Guard\Config\Reader\LimitConfigReader
  * @uses \Guard\Config\Reader\MetricPolicyReader
@@ -202,6 +203,7 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DirectoryRuleListConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentListConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\HeadingPolicyReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\MetricPolicyReader::class)]
@@ -304,6 +306,25 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
 final class CollectorTest extends TestCase
 {
+    public function testCollectAppliesGlobExclusionsToTraversalLiteralRootsAndExactPatterns(): void
+    {
+        $project = new \Tests\Support\Project(['src/a.xml' => '<a/>', 'src/nested/b.xml' => '<b/>', 'src/skip/c.xml' => '<broken', 'src/c.json' => '{']);
+        try {
+            $filesystem = new \Tests\Support\CountingFilesystem();
+            $inputs = [
+                'xml' => new \Guard\Collect\Input(new \Guard\Collect\Selection('patterns', ['src/**/*', 'src/skip/*.xml', 'src/skip/c.xml', 'src/c.json'], ['src/skip'], '.xml'), 'xml'),
+                'metadata' => new \Guard\Collect\Input(new \Guard\Collect\Selection('files', ['src/skip/c.xml'])),
+            ];
+            $sets = (new \Guard\Collect\Collector($filesystem))->collect($project->root, $inputs, ['xml' => new \Guard\Structure\DocumentStructurer('xml')]);
+            self::assertSame(['src/a.xml', 'src/nested/b.xml'], array_keys($sets['xml']->files));
+            self::assertSame(['src/skip/c.xml'], array_keys($sets['metadata']->files));
+            self::assertArrayNotHasKey(realpath($project->root) . '/src/skip', $filesystem->listings);
+            self::assertCount(2, $filesystem->reads);
+            self::assertSame([1], array_values(array_unique($filesystem->reads)));
+        } finally {
+            $project->remove();
+        }
+    }
     /**
      * @throws JsonException
      * @throws \Nette\Neon\Exception

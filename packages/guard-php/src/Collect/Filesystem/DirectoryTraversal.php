@@ -44,14 +44,17 @@ final class DirectoryTraversal
                 $result = $results[$route->query];
                 $ancestors = array_merge($route->ancestors, [$identity]);
                 $candidate = $selection->mode === 'descendants' ? $paths->relative($root, $absolute) : $child;
+                if ($selection->exclude !== [] && !(new SelectionFilter())->includes($selection, $candidate)) {
+                    continue;
+                }
                 if ($selection->mode === 'patterns') {
                     $positions = (new GlobMatcher())->advance($route->segments, $route->positions, $name, $entry->directory, $entry->link);
                     if ($entry->directory && $positions !== []) {
                         $queue->add($absolute, new Route($route->query, $route->segments, $positions, $ancestors));
-                    } elseif ($entry->file && in_array(count($route->segments), $positions, true)) {
+                    } elseif ($entry->file && in_array(count($route->segments), $positions, true) && str_ends_with($child, $selection->suffix)) {
                         $result->addFile(new FileRecord($absolute, $child, $entry));
                     }
-                } elseif ((new SelectionFilter())->includes($selection, $candidate)) {
+                } else {
                     if ($entry->directory) {
                         $directories[$route->query][$name] = $name;
                         if (($selection->mode === 'directories' || !$entry->link) && !in_array($entry->identity, $ancestors, true)) {
@@ -66,6 +69,18 @@ final class DirectoryTraversal
                 }
             }
         }
+        $this->listings($relative, $routes, $inputs, $results, $files, $directories);
+    }
+    /**
+     * Completes directory queries from the children accumulated during traversal, without file reads.
+     * @param list<Route> $routes
+     * @param array<string, Input> $inputs
+     * @param array<string, QueryResult> $results
+     * @param array<string, array<string, string>> $files
+     * @param array<string, array<string, string>> $directories
+     */
+    public function listings(string $relative, array $routes, array $inputs, array $results, array $files, array $directories): void
+    {
         foreach ($routes as $route) {
             if ($inputs[$route->query]->selection->mode === 'directories') {
                 $fileNames = array_values($files[$route->query] ?? []);

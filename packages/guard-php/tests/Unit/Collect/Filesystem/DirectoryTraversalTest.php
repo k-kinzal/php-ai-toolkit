@@ -50,6 +50,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Config\Reader\DirectoryRuleListConfigReader
  * @uses \Guard\Config\Reader\DocumentConfigReader
  * @uses \Guard\Config\Reader\DocumentListConfigReader
+ * @uses \Guard\Config\Reader\ExtensionConfigReader
  * @uses \Guard\Config\Reader\HeadingPolicyReader
  * @uses \Guard\Config\Reader\LimitConfigReader
  * @uses \Guard\Config\Reader\MetricPolicyReader
@@ -168,6 +169,7 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DirectoryRuleListConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentListConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\HeadingPolicyReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\MetricPolicyReader::class)]
@@ -245,6 +247,18 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\SourceMetrics::class)]
 final class DirectoryTraversalTest extends TestCase
 {
+    public function testListingsSortsSelectedChildrenWithoutReadingTheFilesystem(): void
+    {
+        $filesystem = new \Tests\Support\CountingFilesystem();
+        $traversal = new \Guard\Collect\Filesystem\DirectoryTraversal(new \Guard\Collect\Filesystem\Snapshot($filesystem));
+        $inputs = ['dir' => new \Guard\Collect\Input(new \Guard\Collect\Selection('directories', ['src']))];
+        $result = new \Guard\Collect\Filesystem\QueryResult();
+        $traversal->listings('src', [new \Guard\Collect\Filesystem\Route('dir', [], [], [])], $inputs, ['dir' => $result], ['dir' => ['B' => 'B', 'A' => 'A']], ['dir' => ['z' => 'z', 'a' => 'a']]);
+        self::assertSame(['A', 'B'], $result->directories()['src']->fileNames);
+        self::assertSame(['a', 'z'], $result->directories()['src']->dirNames);
+        self::assertSame([], $filesystem->inspections);
+        self::assertSame([], $filesystem->reads);
+    }
     public function testVisitProjectsOneDirectoryIntoIndependentSelections(): void
     {
         $project = new \Tests\Support\Project(['dir/A.php' => '<?php', 'dir/B.txt' => 'text']);

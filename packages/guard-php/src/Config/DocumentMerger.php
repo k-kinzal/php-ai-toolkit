@@ -27,6 +27,11 @@ final class DocumentMerger
         $merged = $this->mergeSection($merged, $overlay, 'metrics');
         $merged = $this->mergeSection($merged, $overlay, 'structure');
         $merged = $this->mergeSection($merged, $overlay, 'documentation');
+        if (array_key_exists('extensions', $overlay)) {
+            $extensions = (new Reader\ExtensionConfigReader())->read($overlay['extensions']);
+            $current = (new Reader\ExtensionConfigReader())->read($merged['extensions'] ?? []);
+            $merged['extensions'] = array_replace($current, $extensions);
+        }
         if (!array_key_exists('configuration', $overlay)) {
             return $merged;
         }

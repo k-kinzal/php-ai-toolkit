@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Guard\Config;
 
 use Guard\Config\Reader\DirectoryPolicyReader;
+use Guard\Config\Reader\ExtensionConfigReader;
 use Guard\Config\Reader\HeadingPolicyReader;
 use Guard\Config\Reader\MetricPolicyReader;
 use Guard\Extension\PolicyBinding;
@@ -43,6 +44,6 @@ final class ConfigurationLoader
          * Field failures historically take precedence, while source findings are reported first.
          */
         array_unshift($policies, new PolicyBinding('field-constraints', new FieldConstraints($rules), 30));
-        return new Configuration($root, $policies);
+        return new Configuration($root, $policies, (new ExtensionConfigReader())->read($data['extensions'] ?? []));
     }
 }

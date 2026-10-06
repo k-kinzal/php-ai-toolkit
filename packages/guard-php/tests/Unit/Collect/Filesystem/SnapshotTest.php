@@ -44,6 +44,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Config\Reader\DirectoryRuleListConfigReader
  * @uses \Guard\Config\Reader\DocumentConfigReader
  * @uses \Guard\Config\Reader\DocumentListConfigReader
+ * @uses \Guard\Config\Reader\ExtensionConfigReader
  * @uses \Guard\Config\Reader\HeadingPolicyReader
  * @uses \Guard\Config\Reader\LimitConfigReader
  * @uses \Guard\Config\Reader\MetricPolicyReader
@@ -156,6 +157,7 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DirectoryRuleListConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentListConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\HeadingPolicyReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\MetricPolicyReader::class)]

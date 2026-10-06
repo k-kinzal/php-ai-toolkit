@@ -59,6 +59,7 @@ use Tests\Support\Project;
  * @uses \Guard\Config\Reader\DirectoryRuleListConfigReader
  * @uses \Guard\Config\Reader\DocumentConfigReader
  * @uses \Guard\Config\Reader\DocumentListConfigReader
+ * @uses \Guard\Config\Reader\ExtensionConfigReader
  * @uses \Guard\Config\Reader\HeadingPolicyReader
  * @uses \Guard\Config\Reader\LimitConfigReader
  * @uses \Guard\Config\Reader\MetricPolicyReader
@@ -98,6 +99,7 @@ use Tests\Support\Project;
  * @uses \Guard\Execution\Plan
  * @uses \Guard\Execution\TargetPath
  * @uses \Guard\Extension\BuiltinExtension
+ * @uses \Guard\Extension\ExtensionLoader
  * @uses \Guard\Extension\PolicyBinding
  * @uses \Guard\Extension\Registry
  * @uses \Guard\Init\Initializer
@@ -244,6 +246,7 @@ use Tests\Support\Project;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DirectoryRuleListConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentListConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\HeadingPolicyReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\MetricPolicyReader::class)]
@@ -283,6 +286,7 @@ use Tests\Support\Project;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Plan::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\TargetPath::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\BuiltinExtension::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\ExtensionLoader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\PolicyBinding::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(Registry::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Initializer::class)]

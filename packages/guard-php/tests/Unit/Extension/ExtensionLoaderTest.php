@@ -1,0 +1,223 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\Extension;
+
+use Guard\Extension\BuiltinExtension;
+use Guard\Extension\ExtensionLoader;
+use Guard\Extension\Registry;
+use Guard\Policy\PolicyException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+use Tests\Support\RequiredReadmeExtension;
+use Tests\Support\XmlSchemaExample;
+
+/**
+ * @covers \Guard\Extension\ExtensionLoader
+ * @uses \Guard\Config\Schema
+ * @uses \Guard\Collect\DirectoryListing
+ * @uses \Guard\Collect\FileRecord
+ * @uses \Guard\Collect\FileSet
+ * @uses \Guard\Collect\Filesystem\Entry
+ * @uses \Guard\Collect\Input
+ * @uses \Guard\Collect\InputSet
+ * @uses \Guard\Collect\Selection
+ * @uses \Guard\Collect\StructuredFile
+ * @uses \Guard\Config\Configuration
+ * @uses \Guard\Document\DataDocument
+ * @uses \Guard\Document\DocumentNode
+ * @uses \Guard\Document\Json5Reader
+ * @uses \Guard\Document\PhpConfigReader
+ * @uses \Guard\Document\PhpDocument
+ * @uses \Guard\Document\Pointer
+ * @uses \Guard\Document\Selection
+ * @uses \Guard\Document\TomlEncoder
+ * @uses \Guard\Document\XmlDocument
+ * @uses \Guard\Execution\Context
+ * @uses \Guard\Execution\FileChange
+ * @uses \Guard\Execution\Plan
+ * @uses \Guard\Extension\BuiltinExtension
+ * @uses \Guard\Extension\PolicyBinding
+ * @uses \Guard\Extension\Registry
+ * @uses \Guard\Policy\Constraint
+ * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Structure\DocumentStructurer
+ * @uses \Guard\Structure\Markdown\AtxHeadingMatcher
+ * @uses \Guard\Structure\Markdown\BlockMarkerMatcher
+ * @uses \Guard\Structure\Markdown\Block\BlockLineScanner
+ * @uses \Guard\Structure\Markdown\Fence
+ * @uses \Guard\Structure\Markdown\FenceMatcher
+ * @uses \Guard\Structure\Markdown\Heading
+ * @uses \Guard\Structure\Markdown\HeadingList
+ * @uses \Guard\Structure\Markdown\HeadingParser
+ * @uses \Guard\Structure\Markdown\HeadingStructurer
+ * @uses \Guard\Structure\Markdown\HeadingTextNormalizer
+ * @uses \Guard\Structure\Markdown\HtmlBlockMatcher
+ * @uses \Guard\Structure\Markdown\LineIndentation
+ * @uses \Guard\Structure\Markdown\LineScanner
+ * @uses \Guard\Structure\Markdown\MarkdownLineSplitter
+ * @uses \Guard\Structure\Markdown\ParserState
+ * @uses \Guard\Structure\Markdown\SetextUnderlineMatcher
+ * @uses \Guard\Structure\ParsedDocument
+ * @uses \Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader
+ * @uses \Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric
+ * @uses \Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser
+ * @uses \Guard\Structure\Php\Complexity\CyclomaticComplexityCalculator
+ * @uses \Guard\Structure\Php\Complexity\CyclomaticComplexityState
+ * @uses \Guard\Structure\Php\Complexity\CyclomaticDecisionWeight
+ * @uses \Guard\Structure\Php\FileMetric\FileMetric
+ * @uses \Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary
+ * @uses \Guard\Structure\Php\FunctionMetric\ArrowFunctionMetricReader
+ * @uses \Guard\Structure\Php\FunctionMetric\BlockFunctionMetricReader
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionBodyLocator
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionLineParser
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionMetric
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionMetricComplexityAssigner
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionMetricParser
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionNameReader
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionScanState
+ * @uses \Guard\Structure\Php\FunctionMetric\NestedFunctionMetricRange
+ * @uses \Guard\Structure\Php\MetricParser
+ * @uses \Guard\Structure\Php\SourceMetrics
+ * @uses \Guard\Structure\Php\TokenParser
+ * @uses \Guard\Structure\Php\Token\ClassLikeTokenMatcher
+ * @uses \Guard\Structure\Php\Token\CodeTokenLineResolver
+ * @uses \Guard\Structure\Php\Token\PhpTokenNavigator
+ * @uses \Guard\Structure\Php\Token\TokenLineCounter
+ * @uses \Guard\Structure\Php\Tokens
+ * @uses \Guard\Structure\Source
+ */
+#[CoversClass(ExtensionLoader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\DirectoryListing::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileRecord::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Entry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Input::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\InputSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Selection::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\StructuredFile::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\DataDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\DocumentNode::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Json5Reader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\PhpConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\PhpDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Pointer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Selection::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\TomlEncoder::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\XmlDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Context::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\FileChange::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Plan::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(BuiltinExtension::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\PolicyBinding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(Registry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Constraint::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(PolicyException::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Finding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\DocumentStructurer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\AtxHeadingMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\BlockMarkerMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Block\BlockLineScanner::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Fence::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\FenceMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Heading::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingList::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingStructurer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingTextNormalizer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HtmlBlockMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\LineIndentation::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\LineScanner::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\MarkdownLineSplitter::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\ParserState::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\SetextUnderlineMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\ParsedDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticComplexityCalculator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticComplexityState::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticDecisionWeight::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FileMetric\FileMetric::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\ArrowFunctionMetricReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\BlockFunctionMetricReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionBodyLocator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionLineParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetric::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetricComplexityAssigner::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetricParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionNameReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionScanState::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\NestedFunctionMetricRange::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\MetricParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\SourceMetrics::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\TokenParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\ClassLikeTokenMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\CodeTokenLineResolver::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\PhpTokenNavigator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Schema::class)]
+final class ExtensionLoaderTest extends TestCase
+{
+    public function testRegisterLoadsAnOptionlessExtension(): void
+    {
+        $registry = new Registry();
+        (new ExtensionLoader())->register([RequiredReadmeExtension::class => []], $registry);
+        self::assertSame('readme', $registry->policies()[0]->id);
+    }
+
+    public function testCreateReturnsAnExtensionWithoutRegisteringIt(): void
+    {
+        self::assertInstanceOf(RequiredReadmeExtension::class, (new ExtensionLoader())->create(RequiredReadmeExtension::class, []));
+    }
+
+    public function testRegisterUsesTheConfigurationFactoryWithoutCallingItsConstructor(): void
+    {
+        XmlSchemaExample::load();
+        $registry = new Registry();
+        (new ExtensionLoader())->register(['Example\\Guard\\XmlSchemaExtension' => ['schema' => 'schema.xsd']], $registry);
+        self::assertSame('example.xml-schema', $registry->policies()[0]->id);
+    }
+
+    /**
+     * @dataProvider providerInvalidExtensions
+     * @param array<string, mixed> $options
+     */
+    #[DataProvider('providerInvalidExtensions')]
+    public function testRegisterReportsTheClassAndHowToFixAnInvalidExtension(string $class, array $options, string $message): void
+    {
+        XmlSchemaExample::load();
+        $this->expectException(PolicyException::class);
+        $this->expectExceptionMessage('Extension "' . $class . '":');
+        $this->expectExceptionMessage($message);
+        (new ExtensionLoader())->register([$class => $options], new Registry());
+    }
+
+    /**
+     * @return iterable<string, array{string, array<string, mixed>, string}>
+     */
+    public static function providerInvalidExtensions(): iterable
+    {
+        yield 'missing' => ['Missing\\GuardExtension', [], 'composer dump-autoload'];
+        yield 'wrong contract' => [Registry::class, [], 'must implement Guard\\Extension\\Extension'];
+        yield 'required constructor' => [BuiltinExtension::class, [], 'public no-argument constructor'];
+        yield 'unsupported options' => [RequiredReadmeExtension::class, ['typo' => true], 'Implement fromOptions()'];
+        yield 'factory validation' => ['Example\\Guard\\XmlSchemaExtension', [], 'schema must be a non-empty string'];
+    }
+
+    public function testRegisterReportsRegistrationConflictsWithTheirExtensionClass(): void
+    {
+        $registry = new Registry();
+        (new RequiredReadmeExtension())->register($registry);
+        $this->expectException(PolicyException::class);
+        $this->expectExceptionMessage('Extension "' . RequiredReadmeExtension::class . '": Policy id "readme"');
+        (new ExtensionLoader())->register([RequiredReadmeExtension::class => []], $registry);
+    }
+}

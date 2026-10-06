@@ -23,6 +23,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Collect\Input
  * @uses \Guard\Collect\InputSet
  * @uses \Guard\Collect\Matching\PathPatternMatcher
+ * @uses \Guard\Collect\Matching\SelectionFilter
  * @uses \Guard\Collect\Selection
  * @uses \Guard\Collect\StructuredFile
  * @uses \Guard\Config\Assignment\ApplyRuleMatcher
@@ -49,6 +50,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Config\Reader\DirectoryRuleListConfigReader
  * @uses \Guard\Config\Reader\DocumentConfigReader
  * @uses \Guard\Config\Reader\DocumentListConfigReader
+ * @uses \Guard\Config\Reader\ExtensionConfigReader
  * @uses \Guard\Config\Reader\HeadingPolicyReader
  * @uses \Guard\Config\Reader\LimitConfigReader
  * @uses \Guard\Config\Reader\MetricPolicyReader
@@ -141,6 +143,7 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Input::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\InputSet::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\PathPatternMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\SelectionFilter::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Selection::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\StructuredFile::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Assignment\ApplyRuleMatcher::class)]
@@ -167,6 +170,7 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DirectoryRuleListConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentListConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\HeadingPolicyReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\MetricPolicyReader::class)]

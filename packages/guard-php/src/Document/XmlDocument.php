@@ -50,6 +50,14 @@ final class XmlDocument
         $this->document = clone $this->document;
     }
     /**
+     * Exposes the parsed DOM for XML policies, including XSD validation, without reparsing.
+     * Obtain this document through ParsedDocument::copy() to isolate policy mutations.
+     */
+    public function dom(): DOMDocument
+    {
+        return $this->document;
+    }
+    /**
      * @throws PolicyException when a selector is invalid or ambiguous
      */
     public function node(string $selector): ?DOMNode

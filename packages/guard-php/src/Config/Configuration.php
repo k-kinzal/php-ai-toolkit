@@ -9,17 +9,21 @@ use Guard\Extension\PolicyBinding;
 /** A project root and ordinary policy registrations, without tool-specific compartments.
  * @property-read string $root
  * @property-read list<PolicyBinding> $policies
+ * @property-read array<string, array<string, mixed>> $extensions
  */
 final class Configuration
 {
     /**
      * @param list<PolicyBinding> $policies
+     * @param array<string, array<string, mixed>> $extensions
      */
     public function __construct(
         /** @readonly */
         private string $root,
         /** @readonly */
         private array $policies,
+        /** @readonly */
+        public array $extensions = [],
     ) {
     }
     /**

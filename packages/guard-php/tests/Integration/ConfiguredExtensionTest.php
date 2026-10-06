@@ -2,18 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Policy;
+namespace Tests\Integration;
 
-use Guard\Config\Configuration;
-use Guard\Execution\Context;
-use Guard\Policy\PolicyException;
-use JsonException;
+use Guard\Cli\Application;
+use Guard\Collect\Collector;
+use Guard\Config\ConfigurationLoader;
+use Guard\Execution\Pipeline;
+use Guard\Extension\Registry;
+use Guard\Structure\DocumentStructurer;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Tests\Support\CountingFilesystem;
+use Tests\Support\CountingStructurer;
 use Tests\Support\Project;
+use Tests\Support\XmlSchemaExample;
 
 /**
- * @covers \Guard\Policy\HeadingStructure
+ * @covers \Guard\Execution\Pipeline
+ * @covers \Guard\Document\XmlDocument
+ * @medium
+ * @uses \Guard\Cli\Application
+ * @uses \Guard\Cli\Arguments
  * @uses \Guard\Collect\Collector
  * @uses \Guard\Collect\DirectoryListing
  * @uses \Guard\Collect\FileRecord
@@ -64,11 +74,13 @@ use Tests\Support\Project;
  * @uses \Guard\Config\Reader\HeadingPolicyReader
  * @uses \Guard\Config\Reader\LimitConfigReader
  * @uses \Guard\Config\Reader\MetricPolicyReader
+ * @uses \Guard\Config\Reader\ScanConfigReader
  * @uses \Guard\Config\RuleReader
  * @uses \Guard\Config\Schema
  * @uses \Guard\Config\Validation\DirectoryConfigScalarReader
  * @uses \Guard\Config\Validation\DirectoryConfigStringListReader
  * @uses \Guard\Config\Validation\HeadingConfigKeyValidator
+ * @uses \Guard\Config\Validation\HeadingConfigStringListReader
  * @uses \Guard\Config\Validation\MetricConfigKeyValidator
  * @uses \Guard\Config\Validation\MetricConfigScalarReader
  * @uses \Guard\Config\Validation\MetricConfigStringListReader
@@ -89,20 +101,39 @@ use Tests\Support\Project;
  * @uses \Guard\Document\Pointer
  * @uses \Guard\Document\Selection
  * @uses \Guard\Document\TomlEncoder
- * @uses \Guard\Document\XmlDocument
+ * @uses \Guard\Execution\AtomicWriter
+ * @uses \Guard\Execution\ChangeSet
  * @uses \Guard\Execution\Context
  * @uses \Guard\Execution\FileChange
  * @uses \Guard\Execution\Plan
  * @uses \Guard\Execution\TargetPath
  * @uses \Guard\Extension\BuiltinExtension
+ * @uses \Guard\Extension\ExtensionLoader
  * @uses \Guard\Extension\PolicyBinding
  * @uses \Guard\Extension\Registry
+ * @uses \Guard\Init\Initializer
+ * @uses \Guard\Init\LegacyMigration
+ * @uses \Guard\Init\Legacy\DirectoryConfiguration
+ * @uses \Guard\Init\Legacy\DirectoryReportConfig
+ * @uses \Guard\Init\Legacy\DirectoryReportReader
+ * @uses \Guard\Init\Legacy\HeadingConfiguration
+ * @uses \Guard\Init\Legacy\HeadingReportConfig
+ * @uses \Guard\Init\Legacy\HeadingReportReader
+ * @uses \Guard\Init\Legacy\MetricConfiguration
+ * @uses \Guard\Init\Legacy\MetricReportConfig
+ * @uses \Guard\Init\Legacy\MetricReportReader
+ * @uses \Guard\Init\PresetCatalog
+ * @uses \Guard\Init\PresetOverrides
+ * @uses \Guard\Init\PresetSelector
+ * @uses \Guard\Init\Recommendations
+ * @uses \Guard\Init\ToolDetector
  * @uses \Guard\Policy\Comparison\HeadingHunkClassifier
  * @uses \Guard\Policy\Comparison\HeadingSequenceAligner
  * @uses \Guard\Policy\Comparison\HeadingStructureComparator
  * @uses \Guard\Policy\Constraint
  * @uses \Guard\Policy\DirectoryEntries
  * @uses \Guard\Policy\FieldConstraints
+ * @uses \Guard\Policy\HeadingStructure
  * @uses \Guard\Policy\Inspection\CaseConventionMatcher
  * @uses \Guard\Policy\Inspection\ChildCountInspector
  * @uses \Guard\Policy\Inspection\DepthInspector
@@ -129,6 +160,7 @@ use Tests\Support\Project;
  * @uses \Guard\Reporting\HeadingViolation
  * @uses \Guard\Reporting\HeadingViolationFactory
  * @uses \Guard\Reporting\MetricViolation
+ * @uses \Guard\Reporting\Reporter
  * @uses \Guard\Structure\DocumentStructurer
  * @uses \Guard\Structure\Markdown\AtxHeadingMatcher
  * @uses \Guard\Structure\Markdown\BlockMarkerMatcher
@@ -175,8 +207,11 @@ use Tests\Support\Project;
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
  */
-#[CoversClass(\Guard\Policy\HeadingStructure::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Collector::class)]
+#[CoversClass(Pipeline::class)]
+#[CoversClass(\Guard\Document\XmlDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(Application::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Arguments::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(Collector::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\DirectoryListing::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileRecord::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileSet::class)]
@@ -201,8 +236,8 @@ use Tests\Support\Project;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Assignment\ApplyRuleMatcher::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Assignment\FilePolicyAssigner::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Assignment\FilePolicyAssignment::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ConfigurationLoader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(ConfigurationLoader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\DocumentMerger::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ImportResolver::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyConfig::class)]
@@ -226,11 +261,13 @@ use Tests\Support\Project;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\HeadingPolicyReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\MetricPolicyReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ScanConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\RuleReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Schema::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\DirectoryConfigScalarReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\DirectoryConfigStringListReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\HeadingConfigKeyValidator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\HeadingConfigStringListReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigKeyValidator::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigScalarReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigStringListReader::class)]
@@ -251,20 +288,39 @@ use Tests\Support\Project;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Pointer::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Selection::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\TomlEncoder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\XmlDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Context::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\AtomicWriter::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\ChangeSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Context::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\FileChange::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Plan::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\TargetPath::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\BuiltinExtension::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\ExtensionLoader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\Registry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(Registry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Initializer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\LegacyMigration::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Legacy\DirectoryConfiguration::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Legacy\DirectoryReportConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Legacy\DirectoryReportReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Legacy\HeadingConfiguration::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Legacy\HeadingReportConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Legacy\HeadingReportReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Legacy\MetricConfiguration::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Legacy\MetricReportConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Legacy\MetricReportReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\PresetCatalog::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\PresetOverrides::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\PresetSelector::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Recommendations::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\ToolDetector::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\HeadingHunkClassifier::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\HeadingSequenceAligner::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\HeadingStructureComparator::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Constraint::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\DirectoryEntries::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FieldConstraints::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\HeadingStructure::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\CaseConventionMatcher::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\ChildCountInspector::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\DepthInspector::class)]
@@ -283,7 +339,7 @@ use Tests\Support\Project;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FunctionMetricViolationBuilder::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\MetricLimitInspector::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\MetricLimits::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(PolicyException::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyException::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Rule::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\RuleEvaluator::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\DirectoryViolation::class)]
@@ -291,7 +347,8 @@ use Tests\Support\Project;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\HeadingViolation::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\HeadingViolationFactory::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\MetricViolation::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\DocumentStructurer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Reporter::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(DocumentStructurer::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\AtxHeadingMatcher::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\BlockMarkerMatcher::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Block\BlockLineScanner::class)]
@@ -336,55 +393,187 @@ use Tests\Support\Project;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
-final class HeadingStructureTest extends TestCase
+#[\PHPUnit\Framework\Attributes\Medium]
+final class ConfiguredExtensionTest extends TestCase
 {
-    /**
-     * @throws JsonException
-     * @throws \Nette\Neon\Exception
-     */
-    public function testEvaluateChecksTheSnapshotAndFiltersDepthOnlyWhenApplyingThePolicy(): void
+    public function testSchemaViolationsBlockBuiltInRepairs(): void
     {
-        $project = new Project(['README.md' => "Project\n=======\n\n### Added detail\n", 'extra.md' => '# Extra', 'guard.yaml' => "version: 1\ndocumentation:\n  files:\n    README.md: {headings: ['# Project'], max_level: 1}\n  scan: ['*.md', '**/*.md']\n"]);
+        XmlSchemaExample::load();
+        $project = new Project([
+            'guard.yaml' => XmlSchemaExample::configuration() . "configuration:\n  - {id: mode, file: app.json, select: /mode, assert: {equals: A}}\n",
+            'app.json' => '{"mode":"B"}',
+            'schema.xsd' => XmlSchemaExample::schema(),
+            'file.xml' => '<count>0</count>',
+        ]);
         try {
-            [$policy, $subject, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'heading-structure', false);
-            unlink($project->root . '/README.md');
-            unlink($project->root . '/extra.md');
-            $plan = $policy->evaluate($subject, $context);
-            self::assertCount(1, $plan->findings);
-            self::assertSame('documentation.undeclared_document', $plan->findings[0]->rule);
-            self::assertSame('extra.md', $plan->findings[0]->path);
+            $output = '';
+            $app = new Application($project->root, static function (string $text) use (&$output): void {
+                $output .= $text;
+            });
+            $before = $project->files();
+            self::assertSame(1, $app->run(['apply']));
+            self::assertStringContainsString('blocked:', $output);
+            self::assertSame($before, $project->files());
+            $project->write('file.xml', '<count>1</count>');
+            self::assertSame(0, $app->run(['apply']));
+            self::assertSame(['mode' => 'A'], json_decode($project->files()['app.json'], true, 512, JSON_THROW_ON_ERROR));
         } finally {
             $project->remove();
         }
     }
 
-
-
-    /**
-     * @throws JsonException
-     * @throws \Nette\Neon\Exception
-     */
-    public function testUndeclaredRespectsExclusionsAndReportsFirstMatchOnce(): void
+    public function testConfiguredXmlPolicyDiscoversRootAndNestedFilesAndReportsThroughCli(): void
     {
-        $project = new Project(['README.md' => '# Main', 'extra.md' => '# Extra', 'skip.md' => '# Skip', 'guard.yaml' => "version: 1\ndocumentation:\n  files: {README.md: {headings: ['# Main']}}\n  scan: ['*.md', '**/*.md']\n  exclude: [skip.md]\n"]);
+        XmlSchemaExample::load();
+        $project = new Project([
+            'guard.yaml' => XmlSchemaExample::configuration(),
+            'schema.xsd' => XmlSchemaExample::schema(),
+            'valid.xml' => '<count>1</count>',
+            'nested/invalid.xml' => '<count>0</count>',
+            'ignored.json' => '{',
+            'vendor/ignored.xml' => '<broken',
+        ]);
         try {
-            [$policy, $inputs, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'heading-structure');
-            $plan = $policy->evaluate($inputs, $context);
-            self::assertCount(1, $plan->findings);
-            self::assertSame('extra.md', $plan->findings[0]->path);
-            self::assertStringContainsString('*.md', $plan->findings[0]->message);
+            $output = '';
+            $app = new Application($project->root, static function (string $text) use (&$output): void {
+                $output .= $text;
+            });
+            self::assertSame(1, $app->run(['check', '--format=json']));
+            $report = json_decode($output, true, 512, JSON_THROW_ON_ERROR);
+            self::assertStringContainsString('nested/invalid.xml', $output);
+            self::assertStringContainsString('example.xml-schema', $output);
+            self::assertSame(['nested/invalid.xml'], array_column($report['findings'], 'path'));
+            $before = $project->files();
+            self::assertSame(1, $app->run(['apply']));
+            self::assertSame($before, $project->files());
+            $project->write('nested/invalid.xml', '<count>3</count>');
+            $output = '';
+            self::assertSame(0, $app->run(['check']));
+            self::assertSame("Guard passed.\n", $output);
         } finally {
             $project->remove();
         }
     }
-    /**
 
-     */
-    public function testInputsDeclaresTheRequiredStructureWithoutFilesystemAccess(): void
+    public function testImportedExtensionCanBeOverriddenAndRunsAlongsideBuiltInChecks(): void
     {
-        $policy = new \Guard\Policy\HeadingStructure((new \Guard\Config\Reader\HeadingPolicyReader())->read(['files' => ['README.md' => ['headings' => ['# Project']]]], '/none', 'guard.yaml'));
-        $context = new Context(new Configuration('/none', []), '/none/guard.yaml', false);
-        $inputs = $policy->inputs($context);
-        self::assertSame('markdown.headings', $inputs['declared0']->structure);
+        XmlSchemaExample::load();
+        $project = new Project([
+            'guard.yaml' => XmlSchemaExample::configuration() . "imports: [presets/checks.yaml]\nconfiguration:\n  - {id: count, file: valid.xml, format: xml, select: /count, assert: {equals: '2'}}\n",
+            'presets/checks.yaml' => "extensions:\n  Example\\Guard\\XmlSchemaExtension:\n    schema: wrong.xsd\n    files: [ignored.xml]\n  Tests\\Support\\RequiredReadmeExtension: {}\n",
+            'schema.xsd' => XmlSchemaExample::schema(),
+            'valid.xml' => '<count>1</count>',
+            'README.md' => '# Project',
+        ]);
+        try {
+            $context = $project->context();
+            self::assertCount(2, $context->configuration->extensions);
+            self::assertSame(['schema' => 'schema.xsd'], $context->configuration->extensions['Example\\Guard\\XmlSchemaExtension']);
+            $plan = (new Pipeline())->run($context);
+            self::assertCount(1, $plan->findings);
+            self::assertSame('count', $plan->findings[0]->rule);
+        } finally {
+            $project->remove();
+        }
+    }
+
+    public function testConfiguredPoliciesShareXmlReadsAndParsingAcrossOverlappingSelections(): void
+    {
+        XmlSchemaExample::load();
+        $project = new Project([
+            'guard.yaml' => XmlSchemaExample::configuration() . "configuration:\n  - {id: count, file: nested/valid.xml, format: xml, select: /count, assert: {equals: '2'}}\n",
+            'schema.xsd' => XmlSchemaExample::schema(),
+            'root.xml' => '<count>1</count>',
+            'nested/valid.xml' => '<count>2</count>',
+        ]);
+        try {
+            $context = $project->context();
+            $registry = new Registry();
+            $parser = new CountingStructurer(new DocumentStructurer('xml'));
+            $registry->addStructure('xml', $parser);
+            foreach ($context->configuration->policies as $binding) {
+                $registry->addPolicy($binding->id, $binding->policy);
+            }
+            $filesystem = new CountingFilesystem();
+            $pipeline = new Pipeline($registry, new Collector($filesystem));
+            self::assertSame([], $pipeline->run($context)->findings);
+            self::assertSame(3, $parser->calls);
+            self::assertCount(3, $filesystem->reads);
+            self::assertSame([1], array_values(array_unique($filesystem->reads)));
+            self::assertCount(2, $filesystem->listings);
+            self::assertSame([1], array_values(array_unique($filesystem->listings)));
+            self::assertCount(1, $registry->policies());
+            self::assertSame([], $pipeline->run($context)->findings);
+            self::assertSame(6, $parser->calls);
+        } finally {
+            $project->remove();
+        }
+    }
+
+    /**
+     * @dataProvider invalidInputs
+     * @param array<string, string> $files
+     */
+    #[DataProvider('invalidInputs')]
+    public function testInvalidExtensionInputFailsBeforeAnyRepair(array $files, string $message): void
+    {
+        XmlSchemaExample::load();
+        $project = new Project(array_replace([
+            'guard.yaml' => XmlSchemaExample::configuration() . "configuration:\n  - {id: mode, file: app.json, select: /mode, assert: {equals: A}}\n",
+            'app.json' => '{"mode":"B"}',
+            'schema.xsd' => XmlSchemaExample::schema(),
+            'file.xml' => '<count>1</count>',
+        ], $files));
+        try {
+            $output = '';
+            $app = new Application($project->root, static function (string $text) use (&$output): void {
+                $output .= $text;
+            });
+            $before = $project->files();
+            self::assertSame(2, $app->run(['apply']));
+            self::assertStringContainsString($message, $output);
+            self::assertSame($before, $project->files());
+        } finally {
+            $project->remove();
+        }
+    }
+
+    /** @return iterable<string, array{array<string, string>, string}> */
+    public static function invalidInputs(): iterable
+    {
+        yield 'malformed xml' => [['file.xml' => '<count>'], 'file.xml: Invalid XML'];
+        yield 'malformed schema' => [['schema.xsd' => '<broken'], 'schema.xsd: Invalid XML'];
+        yield 'invalid xsd' => [['schema.xsd' => '<not-a-schema/>'], 'valid XSD 1.0'];
+        yield 'missing schema' => [['guard.yaml' => str_replace('schema.xsd', 'missing.xsd', XmlSchemaExample::configuration())], 'missing.xsd'];
+        yield 'undeclared dependency' => [['schema.xsd' => '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"><xs:include schemaLocation="other.xsd"/></xs:schema>'], 'self-contained XSD'];
+        yield 'unknown class' => [['guard.yaml' => "version: 1\nextensions: {MissingExtension: {}}\n"], 'composer dump-autoload'];
+        yield 'invalid options' => [['guard.yaml' => XmlSchemaExample::configuration() . "    typo: true\n"], 'unknown key "typo"'];
+    }
+
+    public function testExecutableLoadsTheProjectComposerAutoloaderAndResolvesConfigRelativePaths(): void
+    {
+        $package = dirname(__DIR__, 2);
+        $project = new Project([
+            'checks/guard.yaml' => XmlSchemaExample::configuration(),
+            'checks/schema.xsd' => XmlSchemaExample::schema(),
+            'checks/file.xml' => '<count>0</count>',
+            'unrelated.xml' => '<broken',
+        ]);
+        try {
+            $project->write('vendor/autoload.php', '<?php $loader = require ' . var_export($package . '/vendor/autoload.php', true) . '; $loader->addPsr4("Example\\\\Guard\\\\", ' . var_export($package . '/examples/xml-schema/src', true) . '); return $loader;');
+            $project->write('vendor/bin/guard', '<?php $GLOBALS["_composer_autoload_path"] = __DIR__ . "/../autoload.php"; require ' . var_export($package . '/bin/guard', true) . ';');
+            $process = proc_open([PHP_BINARY, $project->root . '/vendor/bin/guard', 'check', '--config=checks/guard.yaml'], [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, $project->root);
+            self::assertIsResource($process);
+            $output = stream_get_contents($pipes[1]);
+            $errors = stream_get_contents($pipes[2]);
+            fclose($pipes[1]);
+            fclose($pipes[2]);
+            self::assertSame(1, proc_close($process));
+            self::assertSame('', $errors);
+            self::assertStringContainsString('[example.xml-schema]', $output);
+            self::assertStringContainsString('file.xml', $output);
+        } finally {
+            $project->remove();
+        }
     }
 }

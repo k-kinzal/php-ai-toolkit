@@ -43,6 +43,21 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Finding::class)]
 final class QueryResultTest extends TestCase
 {
+    public function testFileSetRestoresSelectionOrderAfterPhysicalFileGrouping(): void
+    {
+        $result = new \Guard\Collect\Filesystem\QueryResult();
+        $a = new \Guard\Collect\FileRecord('/root/A', 'A', new \Guard\Collect\Filesystem\Entry(false, true, false, '/root/A'));
+        $b = new \Guard\Collect\FileRecord('/root/B', 'B', new \Guard\Collect\Filesystem\Entry(false, true, false, '/root/B'));
+        $result->addFile($b);
+        $result->addFile($a);
+        $listing = new \Guard\Collect\DirectoryListing('src', ['A', 'B'], []);
+        $result->addDirectory($listing);
+        $values = ['B' => new \Guard\Collect\StructuredFile($b, true, null, null), 'A' => new \Guard\Collect\StructuredFile($a, true, null, null)];
+        $set = $result->fileSet($values);
+        self::assertSame(['A', 'B'], array_keys($set->files));
+        self::assertSame($values['A'], $set->files['A']);
+        self::assertSame(['src' => $listing], $set->directories);
+    }
     /**
 
      */

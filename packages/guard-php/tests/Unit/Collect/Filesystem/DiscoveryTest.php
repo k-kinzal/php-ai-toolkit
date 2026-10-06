@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Collect\Filesystem;
 
+use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -54,6 +55,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Config\Reader\DirectoryRuleListConfigReader
  * @uses \Guard\Config\Reader\DocumentConfigReader
  * @uses \Guard\Config\Reader\DocumentListConfigReader
+ * @uses \Guard\Config\Reader\ExtensionConfigReader
  * @uses \Guard\Config\Reader\HeadingPolicyReader
  * @uses \Guard\Config\Reader\LimitConfigReader
  * @uses \Guard\Config\Reader\MetricPolicyReader
@@ -121,6 +123,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Reporting\HeadingViolation
  * @uses \Guard\Reporting\HeadingViolationFactory
  * @uses \Guard\Reporting\MetricViolation
+ * @uses \Guard\Structure\DocumentStructurer
  * @uses \Guard\Structure\Markdown\AtxHeadingMatcher
  * @uses \Guard\Structure\Markdown\Heading
  * @uses \Guard\Structure\Markdown\HeadingList
@@ -130,6 +133,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Php\FileMetric\FileMetric
  * @uses \Guard\Structure\Php\FunctionMetric\FunctionMetric
  * @uses \Guard\Structure\Php\SourceMetrics
+ * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
  */
 #[CoversClass(\Guard\Collect\Filesystem\Discovery::class)]
@@ -178,6 +182,7 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DirectoryRuleListConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentListConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\HeadingPolicyReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\MetricPolicyReader::class)]
@@ -245,6 +250,7 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\HeadingViolation::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\HeadingViolationFactory::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\MetricViolation::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\DocumentStructurer::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\AtxHeadingMatcher::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Heading::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingList::class)]
@@ -254,9 +260,50 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FileMetric\FileMetric::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetric::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\SourceMetrics::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
 final class DiscoveryTest extends TestCase
 {
+    /**
+     * @throws JsonException
+     * @throws \Nette\Neon\Exception
+     */
+    public function testValidateRejectsConfinedGlobSymlinksBeforeReadingFiles(): void
+    {
+        $project = new \Tests\Support\Project(['data.xml' => '<data/>']);
+        try {
+            symlink($project->root . '/data.xml', $project->root . '/alias.xml');
+            $filesystem = new \Tests\Support\CountingFilesystem();
+            $input = new \Guard\Collect\Input(new \Guard\Collect\Selection('patterns', ['*.xml'], [], '', true), 'xml');
+            $sets = (new \Guard\Collect\Collector($filesystem))->collect($project->root, ['xml' => $input], ['xml' => new \Guard\Structure\DocumentStructurer('xml')]);
+            self::assertSame([], $filesystem->reads);
+            $this->expectException(\Guard\Policy\PolicyException::class);
+            $this->expectExceptionMessage('traverses a symlink');
+            $sets['xml']->validate();
+        } finally {
+            $project->remove();
+        }
+    }
+
+    /**
+     * @throws JsonException
+     * @throws \Nette\Neon\Exception
+     */
+    public function testValidateRejectsAForbiddenGlobMatchBeforeReadingFiles(): void
+    {
+        $project = new \Tests\Support\Project(['data.xml' => '<data/>']);
+        try {
+            $filesystem = new \Tests\Support\CountingFilesystem();
+            $selection = new \Guard\Collect\Selection('patterns', ['data.xml'], [], '', false, '', $project->root . '/data.xml', 'Do not select the policy file.');
+            $sets = (new \Guard\Collect\Collector($filesystem))->collect($project->root, ['xml' => new \Guard\Collect\Input($selection, 'xml')], ['xml' => new \Guard\Structure\DocumentStructurer('xml')]);
+            self::assertSame([], $filesystem->reads);
+            $this->expectException(\Guard\Policy\PolicyException::class);
+            $this->expectExceptionMessage('Do not select the policy file.');
+            $sets['xml']->validate();
+        } finally {
+            $project->remove();
+        }
+    }
     /**
 
      */

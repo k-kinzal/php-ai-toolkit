@@ -6,6 +6,8 @@ namespace Guard\Collect\Filesystem;
 
 use Guard\Collect\DirectoryListing;
 use Guard\Collect\FileRecord;
+use Guard\Collect\FileSet;
+use Guard\Collect\StructuredFile;
 use JsonException;
 use RuntimeException;
 
@@ -47,6 +49,20 @@ final class QueryResult
     {
         ksort($this->files);
         return $this->files;
+    }
+    /**
+     * Restores selection order after shared file structuring and retains deferred selection errors.
+     * @param array<array-key, StructuredFile> $values
+     */
+    public function fileSet(array $values): FileSet
+    {
+        $files = [];
+        foreach ($this->files() as $key => $file) {
+            if (isset($values[$key])) {
+                $files[$key] = $values[$key];
+            }
+        }
+        return new FileSet($files, $this->directories(), $this->failure);
     }
     /**
      * @return array<string, DirectoryListing>

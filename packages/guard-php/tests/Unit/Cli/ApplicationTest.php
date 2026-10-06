@@ -58,6 +58,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Config\Reader\DirectoryRuleListConfigReader
  * @uses \Guard\Config\Reader\DocumentConfigReader
  * @uses \Guard\Config\Reader\DocumentListConfigReader
+ * @uses \Guard\Config\Reader\ExtensionConfigReader
  * @uses \Guard\Config\Reader\HeadingPolicyReader
  * @uses \Guard\Config\Reader\LimitConfigReader
  * @uses \Guard\Config\Reader\MetricPolicyReader
@@ -97,6 +98,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Execution\Plan
  * @uses \Guard\Execution\TargetPath
  * @uses \Guard\Extension\BuiltinExtension
+ * @uses \Guard\Extension\ExtensionLoader
  * @uses \Guard\Extension\PolicyBinding
  * @uses \Guard\Extension\Registry
  * @uses \Guard\Init\Initializer
@@ -243,6 +245,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Guard\Config\Reader\DirectoryRuleListConfigReader::class)]
 #[UsesClass(\Guard\Config\Reader\DocumentConfigReader::class)]
 #[UsesClass(\Guard\Config\Reader\DocumentListConfigReader::class)]
+#[UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
 #[UsesClass(\Guard\Config\Reader\HeadingPolicyReader::class)]
 #[UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
 #[UsesClass(\Guard\Config\Reader\MetricPolicyReader::class)]
@@ -282,6 +285,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Guard\Execution\Plan::class)]
 #[UsesClass(\Guard\Execution\TargetPath::class)]
 #[UsesClass(\Guard\Extension\BuiltinExtension::class)]
+#[UsesClass(\Guard\Extension\ExtensionLoader::class)]
 #[UsesClass(\Guard\Extension\PolicyBinding::class)]
 #[UsesClass(\Guard\Extension\Registry::class)]
 #[UsesClass(\Guard\Init\Initializer::class)]

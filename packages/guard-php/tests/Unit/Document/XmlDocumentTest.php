@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Document;
 
+use DOMElement;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -47,6 +48,17 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Guard\Reporting\Finding::class)]
 final class XmlDocumentTest extends TestCase
 {
+    public function testDomExposesTheAlreadyParsedTreeAndIsolatesClones(): void
+    {
+        $document = new \Guard\Document\XmlDocument('<count>1</count>');
+        $copy = clone $document;
+        self::assertSame($copy->node('/'), $copy->dom());
+        $element = $copy->dom()->documentElement;
+        self::assertInstanceOf(DOMElement::class, $element);
+        $element->textContent = '2';
+        self::assertStringContainsString('<count>1</count>', $document->encode());
+        self::assertStringContainsString('<count>2</count>', $copy->encode());
+    }
     /**
      * @throws JsonException
      */

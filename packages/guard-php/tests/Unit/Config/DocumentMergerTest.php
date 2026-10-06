@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Collect\Selection
  * @uses \Guard\Collect\StructuredFile
  * @uses \Guard\Config\Configuration
+ * @uses \Guard\Config\Reader\ExtensionConfigReader
  * @uses \Guard\Execution\Context
  * @uses \Guard\Execution\FileChange
  * @uses \Guard\Execution\Plan
@@ -35,6 +36,7 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Selection::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\StructuredFile::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Context::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\FileChange::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Plan::class)]

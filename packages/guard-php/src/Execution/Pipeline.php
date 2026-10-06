@@ -8,6 +8,7 @@ use Guard\Collect\Collector;
 use Guard\Collect\Input;
 use Guard\Collect\InputSet;
 use Guard\Extension\BuiltinExtension;
+use Guard\Extension\ExtensionLoader;
 use Guard\Extension\PolicyBinding;
 use Guard\Extension\Registry;
 use JsonException;
@@ -31,11 +32,11 @@ final class Pipeline
      */
     public function run(Context $context): Plan
     {
-        $registry = $this->registry;
-        if ($registry === null) {
-            $registry = new Registry();
+        $registry = $this->registry === null ? new Registry() : clone $this->registry;
+        if ($this->registry === null) {
             (new BuiltinExtension($context->configuration))->register($registry);
         }
+        (new ExtensionLoader())->register($context->configuration->extensions, $registry);
         /** @var array<string, Input> $requests */
         $requests = [];
         /** @var array<int, array<string, string>> $names */

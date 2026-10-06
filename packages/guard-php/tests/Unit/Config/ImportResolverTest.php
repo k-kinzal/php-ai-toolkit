@@ -20,6 +20,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Collect\StructuredFile
  * @uses \Guard\Config\Configuration
  * @uses \Guard\Config\DocumentMerger
+ * @uses \Guard\Config\Reader\ExtensionConfigReader
  * @uses \Guard\Config\Schema
  * @uses \Guard\Execution\Context
  * @uses \Guard\Execution\FileChange
@@ -39,6 +40,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Guard\Collect\StructuredFile::class)]
 #[UsesClass(\Guard\Config\Configuration::class)]
 #[UsesClass(\Guard\Config\DocumentMerger::class)]
+#[UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
 #[UsesClass(\Guard\Config\Schema::class)]
 #[UsesClass(\Guard\Execution\Context::class)]
 #[UsesClass(\Guard\Execution\FileChange::class)]

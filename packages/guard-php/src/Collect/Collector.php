@@ -36,6 +36,9 @@ final class Collector
         /** @var array<string, list<array{string, int|string, FileRecord}>> $demands */
         $demands = [];
         foreach ($selections as $id => $selection) {
+            if ($selection->failure() !== null) {
+                continue;
+            }
             foreach ($selection->files() as $key => $file) {
                 $demands[$file->entry->identity][] = [$id, $key, $file];
             }
@@ -66,14 +69,7 @@ final class Collector
         }
         $result = [];
         foreach ($selections as $id => $selection) {
-            /**
-             * Restore each query's established path order after physical-file grouping.
-             */
-            $files = [];
-            foreach ($selection->files() as $key => $file) {
-                $files[$key] = $values[$id][$key];
-            }
-            $result[$id] = new FileSet($files, $selection->directories(), $selection->failure());
+            $result[$id] = $selection->fileSet($values[$id] ?? []);
         }
         return $result;
     }

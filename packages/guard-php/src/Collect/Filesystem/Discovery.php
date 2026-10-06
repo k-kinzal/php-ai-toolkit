@@ -6,6 +6,7 @@ namespace Guard\Collect\Filesystem;
 
 use Guard\Collect\Input;
 use Guard\Collect\Selection;
+use Guard\Execution\TargetPath;
 use Guard\Policy\PolicyException;
 
 /**
@@ -49,6 +50,30 @@ final class Discovery
             }
             (new DirectoryTraversal($this->snapshot))->visit($root, $path, $entries, $routes, $inputs, $queue, $results);
         }
+        foreach ($inputs as $id => $input) {
+            $this->validate($root, $input->selection, $results[$id]);
+        }
         return $results;
+    }
+    /**
+     * Applies file access constraints to glob matches before any content is read.
+     */
+    public function validate(string $root, Selection $selection, QueryResult $result): void
+    {
+        if ($selection->mode !== 'patterns' || (!$selection->confined && $selection->forbiddenPath === null)) {
+            return;
+        }
+        try {
+            foreach ($result->files() as $file) {
+                if ($selection->confined) {
+                    (new TargetPath($this->snapshot))->resolve($root, $file->relativePath);
+                }
+                if ($selection->forbiddenPath !== null && $file->entry->identity === $this->snapshot->inspect($selection->forbiddenPath)->identity) {
+                    throw new PolicyException($selection->forbiddenMessage);
+                }
+            }
+        } catch (PolicyException $error) {
+            $result->fail($error);
+        }
     }
 }

@@ -58,7 +58,10 @@ final class FieldConstraints implements Policy
         $findings = [];
         $changes = [];
         foreach ($this->groups as $index => $rules) {
-            $file = $inputs->get('file' . $index)->files[$rules[0]->file];
+            $file = $inputs->get('file' . $index)->files[$rules[0]->file] ?? null;
+            if ($file === null) {
+                continue;
+            }
             try {
                 $plan = $this->plan($file, $rules, $context->repair);
             } catch (RuntimeException|JsonException|NeonException $error) {

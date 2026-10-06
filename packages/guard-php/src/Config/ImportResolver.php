@@ -86,7 +86,7 @@ final class ImportResolver
         }
         $context = $root ? 'guard.yaml' : basename($path);
 
-        return (new Schema())->mapping($parsed, ['version', 'imports', 'metrics', 'structure', 'documentation', 'configuration', 'extensions'], $context);
+        return (new Schema())->mapping($parsed, ['version', 'imports', 'metrics', 'structure', 'documentation', 'configuration', 'extensions', 'collect'], $context);
     }
 
     /**

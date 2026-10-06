@@ -50,7 +50,7 @@ final class Pipeline
                 $names[$index][$name] = $key;
             }
         }
-        $collected = ($this->collector ?? new Collector())->collect($context->configuration->root, $requests, $registry->structures());
+        $collected = ($this->collector ?? new Collector())->collect($context->configuration->root, $requests, $registry->structures(), $context->configuration->scope);
         $plans = [];
         foreach ($bindings as $index => $binding) {
             $sets = [];

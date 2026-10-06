@@ -39,7 +39,7 @@ final class HeadingStructure implements Policy
         foreach ($this->config->documents as $index => $document) {
             $inputs['declared' . $index] = new Input(new Selection('files', [$document->path], [], '', false, ''), 'markdown.headings');
         }
-        $inputs['excluded'] = new Input(new Selection('patterns', $this->config->exclude, [], '', false, ''), null);
+        $inputs['excluded'] = new Input(new Selection('patterns', $context->configuration->scope === null ? $this->config->exclude : [], [], '', false, ''), null);
         foreach ($this->config->scan as $index => $pattern) {
             $inputs['scan' . $index] = new Input(new Selection('patterns', [$pattern], [], '', false, ''), null);
         }
@@ -54,7 +54,10 @@ final class HeadingStructure implements Policy
     {
         $violations = [];
         foreach ($this->config->documents as $index => $document) {
-            $value = $inputs->get('declared' . $index)->files[$document->path];
+            $value = $inputs->get('declared' . $index)->files[$document->path] ?? null;
+            if ($value === null) {
+                continue;
+            }
             if (!$value->file->entry->file) {
                 $violations[] = (new HeadingViolationFactory())->missingDocument($document->path, $this->config->configName);
                 continue;

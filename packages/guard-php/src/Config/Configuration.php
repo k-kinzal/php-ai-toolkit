@@ -10,6 +10,7 @@ use Guard\Extension\PolicyBinding;
  * @property-read string $root
  * @property-read list<PolicyBinding> $policies
  * @property-read array<string, array<string, mixed>> $extensions
+ * @property-read ?\Guard\Collect\Scope $scope
  */
 final class Configuration
 {
@@ -24,6 +25,8 @@ final class Configuration
         private array $policies,
         /** @readonly */
         public array $extensions = [],
+        /** @readonly */
+        private ?\Guard\Collect\Scope $scope = null,
     ) {
     }
     /**
@@ -34,6 +37,7 @@ final class Configuration
         return match ($name) {
             'root' => $this->root,
             'policies' => $this->policies,
+            'scope' => $this->scope,
             default => null,
         };
     }

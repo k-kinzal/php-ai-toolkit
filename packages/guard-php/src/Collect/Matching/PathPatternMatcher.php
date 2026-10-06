@@ -20,6 +20,28 @@ final class PathPatternMatcher
      */
     public function matches(string $pattern, string $path): bool
     {
+        $segments = trim($pattern, '/') === '' ? [] : explode('/', trim($pattern, '/'));
+        return isset($this->states($pattern, $path)[count($segments)]);
+    }
+    /**
+     * Reports whether a directory prefix can lead to a matching descendant.
+     */
+    public function canMatchBelow(string $pattern, string $directory): bool
+    {
+        $size = trim($pattern, '/') === '' ? 0 : count(explode('/', trim($pattern, '/')));
+        foreach (array_keys($this->states($pattern, $directory)) as $position) {
+            if ($position < $size) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * Advances glob states without filesystem access or hidden-file assumptions.
+     * @return array<int, true>
+     */
+    public function states(string $pattern, string $path): array
+    {
         $pattern = trim($pattern, '/');
         $path = trim($path, '/');
         $patternSegments = $pattern === '' ? [] : explode('/', $pattern);
@@ -55,6 +77,6 @@ final class PathPatternMatcher
             }
         }
 
-        return isset($reachable[count($patternSegments)]);
+        return $reachable;
     }
 }

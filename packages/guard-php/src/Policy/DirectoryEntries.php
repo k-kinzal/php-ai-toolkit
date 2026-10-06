@@ -30,6 +30,9 @@ final class DirectoryEntries implements Policy
      */
     public function inputs(Context $context): array
     {
+        if ($context->configuration->scope !== null) {
+            return ['entries' => new Input(new Selection('directories', ['.']))];
+        }
         return ['entries' => new Input(new Selection('directories', $this->config->paths, $this->config->exclude, '', false, 'Configured path is not a directory: {path}'), null)];
     }
     /**

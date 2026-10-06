@@ -21,6 +21,6 @@ final class XmlSchemaExample
 
     public static function configuration(): string
     {
-        return "version: 1\nextensions:\n  Example\\Guard\\XmlSchemaExtension:\n    schema: schema.xsd\n";
+        return "version: 1\ncollect: {exclude: ['vendor/**']}\nextensions:\n  Example\\Guard\\XmlSchemaExtension:\n    schema: schema.xsd\n";
     }
 }

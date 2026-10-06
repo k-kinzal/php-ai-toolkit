@@ -28,6 +28,9 @@ final class MetricLimits implements Policy
      */
     public function inputs(Context $context): array
     {
+        if ($context->configuration->scope !== null) {
+            return ['sources' => new \Guard\Collect\Input(new \Guard\Collect\Selection('patterns', ['**/*.php']), 'php.metrics')];
+        }
         return ['sources' => new \Guard\Collect\Input(new \Guard\Collect\Selection(
             'descendants',
             $this->config->scan->roots,
@@ -52,7 +55,7 @@ final class MetricLimits implements Policy
         }
         ksort($files);
         $findings = [];
-        foreach ((new FilePolicyAssigner())->assign($this->config, $files) as $assignment) {
+        foreach ((new FilePolicyAssigner())->assign($this->config, $files, $context->configuration->scope === null) as $assignment) {
             $value = $values[$assignment->path];
             if (!$value->readable) {
                 continue;

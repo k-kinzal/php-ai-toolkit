@@ -18,10 +18,9 @@ final class XmlSchemaExtension implements ConfigurableExtension
     public static function fromOptions(array $options): self
     {
         $reader = new Schema();
-        $options = $reader->mapping($options, ['files', 'exclude', 'schema'], self::class);
+        $options = $reader->mapping($options, ['files', 'schema'], self::class);
         return new self(new XmlSchemaPolicy(
             $reader->strings($options['files'] ?? ['**/*.xml'], self::class . '.files'),
-            $reader->strings($options['exclude'] ?? ['vendor/**'], self::class . '.exclude'),
             $reader->string($options['schema'] ?? null, self::class . '.schema'),
         ));
     }

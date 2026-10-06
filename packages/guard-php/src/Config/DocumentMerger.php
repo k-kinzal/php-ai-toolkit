@@ -27,6 +27,12 @@ final class DocumentMerger
         $merged = $this->mergeSection($merged, $overlay, 'metrics');
         $merged = $this->mergeSection($merged, $overlay, 'structure');
         $merged = $this->mergeSection($merged, $overlay, 'documentation');
+        if (array_key_exists('collect', $overlay)) {
+            (new Reader\ScopeConfigReader())->read($overlay['collect']);
+            $current = (new Schema())->mapping($merged['collect'] ?? [], ['include', 'exclude'], 'collect');
+            $scope = (new Schema())->mapping($overlay['collect'], ['include', 'exclude'], 'collect');
+            $merged['collect'] = array_replace($current, $scope);
+        }
         if (array_key_exists('extensions', $overlay)) {
             $extensions = (new Reader\ExtensionConfigReader())->read($overlay['extensions']);
             $current = (new Reader\ExtensionConfigReader())->read($merged['extensions'] ?? []);

@@ -37,9 +37,9 @@ final class FilePolicyAssigner
      *
      * @throws PolicyException when assignment cannot be completed unambiguously
      */
-    public function assign(MetricsConfig $config, array $files): array
+    public function assign(MetricsConfig $config, array $files, bool $requireMatches = true): array
     {
-        if ($files === []) {
+        if ($files === [] && $requireMatches) {
             throw new PolicyException(
                 'Configured scan roots contain no PHP files. Set scan.roots to production source directories.',
             );
@@ -60,7 +60,7 @@ final class FilePolicyAssigner
         }
 
         foreach ($matchCounts as $ruleName => $count) {
-            if ($count === 0) {
+            if ($count === 0 && $requireMatches) {
                 throw new PolicyException(sprintf(
                     'Apply rule "%s" matches no scanned PHP files. Fix or remove its path patterns.',
                     $ruleName,

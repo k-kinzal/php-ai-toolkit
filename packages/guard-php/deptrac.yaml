@@ -36,7 +36,7 @@ deptrac:
         - type: directory
           value: 'src/Collect/Filesystem/(?!Entry\.php|Path\.php).*'
         - type: directory
-          value: 'src/Collect/Matching/(GlobMatcher|SelectionFilter)\.php'
+          value: 'src/Collect/Matching/(GlobMatcher|SelectionFilter|ScopeMatcher)\.php'
         - type: directory
           value: 'src/Execution/TargetPath\.php'
     - name: Structuring

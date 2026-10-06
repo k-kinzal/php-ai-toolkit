@@ -8,6 +8,7 @@ use Guard\Collect\DirectoryListing;
 use Guard\Collect\FileRecord;
 use Guard\Collect\Input;
 use Guard\Collect\Matching\GlobMatcher;
+use Guard\Collect\Matching\ScopeMatcher;
 use Guard\Collect\Matching\SelectionFilter;
 
 /**
@@ -18,7 +19,7 @@ final class DirectoryTraversal
     /**
      * Shares the collector's directory and metadata snapshot.
      */
-    public function __construct(private Snapshot $snapshot)
+    public function __construct(private Snapshot $snapshot, private ?ScopeMatcher $scope = null)
     {
     }
     /**
@@ -38,13 +39,16 @@ final class DirectoryTraversal
         foreach ($entries as $name) {
             $absolute = $path . '/' . $name;
             $child = $paths->child($relative, $name);
-            $entry = $this->snapshot->inspect($absolute);
+            $entry = $this->entry($absolute, $child);
+            if ($entry === null) {
+                continue;
+            }
             foreach ($routes as $route) {
                 $selection = $inputs[$route->query]->selection;
                 $result = $results[$route->query];
                 $ancestors = array_merge($route->ancestors, [$identity]);
                 $candidate = $selection->mode === 'descendants' ? $paths->relative($root, $absolute) : $child;
-                if ($selection->exclude !== [] && !(new SelectionFilter())->includes($selection, $candidate)) {
+                if (!(new SelectionFilter())->includes($selection, $candidate)) {
                     continue;
                 }
                 if ($selection->mode === 'patterns') {
@@ -70,6 +74,17 @@ final class DirectoryTraversal
             }
         }
         $this->listings($relative, $routes, $inputs, $results, $files, $directories);
+    }
+    /**
+     * Rejects unrelated paths before stat and resolved out-of-scope entries before traversal.
+     */
+    public function entry(string $absolute, string $relative): ?Entry
+    {
+        if ($this->scope !== null && !$this->scope->contains($relative) && !$this->scope->mayContain($relative)) {
+            return null;
+        }
+        $entry = $this->snapshot->inspect($absolute);
+        return $this->scope !== null && !$this->scope->accepts($relative, $entry) ? null : $entry;
     }
     /**
      * Completes directory queries from the children accumulated during traversal, without file reads.

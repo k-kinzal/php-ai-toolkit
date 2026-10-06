@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Guard\Collect\Filesystem;
 
 use Guard\Collect\FileRecord;
+use Guard\Collect\Matching\ScopeMatcher;
 use Guard\Collect\Selection;
 use Guard\Execution\TargetPath;
 use Guard\Policy\PolicyException;
@@ -17,7 +18,7 @@ final class SelectionRoots
     /**
      * Shares path metadata with the collector traversal.
      */
-    public function __construct(private Snapshot $snapshot)
+    public function __construct(private Snapshot $snapshot, private ?ScopeMatcher $scope = null)
     {
     }
     /** Queues directory roots and records exact file requests without directory scans.
@@ -25,6 +26,10 @@ final class SelectionRoots
      */
     public function seed(string $root, string $id, Selection $selection, WalkQueue $queue, QueryResult $result): void
     {
+        if ($this->scope !== null) {
+            (new ScopedRoots($this->snapshot, $this->scope))->seed($root, $id, $selection, $queue, $result);
+            return;
+        }
         $paths = new Path();
         foreach ($selection->paths as $path) {
             if ($selection->mode === 'patterns') {

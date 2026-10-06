@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Guard\Collect\Filesystem;
 
 use Guard\Collect\Input;
+use Guard\Collect\Matching\ScopeMatcher;
+use Guard\Collect\Scope;
 use Guard\Collect\Selection;
 use Guard\Execution\TargetPath;
 use Guard\Policy\PolicyException;
@@ -17,7 +19,7 @@ final class Discovery
     /**
      * Creates the Discovery with its declared dependencies.
      */
-    public function __construct(private Snapshot $snapshot)
+    public function __construct(private Snapshot $snapshot, private ?Scope $scope = null)
     {
     }
     /** Builds all selections together; individual failures remain attached to their input.
@@ -28,11 +30,15 @@ final class Discovery
     {
         $queue = new WalkQueue();
         $results = [];
+        $scope = $this->scope === null || $this->scope->include === [] || $inputs === [] ? null : new ScopeMatcher($root, $this->snapshot->inspect($root)->identity, $this->scope);
         foreach ($inputs as $id => $input) {
             $result = new QueryResult();
             $results[$id] = $result;
+            if ($this->scope !== null && $this->scope->include === []) {
+                continue;
+            }
             try {
-                (new SelectionRoots($this->snapshot))->seed($root, $id, $input->selection, $queue, $result);
+                (new SelectionRoots($this->snapshot, $scope))->seed($root, $id, $input->selection, $queue, $result);
             } catch (PolicyException $error) {
                 $result->fail($error);
             }
@@ -48,7 +54,7 @@ final class Discovery
                 }
                 continue;
             }
-            (new DirectoryTraversal($this->snapshot))->visit($root, $path, $entries, $routes, $inputs, $queue, $results);
+            (new DirectoryTraversal($this->snapshot, $scope))->visit($root, $path, $entries, $routes, $inputs, $queue, $results);
         }
         foreach ($inputs as $id => $input) {
             $this->validate($root, $input->selection, $results[$id]);

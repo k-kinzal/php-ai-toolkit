@@ -21,6 +21,7 @@ Exit codes are `0` for success (including recommendations), `1` for required vio
 
 The schema organizes responsibilities rather than nesting three old command configurations:
 
+- `collect.include` and `collect.exclude` define the shared collection boundary. Every policy input is intersected with this boundary before traversal and reading.
 - `metrics.source` and `metrics.exclude` select PHP files for metric checks. `metrics.profiles`, `metrics.default` and `metrics.assignments` define metric policies and path-specific assignments. Profile `extends` and all existing limits keep their previous meaning.
 - `structure.paths`, `structure.exclude` and `structure.directories` declare directory rules. Every matching rule is enforced.
 - `documentation.files` and `documentation.scan` declare Markdown headings and discover undeclared documents. `documentation.exclude` excludes specified paths from discovery, while explicitly declared documents are still checked.
@@ -45,6 +46,7 @@ Import only the presets you want. A section that is neither imported nor written
 
 Overrides keep the imported values for every key you leave out:
 
+- `collect.include` and `collect.exclude` each replace the imported list when specified. An omitted list retains its imported value.
 - A `configuration` entry with the same `id` replaces only the keys it sets. Point a shipped rule at `phpstan.neon.dist` without copying its assertion.
 - `metrics.profiles` merges by profile name. A limit replaces only the metrics you set. `metrics.source` and `metrics.exclude` replace the imported lists when the project file sets them.
 - `structure.directories` merges by `path`. A directory rule replaces only the keys you set, and a new path is added.
@@ -164,12 +166,53 @@ Targets must be existing regular files inside the project; traversal and symlink
 The executable is `bin/guard`, exposed as `vendor/bin/guard` by Composer. The standalone analyzer classes and individual guard executables have been removed. `guard init` still reads legacy configuration files as migration input; it does not run legacy analyzers. PHP callers use the `Guard\` namespace, mapped directly to `src/`.
 
 
+## Collection scope
+
+The Collector owns the project's reading boundary. Extensions and policies declare which files and structures they need within that boundary. They cannot expand it:
+
+```text
+effective input = (collect.include − collect.exclude) ∩ policy input
+```
+
+For example, this configuration collects only relevant files from `lib`, `docs` and `assets`, plus the two named files. PHP requests `**/*.php`; the Markdown policy requests its declared files and scan patterns; the XML extension requests `**/*.xml` and its XSD dependency.
+
+```yaml
+version: 1
+collect:
+  include: [lib, docs, assets, README.md, schemas/catalog.xsd]
+  exclude: ['**/generated/**', 'docs/archive/**']
+metrics:
+  profiles:
+    standard:
+      limits:
+        file: {lines: 500}
+documentation:
+  files:
+    README.md: {headings: ['# Product', '## Usage']}
+  scan: [README.md, 'docs/**/*.md']
+extensions:
+  Example\Guard\XmlSchemaExtension:
+    schema: schemas/catalog.xsd
+```
+
+The example extension must be Composer-autoloadable as described below. Markdown files discovered by `scan` still need heading declarations; discovery does not automatically define a heading policy for them.
+
+All scope and input paths are relative to the main `guard.yaml`, regardless of the current working directory or the location of imported configuration. Scope lists accept literal paths and segment-aware globs. A literal directory includes its descendants; `*` matches one segment and `**` matches any number of segments. Matching directory exclusions prune their descendants. An explicit `collect` defaults to `include: ['**']` and `exclude: []`; `include: []` selects nothing. Absolute scope paths, parent traversal and backslash separators are rejected. Equivalent `./` and repeated-separator spellings are normalized for matching. Scoped collection does not follow symlinks or read resolved targets outside the same boundary.
+
+The Collector intersects literal prefixes before opening traversal roots, prunes excluded or impossible subtrees before inspecting their entries, and merges the remaining routes into its shared directory queue. It does not first enumerate all included files and then enumerate each extension's range. Exact files need no directory scan. Only files requested by an active input are read, and only requested structures are built. A PHP, Markdown or XML extension adds no independent scanner.
+
+When `collect` is present, it replaces the legacy reading scopes `metrics.source` / `metrics.exclude`, `structure.paths` / `structure.exclude`, and `documentation.exclude`, including values supplied by imported presets. PHP then requests `**/*.php` across the collector scope and directory policies inspect the scoped tree. Metric assignments, directory rule paths, declared Markdown files, Markdown scan patterns and exact configuration-rule targets still determine which collected information each policy checks. A policy with no in-scope targets performs no checks; metric assignments excluded by the collector do not cause stale-assignment errors.
+
+When `collect` is omitted, the existing per-policy scope settings and diagnostics retain their previous behavior. This compatibility path keeps existing projects unchanged while allowing them to move their reading boundary into `collect` explicitly.
+
+The boundary applies equally to explicit filenames, directory listings, and auxiliary inputs such as XSD. An out-of-scope exact request produces an empty file set, not a missing-file diagnostic. An in-scope missing exact file keeps its existing missing-file behavior. Policies must evaluate the prepared set and handle an empty set; they must not reopen an excluded file. If a selected target needs a dependency outside the boundary, the policy should identify that dependency and ask for it to be included. The XML example does this for its XSD. Scoped directory listings contain only in-scope entries and the ancestors needed to reach them.
+
 ## Collection and policies
 
 Every policy follows the same pipeline:
 
 1. Policies declare named inputs: which paths to select and which structure each selection needs.
-2. One `Guard\Collect\Collector` combines those requests. A shared directory queue visits overlapping roots together, and each physical directory is read at most once. Literal pattern prefixes skip unrelated ancestors; exact filenames require no directory scan.
+2. One `Guard\Collect\Collector` intersects those requests with its `Scope`, then combines them. A shared directory queue visits overlapping roots together, and each physical directory is read at most once. The include and request prefixes jointly skip unrelated ancestors; exact filenames require no directory scan.
 3. Each selected file is read at most once. Only requested structures are built, once per physical file and structure id. Metadata-only requests never read file content.
 4. Policies evaluate their prepared inputs and return plans. The CLI applies permitted changes and reports the combined findings.
 
@@ -186,6 +229,8 @@ File selection, structuring and policy evaluation are separate contracts:
 
 `Selection` accepts paths, exclusions and an optional filename suffix. Recursive file selections use segment-aware exclusions and do not follow directory symlinks. Directory selections provide directory listings, keep the established `fnmatch` exclusions and prune excluded children; they do not allocate a separate file result for every listed entry. Glob selections preserve hidden-name and double-star semantics. Different selections retain their own exclusions while sharing filesystem reads. A null structure id requests metadata alone.
 
+`Collect\Scope` is the collector boundary; `Selection` is a request within it. New extension configuration should put reading boundaries in `collect` and expose only the expected input patterns or policy-specific targets. Legacy selection exclusions remain available to existing callers and can only narrow the collector boundary.
+
 PHP metrics and PHP configuration values depend on the same `php.tokens` structure, so requesting both tokenizes the file once. Markdown headings retain every heading level; policies apply their own level limits. Configuration documents retain their original bytes and provide private editable copies, including independent XML trees. Raw source buffers and intermediate structures are released after fulfilling that file's requests; the collector retains only the results requested by policies.
 
 Policies execute in registration order. Selection and parsing errors are retained with the affected input, preserving error precedence even though collection is shared. A binding's `reportOrder` controls finding order independently of evaluation order; equal values retain registration order. Required source findings still fail the command while permitting valid configuration repairs. Unsatisfied required field constraints block all proposed writes.
@@ -196,10 +241,12 @@ Policies execute in registration order. Selection and parsing errors are retaine
 
 ```yaml
 version: 1
+collect:
+  include: [assets, schemas/catalog.xsd]
+  exclude: ['assets/generated/**']
 extensions:
   Example\Guard\XmlSchemaExtension:
     files: ['**/*.xml']
-    exclude: ['vendor/**']
     schema: schemas/catalog.xsd
 ```
 
@@ -265,11 +312,11 @@ The complete, integration-tested [XML Schema extension](../examples/xml-schema/s
 }
 ```
 
-Use the `extensions` configuration above and provide `schemas/catalog.xsd`. Run `vendor/bin/guard check` normally. The example defaults to `**/*.xml` and excludes `vendor/**`; its options can change both. Its policy declares two inputs:
+Use the `extensions` configuration above and provide `schemas/catalog.xsd`. Run `vendor/bin/guard check` normally. The example expects `**/*.xml` by default; `files` can further specialize that expectation. Include/exclude boundaries belong to `collect`, and the XSD must be included there too. Its policy declares two inputs:
 
 ```php
 return [
-    'documents' => new Input(new Selection('patterns', $this->files, $this->exclude, '', true), 'xml'),
+    'documents' => new Input(new Selection('patterns', $this->files, [], '', true), 'xml'),
     'schema' => new Input(new Selection('files', [$this->schema], [], '', true), 'xml'),
 ];
 ```

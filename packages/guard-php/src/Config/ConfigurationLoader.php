@@ -8,6 +8,7 @@ use Guard\Config\Reader\DirectoryPolicyReader;
 use Guard\Config\Reader\ExtensionConfigReader;
 use Guard\Config\Reader\HeadingPolicyReader;
 use Guard\Config\Reader\MetricPolicyReader;
+use Guard\Config\Reader\ScopeConfigReader;
 use Guard\Extension\PolicyBinding;
 use Guard\Policy\DirectoryEntries;
 use Guard\Policy\FieldConstraints;
@@ -44,6 +45,7 @@ final class ConfigurationLoader
          * Field failures historically take precedence, while source findings are reported first.
          */
         array_unshift($policies, new PolicyBinding('field-constraints', new FieldConstraints($rules), 30));
-        return new Configuration($root, $policies, (new ExtensionConfigReader())->read($data['extensions'] ?? []));
+        $scope = array_key_exists('collect', $data) ? (new ScopeConfigReader())->read($data['collect']) : null;
+        return new Configuration($root, $policies, (new ExtensionConfigReader())->read($data['extensions'] ?? []), $scope);
     }
 }

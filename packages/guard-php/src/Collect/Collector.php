@@ -29,10 +29,10 @@ final class Collector
      * @param array<string, Structurer> $structurers
      * @return array<string, FileSet>
      */
-    public function collect(string $root, array $inputs, array $structurers): array
+    public function collect(string $root, array $inputs, array $structurers, ?Scope $scope = null): array
     {
         $snapshot = new Snapshot($this->filesystem ?? new NativeFilesystem());
-        $selections = (new Discovery($snapshot))->discover($root, $inputs);
+        $selections = (new Discovery($snapshot, $scope))->discover($root, $inputs);
         /** @var array<string, list<array{string, int|string, FileRecord}>> $demands */
         $demands = [];
         foreach ($selections as $id => $selection) {

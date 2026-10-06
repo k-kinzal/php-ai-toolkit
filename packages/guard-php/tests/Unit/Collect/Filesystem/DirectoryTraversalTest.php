@@ -23,7 +23,9 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Collect\InputSet
  * @uses \Guard\Collect\Matching\GlobMatcher
  * @uses \Guard\Collect\Matching\PathPatternMatcher
+ * @uses \Guard\Collect\Matching\ScopeMatcher
  * @uses \Guard\Collect\Matching\SelectionFilter
+ * @uses \Guard\Collect\Scope
  * @uses \Guard\Collect\Selection
  * @uses \Guard\Collect\StructuredFile
  * @uses \Guard\Config\Assignment\ApplyRuleMatcher
@@ -54,6 +56,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Config\Reader\HeadingPolicyReader
  * @uses \Guard\Config\Reader\LimitConfigReader
  * @uses \Guard\Config\Reader\MetricPolicyReader
+ * @uses \Guard\Config\Reader\ScopeConfigReader
  * @uses \Guard\Config\RuleReader
  * @uses \Guard\Config\Schema
  * @uses \Guard\Config\Validation\DirectoryConfigScalarReader
@@ -142,7 +145,9 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\InputSet::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\GlobMatcher::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\PathPatternMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\ScopeMatcher::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\SelectionFilter::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Scope::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Selection::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\StructuredFile::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Assignment\ApplyRuleMatcher::class)]
@@ -173,6 +178,7 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\HeadingPolicyReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\MetricPolicyReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ScopeConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\RuleReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Schema::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\DirectoryConfigScalarReader::class)]
@@ -247,6 +253,14 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\SourceMetrics::class)]
 final class DirectoryTraversalTest extends TestCase
 {
+    public function testEntryRejectsOutOfScopePathsBeforeInspectingTheirMetadata(): void
+    {
+        $filesystem = new \Tests\Support\CountingFilesystem();
+        $scope = new \Guard\Collect\Matching\ScopeMatcher('/root', '/root', new \Guard\Collect\Scope(['src']));
+        $traversal = new \Guard\Collect\Filesystem\DirectoryTraversal(new \Guard\Collect\Filesystem\Snapshot($filesystem), $scope);
+        self::assertNull($traversal->entry('/root/vendor/A.php', 'vendor/A.php'));
+        self::assertSame([], $filesystem->inspections);
+    }
     public function testListingsSortsSelectedChildrenWithoutReadingTheFilesystem(): void
     {
         $filesystem = new \Tests\Support\CountingFilesystem();

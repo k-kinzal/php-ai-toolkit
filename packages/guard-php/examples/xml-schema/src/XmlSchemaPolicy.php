@@ -21,23 +21,29 @@ final class XmlSchemaPolicy implements Policy
 {
     /**
      * @param list<string> $files
-     * @param list<string> $exclude
      */
-    public function __construct(private array $files, private array $exclude, private string $schema)
+    public function __construct(private array $files, private string $schema)
     {
     }
 
     public function inputs(Context $context): array
     {
         return [
-            'documents' => new Input(new Selection('patterns', $this->files, $this->exclude, '', true), 'xml'),
+            'documents' => new Input(new Selection('patterns', $this->files, [], '', true), 'xml'),
             'schema' => new Input(new Selection('files', [$this->schema], [], '', true), 'xml'),
         ];
     }
 
     public function evaluate(InputSet $inputs, Context $context): Plan
     {
-        $schema = $this->xml($inputs->get('schema')->files[$this->schema]);
+        if ($inputs->get('documents')->files === []) {
+            return new Plan([], []);
+        }
+        $schemaFile = $inputs->get('schema')->files[$this->schema] ?? null;
+        if ($schemaFile === null) {
+            throw new PolicyException('Schema "' . $this->schema . '" is outside the collector scope. Include it in collect.include and remove any matching collect.exclude entry.');
+        }
+        $schema = $this->xml($schemaFile);
         $validator = new SchemaValidation($schema, $this->schema);
         $findings = [];
         foreach ($inputs->get('documents')->files as $path => $file) {

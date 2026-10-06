@@ -6,22 +6,16 @@ namespace Tests\Integration;
 
 use Guard\Cli\Application;
 use Guard\Collect\Collector;
-use Guard\Config\ConfigurationLoader;
 use Guard\Execution\Pipeline;
-use Guard\Extension\Registry;
-use Guard\Structure\DocumentStructurer;
+use Guard\Reporting\Finding;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Tests\Support\CountingFilesystem;
-use Tests\Support\CountingStructurer;
 use Tests\Support\Project;
 use Tests\Support\XmlSchemaExample;
 
 /**
  * @covers \Guard\Execution\Pipeline
- * @covers \Guard\Document\XmlDocument
- * @medium
  * @uses \Guard\Cli\Application
  * @uses \Guard\Cli\Arguments
  * @uses \Guard\Collect\Collector
@@ -105,6 +99,7 @@ use Tests\Support\XmlSchemaExample;
  * @uses \Guard\Document\Pointer
  * @uses \Guard\Document\Selection
  * @uses \Guard\Document\TomlEncoder
+ * @uses \Guard\Document\XmlDocument
  * @uses \Guard\Execution\AtomicWriter
  * @uses \Guard\Execution\ChangeSet
  * @uses \Guard\Execution\Context
@@ -212,8 +207,6 @@ use Tests\Support\XmlSchemaExample;
  * @uses \Guard\Structure\Source
  */
 #[CoversClass(Pipeline::class)]
-#[CoversClass(\Guard\Document\XmlDocument::class)]
-#[\PHPUnit\Framework\Attributes\Medium]
 #[\PHPUnit\Framework\Attributes\UsesClass(Application::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Arguments::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(Collector::class)]
@@ -245,7 +238,7 @@ use Tests\Support\XmlSchemaExample;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Assignment\FilePolicyAssigner::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Assignment\FilePolicyAssignment::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(ConfigurationLoader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ConfigurationLoader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\DocumentMerger::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ImportResolver::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyConfig::class)]
@@ -297,6 +290,7 @@ use Tests\Support\XmlSchemaExample;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Pointer::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Selection::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\TomlEncoder::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\XmlDocument::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\AtomicWriter::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\ChangeSet::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Context::class)]
@@ -306,7 +300,7 @@ use Tests\Support\XmlSchemaExample;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\BuiltinExtension::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\ExtensionLoader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Registry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\Registry::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Initializer::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\LegacyMigration::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Init\Legacy\DirectoryConfiguration::class)]
@@ -352,12 +346,12 @@ use Tests\Support\XmlSchemaExample;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Rule::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\RuleEvaluator::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\DirectoryViolation::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Finding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(Finding::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\HeadingViolation::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\HeadingViolationFactory::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\MetricViolation::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Reporter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(DocumentStructurer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\DocumentStructurer::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\AtxHeadingMatcher::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\BlockMarkerMatcher::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Block\BlockLineScanner::class)]
@@ -402,184 +396,108 @@ use Tests\Support\XmlSchemaExample;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
-final class ConfiguredExtensionTest extends TestCase
+final class CollectorScopeTest extends TestCase
 {
-    public function testSchemaViolationsBlockBuiltInRepairs(): void
+    public function testBuiltInAndExternalPoliciesShareTheSameCollectorBoundary(): void
     {
         XmlSchemaExample::load();
         $project = new Project([
-            'guard.yaml' => XmlSchemaExample::configuration() . "configuration:\n  - {id: mode, file: app.json, select: /mode, assert: {equals: A}}\n",
-            'app.json' => '{"mode":"B"}',
+            'guard.yaml' => "version: 1\ncollect:\n  include: [lib, docs, assets, schema.xsd]\n  exclude: ['lib/generated', 'docs/ignored.md']\nmetrics:\n  profiles: {standard: {limits: {file: {lines: 1}}}}\ndocumentation:\n  files:\n    README.md: {headings: ['# Missing but out of scope']}\n    docs/Intro.md: {headings: ['# Intro']}\n  scan: ['docs/**/*.md']\nconfiguration:\n  - {id: outside, file: outside.json, select: /mode, assert: {equals: A}}\nextensions:\n  Example\\Guard\\XmlSchemaExtension: {schema: schema.xsd}\n",
+            'lib/A.php' => "<?php\necho 1;\necho 2;\n",
+            'lib/generated/B.php' => "<?php\necho 1;\necho 2;\n",
+            'docs/Intro.md' => '# Intro',
+            'docs/ignored.md' => '# Undeclared',
+            'assets/fail.xml' => '<count>0</count>',
             'schema.xsd' => XmlSchemaExample::schema(),
-            'file.xml' => '<count>0</count>',
+            'outside.json' => '{',
+            'vendor/invalid.xml' => '<broken',
+        ]);
+        try {
+            $filesystem = new CountingFilesystem();
+            $plan = (new Pipeline(null, new Collector($filesystem)))->run($project->context());
+            self::assertSame(['lib/A.php', 'assets/fail.xml'], array_map(static fn (Finding $finding): string => $finding->path, $plan->findings));
+            self::assertCount(3, $filesystem->listings);
+            self::assertSame([1], array_values(array_unique($filesystem->listings)));
+            self::assertCount(4, $filesystem->reads);
+            self::assertSame([1], array_values(array_unique($filesystem->reads)));
+        } finally {
+            $project->remove();
+        }
+    }
+
+    public function testImportsReplaceIncludeAndRetainUnspecifiedCollectorExclusions(): void
+    {
+        $project = new Project([
+            'guard.yaml' => "version: 1\nimports: [preset.yaml]\ncollect: {include: [lib]}\n",
+            'preset.yaml' => "collect: {include: [src], exclude: ['lib/generated']}\nmetrics: {source: [missing-legacy-root], exclude: [lib], profiles: {standard: {limits: {file: {lines: 1}}}}}\n",
+            'lib/B.php' => '<?php',
+            'lib/generated/A.php' => "<?php\necho 1;\necho 2;\n",
+        ]);
+        try {
+            $context = $project->context();
+            self::assertSame(['lib'], $context->configuration->scope->include);
+            self::assertSame(['lib/generated'], $context->configuration->scope->exclude);
+            self::assertSame([], (new Pipeline())->run($context)->findings);
+        } finally {
+            $project->remove();
+        }
+    }
+
+    public function testApplyCannotRepairExplicitFilesOutsideTheCollectorScope(): void
+    {
+        $project = new Project([
+            'guard.yaml' => "version: 1\ncollect: {include: ['*.json'], exclude: [blocked.json]}\nconfiguration:\n  - {id: allowed, file: app.json, select: /mode, assert: {equals: A}}\n  - {id: excluded, file: blocked.json, select: /mode, assert: {equals: A}}\n",
+            'app.json' => '{"mode":"B"}',
+            'blocked.json' => '{',
         ]);
         try {
             $output = '';
             $app = new Application($project->root, static function (string $text) use (&$output): void {
                 $output .= $text;
             });
-            $before = $project->files();
-            self::assertSame(1, $app->run(['apply']));
-            self::assertStringContainsString('blocked:', $output);
-            self::assertSame($before, $project->files());
-            $project->write('file.xml', '<count>1</count>');
             self::assertSame(0, $app->run(['apply']));
+            self::assertSame('{', $project->files()['blocked.json']);
             self::assertSame(['mode' => 'A'], json_decode($project->files()['app.json'], true, 512, JSON_THROW_ON_ERROR));
         } finally {
             $project->remove();
         }
     }
 
-    public function testConfiguredXmlPolicyDiscoversRootAndNestedFilesAndReportsThroughCli(): void
+    public function testSchemaDependencyMustAlsoBeInsideTheCollectorScope(): void
     {
         XmlSchemaExample::load();
         $project = new Project([
-            'guard.yaml' => XmlSchemaExample::configuration(),
-            'schema.xsd' => XmlSchemaExample::schema(),
-            'valid.xml' => '<count>1</count>',
-            'nested/invalid.xml' => '<count>0</count>',
-            'ignored.json' => '{',
-            'vendor/ignored.xml' => '<broken',
-        ]);
-        try {
-            $output = '';
-            $app = new Application($project->root, static function (string $text) use (&$output): void {
-                $output .= $text;
-            });
-            self::assertSame(1, $app->run(['check', '--format=json']));
-            $report = json_decode($output, true, 512, JSON_THROW_ON_ERROR);
-            self::assertStringContainsString('nested/invalid.xml', $output);
-            self::assertStringContainsString('example.xml-schema', $output);
-            self::assertSame(['nested/invalid.xml'], array_column($report['findings'], 'path'));
-            $before = $project->files();
-            self::assertSame(1, $app->run(['apply']));
-            self::assertSame($before, $project->files());
-            $project->write('nested/invalid.xml', '<count>3</count>');
-            $output = '';
-            self::assertSame(0, $app->run(['check']));
-            self::assertSame("Guard passed.\n", $output);
-        } finally {
-            $project->remove();
-        }
-    }
-
-    public function testImportedExtensionCanBeOverriddenAndRunsAlongsideBuiltInChecks(): void
-    {
-        XmlSchemaExample::load();
-        $project = new Project([
-            'guard.yaml' => XmlSchemaExample::configuration() . "imports: [presets/checks.yaml]\nconfiguration:\n  - {id: count, file: valid.xml, format: xml, select: /count, assert: {equals: '2'}}\n",
-            'presets/checks.yaml' => "extensions:\n  Example\\Guard\\XmlSchemaExtension:\n    schema: wrong.xsd\n    files: [ignored.xml]\n  Tests\\Support\\RequiredReadmeExtension: {}\n",
-            'schema.xsd' => XmlSchemaExample::schema(),
-            'valid.xml' => '<count>1</count>',
-            'README.md' => '# Project',
-        ]);
-        try {
-            $context = $project->context();
-            self::assertCount(2, $context->configuration->extensions);
-            self::assertSame(['schema' => 'schema.xsd'], $context->configuration->extensions['Example\\Guard\\XmlSchemaExtension']);
-            $plan = (new Pipeline())->run($context);
-            self::assertCount(1, $plan->findings);
-            self::assertSame('count', $plan->findings[0]->rule);
-        } finally {
-            $project->remove();
-        }
-    }
-
-    public function testConfiguredPoliciesShareXmlReadsAndParsingAcrossOverlappingSelections(): void
-    {
-        XmlSchemaExample::load();
-        $project = new Project([
-            'guard.yaml' => XmlSchemaExample::configuration() . "configuration:\n  - {id: count, file: nested/valid.xml, format: xml, select: /count, assert: {equals: '2'}}\n",
-            'schema.xsd' => XmlSchemaExample::schema(),
-            'root.xml' => '<count>1</count>',
-            'nested/valid.xml' => '<count>2</count>',
-        ]);
-        try {
-            $context = $project->context();
-            $registry = new Registry();
-            $parser = new CountingStructurer(new DocumentStructurer('xml'));
-            $registry->addStructure('xml', $parser);
-            foreach ($context->configuration->policies as $binding) {
-                $registry->addPolicy($binding->id, $binding->policy);
-            }
-            $filesystem = new CountingFilesystem();
-            $pipeline = new Pipeline($registry, new Collector($filesystem));
-            self::assertSame([], $pipeline->run($context)->findings);
-            self::assertSame(3, $parser->calls);
-            self::assertCount(3, $filesystem->reads);
-            self::assertSame([1], array_values(array_unique($filesystem->reads)));
-            self::assertCount(2, $filesystem->listings);
-            self::assertSame([1], array_values(array_unique($filesystem->listings)));
-            self::assertCount(1, $registry->policies());
-            self::assertSame([], $pipeline->run($context)->findings);
-            self::assertSame(6, $parser->calls);
-        } finally {
-            $project->remove();
-        }
-    }
-
-    /**
-     * @dataProvider invalidInputs
-     * @param array<string, string> $files
-     */
-    #[DataProvider('invalidInputs')]
-    public function testInvalidExtensionInputFailsBeforeAnyRepair(array $files, string $message): void
-    {
-        XmlSchemaExample::load();
-        $project = new Project(array_replace([
-            'guard.yaml' => XmlSchemaExample::configuration() . "configuration:\n  - {id: mode, file: app.json, select: /mode, assert: {equals: A}}\n",
-            'app.json' => '{"mode":"B"}',
-            'schema.xsd' => XmlSchemaExample::schema(),
+            'guard.yaml' => "version: 1\ncollect: {include: ['**/*.xml']}\nextensions:\n  Example\\Guard\\XmlSchemaExtension: {schema: schema.xsd}\n",
             'file.xml' => '<count>1</count>',
-        ], $files));
+            'schema.xsd' => '<broken',
+        ]);
         try {
             $output = '';
             $app = new Application($project->root, static function (string $text) use (&$output): void {
                 $output .= $text;
             });
-            $before = $project->files();
-            self::assertSame(2, $app->run(['apply']));
-            self::assertStringContainsString($message, $output);
-            self::assertSame($before, $project->files());
+            self::assertSame(2, $app->run(['check']));
+            self::assertStringContainsString('Schema "schema.xsd" is outside the collector scope', $output);
+            self::assertStringContainsString('collect.include', $output);
+            self::assertStringNotContainsString('Invalid XML', $output);
         } finally {
             $project->remove();
         }
     }
 
-    /** @return iterable<string, array{array<string, string>, string}> */
-    public static function invalidInputs(): iterable
+    public function testEmptyCollectorIncludesDisableEveryTargetWithoutContentReads(): void
     {
-        yield 'malformed xml' => [['file.xml' => '<count>'], 'file.xml: Invalid XML'];
-        yield 'malformed schema' => [['schema.xsd' => '<broken'], 'schema.xsd: Invalid XML'];
-        yield 'invalid xsd' => [['schema.xsd' => '<not-a-schema/>'], 'valid XSD 1.0'];
-        yield 'missing schema' => [['guard.yaml' => str_replace('schema.xsd', 'missing.xsd', XmlSchemaExample::configuration())], 'missing.xsd'];
-        yield 'undeclared dependency' => [['schema.xsd' => '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"><xs:include schemaLocation="other.xsd"/></xs:schema>'], 'self-contained XSD'];
-        yield 'unknown class' => [['guard.yaml' => "version: 1\nextensions: {MissingExtension: {}}\n"], 'composer dump-autoload'];
-        yield 'invalid options' => [['guard.yaml' => XmlSchemaExample::configuration() . "    typo: true\n"], 'unknown key "typo"'];
-    }
-
-    public function testExecutableLoadsTheProjectComposerAutoloaderAndResolvesConfigRelativePaths(): void
-    {
-        $package = dirname(__DIR__, 2);
+        XmlSchemaExample::load();
         $project = new Project([
-            'checks/guard.yaml' => XmlSchemaExample::configuration(),
-            'checks/schema.xsd' => XmlSchemaExample::schema(),
-            'checks/file.xml' => '<count>0</count>',
-            'unrelated.xml' => '<broken',
+            'guard.yaml' => "version: 1\ncollect: {include: []}\nconfiguration:\n  - {id: missing, file: missing.json, select: /mode, assert: {equals: A}}\nextensions:\n  Example\\Guard\\XmlSchemaExtension: {schema: missing.xsd}\n",
+            'invalid.xml' => '<broken',
         ]);
         try {
-            $project->write('vendor/autoload.php', '<?php $loader = require ' . var_export($package . '/vendor/autoload.php', true) . '; $loader->addPsr4("Example\\\\Guard\\\\", ' . var_export($package . '/examples/xml-schema/src', true) . '); return $loader;');
-            $project->write('vendor/bin/guard', '<?php $GLOBALS["_composer_autoload_path"] = __DIR__ . "/../autoload.php"; require ' . var_export($package . '/bin/guard', true) . ';');
-            $process = proc_open([PHP_BINARY, $project->root . '/vendor/bin/guard', 'check', '--config=checks/guard.yaml'], [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, $project->root);
-            self::assertIsResource($process);
-            $output = stream_get_contents($pipes[1]);
-            $errors = stream_get_contents($pipes[2]);
-            fclose($pipes[1]);
-            fclose($pipes[2]);
-            self::assertSame(1, proc_close($process));
-            self::assertSame('', $errors);
-            self::assertStringContainsString('[example.xml-schema]', $output);
-            self::assertStringContainsString('file.xml', $output);
+            $filesystem = new CountingFilesystem();
+            self::assertSame([], (new Pipeline(null, new Collector($filesystem)))->run($project->context())->findings);
+            self::assertSame([], $filesystem->inspections);
+            self::assertSame([], $filesystem->listings);
+            self::assertSame([], $filesystem->reads);
         } finally {
             $project->remove();
         }

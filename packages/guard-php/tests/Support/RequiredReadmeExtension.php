@@ -21,7 +21,8 @@ final class RequiredReadmeExtension implements Extension
         $registry->addPolicy('readme', new CallbackPolicy(
             ['readme' => new Input(new Selection('files', ['README.md'], [], '', false, ''), null)],
             static function (InputSet $inputs, Context $context): Plan {
-                $exists = $inputs->get('readme')->files['README.md']->file->entry->file;
+                $file = $inputs->get('readme')->files['README.md'] ?? null;
+                $exists = $file === null || $file->file->entry->file;
                 return new Plan($exists ? [] : [new Finding('README.md', 'readme.required', 'required', 'Create README.md.')], []);
             },
         ));

@@ -1,0 +1,7 @@
+# Guard behavior fixtures
+
+`scenarios.json` describes complete project inputs and command sequences. `expected.json` records the original implementation at commit `e521e4e2bf808ff304535792d5a1ee5bf81b0a8b`, before the Collect/Policy/Report refactor. Every command records its exit code, complete application output, and every resulting project file's bytes. The file inventory is sorted by filename as strings, independently of PHP array-key comparison changes. Temporary project and package paths in command output use placeholders.
+
+The reference capture used PHP 8.5 and Symfony YAML 8. The `expected-yaml5.json` and `expected-yaml6.json` overrides were captured from that same original implementation using the PHP 8.0 and PHP 8.1 lock files. The `expected-yaml7.json` override used the original implementation on PHP 8.5 with the locked Symfony YAML 7 component. Those serializers spell an empty YAML map differently; the test selects the matching original output rather than normalizing file bytes.
+
+The scenarios cover all policies together, configuration formats, required and recommended findings, dry runs, repeated repairs, conflicts, malformed inputs, error precedence, imports, initial setup, legacy YAML migration, Markdown discovery, numeric path patterns, and YAML aliases. Treat these as compatibility expectations; do not regenerate them from the refactored implementation to resolve a failure.

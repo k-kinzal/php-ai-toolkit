@@ -1,73 +1,44 @@
-# TreeGuard
+# Tree policy
 
-New projects use [Guard](guard.md), published by `k-kinzal/guard-php`. Run `guard init` to import the shipped structure preset, or to copy an existing `tree.yaml` into `guard.yaml` without that preset. Then use `guard check` and `guard apply`. The schemas below describe the preserved legacy analyzers; their commands are `bin/loc-guard`, `bin/tree-guard`, and `bin/doc-guard` in this package.
-
-
-## Purpose
-
-TreeGuard is a first-party CLI for enforcing directory and file structure constraints. It checks directory file counts, subdirectory counts, recursive subtree totals, nesting depth, file and directory naming (globs and case conventions), required files, and empty directories. It catches the structural drift AI agents tend to introduce — bloated directories, naming deviations, missing required files, deep nesting, and leftover empty directories — before it accumulates.
-
-## Command
-
-Run:
-
-```bash
-vendor/bin/tree-guard --config=tree.yaml
-```
-
-Exit codes:
-
-- `0`: no violations
-- `1`: structure violations found
-- `2`: configuration or runtime error
+`Guard\Policy\Tree\TreePolicy` applies directory constraints to the snapshot returned by `TreeCollector`. Run it with [Guard](guard.md). All matching rules are enforced independently.
 
 ## Configuration
 
-Example `tree.yaml`:
-
 ```yaml
-paths:
-  - '.'
-
-exclude:
-  - '.git'
-  - 'vendor'
-
-rules:
-  - path: '**'
-    deny_dirs: ['scripts', 'Scripts']
-  - path: 'src/**'
-    forbid_empty: true
-    allow: ['*.php']
-    deny: ['*Helper.php']
-    file_case: pascal
-    dir_case: pascal
-    max_files: 15
-    max_dirs: 20
-  - path: 'src/*'
-    max_total_files: 250
-    max_depth: 3
-
-report:
-  reporter: ai
-  order_by:
-    - path
-    - rule
+version: 1
+structure:
+  paths: [.]
+  exclude: [.git, vendor]
+  directories:
+    - path: '**'
+      deny_dirs: [scripts, Scripts]
+    - path: 'src/**'
+      forbid_empty: true
+      allow: ['*.php']
+      file_case: pascal
+      dir_case: pascal
+      max_files: 15
+      max_dirs: 20
+    - path: 'src/*'
+      max_total_files: 250
+      max_depth: 3
 ```
 
-`paths` (default `['src']`) lists the directories to scan, relative to the config file directory. Each entry must exist and be a directory.
+The shipped `rules/structure.yaml` preset supplies the standard directory constraints. `guard init` migrates existing `tree.yaml` rules without changing their meaning.
 
-The entry `.` scans the project root itself, which is how a rule reaches the root directory, dotted directories such as `.github`, and everything else outside the source roots. The root is reported as the path `.`, and every directory below it keeps its plain root-relative path (`src`, `.github/workflows`), so rules written for a source root match the same directories whether the scan starts at `.` or at `src`. Pair `.` with `exclude` entries for vendored and generated directories such as `vendor`, `build`, `node_modules`, and `.git`.
+`structure.paths` (default `['.']`) lists the directories to scan, relative to the config file directory. Each entry must exist and be a directory.
 
-`exclude` (default `[]`) removes entries from analysis. An excluded file disappears from its directory listing; an excluded directory is pruned together with its whole subtree.
+The entry `.` scans the project root itself, which is how a rule reaches the root directory, dotted directories such as `.github`, and everything else outside the source roots. The root is reported as the path `.`, and every directory below it keeps its plain root-relative path (`src`, `.github/workflows`), so rules written for a source root match the same directories whether the scan starts at `.` or at `src`. Pair `.` with `structure.exclude` entries for vendored and generated directories such as `vendor`, `build`, `node_modules`, and `.git`.
 
-`rules` (default `[]`) is a list of rule blocks. Each block has a required `path` pattern and any number of constraints. Every rule whose pattern matches a directory is applied to it independently; there is no override or merge between overlapping rules. Violations carry the originating pattern, so each rule's findings stay identifiable.
+`structure.exclude` (default `[]`) removes entries from analysis. An excluded file disappears from its directory listing; an excluded directory is pruned together with its whole subtree.
+
+`structure.directories` (default `[]`) is a list of rule blocks. Each block has a required `path` pattern and any number of constraints. Every rule whose pattern matches a directory is applied to it independently; there is no override or merge between overlapping rules. Violations carry the originating pattern, so each rule's findings stay identifiable.
 
 Unknown keys in a rule block are rejected with an error. A typo such as `max_file` would otherwise silently disable a constraint.
 
 ## Pattern Semantics
 
-`rules[].path` patterns match whole relative directory paths segment by segment:
+`structure.directories[].path` patterns match whole relative directory paths segment by segment:
 
 - The pattern and the path are split on `/`. Every non-`**` segment is matched against exactly one path segment with `fnmatch`, so `*` never crosses a `/` boundary.
 - A `**` segment matches **zero or more** path segments. This means `src/**` also matches `src` itself — unlike gitignore, where `src/**` matches only paths inside `src`.
@@ -77,7 +48,7 @@ Examples: `src` matches only `src`; `src/*` matches only direct children of `src
 
 The project root carries no path segment, so only `.` and `**` match it: `.` constrains the root alone, `**` constrains the root together with every directory below it, and `*` matches the directories directly inside the root instead.
 
-`exclude` uses a different mechanism: each entry is a plain `fnmatch` glob applied to the whole relative path (LocGuard-compatible), where `*` can cross `/` boundaries.
+`structure.exclude` uses a different mechanism: each entry is a plain `fnmatch` glob applied to the whole relative path , where `*` can cross `/` boundaries.
 
 ## Constraints
 
@@ -113,6 +84,8 @@ Case conventions are matched with these patterns: pascal `^[A-Z][A-Za-z0-9]*$`, 
 
 ## Rule Identifiers
 
+Reports prefix these identifiers with `structure.`.
+
 | Rule id | Reported path | Fires when |
 |---------|---------------|-----------|
 | `max_files` | directory | Direct file count exceeds the limit. |
@@ -127,20 +100,3 @@ Case conventions are matched with these patterns: pascal `^[A-Z][A-Za-z0-9]*$`, 
 | `empty_directory` | directory | `forbid_empty` is set and the directory is empty. |
 | `file_case` | file | A file stem does not follow `file_case`. |
 | `dir_case` | directory | A subdirectory name does not follow `dir_case`. |
-
-## Reporting
-
-Configure the reporter with `report.reporter`:
-
-- `ai`: structured text with remediation guidance for coding agents.
-- `text`: concise human-readable output.
-- `json`: machine-readable JSON for CI and tooling.
-
-Override the configured reporter from the CLI:
-
-```bash
-vendor/bin/tree-guard --config=tree.yaml --reporter=json
-vendor/bin/tree-guard --config=tree.yaml --format=text
-```
-
-Configure violation ordering with `report.order_by`. Supported fields are `path`, `rule`, `actual`, and `limit` (default `path`, `rule`). Violations without counts sort before counted ones on `actual` and `limit`.

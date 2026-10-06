@@ -23,6 +23,9 @@
         <testsuite name="unit">
             <directory>tests/Unit</directory>
         </testsuite>
+        <testsuite name="integration">
+            <directory>tests/Integration</directory>
+        </testsuite>
         <testsuite name="doctest">
             <file>vendor/k-kinzal/phpunit-ai-reporter/src/Doctest/DoctestSuite.php</file>
         </testsuite>

@@ -1,0 +1,36 @@
+{
+    "yaml-object-list-types": [
+        {
+            "exit": 1,
+            "output": "error: app.yaml [value] /value must satisfy {\"equals\":1}. Run guard apply to set the configured repair.\nGuard found required violations.\n",
+            "files": {
+                "app.yaml": "# preserve when compliant\nvalue: 0\nmap: {}\nitems: []\nnothing: null\nlist: [{a: 1}, {b: true}]\n",
+                "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, select: /value, assert: {equals: 1}}\n"
+            }
+        },
+        {
+            "exit": 1,
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.yaml\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/value must satisfy {\\\"equals\\\":1}. Run guard apply to set the configured repair.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "files": {
+                "app.yaml": "# preserve when compliant\nvalue: 0\nmap: {}\nitems: []\nnothing: null\nlist: [{a: 1}, {b: true}]\n",
+                "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, select: /value, assert: {equals: 1}}\n"
+            }
+        },
+        {
+            "exit": 0,
+            "output": "would change: <project>/app.yaml\nGuard passed.\n",
+            "files": {
+                "app.yaml": "# preserve when compliant\nvalue: 0\nmap: {}\nitems: []\nnothing: null\nlist: [{a: 1}, {b: true}]\n",
+                "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, select: /value, assert: {equals: 1}}\n"
+            }
+        },
+        {
+            "exit": 0,
+            "output": "changed: <project>/app.yaml\nGuard passed.\n",
+            "files": {
+                "app.yaml": "value: 1\nmap: {  }\nitems: []\nnothing: null\nlist:\n  -\n    a: 1\n  -\n    b: true\n",
+                "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, select: /value, assert: {equals: 1}}\n"
+            }
+        }
+    ]
+}

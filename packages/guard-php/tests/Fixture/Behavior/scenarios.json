@@ -1,0 +1,737 @@
+[
+  {
+    "name": "all-policies",
+    "files": {
+      "src/Example.php": "<?php\nclass Example {\n public function run($a) { if ($a) { return 1; } return 0; }\n}\n",
+      "src/bad.txt": "keep",
+      "README.md": "# Wrong\n\n### Details\n",
+      "docs/extra.md": "# Extra\n",
+      "app.json": "{\"count\":0,\"mode\":\"old\",\"keep\":true}",
+      "guard.yaml": "version: 1\nmetrics:\n  source: [src]\n  profiles:\n    standard:\n      limits:\n        file: {lines: 1, ncloc: 1}\n        class: {lines: 1}\n        method: {lines: 1, cyclomatic_complexity: 1}\n  default: standard\nstructure:\n  paths: [src]\n  directories:\n    - {path: 'src', allow: ['*.php'], require: [Required.php], max_files: 1}\ndocumentation:\n  files:\n    README.md: {headings: ['# Expected', '## Details']}\n    MISSING.md: {headings: ['# Missing']}\n  scan: ['**/*.md']\nconfiguration:\n  - {id: count, file: app.json, select: /count, assert: {min: 1}, repair: 2}\n  - {id: mode, file: app.json, select: /mode, level: recommended, assert: {equals: new}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "json",
+    "files": {
+      "app.json": "{\"value\":0,\"keep\":true}",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, format: json, select: /value, assert: {equals: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "json5",
+    "files": {
+      "app.json5": "{value: 0, keep: true,}",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json5, format: json5, select: /value, assert: {equals: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "yaml",
+    "files": {
+      "app.yaml": "value: 0\nkeep: true\n",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, format: yaml, select: /value, assert: {equals: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "neon",
+    "files": {
+      "app.neon": "value: 0\nkeep: true\n",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.neon, format: neon, select: /value, assert: {equals: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "toml",
+    "files": {
+      "app.toml": "value = 0\nkeep = true\n",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.toml, format: toml, select: /value, assert: {equals: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "xml",
+    "files": {
+      "app.xml": "<app value=\"0\"><keep/></app>",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.xml, format: xml, select: /app/@value, assert: {equals: '1'}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "php",
+    "files": {
+      "settings.php": "<?php\nreturn ['value' => 0, 'keep' => true];\n",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: settings.php, format: php, select: /return/value, assert: {equals: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "conflict",
+    "files": {
+      "a.json": "{\"value\":0}",
+      "b.json": "{\"value\":0}",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: first, file: a.json, select: /value, assert: {equals: 1}}\n  - {id: second, file: b.json, select: /value, assert: {equals: 1}}\n  - {id: conflict, file: b.json, select: /value, assert: {equals: 2}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "recommended",
+    "files": {
+      "app.json": "{\"value\":0}",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, select: /value, level: recommended, assert: {min: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "malformed",
+    "files": {
+      "a.json": "{\"value\":0}",
+      "b.json": "{",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: first, file: a.json, select: /value, assert: {equals: 1}}\n  - {id: broken, file: b.json, select: /value, assert: {equals: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "format-conflict",
+    "files": {
+      "app.json": "{\"value\":0}",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: first, file: app.json, format: json, select: /value, assert: {equals: 1}}\n  - {id: second, file: app.json, format: yaml, select: /value, assert: {equals: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "self-target",
+    "files": {
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: self, file: guard.yaml, select: /version, assert: {equals: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "docs-exclusion",
+    "files": {
+      "README.md": "# Main\n\n```md\n# Ignored\n```\n\nDetails\n-------\n",
+      "docs/skip.md": "# Skip\n",
+      "docs/extra.md": "# Extra\n",
+      "guard.yaml": "version: 1\ndocumentation:\n  files:\n    README.md: {headings: ['# Main', '## Details']}\n  scan: ['**/*.md', 'docs/*.md']\n  exclude: ['docs/skip.md']\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "tree-overlap",
+    "files": {
+      "src/one/A.php": "<?php",
+      "src/one/a_bad.txt": "x",
+      "guard.yaml": "version: 1\nstructure:\n  paths: [src]\n  directories:\n    - {path: '**', allow: ['*.php'], max_depth: 1}\n    - {path: 'src/**', require: [index.php], file_case: pascal}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "empty-metrics",
+    "files": {
+      "guard.yaml": "version: 1\nmetrics:\n  source: [src]\n  profiles: {standard: {limits: {file: {lines: 1}}}}\n  default: standard\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "imports",
+    "files": {
+      "src/A.php": "<?php\n\n\n",
+      "base.yaml": "metrics:\n  source: [src]\n  profiles: {standard: {limits: {file: {lines: 1}}}}\n  default: standard\n",
+      "guard.yaml": "version: 1\nimports: [base.yaml]\nmetrics:\n  profiles: {standard: {limits: {file: {lines: 10}}}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "args",
+    "files": {
+      "guard.yaml": "version: 1\n"
+    },
+    "commands": [
+      [
+        "--help"
+      ],
+      [
+        "bad"
+      ],
+      [
+        "check",
+        "--format=bad"
+      ],
+      [
+        "apply",
+        "--dry-run",
+        "--format=json"
+      ],
+      [
+        "check",
+        "--config=missing.yaml"
+      ]
+    ]
+  },
+  {
+    "name": "init",
+    "files": {
+      "README.md": "# Example\n\n## Use\n"
+    },
+    "commands": [
+      [
+        "init",
+        "--import="
+      ],
+      [
+        "check"
+      ],
+      [
+        "init",
+        "--import="
+      ]
+    ]
+  },
+  {
+    "name": "init-readme",
+    "files": {
+      "README.md": "# Project\n\n## Usage\n"
+    },
+    "commands": [
+      [
+        "init"
+      ],
+      [
+        "check"
+      ],
+      [
+        "init"
+      ]
+    ]
+  },
+  {
+    "name": "migrate",
+    "files": {
+      "README.md": "# Project\n",
+      "src/A.php": "<?php\n",
+      "loc.yaml": "scan: {roots: [src], exclude: []}\npolicies: {standard: {limits: {file: {lines: 10}}}}\napply: {default: standard, rules: []}\n",
+      "tree.yaml": "paths: [src]\nrules: [{path: 'src/**', allow: ['*.php'], max_files: 4}]\n",
+      "doc-guard.yaml": "documents: {README.md: {headings: ['# Project']}}\nscan: ['*.md']\n"
+    },
+    "commands": [
+      [
+        "init"
+      ],
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply"
+      ]
+    ]
+  },
+  {
+    "name": "error-order-files",
+    "files": {
+      "a.json": "{\"mode\":0}",
+      "b.json": "{",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: bad-selector, file: a.json, select: missing-slash, assert: {equals: 1}}\n  - {id: bad-json, file: b.json, select: /mode, assert: {equals: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ]
+    ]
+  },
+  {
+    "name": "error-order-source",
+    "files": {
+      "a.json": "{\"mode\":0}",
+      "guard.yaml": "version: 1\nmetrics:\n  source: [missing-src]\n  profiles: {standard: {limits: {file: {lines: 1}}}}\n  default: standard\nconfiguration:\n  - {id: bad-selector, file: a.json, select: missing-slash, assert: {equals: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ]
+    ]
+  },
+  {
+    "name": "yaml-object-list-types",
+    "files": {
+      "app.yaml": "# preserve when compliant\nvalue: 0\nmap: {}\nitems: []\nnothing: null\nlist: [{a: 1}, {b: true}]\n",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, select: /value, assert: {equals: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ]
+    ]
+  },
+  {
+    "name": "php-literal",
+    "files": {
+      "fixer.php": "<?php\nreturn (new Config())->setRiskyAllowed(false)->setRules(['strict_comparison' => false]);\n",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: risky, file: fixer.php, format: php, select: /riskyAllowed, assert: {equals: true}}\n  - {id: strict, file: fixer.php, format: php, select: /rules/strict_comparison, assert: {equals: true}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ],
+      [
+        "apply"
+      ]
+    ]
+  },
+  {
+    "name": "numeric-discovery-pattern",
+    "files": {
+      "README.md": "# Project\n",
+      "123": "# Numeric name\n",
+      "guard.yaml": "version: 1\ndocumentation:\n  files: {README.md: {headings: ['# Project']}}\n  scan: ['123']\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  },
+  {
+    "name": "yaml-aliases",
+    "files": {
+      "app.yaml": "first: &alias {value: 0}\nsecond: *alias\n",
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: alias, file: app.yaml, select: /first/value, assert: {equals: 1}}\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "apply"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
+  }
+]

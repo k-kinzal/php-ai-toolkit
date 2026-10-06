@@ -2162,7 +2162,7 @@
             "dist": {
                 "type": "path",
                 "url": "../guard-php",
-                "reference": "9519cb580c4029490e57621a53b2bdcdd3c531e5"
+                "reference": "3db1390431ab3c245265ea74e14bc93af246365f"
             },
             "require": {
                 "ext-dom": "*",
@@ -2190,13 +2190,16 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Toolkit\\": "src/"
+                    "Guard\\": "src/"
                 }
             },
             "autoload-dev": {
                 "psr-4": {
                     "Tests\\": "tests/"
-                }
+                },
+                "exclude-from-classmap": [
+                    "vendor/marc-mabe/php-enum/stubs/Stringable.php"
+                ]
             },
             "scripts": {
                 "test": [

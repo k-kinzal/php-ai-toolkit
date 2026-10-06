@@ -12,13 +12,16 @@
     },
     "autoload": {
         "psr-4": {
-            "Toolkit\\": "src/"
+            "Guard\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "exclude-from-classmap": [
+            "vendor/marc-mabe/php-enum/stubs/Stringable.php"
+        ]
     },
     "bin": [
         "bin/guard"

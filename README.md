@@ -74,14 +74,14 @@ Run the end-to-end adoption skill:
 The component skills are also available for focused setup or maintenance:
 
 - `/setup-toolkit-agents-md` — AGENTS.md with project conventions and AI agent guidelines
-- `/setup-toolkit-doc-guard` — DocGuard fixed section structure for README.md, AGENTS.md, and docs/
+- `/setup-toolkit-doc-guard` — Guard documentation policies for fixed section structure for README.md, AGENTS.md, and docs/
 - `/setup-toolkit-deptrac` — Deptrac architecture dependency rules for web apps, CLI apps, libraries, and modular projects
 - `/setup-toolkit-doctest` — Doctest, the port of k-kinzal/doctest-php that runs PHPDoc examples as PHPUnit test cases
 - `/setup-toolkit-docgen` — DocGen static documentation site with full types, relations, layers, doctest examples, and a two-revision diff mode
 - `/setup-toolkit-github-actions` — GitHub Actions CI for tests, lint gates, PHP compatibility, pinned actions, and Context7 refresh
 - `/setup-toolkit-fuzzing` — contract-driven, domain-aware fuzzing with reproducible corpora, a scheduled campaign on the default branch, and findings reported as issues
 - `/setup-toolkit-infection` — Infection mutation testing measured daily on the default branch, with a score below the whole-tree threshold reported as an issue
-- `/setup-toolkit-loc-guard` — LocGuard metrics checks for production source complexity and length limits
+- `/setup-toolkit-loc-guard` — Guard source metric policies for production source complexity and length limits
 - `/setup-toolkit-phpbench` — PHPBench subjects, consistent local commands, and same-runner pull-request comparisons with artifacts
 - `/setup-toolkit-php-compatibility` — PHPCompatibility gate that keeps the code runnable on the declared minimum PHP
 - `/setup-toolkit-php-cs-fixer` — PHP-CS-Fixer configuration
@@ -89,7 +89,7 @@ The component skills are also available for focused setup or maintenance:
 - `/setup-toolkit-phpunit` — PHPUnit with strict configuration and AI test reporter
 - `/setup-toolkit-pbt` — Eris property-based testing in an isolated PHPUnit group and dedicated CI workflow
 - `/setup-toolkit-readme` — minimal README with badges, an overview, Requirements, Getting Started, License, and the DeepWiki link
-- `/setup-toolkit-tree-guard` — TreeGuard directory and file structure constraints
+- `/setup-toolkit-tree-guard` — Guard directory and file structure policies
 
 Component skills share fixed toolkit defaults. They adapt project facts such as
 autoload roots and supported PHP versions, but do not calibrate quality limits to
@@ -102,13 +102,13 @@ and published on every push to `main`.
 
 - [Guard](packages/guard-php/docs/guard.md): Unified checks, configuration policies, staged repairs and migration
 - [DocGen](packages/docgen-php/docs/docgen.md): DocGen documentation scope, caching, and generated site behavior
-- [DocGuard](packages/guard-php/docs/doc-guard.md): DocGuard Markdown document structure constraints
+- [Doc policy](packages/guard-php/docs/doc-guard.md): Guard Markdown document structure constraints
 - [Doctest](packages/phpunit-ai-reporter/docs/doctest.md): Running the examples written in PHPDoc blocks as PHPUnit tests, the assertion notation, and how the port differs from upstream
-- [LocGuard](packages/guard-php/docs/loc-guard.md): LocGuard source metric limits and reporting
+- [Loc policy](packages/guard-php/docs/loc-guard.md): Guard source metric limits and reporting
 - [PHPStan AI Formatter](packages/phpstan-ai-formatter/docs/phpstan-ai-formatter.md): The `ai` error formatter, its mode detection, and its output
 - [PHPStan Rules](packages/phpstan-guard-rules/docs/phpstan-rules.md): Custom rules and their error identifiers
 - [PHPUnit AI Reporter](packages/phpunit-ai-reporter/docs/phpunit-ai-reporter.md): The failure reporter for PHPUnit 9.6 and 10.5 or later
-- [TreeGuard](packages/guard-php/docs/tree-guard.md): TreeGuard directory and file structure constraints
+- [Tree policy](packages/guard-php/docs/tree-guard.md): Guard directory and file structure policies
 ## License
 
 MIT

@@ -159,4 +159,56 @@ Targets must be existing regular files inside the project; traversal and symlink
 
 `guard init` writes the project file that imports the matching shipped presets, records Composer source roots and the current README headings, and adds only the overrides the project needs. A project is configured correctly when `guard check` passes that policy.
 
-The legacy analyzer classes and `bin/loc-guard`, `bin/tree-guard` and `bin/doc-guard` remain available for existing callers supplying their old configuration files. New Composer installations expose the unified `guard` command.
+The executable is `bin/guard`, exposed as `vendor/bin/guard` by Composer. The standalone analyzer classes and individual guard executables have been removed. `guard init` still reads legacy configuration files as migration input; it does not run legacy analyzers. PHP callers use the `Guard\` namespace, mapped directly to `src/`.
+
+
+## Collection and policies
+
+Every check and apply uses the same pipeline:
+
+1. Registered collectors select inputs, read them, and return structured `Guard\Collect\Subject` values.
+2. Registered policies receive subjects matching their registered class or interface and return a `Guard\Execution\Plan`.
+3. The CLI commits permitted changes and renders the combined findings through `Guard\Reporting\Reporter`.
+
+| Collector | Collected subject | Built-in policy |
+|-----------|-------------------|-----------------|
+| `PhpCollector` | `PhpSources`: paths, physical lines, NCLOC, class and function metrics | `LocPolicy` |
+| `TreeCollector` | `DirectoryTree`: exclusion-filtered listings and child relationships | `TreePolicy` |
+| `MarkdownCollector` | `MarkdownDocuments`: parsed headings, missing files, discovery and exclusions | `DocPolicy` |
+| `ConfigurationCollector` | `ConfigurationDocument`: original bytes, parsed values and applicable field rules | `ConfigurationPolicy` |
+
+Collectors do not apply thresholds or produce violations. Policies do not read source files or write repairs. Each selected input is collected once per invocation, then every matching policy consumes that subject. Collectors may yield inputs incrementally, retaining the established error order across configuration files. Findings are assembled in policy registration order, independently of collection order. Markdown collection keeps all heading levels; `DocPolicy` applies each document's `max_level`. Directory policies share a complete tree so subtree totals and depth checks see the same snapshot.
+
+A plan contains findings, proposed byte changes, and findings that block repairs. Required source violations still fail the command while permitting valid configuration repairs. Unsatisfied required configuration constraints block all proposed writes. Applying a configuration policy uses a private document copy; another policy sees the original collected values.
+
+## Registering extensions
+
+`Guard\Extension\Registry` is the explicit extension boundary. `BuiltinExtension` registers the shipped collectors and policies using the same API available to callers. A supplied registry is complete: register `BuiltinExtension` first when extending the standard checks.
+
+```php
+use Guard\Cli\Application;
+use Guard\Collect\Tree\DirectoryTree;
+use Guard\Extension\BuiltinExtension;
+use Guard\Extension\Registry;
+
+$registry = new Registry();
+(new BuiltinExtension())->register($registry);
+$registry->addPolicy('project.directory-policy', DirectoryTree::class, new ProjectDirectoryPolicy());
+
+$app = new Application(getcwd(), static function (string $text): void {
+    echo $text;
+}, $registry);
+exit($app->run(['check']));
+```
+
+Implement `Guard\Policy\Policy::evaluate(Subject $information, Context $context): Plan` for a policy. Use `addPolicy($id, $subjectType, $policy)` to associate it with a collected class or interface. Policies run in registration order, and every matching policy runs; registering a second policy does not replace the first. Ids must be non-empty and unique within the collector or policy registry.
+
+To read a new kind of input, implement `Guard\Collect\Collector::collect(Context $context): iterable` and register it with `addCollector($id, $collector)`. Yield subject objects containing the structured information policies need. Register the corresponding policy with the subject's type. If multiple policies propose changes to the same file, identical proposals are combined and conflicting proposals fail before any writes. An extension can implement `Guard\Extension\Extension::register(Registry $registry): void` to package both registrations.
+
+`Context` supplies the validated project configuration, policy file path, and whether repairs are requested. Extension-specific settings can be passed to a collector or policy constructor. Registration is currently a PHP API; automatic Composer discovery and additional YAML extension keys are not enabled.
+
+The complete registry can also run through `Guard\Execution\Pipeline::run(Context $context): Plan` without CLI output or file writes. The engine contains no list of built-in policy types.
+
+## Refactoring compatibility
+
+The CLI contract remains `guard check|apply|init`, the existing `guard.yaml` schema, text and JSON reports, exit codes, import precedence, and repair behavior. The integration suite compares these against output captured before the pipeline refactor, including every target file's bytes after checks, dry runs, repairs, conflicts and repeated repairs. Some diagnostics retain legacy configuration names to preserve existing messages.

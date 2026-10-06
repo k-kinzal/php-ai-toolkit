@@ -5,27 +5,71 @@ deptrac:
     - '#.*/tests?/.*#'
     - '#.*/vendor/.*#'
   layers:
-    - name: LocGuard
+    - name: Foundation
       collectors:
         - type: directory
-          value: src/LocGuard/.*
-    - name: TreeGuard
+          value: 'src/(Config|Document)/.*'
+        - type: directory
+          value: 'src/Execution/(Context|Plan|FileChange|TargetPath)\.php'
+        - type: directory
+          value: 'src/Policy/(Policy|PolicyException|Constraint|Rule)\.php'
+        - type: directory
+          value: 'src/Collect/(Collector|Subject)\.php'
+        - type: directory
+          value: 'src/Reporting/Finding\.php'
+    - name: Collection
       collectors:
         - type: directory
-          value: src/TreeGuard/.*
-    - name: DocGuard
+          value: 'src/Collect/(Php|Tree|Markdown|Configuration)/.*'
+    - name: Policy
       collectors:
         - type: directory
-          value: src/DocGuard/.*
-    - name: Guard
+          value: 'src/Policy/(Loc|Tree|Doc|Configuration)/.*'
+        - type: directory
+          value: 'src/Policy/RuleEvaluator\.php'
+    - name: Extension
       collectors:
         - type: directory
-          value: src/Guard/.*
+          value: 'src/Extension/.*'
+    - name: Execution
+      collectors:
+        - type: directory
+          value: 'src/Execution/(Pipeline|AtomicWriter|ChangeSet)\.php'
+    - name: Reporting
+      collectors:
+        - type: directory
+          value: 'src/Reporting/Reporter\.php'
+    - name: Initialization
+      collectors:
+        - type: directory
+          value: 'src/Init/.*'
+    - name: Cli
+      collectors:
+        - type: directory
+          value: 'src/Cli/.*'
   ruleset:
-    Guard:
-      - LocGuard
-      - TreeGuard
-      - DocGuard
-    LocGuard: ~
-    TreeGuard: ~
-    DocGuard: ~
+    Foundation:
+      - Collection
+    Collection:
+      - Foundation
+    Policy:
+      - Foundation
+      - Collection
+    Extension:
+      - Foundation
+      - Collection
+      - Policy
+    Execution:
+      - Foundation
+      - Extension
+    Reporting:
+      - Foundation
+    Initialization:
+      - Foundation
+      - Collection
+    Cli:
+      - Foundation
+      - Extension
+      - Execution
+      - Reporting
+      - Initialization

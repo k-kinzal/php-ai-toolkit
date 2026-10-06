@@ -1,0 +1,14 @@
+Update this project's existing DocUI (document-design) integration to the published stable release v1.2.1. Follow this repository's AGENTS.md and contribution workflow.
+
+Upstream release: https://github.com/k-kinzal/document-design/releases/tag/v1.2.1
+Release commit: 8a9032c7546db6dd9c55e38f15e6c9e388987fab
+Immutable asset base: https://k-kinzal.github.io/document-design/v1.2.1/
+Local upstream source, if useful: /Users/ab/Projects/document-design (inspect the v1.2.1 tag, not unreleased main).
+
+Use exact v1.2.1 upstream assets and preserve their contents. Update versioned filenames, references, provenance, checksums, and license notices together. Keep generation and viewing offline-capable and use fixed version URLs for acquisition rather than floating latest/major/minor URLs. Preserve older versioned assets needed by archived reports and documents; new output should use v1.2.1.
+
+Review upstream changes since the currently integrated version and adjust existing markup or integration code where needed. Keep this task focused on the dependency update and compatibility, without introducing unrelated product features. Run the project's relevant checks and tests, generate a representative real output, and verify rendering, Japanese text, and print behavior where applicable. Report the files changed, versions before/after, validation results, and any remaining issues.
+
+Current integration observed: v1.1.0 in packages/docgen-php, including resources/docgen/document-design-v1.1.0.css, src/DocGen/Render/AssetPublisher.php, and src/DocGen/Render/PageChrome.php.
+
+Update the bundled upstream CSS, asset publisher, HTML stylesheet references, provenance/license file, docs/docgen.md, and checksum/renderer tests. Review the existing DocGen-specific style.css extensions for compatibility, retaining DocGen's search, copy/run controls, diff modes, and theme behavior. Preserve the existing v1.0.0/v1.1.0 assets required by archived documents and avoid overwriting their bytes during publishing. Regenerate a representative document with --clear-cache or --no-cache so cached HTML cannot hide a stale stylesheet reference; check nested-page relative paths and file:// viewing.

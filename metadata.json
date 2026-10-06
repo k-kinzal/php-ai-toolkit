@@ -1,0 +1,56 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M49K3PNTSF22WS8JZ1G859GH",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/guard-php/deptrac.yaml",
+    "packages/guard-php/docs/guard.md",
+    "packages/guard-php/examples/xml-schema/composer.json",
+    "packages/guard-php/examples/xml-schema/src/SchemaValidation.php",
+    "packages/guard-php/examples/xml-schema/src/XmlSchemaExtension.php",
+    "packages/guard-php/examples/xml-schema/src/XmlSchemaPolicy.php",
+    "packages/guard-php/src/Collect/Collector.php",
+    "packages/guard-php/src/Collect/Filesystem/DirectoryTraversal.php",
+    "packages/guard-php/src/Collect/Filesystem/Discovery.php",
+    "packages/guard-php/src/Collect/Filesystem/PatternRoots.php",
+    "packages/guard-php/src/Collect/Filesystem/QueryResult.php",
+    "packages/guard-php/src/Collect/Filesystem/SelectionRoots.php",
+    "packages/guard-php/src/Config/Configuration.php",
+    "packages/guard-php/src/Config/ConfigurationLoader.php",
+    "packages/guard-php/src/Config/DocumentMerger.php",
+    "packages/guard-php/src/Config/ImportResolver.php",
+    "packages/guard-php/src/Config/Reader/ExtensionConfigReader.php",
+    "packages/guard-php/src/Document/XmlDocument.php",
+    "packages/guard-php/src/Execution/Pipeline.php",
+    "packages/guard-php/src/Extension/ConfigurableExtension.php",
+    "packages/guard-php/src/Extension/ExtensionLoader.php",
+    "packages/guard-php/tests/Integration/ConfiguredExtensionTest.php",
+    "packages/guard-php/tests/Support/XmlSchemaExample.php",
+    "packages/guard-php/tests/Unit/Collect/CollectorTest.php",
+    "packages/guard-php/tests/Unit/Collect/Filesystem/DirectoryTraversalTest.php",
+    "packages/guard-php/tests/Unit/Collect/Filesystem/DiscoveryTest.php",
+    "packages/guard-php/tests/Unit/Collect/Filesystem/QueryResultTest.php",
+    "packages/guard-php/tests/Unit/Config/Reader/ExtensionConfigReaderTest.php",
+    "packages/guard-php/tests/Unit/Document/XmlDocumentTest.php",
+    "packages/guard-php/tests/Unit/Extension/ConfigurableExtensionTest.php",
+    "packages/guard-php/tests/Unit/Extension/ExtensionLoaderTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 133203,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 4076416,
+    "output_tokens": 37629,
+    "api_call_count": 45
+  }
+}

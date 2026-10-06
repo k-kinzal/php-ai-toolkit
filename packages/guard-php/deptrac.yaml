@@ -8,29 +8,59 @@ deptrac:
     - name: Foundation
       collectors:
         - type: directory
-          value: 'src/(Config|Document)/.*'
+          value: 'src/Config/(Value|Reader|Profile|Validation)/.*'
         - type: directory
-          value: 'src/Execution/(Context|Plan|FileChange|TargetPath)\.php'
+          value: 'src/Config/(Configuration|Schema)\.php'
+        - type: directory
+          value: 'src/Document/.*'
+        - type: directory
+          value: 'src/Collect/[^/]+(?<!Collector)\.php'
+        - type: directory
+          value: 'src/Collect/Filesystem/(Entry|Path)\.php'
+        - type: directory
+          value: 'src/Collect/Matching/PathPatternMatcher\.php'
+        - type: directory
+          value: 'src/Execution/(Context|Plan|FileChange)\.php'
+        - type: directory
+          value: 'src/Extension/PolicyBinding\.php'
         - type: directory
           value: 'src/Policy/(Policy|PolicyException|Constraint|Rule)\.php'
         - type: directory
-          value: 'src/Collect/(Collector|Subject)\.php'
+          value: 'src/Reporting/[^/]+(?<!Reporter)\.php'
         - type: directory
-          value: 'src/Reporting/Finding\.php'
+          value: 'src/Structure/(Subject|Structurer|Source|ParsedDocument)\.php'
     - name: Collection
       collectors:
         - type: directory
-          value: 'src/Collect/(Php|Tree|Markdown|Configuration)/.*'
+          value: 'src/Collect/Collector\.php'
+        - type: directory
+          value: 'src/Collect/Filesystem/(?!Entry\.php|Path\.php).*'
+        - type: directory
+          value: 'src/Collect/Matching/(GlobMatcher|SelectionFilter)\.php'
+        - type: directory
+          value: 'src/Execution/TargetPath\.php'
+    - name: Structuring
+      collectors:
+        - type: directory
+          value: 'src/Structure/(Php|Markdown)/.*'
+        - type: directory
+          value: 'src/Structure/DocumentStructurer\.php'
     - name: Policy
       collectors:
         - type: directory
-          value: 'src/Policy/(Loc|Tree|Doc|Configuration)/.*'
+          value: 'src/Policy/(Comparison|Inspection|Limit)/.*'
         - type: directory
-          value: 'src/Policy/RuleEvaluator\.php'
+          value: 'src/Policy/(MetricLimits|DirectoryEntries|HeadingStructure|FieldConstraints|RuleEvaluator)\.php'
+        - type: directory
+          value: 'src/Config/Assignment/.*'
+    - name: Configuration
+      collectors:
+        - type: directory
+          value: 'src/Config/(ConfigurationLoader|ImportResolver|DocumentMerger|RuleReader)\.php'
     - name: Extension
       collectors:
         - type: directory
-          value: 'src/Extension/.*'
+          value: 'src/Extension/(Registry|Extension|BuiltinExtension)\.php'
     - name: Execution
       collectors:
         - type: directory
@@ -48,28 +78,13 @@ deptrac:
         - type: directory
           value: 'src/Cli/.*'
   ruleset:
-    Foundation:
-      - Collection
-    Collection:
-      - Foundation
-    Policy:
-      - Foundation
-      - Collection
-    Extension:
-      - Foundation
-      - Collection
-      - Policy
-    Execution:
-      - Foundation
-      - Extension
-    Reporting:
-      - Foundation
-    Initialization:
-      - Foundation
-      - Collection
-    Cli:
-      - Foundation
-      - Extension
-      - Execution
-      - Reporting
-      - Initialization
+    Foundation: [Structuring]
+    Collection: [Foundation]
+    Structuring: [Foundation]
+    Policy: [Foundation, Structuring]
+    Configuration: [Foundation, Policy]
+    Extension: [Foundation, Structuring]
+    Execution: [Foundation, Collection, Extension]
+    Reporting: [Foundation]
+    Initialization: [Foundation, Structuring, Configuration]
+    Cli: [Foundation, Configuration, Extension, Execution, Reporting, Initialization]

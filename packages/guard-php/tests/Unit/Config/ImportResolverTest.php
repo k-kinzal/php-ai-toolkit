@@ -10,25 +10,41 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Config\ImportResolver
+ * @uses \Guard\Collect\DirectoryListing
+ * @uses \Guard\Collect\FileRecord
+ * @uses \Guard\Collect\FileSet
+ * @uses \Guard\Collect\Filesystem\Entry
+ * @uses \Guard\Collect\Input
+ * @uses \Guard\Collect\InputSet
+ * @uses \Guard\Collect\Selection
+ * @uses \Guard\Collect\StructuredFile
  * @uses \Guard\Config\Configuration
  * @uses \Guard\Config\DocumentMerger
  * @uses \Guard\Config\Schema
  * @uses \Guard\Execution\Context
  * @uses \Guard\Execution\FileChange
  * @uses \Guard\Execution\Plan
+ * @uses \Guard\Extension\PolicyBinding
  * @uses \Guard\Policy\PolicyException
- * @uses \Guard\Policy\Rule
  * @uses \Guard\Reporting\Finding
  */
 #[CoversClass(\Guard\Config\ImportResolver::class)]
+#[UsesClass(\Guard\Collect\DirectoryListing::class)]
+#[UsesClass(\Guard\Collect\FileRecord::class)]
+#[UsesClass(\Guard\Collect\FileSet::class)]
+#[UsesClass(\Guard\Collect\Filesystem\Entry::class)]
+#[UsesClass(\Guard\Collect\Input::class)]
+#[UsesClass(\Guard\Collect\InputSet::class)]
+#[UsesClass(\Guard\Collect\Selection::class)]
+#[UsesClass(\Guard\Collect\StructuredFile::class)]
 #[UsesClass(\Guard\Config\Configuration::class)]
 #[UsesClass(\Guard\Config\DocumentMerger::class)]
 #[UsesClass(\Guard\Config\Schema::class)]
 #[UsesClass(\Guard\Execution\Context::class)]
 #[UsesClass(\Guard\Execution\FileChange::class)]
 #[UsesClass(\Guard\Execution\Plan::class)]
+#[UsesClass(\Guard\Extension\PolicyBinding::class)]
 #[UsesClass(\Guard\Policy\PolicyException::class)]
-#[UsesClass(\Guard\Policy\Rule::class)]
 #[UsesClass(\Guard\Reporting\Finding::class)]
 final class ImportResolverTest extends TestCase
 {

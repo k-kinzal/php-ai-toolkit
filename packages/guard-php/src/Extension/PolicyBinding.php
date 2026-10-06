@@ -4,39 +4,36 @@ declare(strict_types=1);
 
 namespace Guard\Extension;
 
-/**
- * Associates a policy with an information type.
- *
+use Guard\Policy\Policy;
+
+/** A policy registration, with report order independent of evaluation precedence.
  * @property-read string $id
- * @property-read class-string<\Guard\Collect\Subject> $informationType
- * @property-read \Guard\Policy\Policy $policy
+ * @property-read Policy $policy
+ * @property-read int $reportOrder
  */
 final class PolicyBinding
 {
     /**
-     * @param string $id
-     * @param class-string<\Guard\Collect\Subject> $informationType
-     * @param \Guard\Policy\Policy $policy
+     * Creates the PolicyBinding with its declared dependencies.
      */
     public function __construct(
         /** @readonly */
         private string $id,
         /** @readonly */
-        private string $informationType,
+        private Policy $policy,
         /** @readonly */
-        private \Guard\Policy\Policy $policy,
+        private int $reportOrder = 0,
     ) {
     }
-
     /**
-     * Returns a collected value.
+     * Returns a registered property.
      */
     public function __get(string $name): mixed
     {
         return match ($name) {
             'id' => $this->id,
-            'informationType' => $this->informationType,
             'policy' => $this->policy,
+            'reportOrder' => $this->reportOrder,
             default => null,
         };
     }

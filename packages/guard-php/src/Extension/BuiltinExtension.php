@@ -4,36 +4,36 @@ declare(strict_types=1);
 
 namespace Guard\Extension;
 
-use Guard\Collect\Configuration\ConfigurationCollector;
-use Guard\Collect\Configuration\ConfigurationDocument;
-use Guard\Collect\Markdown\MarkdownCollector;
-use Guard\Collect\Markdown\MarkdownDocuments;
-use Guard\Collect\Php\PhpCollector;
-use Guard\Collect\Php\PhpSources;
-use Guard\Collect\Tree\DirectoryTree;
-use Guard\Collect\Tree\TreeCollector;
-use Guard\Policy\Configuration\ConfigurationPolicy;
-use Guard\Policy\Doc\DocPolicy;
-use Guard\Policy\Loc\LocPolicy;
-use Guard\Policy\Tree\TreePolicy;
+use Guard\Config\Configuration;
+use Guard\Structure\DocumentStructurer;
+use Guard\Structure\Markdown\HeadingStructurer;
+use Guard\Structure\Php\MetricParser;
+use Guard\Structure\Php\TokenParser;
 
 /**
- * Registers the shipped policies through the public extension contract.
+ * Registers built-in formats and the same policy declarations available to extensions.
  */
 final class BuiltinExtension implements Extension
 {
     /**
-     * Preserves source finding order and configuration document discovery order.
+     * Creates the BuiltinExtension with its declared dependencies.
+     */
+    public function __construct(private Configuration $configuration)
+    {
+    }
+    /**
+     * Adds all structure producers; only requested structures will run.
      */
     public function register(Registry $registry): void
     {
-        $registry->addCollector('configuration', new ConfigurationCollector());
-        $registry->addCollector('php', new PhpCollector());
-        $registry->addCollector('tree', new TreeCollector());
-        $registry->addCollector('markdown', new MarkdownCollector());
-        $registry->addPolicy('loc', PhpSources::class, new LocPolicy());
-        $registry->addPolicy('tree', DirectoryTree::class, new TreePolicy());
-        $registry->addPolicy('doc', MarkdownDocuments::class, new DocPolicy());
-        $registry->addPolicy('configuration', ConfigurationDocument::class, new ConfigurationPolicy());
+        $registry->addStructure('php.tokens', new TokenParser());
+        $registry->addStructure('php.metrics', new MetricParser());
+        $registry->addStructure('markdown.headings', new HeadingStructurer());
+        foreach (['json', 'json5', 'yaml', 'yml', 'neon', 'toml', 'xml', 'php'] as $format) {
+            $registry->addStructure($format, new DocumentStructurer($format));
+        }
+        foreach ($this->configuration->policies as $binding) {
+            $registry->addPolicy($binding->id, $binding->policy, $binding->reportOrder);
+        }
     }
 }

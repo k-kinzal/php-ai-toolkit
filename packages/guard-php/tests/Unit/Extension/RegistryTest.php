@@ -4,90 +4,122 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Extension;
 
-use Guard\Collect\Subject;
-use Guard\Execution\Context;
-use Guard\Execution\Plan;
-use Guard\Extension\Registry;
-use Guard\Policy\PolicyException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 /**
  * @covers \Guard\Extension\Registry
+ * @uses \Guard\Collect\DirectoryListing
+ * @uses \Guard\Collect\FileRecord
+ * @uses \Guard\Collect\FileSet
+ * @uses \Guard\Collect\Filesystem\Entry
+ * @uses \Guard\Collect\Input
+ * @uses \Guard\Collect\InputSet
+ * @uses \Guard\Collect\Selection
+ * @uses \Guard\Collect\StructuredFile
  * @uses \Guard\Config\Configuration
+ * @uses \Guard\Document\DataDocument
+ * @uses \Guard\Document\DocumentFailure
+ * @uses \Guard\Document\DocumentNode
+ * @uses \Guard\Document\Json5Reader
+ * @uses \Guard\Document\PhpConfigReader
+ * @uses \Guard\Document\PhpDocument
+ * @uses \Guard\Document\Pointer
+ * @uses \Guard\Document\Selection
+ * @uses \Guard\Document\TomlEncoder
+ * @uses \Guard\Document\XmlDocument
  * @uses \Guard\Execution\Context
  * @uses \Guard\Execution\FileChange
  * @uses \Guard\Execution\Plan
  * @uses \Guard\Extension\PolicyBinding
+ * @uses \Guard\Policy\Constraint
+ * @uses \Guard\Policy\FieldConstraints
  * @uses \Guard\Policy\PolicyException
  * @uses \Guard\Policy\Rule
+ * @uses \Guard\Policy\RuleEvaluator
  * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Structure\DocumentStructurer
+ * @uses \Guard\Structure\ParsedDocument
+ * @uses \Guard\Structure\Php\TokenParser
+ * @uses \Guard\Structure\Php\Tokens
+ * @uses \Guard\Structure\Source
  */
-#[CoversClass(Registry::class)]
+#[CoversClass(\Guard\Extension\Registry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\DirectoryListing::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileRecord::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Entry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Input::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\InputSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Selection::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\StructuredFile::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Context::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\DataDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\DocumentFailure::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\DocumentNode::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Json5Reader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\PhpConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\PhpDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Pointer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Selection::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\TomlEncoder::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\XmlDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Context::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Plan::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Plan::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(PolicyException::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Constraint::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FieldConstraints::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyException::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Rule::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\RuleEvaluator::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Finding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\DocumentStructurer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\ParsedDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\TokenParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
 final class RegistryTest extends TestCase
 {
-    public function testAddCollectorDuplicateIdsFailWithoutReplacingTheFirstCollector(): void
+    public function testAddStructureRejectsDuplicateIdsWithoutReplacingTheOriginal(): void
     {
-        $registry = new Registry();
-        $collector = new \Tests\Support\CallbackCollector(static fn (Context $context): array => []);
-        $registry->addCollector('custom', $collector);
-        self::assertSame([$collector], $registry->collectors());
-        $this->expectException(PolicyException::class);
-        $this->expectExceptionMessage('custom');
-        $registry->addCollector('custom', $collector);
+        $registry = new \Guard\Extension\Registry();
+        $parser = new \Guard\Structure\Php\TokenParser();
+        $registry->addStructure('tokens', $parser);
+        self::assertSame(['tokens' => $parser], $registry->structures());
+        $this->expectException(\Guard\Policy\PolicyException::class);
+        $registry->addStructure('tokens', new \Guard\Structure\Php\TokenParser());
     }
-    public function testAddPolicyDuplicateIdsFailWithoutReplacingTheFirstBinding(): void
+    public function testAddPolicyRejectsDuplicateIds(): void
     {
-        $registry = new Registry();
-        $policy = new \Tests\Support\CallbackPolicy(static fn (Subject $subject, Context $context): Plan => new Plan([], []));
-        $registry->addPolicy('custom', Subject::class, $policy);
-        self::assertSame($policy, $registry->policies()[0]->policy);
-        $this->expectException(PolicyException::class);
-        $this->expectExceptionMessage('custom');
-        $registry->addPolicy('custom', Subject::class, $policy);
+        $registry = new \Guard\Extension\Registry();
+        $policy = new \Guard\Policy\FieldConstraints([]);
+        $registry->addPolicy('policy', $policy);
+        $this->expectException(\Guard\Policy\PolicyException::class);
+        $registry->addPolicy('policy', $policy);
     }
-    public function testAddCollectorRejectsEmptyIds(): void
+    public function testStructuresPreservesDistinctRegisteredFormats(): void
     {
-        $this->expectException(PolicyException::class);
-        (new Registry())->addCollector('', new \Tests\Support\CallbackCollector(static fn (Context $context): array => []));
+        $registry = new \Guard\Extension\Registry();
+        $registry->addStructure('json', new \Guard\Structure\DocumentStructurer('json'));
+        $registry->addStructure('xml', new \Guard\Structure\DocumentStructurer('xml'));
+        self::assertSame(['json', 'xml'], array_keys($registry->structures()));
     }
-    public function testAddPolicyRejectsEmptyIds(): void
+    public function testPoliciesKeepsRegistrationOrderIndependentlyOfReportOrder(): void
     {
-        $this->expectException(PolicyException::class);
-        (new Registry())->addPolicy('', Subject::class, new \Tests\Support\CallbackPolicy(static fn (Subject $subject, Context $context): Plan => new Plan([], [])));
+        $registry = new \Guard\Extension\Registry();
+        $registry->addPolicy('first', new \Guard\Policy\FieldConstraints([]), 20);
+        $registry->addPolicy('second', new \Guard\Policy\FieldConstraints([]), 0);
+        self::assertSame(['first', 'second'], array_map(static fn (\Guard\Extension\PolicyBinding $binding): string => $binding->id, $registry->policies()));
     }
-
-
-    public function testCollectorsReturnsRegistrationsInInsertionOrder(): void
+    public function testAddStructureRejectsEmptyId(): void
     {
-        $first = new \Tests\Support\CallbackCollector(static fn (Context $context): array => []);
-        $second = new \Tests\Support\CallbackCollector(static fn (Context $context): array => []);
-        $registry = new Registry();
-        $registry->addCollector('z', $first);
-        $registry->addCollector('a', $second);
-        self::assertSame([$first, $second], $registry->collectors());
+        $this->expectException(\Guard\Policy\PolicyException::class);
+        (new \Guard\Extension\Registry())->addStructure('', new \Guard\Structure\Php\TokenParser());
     }
-    public function testPoliciesRetainsMultipleBindingsForTheSameSubject(): void
+    public function testAddPolicyRejectsEmptyId(): void
     {
-        $policy = new \Tests\Support\CallbackPolicy(static fn (Subject $subject, Context $context): Plan => new Plan([], []));
-        $registry = new Registry();
-        $registry->addPolicy('z', Subject::class, $policy);
-        $registry->addPolicy('a', Subject::class, $policy);
-        self::assertSame(['z', 'a'], array_map(static fn (\Guard\Extension\PolicyBinding $binding): string => $binding->id, $registry->policies()));
+        $this->expectException(\Guard\Policy\PolicyException::class);
+        (new \Guard\Extension\Registry())->addPolicy('', new \Guard\Policy\FieldConstraints([]));
     }
-    public function testAddPolicyRejectsTypesThatAreNotSubjects(): void
-    {
-        $this->expectException(PolicyException::class);
-        (new Registry())->addPolicy('invalid', stdClass::class, new \Tests\Support\CallbackPolicy(static fn (Subject $subject, Context $context): Plan => new Plan([], [])));
-    }
-
 }

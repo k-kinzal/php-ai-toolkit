@@ -4,11 +4,25 @@ declare(strict_types=1);
 
 namespace Guard\Document;
 
+use PhpToken;
+
 /**
  * Reads literal setRiskyAllowed and setRules arguments without executing PHP.
  */
 final class PhpConfigReader
 {
+    /** Reads literals from the tokens already shared with other PHP structures.
+     * @param list<PhpToken> $tokens
+     * @return array{riskyAllowed: mixed, rules: mixed}
+     */
+    public function fromTokens(array $tokens): array
+    {
+        $values = [];
+        foreach ($tokens as $token) {
+            $values[] = $token->id < 256 ? $token->text : [$token->id, $token->text, $token->line];
+        }
+        return ['riskyAllowed' => $this->argument($values, 'setRiskyAllowed'), 'rules' => $this->argument($values, 'setRules')];
+    }
     /**
      * Returns the literal risky flag and rule map. Dynamic arguments become null.
      *

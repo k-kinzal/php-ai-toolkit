@@ -4,58 +4,73 @@ declare(strict_types=1);
 
 namespace Guard\Execution;
 
+use Guard\Collect\Collector;
+use Guard\Collect\Input;
+use Guard\Collect\InputSet;
 use Guard\Extension\BuiltinExtension;
+use Guard\Extension\PolicyBinding;
 use Guard\Extension\Registry;
 use JsonException;
+use RuntimeException;
 
 /**
- * Collects information, dispatches registered policies and combines reportable results.
+ * Merges input declarations, collects once, evaluates policies and combines reportable plans.
  */
 final class Pipeline
 {
-    private Registry $registry;
     /**
-     * Accepts a complete registry; the default registry contains the built-in extension.
+     * Creates the Pipeline with its declared dependencies.
      */
-    public function __construct(?Registry $registry = null)
+    public function __construct(private ?Registry $registry = null, private ?Collector $collector = null)
     {
-        if ($registry === null) {
-            $registry = new Registry();
-            (new BuiltinExtension())->register($registry);
-        }
-        $this->registry = $registry;
     }
-    /**
-     * Applies matching policies to each collected subject before reporting any results.
+    /** Runs policies only after their requested file structures have been collected.
+     * @throws RuntimeException
      * @throws JsonException
      * @throws \Nette\Neon\Exception
-     * @throws \Guard\Policy\PolicyException
      */
     public function run(Context $context): Plan
     {
-        /** @var array<string, list<Plan>> $plans */
-        $plans = [];
-        foreach ($this->registry->collectors() as $collector) {
-            foreach ($collector->collect($context) as $information) {
-                foreach ($this->registry->policies() as $binding) {
-                    $type = $binding->informationType;
-                    if ($information instanceof $type) {
-                        $plans[$binding->id][] = $binding->policy->evaluate($information, $context);
-                    }
-                }
+        $registry = $this->registry;
+        if ($registry === null) {
+            $registry = new Registry();
+            (new BuiltinExtension($context->configuration))->register($registry);
+        }
+        /** @var array<string, Input> $requests */
+        $requests = [];
+        /** @var array<int, array<string, string>> $names */
+        $names = [];
+        $bindings = $registry->policies();
+        foreach ($bindings as $index => $binding) {
+            $names[$index] = [];
+            foreach ($binding->policy->inputs($context) as $name => $input) {
+                $key = $index . ':' . $name;
+                $requests[$key] = $input;
+                $names[$index][$name] = $key;
             }
         }
+        $collected = ($this->collector ?? new Collector())->collect($context->configuration->root, $requests, $registry->structures());
+        $plans = [];
+        foreach ($bindings as $index => $binding) {
+            $sets = [];
+            foreach ($names[$index] as $name => $key) {
+                $sets[$name] = $collected[$key];
+            }
+            $inputs = new InputSet($sets);
+            $inputs->validate();
+            $plans[$binding->id] = $binding->policy->evaluate($inputs, $context);
+        }
+        usort($bindings, static fn (PolicyBinding $a, PolicyBinding $b): int => $a->reportOrder <=> $b->reportOrder);
         $findings = [];
         $changes = new ChangeSet();
         $blocking = [];
-        foreach ($this->registry->policies() as $binding) {
-            foreach ($plans[$binding->id] ?? [] as $plan) {
-                $findings = array_merge($findings, $plan->findings);
-                foreach ($plan->changes as $change) {
-                    $changes->add($change);
-                }
-                $blocking = array_merge($blocking, $plan->blockingFindings);
+        foreach ($bindings as $binding) {
+            $plan = $plans[$binding->id];
+            $findings = array_merge($findings, $plan->findings);
+            foreach ($plan->changes as $change) {
+                $changes->add($change);
             }
+            $blocking = array_merge($blocking, $plan->blockingFindings);
         }
         return new Plan($findings, $changes->changes(), $blocking);
     }

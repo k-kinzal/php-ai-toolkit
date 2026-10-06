@@ -4,90 +4,77 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Guard\Collect\Subject;
-use Guard\Config\Configuration;
-use Guard\Execution\Context;
-use Guard\Execution\Pipeline;
-use Guard\Execution\Plan;
-use Guard\Extension\Registry;
-use Guard\Reporting\Finding;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Execution\Pipeline
- * @uses \Guard\Collect\Configuration\ConfigurationCollector
- * @uses \Guard\Collect\Configuration\ConfigurationDocument
- * @uses \Guard\Collect\Markdown\Filesystem\MarkdownFileFinder
- * @uses \Guard\Collect\Markdown\Filesystem\MarkdownFileReader
- * @uses \Guard\Collect\Markdown\Filesystem\PathResolver
- * @uses \Guard\Collect\Markdown\MarkdownCollector
- * @uses \Guard\Collect\Markdown\MarkdownDocuments
- * @uses \Guard\Collect\Markdown\Parsing\AtxHeadingMatcher
- * @uses \Guard\Collect\Markdown\Parsing\BlockLineScanner
- * @uses \Guard\Collect\Markdown\Parsing\BlockMarkerMatcher
- * @uses \Guard\Collect\Markdown\Parsing\Fence
- * @uses \Guard\Collect\Markdown\Parsing\FenceMatcher
- * @uses \Guard\Collect\Markdown\Parsing\Heading
- * @uses \Guard\Collect\Markdown\Parsing\HeadingParser
- * @uses \Guard\Collect\Markdown\Parsing\HeadingTextNormalizer
- * @uses \Guard\Collect\Markdown\Parsing\HtmlBlockMatcher
- * @uses \Guard\Collect\Markdown\Parsing\LineIndentation
- * @uses \Guard\Collect\Markdown\Parsing\LineScanner
- * @uses \Guard\Collect\Markdown\Parsing\MarkdownLineSplitter
- * @uses \Guard\Collect\Markdown\Parsing\ParserState
- * @uses \Guard\Collect\Markdown\Parsing\SetextUnderlineMatcher
- * @uses \Guard\Collect\Php\ClassLikeMetric\ClassLikeDeclarationReader
- * @uses \Guard\Collect\Php\ClassLikeMetric\ClassLikeMetric
- * @uses \Guard\Collect\Php\ClassLikeMetric\ClassLikeMetricCollector
- * @uses \Guard\Collect\Php\Complexity\CyclomaticComplexityCalculator
- * @uses \Guard\Collect\Php\Complexity\CyclomaticComplexityState
- * @uses \Guard\Collect\Php\Complexity\CyclomaticDecisionWeight
- * @uses \Guard\Collect\Php\FileMetric\FileMetric
- * @uses \Guard\Collect\Php\Filesystem\FilePathPatternMatcher
- * @uses \Guard\Collect\Php\Filesystem\PathResolver
- * @uses \Guard\Collect\Php\Filesystem\PhpFileFinder
- * @uses \Guard\Collect\Php\Filesystem\PhpFileInclusionPolicy
- * @uses \Guard\Collect\Php\Filesystem\PhpPathFileCollector
- * @uses \Guard\Collect\Php\FunctionMetric\ArrowExpressionBoundary
- * @uses \Guard\Collect\Php\FunctionMetric\ArrowFunctionMetricReader
- * @uses \Guard\Collect\Php\FunctionMetric\BlockFunctionMetricReader
- * @uses \Guard\Collect\Php\FunctionMetric\FunctionBodyLocator
- * @uses \Guard\Collect\Php\FunctionMetric\FunctionMetric
- * @uses \Guard\Collect\Php\FunctionMetric\FunctionMetricCollector
- * @uses \Guard\Collect\Php\FunctionMetric\FunctionMetricComplexityAssigner
- * @uses \Guard\Collect\Php\FunctionMetric\FunctionMetricLineCollector
- * @uses \Guard\Collect\Php\FunctionMetric\FunctionNameReader
- * @uses \Guard\Collect\Php\FunctionMetric\FunctionScanState
- * @uses \Guard\Collect\Php\FunctionMetric\NestedFunctionMetricRange
- * @uses \Guard\Collect\Php\PhpCollector
- * @uses \Guard\Collect\Php\PhpSources
- * @uses \Guard\Collect\Php\SourceMetricReader
- * @uses \Guard\Collect\Php\SourceMetrics
- * @uses \Guard\Collect\Php\Token\ClassLikeTokenMatcher
- * @uses \Guard\Collect\Php\Token\CodeTokenLineResolver
- * @uses \Guard\Collect\Php\Token\PhpTokenNavigator
- * @uses \Guard\Collect\Php\Token\TokenLineCounter
- * @uses \Guard\Collect\Tree\DirectoryTree
- * @uses \Guard\Collect\Tree\Filesystem\DirectoryListing
- * @uses \Guard\Collect\Tree\Filesystem\DirectoryListingReader
- * @uses \Guard\Collect\Tree\Filesystem\DirectoryTreeScanner
- * @uses \Guard\Collect\Tree\Filesystem\PathInclusionPolicy
- * @uses \Guard\Collect\Tree\Filesystem\PathResolver
- * @uses \Guard\Collect\Tree\TreeCollector
+ * @uses \Guard\Collect\Collector
+ * @uses \Guard\Collect\DirectoryListing
+ * @uses \Guard\Collect\FileRecord
+ * @uses \Guard\Collect\FileSet
+ * @uses \Guard\Collect\Filesystem\DirectoryTraversal
+ * @uses \Guard\Collect\Filesystem\Discovery
+ * @uses \Guard\Collect\Filesystem\Entry
+ * @uses \Guard\Collect\Filesystem\NativeFilesystem
+ * @uses \Guard\Collect\Filesystem\Path
+ * @uses \Guard\Collect\Filesystem\PatternRoots
+ * @uses \Guard\Collect\Filesystem\QueryResult
+ * @uses \Guard\Collect\Filesystem\Route
+ * @uses \Guard\Collect\Filesystem\SelectionRoots
+ * @uses \Guard\Collect\Filesystem\Snapshot
+ * @uses \Guard\Collect\Filesystem\WalkQueue
+ * @uses \Guard\Collect\Input
+ * @uses \Guard\Collect\InputSet
+ * @uses \Guard\Collect\Matching\GlobMatcher
+ * @uses \Guard\Collect\Matching\PathPatternMatcher
+ * @uses \Guard\Collect\Matching\SelectionFilter
+ * @uses \Guard\Collect\Selection
+ * @uses \Guard\Collect\StructuredFile
+ * @uses \Guard\Config\Assignment\ApplyRuleMatcher
+ * @uses \Guard\Config\Assignment\FilePolicyAssigner
+ * @uses \Guard\Config\Assignment\FilePolicyAssignment
  * @uses \Guard\Config\Configuration
- * @uses \Guard\Config\Doc\DeclaredHeading
- * @uses \Guard\Config\Doc\DocumentConfig
- * @uses \Guard\Config\Doc\DocumentationConfig
- * @uses \Guard\Config\Loc\LimitConfig
- * @uses \Guard\Config\Loc\MetricsConfig
- * @uses \Guard\Config\Loc\Policy\ApplyConfig
- * @uses \Guard\Config\Loc\Policy\ApplyRuleConfig
- * @uses \Guard\Config\Loc\Policy\PolicyConfig
- * @uses \Guard\Config\Loc\ScanConfig
- * @uses \Guard\Config\Tree\RuleConfig
- * @uses \Guard\Config\Tree\StructureConfig
+ * @uses \Guard\Config\ConfigurationLoader
+ * @uses \Guard\Config\DocumentMerger
+ * @uses \Guard\Config\ImportResolver
+ * @uses \Guard\Config\Profile\ApplyConfig
+ * @uses \Guard\Config\Profile\ApplyConfigReader
+ * @uses \Guard\Config\Profile\ApplyPolicyUsageValidator
+ * @uses \Guard\Config\Profile\ApplyRuleConfig
+ * @uses \Guard\Config\Profile\ApplyRuleConfigReader
+ * @uses \Guard\Config\Profile\ApplyRuleListConfigReader
+ * @uses \Guard\Config\Profile\PolicyConfig
+ * @uses \Guard\Config\Profile\PolicyConfigReader
+ * @uses \Guard\Config\Profile\PolicyDefinition
+ * @uses \Guard\Config\Profile\PolicyListConfigReader
+ * @uses \Guard\Config\Profile\PolicyResolver
+ * @uses \Guard\Config\Reader\DeclaredHeadingReader
+ * @uses \Guard\Config\Reader\DirectoryPolicyReader
+ * @uses \Guard\Config\Reader\DirectoryRuleConfigReader
+ * @uses \Guard\Config\Reader\DirectoryRuleListConfigReader
+ * @uses \Guard\Config\Reader\DocumentConfigReader
+ * @uses \Guard\Config\Reader\DocumentListConfigReader
+ * @uses \Guard\Config\Reader\HeadingPolicyReader
+ * @uses \Guard\Config\Reader\LimitConfigReader
+ * @uses \Guard\Config\Reader\MetricPolicyReader
+ * @uses \Guard\Config\RuleReader
+ * @uses \Guard\Config\Schema
+ * @uses \Guard\Config\Validation\DirectoryConfigScalarReader
+ * @uses \Guard\Config\Validation\DirectoryConfigStringListReader
+ * @uses \Guard\Config\Validation\HeadingConfigKeyValidator
+ * @uses \Guard\Config\Validation\MetricConfigKeyValidator
+ * @uses \Guard\Config\Validation\MetricConfigScalarReader
+ * @uses \Guard\Config\Validation\MetricConfigStringListReader
+ * @uses \Guard\Config\Value\DeclaredHeading
+ * @uses \Guard\Config\Value\DirectoryRuleConfig
+ * @uses \Guard\Config\Value\DocumentConfig
+ * @uses \Guard\Config\Value\DocumentationConfig
+ * @uses \Guard\Config\Value\LimitConfig
+ * @uses \Guard\Config\Value\MetricsConfig
+ * @uses \Guard\Config\Value\ScanConfig
+ * @uses \Guard\Config\Value\StructureConfig
  * @uses \Guard\Document\DataDocument
  * @uses \Guard\Document\DocumentFailure
  * @uses \Guard\Document\DocumentNode
@@ -106,114 +93,151 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Extension\BuiltinExtension
  * @uses \Guard\Extension\PolicyBinding
  * @uses \Guard\Extension\Registry
- * @uses \Guard\Policy\Configuration\ConfigurationPolicy
+ * @uses \Guard\Policy\Comparison\HeadingHunkClassifier
+ * @uses \Guard\Policy\Comparison\HeadingSequenceAligner
+ * @uses \Guard\Policy\Comparison\HeadingStructureComparator
  * @uses \Guard\Policy\Constraint
- * @uses \Guard\Policy\Doc\DocPolicy
- * @uses \Guard\Policy\Doc\HeadingHunkClassifier
- * @uses \Guard\Policy\Doc\HeadingSequenceAligner
- * @uses \Guard\Policy\Doc\HeadingStructureComparator
- * @uses \Guard\Policy\Doc\Violation
- * @uses \Guard\Policy\Doc\ViolationFactory
- * @uses \Guard\Policy\Loc\Assignment\ApplyRuleMatcher
- * @uses \Guard\Policy\Loc\Assignment\FilePolicyAssigner
- * @uses \Guard\Policy\Loc\Assignment\FilePolicyAssignment
- * @uses \Guard\Policy\Loc\ClassLikeMetric\ClassLikeMetricLimit
- * @uses \Guard\Policy\Loc\ClassLikeMetric\ClassLikeMetricViolationBuilder
- * @uses \Guard\Policy\Loc\FileMetric\FileMetricViolationBuilder
- * @uses \Guard\Policy\Loc\FunctionMetric\FunctionComplexityViolationBuilder
- * @uses \Guard\Policy\Loc\FunctionMetric\FunctionLineViolationBuilder
- * @uses \Guard\Policy\Loc\FunctionMetric\FunctionMetricViolationBuilder
- * @uses \Guard\Policy\Loc\LocPolicy
- * @uses \Guard\Policy\Loc\Violation
+ * @uses \Guard\Policy\DirectoryEntries
+ * @uses \Guard\Policy\FieldConstraints
+ * @uses \Guard\Policy\HeadingStructure
+ * @uses \Guard\Policy\Inspection\CaseConventionMatcher
+ * @uses \Guard\Policy\Inspection\ChildCountInspector
+ * @uses \Guard\Policy\Inspection\DepthInspector
+ * @uses \Guard\Policy\Inspection\DirNameInspector
+ * @uses \Guard\Policy\Inspection\DirectoryPatternMatcher
+ * @uses \Guard\Policy\Inspection\DirectoryRuleInspector
+ * @uses \Guard\Policy\Inspection\EmptyDirectoryInspector
+ * @uses \Guard\Policy\Inspection\FileNameInspector
+ * @uses \Guard\Policy\Inspection\RequiredFileInspector
+ * @uses \Guard\Policy\Inspection\TotalFileCountInspector
+ * @uses \Guard\Policy\Limit\ClassLikeMetricLimit
+ * @uses \Guard\Policy\Limit\ClassLikeMetricViolationBuilder
+ * @uses \Guard\Policy\Limit\FileMetricViolationBuilder
+ * @uses \Guard\Policy\Limit\FunctionComplexityViolationBuilder
+ * @uses \Guard\Policy\Limit\FunctionLineViolationBuilder
+ * @uses \Guard\Policy\Limit\FunctionMetricViolationBuilder
+ * @uses \Guard\Policy\Limit\MetricLimitInspector
+ * @uses \Guard\Policy\MetricLimits
  * @uses \Guard\Policy\PolicyException
  * @uses \Guard\Policy\Rule
  * @uses \Guard\Policy\RuleEvaluator
- * @uses \Guard\Policy\Tree\CaseConventionMatcher
- * @uses \Guard\Policy\Tree\ChildCountInspector
- * @uses \Guard\Policy\Tree\DepthInspector
- * @uses \Guard\Policy\Tree\DirNameInspector
- * @uses \Guard\Policy\Tree\DirectoryPatternMatcher
- * @uses \Guard\Policy\Tree\DirectoryRuleInspector
- * @uses \Guard\Policy\Tree\EmptyDirectoryInspector
- * @uses \Guard\Policy\Tree\FileNameInspector
- * @uses \Guard\Policy\Tree\RequiredFileInspector
- * @uses \Guard\Policy\Tree\TotalFileCountInspector
- * @uses \Guard\Policy\Tree\TreePolicy
- * @uses \Guard\Policy\Tree\Violation
+ * @uses \Guard\Reporting\DirectoryViolation
  * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Reporting\HeadingViolation
+ * @uses \Guard\Reporting\HeadingViolationFactory
+ * @uses \Guard\Reporting\MetricViolation
+ * @uses \Guard\Structure\DocumentStructurer
+ * @uses \Guard\Structure\Markdown\AtxHeadingMatcher
+ * @uses \Guard\Structure\Markdown\BlockMarkerMatcher
+ * @uses \Guard\Structure\Markdown\Block\BlockLineScanner
+ * @uses \Guard\Structure\Markdown\Fence
+ * @uses \Guard\Structure\Markdown\FenceMatcher
+ * @uses \Guard\Structure\Markdown\Heading
+ * @uses \Guard\Structure\Markdown\HeadingList
+ * @uses \Guard\Structure\Markdown\HeadingParser
+ * @uses \Guard\Structure\Markdown\HeadingStructurer
+ * @uses \Guard\Structure\Markdown\HeadingTextNormalizer
+ * @uses \Guard\Structure\Markdown\HtmlBlockMatcher
+ * @uses \Guard\Structure\Markdown\LineIndentation
+ * @uses \Guard\Structure\Markdown\LineScanner
+ * @uses \Guard\Structure\Markdown\MarkdownLineSplitter
+ * @uses \Guard\Structure\Markdown\ParserState
+ * @uses \Guard\Structure\Markdown\SetextUnderlineMatcher
+ * @uses \Guard\Structure\ParsedDocument
+ * @uses \Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader
+ * @uses \Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric
+ * @uses \Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser
+ * @uses \Guard\Structure\Php\Complexity\CyclomaticComplexityCalculator
+ * @uses \Guard\Structure\Php\Complexity\CyclomaticComplexityState
+ * @uses \Guard\Structure\Php\Complexity\CyclomaticDecisionWeight
+ * @uses \Guard\Structure\Php\FileMetric\FileMetric
+ * @uses \Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary
+ * @uses \Guard\Structure\Php\FunctionMetric\ArrowFunctionMetricReader
+ * @uses \Guard\Structure\Php\FunctionMetric\BlockFunctionMetricReader
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionBodyLocator
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionLineParser
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionMetric
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionMetricComplexityAssigner
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionMetricParser
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionNameReader
+ * @uses \Guard\Structure\Php\FunctionMetric\FunctionScanState
+ * @uses \Guard\Structure\Php\FunctionMetric\NestedFunctionMetricRange
+ * @uses \Guard\Structure\Php\MetricParser
+ * @uses \Guard\Structure\Php\SourceMetrics
+ * @uses \Guard\Structure\Php\TokenParser
+ * @uses \Guard\Structure\Php\Token\ClassLikeTokenMatcher
+ * @uses \Guard\Structure\Php\Token\CodeTokenLineResolver
+ * @uses \Guard\Structure\Php\Token\PhpTokenNavigator
+ * @uses \Guard\Structure\Php\Token\TokenLineCounter
+ * @uses \Guard\Structure\Php\Tokens
+ * @uses \Guard\Structure\Source
  */
-#[CoversClass(Pipeline::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Configuration\ConfigurationCollector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Configuration\ConfigurationDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Filesystem\MarkdownFileFinder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Filesystem\MarkdownFileReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Filesystem\PathResolver::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\MarkdownCollector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\MarkdownDocuments::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\AtxHeadingMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\BlockLineScanner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\BlockMarkerMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\Fence::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\FenceMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\Heading::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\HeadingParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\HeadingTextNormalizer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\HtmlBlockMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\LineIndentation::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\LineScanner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\MarkdownLineSplitter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\ParserState::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Markdown\Parsing\SetextUnderlineMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\ClassLikeMetric\ClassLikeDeclarationReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\ClassLikeMetric\ClassLikeMetric::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\ClassLikeMetric\ClassLikeMetricCollector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\Complexity\CyclomaticComplexityCalculator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\Complexity\CyclomaticComplexityState::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\Complexity\CyclomaticDecisionWeight::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\FileMetric\FileMetric::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\Filesystem\FilePathPatternMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\Filesystem\PathResolver::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\Filesystem\PhpFileFinder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\Filesystem\PhpFileInclusionPolicy::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\Filesystem\PhpPathFileCollector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\FunctionMetric\ArrowExpressionBoundary::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\FunctionMetric\ArrowFunctionMetricReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\FunctionMetric\BlockFunctionMetricReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\FunctionMetric\FunctionBodyLocator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\FunctionMetric\FunctionMetric::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\FunctionMetric\FunctionMetricCollector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\FunctionMetric\FunctionMetricComplexityAssigner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\FunctionMetric\FunctionMetricLineCollector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\FunctionMetric\FunctionNameReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\FunctionMetric\FunctionScanState::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\FunctionMetric\NestedFunctionMetricRange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\PhpCollector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\PhpSources::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\SourceMetricReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\SourceMetrics::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\Token\ClassLikeTokenMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\Token\CodeTokenLineResolver::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\Token\PhpTokenNavigator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Php\Token\TokenLineCounter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Tree\DirectoryTree::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Tree\Filesystem\DirectoryListing::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Tree\Filesystem\DirectoryListingReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Tree\Filesystem\DirectoryTreeScanner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Tree\Filesystem\PathInclusionPolicy::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Tree\Filesystem\PathResolver::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Tree\TreeCollector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Doc\DeclaredHeading::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Doc\DocumentConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Doc\DocumentationConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Loc\LimitConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Loc\MetricsConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Loc\Policy\ApplyConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Loc\Policy\ApplyRuleConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Loc\Policy\PolicyConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Loc\ScanConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Tree\RuleConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Tree\StructureConfig::class)]
+#[CoversClass(\Guard\Execution\Pipeline::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Collector::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\DirectoryListing::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileRecord::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\DirectoryTraversal::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Discovery::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Entry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\NativeFilesystem::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Path::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\PatternRoots::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\QueryResult::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Route::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\SelectionRoots::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Snapshot::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\WalkQueue::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Input::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\InputSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\GlobMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\PathPatternMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\SelectionFilter::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Selection::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\StructuredFile::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Assignment\ApplyRuleMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Assignment\FilePolicyAssigner::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Assignment\FilePolicyAssignment::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ConfigurationLoader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\DocumentMerger::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ImportResolver::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyPolicyUsageValidator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyRuleConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyRuleConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyRuleListConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyDefinition::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyListConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyResolver::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DeclaredHeadingReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DirectoryPolicyReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DirectoryRuleConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DirectoryRuleListConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentListConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\HeadingPolicyReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\MetricPolicyReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\RuleReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Schema::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\DirectoryConfigScalarReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\DirectoryConfigStringListReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\HeadingConfigKeyValidator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigKeyValidator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigScalarReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigStringListReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\DeclaredHeading::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\DirectoryRuleConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\DocumentConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\DocumentationConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\LimitConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\MetricsConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\ScanConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\StructureConfig::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\DataDocument::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\DocumentFailure::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\DocumentNode::class)]
@@ -225,102 +249,139 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\TomlEncoder::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\XmlDocument::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\ChangeSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Context::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Context::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Plan::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Plan::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\TargetPath::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\BuiltinExtension::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Registry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Configuration\ConfigurationPolicy::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\Registry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\HeadingHunkClassifier::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\HeadingSequenceAligner::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\HeadingStructureComparator::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Constraint::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Doc\DocPolicy::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Doc\HeadingHunkClassifier::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Doc\HeadingSequenceAligner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Doc\HeadingStructureComparator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Doc\Violation::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Doc\ViolationFactory::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Loc\Assignment\ApplyRuleMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Loc\Assignment\FilePolicyAssigner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Loc\Assignment\FilePolicyAssignment::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Loc\ClassLikeMetric\ClassLikeMetricLimit::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Loc\ClassLikeMetric\ClassLikeMetricViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Loc\FileMetric\FileMetricViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Loc\FunctionMetric\FunctionComplexityViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Loc\FunctionMetric\FunctionLineViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Loc\FunctionMetric\FunctionMetricViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Loc\LocPolicy::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Loc\Violation::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\DirectoryEntries::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FieldConstraints::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\HeadingStructure::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\CaseConventionMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\ChildCountInspector::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\DepthInspector::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\DirNameInspector::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\DirectoryPatternMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\DirectoryRuleInspector::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\EmptyDirectoryInspector::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\FileNameInspector::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\RequiredFileInspector::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\TotalFileCountInspector::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\ClassLikeMetricLimit::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\ClassLikeMetricViolationBuilder::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FileMetricViolationBuilder::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FunctionComplexityViolationBuilder::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FunctionLineViolationBuilder::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FunctionMetricViolationBuilder::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\MetricLimitInspector::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\MetricLimits::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyException::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Rule::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\RuleEvaluator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Tree\CaseConventionMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Tree\ChildCountInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Tree\DepthInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Tree\DirNameInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Tree\DirectoryPatternMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Tree\DirectoryRuleInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Tree\EmptyDirectoryInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Tree\FileNameInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Tree\RequiredFileInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Tree\TotalFileCountInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Tree\TreePolicy::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Tree\Violation::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Finding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\DirectoryViolation::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Finding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\HeadingViolation::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\HeadingViolationFactory::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\MetricViolation::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\DocumentStructurer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\AtxHeadingMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\BlockMarkerMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Block\BlockLineScanner::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Fence::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\FenceMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Heading::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingList::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingStructurer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingTextNormalizer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HtmlBlockMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\LineIndentation::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\LineScanner::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\MarkdownLineSplitter::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\ParserState::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\SetextUnderlineMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\ParsedDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticComplexityCalculator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticComplexityState::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticDecisionWeight::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FileMetric\FileMetric::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\ArrowFunctionMetricReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\BlockFunctionMetricReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionBodyLocator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionLineParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetric::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetricComplexityAssigner::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetricParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionNameReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionScanState::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\NestedFunctionMetricRange::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\MetricParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\SourceMetrics::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\TokenParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\ClassLikeTokenMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\CodeTokenLineResolver::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\PhpTokenNavigator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
 final class PipelineTest extends TestCase
 {
     /**
      * @throws JsonException
      * @throws \Nette\Neon\Exception
      */
-    public function testRunCollectsOnceAndDispatchesOnlyMatchingSubjects(): void
+    public function testRunStructuresAllInputsBeforePoliciesAndReusesOneFileAcrossExtensions(): void
     {
-        $events = [];
-        $subject = new \Guard\Collect\Tree\DirectoryTree([]);
-        $registry = new Registry();
-        $registry->addCollector('first', new \Tests\Support\CallbackCollector(static function (Context $context) use (&$events, $subject): array {
-            $events[] = 'collect-first';
-            return [$subject];
-        }));
-        $registry->addCollector('second', new \Tests\Support\CallbackCollector(static function (Context $context) use (&$events): array {
-            $events[] = 'collect-second';
-            return [new \Guard\Collect\Php\PhpSources([], [])];
-        }));
-
-        $registry->addPolicy('one', \Guard\Collect\Tree\DirectoryTree::class, new \Tests\Support\CallbackPolicy(static function (Subject $input, Context $context) use (&$events, $subject): Plan {
-            self::assertSame($subject, $input);
-            $events[] = 'one';
-            return new Plan([new Finding('tree', 'one', 'recommended', 'Review one')], []);
-        }));
-
-        $registry->addPolicy('two', \Guard\Collect\Tree\DirectoryTree::class, new \Tests\Support\CallbackPolicy(static function (Subject $input, Context $context) use (&$events, $subject): Plan {
-            self::assertSame($subject, $input);
-            $events[] = 'two';
-            return new Plan([new Finding('tree', 'two', 'recommended', 'Review two')], []);
-        }));
-        $context = new Context(new Configuration('/unread', null, null, null, []), '/unread/guard.yaml', false);
-        $plan = (new Pipeline($registry))->run($context);
-        self::assertSame(['collect-first', 'one', 'two', 'collect-second'], $events);
-        self::assertSame(['one', 'two'], array_map(static fn (Finding $finding): string => $finding->rule, $plan->findings));
-        self::assertSame([], $plan->changes);
-        self::assertSame([], $plan->blockingFindings);
+        $project = new \Tests\Support\Project(['A.md' => '# Before']);
+        try {
+            $registry = new \Guard\Extension\Registry();
+            $parser = new \Tests\Support\CountingStructurer(new \Guard\Structure\Markdown\HeadingStructurer());
+            $registry->addStructure('headings', $parser);
+            $input = ['file' => new \Guard\Collect\Input(new \Guard\Collect\Selection('files', ['A.md'], [], '', false, ''), 'headings')];
+            $seen = [];
+            $registry->addPolicy('first', new \Tests\Support\CallbackPolicy($input, static function (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context) use ($project, &$seen): \Guard\Execution\Plan {
+                $seen[] = $inputs->get('file')->files['A.md']->value();
+                unlink($project->root . '/A.md');
+                return new \Guard\Execution\Plan([new \Guard\Reporting\Finding('A.md', 'first', 'required', 'First')], []);
+            }), 10);
+            $registry->addPolicy('second', new \Tests\Support\CallbackPolicy($input, static function (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context) use (&$seen): \Guard\Execution\Plan {
+                $seen[] = $inputs->get('file')->files['A.md']->value();
+                return new \Guard\Execution\Plan([new \Guard\Reporting\Finding('A.md', 'second', 'required', 'Second')], []);
+            }), 0);
+            $filesystem = new \Tests\Support\CountingFilesystem();
+            $context = new \Guard\Execution\Context(new \Guard\Config\Configuration($project->root, []), $project->root . '/guard.yaml', false);
+            $plan = (new \Guard\Execution\Pipeline($registry, new \Guard\Collect\Collector($filesystem)))->run($context);
+            self::assertSame($seen[0], $seen[1]);
+            self::assertSame(1, $parser->calls);
+            self::assertSame(1, $filesystem->reads[realpath($project->root) . '/A.md']);
+            self::assertSame(['second', 'first'], array_map(static fn (\Guard\Reporting\Finding $finding): string => $finding->rule, $plan->findings));
+        } finally {
+            $project->remove();
+        }
     }
-
     /**
      * @throws JsonException
      * @throws \Nette\Neon\Exception
      */
-    public function testRunMergesBlockingFindingsWithoutTreatingSourceViolationsAsWriteBlockers(): void
+    public function testRunKeepsSourceFailuresSeparateFromWriteBlockingFindings(): void
     {
-        $registry = new Registry();
-        $registry->addCollector('tree', new \Tests\Support\CallbackCollector(static fn (Context $context): array => [new \Guard\Collect\Tree\DirectoryTree([])]));
-        $source = new Finding('src', 'source', 'required', 'Fix source');
-        $blocked = new Finding('config', 'conflict', 'required', 'Resolve conflict');
-        $registry->addPolicy('source', Subject::class, new \Tests\Support\CallbackPolicy(static fn (Subject $subject, Context $context): Plan => new Plan([$source], [])));
-        $registry->addPolicy('repair', Subject::class, new \Tests\Support\CallbackPolicy(static fn (Subject $subject, Context $context): Plan => new Plan([$blocked], [], [$blocked])));
-        $plan = (new Pipeline($registry))->run(new Context(new Configuration('/unread', null, null, null, []), '/unread/guard.yaml', true));
-        self::assertSame([$source, $blocked], $plan->findings);
-        self::assertSame([$blocked], $plan->blockingFindings);
+        $registry = new \Guard\Extension\Registry();
+        $source = new \Guard\Reporting\Finding('a', 'size', 'required', 'Split a.');
+        $blocking = new \Guard\Reporting\Finding('b', 'value', 'required', 'Repair b.');
+        $registry->addPolicy('source', new \Tests\Support\CallbackPolicy([], static fn (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan => new \Guard\Execution\Plan([$source], [])));
+        $registry->addPolicy('config', new \Tests\Support\CallbackPolicy([], static fn (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan => new \Guard\Execution\Plan([$blocking], [], [$blocking])));
+        $plan = (new \Guard\Execution\Pipeline($registry))->run(new \Guard\Execution\Context(new \Guard\Config\Configuration('/unused', []), '/unused/guard.yaml', false));
+        self::assertSame([$source, $blocking], $plan->findings);
+        self::assertSame([$blocking], $plan->blockingFindings);
     }
-
 }

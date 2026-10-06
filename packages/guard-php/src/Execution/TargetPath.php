@@ -11,6 +11,14 @@ use Guard\Policy\PolicyException;
  */
 final class TargetPath
 {
+    private \Guard\Collect\Filesystem\Snapshot $snapshot;
+    /**
+     * Creates the TargetPath with its declared dependencies.
+     */
+    public function __construct(?\Guard\Collect\Filesystem\Snapshot $snapshot = null)
+    {
+        $this->snapshot = $snapshot ?? new \Guard\Collect\Filesystem\Snapshot(new \Guard\Collect\Filesystem\NativeFilesystem());
+    }
     /**
      * @throws PolicyException when a path escapes the root or traverses symlinks
      */
@@ -26,11 +34,11 @@ final class TargetPath
                 continue;
             }
             $path .= '/' . $part;
-            if (is_link($path)) {
+            if ($this->snapshot->inspect($path)->link) {
                 throw new PolicyException('Target "' . $relative . '" traverses a symlink. Select a regular project file.');
             }
         }
-        if (!is_file($path)) {
+        if (!$this->snapshot->inspect($path)->file) {
             throw new PolicyException('Target "' . $relative . '" does not exist. Create the configuration file first.');
         }
         return $path;

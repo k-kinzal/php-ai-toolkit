@@ -4,50 +4,32 @@ declare(strict_types=1);
 
 namespace Guard\Config;
 
-/**
- * Validated project policy shared by check and apply.
- *
+use Guard\Extension\PolicyBinding;
+
+/** A project root and ordinary policy registrations, without tool-specific compartments.
  * @property-read string $root
- * @property-read ?Loc\MetricsConfig $metrics
- * @property-read ?Tree\StructureConfig $structure
- * @property-read ?Doc\DocumentationConfig $documentation
- * @property-read list<\Guard\Policy\Rule> $rules
+ * @property-read list<PolicyBinding> $policies
  */
 final class Configuration
 {
     /**
-     * Creates the immutable value.
-     * @param string $root
-     * @param ?Loc\MetricsConfig $metrics
-     * @param ?Tree\StructureConfig $structure
-     * @param ?Doc\DocumentationConfig $documentation
-     * @param list<\Guard\Policy\Rule> $rules
+     * @param list<PolicyBinding> $policies
      */
     public function __construct(
         /** @readonly */
         private string $root,
         /** @readonly */
-        private ?Loc\MetricsConfig $metrics,
-        /** @readonly */
-        private ?Tree\StructureConfig $structure,
-        /** @readonly */
-        private ?Doc\DocumentationConfig $documentation,
-        /** @readonly */
-        private array $rules,
+        private array $policies,
     ) {
     }
-
-    /** Returns a declared immutable property.
-     * @return mixed
+    /**
+     * Returns a declared immutable property.
      */
     public function __get(string $name): mixed
     {
         return match ($name) {
             'root' => $this->root,
-            'metrics' => $this->metrics,
-            'structure' => $this->structure,
-            'documentation' => $this->documentation,
-            'rules' => $this->rules,
+            'policies' => $this->policies,
             default => null,
         };
     }

@@ -1,6 +1,6 @@
 # Loc policy
 
-`Guard\Policy\Loc\LocPolicy` checks PHP source metrics collected by `PhpCollector`. Configure it in the `metrics` section of [guard.yaml](guard.md); run `vendor/bin/guard check` or `vendor/bin/guard check --format=json`. Findings use the `metrics.` rule prefix. Source repairs remain manual.
+`Guard\Policy\MetricLimits` declares PHP inputs and checks their shared `php.metrics` structures. Configure it in the `metrics` section of [guard.yaml](guard.md); run `vendor/bin/guard check` or `vendor/bin/guard check --format=json`. Findings use the `metrics.` rule prefix. Source repairs remain manual.
 
 ## Configuration
 
@@ -111,12 +111,12 @@ Every scanned file receives exactly one policy:
 - One rule match: use that rule's policy.
 - Multiple rule matches: fail and identify the conflicting rule names.
 
-Rule order never establishes precedence, and LocPolicy never guesses which glob is more specific. Rule patterns must be disjoint. A rule that matches no scanned PHP files and a policy that is never referenced are configuration errors because both usually indicate stale configuration.
+Rule order never establishes precedence, and MetricLimits never guesses which glob is more specific. Rule patterns must be disjoint. A rule that matches no scanned PHP files and a policy that is never referenced are configuration errors because both usually indicate stale configuration.
 
 For native API adapters, relax only the file or class-like limits caused by the inherited surface. Function and method length or complexity remain inherited from the standard policy unless explicitly changed.
 
 ## Complexity
 
-LocPolicy starts each function or method at complexity `1` and increments for branch points such as `if`, `elseif`, loops, `case`, `catch`, boolean operators, null coalescing, ternary branches, and `match` arms.
+The PHP metric parser starts each function or method at complexity `1` and increments for branch points such as `if`, `elseif`, loops, `case`, `catch`, boolean operators, null coalescing, ternary branches, and `match` arms.
 
 Function and method complexity have separate limits, allowing a policy to express different thresholds without coupling them.

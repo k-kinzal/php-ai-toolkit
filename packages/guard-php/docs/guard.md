@@ -164,50 +164,75 @@ The executable is `bin/guard`, exposed as `vendor/bin/guard` by Composer. The st
 
 ## Collection and policies
 
-Every check and apply uses the same pipeline:
+Every policy follows the same pipeline:
 
-1. Registered collectors select inputs, read them, and return structured `Guard\Collect\Subject` values.
-2. Registered policies receive subjects matching their registered class or interface and return a `Guard\Execution\Plan`.
-3. The CLI commits permitted changes and renders the combined findings through `Guard\Reporting\Reporter`.
+1. Policies declare named inputs: which paths to select and which structure each selection needs.
+2. One `Guard\Collect\Collector` combines those requests. A shared directory queue visits overlapping roots together, and each physical directory is read at most once. Literal pattern prefixes skip unrelated ancestors; exact filenames require no directory scan.
+3. Each selected file is read at most once. Only requested structures are built, once per physical file and structure id. Metadata-only requests never read file content.
+4. Policies evaluate their prepared inputs and return plans. The CLI applies permitted changes and reports the combined findings.
 
-| Collector | Collected subject | Built-in policy |
-|-----------|-------------------|-----------------|
-| `PhpCollector` | `PhpSources`: paths, physical lines, NCLOC, class and function metrics | `LocPolicy` |
-| `TreeCollector` | `DirectoryTree`: exclusion-filtered listings and child relationships | `TreePolicy` |
-| `MarkdownCollector` | `MarkdownDocuments`: parsed headings, missing files, discovery and exclusions | `DocPolicy` |
-| `ConfigurationCollector` | `ConfigurationDocument`: original bytes, parsed values and applicable field rules | `ConfigurationPolicy` |
+There are no collectors for particular filenames, file types or policy families. `MetricLimits`, `DirectoryEntries`, `HeadingStructure` and `FieldConstraints` are ordinary implementations of the same `Policy` interface. They declare their own inputs; the engine does not recognize their names or divide execution into source, directory and documentation subsystems. The existing YAML sections are converted to policy registrations by `ConfigurationLoader`.
 
-Collectors do not apply thresholds or produce violations. Policies do not read source files or write repairs. Each selected input is collected once per invocation, then every matching policy consumes that subject. Collectors may yield inputs incrementally, retaining the established error order across configuration files. Findings are assembled in policy registration order, independently of collection order. Markdown collection keeps all heading levels; `DocPolicy` applies each document's `max_level`. Directory policies share a complete tree so subtree totals and depth checks see the same snapshot.
+File selection, structuring and policy evaluation are separate contracts:
 
-A plan contains findings, proposed byte changes, and findings that block repairs. Required source violations still fail the command while permitting valid configuration repairs. Unsatisfied required configuration constraints block all proposed writes. Applying a configuration policy uses a private document copy; another policy sees the original collected values.
+| Contract | Responsibility |
+| --- | --- |
+| `Policy::inputs(Context): array` | Declare named `Input` values, each pairing a `Selection` with an optional structure id. |
+| `Selection` | Select exact `files`, glob `patterns`, recursive `descendants`, or `directories` with entry metadata. |
+| `Structurer::structure(Source): Subject` | Structure already-read bytes without accessing the filesystem. |
+| `Policy::evaluate(InputSet, Context): Plan` | Inspect prepared input sets and propose findings or repairs without filesystem access. |
+
+`Selection` accepts paths, exclusions and an optional filename suffix. Recursive file selections use segment-aware exclusions and do not follow directory symlinks. Directory selections provide directory listings, keep the established `fnmatch` exclusions and prune excluded children; they do not allocate a separate file result for every listed entry. Glob selections preserve hidden-name and double-star semantics. Different selections retain their own exclusions while sharing filesystem reads. A null structure id requests metadata alone.
+
+PHP metrics and PHP configuration values depend on the same `php.tokens` structure, so requesting both tokenizes the file once. Markdown headings retain every heading level; policies apply their own level limits. Configuration documents retain their original bytes and provide private editable copies, including independent XML trees. Raw source buffers and intermediate structures are released after fulfilling that file's requests; the collector retains only the results requested by policies.
+
+Policies execute in registration order. Selection and parsing errors are retained with the affected input, preserving error precedence even though collection is shared. A binding's `reportOrder` controls finding order independently of evaluation order; equal values retain registration order. Required source findings still fail the command while permitting valid configuration repairs. Unsatisfied required field constraints block all proposed writes.
 
 ## Registering extensions
 
-`Guard\Extension\Registry` is the explicit extension boundary. `BuiltinExtension` registers the shipped collectors and policies using the same API available to callers. A supplied registry is complete: register `BuiltinExtension` first when extending the standard checks.
+`Guard\Extension\Registry` registers structures and policies. `BuiltinExtension` registers the built-in structurers and the policy bindings produced by the configuration loader. A supplied registry is complete: register `BuiltinExtension` first when extending the standard checks.
 
 ```php
 use Guard\Cli\Application;
-use Guard\Collect\Tree\DirectoryTree;
+use Guard\Config\ConfigurationLoader;
 use Guard\Extension\BuiltinExtension;
 use Guard\Extension\Registry;
 
+$configuration = (new ConfigurationLoader())->load(__DIR__ . '/guard.yaml');
 $registry = new Registry();
-(new BuiltinExtension())->register($registry);
-$registry->addPolicy('project.directory-policy', DirectoryTree::class, new ProjectDirectoryPolicy());
+(new BuiltinExtension($configuration))->register($registry);
+$registry->addPolicy('project.required-documents', new RequiredDocumentsPolicy());
 
-$app = new Application(getcwd(), static function (string $text): void {
+$app = new Application(__DIR__, static function (string $text): void {
     echo $text;
 }, $registry);
 exit($app->run(['check']));
 ```
 
-Implement `Guard\Policy\Policy::evaluate(Subject $information, Context $context): Plan` for a policy. Use `addPolicy($id, $subjectType, $policy)` to associate it with a collected class or interface. Policies run in registration order, and every matching policy runs; registering a second policy does not replace the first. Ids must be non-empty and unique within the collector or policy registry.
+A policy declares its own requests, for example:
 
-To read a new kind of input, implement `Guard\Collect\Collector::collect(Context $context): iterable` and register it with `addCollector($id, $collector)`. Yield subject objects containing the structured information policies need. Register the corresponding policy with the subject's type. If multiple policies propose changes to the same file, identical proposals are combined and conflicting proposals fail before any writes. An extension can implement `Guard\Extension\Extension::register(Registry $registry): void` to package both registrations.
+```php
+public function inputs(Guard\Execution\Context $context): array
+{
+    return [
+        'documents' => new Guard\Collect\Input(
+            new Guard\Collect\Selection('patterns', ['docs/**/*.md']),
+            'markdown.headings',
+        ),
+        'readme' => new Guard\Collect\Input(
+            new Guard\Collect\Selection('files', ['README.md']),
+        ),
+    ];
+}
+```
 
-`Context` supplies the validated project configuration, policy file path, and whether repairs are requested. Extension-specific settings can be passed to a collector or policy constructor. Registration is currently a PHP API; automatic Composer discovery and additional YAML extension keys are not enabled.
+`evaluate()` receives those names through `InputSet::get()`. A file set contains `files`, keyed by their selected path spelling, and `directories`, keyed by relative directory paths. Each `StructuredFile` exposes its file metadata, readability and `value()` method. Missing exact files remain visible as metadata so a policy can decide whether absence is a violation. Parsing failures surface when the corresponding value is inspected.
 
-The complete registry can also run through `Guard\Execution\Pipeline::run(Context $context): Plan` without CLI output or file writes. The engine contains no list of built-in policy types.
+Register an additional representation with `addStructure($id, $structurer)` and request its id from policies. A structurer consumes `Source::text()` and can request another registered representation through `Source::structure($id)`. Dependencies share a per-file cache, including parsing failures; circular dependencies are rejected. Structurers and policies treat shared subjects as read-only. Structure registration alone performs no work.
+
+Register a policy with `addPolicy($id, $policy, $reportOrder = 0)`. Multiple policies can request the same files and structures; collection and structuring are shared without requiring an extension to implement its own scanner. Identical proposed file replacements are combined, while conflicting replacements fail before writes. Implement `Extension::register(Registry): void` to package registrations.
+
+`Context` supplies the project configuration, policy-file path and repair mode. Policy-specific options belong in policy constructors. Extension discovery through Composer and additional YAML extension keys are not enabled. `Pipeline::run(Context): Plan` also runs a registry without CLI output or writes. Collection caches are scoped to one invocation, so subsequent checks observe file changes.
 
 ## Refactoring compatibility
 

@@ -4,21 +4,26 @@ declare(strict_types=1);
 
 namespace Guard\Policy;
 
-use Guard\Collect\Subject;
+use Guard\Collect\Input;
+use Guard\Collect\InputSet;
 use Guard\Execution\Context;
 use Guard\Execution\Plan;
 use JsonException;
+use RuntimeException;
 
 /**
- * Evaluates collected information and proposes changes without writing files.
+ * Declares inputs and evaluates their collected structures without filesystem access.
  */
 interface Policy
 {
-    /**
-     * Returns findings and proposed changes for the registered information type.
+    /** Returns named selections and the structures they require.
+     * @return array<string, Input>
+     */
+    public function inputs(Context $context): array;
+    /** Evaluates prepared inputs and proposes changes without writing files.
+     * @throws RuntimeException
      * @throws JsonException
      * @throws \Nette\Neon\Exception
-     * @throws PolicyException
      */
-    public function evaluate(Subject $information, Context $context): Plan;
+    public function evaluate(InputSet $inputs, Context $context): Plan;
 }

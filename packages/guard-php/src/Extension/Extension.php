@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Guard\Extension;
 
 /**
- * Registers collectors and their information-to-policy bindings.
+ * Registers structure producers and policies.
  */
 interface Extension
 {

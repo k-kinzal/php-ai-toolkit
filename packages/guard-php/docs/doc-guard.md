@@ -1,6 +1,6 @@
 # Doc policy
 
-`Guard\Policy\Doc\DocPolicy` checks the headings and declared file set collected by `MarkdownCollector`. It runs through [Guard](guard.md), alongside source and directory policies. Content within sections remains free to change.
+`Guard\Policy\HeadingStructure` declares file selections and checks their shared `markdown.headings` structures. It runs through [Guard](guard.md), alongside source and directory policies. Content within sections remains free to change.
 
 ## Configuration
 
@@ -32,16 +32,16 @@ Two headings are equal when their level and their text are equal. The text is co
 
 The markup style of a heading is not structure. `Title` underlined with `===` equals `# Title`, a closing sequence such as `## Usage ##` equals `## Usage`, and extra spaces inside the text are ignored. Changing the style passes; changing the words, the level, or the position does not.
 
-DocPolicy aligns the declared and the actual headings along their longest common subsequence, and classifies what remains:
+HeadingStructure aligns the declared and the actual headings along their longest common subsequence, and classifies what remains:
 
 - A declared heading that appears at a different position is moved.
 - Within one gap between aligned headings, a declared and an actual heading with the same text are a level change.
 - When the remaining declared and actual headings of a gap pair up one to one at the same levels, each pair is a rename.
-- Everything else is an added heading or a missing heading. When one declared section is replaced by several new ones, DocPolicy reports the additions and the removal instead of guessing which new heading replaced the old one.
+- Everything else is an added heading or a missing heading. When one declared section is replaced by several new ones, HeadingStructure reports the additions and the removal instead of guessing which new heading replaced the old one.
 
 ## Heading Recognition
 
-DocPolicy parses the block structure that decides whether a line is a heading, following CommonMark:
+The Markdown structurer parses the block structure that decides whether a line is a heading, following CommonMark:
 
 - ATX headings: up to three spaces of indentation, one to six `#`, then a space, a tab, or the end of the line. `#hashtag`, `\# text`, and seven `#` are not headings.
 - Setext headings: one or more paragraph lines followed by an underline of `=` (level 1) or `-` (level 2). The paragraph lines are joined with a space. Without a preceding paragraph, `---` is a thematic break.
@@ -51,13 +51,13 @@ DocPolicy parses the block structure that decides whether a line is a heading, f
 - A paragraph of a list item or a block quote never becomes a setext heading, and a `#` line inside a block quote is not a document heading.
 - A YAML front matter block between `---` lines at the start of the file is skipped.
 
-Inline content is not parsed. The parser is deliberately small and owned by DocPolicy; it is shared by Markdown collection and initialization.
+Inline content is not parsed. The Markdown parser is shared by registered structurers and initialization. Policies consume its parsed headings without reading or parsing documents again.
 
 ## Undeclared Documents
 
-A new Markdown file is the same failure as a new section: the structure grew without a human decision. If DocPolicy ignored new files, an agent that is told not to add a section to the README would add `docs/development.md` instead.
+A new Markdown file is the same failure as a new section: the structure grew without a human decision. If HeadingStructure ignored new files, an agent that is told not to add a section to the README would add `docs/development.md` instead.
 
-DocPolicy therefore reports `undeclared_document` for every file that matches a `scan` pattern and is not declared. Patterns are segment-aware and relative to the directory of `guard.yaml`:
+HeadingStructure therefore reports `undeclared_document` for every file that matches a `scan` pattern and is not declared. Patterns are segment-aware and relative to the directory of `guard.yaml`:
 
 - `*` and `?` match within one path segment and never cross `/`.
 - A `**` segment matches zero or more directories.
@@ -65,7 +65,7 @@ DocPolicy therefore reports `undeclared_document` for every file that matches a 
 
 `*.md` catches a new file next to the README, such as `CONTRIBUTING.md` or `DEVELOPMENT.md`, and `docs/**/*.md` catches a new page at any depth under `docs/`. Avoid `**/*.md` at a repository root, which also scans `vendor/` and every package.
 
-Detection belongs to DocPolicy rather than to TreePolicy. TreePolicy could forbid unknown file names with an exact `allow` list, but that list would duplicate the document list of `guard.yaml` in a second human-managed file that drifts from the first, and its remediation speaks about renaming and moving files. DocPolicy already owns the set of documents, reports the addition with the same instruction as an added section,.
+The heading policy uses the declared document list to identify undeclared files and report the required correction. File discovery is shared with every other policy through the common collector.
 
 ## Rule Identifiers
 

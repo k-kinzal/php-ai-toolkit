@@ -6,6 +6,7 @@ namespace Guard\Document;
 
 use Guard\Policy\PolicyException;
 use JsonException;
+use PhpToken;
 
 /**
  * Reads literal values from a PHP configuration file. The file is not executed or rewritten.
@@ -14,11 +15,12 @@ final class PhpDocument
 {
     private DocumentNode $data;
     /**
+     * @param ?list<PhpToken> $tokens
      * Keeps the original PHP source. Literal calls are structured during collection.
      */
-    public function __construct(private string $source)
+    public function __construct(private string $source, ?array $tokens = null)
     {
-        $this->data = new DocumentNode((new PhpConfigReader())->read($source));
+        $this->data = new DocumentNode($tokens === null ? (new PhpConfigReader())->read($source) : (new PhpConfigReader())->fromTokens($tokens));
     }
 
     /**

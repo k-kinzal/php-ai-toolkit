@@ -733,5 +733,43 @@
         "--format=json"
       ]
     ]
+  },
+  {
+    "name": "root-spellings-and-literal-discovery",
+    "files": {
+      "src/A.php": "<?php\n\n\n",
+      "README.md": "# Root\n",
+      "docs/placeholder.txt": "placeholder",
+      "guard.yaml": "version: 1\nmetrics:\n  source: [src, ./src]\n  profiles:\n    standard: {limits: {file: {lines: 1}}}\n  default: standard\nstructure:\n  paths: [src, ./src]\n  directories: [{path: '**', deny: ['*.php']}]\ndocumentation:\n  files:\n    README.md: {headings: ['# Root']}\n  scan: [docs/../README.md]\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ],
+      [
+        "apply",
+        "--dry-run"
+      ]
+    ]
+  },
+  {
+    "name": "dot-root-source",
+    "files": {
+      "src/A.php": "<?php\n\n\n",
+      "guard.yaml": "version: 1\nmetrics:\n  source: ['./']\n  profiles:\n    standard: {limits: {file: {lines: 1}}}\n  default: standard\n"
+    },
+    "commands": [
+      [
+        "check"
+      ],
+      [
+        "check",
+        "--format=json"
+      ]
+    ]
   }
 ]

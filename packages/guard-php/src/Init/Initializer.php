@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Init;
 
-use Guard\Collect\Markdown\Parsing\HeadingParser;
 use Guard\Policy\PolicyException;
+use Guard\Structure\Markdown\HeadingParser;
 use JsonException;
 use Symfony\Component\Yaml\Yaml;
 

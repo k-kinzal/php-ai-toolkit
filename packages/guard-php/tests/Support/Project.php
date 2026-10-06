@@ -46,7 +46,7 @@ final class Project
     public function context(bool $repair = false): Context
     {
         $path = $this->root . '/guard.yaml';
-        $config = is_file($path) ? (new ConfigurationLoader())->load($path) : new Configuration($this->root, null, null, null, []);
+        $config = is_file($path) ? (new ConfigurationLoader())->load($path) : new Configuration($this->root, []);
         return new Context($config, $path, $repair);
     }
     /**

@@ -10,21 +10,41 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Execution\TargetPath
+ * @uses \Guard\Collect\DirectoryListing
+ * @uses \Guard\Collect\FileRecord
+ * @uses \Guard\Collect\FileSet
+ * @uses \Guard\Collect\Filesystem\Entry
+ * @uses \Guard\Collect\Filesystem\NativeFilesystem
+ * @uses \Guard\Collect\Filesystem\Snapshot
+ * @uses \Guard\Collect\Input
+ * @uses \Guard\Collect\InputSet
+ * @uses \Guard\Collect\Selection
+ * @uses \Guard\Collect\StructuredFile
  * @uses \Guard\Config\Configuration
  * @uses \Guard\Execution\Context
  * @uses \Guard\Execution\FileChange
  * @uses \Guard\Execution\Plan
+ * @uses \Guard\Extension\PolicyBinding
  * @uses \Guard\Policy\PolicyException
- * @uses \Guard\Policy\Rule
  * @uses \Guard\Reporting\Finding
  */
 #[CoversClass(\Guard\Execution\TargetPath::class)]
+#[UsesClass(\Guard\Collect\DirectoryListing::class)]
+#[UsesClass(\Guard\Collect\FileRecord::class)]
+#[UsesClass(\Guard\Collect\FileSet::class)]
+#[UsesClass(\Guard\Collect\Filesystem\Entry::class)]
+#[UsesClass(\Guard\Collect\Filesystem\NativeFilesystem::class)]
+#[UsesClass(\Guard\Collect\Filesystem\Snapshot::class)]
+#[UsesClass(\Guard\Collect\Input::class)]
+#[UsesClass(\Guard\Collect\InputSet::class)]
+#[UsesClass(\Guard\Collect\Selection::class)]
+#[UsesClass(\Guard\Collect\StructuredFile::class)]
 #[UsesClass(\Guard\Config\Configuration::class)]
 #[UsesClass(\Guard\Execution\Context::class)]
 #[UsesClass(\Guard\Execution\FileChange::class)]
 #[UsesClass(\Guard\Execution\Plan::class)]
+#[UsesClass(\Guard\Extension\PolicyBinding::class)]
 #[UsesClass(\Guard\Policy\PolicyException::class)]
-#[UsesClass(\Guard\Policy\Rule::class)]
 #[UsesClass(\Guard\Reporting\Finding::class)]
 final class TargetPathTest extends TestCase
 {

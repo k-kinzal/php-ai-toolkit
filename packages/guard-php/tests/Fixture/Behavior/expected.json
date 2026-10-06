@@ -1218,5 +1218,55 @@
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: alias, file: app.yaml, select: /first/value, assert: {equals: 1}}\n"
             }
         }
+    ],
+    "root-spellings-and-literal-discovery": [
+        {
+            "exit": 1,
+            "output": "error: ./src/A.php [metrics.file_lines] File has 3 physical lines; maximum is 1.\nerror: src/A.php [metrics.file_lines] File has 3 physical lines; maximum is 1.\nerror: ./src/A.php [structure.denied_file] File \"./src/A.php\" matches denied pattern \"*.php\". Rename or remove it.\nerror: src/A.php [structure.denied_file] File \"src/A.php\" matches denied pattern \"*.php\". Rename or remove it.\nerror: docs/../README.md [documentation.undeclared_document] Document docs/../README.md matches the scan pattern \"docs/../README.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\nGuard found required violations.\n",
+            "files": {
+                "README.md": "# Root\n",
+                "docs/placeholder.txt": "placeholder",
+                "guard.yaml": "version: 1\nmetrics:\n  source: [src, ./src]\n  profiles:\n    standard: {limits: {file: {lines: 1}}}\n  default: standard\nstructure:\n  paths: [src, ./src]\n  directories: [{path: '**', deny: ['*.php']}]\ndocumentation:\n  files:\n    README.md: {headings: ['# Root']}\n  scan: [docs/../README.md]\n",
+                "src/A.php": "<?php\n\n\n"
+            }
+        },
+        {
+            "exit": 1,
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"./src/A.php\",\n            \"rule\": \"metrics.file_lines\",\n            \"level\": \"error\",\n            \"message\": \"File has 3 physical lines; maximum is 1.\"\n        },\n        {\n            \"path\": \"src/A.php\",\n            \"rule\": \"metrics.file_lines\",\n            \"level\": \"error\",\n            \"message\": \"File has 3 physical lines; maximum is 1.\"\n        },\n        {\n            \"path\": \"./src/A.php\",\n            \"rule\": \"structure.denied_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"./src/A.php\\\" matches denied pattern \\\"*.php\\\". Rename or remove it.\"\n        },\n        {\n            \"path\": \"src/A.php\",\n            \"rule\": \"structure.denied_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"src/A.php\\\" matches denied pattern \\\"*.php\\\". Rename or remove it.\"\n        },\n        {\n            \"path\": \"docs/../README.md\",\n            \"rule\": \"documentation.undeclared_document\",\n            \"level\": \"error\",\n            \"message\": \"Document docs/../README.md matches the scan pattern \\\"docs/../README.md\\\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": false\n}\n",
+            "files": {
+                "README.md": "# Root\n",
+                "docs/placeholder.txt": "placeholder",
+                "guard.yaml": "version: 1\nmetrics:\n  source: [src, ./src]\n  profiles:\n    standard: {limits: {file: {lines: 1}}}\n  default: standard\nstructure:\n  paths: [src, ./src]\n  directories: [{path: '**', deny: ['*.php']}]\ndocumentation:\n  files:\n    README.md: {headings: ['# Root']}\n  scan: [docs/../README.md]\n",
+                "src/A.php": "<?php\n\n\n"
+            }
+        },
+        {
+            "exit": 1,
+            "output": "error: ./src/A.php [metrics.file_lines] File has 3 physical lines; maximum is 1.\nerror: src/A.php [metrics.file_lines] File has 3 physical lines; maximum is 1.\nerror: ./src/A.php [structure.denied_file] File \"./src/A.php\" matches denied pattern \"*.php\". Rename or remove it.\nerror: src/A.php [structure.denied_file] File \"src/A.php\" matches denied pattern \"*.php\". Rename or remove it.\nerror: docs/../README.md [documentation.undeclared_document] Document docs/../README.md matches the scan pattern \"docs/../README.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\nGuard found required violations.\n",
+            "files": {
+                "README.md": "# Root\n",
+                "docs/placeholder.txt": "placeholder",
+                "guard.yaml": "version: 1\nmetrics:\n  source: [src, ./src]\n  profiles:\n    standard: {limits: {file: {lines: 1}}}\n  default: standard\nstructure:\n  paths: [src, ./src]\n  directories: [{path: '**', deny: ['*.php']}]\ndocumentation:\n  files:\n    README.md: {headings: ['# Root']}\n  scan: [docs/../README.md]\n",
+                "src/A.php": "<?php\n\n\n"
+            }
+        }
+    ],
+    "dot-root-source": [
+        {
+            "exit": 1,
+            "output": "error: ./src/A.php [metrics.file_lines] File has 3 physical lines; maximum is 1.\nGuard found required violations.\n",
+            "files": {
+                "guard.yaml": "version: 1\nmetrics:\n  source: ['./']\n  profiles:\n    standard: {limits: {file: {lines: 1}}}\n  default: standard\n",
+                "src/A.php": "<?php\n\n\n"
+            }
+        },
+        {
+            "exit": 1,
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"./src/A.php\",\n            \"rule\": \"metrics.file_lines\",\n            \"level\": \"error\",\n            \"message\": \"File has 3 physical lines; maximum is 1.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": false\n}\n",
+            "files": {
+                "guard.yaml": "version: 1\nmetrics:\n  source: ['./']\n  profiles:\n    standard: {limits: {file: {lines: 1}}}\n  default: standard\n",
+                "src/A.php": "<?php\n\n\n"
+            }
+        }
     ]
 }

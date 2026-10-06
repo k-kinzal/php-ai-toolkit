@@ -11,24 +11,10 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Policy\Constraint
- * @uses \Guard\Config\Configuration
  * @uses \Guard\Document\Selection
- * @uses \Guard\Execution\Context
- * @uses \Guard\Execution\FileChange
- * @uses \Guard\Execution\Plan
- * @uses \Guard\Policy\PolicyException
- * @uses \Guard\Policy\Rule
- * @uses \Guard\Reporting\Finding
  */
 #[CoversClass(\Guard\Policy\Constraint::class)]
-#[UsesClass(\Guard\Config\Configuration::class)]
 #[UsesClass(\Guard\Document\Selection::class)]
-#[UsesClass(\Guard\Execution\Context::class)]
-#[UsesClass(\Guard\Execution\FileChange::class)]
-#[UsesClass(\Guard\Execution\Plan::class)]
-#[UsesClass(\Guard\Policy\PolicyException::class)]
-#[UsesClass(\Guard\Policy\Rule::class)]
-#[UsesClass(\Guard\Reporting\Finding::class)]
 final class ConstraintTest extends TestCase
 {
     /**

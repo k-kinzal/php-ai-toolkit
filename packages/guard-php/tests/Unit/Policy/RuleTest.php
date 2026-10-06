@@ -10,20 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Policy\Rule
- * @uses \Guard\Config\Configuration
- * @uses \Guard\Execution\Context
- * @uses \Guard\Execution\FileChange
- * @uses \Guard\Execution\Plan
- * @uses \Guard\Policy\PolicyException
- * @uses \Guard\Reporting\Finding
  */
 #[CoversClass(\Guard\Policy\Rule::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Context::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Plan::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Finding::class)]
 final class RuleTest extends TestCase
 {
     /**

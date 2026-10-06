@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Document;
 
+use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -96,5 +97,11 @@ PHP;
         $reader = new \Guard\Document\PhpConfigReader();
         self::assertSame('1', $reader->key(1));
         self::assertSame('', $reader->key(null));
+    }
+
+    public function testFromTokensReusesTokensAndPreservesLiteralCallValues(): void
+    {
+        $tokens = array_values(PhpToken::tokenize('<?php $config->setRiskyAllowed(true)->setRules(["x" => false]);'));
+        self::assertSame(['riskyAllowed' => true, 'rules' => ['x' => false]], (new \Guard\Document\PhpConfigReader())->fromTokens($tokens));
     }
 }

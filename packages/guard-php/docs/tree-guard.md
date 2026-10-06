@@ -1,6 +1,6 @@
 # Tree policy
 
-`Guard\Policy\Tree\TreePolicy` applies directory constraints to the snapshot returned by `TreeCollector`. Run it with [Guard](guard.md). All matching rules are enforced independently.
+`Guard\Policy\DirectoryEntries` requests directory metadata from the common collector and checks the resulting listings. Run it with [Guard](guard.md). All matching rules are enforced independently.
 
 ## Configuration
 

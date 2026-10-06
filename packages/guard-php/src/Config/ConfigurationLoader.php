@@ -4,28 +4,45 @@ declare(strict_types=1);
 
 namespace Guard\Config;
 
+use Guard\Config\Reader\DirectoryPolicyReader;
+use Guard\Config\Reader\HeadingPolicyReader;
+use Guard\Config\Reader\MetricPolicyReader;
+use Guard\Extension\PolicyBinding;
+use Guard\Policy\DirectoryEntries;
+use Guard\Policy\FieldConstraints;
+use Guard\Policy\HeadingStructure;
+use Guard\Policy\MetricLimits;
 use Guard\Policy\PolicyException;
 use JsonException;
 
 /**
- * Loads the versioned guard.yaml project policy.
+ * Adapts the existing YAML schema into ordinary policy registrations.
  */
 final class ConfigurationLoader
 {
-    /**
-     * @throws PolicyException when guard.yaml is missing or has an unsupported schema
+    /** Preserves schema validation and diagnostic order at the configuration boundary.
+     * @throws PolicyException
      * @throws JsonException
      */
     public function load(string $path): Configuration
     {
         $data = (new ImportResolver())->resolve($path);
         $root = dirname($path);
-        return new Configuration(
-            $root,
-            array_key_exists('metrics', $data) ? (new MetricsReader())->read($data['metrics'], $root) : null,
-            array_key_exists('structure', $data) ? (new StructureReader())->read($data['structure'], $root) : null,
-            array_key_exists('documentation', $data) ? (new DocumentationReader())->read($data['documentation'], $root, basename($path)) : null,
-            (new RuleReader())->read($data['configuration'] ?? []),
-        );
+        $policies = [];
+        if (array_key_exists('metrics', $data)) {
+            $policies[] = new PolicyBinding('metric-limits', new MetricLimits((new MetricPolicyReader())->read($data['metrics'], $root)), 0);
+        }
+        if (array_key_exists('structure', $data)) {
+            $policies[] = new PolicyBinding('directory-entries', new DirectoryEntries((new DirectoryPolicyReader())->read($data['structure'], $root)), 10);
+        }
+        if (array_key_exists('documentation', $data)) {
+            $policies[] = new PolicyBinding('heading-structure', new HeadingStructure((new HeadingPolicyReader())->read($data['documentation'], $root, basename($path))), 20);
+        }
+        $rules = (new RuleReader())->read($data['configuration'] ?? []);
+        /**
+         * Field failures historically take precedence, while source findings are reported first.
+         */
+        array_unshift($policies, new PolicyBinding('field-constraints', new FieldConstraints($rules), 30));
+        return new Configuration($root, $policies);
     }
 }

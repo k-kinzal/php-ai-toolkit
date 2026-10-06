@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Guard\Init;
 
-use Guard\Init\Legacy\Doc\ConfigLoader as DocLoader;
-use Guard\Init\Legacy\Loc\ConfigLoader as LocLoader;
-use Guard\Init\Legacy\Tree\ConfigLoader as TreeLoader;
+use Guard\Init\Legacy\DirectoryConfiguration as DirectoryLoader;
+use Guard\Init\Legacy\HeadingConfiguration as HeadingLoader;
+use Guard\Init\Legacy\MetricConfiguration as MetricLoader;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -21,7 +21,7 @@ final class LegacyMigration
     public function migrate(string $root, array $defaults): array
     {
         if (is_file($root . '/loc.yaml')) {
-            (new LocLoader())->load($root . '/loc.yaml');
+            (new MetricLoader())->load($root . '/loc.yaml');
             $data = $this->read($root . '/loc.yaml');
             $scan = is_array($data['scan'] ?? null) ? $data['scan'] : [];
             $apply = is_array($data['apply'] ?? null) ? $data['apply'] : [];
@@ -34,12 +34,12 @@ final class LegacyMigration
             ];
         }
         if (is_file($root . '/tree.yaml')) {
-            (new TreeLoader())->load($root . '/tree.yaml');
+            (new DirectoryLoader())->load($root . '/tree.yaml');
             $data = $this->read($root . '/tree.yaml');
             $defaults['structure'] = ['paths' => $data['paths'] ?? ['src'], 'exclude' => $data['exclude'] ?? [], 'directories' => $data['rules'] ?? []];
         }
         if (is_file($root . '/doc-guard.yaml')) {
-            (new DocLoader())->load($root . '/doc-guard.yaml');
+            (new HeadingLoader())->load($root . '/doc-guard.yaml');
             $data = $this->read($root . '/doc-guard.yaml');
             $defaults['documentation'] = ['files' => $data['documents'], 'scan' => $data['scan'] ?? []];
         }

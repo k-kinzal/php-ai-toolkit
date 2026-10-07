@@ -1,0 +1,55 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4A217VV4521A2KFYNWG7GF6",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/docgen-php/guard.yaml",
+    "packages/guard-php/docs/guard.md",
+    "packages/guard-php/docs/loc-guard.md",
+    "packages/guard-php/guard.yaml",
+    "packages/guard-php/rules/quality.yaml",
+    "packages/guard-php/skills/setup-toolkit-loc-guard/SKILL.md",
+    "packages/guard-php/src/Guard/Config/ConfigurationLoader.php",
+    "packages/guard-php/src/Guard/Config/DocumentMerger.php",
+    "packages/guard-php/src/Guard/Config/ImportResolver.php",
+    "packages/guard-php/src/Guard/Config/QualityReader.php",
+    "packages/guard-php/src/Guard/Execution/SourceChecks.php",
+    "packages/guard-php/src/Guard/Init/Initializer.php",
+    "packages/guard-php/src/Guard/Init/LegacyMigration.php",
+    "packages/guard-php/src/Guard/Init/PresetCatalog.php",
+    "packages/guard-php/src/Guard/Init/PresetSelector.php",
+    "packages/guard-php/tests/Unit/Guard/Cli/ApplicationTest.php",
+    "packages/guard-php/tests/Unit/Guard/Cli/ArgumentsTest.php",
+    "packages/guard-php/tests/Unit/Guard/Config/ConfigurationLoaderTest.php",
+    "packages/guard-php/tests/Unit/Guard/Config/DocumentMergerTest.php",
+    "packages/guard-php/tests/Unit/Guard/Config/ImportResolverTest.php",
+    "packages/guard-php/tests/Unit/Guard/Config/QualityReaderTest.php",
+    "packages/guard-php/tests/Unit/Guard/Config/SchemaTest.php",
+    "packages/guard-php/tests/Unit/Guard/Execution/SourceChecksTest.php",
+    "packages/guard-php/tests/Unit/Guard/Init/InitializerTest.php",
+    "packages/guard-php/tests/Unit/Guard/Init/LegacyMigrationTest.php",
+    "packages/guard-php/tests/Unit/Guard/Init/PresetCatalogTest.php",
+    "packages/guard-php/tests/Unit/Guard/Init/PresetSelectorTest.php",
+    "packages/phpstan-ai-formatter/guard.yaml",
+    "packages/phpstan-guard-rules/guard.yaml",
+    "packages/phpunit-ai-reporter/guard.yaml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 5561,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 511360,
+    "output_tokens": 1220,
+    "api_call_count": 4
+  }
+}

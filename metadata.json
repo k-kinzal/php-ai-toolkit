@@ -3,10 +3,18 @@
   "checkpoint_id": "01M4B7TG5G1RRYT34X2JZYVTXT",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 3,
+  "checkpoints_count": 4,
   "files_touched": [
     "README.md",
     "packages/guard-php/README.md",
+    "packages/guard-php/docs/cli.md",
+    "packages/guard-php/docs/configuration.md",
+    "packages/guard-php/docs/documents.md",
+    "packages/guard-php/docs/extensions.md",
+    "packages/guard-php/docs/fields.md",
+    "packages/guard-php/docs/metrics.md",
+    "packages/guard-php/docs/policies.md",
+    "packages/guard-php/docs/structure.md",
     "packages/guard-php/skills/setup-toolkit-doc-guard/SKILL.md",
     "packages/guard-php/skills/setup-toolkit-loc-guard/SKILL.md",
     "packages/guard-php/skills/setup-toolkit-tree-guard/SKILL.md"
@@ -25,13 +33,20 @@
       "compact_transcript": "/1/transcript.jsonl",
       "content_hash": "/1/content_hash.txt",
       "prompt": "/1/prompt.txt"
+    },
+    {
+      "metadata": "/2/metadata.json",
+      "transcript": "/2/full.jsonl",
+      "compact_transcript": "/2/transcript.jsonl",
+      "content_hash": "/2/content_hash.txt",
+      "prompt": "/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 5405,
-    "cache_creation_tokens": 1438620,
-    "cache_read_tokens": 66849053,
-    "output_tokens": 216398,
-    "api_call_count": 222
+    "input_tokens": 5549,
+    "cache_creation_tokens": 1834130,
+    "cache_read_tokens": 77422281,
+    "output_tokens": 272491,
+    "api_call_count": 294
   }
 }

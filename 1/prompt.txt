@@ -1,0 +1,12 @@
+agents-md.yamlとclaude-md.yamlとreadme-md.yamlを作ってください。ちょっと細かいところを決めきれてないのでagentsはprojectsにあるAGENTS.mdを作ってどういう構造でどこに差異があるかを洗ってください。ztd-query-phpはおおよそ2パターンになると思っておりこちらも構造を洗ってください。CLAUDE.mdは完全一致で@AGENTS.mdと記載されていればOKです。またREADME.mdだとh1の前にバッヂが入り、これも一貫性持たせたいのでルール化してください。
+これらはinit時にREADME.mdがあればreadme-md.yamlをという感じで対応するルールをimportに入れるようにしてください。claude-mdは特殊でCLAUDE.mdがあればAGENTS.mdも入れてください。
+
+あとふと思いましたが該当ファイルがなければそれも違反として検知されるべきかと思いました。ルールあるのにファイルがないはおかしいですし。
+
+---
+
+バッヂはh1の前でしたっけ？実態に合わせて欲しいです。
+READMEはCLIパターンとライブラリパターンです。基本はAとしつつGetting Startedの代わりにInstallation、Usageとできるようにしてください。
+AGENTS.mdはh1はAGENTS、H2は1つめがVision/Product Visionで2つはSupported Versions、3つ目はOptionalでArchitectureでその中は自由、最後がDocumentsとしてください。
+非公開ならDeepWikiは意味がないので不要です。
+docs/examplesは私が削除しました。ここに依存があること自体がおかしいので失敗するのがおかしいです。依存しないように修正してください。docsはあとで作り直します。

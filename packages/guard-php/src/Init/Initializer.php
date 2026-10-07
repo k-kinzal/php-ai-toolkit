@@ -63,7 +63,7 @@ final class Initializer
         }
         $document = (new PresetOverrides())->apply($root, $names, $document);
 
-        return (new LegacyMigration())->migrate($root, $document);
+        return (new LegacyMigration())->migrate($root, $document, in_array('disable-doc', $names, true));
     }
 
     /**

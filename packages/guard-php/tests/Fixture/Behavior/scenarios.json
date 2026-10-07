@@ -563,7 +563,8 @@
   {
     "name": "init-readme",
     "files": {
-      "README.md": "# Project\n\n## Usage\n"
+      "README.md": "# Project\n\n## Usage\n",
+      "docs/.gitkeep": ""
     },
     "commands": [
       [
@@ -581,6 +582,7 @@
     "name": "migrate",
     "files": {
       "README.md": "# Project\n",
+      "docs/.gitkeep": "",
       "src/A.php": "<?php\n",
       "loc.yaml": "scan: {roots: [src], exclude: []}\npolicies: {standard: {limits: {file: {lines: 10}}}}\napply: {default: standard, rules: []}\n",
       "tree.yaml": "paths: [src]\nrules: [{path: 'src/**', allow: ['*.php'], max_files: 4}]\n",

@@ -405,7 +405,7 @@ final class InitializerTest extends TestCase
         mkdir($root);
         $config = (new \Guard\Init\Initializer())->configuration($root);
         self::assertArrayNotHasKey('configuration', $config);
-        self::assertArrayNotHasKey('imports', $config);
+        self::assertSame([(new \Guard\Init\PresetCatalog())->importPath($root, 'disable-doc')], $config['imports']);
         self::assertArrayNotHasKey('metrics', $config);
         self::assertArrayNotHasKey('scope', $config);
     }
@@ -421,6 +421,7 @@ final class InitializerTest extends TestCase
         $config = (new \Guard\Init\Initializer())->configuration($root, ['composer', 'composer']);
         self::assertStringContainsString('composer.yaml', json_encode($config['imports'], JSON_THROW_ON_ERROR));
         self::assertStringNotContainsString('metrics.yaml', json_encode($config['imports'], JSON_THROW_ON_ERROR));
+        self::assertStringNotContainsString('disable-doc.yaml', json_encode($config['imports'], JSON_THROW_ON_ERROR));
     }
 
     /**

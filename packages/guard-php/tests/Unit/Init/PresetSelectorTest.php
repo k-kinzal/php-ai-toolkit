@@ -182,7 +182,52 @@ final class PresetSelectorTest extends TestCase
         file_put_contents($root . '/phpstan.neon', "parameters:\n    level: max\n");
         file_put_contents($root . '/phpunit.xml.dist', '<phpunit/>');
         $names = (new \Guard\Init\PresetSelector())->detect($root);
-        self::assertSame(['metrics', 'structure', 'phpstan', 'phpstan-guard-rules', 'phpunit9', 'composer'], $names);
+        self::assertSame(['metrics', 'structure', 'disable-doc', 'phpstan', 'phpstan-guard-rules', 'phpunit9', 'composer'], $names);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testDetectDisablesDocsWithoutSourceDirectories(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-no-docs-' . uniqid();
+        mkdir($root);
+        self::assertSame(['disable-doc'], (new \Guard\Init\PresetSelector())->detect($root));
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testDetectKeepsExistingEmptyDocumentationAllowed(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-existing-docs-' . uniqid();
+        mkdir($root . '/docs', 0777, true);
+        self::assertSame([], (new \Guard\Init\PresetSelector())->detect($root));
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testDetectKeepsExistingDocumentationAllowed(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-populated-docs-' . uniqid();
+        mkdir($root . '/docs', 0777, true);
+        file_put_contents($root . '/docs/guide.md', '# Guide');
+        self::assertSame([], (new \Guard\Init\PresetSelector())->detect($root));
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testSelectRespectsExplicitImportsRegardlessOfDocsPresence(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-explicit-docs-' . uniqid();
+        mkdir($root);
+        $selector = new \Guard\Init\PresetSelector();
+        self::assertSame([], $selector->select($root, []));
+        self::assertSame(['composer'], $selector->select($root, ['composer']));
+        mkdir($root . '/docs');
+        self::assertSame(['disable-doc'], $selector->select($root, ['disable-doc', 'disable-doc']));
     }
 
     /**

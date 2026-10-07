@@ -16,9 +16,10 @@ final class LegacyMigration
 {
     /**
      * @param array<string, mixed> $defaults
+     * @param bool $includeProjectRoot include the project root for presets that check root directory entries
      * @return array<string, mixed>
      */
-    public function migrate(string $root, array $defaults): array
+    public function migrate(string $root, array $defaults, bool $includeProjectRoot = false): array
     {
         if (is_file($root . '/loc.yaml')) {
             (new MetricLoader())->load($root . '/loc.yaml');
@@ -34,9 +35,13 @@ final class LegacyMigration
             ];
         }
         if (is_file($root . '/tree.yaml')) {
-            (new DirectoryLoader())->load($root . '/tree.yaml');
+            $config = (new DirectoryLoader())->load($root . '/tree.yaml');
             $data = $this->read($root . '/tree.yaml');
-            $defaults['structure'] = ['paths' => $data['paths'] ?? ['src'], 'exclude' => $data['exclude'] ?? [], 'directories' => $data['rules'] ?? []];
+            $paths = $config->paths;
+            if ($includeProjectRoot && !in_array('.', $paths, true)) {
+                $paths[] = '.';
+            }
+            $defaults['structure'] = ['paths' => $paths, 'exclude' => $data['exclude'] ?? [], 'directories' => $data['rules'] ?? []];
         }
         if (is_file($root . '/doc-guard.yaml')) {
             (new HeadingLoader())->load($root . '/doc-guard.yaml');

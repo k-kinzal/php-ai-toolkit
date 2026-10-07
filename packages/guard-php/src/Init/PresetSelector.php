@@ -39,7 +39,7 @@ final class PresetSelector
     }
 
     /**
-     * Detects generic presets from source roots and tool presets from installed configuration.
+     * Detects generic presets from source roots and docs presence, and tool presets from installed configuration.
      *
      * @return list<string>
      * @throws JsonException when composer.json or composer.lock is malformed
@@ -50,6 +50,9 @@ final class PresetSelector
         if ((new ToolDetector())->sources($root) !== []) {
             $names[] = 'metrics';
             $names[] = 'structure';
+        }
+        if (!is_dir($root . '/docs')) {
+            $names[] = 'disable-doc';
         }
         foreach ($this->phpstanPresets($root) as $name) {
             $names[] = $name;

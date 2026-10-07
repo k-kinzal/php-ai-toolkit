@@ -956,6 +956,7 @@
             "output": "Created <project>/guard.yaml. Review the detected recommendations, then run guard check.\n",
             "files": {
                 "README.md": "# Project\n\n## Usage\n",
+                "docs/.gitkeep": "",
                 "guard.yaml": "# Project policy. Required rules fail; recommendations warn.\nversion: 1\ndocumentation:\n  files:\n    README.md:\n      headings:\n        - '# Project'\n        - '## Usage'\n  scan:\n    - README.md\n"
             }
         },
@@ -964,6 +965,7 @@
             "output": "Guard passed.\n",
             "files": {
                 "README.md": "# Project\n\n## Usage\n",
+                "docs/.gitkeep": "",
                 "guard.yaml": "# Project policy. Required rules fail; recommendations warn.\nversion: 1\ndocumentation:\n  files:\n    README.md:\n      headings:\n        - '# Project'\n        - '## Usage'\n  scan:\n    - README.md\n"
             }
         },
@@ -972,6 +974,7 @@
             "output": "Guard error: Cannot create <project>/guard.yaml: it already exists. Review the existing policy instead of overwriting it.\n",
             "files": {
                 "README.md": "# Project\n\n## Usage\n",
+                "docs/.gitkeep": "",
                 "guard.yaml": "# Project policy. Required rules fail; recommendations warn.\nversion: 1\ndocumentation:\n  files:\n    README.md:\n      headings:\n        - '# Project'\n        - '## Usage'\n  scan:\n    - README.md\n"
             }
         }
@@ -983,6 +986,7 @@
             "files": {
                 "README.md": "# Project\n",
                 "doc-guard.yaml": "documents: {README.md: {headings: ['# Project']}}\nscan: ['*.md']\n",
+                "docs/.gitkeep": "",
                 "guard.yaml": "# Project policy. Required rules fail; recommendations warn.\nversion: 1\ndocumentation:\n  files:\n    README.md:\n      headings:\n        - '# Project'\n  scan:\n    - '*.md'\nmetrics:\n  source:\n    - src\n  exclude: []\n  profiles:\n    standard:\n      limits:\n        file:\n          lines: 10\n  default: standard\n  assignments: []\nstructure:\n  paths:\n    - src\n  exclude: []\n  directories:\n    -\n      path: 'src/**'\n      allow:\n        - '*.php'\n      max_files: 4\n",
                 "loc.yaml": "scan: {roots: [src], exclude: []}\npolicies: {standard: {limits: {file: {lines: 10}}}}\napply: {default: standard, rules: []}\n",
                 "src/A.php": "<?php\n",
@@ -995,6 +999,7 @@
             "files": {
                 "README.md": "# Project\n",
                 "doc-guard.yaml": "documents: {README.md: {headings: ['# Project']}}\nscan: ['*.md']\n",
+                "docs/.gitkeep": "",
                 "guard.yaml": "# Project policy. Required rules fail; recommendations warn.\nversion: 1\ndocumentation:\n  files:\n    README.md:\n      headings:\n        - '# Project'\n  scan:\n    - '*.md'\nmetrics:\n  source:\n    - src\n  exclude: []\n  profiles:\n    standard:\n      limits:\n        file:\n          lines: 10\n  default: standard\n  assignments: []\nstructure:\n  paths:\n    - src\n  exclude: []\n  directories:\n    -\n      path: 'src/**'\n      allow:\n        - '*.php'\n      max_files: 4\n",
                 "loc.yaml": "scan: {roots: [src], exclude: []}\npolicies: {standard: {limits: {file: {lines: 10}}}}\napply: {default: standard, rules: []}\n",
                 "src/A.php": "<?php\n",
@@ -1007,6 +1012,7 @@
             "files": {
                 "README.md": "# Project\n",
                 "doc-guard.yaml": "documents: {README.md: {headings: ['# Project']}}\nscan: ['*.md']\n",
+                "docs/.gitkeep": "",
                 "guard.yaml": "# Project policy. Required rules fail; recommendations warn.\nversion: 1\ndocumentation:\n  files:\n    README.md:\n      headings:\n        - '# Project'\n  scan:\n    - '*.md'\nmetrics:\n  source:\n    - src\n  exclude: []\n  profiles:\n    standard:\n      limits:\n        file:\n          lines: 10\n  default: standard\n  assignments: []\nstructure:\n  paths:\n    - src\n  exclude: []\n  directories:\n    -\n      path: 'src/**'\n      allow:\n        - '*.php'\n      max_files: 4\n",
                 "loc.yaml": "scan: {roots: [src], exclude: []}\npolicies: {standard: {limits: {file: {lines: 10}}}}\napply: {default: standard, rules: []}\n",
                 "src/A.php": "<?php\n",
@@ -1019,6 +1025,7 @@
             "files": {
                 "README.md": "# Project\n",
                 "doc-guard.yaml": "documents: {README.md: {headings: ['# Project']}}\nscan: ['*.md']\n",
+                "docs/.gitkeep": "",
                 "guard.yaml": "# Project policy. Required rules fail; recommendations warn.\nversion: 1\ndocumentation:\n  files:\n    README.md:\n      headings:\n        - '# Project'\n  scan:\n    - '*.md'\nmetrics:\n  source:\n    - src\n  exclude: []\n  profiles:\n    standard:\n      limits:\n        file:\n          lines: 10\n  default: standard\n  assignments: []\nstructure:\n  paths:\n    - src\n  exclude: []\n  directories:\n    -\n      path: 'src/**'\n      allow:\n        - '*.php'\n      max_files: 4\n",
                 "loc.yaml": "scan: {roots: [src], exclude: []}\npolicies: {standard: {limits: {file: {lines: 10}}}}\napply: {default: standard, rules: []}\n",
                 "src/A.php": "<?php\n",

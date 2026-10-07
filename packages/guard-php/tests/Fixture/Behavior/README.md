@@ -6,4 +6,6 @@ The reference capture used PHP 8.5 and Symfony YAML 8. The `expected-yaml5.json`
 
 The scenarios cover all policies together, configuration formats, required and recommended findings, dry runs, repeated repairs, conflicts, malformed inputs, error precedence, imports, initial setup, legacy YAML migration, Markdown discovery, numeric path patterns, equivalent root spellings, literal discovery prefixes, and YAML aliases. Treat these as compatibility expectations; do not regenerate them from the refactored implementation to resolve a failure.
 
+The `init-readme` and `migrate` scenarios include `docs/.gitkeep` to preserve their original generated policies after automatic `disable-doc` selection was added. That fixture file is also included in their expected file inventories. Projects without `docs/` and the resulting directory violations are covered by `PresetSelectorTest` and `ApplicationTest`.
+
 The `args` scenario changed on purpose when the guard CLI moved to Symfony Console. Its `--help` case was removed because the help text depends on the installed Symfony Console version; `ApplicationTest` covers it instead. Its command-line errors now carry the Symfony Console message for an unknown command and a format error that names the rejected value.

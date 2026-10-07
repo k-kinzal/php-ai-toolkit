@@ -48,6 +48,7 @@ final class PresetCatalogTest extends TestCase
     {
         $names = (new \Guard\Init\PresetCatalog())->names();
         self::assertContains('metrics', $names);
+        self::assertContains('disable-doc', $names);
         self::assertContains('phpstan-guard-rules', $names);
         self::assertContains('phpunit9', $names);
         self::assertContains('phpunit13', $names);

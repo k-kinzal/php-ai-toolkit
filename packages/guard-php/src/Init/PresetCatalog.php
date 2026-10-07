@@ -20,7 +20,7 @@ final class PresetCatalog
      */
     public function names(): array
     {
-        return array_merge(['metrics', 'structure'], array_keys($this->defaults()));
+        return array_merge(['metrics', 'structure', 'disable-doc'], array_keys($this->defaults()));
     }
 
     /**

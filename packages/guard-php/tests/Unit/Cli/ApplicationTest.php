@@ -6,6 +6,7 @@ namespace Tests\Unit\Cli;
 
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
@@ -397,6 +398,98 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Guard\Structure\Source::class)]
 final class ApplicationTest extends TestCase
 {
+    public function testInitRejectsNewDocsIncludingEmptyDirectories(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-disable-doc-' . uniqid();
+        mkdir($root . '/vendor/example/docs', 0777, true);
+        mkdir($root . '/packages/example/docs', 0777, true);
+        $output = '';
+        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+            $output .= $text;
+        });
+        self::assertSame(0, $app->run(['init']));
+        self::assertStringContainsString('disable-doc.yaml', (string) file_get_contents($root . '/guard.yaml'));
+        file_put_contents($root . '/README.md', "# Project\n");
+        self::assertSame(0, $app->run(['check']));
+        mkdir($root . '/docs');
+        $output = '';
+        self::assertSame(1, $app->run(['check']));
+        self::assertStringContainsString('structure.denied_dir', $output);
+        self::assertStringContainsString('Directory "docs" matches denied pattern "docs". Rename or remove it.', $output);
+        file_put_contents($root . '/docs/guide.md', "# Guide\n");
+        self::assertSame(1, $app->run(['check']));
+        self::assertSame(1, $app->run(['apply', '--dry-run']));
+        self::assertSame(1, $app->run(['apply']));
+        self::assertSame("# Guide\n", file_get_contents($root . '/docs/guide.md'));
+    }
+
+    public function testInitAllowsExistingDocs(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-allow-doc-' . uniqid();
+        mkdir($root . '/docs', 0777, true);
+        file_put_contents($root . '/docs/guide.md', "# Guide\n");
+        $output = '';
+        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+            $output .= $text;
+        });
+        self::assertSame(0, $app->run(['init']));
+        self::assertStringNotContainsString('disable-doc.yaml', (string) file_get_contents($root . '/guard.yaml'));
+        self::assertSame(0, $app->run(['check']));
+        self::assertSame("# Guide\n", file_get_contents($root . '/docs/guide.md'));
+    }
+
+    /**
+     * @dataProvider providerStructureImportOrders
+     */
+    #[DataProvider('providerStructureImportOrders')]
+    public function testDisableDocCombinesWithStructureInEitherImportOrder(string $imports): void
+    {
+        $root = sys_get_temp_dir() . '/guard-disable-doc-structure-' . uniqid();
+        mkdir($root . '/docs', 0777, true);
+        mkdir($root . '/scripts');
+        mkdir($root . '/vendor/example/docs', 0777, true);
+        $output = '';
+        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+            $output .= $text;
+        });
+        self::assertSame(0, $app->run(['init', '--import=' . $imports]));
+        $output = '';
+        self::assertSame(1, $app->run(['check']));
+        self::assertStringContainsString('Directory "docs" matches denied pattern "docs".', $output);
+        self::assertStringContainsString('Directory "scripts" matches denied pattern "scripts".', $output);
+        self::assertStringNotContainsString('vendor/example/docs', $output);
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function providerStructureImportOrders(): iterable
+    {
+        yield 'structure first' => ['structure,disable-doc'];
+        yield 'disable-doc first' => ['disable-doc,structure'];
+    }
+
+    public function testInitDisablesDocsWhenLegacyTreeScansOnlySourceDirectories(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-legacy-disable-doc-' . uniqid();
+        mkdir($root . '/src', 0777, true);
+        file_put_contents($root . '/src/Example.php', "<?php\n");
+        file_put_contents($root . '/tree.yaml', "paths: [src]\nrules: [{path: 'src/**', allow: ['*.php']}]\n");
+        $output = '';
+        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+            $output .= $text;
+        });
+        self::assertSame(0, $app->run(['init']));
+        self::assertSame(0, $app->run(['check']));
+        mkdir($root . '/docs');
+        file_put_contents($root . '/src/notes.txt', 'notes');
+        $output = '';
+        self::assertSame(1, $app->run(['check']));
+        self::assertStringContainsString('Directory "docs" matches denied pattern "docs".', $output);
+        self::assertStringContainsString('src/notes.txt', $output);
+        self::assertStringContainsString('structure.disallowed_file', $output);
+    }
+
     /**
      * @throws JsonException
      */

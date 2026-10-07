@@ -1,0 +1,6 @@
+structure:
+  directories:
+    -
+      path: .
+      deny_dirs:
+        - docs

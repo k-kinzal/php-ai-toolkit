@@ -12,6 +12,7 @@ use Guard\Document\DocumentFailure;
 use Guard\Execution\Context;
 use Guard\Execution\FileChange;
 use Guard\Execution\Plan;
+use Guard\Reporting\Finding;
 use Guard\Structure\ParsedDocument;
 use JsonException;
 use Nette\Neon\Exception as NeonException;
@@ -62,6 +63,10 @@ final class FieldConstraints implements Policy
             if ($file === null) {
                 continue;
             }
+            if (!$file->file->entry->file) {
+                $findings = array_merge($findings, $this->missing($rules, basename($context->configPath)));
+                continue;
+            }
             try {
                 $plan = $this->plan($file, $rules, $context->repair);
             } catch (RuntimeException|JsonException|NeonException $error) {
@@ -71,6 +76,20 @@ final class FieldConstraints implements Policy
             $changes = array_merge($changes, $plan->changes);
         }
         return new Plan($findings, $changes, $findings);
+    }
+    /**
+     * Reports every rule of a target file that does not exist, at each rule's own level.
+     *
+     * @param list<Rule> $rules
+     * @return list<Finding>
+     */
+    public function missing(array $rules, string $configName): array
+    {
+        $findings = [];
+        foreach ($rules as $rule) {
+            $findings[] = new Finding($rule->file, $rule->id, $rule->level, $rule->file . ' does not exist, but this rule checks ' . $rule->select . ' in it. Create ' . $rule->file . ' with a compliant value; removing the rule requires a human to update ' . $configName . '.');
+        }
+        return $findings;
     }
     /** Evaluates a private document copy without filesystem access.
      * @param non-empty-list<Rule> $rules

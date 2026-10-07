@@ -152,6 +152,18 @@ final class DocumentMergerTest extends TestCase
         );
     }
 
+    public function testFilesKeepsImportedKeysThatALaterDeclarationOmits(): void
+    {
+        self::assertSame(
+            ['README.md' => ['outlines' => ['package' => ['# *']], 'badges' => [['name' => 'PHP', 'image' => 'p']], 'headings' => ['# Tool']]],
+            (new \Guard\Config\DocumentMerger())->files(
+                ['README.md' => ['outlines' => ['package' => ['# *']], 'badges' => [['name' => 'PHP', 'image' => 'p']]]],
+                ['README.md' => ['headings' => ['# Tool']]],
+            ),
+        );
+        self::assertSame(['CLAUDE.md' => 'invalid'], (new \Guard\Config\DocumentMerger())->files(['CLAUDE.md' => ['content' => '@AGENTS.md']], ['CLAUDE.md' => 'invalid']));
+    }
+
     public function testEntriesPatchesByIdentity(): void
     {
         self::assertSame(

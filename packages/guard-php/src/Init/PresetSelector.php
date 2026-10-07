@@ -70,6 +70,32 @@ final class PresetSelector
         if (is_file($root . '/composer.json')) {
             $names[] = 'composer';
         }
+        foreach ($this->documentPresets($root) as $name) {
+            $names[] = $name;
+        }
+
+        return $names;
+    }
+
+    /**
+     * Returns the Markdown presets for the documents the project has.
+     *
+     * CLAUDE.md only imports AGENTS.md, so its preset also selects agents-md, which reports AGENTS.md when it is missing.
+     *
+     * @return list<string>
+     */
+    public function documentPresets(string $root): array
+    {
+        $names = [];
+        if (is_file($root . '/AGENTS.md') || is_file($root . '/CLAUDE.md')) {
+            $names[] = 'agents-md';
+        }
+        if (is_file($root . '/CLAUDE.md')) {
+            $names[] = 'claude-md';
+        }
+        if (is_file($root . '/README.md')) {
+            $names[] = 'readme-md';
+        }
 
         return $names;
     }

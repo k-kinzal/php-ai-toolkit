@@ -28,10 +28,14 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Collect\Selection
  * @uses \Guard\Collect\StructuredFile
  * @uses \Guard\Config\Configuration
+ * @uses \Guard\Config\Reader\BadgeConfigReader
  * @uses \Guard\Config\Reader\DeclaredHeadingReader
+ * @uses \Guard\Config\Reader\OutlineConfigReader
  * @uses \Guard\Config\Validation\HeadingConfigKeyValidator
+ * @uses \Guard\Config\Value\BadgeEntry
  * @uses \Guard\Config\Value\DeclaredHeading
  * @uses \Guard\Config\Value\DocumentConfig
+ * @uses \Guard\Config\Value\OutlineEntry
  * @uses \Guard\Execution\Context
  * @uses \Guard\Execution\FileChange
  * @uses \Guard\Execution\Plan
@@ -65,6 +69,10 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(AtxHeadingMatcher::class)]
 #[UsesClass(Heading::class)]
 #[UsesClass(HeadingTextNormalizer::class)]
+#[UsesClass(\Guard\Config\Reader\BadgeConfigReader::class)]
+#[UsesClass(\Guard\Config\Reader\OutlineConfigReader::class)]
+#[UsesClass(\Guard\Config\Value\BadgeEntry::class)]
+#[UsesClass(\Guard\Config\Value\OutlineEntry::class)]
 final class DocumentConfigReaderTest extends TestCase
 {
     public function testReadParsesHeadingsAndMaxLevel(): void
@@ -72,6 +80,7 @@ final class DocumentConfigReaderTest extends TestCase
         $document = (new DocumentConfigReader())->read('README.md', ['headings' => ['# Tool', '## Usage'], 'max_level' => 2]);
 
         self::assertSame('README.md', $document->path);
+        self::assertNotNull($document->headings);
         self::assertSame(['# Tool', '## Usage'], array_map(static fn (DeclaredHeading $heading): string => $heading->notation(), $document->headings));
         self::assertSame(2, $document->maxLevel);
     }
@@ -122,6 +131,47 @@ final class DocumentConfigReaderTest extends TestCase
         $this->expectExceptionMessage('"documents.README.md.max_level" must be an integer from 1 to 6.');
 
         (new DocumentConfigReader())->read('README.md', ['headings' => [], 'max_level' => 7]);
+    }
+
+    public function testReadAcceptsOutlinesBadgesAndContentWithoutHeadings(): void
+    {
+        $document = (new DocumentConfigReader())->read('README.md', [
+            'outlines' => ['package' => ['# *', '## License']],
+            'badges' => [['name' => 'PHP', 'image' => 'https://img.shields.io/badge/php-*']],
+            'content' => '',
+        ]);
+
+        self::assertNull($document->headings);
+        self::assertSame(['package'], array_keys($document->outlines));
+        self::assertNotNull($document->badges);
+        self::assertSame('PHP', $document->badges[0]->name);
+        self::assertSame('', $document->content);
+    }
+
+    public function testReadKeepsExactHeadingsNextToAnOutline(): void
+    {
+        $document = (new DocumentConfigReader())->read('AGENTS.md', ['headings' => ['# AGENTS'], 'outlines' => ['agents' => ['# AGENTS']]]);
+
+        self::assertNotNull($document->headings);
+        self::assertCount(1, $document->headings);
+        self::assertCount(1, $document->outlines['agents']);
+        self::assertNull($document->badges);
+        self::assertNull($document->content);
+    }
+
+    public function testHeadingsReadsAListNoDeeperThanTheMaximum(): void
+    {
+        $headings = (new DocumentConfigReader())->headings(['# Tool', '## Usage'], 2, 'documents.README.md');
+
+        self::assertSame(['# Tool', '## Usage'], array_map(static fn (DeclaredHeading $heading): string => $heading->notation(), $headings));
+    }
+
+    public function testReadRejectsNonStringContent(): void
+    {
+        $this->expectException(PolicyException::class);
+        $this->expectExceptionMessage('"documents.CLAUDE.md.content" must be a string holding the exact file content.');
+
+        (new DocumentConfigReader())->read('CLAUDE.md', ['content' => ['@AGENTS.md']]);
     }
 
     public function testReadRejectsHeadingDeeperThanMaxLevel(): void

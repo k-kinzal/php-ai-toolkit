@@ -53,6 +53,35 @@ final class PresetCatalogTest extends TestCase
         self::assertContains('phpunit9', $names);
         self::assertContains('phpunit13', $names);
         self::assertContains('docgen', $names);
+        self::assertContains('readme-md', $names);
+    }
+
+    public function testDocumentsMapsMarkdownPresetsToTheirFiles(): void
+    {
+        self::assertSame(['agents-md' => 'AGENTS.md', 'claude-md' => 'CLAUDE.md', 'readme-md' => 'README.md'], (new \Guard\Init\PresetCatalog())->documents());
+    }
+
+    /**
+     * @dataProvider providerMarkdownPresets
+     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerMarkdownPresets')]
+    public function testMarkdownPresetDeclaresOnlyItsDocument(string $name, string $document): void
+    {
+        $documentation = (new \Guard\Init\PresetCatalog())->read($name)['documentation'] ?? null;
+
+        self::assertIsArray($documentation);
+        self::assertIsArray($documentation['files'] ?? null);
+        self::assertSame([$document], array_keys($documentation['files']));
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function providerMarkdownPresets(): iterable
+    {
+        yield 'agents-md' => ['agents-md', 'AGENTS.md'];
+        yield 'claude-md' => ['claude-md', 'CLAUDE.md'];
+        yield 'readme-md' => ['readme-md', 'README.md'];
     }
 
     public function testDefaultsNamesThePhpUnitThirteenFile(): void

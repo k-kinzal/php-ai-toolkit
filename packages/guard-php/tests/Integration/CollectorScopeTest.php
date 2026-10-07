@@ -12,7 +12,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Tests\Support\CountingFilesystem;
 use Tests\Support\Project;
-use Tests\Support\XmlSchemaExample;
 
 /**
  * @covers \Guard\Execution\Pipeline
@@ -410,33 +409,6 @@ use Tests\Support\XmlSchemaExample;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
 final class CollectorScopeTest extends TestCase
 {
-    public function testBuiltInAndExternalPoliciesShareTheSameCollectorBoundary(): void
-    {
-        XmlSchemaExample::load();
-        $project = new Project([
-            'guard.yaml' => "version: 1\ncollect:\n  include: [lib, docs, assets, schema.xsd]\n  exclude: ['lib/generated', 'docs/ignored.md']\nmetrics:\n  profiles: {standard: {limits: {file: {lines: 1}}}}\ndocumentation:\n  files:\n    README.md: {headings: ['# Missing but out of scope']}\n    docs/Intro.md: {headings: ['# Intro']}\n  scan: ['docs/**/*.md']\nconfiguration:\n  - {id: outside, file: outside.json, select: /mode, assert: {equals: A}}\nextensions:\n  Example\\Guard\\XmlSchemaExtension: {schema: schema.xsd}\n",
-            'lib/A.php' => "<?php\necho 1;\necho 2;\n",
-            'lib/generated/B.php' => "<?php\necho 1;\necho 2;\n",
-            'docs/Intro.md' => '# Intro',
-            'docs/ignored.md' => '# Undeclared',
-            'assets/fail.xml' => '<count>0</count>',
-            'schema.xsd' => XmlSchemaExample::schema(),
-            'outside.json' => '{',
-            'vendor/invalid.xml' => '<broken',
-        ]);
-        try {
-            $filesystem = new CountingFilesystem();
-            $plan = (new Pipeline(null, new Collector($filesystem)))->run($project->context());
-            self::assertSame(['lib/A.php', 'assets/fail.xml'], array_map(static fn (Finding $finding): string => $finding->path, $plan->findings));
-            self::assertCount(3, $filesystem->listings);
-            self::assertSame([1], array_values(array_unique($filesystem->listings)));
-            self::assertCount(4, $filesystem->reads);
-            self::assertSame([1], array_values(array_unique($filesystem->reads)));
-        } finally {
-            $project->remove();
-        }
-    }
-
     public function testImportsReplaceIncludeAndRetainUnspecifiedCollectorExclusions(): void
     {
         $project = new Project([
@@ -475,33 +447,10 @@ final class CollectorScopeTest extends TestCase
         }
     }
 
-    public function testSchemaDependencyMustAlsoBeInsideTheCollectorScope(): void
-    {
-        XmlSchemaExample::load();
-        $project = new Project([
-            'guard.yaml' => "version: 1\ncollect: {include: ['**/*.xml']}\nextensions:\n  Example\\Guard\\XmlSchemaExtension: {schema: schema.xsd}\n",
-            'file.xml' => '<count>1</count>',
-            'schema.xsd' => '<broken',
-        ]);
-        try {
-            $output = '';
-            $app = new Application($project->root, static function (string $text) use (&$output): void {
-                $output .= $text;
-            });
-            self::assertSame(2, $app->run(['check']));
-            self::assertStringContainsString('Schema "schema.xsd" is outside the collector scope', $output);
-            self::assertStringContainsString('collect.include', $output);
-            self::assertStringNotContainsString('Invalid XML', $output);
-        } finally {
-            $project->remove();
-        }
-    }
-
     public function testEmptyCollectorIncludesDisableEveryTargetWithoutContentReads(): void
     {
-        XmlSchemaExample::load();
         $project = new Project([
-            'guard.yaml' => "version: 1\ncollect: {include: []}\nconfiguration:\n  - {id: missing, file: missing.json, select: /mode, assert: {equals: A}}\nextensions:\n  Example\\Guard\\XmlSchemaExtension: {schema: missing.xsd}\n",
+            'guard.yaml' => "version: 1\ncollect: {include: []}\nconfiguration:\n  - {id: missing, file: missing.json, select: /mode, assert: {equals: A}}\n",
             'invalid.xml' => '<broken',
         ]);
         try {

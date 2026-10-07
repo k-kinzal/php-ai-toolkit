@@ -20,9 +20,22 @@ final class TargetPath
         $this->snapshot = $snapshot ?? new \Guard\Collect\Filesystem\Snapshot(new \Guard\Collect\Filesystem\NativeFilesystem());
     }
     /**
-     * @throws PolicyException when a path escapes the root or traverses symlinks
+     * @throws PolicyException when a path escapes the root, traverses symlinks, or is not an existing regular file
      */
     public function resolve(string $root, string $relative): string
+    {
+        $path = $this->confine($root, $relative);
+        if (!$this->snapshot->inspect($path)->file) {
+            throw new PolicyException('Target "' . $relative . '" does not exist. Create the configuration file first.');
+        }
+        return $path;
+    }
+    /**
+     * Returns the absolute path inside the root without requiring it to exist, so a policy can report a missing file.
+     *
+     * @throws PolicyException when a path escapes the root or traverses symlinks
+     */
+    public function confine(string $root, string $relative): string
     {
         $parts = explode('/', str_replace('\\', '/', $relative));
         if (str_starts_with($relative, '/') || preg_match('/^[A-Za-z]:/', $relative) === 1 || in_array('..', $parts, true)) {
@@ -37,9 +50,6 @@ final class TargetPath
             if ($this->snapshot->inspect($path)->link) {
                 throw new PolicyException('Target "' . $relative . '" traverses a symlink. Select a regular project file.');
             }
-        }
-        if (!$this->snapshot->inspect($path)->file) {
-            throw new PolicyException('Target "' . $relative . '" does not exist. Create the configuration file first.');
         }
         return $path;
     }

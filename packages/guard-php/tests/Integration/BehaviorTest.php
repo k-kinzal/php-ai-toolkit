@@ -60,6 +60,7 @@ use Tests\Support\BehaviorCases;
  * @uses \Guard\Config\Profile\PolicyDefinition
  * @uses \Guard\Config\Profile\PolicyListConfigReader
  * @uses \Guard\Config\Profile\PolicyResolver
+ * @uses \Guard\Config\Reader\BadgeConfigReader
  * @uses \Guard\Config\Reader\DeclaredHeadingReader
  * @uses \Guard\Config\Reader\DirectoryPolicyReader
  * @uses \Guard\Config\Reader\DirectoryRuleConfigReader
@@ -70,6 +71,7 @@ use Tests\Support\BehaviorCases;
  * @uses \Guard\Config\Reader\HeadingPolicyReader
  * @uses \Guard\Config\Reader\LimitConfigReader
  * @uses \Guard\Config\Reader\MetricPolicyReader
+ * @uses \Guard\Config\Reader\OutlineConfigReader
  * @uses \Guard\Config\Reader\ScanConfigReader
  * @uses \Guard\Config\RuleReader
  * @uses \Guard\Config\Schema
@@ -80,12 +82,14 @@ use Tests\Support\BehaviorCases;
  * @uses \Guard\Config\Validation\MetricConfigKeyValidator
  * @uses \Guard\Config\Validation\MetricConfigScalarReader
  * @uses \Guard\Config\Validation\MetricConfigStringListReader
+ * @uses \Guard\Config\Value\BadgeEntry
  * @uses \Guard\Config\Value\DeclaredHeading
  * @uses \Guard\Config\Value\DirectoryRuleConfig
  * @uses \Guard\Config\Value\DocumentConfig
  * @uses \Guard\Config\Value\DocumentationConfig
  * @uses \Guard\Config\Value\LimitConfig
  * @uses \Guard\Config\Value\MetricsConfig
+ * @uses \Guard\Config\Value\OutlineEntry
  * @uses \Guard\Config\Value\ScanConfig
  * @uses \Guard\Config\Value\StructureConfig
  * @uses \Guard\Document\DataDocument
@@ -125,9 +129,13 @@ use Tests\Support\BehaviorCases;
  * @uses \Guard\Init\PresetSelector
  * @uses \Guard\Init\Recommendations
  * @uses \Guard\Init\ToolDetector
+ * @uses \Guard\Policy\Comparison\BadgeComparator
  * @uses \Guard\Policy\Comparison\HeadingHunkClassifier
  * @uses \Guard\Policy\Comparison\HeadingSequenceAligner
  * @uses \Guard\Policy\Comparison\HeadingStructureComparator
+ * @uses \Guard\Policy\Comparison\OutlineComparator
+ * @uses \Guard\Policy\Comparison\SequenceMatcher
+ * @uses \Guard\Policy\Comparison\SequenceResult
  * @uses \Guard\Policy\Constraint
  * @uses \Guard\Policy\DirectoryEntries
  * @uses \Guard\Policy\FieldConstraints
@@ -154,6 +162,7 @@ use Tests\Support\BehaviorCases;
  * @uses \Guard\Policy\Rule
  * @uses \Guard\Policy\RuleEvaluator
  * @uses \Guard\Reporting\DirectoryViolation
+ * @uses \Guard\Reporting\DocumentViolationFactory
  * @uses \Guard\Reporting\Finding
  * @uses \Guard\Reporting\HeadingViolation
  * @uses \Guard\Reporting\HeadingViolationFactory
@@ -161,6 +170,10 @@ use Tests\Support\BehaviorCases;
  * @uses \Guard\Reporting\Reporter
  * @uses \Guard\Structure\DocumentStructurer
  * @uses \Guard\Structure\Markdown\AtxHeadingMatcher
+ * @uses \Guard\Structure\Markdown\Badge\Badge
+ * @uses \Guard\Structure\Markdown\Badge\BadgeBlock
+ * @uses \Guard\Structure\Markdown\Badge\BadgeLineParser
+ * @uses \Guard\Structure\Markdown\Badge\BadgeStructurer
  * @uses \Guard\Structure\Markdown\BlockMarkerMatcher
  * @uses \Guard\Structure\Markdown\Block\BlockLineScanner
  * @uses \Guard\Structure\Markdown\Fence
@@ -204,6 +217,8 @@ use Tests\Support\BehaviorCases;
  * @uses \Guard\Structure\Php\Token\TokenLineCounter
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
+ * @uses \Guard\Structure\Text
+ * @uses \Guard\Structure\TextStructurer
  */
 #[CoversClass(Application::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\ClosureOutput::class)]
@@ -397,6 +412,21 @@ use Tests\Support\BehaviorCases;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\BadgeConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\OutlineConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\BadgeEntry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\OutlineEntry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\BadgeComparator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\OutlineComparator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\SequenceMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\SequenceResult::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\DocumentViolationFactory::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Badge\Badge::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Badge\BadgeBlock::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Badge\BadgeLineParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Badge\BadgeStructurer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Text::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\TextStructurer::class)]
 final class BehaviorTest extends TestCase
 {
     /**

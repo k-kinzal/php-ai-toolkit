@@ -405,6 +405,40 @@ final class FieldConstraintsTest extends TestCase
 
     /**
      * @throws JsonException
+     * @throws \Nette\Neon\Exception
+     */
+    public function testEvaluateReportsEachRuleOfAMissingTargetAtItsLevel(): void
+    {
+        $project = new Project(['guard.yaml' => "version: 1\nconfiguration:\n  - {id: a, file: app.json, select: /mode, assert: {equals: A}}\n  - {id: b, file: app.json, select: /count, level: recommended, assert: {min: 1}, repair: 1}\n"]);
+        try {
+            [$policy, $subject, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'field-constraints', true);
+            $plan = $policy->evaluate($subject, $context);
+            self::assertSame(['a', 'b'], array_map(static fn (\Guard\Reporting\Finding $finding): string => $finding->rule, $plan->findings));
+            self::assertSame(['required', 'recommended'], array_map(static fn (\Guard\Reporting\Finding $finding): string => $finding->level, $plan->findings));
+            self::assertSame('app.json does not exist, but this rule checks /mode in it. Create app.json with a compliant value; removing the rule requires a human to update guard.yaml.', $plan->findings[0]->message);
+            self::assertSame([], $plan->changes);
+            self::assertSame($plan->findings, $plan->blockingFindings);
+        } finally {
+            $project->remove();
+        }
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testMissingNamesThePolicyFile(): void
+    {
+        $rules = (new \Guard\Config\RuleReader())->read([['id' => 'x', 'file' => 'app.json', 'select' => '/x', 'assert' => ['present' => true]]]);
+
+        $findings = (new \Guard\Policy\FieldConstraints($rules))->missing($rules, 'custom.yaml');
+
+        self::assertCount(1, $findings);
+        self::assertSame('app.json', $findings[0]->path);
+        self::assertStringEndsWith('removing the rule requires a human to update custom.yaml.', $findings[0]->message);
+    }
+
+    /**
+     * @throws JsonException
 
      */
     public function testInputsDeclaresTheRequiredStructureWithoutFilesystemAccess(): void

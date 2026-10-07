@@ -64,4 +64,28 @@ final class TargetPathTest extends TestCase
         (new \Guard\Execution\TargetPath())->resolve($root, 'linked.json');
     }
 
+    public function testResolveRejectsAMissingTarget(): void
+    {
+        $this->expectException(\Guard\Policy\PolicyException::class);
+        $this->expectExceptionMessage('Target "missing.json" does not exist. Create the configuration file first.');
+        (new \Guard\Execution\TargetPath())->resolve(sys_get_temp_dir() . '/guard-path-' . uniqid(), 'missing.json');
+    }
+
+    public function testConfineAcceptsAMissingTargetInsideTheRoot(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-path-' . uniqid();
+        mkdir($root);
+        try {
+            self::assertSame($root . '/config/missing.json', (new \Guard\Execution\TargetPath())->confine($root, './config//missing.json'));
+        } finally {
+            rmdir($root);
+        }
+    }
+
+    public function testConfineRejectsEscapingRoot(): void
+    {
+        $this->expectException(\Guard\Policy\PolicyException::class);
+        $this->expectExceptionMessage('Target "../outside.json" must stay inside the directory containing guard.yaml.');
+        (new \Guard\Execution\TargetPath())->confine(sys_get_temp_dir(), '../outside.json');
+    }
 }

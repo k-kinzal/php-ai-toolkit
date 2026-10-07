@@ -1,0 +1,59 @@
+documentation:
+  files:
+    README.md:
+      outlines:
+        cli:
+          - '# *'
+          - '## Requirements'
+          - '## Getting Started'
+          -
+            heading: '## *'
+            optional: true
+            repeat: true
+          - '## License'
+        library:
+          - '# *'
+          - '## Requirements'
+          - '## Installation'
+          - '## Usage'
+          -
+            heading: '## *'
+            optional: true
+            repeat: true
+          - '## License'
+        monorepo:
+          - '# *'
+          - '## Packages'
+          -
+            heading: '## Related Projects'
+            optional: true
+          - '## License'
+      badges:
+        -
+          name: docs
+          label: docs
+          image: 'https://img.shields.io/badge/docs-*'
+          optional: true
+        -
+          name: workflow
+          image: 'https://github.com/*/actions/workflows/*/badge.svg*'
+          optional: true
+          repeat: true
+        -
+          name: Packagist
+          label: Packagist
+          image: 'https://img.shields.io/packagist/v/*'
+          optional: true
+        -
+          name: PHP
+          label: PHP
+          image: 'https://img.shields.io/badge/php-*'
+        -
+          name: License
+          label: License
+          image: 'https://img.shields.io/badge/license-*'
+        -
+          name: DeepWiki
+          label: Ask DeepWiki
+          image: 'https://deepwiki.com/badge.svg'
+          optional: true

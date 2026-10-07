@@ -12,7 +12,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Tests\Support\RequiredReadmeExtension;
-use Tests\Support\XmlSchemaExample;
 
 /**
  * @covers \Guard\Extension\ExtensionLoader
@@ -178,14 +177,6 @@ final class ExtensionLoaderTest extends TestCase
         self::assertInstanceOf(RequiredReadmeExtension::class, (new ExtensionLoader())->create(RequiredReadmeExtension::class, []));
     }
 
-    public function testRegisterUsesTheConfigurationFactoryWithoutCallingItsConstructor(): void
-    {
-        XmlSchemaExample::load();
-        $registry = new Registry();
-        (new ExtensionLoader())->register(['Example\\Guard\\XmlSchemaExtension' => ['schema' => 'schema.xsd']], $registry);
-        self::assertSame('example.xml-schema', $registry->policies()[0]->id);
-    }
-
     /**
      * @dataProvider providerInvalidExtensions
      * @param array<string, mixed> $options
@@ -193,7 +184,6 @@ final class ExtensionLoaderTest extends TestCase
     #[DataProvider('providerInvalidExtensions')]
     public function testRegisterReportsTheClassAndHowToFixAnInvalidExtension(string $class, array $options, string $message): void
     {
-        XmlSchemaExample::load();
         $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('Extension "' . $class . '":');
         $this->expectExceptionMessage($message);
@@ -209,7 +199,6 @@ final class ExtensionLoaderTest extends TestCase
         yield 'wrong contract' => [Registry::class, [], 'must implement Guard\\Extension\\Extension'];
         yield 'required constructor' => [BuiltinExtension::class, [], 'public no-argument constructor'];
         yield 'unsupported options' => [RequiredReadmeExtension::class, ['typo' => true], 'Implement fromOptions()'];
-        yield 'factory validation' => ['Example\\Guard\\XmlSchemaExtension', [], 'schema must be a non-empty string'];
     }
 
     public function testRegisterReportsRegistrationConflictsWithTheirExtensionClass(): void

@@ -201,7 +201,7 @@ final class DocumentMerger
     }
 
     /**
-     * Replaces one declared document at a time and replaces scan or exclude when set.
+     * Merges declared documents key by key and replaces scan or exclude when set.
      *
      * @param array<mixed> $base
      * @param array<mixed> $overlay
@@ -227,7 +227,7 @@ final class DocumentMerger
     }
 
     /**
-     * Replaces declared documents by path.
+     * Merges declared documents by path. A later declaration replaces only the keys it sets.
      *
      * @param array<mixed> $base
      * @param array<mixed> $overlay
@@ -236,7 +236,10 @@ final class DocumentMerger
     public function files(array $base, array $overlay): array
     {
         foreach ($overlay as $path => $document) {
-            $base[$path] = $document;
+            $current = $base[$path] ?? null;
+            $base[$path] = is_array($current) && $this->isMapping($current) && is_array($document) && $this->isMapping($document)
+                ? $this->patch($current, $document)
+                : $document;
         }
 
         return $base;

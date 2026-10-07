@@ -1,0 +1,15 @@
+documentation:
+  files:
+    AGENTS.md:
+      outlines:
+        agents:
+          - '# AGENTS'
+          -
+            one_of:
+              - '## Vision'
+              - '## Product Vision'
+          - '## Supported Versions'
+          -
+            heading: '## Architecture'
+            optional: true
+          - '## Documents'

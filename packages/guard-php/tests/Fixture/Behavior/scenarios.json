@@ -564,7 +564,8 @@
     "name": "init-readme",
     "files": {
       "README.md": "# Project\n\n## Usage\n",
-      "docs/.gitkeep": ""
+      "docs/.gitkeep": "",
+      "vendor/k-kinzal/guard-php/rules/readme-md.yaml": "documentation:\n  files:\n    README.md:\n      outlines:\n        cli:\n          - '# *'\n          - '## Requirements'\n          - '## Getting Started'\n          -\n            heading: '## *'\n            optional: true\n            repeat: true\n          - '## License'\n        library:\n          - '# *'\n          - '## Requirements'\n          - '## Installation'\n          - '## Usage'\n          -\n            heading: '## *'\n            optional: true\n            repeat: true\n          - '## License'\n        monorepo:\n          - '# *'\n          - '## Packages'\n          -\n            heading: '## Related Projects'\n            optional: true\n          - '## License'\n      badges:\n        -\n          name: docs\n          label: docs\n          image: 'https://img.shields.io/badge/docs-*'\n          optional: true\n        -\n          name: workflow\n          image: 'https://github.com/*/actions/workflows/*/badge.svg*'\n          optional: true\n          repeat: true\n        -\n          name: Packagist\n          label: Packagist\n          image: 'https://img.shields.io/packagist/v/*'\n          optional: true\n        -\n          name: PHP\n          label: PHP\n          image: 'https://img.shields.io/badge/php-*'\n        -\n          name: License\n          label: License\n          image: 'https://img.shields.io/badge/license-*'\n        -\n          name: DeepWiki\n          label: Ask DeepWiki\n          image: 'https://deepwiki.com/badge.svg'\n          optional: true\n"
     },
     "commands": [
       [
@@ -586,7 +587,8 @@
       "src/A.php": "<?php\n",
       "loc.yaml": "scan: {roots: [src], exclude: []}\npolicies: {standard: {limits: {file: {lines: 10}}}}\napply: {default: standard, rules: []}\n",
       "tree.yaml": "paths: [src]\nrules: [{path: 'src/**', allow: ['*.php'], max_files: 4}]\n",
-      "doc-guard.yaml": "documents: {README.md: {headings: ['# Project']}}\nscan: ['*.md']\n"
+      "doc-guard.yaml": "documents: {README.md: {headings: ['# Project']}}\nscan: ['*.md']\n",
+      "vendor/k-kinzal/guard-php/rules/readme-md.yaml": "documentation:\n  files:\n    README.md:\n      outlines:\n        cli:\n          - '# *'\n          - '## Requirements'\n          - '## Getting Started'\n          -\n            heading: '## *'\n            optional: true\n            repeat: true\n          - '## License'\n        library:\n          - '# *'\n          - '## Requirements'\n          - '## Installation'\n          - '## Usage'\n          -\n            heading: '## *'\n            optional: true\n            repeat: true\n          - '## License'\n        monorepo:\n          - '# *'\n          - '## Packages'\n          -\n            heading: '## Related Projects'\n            optional: true\n          - '## License'\n      badges:\n        -\n          name: docs\n          label: docs\n          image: 'https://img.shields.io/badge/docs-*'\n          optional: true\n        -\n          name: workflow\n          image: 'https://github.com/*/actions/workflows/*/badge.svg*'\n          optional: true\n          repeat: true\n        -\n          name: Packagist\n          label: Packagist\n          image: 'https://img.shields.io/packagist/v/*'\n          optional: true\n        -\n          name: PHP\n          label: PHP\n          image: 'https://img.shields.io/badge/php-*'\n        -\n          name: License\n          label: License\n          image: 'https://img.shields.io/badge/license-*'\n        -\n          name: DeepWiki\n          label: Ask DeepWiki\n          image: 'https://deepwiki.com/badge.svg'\n          optional: true\n"
     },
     "commands": [
       [

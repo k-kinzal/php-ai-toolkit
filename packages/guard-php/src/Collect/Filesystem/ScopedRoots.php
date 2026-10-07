@@ -58,7 +58,7 @@ final class ScopedRoots
             return;
         }
         if ($selection->confined) {
-            (new TargetPath($this->snapshot))->resolve($root, $relative);
+            (new TargetPath($this->snapshot))->confine($root, $relative);
         }
         if ($selection->forbiddenPath !== null && $entry->identity === $this->snapshot->inspect($selection->forbiddenPath)->identity) {
             throw new PolicyException($selection->forbiddenMessage);

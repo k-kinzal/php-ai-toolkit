@@ -54,6 +54,7 @@ use Tests\Support\Project;
  * @uses \Guard\Config\Profile\PolicyDefinition
  * @uses \Guard\Config\Profile\PolicyListConfigReader
  * @uses \Guard\Config\Profile\PolicyResolver
+ * @uses \Guard\Config\Reader\BadgeConfigReader
  * @uses \Guard\Config\Reader\DeclaredHeadingReader
  * @uses \Guard\Config\Reader\DirectoryPolicyReader
  * @uses \Guard\Config\Reader\DirectoryRuleConfigReader
@@ -64,6 +65,7 @@ use Tests\Support\Project;
  * @uses \Guard\Config\Reader\HeadingPolicyReader
  * @uses \Guard\Config\Reader\LimitConfigReader
  * @uses \Guard\Config\Reader\MetricPolicyReader
+ * @uses \Guard\Config\Reader\OutlineConfigReader
  * @uses \Guard\Config\RuleReader
  * @uses \Guard\Config\Schema
  * @uses \Guard\Config\Validation\DirectoryConfigScalarReader
@@ -72,12 +74,14 @@ use Tests\Support\Project;
  * @uses \Guard\Config\Validation\MetricConfigKeyValidator
  * @uses \Guard\Config\Validation\MetricConfigScalarReader
  * @uses \Guard\Config\Validation\MetricConfigStringListReader
+ * @uses \Guard\Config\Value\BadgeEntry
  * @uses \Guard\Config\Value\DeclaredHeading
  * @uses \Guard\Config\Value\DirectoryRuleConfig
  * @uses \Guard\Config\Value\DocumentConfig
  * @uses \Guard\Config\Value\DocumentationConfig
  * @uses \Guard\Config\Value\LimitConfig
  * @uses \Guard\Config\Value\MetricsConfig
+ * @uses \Guard\Config\Value\OutlineEntry
  * @uses \Guard\Config\Value\ScanConfig
  * @uses \Guard\Config\Value\StructureConfig
  * @uses \Guard\Document\DataDocument
@@ -97,9 +101,13 @@ use Tests\Support\Project;
  * @uses \Guard\Extension\BuiltinExtension
  * @uses \Guard\Extension\PolicyBinding
  * @uses \Guard\Extension\Registry
+ * @uses \Guard\Policy\Comparison\BadgeComparator
  * @uses \Guard\Policy\Comparison\HeadingHunkClassifier
  * @uses \Guard\Policy\Comparison\HeadingSequenceAligner
  * @uses \Guard\Policy\Comparison\HeadingStructureComparator
+ * @uses \Guard\Policy\Comparison\OutlineComparator
+ * @uses \Guard\Policy\Comparison\SequenceMatcher
+ * @uses \Guard\Policy\Comparison\SequenceResult
  * @uses \Guard\Policy\Constraint
  * @uses \Guard\Policy\DirectoryEntries
  * @uses \Guard\Policy\FieldConstraints
@@ -125,12 +133,17 @@ use Tests\Support\Project;
  * @uses \Guard\Policy\Rule
  * @uses \Guard\Policy\RuleEvaluator
  * @uses \Guard\Reporting\DirectoryViolation
+ * @uses \Guard\Reporting\DocumentViolationFactory
  * @uses \Guard\Reporting\Finding
  * @uses \Guard\Reporting\HeadingViolation
  * @uses \Guard\Reporting\HeadingViolationFactory
  * @uses \Guard\Reporting\MetricViolation
  * @uses \Guard\Structure\DocumentStructurer
  * @uses \Guard\Structure\Markdown\AtxHeadingMatcher
+ * @uses \Guard\Structure\Markdown\Badge\Badge
+ * @uses \Guard\Structure\Markdown\Badge\BadgeBlock
+ * @uses \Guard\Structure\Markdown\Badge\BadgeLineParser
+ * @uses \Guard\Structure\Markdown\Badge\BadgeStructurer
  * @uses \Guard\Structure\Markdown\BlockMarkerMatcher
  * @uses \Guard\Structure\Markdown\Block\BlockLineScanner
  * @uses \Guard\Structure\Markdown\Fence
@@ -174,6 +187,8 @@ use Tests\Support\Project;
  * @uses \Guard\Structure\Php\Token\TokenLineCounter
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
+ * @uses \Guard\Structure\Text
+ * @uses \Guard\Structure\TextStructurer
  */
 #[CoversClass(\Guard\Policy\HeadingStructure::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Collector::class)]
@@ -336,6 +351,21 @@ use Tests\Support\Project;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\BadgeConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\OutlineConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\BadgeEntry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\OutlineEntry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\BadgeComparator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\OutlineComparator::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\SequenceMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\SequenceResult::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\DocumentViolationFactory::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Badge\Badge::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Badge\BadgeBlock::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Badge\BadgeLineParser::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Badge\BadgeStructurer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Text::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\TextStructurer::class)]
 final class HeadingStructureTest extends TestCase
 {
     /**
@@ -386,5 +416,74 @@ final class HeadingStructureTest extends TestCase
         $context = new Context(new Configuration('/none', []), '/none/guard.yaml', false);
         $inputs = $policy->inputs($context);
         self::assertSame('markdown.headings', $inputs['declared0']->structure);
+        self::assertArrayNotHasKey('badges0', $inputs);
+        self::assertArrayNotHasKey('text0', $inputs);
+    }
+
+    public function testInputsRequestBadgesAndTextOnlyForDocumentsThatDeclareThem(): void
+    {
+        $policy = new \Guard\Policy\HeadingStructure((new \Guard\Config\Reader\HeadingPolicyReader())->read(['files' => [
+            'README.md' => ['badges' => [['name' => 'PHP', 'image' => 'https://img.shields.io/badge/php-*']]],
+            'CLAUDE.md' => ['content' => '@AGENTS.md'],
+        ]], '/none', 'guard.yaml'));
+        $inputs = $policy->inputs(new Context(new Configuration('/none', []), '/none/guard.yaml', false));
+
+        self::assertSame('markdown.badges', $inputs['badges0']->structure);
+        self::assertSame('text', $inputs['text1']->structure);
+        self::assertArrayNotHasKey('text0', $inputs);
+        self::assertArrayNotHasKey('badges1', $inputs);
+    }
+
+    /**
+     * @throws JsonException
+     * @throws \Nette\Neon\Exception
+     */
+    public function testDocumentChecksOutlinesBadgesAndExactContent(): void
+    {
+        $project = new Project([
+            'README.md' => "# Tool\n\n[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)\n\nOverview.\n\n## Requirements\n\n## Installation\n\n### Detail\n\n## License\n",
+            'CLAUDE.md' => "@AGENTS.md\n",
+            'AGENTS.md' => "# AGENTS\n\n## Supported Versions\n\n## Branching Strategy\n",
+            'guard.yaml' => "version: 1\ndocumentation:\n  files:\n"
+                . "    README.md:\n      outlines: {package: ['# *', '## Requirements', '## Getting Started', {heading: '## *', optional: true, repeat: true}, '## License']}\n"
+                . "      badges: [{name: PHP, image: 'https://img.shields.io/badge/php-*'}, {name: License, image: 'https://img.shields.io/badge/license-*'}]\n"
+                . "    CLAUDE.md: {content: '@AGENTS.md'}\n"
+                . "    AGENTS.md: {outlines: {agents: ['# AGENTS', '## Supported Versions', {heading: '## *', optional: true, repeat: true}]}}\n",
+        ]);
+        try {
+            [$policy, $inputs, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'heading-structure');
+            $plan = $policy->evaluate($inputs, $context);
+            $rules = array_map(static fn (\Guard\Reporting\Finding $finding): string => $finding->path . ' ' . $finding->rule, $plan->findings);
+
+            self::assertSame([
+                'README.md documentation.missing_outline_heading',
+                'README.md documentation.missing_badge',
+                'CLAUDE.md documentation.unexpected_content',
+            ], $rules);
+            self::assertInstanceOf(\Guard\Policy\HeadingStructure::class, $policy);
+            $agents = (new \Guard\Config\Reader\DocumentConfigReader())->read('AGENTS.md', ['outlines' => ['agents' => ['# AGENTS', '## Supported Versions']]]);
+            self::assertSame(['## Branching Strategy'], array_map(static fn (\Guard\Reporting\HeadingViolation $violation): ?string => $violation->actual, $policy->document(2, $agents, $inputs)));
+        } finally {
+            $project->remove();
+        }
+    }
+
+    /**
+     * @throws JsonException
+     * @throws \Nette\Neon\Exception
+     */
+    public function testDocumentReportsAMissingDocumentInsteadOfItsChecks(): void
+    {
+        $project = new Project(['guard.yaml' => "version: 1\ndocumentation:\n  files:\n    CLAUDE.md: {content: '@AGENTS.md'}\n"]);
+        try {
+            [$policy, $inputs, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'heading-structure');
+            $plan = $policy->evaluate($inputs, $context);
+
+            self::assertCount(1, $plan->findings);
+            self::assertSame('documentation.missing_document', $plan->findings[0]->rule);
+            self::assertSame('CLAUDE.md', $plan->findings[0]->path);
+        } finally {
+            $project->remove();
+        }
     }
 }

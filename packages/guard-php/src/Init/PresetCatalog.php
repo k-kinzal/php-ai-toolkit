@@ -20,7 +20,21 @@ final class PresetCatalog
      */
     public function names(): array
     {
-        return array_merge(['metrics', 'structure', 'disable-doc'], array_keys($this->defaults()));
+        return array_merge(['metrics', 'structure', 'disable-doc'], array_keys($this->defaults()), array_keys($this->documents()));
+    }
+
+    /**
+     * Returns the document each Markdown preset declares.
+     *
+     * @return array<string, string>
+     */
+    public function documents(): array
+    {
+        return [
+            'agents-md' => 'AGENTS.md',
+            'claude-md' => 'CLAUDE.md',
+            'readme-md' => 'README.md',
+        ];
     }
 
     /**

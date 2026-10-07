@@ -188,6 +188,31 @@ final class PresetSelectorTest extends TestCase
     /**
      * @throws JsonException
      */
+    public function testDetectAppendsTheMarkdownPresetsOfExistingDocuments(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-detect-markdown-' . uniqid();
+        mkdir($root . '/docs', 0777, true);
+        file_put_contents($root . '/README.md', '# Tool');
+        file_put_contents($root . '/CLAUDE.md', '@AGENTS.md');
+        self::assertSame(['agents-md', 'claude-md', 'readme-md'], (new \Guard\Init\PresetSelector())->detect($root));
+    }
+
+    public function testDocumentPresetsSelectsAgentsForEitherAgentFile(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-document-presets-' . uniqid();
+        mkdir($root);
+        $selector = new \Guard\Init\PresetSelector();
+        self::assertSame([], $selector->documentPresets($root));
+        file_put_contents($root . '/AGENTS.md', '# AGENTS');
+        self::assertSame(['agents-md'], $selector->documentPresets($root));
+        file_put_contents($root . '/CLAUDE.md', '@AGENTS.md');
+        unlink($root . '/AGENTS.md');
+        self::assertSame(['agents-md', 'claude-md'], $selector->documentPresets($root));
+    }
+
+    /**
+     * @throws JsonException
+     */
     public function testDetectDisablesDocsWithoutSourceDirectories(): void
     {
         $root = sys_get_temp_dir() . '/guard-no-docs-' . uniqid();

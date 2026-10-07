@@ -26,27 +26,17 @@ structure:
       allow: []
       max_dirs: 20
     -
-      path: 'src/**'
-      forbid_empty: true
-      allow:
-        - '*.php'
-      deny:
-        - '*Helper.php'
-        - '*Helpers.php'
-        - '*Manager.php'
-        - '*Util.php'
-        - '*Utils.php'
-        - '*Service.php'
-        - '*Evidence.php'
-        - '*Evidences.php'
-        - '*Outcome.php'
-        - '*Outcomes.php'
-        - '*Probe.php'
-        - '*Probes.php'
-      file_case: pascal
-      dir_case: pascal
-      max_files: 15
-      max_dirs: 20
+      path: tests
+      deny_dirs:
+        - Fixture
+        - Fixtures
+        - Support
+        - Supports
+        - Helper
+        - Helpers
+        - Bench
+        - Fuzz
+        - Fuzzing
     -
       path: tests/Unit
       allow: []
@@ -59,8 +49,3 @@ structure:
       dir_case: pascal
       max_files: 15
       max_dirs: 20
-    -
-      path: 'skills/*'
-      require:
-        - SKILL.md
-      forbid_empty: true

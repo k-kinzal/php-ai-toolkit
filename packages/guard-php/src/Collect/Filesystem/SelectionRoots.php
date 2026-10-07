@@ -36,7 +36,8 @@ final class SelectionRoots
                 (new PatternRoots($this->snapshot))->seed($root, $id, $path, $queue, $result, $selection);
                 continue;
             }
-            $absolute = $selection->confined ? (new TargetPath($this->snapshot))->resolve($root, $path) : $paths->absolute($root, $path);
+            $absolute = !$selection->confined ? $paths->absolute($root, $path)
+                : ($selection->mode === 'files' ? (new TargetPath($this->snapshot))->confine($root, $path) : (new TargetPath($this->snapshot))->resolve($root, $path));
             $entry = $this->snapshot->inspect($absolute);
             if ($selection->forbiddenPath !== null && $entry->identity === $this->snapshot->inspect($selection->forbiddenPath)->identity) {
                 throw new PolicyException($selection->forbiddenMessage);

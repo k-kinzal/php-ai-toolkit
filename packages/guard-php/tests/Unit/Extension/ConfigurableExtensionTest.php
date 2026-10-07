@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\Extension;
 
 use Guard\Config\Configuration;
+use Guard\Config\Schema;
 use Guard\Execution\Context;
 use Guard\Extension\ConfigurableExtension;
 use Guard\Extension\ExtensionLoader;
 use Guard\Extension\Registry;
+use Guard\Policy\PolicyException;
+use Guard\Structure\TextStructurer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\XmlSchemaExample;
 
 /**
  * @covers \Guard\Extension\ExtensionLoader
@@ -49,23 +51,54 @@ use Tests\Support\XmlSchemaExample;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Plan::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\PolicyBinding::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(Registry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyException::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(PolicyException::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Finding::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Schema::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(Schema::class)]
 final class ConfigurableExtensionTest extends TestCase
 {
-    public function testFromOptionsConfiguresPolicyInputsWithoutFileAccess(): void
+    public function testFromOptionsConfiguresTheExtensionInsteadOfItsConstructor(): void
     {
-        XmlSchemaExample::load();
-        $extension = (new ExtensionLoader())->create('Example\\Guard\\XmlSchemaExtension', ['schema' => 'schema.xsd']);
-        self::assertInstanceOf(ConfigurableExtension::class, $extension);
+        $class = get_class(new class ('unused') implements ConfigurableExtension {
+            public function __construct(private string $name)
+            {
+            }
+
+            public static function fromOptions(array $options): self
+            {
+                return new self((new Schema())->string((new Schema())->mapping($options, ['name'], 'options')['name'] ?? null, 'options.name'));
+            }
+
+            public function register(Registry $registry): void
+            {
+                $registry->addStructure('configured.' . $this->name, new TextStructurer());
+            }
+        });
         $registry = new Registry();
-        $extension->register($registry);
-        $context = new Context(new Configuration('/does-not-exist', []), '/does-not-exist/guard.yaml', false);
-        $inputs = $registry->policies()[0]->policy->inputs($context);
-        self::assertSame(['**/*.xml'], $inputs['documents']->selection->paths);
-        self::assertSame('xml', $inputs['documents']->structure);
-        self::assertSame(['schema.xsd'], $inputs['schema']->selection->paths);
+
+        (new ExtensionLoader())->register([$class => ['name' => 'text']], $registry);
+
+        self::assertSame(['configured.text'], array_keys($registry->structures()));
+    }
+
+    public function testFromOptionsReportsInvalidOptionsWithTheExtensionClass(): void
+    {
+        $class = get_class(new class () implements ConfigurableExtension {
+            public static function fromOptions(array $options): self
+            {
+                (new Schema())->mapping($options, [], 'options');
+
+                return new self();
+            }
+
+            public function register(Registry $registry): void
+            {
+            }
+        });
+
+        $this->expectException(PolicyException::class);
+        $this->expectExceptionMessage('Extension "' . $class . '": options: unknown key "typo"');
+
+        (new ExtensionLoader())->register([$class => ['typo' => true]], new Registry());
     }
 }

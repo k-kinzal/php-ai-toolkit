@@ -54,7 +54,7 @@ final class HeadingStructureComparator
      */
     public function compare(DocumentConfig $document, array $actual, string $configName): array
     {
-        $declared = $document->headings;
+        $declared = $document->headings ?? [];
         $hunks = $this->hunks($this->aligner->align(
             array_map(static fn (DeclaredHeading $heading): string => $heading->notation(), $declared),
             array_map(static fn (Heading $heading): string => $heading->notation(), $actual),

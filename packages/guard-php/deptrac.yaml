@@ -44,7 +44,7 @@ deptrac:
         - type: directory
           value: 'src/Structure/(Php|Markdown)/.*'
         - type: directory
-          value: 'src/Structure/DocumentStructurer\.php'
+          value: 'src/Structure/(DocumentStructurer|TextStructurer|Text)\.php'
     - name: Policy
       collectors:
         - type: directory

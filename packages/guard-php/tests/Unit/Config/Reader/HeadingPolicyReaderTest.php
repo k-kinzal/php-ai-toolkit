@@ -72,6 +72,7 @@ final class HeadingPolicyReaderTest extends TestCase
     {
         $config = (new \Guard\Config\Reader\HeadingPolicyReader())->read(['files' => ['README.md' => ['headings' => ['# Product', '## Usage']]]], '/project', 'guard.yaml');
         self::assertSame('guard.yaml', $config->configName);
+        self::assertNotNull($config->documents[0]->headings);
         self::assertCount(2, $config->documents[0]->headings);
     }
 

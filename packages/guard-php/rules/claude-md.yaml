@@ -1,0 +1,4 @@
+documentation:
+  files:
+    CLAUDE.md:
+      content: '@AGENTS.md'

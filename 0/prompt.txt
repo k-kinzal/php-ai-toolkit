@@ -1,0 +1,1 @@
+guard-php用のスキルを作成ください。名前はguardでguard-php/skills/に配置ください。スキル内にreferencesを配置して制限する種別毎にプラクティスを記載してSKILL.mdから参照を持たせてください。

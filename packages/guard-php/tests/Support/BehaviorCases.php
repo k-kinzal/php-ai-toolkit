@@ -30,7 +30,11 @@ final class BehaviorCases
         $expected = json_decode($expectedSource, true, 512, JSON_THROW_ON_ERROR);
         $yamlVersion = InstalledVersions::getVersion('symfony/yaml');
         $yamlMajor = $yamlVersion === null ? '' : explode('.', $yamlVersion)[0];
-        $variant = $base . 'expected-yaml' . $yamlMajor . '.json';
+        $yamlMinor = $yamlVersion === null ? '' : implode('.', array_slice(explode('.', $yamlVersion), 0, 2));
+        $variant = $base . 'expected-yaml' . $yamlMinor . '.json';
+        if (!is_file($variant)) {
+            $variant = $base . 'expected-yaml' . $yamlMajor . '.json';
+        }
         if (is_file($variant)) {
             $variantSource = file_get_contents($variant);
             if ($variantSource === false) {

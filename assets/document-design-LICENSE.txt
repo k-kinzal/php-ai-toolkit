@@ -1,20 +1,26 @@
-document-design / @k-kinzal/doc-ui v1.1.0
-Release: https://github.com/k-kinzal/document-design/releases/tag/v1.1.0
-Tag commit: ee789d04fb775b735c3217d74019642485c9a297
-Source: https://github.com/k-kinzal/document-design/tree/v1.1.0/packages/doc-ui
+document-design / @k-kinzal/doc-ui v1.2.1
+Release: https://github.com/k-kinzal/document-design/releases/tag/v1.2.1
+Tag commit: 8a9032c7546db6dd9c55e38f15e6c9e388987fab
+Source: https://github.com/k-kinzal/document-design/tree/v1.2.1/packages/doc-ui
 
-Upstream stylesheet (unmodified): document-design-v1.1.0.css
-https://k-kinzal.github.io/document-design/v1.1.0/document-design.css
-SHA-256: 8874255e9deb2d159016522e985015be6a5d7a88c90c077704b5d762567b7ebd
+Upstream stylesheet (unmodified): document-design-v1.2.1.css
+https://k-kinzal.github.io/document-design/v1.2.1/document-design.css
+SHA-256: 17d7832ef632ad4c7101d479b3dbcc64beac0e7417c3ac51a66f99964f0bc918
 
 Upstream MIT license (verbatim below):
-https://k-kinzal.github.io/document-design/v1.1.0/LICENSE
+https://k-kinzal.github.io/document-design/v1.2.1/LICENSE
 SHA-256: 390aeb080eabe1cf8c276d6c32e0520649301bbee2126c1647f7e409f47225ad
 
 Design reference:
-https://k-kinzal.github.io/document-design/v1.1.0/DESIGN.md
-SHA-256: d0a45aace62c11f2fca8092687eb90452d675c9b3f6de34e9816337c578cde45
-Component documentation: https://k-kinzal.github.io/document-design/components/
+https://k-kinzal.github.io/document-design/v1.2.1/DESIGN.md
+SHA-256: 242d344ecd068828c1aa3cde4986cea4d4b876872b1e389f12d76d0e7a7ebe1e
+Usage documentation: https://github.com/k-kinzal/document-design/blob/v1.2.1/packages/doc-ui/README.md
+
+Retained stylesheet for archived documents (unmodified): document-design-v1.1.0.css
+https://k-kinzal.github.io/document-design/v1.1.0/document-design.css
+SHA-256: 8874255e9deb2d159016522e985015be6a5d7a88c90c077704b5d762567b7ebd
+Tag commit: ee789d04fb775b735c3217d74019642485c9a297
+License: MIT. Attribution: k-kinzal.
 
 Retained stylesheet for archived documents (unmodified): document-design-v1.0.0.css
 https://k-kinzal.github.io/document-design/v1.0.0/document-design.css

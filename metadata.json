@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M49Y6NZ1HXN37DEW6NGXNK4G",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/guard-php/tests/Fixture/Behavior/README.md",
+    "packages/guard-php/tests/Support/BehaviorCases.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 44217,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2215552,
+    "output_tokens": 8124,
+    "api_call_count": 25
+  }
+}

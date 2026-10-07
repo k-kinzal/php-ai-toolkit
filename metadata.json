@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4B7VJ3H86FMKR25S68PZBPV",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/guard-php/skills/guard/SKILL.md",
+    "packages/guard-php/skills/guard/references/configuration.md",
+    "packages/guard-php/skills/guard/references/documentation.md",
+    "packages/guard-php/skills/guard/references/extensions.md",
+    "packages/guard-php/skills/guard/references/metrics.md",
+    "packages/guard-php/skills/guard/references/structure.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 36,
+    "cache_creation_tokens": 154188,
+    "cache_read_tokens": 1043905,
+    "output_tokens": 17953,
+    "api_call_count": 18
+  }
+}

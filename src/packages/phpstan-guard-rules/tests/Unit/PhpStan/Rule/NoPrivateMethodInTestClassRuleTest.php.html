@@ -71,7 +71,7 @@
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a></span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodePrivateMethodInRestrictedTestClassIsReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L36"><a class="ln" href="#L36">36</a>    {</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/NoPrivateMethodInTestClass/WithPrivateMethod.php&#039;</span>], [</span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/NoPrivateMethodInTestClass/WithPrivateMethod.php&#039;</span>], [</span>
 <span class="src-line" id="L38"><a class="ln" href="#L38">38</a>            [</span>
 <span class="src-line" id="L39"><a class="ln" href="#L39">39</a>                <span class="tok-str">&#039;Inline private method helper() into the test method or move it to a dedicated collaborator. Tests\\Unit and Tests\\Integration classes may contain only test methods, data providers, and framework overrides.&#039;</span>,</span>
 <span class="src-line" id="L40"><a class="ln" href="#L40">40</a>                <span class="tok-num">16</span>,</span>
@@ -81,7 +81,7 @@
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a></span>
 <span class="src-line" id="L45"><a class="ln" href="#L45">45</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodePrivateMethodInNonTestClassIsNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L46"><a class="ln" href="#L46">46</a>    {</span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/NoPrivateMethodInTestClass/NonTestWithPrivate.php&#039;</span>], []);</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/NoPrivateMethodInTestClass/NonTestWithPrivate.php&#039;</span>], []);</span>
 <span class="src-line" id="L48"><a class="ln" href="#L48">48</a>    }</span>
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a>}</span>
 <span class="src-line" id="L50"><a class="ln" href="#L50">50</a></span>

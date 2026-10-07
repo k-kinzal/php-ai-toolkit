@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Command Line — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/cli.md.html">
+<meta name="description" content="Command Line, a document of the k-kinzal/guard-php package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Command Line — php-ai-toolkit">
+<meta property="og:description" content="Command Line, a document of the k-kinzal/guard-php package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/cli.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/all-items.html">All items</a></li><li><a href="../../../../k-kinzal/guard-php/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/Guard/Cli/index.html" title="Guard\Cli">Guard\Cli</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Cli/Command/index.html" title="Guard\Cli\Command">Guard\Cli\Command</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/index.html" title="Guard\Collect">Guard\Collect</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/Filesystem/index.html" title="Guard\Collect\Filesystem">Guard\Collect\Filesystem</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/Matching/index.html" title="Guard\Collect\Matching">Guard\Collect\Matching</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/index.html" title="Guard\Config">Guard\Config</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Assignment/index.html" title="Guard\Config\Assignment">Guard\Config\Assignment</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Profile/index.html" title="Guard\Config\Profile">Guard\Config\Profile</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Reader/index.html" title="Guard\Config\Reader">Guard\Config\Reader</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Validation/index.html" title="Guard\Config\Validation">Guard\Config\Validation</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Value/index.html" title="Guard\Config\Value">Guard\Config\Value</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Document/index.html" title="Guard\Document">Guard\Document</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Execution/index.html" title="Guard\Execution">Guard\Execution</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Extension/index.html" title="Guard\Extension">Guard\Extension</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Init/index.html" title="Guard\Init">Guard\Init</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Init/Legacy/index.html" title="Guard\Init\Legacy">Guard\Init\Legacy</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/index.html" title="Guard\Policy">Guard\Policy</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Comparison/index.html" title="Guard\Policy\Comparison">Guard\Policy\Comparison</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Inspection/index.html" title="Guard\Policy\Inspection">Guard\Policy\Inspection</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Limit/index.html" title="Guard\Policy\Limit">Guard\Policy\Limit</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Reporting/index.html" title="Guard\Reporting">Guard\Reporting</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/index.html" title="Guard\Structure">Guard\Structure</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/index.html" title="Guard\Structure\Markdown">Guard\Structure\Markdown</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Badge/index.html" title="Guard\Structure\Markdown\Badge">Guard\Structure\Markdown\Badge</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Block/index.html" title="Guard\Structure\Markdown\Block">Guard\Structure\Markdown\Block</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/index.html" title="Guard\Structure\Php">Guard\Structure\Php</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/ClassLikeMetric/index.html" title="Guard\Structure\Php\ClassLikeMetric">Guard\Structure\Php\ClassLikeMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/Complexity/index.html" title="Guard\Structure\Php\Complexity">Guard\Structure\Php\Complexity</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/FileMetric/index.html" title="Guard\Structure\Php\FileMetric">Guard\Structure\Php\FileMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/FunctionMetric/index.html" title="Guard\Structure\Php\FunctionMetric">Guard\Structure\Php\FunctionMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/Token/index.html" title="Guard\Structure\Php\Token">Guard\Structure\Php\Token</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/cli.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Command Line</h1><div class="symbol-meta"><span class="source-link">docs/cli.md</span></div></div>
+<section class="readme prose"><h2>Command Line</h2>
+<pre class="code"><code>vendor/bin/guard &lt;command&gt; [options]</code></pre>
+<p><code>guard</code> without a command runs <code>check</code>. Run <code>guard --help</code> for the command list and <code>guard &lt;command&gt; --help</code> for the options of one command. A command name may be shortened while only one command starts with it, such as <code>guard ch</code>.</p>
+<h3>Commands</h3>
+<div class="table-wrap"><table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>check</code></td><td>Reports every violation without changing a file.</td></tr><tr><td><code>apply</code></td><td>Writes the repairs of <a href="../../../../k-kinzal/guard-php/doc/docs/fields.md.html#repairs">configuration fields</a>, then reports what remains.</td></tr><tr><td><code>init</code></td><td>Writes a first <code>guard.yaml</code> with the presets that fit the project. See <a href="#init">Init</a>.</td></tr></tbody></table></div>
+<p>Adopting Guard in a project usually takes these steps:</p>
+<pre class="code"><code>guard init
+guard apply --dry-run
+guard apply
+guard check</code></pre>
+<h3>Options</h3>
+<div class="table-wrap"><table><thead><tr><th>Command</th><th>Option</th><th>Description</th></tr></thead><tbody><tr><td>all</td><td><code>-c</code>, <code>--config=FILE</code></td><td>Policy file, relative to the working directory. Default <code>guard.yaml</code>. Paths inside it are relative to its own directory, not to the working directory.</td></tr><tr><td><code>check</code>, <code>apply</code></td><td><code>--format=FORMAT</code></td><td><code>text</code> (default) or <code>json</code>. See <a href="#reports">Reports</a>.</td></tr><tr><td><code>apply</code></td><td><code>--dry-run</code></td><td>List the files that would change without writing them.</td></tr><tr><td><code>init</code></td><td><code>--import=NAMES</code></td><td>Import only these presets, comma-separated or repeated, instead of detecting them.</td></tr></tbody></table></div>
+<p>The Symfony Console options <code>-q</code>, <code>--silent</code>, <code>-v</code>, <code>--ansi</code>, <code>--no-ansi</code> and <code>-n</code> behave as in other Symfony Console tools, and <code>guard completion</code> prints a shell completion script.</p>
+<h3>Exit codes</h3>
+<div class="table-wrap"><table><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><td><code>0</code></td><td>No required violation; recommendations may remain. For <code>init</code>, the policy file was created.</td></tr><tr><td><code>1</code></td><td>A required rule is violated. For <code>apply</code>, after the repairs it could make.</td></tr><tr><td><code>2</code></td><td>Invalid command line, policy file, input document or extension; for <code>init</code>, an existing policy file or an unknown preset.</td></tr></tbody></table></div>
+<p>Exit code <code>2</code> prints one line to standard error that starts with <code>Guard error:</code> and says how to fix the problem. It is printed even with <code>--quiet</code>.</p>
+<h3>Reports</h3>
+<p>The text report has one line per finding, then one line per file change, then a summary. This one comes from <code>guard apply --dry-run</code>:</p>
+<pre class="code"><code>error: src/Big.php [metrics.method_lines] method Big::m has 52 physical lines; maximum is 50.
+would change: /project/phpstan.neon
+Guard found required violations.</code></pre>
+<p>A finding line holds the level, the path, the rule ID in brackets and the message. <code>apply</code> does not report the findings its planned repairs resolve; <code>check</code> reports them, such as <code>error: phpstan.neon [phpstan.level] /parameters/level must satisfy {&quot;equals&quot;:&quot;max&quot;}. Run guard apply to set the configured repair.</code> A change line starts with <code>changed</code>, <code>would change</code> for <code>--dry-run</code>, or <code>blocked</code> when nothing was written. The summary is <code>Guard passed.</code> or <code>Guard found required violations.</code></p>
+<p><code>--format=json</code> writes the same information as one object:</p>
+<pre class="code"><code>{
+    &quot;findings&quot;: [
+        {
+            &quot;path&quot;: &quot;src/Big.php&quot;,
+            &quot;rule&quot;: &quot;metrics.method_lines&quot;,
+            &quot;level&quot;: &quot;error&quot;,
+            &quot;message&quot;: &quot;method Big::m has 52 physical lines; maximum is 50.&quot;
+        }
+    ],
+    &quot;changes&quot;: [&quot;/project/phpstan.neon&quot;],
+    &quot;action&quot;: &quot;would change&quot;,
+    &quot;success&quot;: false
+}</code></pre>
+<p><code>changes</code> lists absolute paths, and <code>action</code> applies to all of them. <code>success</code> is <code>false</code> exactly when the exit code is <code>1</code>.</p>
+<h3>Repairs</h3>
+<p><code>apply</code> plans the repairs of every configuration file before writing any of them. While a required configuration rule cannot be satisfied, because it has no repair or its format is check-only, nothing is written and every planned file is reported as <code>blocked</code>. Metric, structure and document findings do not block repairs; they remain required failures after <code>apply</code>.</p>
+<p><code>check</code> never writes. A required configuration violation that <code>apply</code> could repair still fails <code>check</code>.</p>
+<h3>Init</h3>
+<p><code>guard init</code> writes <code>guard.yaml</code> and refuses to overwrite an existing file. Without <code>--import</code> it selects presets from what the project has:</p>
+<div class="table-wrap"><table><thead><tr><th>Preset</th><th>Selected when</th></tr></thead><tbody><tr><td><code>metrics</code>, <code>structure</code></td><td>Composer <code>autoload.psr-4</code> names an existing directory, or <code>src/</code> exists.</td></tr><tr><td><code>disable-doc</code></td><td>The project has no <code>docs/</code> directory.</td></tr><tr><td><code>phpstan</code></td><td><code>phpstan.neon</code> or <code>phpstan.neon.dist</code> exists.</td></tr><tr><td><code>phpstan-guard-rules</code></td><td>As <code>phpstan</code>, and <code>k-kinzal/phpstan-guard-rules</code> is required or locked.</td></tr><tr><td><code>phpunit9</code> … <code>phpunit13</code></td><td>One per PHPUnit configuration file. <code>phpunit10.xml.dist</code> selects <code>phpunit10</code>; <code>phpunit.xml.dist</code> is PHPUnit 13 next to versioned files, and otherwise the major in <code>composer.lock</code> or a single-major constraint.</td></tr><tr><td><code>doctest9</code> … <code>doctest13</code></td><td>The matching PHPUnit file already has a doctest suite, or <code>phpstan.neon</code> requires PHPDoc examples.</td></tr><tr><td><code>php-cs-fixer</code></td><td><code>.php-cs-fixer.dist.php</code> or <code>.php-cs-fixer.php</code> exists.</td></tr><tr><td><code>phpcs</code></td><td><code>phpcs.xml.dist</code> or <code>phpcs.xml</code> exists.</td></tr><tr><td><code>deptrac</code></td><td><code>deptrac/deptrac</code> is installed and <code>deptrac.yaml</code> or <code>deptrac.yml</code> exists.</td></tr><tr><td><code>infection</code></td><td><code>infection.json5</code> exists.</td></tr><tr><td><code>composer</code></td><td><code>composer.json</code> exists.</td></tr><tr><td><code>github-actions</code>, <code>mutation</code></td><td><code>.github/workflows/ci.yml</code> or <code>.github/workflows/mutation.yml</code> exists.</td></tr><tr><td><code>pbt</code>, <code>fuzz</code>, <code>phpbench</code>, <code>docgen</code></td><td><code>giorgiosironi/eris</code>, <code>nikic/php-fuzzer</code>, <code>phpbench/phpbench</code> or <code>k-kinzal/docgen-php</code> is installed.</td></tr><tr><td><code>agents-md</code></td><td><code>AGENTS.md</code> or <code>CLAUDE.md</code> exists.</td></tr><tr><td><code>claude-md</code></td><td><code>CLAUDE.md</code> exists.</td></tr><tr><td><code>readme-md</code></td><td><code>README.md</code> exists.</td></tr></tbody></table></div>
+<p><code>--import</code> replaces detection: only the named presets are imported. Besides the imports, <code>init</code> writes:</p>
+<ul><li><code>metrics.source</code> with the detected source roots, and <code>structure.directories</code> for source roots other than <code>src</code>.</li><li>The current README headings under <code>documentation.files</code>, with <code>scan: [README.md]</code>.</li><li>An <code>id</code> and <code>file</code> override for each tool rule whose configuration file is not the preset&#039;s default, such as <code>phpstan.neon.dist</code>.</li><li>The settings of legacy <code>loc.yaml</code>, <code>tree.yaml</code> and <code>doc-guard.yaml</code> files. A legacy <code>loc.yaml</code> or <code>tree.yaml</code> replaces the <code>metrics</code> or <code>structure</code> import, so its thresholds stay as they were.</li></ul>
+<p>The written file records the project as it is today. Review it before committing: a recorded heading list or a detected preset is a starting point, not a decision.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../assets/search-index.js" defer></script>
+<script src="../../../../assets/app.js" defer></script>
+</body>
+</html>

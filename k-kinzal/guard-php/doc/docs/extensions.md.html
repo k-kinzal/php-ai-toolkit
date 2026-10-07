@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Extensions — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/extensions.md.html">
+<meta name="description" content="Extensions, a document of the k-kinzal/guard-php package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Extensions — php-ai-toolkit">
+<meta property="og:description" content="Extensions, a document of the k-kinzal/guard-php package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/extensions.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/all-items.html">All items</a></li><li><a href="../../../../k-kinzal/guard-php/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/Guard/Cli/index.html" title="Guard\Cli">Guard\Cli</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Cli/Command/index.html" title="Guard\Cli\Command">Guard\Cli\Command</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/index.html" title="Guard\Collect">Guard\Collect</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/Filesystem/index.html" title="Guard\Collect\Filesystem">Guard\Collect\Filesystem</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/Matching/index.html" title="Guard\Collect\Matching">Guard\Collect\Matching</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/index.html" title="Guard\Config">Guard\Config</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Assignment/index.html" title="Guard\Config\Assignment">Guard\Config\Assignment</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Profile/index.html" title="Guard\Config\Profile">Guard\Config\Profile</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Reader/index.html" title="Guard\Config\Reader">Guard\Config\Reader</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Validation/index.html" title="Guard\Config\Validation">Guard\Config\Validation</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Value/index.html" title="Guard\Config\Value">Guard\Config\Value</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Document/index.html" title="Guard\Document">Guard\Document</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Execution/index.html" title="Guard\Execution">Guard\Execution</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Extension/index.html" title="Guard\Extension">Guard\Extension</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Init/index.html" title="Guard\Init">Guard\Init</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Init/Legacy/index.html" title="Guard\Init\Legacy">Guard\Init\Legacy</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/index.html" title="Guard\Policy">Guard\Policy</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Comparison/index.html" title="Guard\Policy\Comparison">Guard\Policy\Comparison</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Inspection/index.html" title="Guard\Policy\Inspection">Guard\Policy\Inspection</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Limit/index.html" title="Guard\Policy\Limit">Guard\Policy\Limit</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Reporting/index.html" title="Guard\Reporting">Guard\Reporting</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/index.html" title="Guard\Structure">Guard\Structure</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/index.html" title="Guard\Structure\Markdown">Guard\Structure\Markdown</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Badge/index.html" title="Guard\Structure\Markdown\Badge">Guard\Structure\Markdown\Badge</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Block/index.html" title="Guard\Structure\Markdown\Block">Guard\Structure\Markdown\Block</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/index.html" title="Guard\Structure\Php">Guard\Structure\Php</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/ClassLikeMetric/index.html" title="Guard\Structure\Php\ClassLikeMetric">Guard\Structure\Php\ClassLikeMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/Complexity/index.html" title="Guard\Structure\Php\Complexity">Guard\Structure\Php\Complexity</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/FileMetric/index.html" title="Guard\Structure\Php\FileMetric">Guard\Structure\Php\FileMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/FunctionMetric/index.html" title="Guard\Structure\Php\FunctionMetric">Guard\Structure\Php\FunctionMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/Token/index.html" title="Guard\Structure\Php\Token">Guard\Structure\Php\Token</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/extensions.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Extensions</h1><div class="symbol-meta"><span class="source-link">docs/extensions.md</span></div></div>
+<section class="readme prose"><h2>Extensions</h2>
+<p>Extensions add policies of your own, and the structures they read, to the same run as the built-in ones. A <strong>policy</strong> declares which files it needs and evaluates them into findings and file changes. A <strong>structure</strong> turns the bytes of a file into a value that policies share, such as parsed XML. The built-in metric, structure, document and field policies are implemented the same way.</p>
+<h3>Policies</h3>
+<pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">Guard\Policy</span>;
+
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Collect\Input</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Collect\InputSet</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Execution\Context</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Execution\Plan</span>;
+
+<span class="tok-kw">interface</span> <span class="tok-id">Policy</span>
+{
+    <span class="tok-com">/** @return array&lt;string, Input&gt; */</span>
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">inputs</span>(<span class="tok-id">Context</span> <span class="tok-var">$context</span>): <span class="tok-kw">array</span>;
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">evaluate</span>(<span class="tok-id">InputSet</span> <span class="tok-var">$inputs</span>, <span class="tok-id">Context</span> <span class="tok-var">$context</span>): <span class="tok-id">Plan</span>;
+}</code></pre>
+<p><code>inputs()</code> names each set of files the policy needs. <code>evaluate()</code> receives them under the same names from <code>InputSet::get()</code>, already read and structured, and must not touch the file system itself.</p>
+<p>This policy requires <code>declare(strict_types=1);</code> in every PHP file it is given:</p>
+<pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">App\Guard</span>;
+
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Collect\Input</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Collect\InputSet</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Collect\Selection</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Execution\Context</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Execution\Plan</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Policy\Policy</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Reporting\Finding</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Structure\Text</span>;
+
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">StrictTypesPolicy</span> <span class="tok-kw">implements</span> <span class="tok-id">Policy</span>
+{
+    <span class="tok-com">/** @param list&lt;string&gt; $files */</span>
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(<span class="tok-kw">private</span> <span class="tok-kw">array</span> <span class="tok-var">$files</span>)
+    {
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">inputs</span>(<span class="tok-id">Context</span> <span class="tok-var">$context</span>): <span class="tok-kw">array</span>
+    {
+        <span class="tok-kw">return</span> [<span class="tok-str">&#039;sources&#039;</span> =&gt; <span class="tok-kw">new</span> <span class="tok-id">Input</span>(<span class="tok-kw">new</span> <span class="tok-id">Selection</span>(<span class="tok-str">&#039;patterns&#039;</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">files</span>), <span class="tok-str">&#039;text&#039;</span>)];
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">evaluate</span>(<span class="tok-id">InputSet</span> <span class="tok-var">$inputs</span>, <span class="tok-id">Context</span> <span class="tok-var">$context</span>): <span class="tok-id">Plan</span>
+    {
+        <span class="tok-var">$findings</span> = [];
+        <span class="tok-kw">foreach</span> (<span class="tok-var">$inputs</span>-&gt;<span class="tok-id">get</span>(<span class="tok-str">&#039;sources&#039;</span>)-&gt;<span class="tok-id">files</span> <span class="tok-kw">as</span> <span class="tok-var">$path</span> =&gt; <span class="tok-var">$file</span>) {
+            <span class="tok-var">$text</span> = <span class="tok-var">$file</span>-&gt;<span class="tok-id">value</span>();
+            <span class="tok-kw">if</span> (<span class="tok-var">$text</span> <span class="tok-kw">instanceof</span> <span class="tok-id">Text</span> &amp;&amp; !<span class="tok-id">str_contains</span>(<span class="tok-var">$text</span>-&gt;<span class="tok-id">content</span>(), <span class="tok-str">&#039;declare(strict_types=1);&#039;</span>)) {
+                <span class="tok-var">$findings</span>[] = <span class="tok-kw">new</span> <span class="tok-id">Finding</span>(<span class="tok-var">$path</span>, <span class="tok-str">&#039;app.strict-types&#039;</span>, <span class="tok-str">&#039;required&#039;</span>, <span class="tok-str">&#039;Add declare(strict_types=1); after the opening &lt;?php tag.&#039;</span>);
+            }
+        }
+
+        <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">Plan</span>(<span class="tok-var">$findings</span>, []);
+    }
+}</code></pre>
+<h4>Inputs</h4>
+<p><code>new Input($selection, $structure)</code> pairs a selection of files with the ID of the structure to build for each of them. Without a structure ID, the policy receives file metadata only, and the file is not read.</p>
+<div class="table-wrap"><table><thead><tr><th>Selection</th><th>Selects</th></tr></thead><tbody><tr><td><code>new Selection(&#039;files&#039;, [&#039;README.md&#039;])</code></td><td>Exact paths. A missing file is still listed, so the policy can report it.</td></tr><tr><td><code>new Selection(&#039;patterns&#039;, [&#039;docs/**/*.md&#039;])</code></td><td>Files matching globs. <code>*</code> stays within one segment and <code>**</code> matches any number.</td></tr><tr><td><code>new Selection(&#039;descendants&#039;, [&#039;src&#039;], [], &#039;.php&#039;)</code></td><td>Files below directories, optionally limited to a name suffix.</td></tr><tr><td><code>new Selection(&#039;directories&#039;, [&#039;.&#039;])</code></td><td>Directory listings with their file and subdirectory names.</td></tr></tbody></table></div>
+<p>The third argument lists exclusions. Paths are relative to the main <code>guard.yaml</code>. Every selection is intersected with the <a href="../../../../k-kinzal/guard-php/doc/docs/configuration.md.html#collection-scope">collection scope</a>, so a policy cannot read outside it, and a file outside it is simply absent from the result.</p>
+<p><code>InputSet::get($name)</code> returns a <code>FileSet</code>. Its <code>files</code> are keyed by path; each <code>StructuredFile</code> has <code>file</code> (with <code>path</code>, <code>relativePath</code> and <code>entry-&gt;file</code>), <code>readable</code>, and <code>value()</code>, which returns the structure or throws the error from parsing it. Its <code>directories</code> are <code>DirectoryListing</code> values with <code>relativePath</code>, <code>fileNames</code> and <code>dirNames</code>.</p>
+<h4>Plans</h4>
+<p><code>new Plan($findings, $changes, $blocking)</code> is the result of <code>evaluate()</code>:</p>
+<div class="table-wrap"><table><thead><tr><th>Argument</th><th>Description</th></tr></thead><tbody><tr><td><code>$findings</code></td><td><code>Finding</code> values, each with a path, a rule ID, <code>required</code> or <code>recommended</code>, and a message.</td></tr><tr><td><code>$changes</code></td><td><code>FileChange</code> values with the absolute path, the content that was read and the replacement. Propose them only when <code>$context-&gt;repair</code> is <code>true</code>.</td></tr><tr><td><code>$blocking</code></td><td>Findings that stop every write of the run, typically the required findings this policy could not repair.</td></tr></tbody></table></div>
+<p>Guard writes the changes only during <code>guard apply</code>, and only when no policy returned a required blocking finding. Identical changes to one file are merged; different changes to one file fail the run before anything is written.</p>
+<p>Write messages the way the built-in ones are written: name the file and the offending symbol, say what is expected, and say how to fix it.</p>
+<h3>Structures</h3>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Value</th></tr></thead><tbody><tr><td><code>text</code></td><td><code>Guard\Structure\Text</code>: the bytes of the file, from <code>content()</code>.</td></tr><tr><td><code>php.tokens</code>, <code>php.metrics</code></td><td>PHP tokens, and the line and complexity metrics built from them.</td></tr><tr><td><code>markdown.headings</code>, <code>markdown.badges</code></td><td>The headings of a Markdown file, and the badge block under its title.</td></tr><tr><td><code>json</code>, <code>json5</code>, <code>yaml</code>, <code>yml</code>, <code>neon</code>, <code>toml</code>, <code>xml</code>, <code>php</code></td><td><code>Guard\Structure\ParsedDocument</code>. <code>copy()</code> returns a private editable document; <code>original()</code> returns the bytes.</td></tr></tbody></table></div>
+<p>Each file is read once and each structure is built once per file, however many policies request it. To add a representation, implement <code>Guard\Structure\Structurer</code>:</p>
+<pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">Guard\Structure</span>;
+
+<span class="tok-kw">interface</span> <span class="tok-id">Structurer</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">structure</span>(<span class="tok-id">Source</span> <span class="tok-var">$source</span>): <span class="tok-id">Subject</span>;
+}</code></pre>
+<p><code>Source::text()</code> returns the bytes, and <code>Source::structure($id)</code> builds another registered structure to depend on, such as <code>markdown.headings</code>. A circular dependency is an error. Treat shared values as read-only; use <code>copy()</code> before changing a parsed document.</p>
+<h3>Registering extensions</h3>
+<p>An extension registers its policies and structures:</p>
+<pre class="code"><code><span class="tok-kw">namespace</span> <span class="tok-id">App\Guard</span>;
+
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Config\Schema</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Extension\ConfigurableExtension</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Extension\Registry</span>;
+
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">StrictTypesExtension</span> <span class="tok-kw">implements</span> <span class="tok-id">ConfigurableExtension</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(<span class="tok-kw">private</span> <span class="tok-id">StrictTypesPolicy</span> <span class="tok-var">$policy</span>)
+    {
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">fromOptions</span>(<span class="tok-kw">array</span> <span class="tok-var">$options</span>): <span class="tok-id">self</span>
+    {
+        <span class="tok-var">$schema</span> = <span class="tok-kw">new</span> <span class="tok-id">Schema</span>();
+        <span class="tok-var">$options</span> = <span class="tok-var">$schema</span>-&gt;<span class="tok-id">mapping</span>(<span class="tok-var">$options</span>, [<span class="tok-str">&#039;files&#039;</span>], <span class="tok-id">self</span>::<span class="tok-kw">class</span>);
+
+        <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">self</span>(<span class="tok-kw">new</span> <span class="tok-id">StrictTypesPolicy</span>(<span class="tok-var">$schema</span>-&gt;<span class="tok-id">strings</span>(<span class="tok-var">$options</span>[<span class="tok-str">&#039;files&#039;</span>] ?? [<span class="tok-str">&#039;src/**/*.php&#039;</span>], <span class="tok-id">self</span>::<span class="tok-kw">class</span> . <span class="tok-str">&#039;.files&#039;</span>)));
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">register</span>(<span class="tok-id">Registry</span> <span class="tok-var">$registry</span>): <span class="tok-id">void</span>
+    {
+        <span class="tok-var">$registry</span>-&gt;<span class="tok-id">addPolicy</span>(<span class="tok-str">&#039;app.strict-types&#039;</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">policy</span>);
+    }
+}</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Interface</th><th>Method</th><th>Use</th></tr></thead><tbody><tr><td><code>Guard\Extension\Extension</code></td><td><code>register(Registry $registry): void</code></td><td>An extension without options. It needs a public constructor without required arguments.</td></tr><tr><td><code>Guard\Extension\ConfigurableExtension</code></td><td><code>static fromOptions(array $options): self</code></td><td>An extension with options. Validate them and throw <code>Guard\Policy\PolicyException</code> for unknown or invalid ones.</td></tr></tbody></table></div>
+<p><code>Registry::addPolicy($id, $policy, $reportOrder = 0)</code> and <code>Registry::addStructure($id, $structurer)</code> reject an ID that is already registered. Prefix IDs with your project or package name, such as <code>app.strict-types</code>.</p>
+<p>Make the class autoloadable with Composer, for example through <code>autoload-dev</code>, run <code>composer dump-autoload</code>, and name it in <code>guard.yaml</code>:</p>
+<pre class="code"><code>version: 1
+extensions:
+  App\Guard\StrictTypesExtension:
+    files: [&#039;src/**/*.php&#039;]</code></pre>
+<p>An extension without options is written as <code>App\Guard\Example: {}</code>. Guard loads only the classes named in <code>extensions</code>, in that order, after the built-in policies; it never scans packages for extensions. A missing class, a class that does not implement the interface, or invalid options stop the run with exit code <code>2</code>. Extension code runs as trusted project code.</p>
+<h3>Running Guard from PHP</h3>
+<p><code>Guard\Cli\Application</code> runs the same commands in-process. A registry passed to it replaces the built-in registrations, so register <code>BuiltinExtension</code> first to keep them:</p>
+<pre class="code"><code><span class="tok-kw">use</span> <span class="tok-id">Guard\Cli\Application</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Config\ConfigurationLoader</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Extension\BuiltinExtension</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Guard\Extension\Registry</span>;
+
+<span class="tok-var">$configuration</span> = (<span class="tok-kw">new</span> <span class="tok-id">ConfigurationLoader</span>())-&gt;<span class="tok-id">load</span>(__DIR__ . <span class="tok-str">&#039;/guard.yaml&#039;</span>);
+<span class="tok-var">$registry</span> = <span class="tok-kw">new</span> <span class="tok-id">Registry</span>();
+(<span class="tok-kw">new</span> <span class="tok-id">BuiltinExtension</span>(<span class="tok-var">$configuration</span>))-&gt;<span class="tok-id">register</span>(<span class="tok-var">$registry</span>);
+<span class="tok-var">$registry</span>-&gt;<span class="tok-id">addPolicy</span>(<span class="tok-str">&#039;app.strict-types&#039;</span>, <span class="tok-kw">new</span> <span class="tok-id">StrictTypesPolicy</span>([<span class="tok-str">&#039;src/**/*.php&#039;</span>]));
+
+<span class="tok-var">$application</span> = <span class="tok-kw">new</span> <span class="tok-id">Application</span>(__DIR__, <span class="tok-kw">static</span> <span class="tok-kw">function</span> (<span class="tok-id">string</span> <span class="tok-var">$text</span>): <span class="tok-id">void</span> {
+    <span class="tok-kw">echo</span> <span class="tok-var">$text</span>;
+}, <span class="tok-var">$registry</span>);
+<span class="tok-kw">exit</span>(<span class="tok-var">$application</span>-&gt;<span class="tok-id">run</span>([<span class="tok-str">&#039;check&#039;</span>]));</code></pre>
+<p>The extensions named in <code>guard.yaml</code> are added to a copy of the registry on every run, so repeated runs do not register them twice. <code>Guard\Execution\Pipeline::run(Context)</code> returns the <code>Plan</code> of all policies without printing or writing anything.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../assets/search-index.js" defer></script>
+<script src="../../../../assets/app.js" defer></script>
+</body>
+</html>

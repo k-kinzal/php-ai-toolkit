@@ -101,7 +101,7 @@
 <span class="src-line" id="L64"><a class="ln" href="#L64">64</a></span>
 <span class="src-line" id="L65"><a class="ln" href="#L65">65</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeDoubleSlashCommentIsReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L66"><a class="ln" href="#L66">66</a>    {</span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbidNonDocComment/WithDoubleSlashComment.php&#039;</span>], [</span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbidNonDocComment/WithDoubleSlashComment.php&#039;</span>], [</span>
 <span class="src-line" id="L68"><a class="ln" href="#L68">68</a>            [</span>
 <span class="src-line" id="L69"><a class="ln" href="#L69">69</a>                <span class="tok-str">&#039;Remove comment &quot;// This is a line comment&quot; or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.&#039;</span>,</span>
 <span class="src-line" id="L70"><a class="ln" href="#L70">70</a>                <span class="tok-num">5</span>,</span>
@@ -115,7 +115,7 @@
 <span class="src-line" id="L78"><a class="ln" href="#L78">78</a></span>
 <span class="src-line" id="L79"><a class="ln" href="#L79">79</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeBlockCommentIsReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L80"><a class="ln" href="#L80">80</a>    {</span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbidNonDocComment/WithBlockComment.php&#039;</span>], [</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbidNonDocComment/WithBlockComment.php&#039;</span>], [</span>
 <span class="src-line" id="L82"><a class="ln" href="#L82">82</a>            [</span>
 <span class="src-line" id="L83"><a class="ln" href="#L83">83</a>                <span class="tok-str">&#039;Remove comment &quot;/* This is a block comment */&quot; or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.&#039;</span>,</span>
 <span class="src-line" id="L84"><a class="ln" href="#L84">84</a>                <span class="tok-num">5</span>,</span>
@@ -129,7 +129,7 @@
 <span class="src-line" id="L92"><a class="ln" href="#L92">92</a></span>
 <span class="src-line" id="L93"><a class="ln" href="#L93">93</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeHashCommentIsReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L94"><a class="ln" href="#L94">94</a>    {</span>
-<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbidNonDocComment/WithHashComment.php&#039;</span>], [</span>
+<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbidNonDocComment/WithHashComment.php&#039;</span>], [</span>
 <span class="src-line" id="L96"><a class="ln" href="#L96">96</a>            [</span>
 <span class="src-line" id="L97"><a class="ln" href="#L97">97</a>                <span class="tok-str">&#039;Remove comment &quot;# This is a hash comment&quot; or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.&#039;</span>,</span>
 <span class="src-line" id="L98"><a class="ln" href="#L98">98</a>                <span class="tok-num">5</span>,</span>
@@ -139,12 +139,12 @@
 <span class="src-line" id="L102"><a class="ln" href="#L102">102</a></span>
 <span class="src-line" id="L103"><a class="ln" href="#L103">103</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodePhpDocIsNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L104"><a class="ln" href="#L104">104</a>    {</span>
-<span class="src-line" id="L105"><a class="ln" href="#L105">105</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbidNonDocComment/WithPhpDocOnly.php&#039;</span>], []);</span>
+<span class="src-line" id="L105"><a class="ln" href="#L105">105</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbidNonDocComment/WithPhpDocOnly.php&#039;</span>], []);</span>
 <span class="src-line" id="L106"><a class="ln" href="#L106">106</a>    }</span>
 <span class="src-line" id="L107"><a class="ln" href="#L107">107</a></span>
 <span class="src-line" id="L108"><a class="ln" href="#L108">108</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodePhpstanIgnoreAndInfectionIgnoreAreSkipped</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L109"><a class="ln" href="#L109">109</a>    {</span>
-<span class="src-line" id="L110"><a class="ln" href="#L110">110</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbidNonDocComment/WithPhpstanIgnore.php&#039;</span>], [</span>
+<span class="src-line" id="L110"><a class="ln" href="#L110">110</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbidNonDocComment/WithPhpstanIgnore.php&#039;</span>], [</span>
 <span class="src-line" id="L111"><a class="ln" href="#L111">111</a>            [</span>
 <span class="src-line" id="L112"><a class="ln" href="#L112">112</a>                <span class="tok-str">&#039;No error with identifier argument.type is reported on line 5.&#039;</span>,</span>
 <span class="src-line" id="L113"><a class="ln" href="#L113">113</a>                <span class="tok-num">5</span>,</span>
@@ -158,12 +158,12 @@
 <span class="src-line" id="L121"><a class="ln" href="#L121">121</a></span>
 <span class="src-line" id="L122"><a class="ln" href="#L122">122</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeDoubleSlashCommentInsideCatchBodyIsNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L123"><a class="ln" href="#L123">123</a>    {</span>
-<span class="src-line" id="L124"><a class="ln" href="#L124">124</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbidNonDocComment/WithCatchLineComment.php&#039;</span>], []);</span>
+<span class="src-line" id="L124"><a class="ln" href="#L124">124</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbidNonDocComment/WithCatchLineComment.php&#039;</span>], []);</span>
 <span class="src-line" id="L125"><a class="ln" href="#L125">125</a>    }</span>
 <span class="src-line" id="L126"><a class="ln" href="#L126">126</a></span>
 <span class="src-line" id="L127"><a class="ln" href="#L127">127</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeDoubleSlashCommentInsideArrayLiteralIsNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L128"><a class="ln" href="#L128">128</a>    {</span>
-<span class="src-line" id="L129"><a class="ln" href="#L129">129</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbidNonDocComment/WithArrayLineComment.php&#039;</span>], []);</span>
+<span class="src-line" id="L129"><a class="ln" href="#L129">129</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbidNonDocComment/WithArrayLineComment.php&#039;</span>], []);</span>
 <span class="src-line" id="L130"><a class="ln" href="#L130">130</a>    }</span>
 <span class="src-line" id="L131"><a class="ln" href="#L131">131</a></span>
 <span class="src-line" id="L132"><a class="ln" href="#L132">132</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeDoubleSlashCommentInsideLongArrayLiteralIsNotReported</span>(): <span class="tok-id">void</span></span>
@@ -192,7 +192,7 @@
 <span class="src-line" id="L155"><a class="ln" href="#L155">155</a></span>
 <span class="src-line" id="L156"><a class="ln" href="#L156">156</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeDoubleSlashCommentInsideArrayAccessIsReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L157"><a class="ln" href="#L157">157</a>    {</span>
-<span class="src-line" id="L158"><a class="ln" href="#L158">158</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbidNonDocComment/WithArrayAccessLineComment.php&#039;</span>], [</span>
+<span class="src-line" id="L158"><a class="ln" href="#L158">158</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbidNonDocComment/WithArrayAccessLineComment.php&#039;</span>], [</span>
 <span class="src-line" id="L159"><a class="ln" href="#L159">159</a>            [</span>
 <span class="src-line" id="L160"><a class="ln" href="#L160">160</a>                <span class="tok-str">&#039;Remove comment &quot;// This comment is inside array access, not an array literal.&quot; or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.&#039;</span>,</span>
 <span class="src-line" id="L161"><a class="ln" href="#L161">161</a>                <span class="tok-num">8</span>,</span>
@@ -202,7 +202,7 @@
 <span class="src-line" id="L165"><a class="ln" href="#L165">165</a></span>
 <span class="src-line" id="L166"><a class="ln" href="#L166">166</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeBlockAndHashCommentsInsideCatchBodyAreReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L167"><a class="ln" href="#L167">167</a>    {</span>
-<span class="src-line" id="L168"><a class="ln" href="#L168">168</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbidNonDocComment/WithCatchNonLineComment.php&#039;</span>], [</span>
+<span class="src-line" id="L168"><a class="ln" href="#L168">168</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbidNonDocComment/WithCatchNonLineComment.php&#039;</span>], [</span>
 <span class="src-line" id="L169"><a class="ln" href="#L169">169</a>            [</span>
 <span class="src-line" id="L170"><a class="ln" href="#L170">170</a>                <span class="tok-str">&#039;Remove comment &quot;/* Block comments are still prohibited inside catch blocks. */&quot; or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.&#039;</span>,</span>
 <span class="src-line" id="L171"><a class="ln" href="#L171">171</a>                <span class="tok-num">10</span>,</span>
@@ -216,7 +216,7 @@
 <span class="src-line" id="L179"><a class="ln" href="#L179">179</a></span>
 <span class="src-line" id="L180"><a class="ln" href="#L180">180</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeBlockAndHashCommentsInsideArrayLiteralAreReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L181"><a class="ln" href="#L181">181</a>    {</span>
-<span class="src-line" id="L182"><a class="ln" href="#L182">182</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbidNonDocComment/WithArrayNonLineComment.php&#039;</span>], [</span>
+<span class="src-line" id="L182"><a class="ln" href="#L182">182</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbidNonDocComment/WithArrayNonLineComment.php&#039;</span>], [</span>
 <span class="src-line" id="L183"><a class="ln" href="#L183">183</a>            [</span>
 <span class="src-line" id="L184"><a class="ln" href="#L184">184</a>                <span class="tok-str">&#039;Remove comment &quot;/* Block comments are still prohibited inside arrays. */&quot; or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.&#039;</span>,</span>
 <span class="src-line" id="L185"><a class="ln" href="#L185">185</a>                <span class="tok-num">8</span>,</span>
@@ -230,7 +230,7 @@
 <span class="src-line" id="L193"><a class="ln" href="#L193">193</a></span>
 <span class="src-line" id="L194"><a class="ln" href="#L194">194</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeDoubleSlashCommentAfterCatchBodyIsReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L195"><a class="ln" href="#L195">195</a>    {</span>
-<span class="src-line" id="L196"><a class="ln" href="#L196">196</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbidNonDocComment/WithCatchBoundaryLineComment.php&#039;</span>], [</span>
+<span class="src-line" id="L196"><a class="ln" href="#L196">196</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbidNonDocComment/WithCatchBoundaryLineComment.php&#039;</span>], [</span>
 <span class="src-line" id="L197"><a class="ln" href="#L197">197</a>            [</span>
 <span class="src-line" id="L198"><a class="ln" href="#L198">198</a>                <span class="tok-str">&#039;Remove comment &quot;// This comment is outside the catch body.&quot; or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.&#039;</span>,</span>
 <span class="src-line" id="L199"><a class="ln" href="#L199">199</a>                <span class="tok-num">11</span>,</span>

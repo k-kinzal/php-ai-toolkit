@@ -84,7 +84,7 @@
 <span class="src-line" id="L47"><a class="ln" href="#L47">47</a></span>
 <span class="src-line" id="L48"><a class="ln" href="#L48">48</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeReportsPropertyAndReturnListDeclarations</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a>    {</span>
-<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/RequireListForArrayLiteral/WithArrayIntListType.php&#039;</span>], [</span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/RequireListForArrayLiteral/WithArrayIntListType.php&#039;</span>], [</span>
 <span class="src-line" id="L51"><a class="ln" href="#L51">51</a>            [</span>
 <span class="src-line" id="L52"><a class="ln" href="#L52">52</a>                <span class="tok-str">&#039;Replace &quot;array&lt;int, string&gt;&quot; with &quot;list&lt;string&gt;&quot; in @var on $names; $names is initialized with a non-empty list literal, so declare its zero-based contiguous keys as part of the property type.&#039;</span>,</span>
 <span class="src-line" id="L53"><a class="ln" href="#L53">53</a>                <span class="tok-num">10</span>,</span>
@@ -118,7 +118,7 @@
 <span class="src-line" id="L81"><a class="ln" href="#L81">81</a></span>
 <span class="src-line" id="L82"><a class="ln" href="#L82">82</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeIgnoresParametersAndNonListOrUncertainValues</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L83"><a class="ln" href="#L83">83</a>    {</span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/RequireListForArrayLiteral/WithoutArrayIntListType.php&#039;</span>], []);</span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/RequireListForArrayLiteral/WithoutArrayIntListType.php&#039;</span>], []);</span>
 <span class="src-line" id="L85"><a class="ln" href="#L85">85</a>    }</span>
 <span class="src-line" id="L86"><a class="ln" href="#L86">86</a></span>
 <span class="src-line" id="L87"><a class="ln" href="#L87">87</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testPropertyErrorsNamesTheInitializedProperty</span>(): <span class="tok-id">void</span></span>

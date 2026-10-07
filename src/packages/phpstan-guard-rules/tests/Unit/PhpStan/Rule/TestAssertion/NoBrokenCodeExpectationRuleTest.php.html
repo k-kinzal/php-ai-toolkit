@@ -95,7 +95,7 @@
 <span class="src-line" id="L58"><a class="ln" href="#L58">58</a></span>
 <span class="src-line" id="L59"><a class="ln" href="#L59">59</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeBrokenCodeExpectationsAreReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L60"><a class="ln" href="#L60">60</a>    {</span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoBrokenCodeExpectation/WithBrokenCodeExpectation.php&#039;</span>], [</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/NoBrokenCodeExpectation/WithBrokenCodeExpectation.php&#039;</span>], [</span>
 <span class="src-line" id="L62"><a class="ln" href="#L62">62</a>            [</span>
 <span class="src-line" id="L63"><a class="ln" href="#L63">63</a>                <span class="tok-str">&#039;Delete this test case instead of expecting &quot;Throwable&quot; in expectException(): Throwable matches every failure, so a passing test says nothing about what the code under test did. Keep only expectations for failures the code under test declares as behavior, such as a RuntimeException subclass.&#039;</span>,</span>
 <span class="src-line" id="L64"><a class="ln" href="#L64">64</a>                <span class="tok-num">18</span>,</span>
@@ -121,12 +121,12 @@
 <span class="src-line" id="L84"><a class="ln" href="#L84">84</a></span>
 <span class="src-line" id="L85"><a class="ln" href="#L85">85</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeBehaviorExpectationsAreNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L86"><a class="ln" href="#L86">86</a>    {</span>
-<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoBrokenCodeExpectation/WithBehaviorExpectation.php&#039;</span>], []);</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/NoBrokenCodeExpectation/WithBehaviorExpectation.php&#039;</span>], []);</span>
 <span class="src-line" id="L88"><a class="ln" href="#L88">88</a>    }</span>
 <span class="src-line" id="L89"><a class="ln" href="#L89">89</a></span>
 <span class="src-line" id="L90"><a class="ln" href="#L90">90</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeOutsideTestNamespaceIsNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L91"><a class="ln" href="#L91">91</a>    {</span>
-<span class="src-line" id="L92"><a class="ln" href="#L92">92</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoBrokenCodeExpectation/NonTestClass.php&#039;</span>], []);</span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/NoBrokenCodeExpectation/NonTestClass.php&#039;</span>], []);</span>
 <span class="src-line" id="L93"><a class="ln" href="#L93">93</a>    }</span>
 <span class="src-line" id="L94"><a class="ln" href="#L94">94</a>}</span>
 <span class="src-line" id="L95"><a class="ln" href="#L95">95</a></span>

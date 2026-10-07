@@ -87,7 +87,7 @@
 <span class="src-line" id="L50"><a class="ln" href="#L50">50</a></span>
 <span class="src-line" id="L51"><a class="ln" href="#L51">51</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodePhpstanIgnoreNextLineIsReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L52"><a class="ln" href="#L52">52</a>    {</span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbiddenComment/PhpstanIgnoreNextLine.php&#039;</span>], [</span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbiddenComment/PhpstanIgnoreNextLine.php&#039;</span>], [</span>
 <span class="src-line" id="L54"><a class="ln" href="#L54">54</a>            [</span>
 <span class="src-line" id="L55"><a class="ln" href="#L55">55</a>                <span class="tok-str">&#039;Remove phpstan-ignore comment &quot;/** @phpstan-ignore-next-line */&quot;. Re-run PHPStan and fix the revealed error. AI agents must not edit ignoreErrors; ask a human operator only when suppression is genuinely justified.&#039;</span>,</span>
 <span class="src-line" id="L56"><a class="ln" href="#L56">56</a>                <span class="tok-num">5</span>,</span>
@@ -101,7 +101,7 @@
 <span class="src-line" id="L64"><a class="ln" href="#L64">64</a></span>
 <span class="src-line" id="L65"><a class="ln" href="#L65">65</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodePhpstanIgnoreBareIsReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L66"><a class="ln" href="#L66">66</a>    {</span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>        <span class="tok-var">$errors</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">gatherAnalyserErrors</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbiddenComment/PhpstanIgnoreBare.php&#039;</span>]);</span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>        <span class="tok-var">$errors</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">gatherAnalyserErrors</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbiddenComment/PhpstanIgnoreBare.php&#039;</span>]);</span>
 <span class="src-line" id="L68"><a class="ln" href="#L68">68</a>        <span class="tok-var">$messages</span> = <span class="tok-id">array_map</span>(<span class="tok-kw">static</span> <span class="tok-kw">fn</span> (<span class="tok-id">Error</span> <span class="tok-var">$error</span>): <span class="tok-id">string</span> =&gt; <span class="tok-id">sprintf</span>(<span class="tok-str">&#039;%d: %s&#039;</span>, (int) <span class="tok-var">$error</span>-&gt;<span class="tok-id">getLine</span>(), <span class="tok-var">$error</span>-&gt;<span class="tok-id">getMessage</span>()), <span class="tok-var">$errors</span>);</span>
 <span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        <span class="tok-id">sort</span>(<span class="tok-var">$messages</span>);</span>
 <span class="src-line" id="L70"><a class="ln" href="#L70">70</a></span>
@@ -113,7 +113,7 @@
 <span class="src-line" id="L76"><a class="ln" href="#L76">76</a></span>
 <span class="src-line" id="L77"><a class="ln" href="#L77">77</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeInfectionIgnoreAllIsReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L78"><a class="ln" href="#L78">78</a>    {</span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbiddenComment/InfectionIgnoreAll.php&#039;</span>], [</span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbiddenComment/InfectionIgnoreAll.php&#039;</span>], [</span>
 <span class="src-line" id="L80"><a class="ln" href="#L80">80</a>            [</span>
 <span class="src-line" id="L81"><a class="ln" href="#L81">81</a>                <span class="tok-str">&#039;Remove infection-ignore-all comment &quot;/** @infection-ignore-all */&quot;. Run mutation testing and strengthen assertions or add focused tests. Ask a human operator only when an exception is genuinely justified.&#039;</span>,</span>
 <span class="src-line" id="L82"><a class="ln" href="#L82">82</a>                <span class="tok-num">5</span>,</span>
@@ -123,7 +123,7 @@
 <span class="src-line" id="L86"><a class="ln" href="#L86">86</a></span>
 <span class="src-line" id="L87"><a class="ln" href="#L87">87</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeNormalCommentsAreNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L88"><a class="ln" href="#L88">88</a>    {</span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../Fixture/ForbiddenComment/NormalComments.php&#039;</span>], []);</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/ForbiddenComment/NormalComments.php&#039;</span>], []);</span>
 <span class="src-line" id="L90"><a class="ln" href="#L90">90</a>    }</span>
 <span class="src-line" id="L91"><a class="ln" href="#L91">91</a>}</span>
 <span class="src-line" id="L92"><a class="ln" href="#L92">92</a></span>

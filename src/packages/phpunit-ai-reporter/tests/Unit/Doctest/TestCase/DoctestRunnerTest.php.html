@@ -66,7 +66,7 @@
 <span class="src-line" id="L29"><a class="ln" href="#L29">29</a>    {</span>
 <span class="src-line" id="L30"><a class="ln" href="#L30">30</a>        <span class="tok-var">$config</span> = <span class="tok-id">FixtureDoctestSuite</span>::<span class="tok-id">configure</span>();</span>
 <span class="src-line" id="L31"><a class="ln" href="#L31">31</a></span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringEndsWith</span>(<span class="tok-str">&#039;Fixture/Doctest/project/src&#039;</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">getDirectories</span>()[<span class="tok-num">0</span>]);</span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringEndsWith</span>(<span class="tok-str">&#039;fixtures/Doctest/project/src&#039;</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">getDirectories</span>()[<span class="tok-num">0</span>]);</span>
 <span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-str">&#039;*/Nested/*&#039;</span>], <span class="tok-var">$config</span>-&gt;<span class="tok-id">getExcludePatterns</span>());</span>
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a>    }</span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a></span>
@@ -120,7 +120,7 @@
 <span class="src-line" id="L83"><a class="ln" href="#L83">83</a>    {</span>
 <span class="src-line" id="L84"><a class="ln" href="#L84">84</a>        <span class="tok-var">$target</span> = <span class="tok-kw">new</span> <span class="tok-id">\Toolkit\Doctest\Scanner\Target</span>(</span>
 <span class="src-line" id="L85"><a class="ln" href="#L85">85</a>            <span class="tok-id">\Toolkit\Doctest\Scanner\TargetKind</span>::<span class="tok-id">CLASS_LIKE</span>,</span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>            (string) <span class="tok-id">realpath</span>(__DIR__ . <span class="tok-str">&#039;/../../../Fixture/Doctest/project/src/Calculator.php&#039;</span>),</span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>            (string) <span class="tok-id">realpath</span>(__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/Doctest/project/src/Calculator.php&#039;</span>),</span>
 <span class="src-line" id="L87"><a class="ln" href="#L87">87</a>            <span class="tok-str">&#039;/** */&#039;</span>,</span>
 <span class="src-line" id="L88"><a class="ln" href="#L88">88</a>            <span class="tok-str">&#039;Calculator&#039;</span>,</span>
 <span class="src-line" id="L89"><a class="ln" href="#L89">89</a>            <span class="tok-num">12</span>,</span>

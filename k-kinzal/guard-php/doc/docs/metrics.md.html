@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metrics — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/metrics.md.html">
+<meta name="description" content="Metrics, a document of the k-kinzal/guard-php package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Metrics — php-ai-toolkit">
+<meta property="og:description" content="Metrics, a document of the k-kinzal/guard-php package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/metrics.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/all-items.html">All items</a></li><li><a href="../../../../k-kinzal/guard-php/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/Guard/Cli/index.html" title="Guard\Cli">Guard\Cli</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Cli/Command/index.html" title="Guard\Cli\Command">Guard\Cli\Command</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/index.html" title="Guard\Collect">Guard\Collect</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/Filesystem/index.html" title="Guard\Collect\Filesystem">Guard\Collect\Filesystem</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/Matching/index.html" title="Guard\Collect\Matching">Guard\Collect\Matching</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/index.html" title="Guard\Config">Guard\Config</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Assignment/index.html" title="Guard\Config\Assignment">Guard\Config\Assignment</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Profile/index.html" title="Guard\Config\Profile">Guard\Config\Profile</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Reader/index.html" title="Guard\Config\Reader">Guard\Config\Reader</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Validation/index.html" title="Guard\Config\Validation">Guard\Config\Validation</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Value/index.html" title="Guard\Config\Value">Guard\Config\Value</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Document/index.html" title="Guard\Document">Guard\Document</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Execution/index.html" title="Guard\Execution">Guard\Execution</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Extension/index.html" title="Guard\Extension">Guard\Extension</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Init/index.html" title="Guard\Init">Guard\Init</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Init/Legacy/index.html" title="Guard\Init\Legacy">Guard\Init\Legacy</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/index.html" title="Guard\Policy">Guard\Policy</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Comparison/index.html" title="Guard\Policy\Comparison">Guard\Policy\Comparison</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Inspection/index.html" title="Guard\Policy\Inspection">Guard\Policy\Inspection</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Limit/index.html" title="Guard\Policy\Limit">Guard\Policy\Limit</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Reporting/index.html" title="Guard\Reporting">Guard\Reporting</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/index.html" title="Guard\Structure">Guard\Structure</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/index.html" title="Guard\Structure\Markdown">Guard\Structure\Markdown</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Badge/index.html" title="Guard\Structure\Markdown\Badge">Guard\Structure\Markdown\Badge</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Block/index.html" title="Guard\Structure\Markdown\Block">Guard\Structure\Markdown\Block</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/index.html" title="Guard\Structure\Php">Guard\Structure\Php</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/ClassLikeMetric/index.html" title="Guard\Structure\Php\ClassLikeMetric">Guard\Structure\Php\ClassLikeMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/Complexity/index.html" title="Guard\Structure\Php\Complexity">Guard\Structure\Php\Complexity</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/FileMetric/index.html" title="Guard\Structure\Php\FileMetric">Guard\Structure\Php\FileMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/FunctionMetric/index.html" title="Guard\Structure\Php\FunctionMetric">Guard\Structure\Php\FunctionMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/Token/index.html" title="Guard\Structure\Php\Token">Guard\Structure\Php\Token</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/metrics.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Metrics</h1><div class="symbol-meta"><span class="source-link">docs/metrics.md</span></div></div>
+<section class="readme prose"><h2>Metrics</h2>
+<p>The <code>metrics</code> section limits the size and complexity of production PHP code. Every scanned file gets exactly one profile of limits, and each element that exceeds a limit is a required finding. Guard does not shorten code; the finding stays until the code is split.</p>
+<h3>Example</h3>
+<pre class="code"><code>version: 1
+metrics:
+  source: [src]
+  exclude: [&#039;src/Generated/**&#039;]
+  profiles:
+    standard:
+      limits:
+        file: {lines: 500, ncloc: 350}
+        class: {lines: 400}
+        trait: {lines: 300}
+        interface: {lines: 200}
+        enum: {lines: 200}
+        function: {lines: 50, cyclomatic_complexity: 20}
+        method: {lines: 50, cyclomatic_complexity: 20}
+    adapter:
+      extends: standard
+      limits:
+        file: {lines: 900, ncloc: 650}
+        class: {lines: 800}
+  default: standard
+  assignments:
+    - name: native-adapters
+      match:
+        paths: [&#039;src/Adapter/Pdo*.php&#039;]
+      policy: adapter</code></pre>
+<p>These are the limits of the shipped <code>rules/metrics.yaml</code>. The adapters that mirror a large native API get longer files and classes, but keep the method limits of <code>standard</code>.</p>
+<h3>Fields</h3>
+<div class="table-wrap"><table><thead><tr><th>Key</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>source</code></td><td><code>[src]</code></td><td>Directories to scan for <code>.php</code> files. Each must exist.</td></tr><tr><td><code>exclude</code></td><td><code>[]</code></td><td>Paths to leave out, such as generated code. Excluding a directory excludes everything below it.</td></tr><tr><td><code>profiles</code></td><td></td><td>Required. Named sets of limits. See <a href="#limits">Limits</a>.</td></tr><tr><td><code>profiles.&lt;name&gt;.extends</code></td><td></td><td>Another profile to inherit limits from. See <a href="#inheritance">Inheritance</a>.</td></tr><tr><td><code>default</code></td><td><code>standard</code></td><td>The profile of files that no assignment matches.</td></tr><tr><td><code>assignments</code></td><td><code>[]</code></td><td>Rules that give matching files another profile, each <code>{name, match: {paths}, policy}</code>. See <a href="#assignments">Assignments</a>.</td></tr></tbody></table></div>
+<p>Scan production code only. Tests and fixtures are long on purpose and do not belong in <code>source</code>. A scan that finds no PHP file is a configuration error. When <a href="../../../../k-kinzal/guard-php/doc/docs/configuration.md.html#collection-scope"><code>collect</code></a> is set, it replaces <code>source</code> and <code>exclude</code>.</p>
+<p><code>exclude</code> and <code>match.paths</code> use the same patterns: <code>*</code> matches within one path segment, <code>**</code> matches any number of segments, and a pattern matches the whole path relative to <code>guard.yaml</code>. <code>src/*.php</code> matches <code>src/Example.php</code> but not <code>src/Nested/Example.php</code>; <code>src/**/*.php</code> matches both.</p>
+<h3>Limits</h3>
+<div class="table-wrap"><table><thead><tr><th>Limit</th><th>Shipped</th><th>Measures</th><th>Rule ID</th></tr></thead><tbody><tr><td><code>file.lines</code></td><td>500</td><td>Physical lines of the file.</td><td><code>metrics.file_lines</code></td></tr><tr><td><code>file.ncloc</code></td><td>350</td><td>Lines that hold PHP code, not counting comments, blank lines and the opening tag.</td><td><code>metrics.file_ncloc</code></td></tr><tr><td><code>class.lines</code></td><td>400</td><td>Lines from the class declaration to its closing brace.</td><td><code>metrics.class_lines</code></td></tr><tr><td><code>trait.lines</code></td><td>300</td><td>The same for a trait.</td><td><code>metrics.trait_lines</code></td></tr><tr><td><code>interface.lines</code></td><td>200</td><td>The same for an interface.</td><td><code>metrics.interface_lines</code></td></tr><tr><td><code>enum.lines</code></td><td>200</td><td>The same for an enum.</td><td><code>metrics.enum_lines</code></td></tr><tr><td><code>function.lines</code></td><td>50</td><td>Lines of a function.</td><td><code>metrics.function_lines</code></td></tr><tr><td><code>method.lines</code></td><td>50</td><td>Lines of a method.</td><td><code>metrics.method_lines</code></td></tr><tr><td><code>function.cyclomatic_complexity</code></td><td>20</td><td>Cyclomatic complexity of a function.</td><td><code>metrics.cyclomatic_complexity</code></td></tr><tr><td><code>method.cyclomatic_complexity</code></td><td>20</td><td>Cyclomatic complexity of a method.</td><td><code>metrics.cyclomatic_complexity</code></td></tr></tbody></table></div>
+<p>A limit is a positive integer and is itself allowed: with <code>method.lines: 50</code>, a 50-line method passes and a 51-line method fails. A metric that a profile does not set is not checked; there are no built-in defaults. Each profile must check at least one metric.</p>
+<p>The finding is reported on the file and names the element, such as <code>method Big::m has 52 physical lines; maximum is 50.</code></p>
+<h4>Inheritance</h4>
+<p>A profile with <code>extends</code> starts from the effective limits of its parent. A value it sets replaces the parent&#039;s, and <code>null</code> turns the metric off. Declaration order does not matter. An unknown parent or a cycle is a configuration error.</p>
+<h4>Complexity</h4>
+<p>Cyclomatic complexity starts at <code>1</code> for each function or method and adds one for each <code>if</code>, <code>elseif</code>, <code>for</code>, <code>foreach</code>, <code>while</code>, <code>do</code>, <code>case</code>, <code>catch</code>, <code>&amp;&amp;</code>, <code>||</code>, <code>??</code>, <code>?</code> and <code>match</code> arm. A closure or arrow function is checked on its own, as <code>function {closure}</code>, against the function limits. Its branches do not add to the complexity of the function around it, but its lines count toward that function&#039;s length.</p>
+<h3>Assignments</h3>
+<div class="table-wrap"><table><thead><tr><th>Matching assignments</th><th>Profile of the file</th></tr></thead><tbody><tr><td>none</td><td><code>default</code></td></tr><tr><td>one</td><td>its <code>policy</code></td></tr><tr><td>several</td><td>configuration error that names the assignments</td></tr></tbody></table></div>
+<p>Order never decides between assignments, and Guard does not guess which pattern is more specific: the patterns must not overlap. An assignment that matches no scanned file and a profile that nothing uses are configuration errors, because both usually mean the configuration is stale.</p>
+<p>Relax only the limits that the reason for the assignment explains. A file that wraps a large native API needs a longer file and class, not longer or more complex methods.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../assets/search-index.js" defer></script>
+<script src="../../../../assets/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Configuration Fields — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/fields.md.html">
+<meta name="description" content="Configuration Fields, a document of the k-kinzal/guard-php package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Configuration Fields — php-ai-toolkit">
+<meta property="og:description" content="Configuration Fields, a document of the k-kinzal/guard-php package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/fields.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/all-items.html">All items</a></li><li><a href="../../../../k-kinzal/guard-php/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/Guard/Cli/index.html" title="Guard\Cli">Guard\Cli</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Cli/Command/index.html" title="Guard\Cli\Command">Guard\Cli\Command</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/index.html" title="Guard\Collect">Guard\Collect</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/Filesystem/index.html" title="Guard\Collect\Filesystem">Guard\Collect\Filesystem</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/Matching/index.html" title="Guard\Collect\Matching">Guard\Collect\Matching</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/index.html" title="Guard\Config">Guard\Config</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Assignment/index.html" title="Guard\Config\Assignment">Guard\Config\Assignment</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Profile/index.html" title="Guard\Config\Profile">Guard\Config\Profile</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Reader/index.html" title="Guard\Config\Reader">Guard\Config\Reader</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Validation/index.html" title="Guard\Config\Validation">Guard\Config\Validation</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Value/index.html" title="Guard\Config\Value">Guard\Config\Value</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Document/index.html" title="Guard\Document">Guard\Document</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Execution/index.html" title="Guard\Execution">Guard\Execution</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Extension/index.html" title="Guard\Extension">Guard\Extension</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Init/index.html" title="Guard\Init">Guard\Init</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Init/Legacy/index.html" title="Guard\Init\Legacy">Guard\Init\Legacy</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/index.html" title="Guard\Policy">Guard\Policy</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Comparison/index.html" title="Guard\Policy\Comparison">Guard\Policy\Comparison</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Inspection/index.html" title="Guard\Policy\Inspection">Guard\Policy\Inspection</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Limit/index.html" title="Guard\Policy\Limit">Guard\Policy\Limit</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Reporting/index.html" title="Guard\Reporting">Guard\Reporting</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/index.html" title="Guard\Structure">Guard\Structure</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/index.html" title="Guard\Structure\Markdown">Guard\Structure\Markdown</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Badge/index.html" title="Guard\Structure\Markdown\Badge">Guard\Structure\Markdown\Badge</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Block/index.html" title="Guard\Structure\Markdown\Block">Guard\Structure\Markdown\Block</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/index.html" title="Guard\Structure\Php">Guard\Structure\Php</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/ClassLikeMetric/index.html" title="Guard\Structure\Php\ClassLikeMetric">Guard\Structure\Php\ClassLikeMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/Complexity/index.html" title="Guard\Structure\Php\Complexity">Guard\Structure\Php\Complexity</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/FileMetric/index.html" title="Guard\Structure\Php\FileMetric">Guard\Structure\Php\FileMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/FunctionMetric/index.html" title="Guard\Structure\Php\FunctionMetric">Guard\Structure\Php\FunctionMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/Token/index.html" title="Guard\Structure\Php\Token">Guard\Structure\Php\Token</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/fields.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Configuration Fields</h1><div class="symbol-meta"><span class="source-link">docs/fields.md</span></div></div>
+<section class="readme prose"><h2>Configuration Fields</h2>
+<p>The <code>configuration</code> section checks single values in the configuration files of other tools: the PHPStan level, a PHPUnit attribute, a Composer setting. An agent that cannot make a check pass can lower that check instead; a field rule turns such an edit into a failure. Rules that know the correct value repair it with <code>guard apply</code>.</p>
+<h3>Example</h3>
+<pre class="code"><code>version: 1
+configuration:
+  - id: phpstan.level
+    file: phpstan.neon
+    select: /parameters/level
+    assert: {equals: max}
+  - id: composer.sort-packages
+    file: composer.json
+    select: /config/sort-packages
+    level: recommended
+    assert: {equals: true}
+  - id: phpunit.fail-on-warning
+    file: phpunit.xml.dist
+    format: xml
+    select: /phpunit/@failOnWarning
+    assert: {equals: &#039;true&#039;}
+  - id: infection.min-msi
+    file: infection.json5
+    select: /minMsi
+    assert: {min: 80}</code></pre>
+<p><code>guard apply</code> sets the PHPStan level to <code>max</code>, <code>sort-packages</code> to <code>true</code> and <code>failOnWarning</code> to <code>&quot;true&quot;</code>. Nothing can repair a <code>minMsi</code> below 80, because <code>infection.json5</code> is check-only and <code>min</code> names no single value. Until someone raises it, <code>apply</code> writes none of the other repairs either. See <a href="#repairs">Repairs</a>.</p>
+<h3>Fields</h3>
+<div class="table-wrap"><table><thead><tr><th>Key</th><th>Required</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td>yes</td><td>Unique rule ID. Reported as the rule of each finding, and used to <a href="../../../../k-kinzal/guard-php/doc/docs/configuration.md.html#imports">override</a> an imported rule.</td></tr><tr><td><code>file</code></td><td>yes</td><td>The configuration file, relative to <code>guard.yaml</code>.</td></tr><tr><td><code>select</code></td><td>yes</td><td>The field: a JSON Pointer, or an XPath for XML. See <a href="#formats">Formats</a>.</td></tr><tr><td><code>assert</code></td><td>yes</td><td>One or more <a href="#assertions">assertions</a>. All must hold.</td></tr><tr><td><code>format</code></td><td>no</td><td><code>json</code>, <code>yaml</code>, <code>yml</code>, <code>neon</code>, <code>toml</code>, <code>xml</code>, <code>json5</code> or <code>php</code>. Default: the file extension. Set it for names such as <code>phpunit.xml.dist</code>.</td></tr><tr><td><code>level</code></td><td>no</td><td><code>required</code> (default) fails the check; <code>recommended</code> warns.</td></tr><tr><td><code>repair</code></td><td>no</td><td>The value <code>apply</code> writes when the field is wrong. See <a href="#repairs">Repairs</a>.</td></tr></tbody></table></div>
+<p>A target file that does not exist is reported at the rule&#039;s level and names the field it should contain. A file outside the <a href="../../../../k-kinzal/guard-php/doc/docs/configuration.md.html#collection-scope">collection scope</a> is skipped.</p>
+<h3>Assertions</h3>
+<div class="table-wrap"><table><thead><tr><th>Assertion</th><th>Holds when</th></tr></thead><tbody><tr><td><code>equals: V</code></td><td>The value equals <code>V</code>, including its type: <code>1</code>, <code>&#039;1&#039;</code> and <code>true</code> differ, and so do a list and a mapping. Mapping key order is ignored.</td></tr><tr><td><code>one_of: [A, B]</code></td><td>The value equals one of the listed values.</td></tr><tr><td><code>min: N</code>, <code>max: N</code></td><td>The value is a number within the bound, which is included.</td></tr><tr><td><code>contains: S</code></td><td>A string contains <code>S</code>, or a list or mapping contains such a string at any depth. <code>key=value</code> also matches a mapping entry with that key and string value.</td></tr><tr><td><code>contains_any: [A, B]</code></td><td>A string or a list entry at any depth equals one of the names. A name with <code>/</code> also matches as part of an entry, such as an include path.</td></tr><tr><td><code>not_contains: S</code></td><td><code>contains: S</code> does not hold.</td></tr><tr><td><code>present: true</code></td><td>The field exists.</td></tr><tr><td><code>absent: true</code></td><td>The field does not exist. It cannot be combined with another assertion.</td></tr></tbody></table></div>
+<p>A missing field fails every assertion except <code>absent</code>, even <code>equals: null</code>: an explicit <code>null</code> and a missing key are different.</p>
+<h3>Formats</h3>
+<div class="table-wrap"><table><thead><tr><th>Format</th><th><code>select</code></th><th>Notes</th></tr></thead><tbody><tr><td><code>json</code></td><td>JSON Pointer, such as <code>/config/sort-packages</code></td><td>Lists and objects, and scalar types, are kept apart.</td></tr><tr><td><code>yaml</code>, <code>yml</code></td><td>JSON Pointer</td><td>Parsed with Symfony YAML. Custom tags are rejected.</td></tr><tr><td><code>neon</code></td><td>JSON Pointer</td><td>Parsed with Nette NEON.</td></tr><tr><td><code>toml</code></td><td>JSON Pointer</td><td>TOML 0.4 syntax. Newer syntax fails without writing. TOML has no <code>null</code>.</td></tr><tr><td><code>xml</code></td><td>XPath that selects one element or attribute</td><td>Values are strings, so quote booleans and numbers in YAML; <code>min</code> and <code>max</code> still read numeric text. Use <code>local-name()</code> and <code>namespace-uri()</code> for namespaced documents. DTDs and entity declarations are rejected.</td></tr><tr><td><code>json5</code></td><td>JSON Pointer</td><td>Comments and trailing commas are accepted. Check-only.</td></tr><tr><td><code>php</code></td><td><code>/riskyAllowed</code>, or <code>/rules/&lt;rule&gt;</code></td><td>For PHP-CS-Fixer configurations: the literal arguments of <code>setRiskyAllowed()</code> and <code>setRules()</code>. The file is read, never executed, and a non-literal argument reads as <code>null</code>. Check-only.</td></tr></tbody></table></div>
+<p>In a JSON Pointer, <code>/</code> inside a key is written <code>~1</code> and <code>~</code> is written <code>~0</code>. A pointer into a list addresses an existing index; Guard does not extend lists or replace a scalar parent with a mapping. An XPath that matches several nodes is an error.</p>
+<h3>Repairs</h3>
+<p><code>equals</code> is its own repair. Every other assertion needs an explicit <code>repair</code> before <code>apply</code> can change the field, and the repair must satisfy all assertions of the rule:</p>
+<pre class="code"><code>- id: application.driver
+  file: settings.yaml
+  select: /driver
+  assert: {one_of: [mysql, pgsql]}
+  repair: mysql</code></pre>
+<p>A field that already satisfies the rule is kept, so <code>pgsql</code> is not replaced by <code>mysql</code>. Without a repair, or in a <code>json5</code> or <code>php</code> file, the finding stays and names the required change. Both levels are repaired.</p>
+<p>Guard plans the changes to every file, then checks rules that touch the same file against the planned result. While a required rule stays unsatisfied, <code>apply</code> writes no file at all and reports the planned files as <code>blocked</code>. A missing mapping key is created along its pointer, and a missing XML attribute on its existing element.</p>
+<h4>Writing</h4>
+<p>A file that does not change keeps every byte. A changed JSON, YAML, NEON or TOML file is serialized again, so its indentation may change and its comments are lost; the result is parsed again and must hold the same data apart from the repaired fields. A changed XML file keeps its comments and every other node.</p>
+<p>Guard writes each file to a temporary file in the same directory and replaces the original atomically, keeping its permissions, and refuses to write when the file changed since it was read. Each replacement is atomic, but a failure in the middle of several files can leave the earlier ones written; fix the cause and run <code>guard check</code> again.</p>
+<p>Targets must be regular files inside the project. Paths that leave the project or pass through a symbolic link are rejected, and a rule cannot edit <code>guard.yaml</code> itself.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../assets/search-index.js" defer></script>
+<script src="../../../../assets/app.js" defer></script>
+</body>
+</html>

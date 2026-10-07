@@ -71,7 +71,7 @@
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a></span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeRedundantAssertInstanceOfIsReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L36"><a class="ln" href="#L36">36</a>    {</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoRedundantAssertInstanceOf/RedundantAssertInstanceOf.php&#039;</span>], [</span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/NoRedundantAssertInstanceOf/RedundantAssertInstanceOf.php&#039;</span>], [</span>
 <span class="src-line" id="L38"><a class="ln" href="#L38">38</a>            [</span>
 <span class="src-line" id="L39"><a class="ln" href="#L39">39</a>                <span class="tok-str">&#039;Remove redundant assertInstanceOf(): &quot;Tests\Fixture\NoRedundantAssertInstanceOf\Reporter&quot; is already an instance of &quot;Tests\Fixture\NoRedundantAssertInstanceOf\ReporterInterface&quot;. Assert observable behavior instead.&#039;</span>,</span>
 <span class="src-line" id="L40"><a class="ln" href="#L40">40</a>                <span class="tok-num">29</span>,</span>
@@ -89,12 +89,12 @@
 <span class="src-line" id="L52"><a class="ln" href="#L52">52</a></span>
 <span class="src-line" id="L53"><a class="ln" href="#L53">53</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeUsefulAssertInstanceOfIsNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L54"><a class="ln" href="#L54">54</a>    {</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoRedundantAssertInstanceOf/AllowedAssertInstanceOf.php&#039;</span>], []);</span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/NoRedundantAssertInstanceOf/AllowedAssertInstanceOf.php&#039;</span>], []);</span>
 <span class="src-line" id="L56"><a class="ln" href="#L56">56</a>    }</span>
 <span class="src-line" id="L57"><a class="ln" href="#L57">57</a></span>
 <span class="src-line" id="L58"><a class="ln" href="#L58">58</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeOutsideTestNamespaceIsNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L59"><a class="ln" href="#L59">59</a>    {</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/NoRedundantAssertInstanceOf/NonTestClass.php&#039;</span>], []);</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/NoRedundantAssertInstanceOf/NonTestClass.php&#039;</span>], []);</span>
 <span class="src-line" id="L61"><a class="ln" href="#L61">61</a>    }</span>
 <span class="src-line" id="L62"><a class="ln" href="#L62">62</a>}</span>
 <span class="src-line" id="L63"><a class="ln" href="#L63">63</a></span>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Configuration — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/configuration.md.html">
+<meta name="description" content="Configuration, a document of the k-kinzal/guard-php package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Configuration — php-ai-toolkit">
+<meta property="og:description" content="Configuration, a document of the k-kinzal/guard-php package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/configuration.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/all-items.html">All items</a></li><li><a href="../../../../k-kinzal/guard-php/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/Guard/Cli/index.html" title="Guard\Cli">Guard\Cli</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Cli/Command/index.html" title="Guard\Cli\Command">Guard\Cli\Command</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/index.html" title="Guard\Collect">Guard\Collect</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/Filesystem/index.html" title="Guard\Collect\Filesystem">Guard\Collect\Filesystem</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/Matching/index.html" title="Guard\Collect\Matching">Guard\Collect\Matching</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/index.html" title="Guard\Config">Guard\Config</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Assignment/index.html" title="Guard\Config\Assignment">Guard\Config\Assignment</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Profile/index.html" title="Guard\Config\Profile">Guard\Config\Profile</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Reader/index.html" title="Guard\Config\Reader">Guard\Config\Reader</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Validation/index.html" title="Guard\Config\Validation">Guard\Config\Validation</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Value/index.html" title="Guard\Config\Value">Guard\Config\Value</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Document/index.html" title="Guard\Document">Guard\Document</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Execution/index.html" title="Guard\Execution">Guard\Execution</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Extension/index.html" title="Guard\Extension">Guard\Extension</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Init/index.html" title="Guard\Init">Guard\Init</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Init/Legacy/index.html" title="Guard\Init\Legacy">Guard\Init\Legacy</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/index.html" title="Guard\Policy">Guard\Policy</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Comparison/index.html" title="Guard\Policy\Comparison">Guard\Policy\Comparison</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Inspection/index.html" title="Guard\Policy\Inspection">Guard\Policy\Inspection</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Limit/index.html" title="Guard\Policy\Limit">Guard\Policy\Limit</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Reporting/index.html" title="Guard\Reporting">Guard\Reporting</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/index.html" title="Guard\Structure">Guard\Structure</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/index.html" title="Guard\Structure\Markdown">Guard\Structure\Markdown</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Badge/index.html" title="Guard\Structure\Markdown\Badge">Guard\Structure\Markdown\Badge</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Block/index.html" title="Guard\Structure\Markdown\Block">Guard\Structure\Markdown\Block</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/index.html" title="Guard\Structure\Php">Guard\Structure\Php</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/ClassLikeMetric/index.html" title="Guard\Structure\Php\ClassLikeMetric">Guard\Structure\Php\ClassLikeMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/Complexity/index.html" title="Guard\Structure\Php\Complexity">Guard\Structure\Php\Complexity</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/FileMetric/index.html" title="Guard\Structure\Php\FileMetric">Guard\Structure\Php\FileMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/FunctionMetric/index.html" title="Guard\Structure\Php\FunctionMetric">Guard\Structure\Php\FunctionMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/Token/index.html" title="Guard\Structure\Php\Token">Guard\Structure\Php\Token</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/configuration.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Configuration</h1><div class="symbol-meta"><span class="source-link">docs/configuration.md</span></div></div>
+<section class="readme prose"><h2>Configuration</h2>
+<p><code>guard.yaml</code> declares the policies of a project. Commands read <code>guard.yaml</code> in the working directory; pass <code>--config FILE</code> to use another. Every path in it is relative to the directory of the main <code>guard.yaml</code>, whatever the working directory and wherever an import lives.</p>
+<h3>Example</h3>
+<pre class="code"><code>version: 1
+imports:
+  - vendor/k-kinzal/guard-php/rules/metrics.yaml
+  - vendor/k-kinzal/guard-php/rules/structure.yaml
+  - vendor/k-kinzal/guard-php/rules/phpstan.yaml
+  - vendor/k-kinzal/guard-php/rules/readme-md.yaml
+metrics:
+  source: [src]
+  profiles:
+    standard:
+      limits:
+        file: {lines: 800}
+documentation:
+  scan: [&#039;*.md&#039;]
+configuration:
+  - id: phpstan.level
+    level: recommended</code></pre>
+<p>The imports supply the shipped rules; the rest of the file changes only what this project does differently. Here the file length limit is raised, every Markdown file in the root must be declared, and the PHPStan level becomes a recommendation instead of a requirement.</p>
+<h3>Fields</h3>
+<div class="table-wrap"><table><thead><tr><th>Key</th><th>Required</th><th>Description</th></tr></thead><tbody><tr><td><code>version</code></td><td>yes</td><td>Always <code>1</code>. An imported file may omit it.</td></tr><tr><td><code>imports</code></td><td>no</td><td>Other policy files to load first. See <a href="#imports">Imports</a>.</td></tr><tr><td><code>collect</code></td><td>no</td><td>The files Guard may read at all. See <a href="#collection-scope">Collection scope</a>.</td></tr><tr><td><code>metrics</code></td><td>no</td><td>PHP size and complexity limits. See <a href="../../../../k-kinzal/guard-php/doc/docs/metrics.md.html">metrics</a>.</td></tr><tr><td><code>structure</code></td><td>no</td><td>Directory rules. See <a href="../../../../k-kinzal/guard-php/doc/docs/structure.md.html">structure</a>.</td></tr><tr><td><code>documentation</code></td><td>no</td><td>Markdown document declarations. See <a href="../../../../k-kinzal/guard-php/doc/docs/documents.md.html">documents</a>.</td></tr><tr><td><code>configuration</code></td><td>no</td><td>Rules for values in tool configuration files. See <a href="../../../../k-kinzal/guard-php/doc/docs/fields.md.html">configuration fields</a>.</td></tr><tr><td><code>extensions</code></td><td>no</td><td>Extension classes and their options, as <code>Class: {options}</code>. See <a href="../../../../k-kinzal/guard-php/doc/docs/extensions.md.html">extensions</a>.</td></tr></tbody></table></div>
+<p>Unknown keys, invalid types, contradictory bounds and two <code>configuration</code> rules with the same <code>id</code> in one file are errors with exit code <code>2</code>. Error messages name a section by the file it came from historically, such as <code>tree.yaml</code> for <code>structure</code> or <code>doc-guard.yaml</code> for <code>documentation</code>.</p>
+<h3>Imports</h3>
+<p>Each entry of <code>imports</code> is a path relative to the file that lists it, or an absolute path. An imported file may import more files. Guard loads the imports in order and then applies the file itself, so a later import overrides an earlier one and the project file overrides all of them. A circular import is an error.</p>
+<p>An override keeps every imported value it does not mention:</p>
+<div class="table-wrap"><table><thead><tr><th>Key</th><th>Merged by</th></tr></thead><tbody><tr><td><code>collect.include</code>, <code>collect.exclude</code></td><td>Each list replaces the imported one when set.</td></tr><tr><td><code>metrics.profiles</code></td><td>Profile name. A profile replaces only the keys it sets, and inside <code>limits</code> only the metrics it sets.</td></tr><tr><td><code>metrics.source</code>, <code>metrics.exclude</code>, <code>metrics.default</code>, <code>metrics.assignments</code></td><td>Each replaces the imported value when set.</td></tr><tr><td><code>structure.directories</code></td><td><code>path</code>. A rule replaces only the keys it sets; a new path is added.</td></tr><tr><td><code>structure.paths</code>, <code>structure.exclude</code></td><td>Each replaces the imported list when set.</td></tr><tr><td><code>documentation.files</code></td><td>Document path. A declaration replaces only the keys it sets, so a project can add <code>headings</code> to a document whose <code>outlines</code> come from a preset.</td></tr><tr><td><code>documentation.scan</code>, <code>documentation.exclude</code></td><td>Each replaces the imported list when set.</td></tr><tr><td><code>configuration</code></td><td><code>id</code>. A rule replaces only the keys it sets; a new <code>id</code> is added.</td></tr><tr><td><code>extensions</code></td><td>Class name. A later declaration replaces that class&#039;s whole option mapping and keeps its position.</td></tr></tbody></table></div>
+<p>To drop an imported rule, remove the import and write the rules you want in the project file instead. A policy without <code>imports</code> is a complete custom policy.</p>
+<h3>Presets</h3>
+<p>The package ships presets in <code>vendor/k-kinzal/guard-php/rules/</code>. Import only those you want; <a href="../../../../k-kinzal/guard-php/doc/docs/cli.md.html#init"><code>guard init</code></a> selects the ones that match the project.</p>
+<div class="table-wrap"><table><thead><tr><th>Preset</th><th>Checks</th></tr></thead><tbody><tr><td><code>metrics.yaml</code></td><td>The standard <a href="../../../../k-kinzal/guard-php/doc/docs/metrics.md.html#limits">metric limits</a> for <code>src</code>.</td></tr><tr><td><code>structure.yaml</code></td><td>The standard <a href="../../../../k-kinzal/guard-php/doc/docs/structure.md.html">directory rules</a> for <code>src</code>, <code>tests/Unit</code> and <code>skills</code>, scanning from the project root.</td></tr><tr><td><code>disable-doc.yaml</code></td><td>No <code>docs/</code> directory in the project root, even an empty one.</td></tr><tr><td><code>readme-md.yaml</code></td><td>The outline and badges of <code>README.md</code>. See <a href="../../../../k-kinzal/guard-php/doc/docs/documents.md.html#shipped-declarations">documents</a>.</td></tr><tr><td><code>agents-md.yaml</code></td><td>The outline of <code>AGENTS.md</code>.</td></tr><tr><td><code>claude-md.yaml</code></td><td><code>CLAUDE.md</code> contains exactly <code>@AGENTS.md</code>.</td></tr><tr><td><code>phpstan.yaml</code>, <code>phpstan-guard-rules.yaml</code></td><td>PHPStan level, includes and toolkit rules.</td></tr><tr><td><code>phpunit9.yaml</code> … <code>phpunit13.yaml</code></td><td>The PHPUnit configuration of each major.</td></tr><tr><td><code>doctest9.yaml</code> … <code>doctest13.yaml</code></td><td>The doctest suite in the PHPUnit configuration of each major.</td></tr><tr><td><code>php-cs-fixer.yaml</code>, <code>phpcs.yaml</code>, <code>deptrac.yaml</code>, <code>infection.yaml</code>, <code>composer.yaml</code></td><td>The configuration of each tool.</td></tr><tr><td><code>github-actions.yaml</code>, <code>mutation.yaml</code></td><td>The CI workflow and the scheduled mutation workflow.</td></tr><tr><td><code>pbt.yaml</code>, <code>fuzz.yaml</code>, <code>phpbench.yaml</code>, <code>docgen.yaml</code></td><td>The configuration of each tool, for projects that use it.</td></tr></tbody></table></div>
+<h3>Collection scope</h3>
+<p><code>collect</code> limits which files Guard reads. Every policy, built-in or from an extension, sees only what lies inside it:</p>
+<pre class="code"><code>files a policy sees = (collect.include − collect.exclude) ∩ files the policy asks for</code></pre>
+<pre class="code"><code>version: 1
+collect:
+  include: [src, docs, README.md, schemas/catalog.xsd]
+  exclude: [&#039;**/generated/**&#039;, &#039;docs/archive/**&#039;]</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Key</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>include</code></td><td><code>[&#039;**&#039;]</code></td><td>Paths and globs to read. A directory includes everything below it. <code>[]</code> selects nothing.</td></tr><tr><td><code>exclude</code></td><td><code>[]</code></td><td>Paths and globs removed from <code>include</code>. An excluded directory is skipped with everything below it.</td></tr></tbody></table></div>
+<p><code>*</code> matches within one path segment and <code>**</code> matches any number of segments. Absolute paths, <code>..</code> and backslashes are rejected. Symbolic links are not followed.</p>
+<p>When <code>collect</code> is set, it replaces the per-section reading scopes <code>metrics.source</code> and <code>metrics.exclude</code>, <code>structure.paths</code> and <code>structure.exclude</code>, and <code>documentation.exclude</code>, including values from presets. Metrics then read every <code>.php</code> file in the scope. Assignments, directory rule paths, declared documents, scan patterns and configuration rule files still choose what each policy checks.</p>
+<p>A file outside the scope is treated as if a policy had not asked for it: a declared document or configuration file outside the scope is skipped, not reported as missing. Without <code>collect</code>, each section keeps its own scope settings.</p>
+<p>Guard walks the file system once for all policies, reads each file at most once and parses it at most once per format, however many policies ask for it.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../assets/search-index.js" defer></script>
+<script src="../../../../assets/app.js" defer></script>
+</body>
+</html>

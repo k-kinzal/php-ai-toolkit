@@ -56,7 +56,7 @@
 <span class="src-line" id="L19"><a class="ln" href="#L19">19</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testReadReturnsRequestedSourceLine</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L20"><a class="ln" href="#L20">20</a>    {</span>
 <span class="src-line" id="L21"><a class="ln" href="#L21">21</a>        <span class="tok-var">$reader</span> = <span class="tok-kw">new</span> <span class="tok-id">TestIssueSourceReader</span>();</span>
-<span class="src-line" id="L22"><a class="ln" href="#L22">22</a>        <span class="tok-var">$file</span> = <span class="tok-id">dirname</span>(__DIR__, <span class="tok-num">3</span>) . <span class="tok-str">&#039;/Fixture/TestReporter/SampleTest.php&#039;</span>;</span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a>        <span class="tok-var">$file</span> = <span class="tok-id">dirname</span>(__DIR__, <span class="tok-num">4</span>) . <span class="tok-str">&#039;/fixtures/TestReporter/SampleTest.php&#039;</span>;</span>
 <span class="src-line" id="L23"><a class="ln" href="#L23">23</a></span>
 <span class="src-line" id="L24"><a class="ln" href="#L24">24</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-str">&quot;        self::assertSame(&#039;John&#039;, \$this-&gt;service-&gt;getName());&quot;</span>, <span class="tok-var">$reader</span>-&gt;<span class="tok-id">read</span>(<span class="tok-var">$file</span>, <span class="tok-num">11</span>));</span>
 <span class="src-line" id="L25"><a class="ln" href="#L25">25</a>    }</span>

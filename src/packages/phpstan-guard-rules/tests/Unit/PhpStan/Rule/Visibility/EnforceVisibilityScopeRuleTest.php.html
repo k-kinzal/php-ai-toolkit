@@ -117,7 +117,7 @@
 <span class="src-line" id="L80"><a class="ln" href="#L80">80</a></span>
 <span class="src-line" id="L81"><a class="ln" href="#L81">81</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeReportsEveryUnusableTag</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L82"><a class="ln" href="#L82">82</a>    {</span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/VisibilityScope/project/src/Invalid/MalformedTags.php&#039;</span>], [</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/VisibilityScope/project/src/Invalid/MalformedTags.php&#039;</span>], [</span>
 <span class="src-line" id="L84"><a class="ln" href="#L84">84</a>            [</span>
 <span class="src-line" id="L85"><a class="ln" href="#L85">85</a>                <span class="tok-str">&#039;Fix &quot;@visibility parrent&quot; on class Tests\Fixture\VisibilityScope\Invalid\MalformedTags: one bare lowercase word is read as a scope keyword, and &quot;parrent&quot; is not one of &quot;public&quot;, &quot;root&quot;, &quot;parent&quot;, &quot;namespace&quot;; write the keyword you meant, or write &quot;\parrent&quot; to name the namespace.&#039;</span>,</span>
 <span class="src-line" id="L86"><a class="ln" href="#L86">86</a>                <span class="tok-num">10</span>,</span>
@@ -136,8 +136,8 @@
 <span class="src-line" id="L99"><a class="ln" href="#L99">99</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testRuleReportsEveryWrittenReferenceOutsideClassScope</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L100"><a class="ln" href="#L100">100</a>    {</span>
 <span class="src-line" id="L101"><a class="ln" href="#L101">101</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([</span>
-<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>            __DIR__ . <span class="tok-str">&#039;/../../../../Fixture/VisibilityScope/project/src/Package/NamespaceScoped.php&#039;</span>,</span>
-<span class="src-line" id="L103"><a class="ln" href="#L103">103</a>            __DIR__ . <span class="tok-str">&#039;/../../../../Fixture/VisibilityScope/project/src/Outside/OutsideCaller.php&#039;</span>,</span>
+<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>            __DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/VisibilityScope/project/src/Package/NamespaceScoped.php&#039;</span>,</span>
+<span class="src-line" id="L103"><a class="ln" href="#L103">103</a>            __DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/VisibilityScope/project/src/Outside/OutsideCaller.php&#039;</span>,</span>
 <span class="src-line" id="L104"><a class="ln" href="#L104">104</a>        ], [</span>
 <span class="src-line" id="L105"><a class="ln" href="#L105">105</a>            [</span>
 <span class="src-line" id="L106"><a class="ln" href="#L106">106</a>                <span class="tok-str">&#039;Class Tests\Fixture\VisibilityScope\Package\NamespaceScoped is not visible from namespace &quot;Tests\Fixture\VisibilityScope\Outside&quot;: the declaration is marked &quot;@visibility namespace&quot;, so it may only be named from namespace &quot;Tests\Fixture\VisibilityScope\Package&quot; and its sub-namespaces. Move this instantiation into that namespace, or widen the declaration to &quot;@visibility Tests\Fixture\VisibilityScope&quot;.&#039;</span>,</span>

@@ -101,8 +101,32 @@
 <span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        (<span class="tok-kw">new</span> <span class="tok-id">\Guard\Execution\TargetPath</span>())-&gt;<span class="tok-id">resolve</span>(<span class="tok-var">$root</span>, <span class="tok-str">&#039;linked.json&#039;</span>);</span>
 <span class="src-line" id="L65"><a class="ln" href="#L65">65</a>    }</span>
 <span class="src-line" id="L66"><a class="ln" href="#L66">66</a></span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>}</span>
-<span class="src-line" id="L68"><a class="ln" href="#L68">68</a></span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testResolveRejectsAMissingTarget</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>    {</span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectException</span>(<span class="tok-id">\Guard\Policy\PolicyException</span>::<span class="tok-kw">class</span>);</span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectExceptionMessage</span>(<span class="tok-str">&#039;Target &quot;missing.json&quot; does not exist. Create the configuration file first.&#039;</span>);</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>        (<span class="tok-kw">new</span> <span class="tok-id">\Guard\Execution\TargetPath</span>())-&gt;<span class="tok-id">resolve</span>(<span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/guard-path-&#039;</span> . <span class="tok-id">uniqid</span>(), <span class="tok-str">&#039;missing.json&#039;</span>);</span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>    }</span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a></span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testConfineAcceptsAMissingTargetInsideTheRoot</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>    {</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        <span class="tok-var">$root</span> = <span class="tok-id">sys_get_temp_dir</span>() . <span class="tok-str">&#039;/guard-path-&#039;</span> . <span class="tok-id">uniqid</span>();</span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>        <span class="tok-id">mkdir</span>(<span class="tok-var">$root</span>);</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>        <span class="tok-kw">try</span> {</span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>            <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-var">$root</span> . <span class="tok-str">&#039;/config/missing.json&#039;</span>, (<span class="tok-kw">new</span> <span class="tok-id">\Guard\Execution\TargetPath</span>())-&gt;<span class="tok-id">confine</span>(<span class="tok-var">$root</span>, <span class="tok-str">&#039;./config//missing.json&#039;</span>));</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>        } <span class="tok-kw">finally</span> {</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>            <span class="tok-id">rmdir</span>(<span class="tok-var">$root</span>);</span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>        }</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>    }</span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a></span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testConfineRejectsEscapingRoot</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>    {</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectException</span>(<span class="tok-id">\Guard\Policy\PolicyException</span>::<span class="tok-kw">class</span>);</span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">expectExceptionMessage</span>(<span class="tok-str">&#039;Target &quot;../outside.json&quot; must stay inside the directory containing guard.yaml.&#039;</span>);</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>        (<span class="tok-kw">new</span> <span class="tok-id">\Guard\Execution\TargetPath</span>())-&gt;<span class="tok-id">confine</span>(<span class="tok-id">sys_get_temp_dir</span>(), <span class="tok-str">&#039;../outside.json&#039;</span>);</span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>    }</span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>}</span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

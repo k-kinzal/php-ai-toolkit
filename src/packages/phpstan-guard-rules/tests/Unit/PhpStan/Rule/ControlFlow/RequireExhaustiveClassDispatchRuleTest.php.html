@@ -204,8 +204,8 @@
 <span class="src-line" id="L167"><a class="ln" href="#L167">167</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeReportsTheClassesADispatchLeavesOut</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L168"><a class="ln" href="#L168">168</a>    {</span>
 <span class="src-line" id="L169"><a class="ln" href="#L169">169</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([</span>
-<span class="src-line" id="L170"><a class="ln" href="#L170">170</a>            __DIR__ . <span class="tok-str">&#039;/../../../../Fixture/RequireExhaustiveDispatch/Hierarchy.php&#039;</span>,</span>
-<span class="src-line" id="L171"><a class="ln" href="#L171">171</a>            __DIR__ . <span class="tok-str">&#039;/../../../../Fixture/RequireExhaustiveDispatch/HierarchyDispatch.php&#039;</span>,</span>
+<span class="src-line" id="L170"><a class="ln" href="#L170">170</a>            __DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/RequireExhaustiveDispatch/Hierarchy.php&#039;</span>,</span>
+<span class="src-line" id="L171"><a class="ln" href="#L171">171</a>            __DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/RequireExhaustiveDispatch/HierarchyDispatch.php&#039;</span>,</span>
 <span class="src-line" id="L172"><a class="ln" href="#L172">172</a>        ], [</span>
 <span class="src-line" id="L173"><a class="ln" href="#L173">173</a>            [</span>
 <span class="src-line" id="L174"><a class="ln" href="#L174">174</a>                <span class="tok-str">&#039;Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\BankTransfer, Tests\\Fixture\\RequireExhaustiveDispatch\\Wallet to its &quot;default&quot; arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking &quot;default&quot;.&#039;</span>,</span>
@@ -225,8 +225,8 @@
 <span class="src-line" id="L188"><a class="ln" href="#L188">188</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeReadsAClassNameDispatchOverAUnionOfFinalClasses</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L189"><a class="ln" href="#L189">189</a>    {</span>
 <span class="src-line" id="L190"><a class="ln" href="#L190">190</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([</span>
-<span class="src-line" id="L191"><a class="ln" href="#L191">191</a>            __DIR__ . <span class="tok-str">&#039;/../../../../Fixture/RequireExhaustiveDispatch/Shapes.php&#039;</span>,</span>
-<span class="src-line" id="L192"><a class="ln" href="#L192">192</a>            __DIR__ . <span class="tok-str">&#039;/../../../../Fixture/RequireExhaustiveDispatch/ShapeDispatch.php&#039;</span>,</span>
+<span class="src-line" id="L191"><a class="ln" href="#L191">191</a>            __DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/RequireExhaustiveDispatch/Shapes.php&#039;</span>,</span>
+<span class="src-line" id="L192"><a class="ln" href="#L192">192</a>            __DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/RequireExhaustiveDispatch/ShapeDispatch.php&#039;</span>,</span>
 <span class="src-line" id="L193"><a class="ln" href="#L193">193</a>        ], [</span>
 <span class="src-line" id="L194"><a class="ln" href="#L194">194</a>            [</span>
 <span class="src-line" id="L195"><a class="ln" href="#L195">195</a>                <span class="tok-str">&#039;Switch statement sends Tests\\Fixture\\RequireExhaustiveDispatch\\Square, Tests\\Fixture\\RequireExhaustiveDispatch\\Triangle to its &quot;default&quot; case. Write a &quot;case&quot; for each of those values so that a value added to the closed type is reported here instead of silently taking &quot;default&quot;.&#039;</span>,</span>

@@ -76,7 +76,7 @@
 <span class="src-line" id="L39"><a class="ln" href="#L39">39</a></span>
 <span class="src-line" id="L40"><a class="ln" href="#L40">40</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeForbiddenSuffixesAreReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L41"><a class="ln" href="#L41">41</a>    {</span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/ForbidClassLikeNameSuffix/WithForbiddenSuffixes.php&#039;</span>], [</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/ForbidClassLikeNameSuffix/WithForbiddenSuffixes.php&#039;</span>], [</span>
 <span class="src-line" id="L43"><a class="ln" href="#L43">43</a>            [</span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a>                <span class="tok-str">&#039;Rename class UserHelper to a specific domain name without the &quot;Helper&quot; suffix.&#039;</span>,</span>
 <span class="src-line" id="L45"><a class="ln" href="#L45">45</a>                <span class="tok-num">7</span>,</span>
@@ -98,7 +98,7 @@
 <span class="src-line" id="L61"><a class="ln" href="#L61">61</a></span>
 <span class="src-line" id="L62"><a class="ln" href="#L62">62</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeAllowedNamesAreNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L63"><a class="ln" href="#L63">63</a>    {</span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/ForbidClassLikeNameSuffix/WithoutForbiddenSuffixes.php&#039;</span>], []);</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/ForbidClassLikeNameSuffix/WithoutForbiddenSuffixes.php&#039;</span>], []);</span>
 <span class="src-line" id="L65"><a class="ln" href="#L65">65</a>    }</span>
 <span class="src-line" id="L66"><a class="ln" href="#L66">66</a></span>
 <span class="src-line" id="L67"><a class="ln" href="#L67">67</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testMatchingSuffixReturnsConfiguredSuffix</span>(): <span class="tok-id">void</span></span>
@@ -133,7 +133,7 @@
 <span class="src-line" id="L96"><a class="ln" href="#L96">96</a></span>
 <span class="src-line" id="L97"><a class="ln" href="#L97">97</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeWithoutConfiguredSuffixesDoesNotReport</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L98"><a class="ln" href="#L98">98</a>    {</span>
-<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../Fixture/ForbidClassLikeNameSuffix/WithForbiddenSuffixes.php&#039;</span>], []);</span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/ForbidClassLikeNameSuffix/WithForbiddenSuffixes.php&#039;</span>], []);</span>
 <span class="src-line" id="L100"><a class="ln" href="#L100">100</a>    }</span>
 <span class="src-line" id="L101"><a class="ln" href="#L101">101</a>}</span>
 <span class="src-line" id="L102"><a class="ln" href="#L102">102</a></span>

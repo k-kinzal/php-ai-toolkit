@@ -6,8 +6,9 @@
     "require": {
         "php": "^8.0",
         "ext-dom": "*",
-        "symfony/yaml": "^5.4 || ^6.4 || ^7.4 || ^8.0",
         "nette/neon": "^3.4",
+        "symfony/console": "^5.4 || ^6.4 || ^7.4 || ^8.0",
+        "symfony/yaml": "^5.4 || ^6.4 || ^7.4 || ^8.0",
         "yosymfony/toml": "^1.0"
     },
     "autoload": {

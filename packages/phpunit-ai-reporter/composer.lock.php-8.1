@@ -1447,12 +1447,13 @@
             "dist": {
                 "type": "path",
                 "url": "../docgen-php",
-                "reference": "8ef434d8f69dd7ec4b89460164f16d47e204f7a8"
+                "reference": "38fd840e6419fc61ca1f6f2d816c24c0347e28d0"
             },
             "require": {
                 "nikic/php-parser": "^4.19 || ^5.0",
                 "php": "^8.0",
                 "phpstan/phpdoc-parser": "^1.33 || ^2.0",
+                "symfony/console": "^5.4 || ^6.4 || ^7.4 || ^8.0",
                 "symfony/yaml": "^5.4 || ^6.4 || ^7.4 || ^8.0"
             },
             "require-dev": {
@@ -1489,6 +1490,9 @@
                 ]
             },
             "scripts": {
+                "autoload:check": [
+                    "composer dump-autoload --optimize --strict-psr --strict-ambiguous"
+                ],
                 "test": [
                     "@php -d memory_limit=512M tests/run.php --parallel --processes=auto"
                 ],
@@ -1520,6 +1524,7 @@
                     "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite doctest"
                 ],
                 "lint": [
+                    "@autoload:check",
                     "@format:check",
                     "@phpstan",
                     "@compat",
@@ -1569,12 +1574,13 @@
             "dist": {
                 "type": "path",
                 "url": "../guard-php",
-                "reference": "3db1390431ab3c245265ea74e14bc93af246365f"
+                "reference": "02028d14e842c7c349f6f9fc28a2bd351ccc544e"
             },
             "require": {
                 "ext-dom": "*",
                 "nette/neon": "^3.4",
                 "php": "^8.0",
+                "symfony/console": "^5.4 || ^6.4 || ^7.4 || ^8.0",
                 "symfony/yaml": "^5.4 || ^6.4 || ^7.4 || ^8.0",
                 "yosymfony/toml": "^1.0"
             },
@@ -1609,6 +1615,9 @@
                 ]
             },
             "scripts": {
+                "autoload:check": [
+                    "composer dump-autoload --optimize --strict-psr --strict-ambiguous"
+                ],
                 "test": [
                     "@php -d memory_limit=512M tests/run.php --parallel --processes=auto"
                 ],
@@ -1640,6 +1649,7 @@
                     "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite doctest"
                 ],
                 "lint": [
+                    "@autoload:check",
                     "@format:check",
                     "@phpstan",
                     "@compat",
@@ -1669,6 +1679,9 @@
                 ],
                 "guard:apply": [
                     "@php bin/guard apply"
+                ],
+                "docgen": [
+                    "docgen"
                 ]
             },
             "license": [
@@ -1686,7 +1699,7 @@
             "dist": {
                 "type": "path",
                 "url": "../phpstan-ai-formatter",
-                "reference": "a8b4cfdfede73a7c511dbf32729a74a45eda5fdb"
+                "reference": "6a2a05b7b544e3b2ebe7f88d2547ed29f5e5775b"
             },
             "require": {
                 "k-kinzal/phpunit-ai-reporter": "^1.0 || dev-main",
@@ -1727,6 +1740,9 @@
                 ]
             },
             "scripts": {
+                "autoload:check": [
+                    "composer dump-autoload --optimize --strict-psr --strict-ambiguous"
+                ],
                 "test": [
                     "@php -d memory_limit=512M tests/run.php --parallel --processes=auto"
                 ],
@@ -1758,6 +1774,7 @@
                     "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite doctest"
                 ],
                 "lint": [
+                    "@autoload:check",
                     "@format:check",
                     "@phpstan",
                     "@compat",
@@ -1787,6 +1804,9 @@
                 ],
                 "guard:apply": [
                     "guard apply"
+                ],
+                "docgen": [
+                    "docgen"
                 ]
             },
             "license": [
@@ -1804,7 +1824,7 @@
             "dist": {
                 "type": "path",
                 "url": "../phpstan-guard-rules",
-                "reference": "1d1bf19080cff5200ab4e3baf5e32c7e169e3b57"
+                "reference": "ff5eebbe703fe53c585316facc73de9829cbc40e"
             },
             "require": {
                 "k-kinzal/docgen-php": "^1.0 || dev-main",
@@ -1851,6 +1871,9 @@
                 ]
             },
             "scripts": {
+                "autoload:check": [
+                    "composer dump-autoload --optimize --strict-psr --strict-ambiguous"
+                ],
                 "test": [
                     "@php -d memory_limit=512M tests/run.php --parallel --processes=auto"
                 ],
@@ -1882,6 +1905,7 @@
                     "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite doctest"
                 ],
                 "lint": [
+                    "@autoload:check",
                     "@format:check",
                     "@phpstan",
                     "@compat",
@@ -1911,6 +1935,9 @@
                 ],
                 "guard:apply": [
                     "guard apply"
+                ],
+                "docgen": [
+                    "docgen"
                 ]
             },
             "license": [

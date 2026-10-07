@@ -3,7 +3,7 @@
   "checkpoint_id": "01M4B7TG5G1RRYT34X2JZYVTXT",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 4,
+  "checkpoints_count": 5,
   "files_touched": [
     "README.md",
     "packages/guard-php/README.md",
@@ -40,13 +40,20 @@
       "compact_transcript": "/2/transcript.jsonl",
       "content_hash": "/2/content_hash.txt",
       "prompt": "/2/prompt.txt"
+    },
+    {
+      "metadata": "/3/metadata.json",
+      "transcript": "/3/full.jsonl",
+      "compact_transcript": "/3/transcript.jsonl",
+      "content_hash": "/3/content_hash.txt",
+      "prompt": "/3/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 5549,
-    "cache_creation_tokens": 1834130,
-    "cache_read_tokens": 77422281,
-    "output_tokens": 272491,
-    "api_call_count": 294
+    "input_tokens": 5555,
+    "cache_creation_tokens": 2226027,
+    "cache_read_tokens": 78234377,
+    "output_tokens": 273955,
+    "api_call_count": 297
   }
 }

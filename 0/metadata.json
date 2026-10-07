@@ -1,0 +1,54 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4B7TG5G1RRYT34X2JZYVTXT",
+  "session_id": "01a113db-5442-7e10-aea0-65d530edd258",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-07T13:11:12.158966Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "README.md",
+    "packages/guard-php/README.md",
+    "packages/guard-php/skills/setup-toolkit-doc-guard/SKILL.md",
+    "packages/guard-php/skills/setup-toolkit-loc-guard/SKILL.md",
+    "packages/guard-php/skills/setup-toolkit-tree-guard/SKILL.md"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "d0702ee62802",
+  "checkpoint_transcript_start": 317,
+  "transcript_lines_at_start": 317,
+  "compact_transcript_start": 42,
+  "token_usage": {
+    "input_tokens": 4979,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1013120,
+    "output_tokens": 2316,
+    "api_call_count": 9
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-07T13:11:11.913648Z",
+    "agent_lines": 18,
+    "agent_removed": 9,
+    "human_added": 876,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 894,
+    "total_lines_changed": 903,
+    "agent_percentage": 2.990033222591362,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

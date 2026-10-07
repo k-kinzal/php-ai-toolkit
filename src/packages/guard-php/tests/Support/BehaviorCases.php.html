@@ -67,45 +67,49 @@
 <span class="src-line" id="L30"><a class="ln" href="#L30">30</a>        <span class="tok-var">$expected</span> = <span class="tok-id">json_decode</span>(<span class="tok-var">$expectedSource</span>, <span class="tok-id">true</span>, <span class="tok-num">512</span>, <span class="tok-id">JSON_THROW_ON_ERROR</span>);</span>
 <span class="src-line" id="L31"><a class="ln" href="#L31">31</a>        <span class="tok-var">$yamlVersion</span> = <span class="tok-id">InstalledVersions</span>::<span class="tok-id">getVersion</span>(<span class="tok-str">&#039;symfony/yaml&#039;</span>);</span>
 <span class="src-line" id="L32"><a class="ln" href="#L32">32</a>        <span class="tok-var">$yamlMajor</span> = <span class="tok-var">$yamlVersion</span> === <span class="tok-id">null</span> ? <span class="tok-str">&#039;&#039;</span> : <span class="tok-id">explode</span>(<span class="tok-str">&#039;.&#039;</span>, <span class="tok-var">$yamlVersion</span>)[<span class="tok-num">0</span>];</span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-var">$variant</span> = <span class="tok-var">$base</span> . <span class="tok-str">&#039;expected-yaml&#039;</span> . <span class="tok-var">$yamlMajor</span> . <span class="tok-str">&#039;.json&#039;</span>;</span>
-<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-kw">if</span> (<span class="tok-id">is_file</span>(<span class="tok-var">$variant</span>)) {</span>
-<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>            <span class="tok-var">$variantSource</span> = <span class="tok-id">file_get_contents</span>(<span class="tok-var">$variant</span>);</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>            <span class="tok-kw">if</span> (<span class="tok-var">$variantSource</span> === <span class="tok-id">false</span>) {</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>                <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">RuntimeException</span>(<span class="tok-str">&#039;Cannot read YAML-version characterization fixture.&#039;</span>);</span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>            }</span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>            <span class="tok-com">/** @var array&lt;string, list&lt;array{exit: int, output: string, files: array&lt;array-key, string&gt;}&gt;&gt; $overrides */</span></span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>            <span class="tok-var">$overrides</span> = <span class="tok-id">json_decode</span>(<span class="tok-var">$variantSource</span>, <span class="tok-id">true</span>, <span class="tok-num">512</span>, <span class="tok-id">JSON_THROW_ON_ERROR</span>);</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>            <span class="tok-var">$expected</span> = <span class="tok-id">array_replace</span>(<span class="tok-var">$expected</span>, <span class="tok-var">$overrides</span>);</span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        }</span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$scenarios</span> <span class="tok-kw">as</span> <span class="tok-var">$scenario</span>) {</span>
-<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>            <span class="tok-kw">yield</span> <span class="tok-var">$scenario</span>[<span class="tok-str">&#039;name&#039;</span>] =&gt; [<span class="tok-var">$scenario</span>, <span class="tok-var">$expected</span>[<span class="tok-var">$scenario</span>[<span class="tok-str">&#039;name&#039;</span>]]];</span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        }</span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>    }</span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a><span class="tok-com">     * @param array{name: string, files: array&lt;array-key, string&gt;, commands: list&lt;list&lt;string&gt;&gt;} $scenario</span></span>
-<span class="src-line" id="L49"><a class="ln" href="#L49">49</a><span class="tok-com">     * @return list&lt;array{exit: int, output: string, files: array&lt;array-key, string&gt;}&gt;</span></span>
-<span class="src-line" id="L50"><a class="ln" href="#L50">50</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">run</span>(<span class="tok-kw">array</span> <span class="tok-var">$scenario</span>): <span class="tok-kw">array</span></span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>    {</span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-var">$package</span> = <span class="tok-id">dirname</span>(__DIR__, <span class="tok-num">2</span>);</span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>        <span class="tok-var">$project</span> = <span class="tok-kw">new</span> <span class="tok-id">Project</span>(<span class="tok-var">$scenario</span>[<span class="tok-str">&#039;files&#039;</span>]);</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>        <span class="tok-var">$results</span> = [];</span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>        <span class="tok-kw">try</span> {</span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$scenario</span>[<span class="tok-str">&#039;commands&#039;</span>] <span class="tok-kw">as</span> <span class="tok-var">$command</span>) {</span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>                <span class="tok-var">$output</span> = <span class="tok-str">&#039;&#039;</span>;</span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>                <span class="tok-var">$application</span> = <span class="tok-kw">new</span> <span class="tok-id">Application</span>(<span class="tok-var">$project</span>-&gt;<span class="tok-id">root</span>, <span class="tok-kw">static</span> <span class="tok-kw">function</span> (<span class="tok-id">string</span> <span class="tok-var">$text</span>) <span class="tok-kw">use</span> (&amp;<span class="tok-var">$output</span>): <span class="tok-id">void</span> {</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>                    <span class="tok-var">$output</span> .= <span class="tok-var">$text</span>;</span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>                });</span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>                <span class="tok-var">$exit</span> = <span class="tok-var">$application</span>-&gt;<span class="tok-id">run</span>(<span class="tok-var">$command</span>);</span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>                <span class="tok-var">$results</span>[] = [<span class="tok-str">&#039;exit&#039;</span> =&gt; <span class="tok-var">$exit</span>, <span class="tok-str">&#039;output&#039;</span> =&gt; <span class="tok-id">str_replace</span>([<span class="tok-var">$project</span>-&gt;<span class="tok-id">root</span>, <span class="tok-var">$package</span>], [<span class="tok-str">&#039;&lt;project&gt;&#039;</span>, <span class="tok-str">&#039;&lt;package&gt;&#039;</span>], <span class="tok-var">$output</span>), <span class="tok-str">&#039;files&#039;</span> =&gt; <span class="tok-var">$project</span>-&gt;<span class="tok-id">files</span>()];</span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>            }</span>
-<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>        } <span class="tok-kw">finally</span> {</span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>            <span class="tok-var">$project</span>-&gt;<span class="tok-id">remove</span>();</span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>        }</span>
-<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>        <span class="tok-kw">return</span> <span class="tok-var">$results</span>;</span>
-<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>    }</span>
-<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>}</span>
-<span class="src-line" id="L71"><a class="ln" href="#L71">71</a></span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-var">$yamlMinor</span> = <span class="tok-var">$yamlVersion</span> === <span class="tok-id">null</span> ? <span class="tok-str">&#039;&#039;</span> : <span class="tok-id">implode</span>(<span class="tok-str">&#039;.&#039;</span>, <span class="tok-id">array_slice</span>(<span class="tok-id">explode</span>(<span class="tok-str">&#039;.&#039;</span>, <span class="tok-var">$yamlVersion</span>), <span class="tok-num">0</span>, <span class="tok-num">2</span>));</span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-var">$variant</span> = <span class="tok-var">$base</span> . <span class="tok-str">&#039;expected-yaml&#039;</span> . <span class="tok-var">$yamlMinor</span> . <span class="tok-str">&#039;.json&#039;</span>;</span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>        <span class="tok-kw">if</span> (!<span class="tok-id">is_file</span>(<span class="tok-var">$variant</span>)) {</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>            <span class="tok-var">$variant</span> = <span class="tok-var">$base</span> . <span class="tok-str">&#039;expected-yaml&#039;</span> . <span class="tok-var">$yamlMajor</span> . <span class="tok-str">&#039;.json&#039;</span>;</span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        }</span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>        <span class="tok-kw">if</span> (<span class="tok-id">is_file</span>(<span class="tok-var">$variant</span>)) {</span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>            <span class="tok-var">$variantSource</span> = <span class="tok-id">file_get_contents</span>(<span class="tok-var">$variant</span>);</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>            <span class="tok-kw">if</span> (<span class="tok-var">$variantSource</span> === <span class="tok-id">false</span>) {</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>                <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">RuntimeException</span>(<span class="tok-str">&#039;Cannot read YAML-version characterization fixture.&#039;</span>);</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>            }</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>            <span class="tok-com">/** @var array&lt;string, list&lt;array{exit: int, output: string, files: array&lt;array-key, string&gt;}&gt;&gt; $overrides */</span></span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>            <span class="tok-var">$overrides</span> = <span class="tok-id">json_decode</span>(<span class="tok-var">$variantSource</span>, <span class="tok-id">true</span>, <span class="tok-num">512</span>, <span class="tok-id">JSON_THROW_ON_ERROR</span>);</span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>            <span class="tok-var">$expected</span> = <span class="tok-id">array_replace</span>(<span class="tok-var">$expected</span>, <span class="tok-var">$overrides</span>);</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        }</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$scenarios</span> <span class="tok-kw">as</span> <span class="tok-var">$scenario</span>) {</span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>            <span class="tok-kw">yield</span> <span class="tok-var">$scenario</span>[<span class="tok-str">&#039;name&#039;</span>] =&gt; [<span class="tok-var">$scenario</span>, <span class="tok-var">$expected</span>[<span class="tok-var">$scenario</span>[<span class="tok-str">&#039;name&#039;</span>]]];</span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>        }</span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>    }</span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a><span class="tok-com">     * @param array{name: string, files: array&lt;array-key, string&gt;, commands: list&lt;list&lt;string&gt;&gt;} $scenario</span></span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a><span class="tok-com">     * @return list&lt;array{exit: int, output: string, files: array&lt;array-key, string&gt;}&gt;</span></span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">run</span>(<span class="tok-kw">array</span> <span class="tok-var">$scenario</span>): <span class="tok-kw">array</span></span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>    {</span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>        <span class="tok-var">$package</span> = <span class="tok-id">dirname</span>(__DIR__, <span class="tok-num">2</span>);</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>        <span class="tok-var">$project</span> = <span class="tok-kw">new</span> <span class="tok-id">Project</span>(<span class="tok-var">$scenario</span>[<span class="tok-str">&#039;files&#039;</span>]);</span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>        <span class="tok-var">$results</span> = [];</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-kw">try</span> {</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$scenario</span>[<span class="tok-str">&#039;commands&#039;</span>] <span class="tok-kw">as</span> <span class="tok-var">$command</span>) {</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>                <span class="tok-var">$output</span> = <span class="tok-str">&#039;&#039;</span>;</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>                <span class="tok-var">$application</span> = <span class="tok-kw">new</span> <span class="tok-id">Application</span>(<span class="tok-var">$project</span>-&gt;<span class="tok-id">root</span>, <span class="tok-kw">static</span> <span class="tok-kw">function</span> (<span class="tok-id">string</span> <span class="tok-var">$text</span>) <span class="tok-kw">use</span> (&amp;<span class="tok-var">$output</span>): <span class="tok-id">void</span> {</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>                    <span class="tok-var">$output</span> .= <span class="tok-var">$text</span>;</span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>                });</span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>                <span class="tok-var">$exit</span> = <span class="tok-var">$application</span>-&gt;<span class="tok-id">run</span>(<span class="tok-var">$command</span>);</span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>                <span class="tok-var">$results</span>[] = [<span class="tok-str">&#039;exit&#039;</span> =&gt; <span class="tok-var">$exit</span>, <span class="tok-str">&#039;output&#039;</span> =&gt; <span class="tok-id">str_replace</span>([<span class="tok-var">$project</span>-&gt;<span class="tok-id">root</span>, <span class="tok-var">$package</span>], [<span class="tok-str">&#039;&lt;project&gt;&#039;</span>, <span class="tok-str">&#039;&lt;package&gt;&#039;</span>], <span class="tok-var">$output</span>), <span class="tok-str">&#039;files&#039;</span> =&gt; <span class="tok-var">$project</span>-&gt;<span class="tok-id">files</span>()];</span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>            }</span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        } <span class="tok-kw">finally</span> {</span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>            <span class="tok-var">$project</span>-&gt;<span class="tok-id">remove</span>();</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>        }</span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>        <span class="tok-kw">return</span> <span class="tok-var">$results</span>;</span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>    }</span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>}</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

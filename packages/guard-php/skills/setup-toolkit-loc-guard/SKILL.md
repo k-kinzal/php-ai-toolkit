@@ -5,7 +5,7 @@ description: Configure Guard source metrics policies for a PHP project, includin
 
 # Set up Guard source metrics policies
 
-Use `k-kinzal/guard-php` and `vendor/bin/guard`. The source metrics checks are policies in the unified Collect → Policy → Report pipeline. Read [the Guard guide](../../docs/guard.md) and [the policy reference](../../docs/loc-guard.md) for configuration semantics.
+Use `k-kinzal/guard-php` and `vendor/bin/guard`. The source metrics checks are policies in the unified Collect → Policy → Report pipeline. Read [the Guard configuration](../../docs/configuration.md) and [the policy reference](../../docs/metrics.md) for configuration semantics.
 
 Inspect the project's existing `guard.yaml`, Composer scripts, and source roots before changing setup. If no policy exists, run `vendor/bin/guard init`; it detects matching presets and migrates existing legacy files. If a policy already exists, update its `metrics` section or imports within the requested scope instead of overwriting it.
 

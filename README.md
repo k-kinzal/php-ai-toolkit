@@ -63,7 +63,7 @@ vendor/bin/guard apply
 `guard.yaml` configures source metrics, directory rules, Markdown structure and
 JSON/YAML/XML/TOML/NEON field constraints. Required violations fail; recommendations
 warn. Existing guard limits are retained when importing older policies. See the
-[Guard guide](packages/guard-php/docs/guard.md) for repair behavior and format limitations.
+[Guard documentation](packages/guard-php/docs/policies.md) for repair behavior and format limitations.
 
 Run the end-to-end adoption skill:
 
@@ -100,15 +100,15 @@ the first measured result.
 The [API documentation site](https://k-kinzal.github.io/php-ai-toolkit/) is generated from the source by `docgen`
 and published on every push to `main`.
 
-- [Guard](packages/guard-php/docs/guard.md): Unified checks, configuration policies, staged repairs and migration
+- [Guard](packages/guard-php/docs/policies.md): Unified checks, configuration policies, staged repairs and migration
 - [DocGen](packages/docgen-php/docs/docgen.md): DocGen documentation scope, caching, and generated site behavior
-- [Doc policy](packages/guard-php/docs/doc-guard.md): Guard Markdown document structure constraints
+- [Doc policy](packages/guard-php/docs/documents.md): Guard Markdown document structure constraints
 - [Doctest](packages/phpunit-ai-reporter/docs/doctest.md): Running the examples written in PHPDoc blocks as PHPUnit tests, the assertion notation, and how the port differs from upstream
-- [Loc policy](packages/guard-php/docs/loc-guard.md): Guard source metric limits and reporting
+- [Loc policy](packages/guard-php/docs/metrics.md): Guard source metric limits and reporting
 - [PHPStan AI Formatter](packages/phpstan-ai-formatter/docs/phpstan-ai-formatter.md): The `ai` error formatter, its mode detection, and its output
 - [PHPStan Rules](packages/phpstan-guard-rules/docs/phpstan-rules.md): Custom rules and their error identifiers
 - [PHPUnit AI Reporter](packages/phpunit-ai-reporter/docs/phpunit-ai-reporter.md): The failure reporter for PHPUnit 9.6 and 10.5 or later
-- [Tree policy](packages/guard-php/docs/tree-guard.md): Guard directory and file structure policies
+- [Tree policy](packages/guard-php/docs/structure.md): Guard directory and file structure policies
 ## License
 
 MIT

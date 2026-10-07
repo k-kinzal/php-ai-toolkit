@@ -8,7 +8,16 @@ Part of [php-ai-toolkit](https://github.com/k-kinzal/php-ai-toolkit).
 composer require --dev k-kinzal/guard-php:dev-main
 ```
 
-See the [guide](docs/guard.md).
+See the documentation:
+
+- [Policies](docs/policies.md): What Guard checks, what it repairs, and the adoption workflow
+- [Command Line](docs/cli.md): Commands, options, exit codes, reports and `guard init` preset detection
+- [Configuration](docs/configuration.md): `guard.yaml`, imports and overrides, shipped presets and the collection scope
+- [Metrics](docs/metrics.md): PHP line and complexity limits, profiles and assignments
+- [Structure](docs/structure.md): Directory contents, naming and count constraints
+- [Documents](docs/documents.md): Markdown headings, outlines, badges, exact content and undeclared documents
+- [Configuration Fields](docs/fields.md): Assertions and repairs for values in tool configuration files
+- [Extensions](docs/extensions.md): Custom policies and structures
 
 ```sh
 vendor/bin/guard init

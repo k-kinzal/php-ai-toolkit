@@ -14,6 +14,7 @@ concurrency:
 
 env:
   COMPOSER_NO_INTERACTION: '1'
+  COMPOSER_ROOT_VERSION: dev-main
 
 defaults:
   run:

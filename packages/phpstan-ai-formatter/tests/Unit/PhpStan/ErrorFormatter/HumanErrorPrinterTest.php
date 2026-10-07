@@ -27,7 +27,7 @@ final class HumanErrorPrinterTest extends TestCase
     public function testWriteEmitsFormattedErrorLines(): void
     {
         $output = new RecordingOutput(self::createStub(OutputStyle::class));
-        $file = __DIR__ . '/../../../Fixture/ErrorFormatter/SampleSource.php';
+        $file = __DIR__ . '/../../../../fixtures/ErrorFormatter/SampleSource.php';
 
         (new HumanErrorPrinter(new ErrorSourceReader(), new ErrorGutter()))->write(
             new Error('Property.', $file, 9, true, null, null, 'Remove it.', null, null, 'custom.a'),

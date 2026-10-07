@@ -18,7 +18,7 @@ final class BehaviorCases
      */
     public function scenarios(): iterable
     {
-        $base = dirname(__DIR__) . '/Fixture/Behavior/';
+        $base = dirname(__DIR__) . '/fixtures/Behavior/';
         $source = file_get_contents($base . 'scenarios.json');
         $expectedSource = file_get_contents($base . 'expected.json');
         if ($source === false || $expectedSource === false) {
@@ -54,7 +54,7 @@ final class BehaviorCases
      */
     public function run(array $scenario): array
     {
-        $package = dirname(__DIR__, 2);
+        $package = dirname(__DIR__);
         $project = new Project($scenario['files']);
         $results = [];
         try {

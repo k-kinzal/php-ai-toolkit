@@ -27,7 +27,7 @@ final class SourceScannerTest extends TestCase
 {
     public function testScanFileFindsTheDocumentedClassAndItsMethods(): void
     {
-        $path = (string) realpath(__DIR__ . '/../../../Fixture/Doctest/project/src/Calculator.php');
+        $path = (string) realpath(__DIR__ . '/../../../../fixtures/Doctest/project/src/Calculator.php');
 
         $targets = iterator_to_array((new SourceScanner())->scanFile($path), false);
 

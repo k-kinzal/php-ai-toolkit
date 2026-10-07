@@ -37,7 +37,7 @@ final class PhpUnitMockApiRuleTest extends RuleTestCase
 
     public function testProcessNodeProhibitedMockApiIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/PhpUnitMockApi/ProhibitedApi.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/PhpUnitMockApi/ProhibitedApi.php'], [
             [
                 'Use createMock(FooInterface::class) or createStub(FooInterface::class) instead of PHPUnit getMockBuilder().',
                 18,
@@ -51,7 +51,7 @@ final class PhpUnitMockApiRuleTest extends RuleTestCase
 
     public function testProcessNodeCreateMockWithConcreteClassIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/PhpUnitMockApi/ConcreteClassMock.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/PhpUnitMockApi/ConcreteClassMock.php'], [
             [
                 'Pass an interface class-string to PHPUnit createMock(); "Tests\Fixture\PhpUnitMockApi\ConcreteService" is not an interface.',
                 20,
@@ -61,12 +61,12 @@ final class PhpUnitMockApiRuleTest extends RuleTestCase
 
     public function testProcessNodeCreateMockWithInterfaceIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/PhpUnitMockApi/InterfaceMock.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/PhpUnitMockApi/InterfaceMock.php'], []);
     }
 
     public function testProcessNodeNonLiteralClassStringIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/PhpUnitMockApi/NonLiteral.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/PhpUnitMockApi/NonLiteral.php'], [
             [
                 'Pass an interface class-string literal to PHPUnit createMock(), e.g. DependencyInterface::class. Do not pass variables or plain strings.',
                 14,

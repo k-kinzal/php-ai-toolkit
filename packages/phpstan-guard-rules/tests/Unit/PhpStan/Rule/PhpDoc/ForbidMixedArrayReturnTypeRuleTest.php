@@ -37,7 +37,7 @@ final class ForbidMixedArrayReturnTypeRuleTest extends RuleTestCase
     protected function getRule(): Rule
     {
         return new ForbidMixedArrayReturnTypeRule([
-            'tests/Fixture/ForbidMixedArrayReturnType/AllowedMixedArrayReturnType.php',
+            'fixtures/ForbidMixedArrayReturnType/AllowedMixedArrayReturnType.php',
         ]);
     }
 
@@ -56,7 +56,7 @@ final class ForbidMixedArrayReturnTypeRuleTest extends RuleTestCase
 
     public function testProcessNodeMixedArrayReturnsAreReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbidMixedArrayReturnType/WithMixedArrayReturnType.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidMixedArrayReturnType/WithMixedArrayReturnType.php'], [
             [
                 'Replace "@return array<string, mixed>" on withStringKeys() with an array value type that describes every returned value. Use a union, array shape, DTO, or domain object instead of mixed.',
                 12,
@@ -90,11 +90,11 @@ final class ForbidMixedArrayReturnTypeRuleTest extends RuleTestCase
 
     public function testProcessNodeOtherMixedDeclarationsAreNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbidMixedArrayReturnType/WithoutMixedArrayReturnType.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidMixedArrayReturnType/WithoutMixedArrayReturnType.php'], []);
     }
 
     public function testProcessNodeAllowedBoundaryPathIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbidMixedArrayReturnType/AllowedMixedArrayReturnType.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidMixedArrayReturnType/AllowedMixedArrayReturnType.php'], []);
     }
 }

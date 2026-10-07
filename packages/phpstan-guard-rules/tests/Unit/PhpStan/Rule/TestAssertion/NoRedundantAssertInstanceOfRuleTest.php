@@ -34,7 +34,7 @@ final class NoRedundantAssertInstanceOfRuleTest extends RuleTestCase
 
     public function testProcessNodeRedundantAssertInstanceOfIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/NoRedundantAssertInstanceOf/RedundantAssertInstanceOf.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/NoRedundantAssertInstanceOf/RedundantAssertInstanceOf.php'], [
             [
                 'Remove redundant assertInstanceOf(): "Tests\Fixture\NoRedundantAssertInstanceOf\Reporter" is already an instance of "Tests\Fixture\NoRedundantAssertInstanceOf\ReporterInterface". Assert observable behavior instead.',
                 29,
@@ -52,11 +52,11 @@ final class NoRedundantAssertInstanceOfRuleTest extends RuleTestCase
 
     public function testProcessNodeUsefulAssertInstanceOfIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/NoRedundantAssertInstanceOf/AllowedAssertInstanceOf.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/NoRedundantAssertInstanceOf/AllowedAssertInstanceOf.php'], []);
     }
 
     public function testProcessNodeOutsideTestNamespaceIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/NoRedundantAssertInstanceOf/NonTestClass.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/NoRedundantAssertInstanceOf/NonTestClass.php'], []);
     }
 }

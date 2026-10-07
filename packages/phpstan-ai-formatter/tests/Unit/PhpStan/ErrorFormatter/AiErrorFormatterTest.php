@@ -103,7 +103,7 @@ final class AiErrorFormatterTest extends ErrorFormatterTestCase
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
-        $file = __DIR__ . '/../../../Fixture/ErrorFormatter/SampleSource.php';
+        $file = __DIR__ . '/../../../../fixtures/ErrorFormatter/SampleSource.php';
         $errors = [
             new Error(
                 'Test class has a property declaration.',
@@ -137,7 +137,7 @@ final class AiErrorFormatterTest extends ErrorFormatterTestCase
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
-        $file = __DIR__ . '/../../../Fixture/ErrorFormatter/SampleSource.php';
+        $file = __DIR__ . '/../../../../fixtures/ErrorFormatter/SampleSource.php';
         $errors = [
             new Error('Error one.', $file, 9, true, null, null, null, null, null, 'customRules.a'),
             new Error('Error two.', $file, 11, true, null, null, null, null, null, 'customRules.b'),
@@ -157,7 +157,7 @@ final class AiErrorFormatterTest extends ErrorFormatterTestCase
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
-        $file = __DIR__ . '/../../../Fixture/ErrorFormatter/SampleSource.php';
+        $file = __DIR__ . '/../../../../fixtures/ErrorFormatter/SampleSource.php';
         $errors = [
             new Error(
                 'Test class has a property declaration.',
@@ -204,7 +204,7 @@ final class AiErrorFormatterTest extends ErrorFormatterTestCase
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
-        $file = __DIR__ . '/../../../Fixture/ErrorFormatter/SampleSource.php';
+        $file = __DIR__ . '/../../../../fixtures/ErrorFormatter/SampleSource.php';
         $errors = [
             new Error('Property.', $file, 9, true, null, null, 'Remove it.', null, null, 'customRules.testClassProperty'),
             new Error('Property.', $file, 10, true, null, null, 'Remove it.', null, null, 'customRules.testClassProperty'),
@@ -257,7 +257,7 @@ final class AiErrorFormatterTest extends ErrorFormatterTestCase
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
-        $file = __DIR__ . '/../../../Fixture/ErrorFormatter/SampleSource.php';
+        $file = __DIR__ . '/../../../../fixtures/ErrorFormatter/SampleSource.php';
         $errors = [
             new Error('Some error.', $file, 9, true, null, null, null, null, null, 'customRules.someError'),
         ];
@@ -276,7 +276,7 @@ final class AiErrorFormatterTest extends ErrorFormatterTestCase
             new SimpleRelativePathHelper(dirname(__DIR__, 3)),
             new AgentDetector(),
         );
-        $file = __DIR__ . '/../../../Fixture/ErrorFormatter/SampleSource.php';
+        $file = __DIR__ . '/../../../../fixtures/ErrorFormatter/SampleSource.php';
         $errors = [new Error('E.', $file, 9, true, null, null, null, null, null, 'customRules.a')];
 
         self::assertSame(1, $formatter->formatErrors(

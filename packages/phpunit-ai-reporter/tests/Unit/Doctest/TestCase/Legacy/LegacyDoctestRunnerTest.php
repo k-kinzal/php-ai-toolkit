@@ -25,7 +25,7 @@ final class LegacyDoctestRunnerTest extends TestCase
 {
     public function testConfigureIsWhatTheSuiteStates(): void
     {
-        self::assertStringEndsWith('Fixture/Doctest/project/src', LegacyFixtureDoctestSuite::configure()->getDirectories()[0]);
+        self::assertStringEndsWith('fixtures/Doctest/project/src', LegacyFixtureDoctestSuite::configure()->getDirectories()[0]);
     }
 
     public function testDoctestProviderNamesEveryExampleAfterItsTarget(): void

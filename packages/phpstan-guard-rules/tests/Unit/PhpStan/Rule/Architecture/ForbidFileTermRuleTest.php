@@ -43,7 +43,7 @@ final class ForbidFileTermRuleTest extends RuleTestCase
     protected function getRule(): Rule
     {
         return new ForbidFileTermRule([
-            'tests/Fixture/ForbidFileTerm/*' => ['mysql', 'MYSQL', 'postgres', 'sqlite', ''],
+            'fixtures/ForbidFileTerm/*' => ['mysql', 'MYSQL', 'postgres', 'sqlite', ''],
         ]);
     }
 
@@ -54,13 +54,13 @@ final class ForbidFileTermRuleTest extends RuleTestCase
 
     public function testProcessNodeReportsTermsInCommentsStringsAndIdentifiersWithoutCaseSensitivity(): void
     {
-        $path = 'tests/Fixture/ForbidFileTerm/*';
+        $path = 'fixtures/ForbidFileTerm/*';
         $message = static fn (string $term): string => sprintf(
             'Forbidden term "%s" appears in a file matched by path "%s"; this is a design error because the concept does not belong in this layer. Redesign the responsibility boundary and move the concept and its behavior to the appropriate layer. Renaming, abbreviating, or deleting only the term is not a fix.',
             $term,
             $path
         );
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbidFileTerm/BackendLeak.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidFileTerm/BackendLeak.php'], [
             [$message('postgres'), 8],
             [$message('mysql'), 12],
             [$message('sqlite'), 14],
@@ -69,7 +69,7 @@ final class ForbidFileTermRuleTest extends RuleTestCase
 
     public function testProcessNodeAllowsARestrictedFileWithoutForbiddenTerms(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbidFileTerm/BackendNeutral.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidFileTerm/BackendNeutral.php'], []);
     }
 
 }

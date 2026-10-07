@@ -33,7 +33,7 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
 
     public function testProcessNodeClassWithoutPhpDocIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/MissingClassDoc.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/RequirePhpDocOnPublicApi/MissingClassDoc.php'], [
             [
                 'Add a multi-line PHPDoc block to class MissingClassDoc describing its purpose.',
                 7,
@@ -43,7 +43,7 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
 
     public function testProcessNodePublicMethodWithoutPhpDocIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/MissingMethodDoc.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/RequirePhpDocOnPublicApi/MissingMethodDoc.php'], [
             [
                 'Add a multi-line PHPDoc block to public method MissingMethodDoc::undocumented() describing behavior, parameters, and return value.',
                 12,
@@ -57,7 +57,7 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
 
     public function testProcessNodePublicPropertyWithoutPhpDocIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/MissingPropertyDoc.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/RequirePhpDocOnPublicApi/MissingPropertyDoc.php'], [
             [
                 'Add a multi-line PHPDoc block to public property MissingPropertyDoc::$undocumented describing the property.',
                 12,
@@ -67,7 +67,7 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
 
     public function testProcessNodePublicConstantWithoutPhpDocIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/MissingConstantDoc.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/RequirePhpDocOnPublicApi/MissingConstantDoc.php'], [
             [
                 'Add a multi-line PHPDoc block to public constant MissingConstantDoc::UNDOCUMENTED describing the constant.',
                 12,
@@ -77,17 +77,17 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
 
     public function testProcessNodeFullyDocumentedClassIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/FullyDocumented.php'], []);
+        $this->analyse([__DIR__ . '/../../../../fixtures/RequirePhpDocOnPublicApi/FullyDocumented.php'], []);
     }
 
     public function testProcessNodeNonPublicMembersAreNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/NonPublicMembers.php'], []);
+        $this->analyse([__DIR__ . '/../../../../fixtures/RequirePhpDocOnPublicApi/NonPublicMembers.php'], []);
     }
 
     public function testProcessNodeInterfaceWithoutPhpDocIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/InterfaceWithoutDoc.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/RequirePhpDocOnPublicApi/InterfaceWithoutDoc.php'], [
             [
                 'Add a multi-line PHPDoc block to interface InterfaceWithoutDoc describing its purpose.',
                 7,
@@ -105,7 +105,7 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
 
     public function testProcessNodeTraitWithoutPhpDocIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/TraitWithoutDoc.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/RequirePhpDocOnPublicApi/TraitWithoutDoc.php'], [
             [
                 'Add a multi-line PHPDoc block to trait TraitWithoutDoc describing its purpose.',
                 7,
@@ -123,7 +123,7 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
 
     public function testProcessNodeEnumWithoutPhpDocIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/EnumWithoutDoc.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/RequirePhpDocOnPublicApi/EnumWithoutDoc.php'], [
             [
                 'Add a multi-line PHPDoc block to enum EnumWithoutDoc describing its purpose.',
                 7,
@@ -133,6 +133,6 @@ final class RequirePhpDocOnPublicApiRuleTest extends RuleTestCase
 
     public function testProcessNodeClassInRestrictedTestNamespaceIsSkipped(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/RequirePhpDocOnPublicApi/TestClassInRestrictedNamespace.php'], []);
+        $this->analyse([__DIR__ . '/../../../../fixtures/RequirePhpDocOnPublicApi/TestClassInRestrictedNamespace.php'], []);
     }
 }

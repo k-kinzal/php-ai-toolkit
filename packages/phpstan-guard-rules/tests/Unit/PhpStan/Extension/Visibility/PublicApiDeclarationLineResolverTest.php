@@ -23,14 +23,14 @@ final class PublicApiDeclarationLineResolverTest extends TestCase
 {
     public function testLinesContainOnlyExplicitlyPublicDeclarations(): void
     {
-        $file = __DIR__ . '/../../../../Fixture/VisibilityPublicUnused/Declarations.php';
+        $file = __DIR__ . '/../../../../../fixtures/VisibilityPublicUnused/Declarations.php';
 
         self::assertSame([12, 19, 26, 33], (new PublicApiDeclarationLineResolver())->lines($file));
     }
 
     public function testDeclaresPublicAtRejectsAnInternalDeclaration(): void
     {
-        $file = __DIR__ . '/../../../../Fixture/VisibilityPublicUnused/Declarations.php';
+        $file = __DIR__ . '/../../../../../fixtures/VisibilityPublicUnused/Declarations.php';
 
         self::assertFalse((new PublicApiDeclarationLineResolver())->declaresPublicAt($file, 40));
     }

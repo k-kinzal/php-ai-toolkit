@@ -64,7 +64,7 @@ final class ForbidNonDocCommentRuleTest extends RuleTestCase
 
     public function testProcessNodeDoubleSlashCommentIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithDoubleSlashComment.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidNonDocComment/WithDoubleSlashComment.php'], [
             [
                 'Remove comment "// This is a line comment" or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 5,
@@ -78,7 +78,7 @@ final class ForbidNonDocCommentRuleTest extends RuleTestCase
 
     public function testProcessNodeBlockCommentIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithBlockComment.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidNonDocComment/WithBlockComment.php'], [
             [
                 'Remove comment "/* This is a block comment */" or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 5,
@@ -92,7 +92,7 @@ final class ForbidNonDocCommentRuleTest extends RuleTestCase
 
     public function testProcessNodeHashCommentIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithHashComment.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidNonDocComment/WithHashComment.php'], [
             [
                 'Remove comment "# This is a hash comment" or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 5,
@@ -102,12 +102,12 @@ final class ForbidNonDocCommentRuleTest extends RuleTestCase
 
     public function testProcessNodePhpDocIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithPhpDocOnly.php'], []);
+        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidNonDocComment/WithPhpDocOnly.php'], []);
     }
 
     public function testProcessNodePhpstanIgnoreAndInfectionIgnoreAreSkipped(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithPhpstanIgnore.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidNonDocComment/WithPhpstanIgnore.php'], [
             [
                 'No error with identifier argument.type is reported on line 5.',
                 5,
@@ -121,12 +121,12 @@ final class ForbidNonDocCommentRuleTest extends RuleTestCase
 
     public function testProcessNodeDoubleSlashCommentInsideCatchBodyIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithCatchLineComment.php'], []);
+        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidNonDocComment/WithCatchLineComment.php'], []);
     }
 
     public function testProcessNodeDoubleSlashCommentInsideArrayLiteralIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithArrayLineComment.php'], []);
+        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidNonDocComment/WithArrayLineComment.php'], []);
     }
 
     public function testProcessNodeDoubleSlashCommentInsideLongArrayLiteralIsNotReported(): void
@@ -155,7 +155,7 @@ PHP));
 
     public function testProcessNodeDoubleSlashCommentInsideArrayAccessIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithArrayAccessLineComment.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidNonDocComment/WithArrayAccessLineComment.php'], [
             [
                 'Remove comment "// This comment is inside array access, not an array literal." or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 8,
@@ -165,7 +165,7 @@ PHP));
 
     public function testProcessNodeBlockAndHashCommentsInsideCatchBodyAreReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithCatchNonLineComment.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidNonDocComment/WithCatchNonLineComment.php'], [
             [
                 'Remove comment "/* Block comments are still prohibited inside catch blocks. */" or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 10,
@@ -179,7 +179,7 @@ PHP));
 
     public function testProcessNodeBlockAndHashCommentsInsideArrayLiteralAreReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithArrayNonLineComment.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidNonDocComment/WithArrayNonLineComment.php'], [
             [
                 'Remove comment "/* Block comments are still prohibited inside arrays. */" or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 8,
@@ -193,7 +193,7 @@ PHP));
 
     public function testProcessNodeDoubleSlashCommentAfterCatchBodyIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/ForbidNonDocComment/WithCatchBoundaryLineComment.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidNonDocComment/WithCatchBoundaryLineComment.php'], [
             [
                 'Remove comment "// This comment is outside the catch body." or convert it to /** ... */ PHPDoc. Only // comments inside catch blocks or array literals are allowed.',
                 11,

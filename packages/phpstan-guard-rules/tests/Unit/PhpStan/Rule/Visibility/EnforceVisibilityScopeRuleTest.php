@@ -80,7 +80,7 @@ final class EnforceVisibilityScopeRuleTest extends RuleTestCase
 
     public function testProcessNodeReportsEveryUnusableTag(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/VisibilityScope/project/src/Invalid/MalformedTags.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/VisibilityScope/project/src/Invalid/MalformedTags.php'], [
             [
                 'Fix "@visibility parrent" on class Tests\Fixture\VisibilityScope\Invalid\MalformedTags: one bare lowercase word is read as a scope keyword, and "parrent" is not one of "public", "root", "parent", "namespace"; write the keyword you meant, or write "\parrent" to name the namespace.',
                 10,
@@ -99,8 +99,8 @@ final class EnforceVisibilityScopeRuleTest extends RuleTestCase
     public function testRuleReportsEveryWrittenReferenceOutsideClassScope(): void
     {
         $this->analyse([
-            __DIR__ . '/../../../../Fixture/VisibilityScope/project/src/Package/NamespaceScoped.php',
-            __DIR__ . '/../../../../Fixture/VisibilityScope/project/src/Outside/OutsideCaller.php',
+            __DIR__ . '/../../../../../fixtures/VisibilityScope/project/src/Package/NamespaceScoped.php',
+            __DIR__ . '/../../../../../fixtures/VisibilityScope/project/src/Outside/OutsideCaller.php',
         ], [
             [
                 'Class Tests\Fixture\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\Fixture\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\Fixture\VisibilityScope\Package" and its sub-namespaces. Move this instantiation into that namespace, or widen the declaration to "@visibility Tests\Fixture\VisibilityScope".',

@@ -43,7 +43,7 @@ final class RequireExceptionChainingRuleTest extends RuleTestCase
 
     public function testProcessNodeUnchainedThrowsAreReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/RequireExceptionChaining/WithUnchainedThrow.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireExceptionChaining/WithUnchainedThrow.php'], [
             [
                 'Pass the caught $exception to the exception thrown in this catch block, e.g. as the $previous constructor argument. Throwing a new exception without chaining discards the original failure and its stack trace.',
                 17,
@@ -57,6 +57,6 @@ final class RequireExceptionChainingRuleTest extends RuleTestCase
 
     public function testProcessNodeChainedThrowsAreNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/RequireExceptionChaining/WithChainedThrow.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireExceptionChaining/WithChainedThrow.php'], []);
     }
 }

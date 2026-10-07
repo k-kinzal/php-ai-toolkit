@@ -39,7 +39,7 @@ final class ForbidClassLikeNameSuffixRuleTest extends RuleTestCase
 
     public function testProcessNodeForbiddenSuffixesAreReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbidClassLikeNameSuffix/WithForbiddenSuffixes.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidClassLikeNameSuffix/WithForbiddenSuffixes.php'], [
             [
                 'Rename class UserHelper to a specific domain name without the "Helper" suffix.',
                 7,
@@ -61,7 +61,7 @@ final class ForbidClassLikeNameSuffixRuleTest extends RuleTestCase
 
     public function testProcessNodeAllowedNamesAreNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbidClassLikeNameSuffix/WithoutForbiddenSuffixes.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidClassLikeNameSuffix/WithoutForbiddenSuffixes.php'], []);
     }
 
     public function testMatchingSuffixReturnsConfiguredSuffix(): void
@@ -96,6 +96,6 @@ final class ForbidClassLikeNameSuffixRuleWithoutConfiguredSuffixesTest extends R
 
     public function testProcessNodeWithoutConfiguredSuffixesDoesNotReport(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbidClassLikeNameSuffix/WithForbiddenSuffixes.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidClassLikeNameSuffix/WithForbiddenSuffixes.php'], []);
     }
 }

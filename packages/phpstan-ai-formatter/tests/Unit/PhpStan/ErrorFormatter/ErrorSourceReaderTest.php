@@ -19,7 +19,7 @@ final class ErrorSourceReaderTest extends TestCase
     public function testReadReturnsRequestedSourceLine(): void
     {
         $reader = new ErrorSourceReader();
-        $file = dirname(__DIR__, 3) . '/Fixture/ErrorFormatter/SampleSource.php';
+        $file = dirname(__DIR__, 4) . '/fixtures/ErrorFormatter/SampleSource.php';
 
         self::assertSame('    private string $name;', $reader->read($file, 9));
     }

@@ -70,7 +70,7 @@ jobs:
           set -euo pipefail
 
           repository="$(printf '%s' "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')"
-          php packages/docgen-php/bin/docgen --packages=packages/* --exclude='*/tests/Fixture/*' --base-url="https://${repository%%/*}.github.io/${repository#*/}"
+          php packages/docgen-php/bin/docgen --packages=packages/* --exclude='*/fixtures/*' --base-url="https://${repository%%/*}.github.io/${repository#*/}"
 
       - name: Check out the documentation branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1

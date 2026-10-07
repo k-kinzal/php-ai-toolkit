@@ -48,12 +48,12 @@ final class ForbidInternalMixedClassPhpDocRuleTest extends RuleTestCase
         $guidance = ': this declaration is internal or scope-restricted, so it must state a deterministic PHPStan type. Validate arbitrary input at an unrestricted public boundary, then pass the narrowed type inward.';
         $prefix = 'Tests\Fixture\ForbidInternalMixedType\RestrictedTypes';
         $arrayType = (new ConcreteMixedTypeInspector())->describe(new ArrayType(new MixedType(false), new MixedType(true)));
-        $this->analyse([__DIR__ . '/../../../../../Fixture/ForbidInternalMixedType/ForbiddenMixedTypes.php'], [
+        $this->analyse([__DIR__ . '/../../../../../../fixtures/ForbidInternalMixedType/ForbiddenMixedTypes.php'], [
             ['Replace concrete mixed type "' . $arrayType . '" in parameter $input of ' . $prefix . '::virtualCall()' . $guidance, 13],
             ['Replace concrete mixed type "array<string, mixed>" in virtual property type of ' . $prefix . '::$virtualPayload' . $guidance, 13],
             ['Replace concrete mixed type "array{payload: mixed}" in type alias Payload of ' . $prefix . $guidance, 13],
             ['Replace concrete mixed type "mixed" in return type of ' . $prefix . '::virtualCall()' . $guidance, 13],
         ]);
-        $this->analyse([__DIR__ . '/../../../../../Fixture/ForbidInternalMixedType/AllowedMixedTypes.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../../fixtures/ForbidInternalMixedType/AllowedMixedTypes.php'], []);
     }
 }

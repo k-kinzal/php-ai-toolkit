@@ -167,8 +167,8 @@ final class RequireExhaustiveClassDispatchRuleTest extends RuleTestCase
     public function testProcessNodeReportsTheClassesADispatchLeavesOut(): void
     {
         $this->analyse([
-            __DIR__ . '/../../../../Fixture/RequireExhaustiveDispatch/Hierarchy.php',
-            __DIR__ . '/../../../../Fixture/RequireExhaustiveDispatch/HierarchyDispatch.php',
+            __DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/Hierarchy.php',
+            __DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/HierarchyDispatch.php',
         ], [
             [
                 'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\BankTransfer, Tests\\Fixture\\RequireExhaustiveDispatch\\Wallet to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
@@ -188,8 +188,8 @@ final class RequireExhaustiveClassDispatchRuleTest extends RuleTestCase
     public function testProcessNodeReadsAClassNameDispatchOverAUnionOfFinalClasses(): void
     {
         $this->analyse([
-            __DIR__ . '/../../../../Fixture/RequireExhaustiveDispatch/Shapes.php',
-            __DIR__ . '/../../../../Fixture/RequireExhaustiveDispatch/ShapeDispatch.php',
+            __DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/Shapes.php',
+            __DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/ShapeDispatch.php',
         ], [
             [
                 'Switch statement sends Tests\\Fixture\\RequireExhaustiveDispatch\\Square, Tests\\Fixture\\RequireExhaustiveDispatch\\Triangle to its "default" case. Write a "case" for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',

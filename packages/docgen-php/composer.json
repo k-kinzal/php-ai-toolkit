@@ -20,7 +20,10 @@
             "Tests\\": "tests/"
         },
         "classmap": [
-            "tests/Fixture/"
+            "fixtures/"
+        ],
+        "exclude-from-classmap": [
+            "vendor/marc-mabe/php-enum/stubs/Stringable.php"
         ]
     },
     "bin": [
@@ -70,7 +73,7 @@
         "infection": "infection --threads=max",
         "guard": "guard check",
         "guard:apply": "guard apply",
-        "docgen": "@php bin/docgen --exclude=tests/Fixture/*"
+        "docgen": "@php bin/docgen --exclude=fixtures/*"
     },
     "scripts-descriptions": {
         "autoload:check": "Check that the PSR-4 mapping is unambiguous before the other lint gates.",

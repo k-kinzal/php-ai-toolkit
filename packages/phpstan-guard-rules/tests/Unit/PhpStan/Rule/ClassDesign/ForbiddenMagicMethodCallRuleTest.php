@@ -43,7 +43,7 @@ final class ForbiddenMagicMethodCallRuleTest extends RuleTestCase
 
     public function testProcessNodeDirectMagicMethodCallIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbiddenMagicMethodCall/DirectCall.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbiddenMagicMethodCall/DirectCall.php'], [
             [
                 'Use (string) cast: (string)$obj instead of calling __toString() directly.',
                 19,
@@ -53,11 +53,11 @@ final class ForbiddenMagicMethodCallRuleTest extends RuleTestCase
 
     public function testProcessNodeParentStaticCallIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbiddenMagicMethodCall/ParentCall.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbiddenMagicMethodCall/ParentCall.php'], []);
     }
 
     public function testProcessNodeNormalMethodCallIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbiddenMagicMethodCall/NormalCall.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbiddenMagicMethodCall/NormalCall.php'], []);
     }
 }

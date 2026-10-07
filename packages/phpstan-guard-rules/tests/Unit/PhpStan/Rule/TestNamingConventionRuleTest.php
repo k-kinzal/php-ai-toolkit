@@ -38,13 +38,13 @@ final class TestNamingConventionRuleTest extends RuleTestCase
 
     public function testProcessNodeValidNamingIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/TestNamingConvention/ValidNaming.php'], []);
+        $this->analyse([__DIR__ . '/../../../../fixtures/TestNamingConvention/ValidNaming.php'], []);
     }
 
 
     public function testProcessNodeInvalidTestMethodNamingIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/TestNamingConvention/InvalidTestNaming.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/TestNamingConvention/InvalidTestNaming.php'], [
             [
                 'Rename test() to test[MethodName] or test[MethodName][Behavior], e.g. testUserCanLogin().',
                 11,
@@ -63,7 +63,7 @@ final class TestNamingConventionRuleTest extends RuleTestCase
 
     public function testProcessNodeInvalidProviderNamingIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/TestNamingConvention/InvalidProviderNaming.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/TestNamingConvention/InvalidProviderNaming.php'], [
             [
                 'Rename provider() to provider[TestCaseName], e.g. providerValidEmails().',
                 16,
@@ -82,7 +82,7 @@ final class TestNamingConventionRuleTest extends RuleTestCase
 
     public function testProcessNodeProhibitedConstructorDestructorIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/TestNamingConvention/ProhibitedConstructorTest.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/TestNamingConvention/ProhibitedConstructorTest.php'], [
             [
                 'Rename testConstruct() and test behavior through the public API instead of targeting a constructor or destructor.',
                 11,
@@ -113,19 +113,19 @@ final class TestNamingConventionRuleTest extends RuleTestCase
 
     public function testProcessNodeNonTestClassIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/TestNamingConvention/NonTestClass.php'], []);
+        $this->analyse([__DIR__ . '/../../../../fixtures/TestNamingConvention/NonTestClass.php'], []);
     }
 
 
     public function testProcessNodePublicMethodWithTestIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/TestNamingConvention/src/CoveredService.php'], []);
+        $this->analyse([__DIR__ . '/../../../../fixtures/TestNamingConvention/src/CoveredService.php'], []);
     }
 
 
     public function testProcessNodePublicMethodWithoutTestIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/TestNamingConvention/src/UncoveredService.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/TestNamingConvention/src/UncoveredService.php'], [
             [
                 'Add a unit test method starting with testGetResult() for public method getResult().',
                 13,

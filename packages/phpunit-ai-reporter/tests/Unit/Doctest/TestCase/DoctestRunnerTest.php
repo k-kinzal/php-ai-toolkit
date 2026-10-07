@@ -29,7 +29,7 @@ final class DoctestRunnerTest extends TestCase
     {
         $config = FixtureDoctestSuite::configure();
 
-        self::assertStringEndsWith('Fixture/Doctest/project/src', $config->getDirectories()[0]);
+        self::assertStringEndsWith('fixtures/Doctest/project/src', $config->getDirectories()[0]);
         self::assertSame(['*/Nested/*'], $config->getExcludePatterns());
     }
 
@@ -83,7 +83,7 @@ final class DoctestRunnerTest extends TestCase
     {
         $target = new \Toolkit\Doctest\Scanner\Target(
             \Toolkit\Doctest\Scanner\TargetKind::CLASS_LIKE,
-            (string) realpath(__DIR__ . '/../../../Fixture/Doctest/project/src/Calculator.php'),
+            (string) realpath(__DIR__ . '/../../../../fixtures/Doctest/project/src/Calculator.php'),
             '/** */',
             'Calculator',
             12,

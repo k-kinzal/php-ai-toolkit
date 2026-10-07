@@ -25,7 +25,10 @@
             "Tests\\": "tests/"
         },
         "classmap": [
-            "tests/Fixture/"
+            "fixtures/"
+        ],
+        "exclude-from-classmap": [
+            "vendor/marc-mabe/php-enum/stubs/Stringable.php"
         ]
     },
     "extra": {

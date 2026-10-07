@@ -9,7 +9,7 @@ parameters:
         - src
         - tests/Unit
     excludePaths:
-        - tests/Fixture
+        - fixtures
     bootstrapFiles:
         - phpstan-stubs/bootstrap.php
     toolkit:

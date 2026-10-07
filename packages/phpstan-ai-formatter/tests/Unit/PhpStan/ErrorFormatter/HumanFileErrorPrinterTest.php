@@ -33,7 +33,7 @@ final class HumanFileErrorPrinterTest extends TestCase
         $relativePathHelper = self::createStub(RelativePathHelper::class);
         $relativePathHelper->method('getRelativePath')->willReturn('SampleSource.php');
         $output = new RecordingOutput(self::createStub(OutputStyle::class));
-        $file = __DIR__ . '/../../../Fixture/ErrorFormatter/SampleSource.php';
+        $file = __DIR__ . '/../../../../fixtures/ErrorFormatter/SampleSource.php';
 
         (new HumanFileErrorPrinter($relativePathHelper, new ErrorGutter()))->write([
             $file => [new Error('Property.', $file, 9, true, null, null, null, null, null, 'custom.a')],

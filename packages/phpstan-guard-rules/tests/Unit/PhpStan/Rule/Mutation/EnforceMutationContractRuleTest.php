@@ -54,7 +54,7 @@ final class EnforceMutationContractRuleTest extends RuleTestCase
 
     public function testProcessNodeEnforcesDirectTransferredAndInheritedEffects(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/MutationContract/project/src/MutationCases.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/MutationContract/project/src/MutationCases.php'], [
             [
                 'Tests\Fixture\MutationContract\MutationCases::directArgument() mutates $box without declaring that effect. Add +mut immediately after $box in its @param tag.',
                 36,

@@ -9,6 +9,6 @@ parameters:
         - src
         - tests/Unit
     excludePaths:
-        - tests/Fixture
+        - fixtures
     toolkit:
         allRules: true

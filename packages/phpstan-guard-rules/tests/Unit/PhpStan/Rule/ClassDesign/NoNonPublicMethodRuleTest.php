@@ -33,7 +33,7 @@ final class NoNonPublicMethodRuleTest extends RuleTestCase
 
     public function testPrivateMethodViolationIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/NoNonPublicMethod/WithPrivateMethod.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/NoNonPublicMethod/WithPrivateMethod.php'], [
             [
                 'Move private method helper() out of Tests\\Fixture\\NoNonPublicMethod\\WithPrivateMethod into a focused collaborator, or make it public only if it is part of this type\'s API.',
                 14,
@@ -43,7 +43,7 @@ final class NoNonPublicMethodRuleTest extends RuleTestCase
 
     public function testProtectedMethodViolationIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/NoNonPublicMethod/WithProtectedMethod.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/NoNonPublicMethod/WithProtectedMethod.php'], [
             [
                 'Move protected method helper() out of concrete class Tests\\Fixture\\NoNonPublicMethod\\WithProtectedMethod, or put the extension point on an abstract class, trait, or override method.',
                 14,
@@ -53,32 +53,32 @@ final class NoNonPublicMethodRuleTest extends RuleTestCase
 
     public function testPrivateConstructorIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/NoNonPublicMethod/WithPrivateConstructor.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/NoNonPublicMethod/WithPrivateConstructor.php'], []);
     }
 
     public function testProtectedConstructorInConcreteClassIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/NoNonPublicMethod/WithProtectedConstructor.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/NoNonPublicMethod/WithProtectedConstructor.php'], []);
     }
 
     public function testAllowsProtectedMethodInAbstractClass(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/NoNonPublicMethod/AbstractClassWithProtectedMethod.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/NoNonPublicMethod/AbstractClassWithProtectedMethod.php'], []);
     }
 
     public function testProcessNodeProtectedMethodInTraitIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/NoNonPublicMethod/TraitWithProtectedMethod.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/NoNonPublicMethod/TraitWithProtectedMethod.php'], []);
     }
 
     public function testHasOverrideAttributeAllowsProtectedOverride(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/NoNonPublicMethod/OverrideProtectedMethod.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/NoNonPublicMethod/OverrideProtectedMethod.php'], []);
     }
 
     public function testResolveClassNameInPrivateMethodViolationForAbstractClass(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/NoNonPublicMethod/AbstractClassWithPrivateMethod.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/NoNonPublicMethod/AbstractClassWithPrivateMethod.php'], [
             [
                 'Move private method helper() out of Tests\\Fixture\\NoNonPublicMethod\\AbstractClassWithPrivateMethod into a focused collaborator, or make it public only if it is part of this type\'s API.',
                 14,
@@ -88,7 +88,7 @@ final class NoNonPublicMethodRuleTest extends RuleTestCase
 
     public function testProcessNodePrivateMethodInTraitIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/NoNonPublicMethod/TraitWithPrivateMethod.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/NoNonPublicMethod/TraitWithPrivateMethod.php'], [
             [
                 'Move private method helper() out of Tests\\Fixture\\NoNonPublicMethod\\TraitWithPrivateMethod into a focused collaborator, or make it public only if it is part of this type\'s API.',
                 14,

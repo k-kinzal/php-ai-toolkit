@@ -129,7 +129,7 @@ final class TestIssueFormatterTest extends TestCase
     {
         putenv('CLAUDE_CODE=1');
 
-        $fixtureFile = dirname(__DIR__, 4) . '/Fixture/TestReporter/SampleTest.php';
+        $fixtureFile = dirname(__DIR__, 5) . '/fixtures/TestReporter/SampleTest.php';
         $formatter = new TestIssueFormatter(new AgentDetector(), dirname(__DIR__, 5));
         $output = $formatter->format([
             new TestIssue(TestIssue::TYPE_FAILED, 'T::m', 'SampleTest::testGetName', $fixtureFile, 11, 'Assertion failed'),
@@ -225,7 +225,7 @@ final class TestIssueFormatterTest extends TestCase
 
     public function testFormatHumanModeIncludesCarets(): void
     {
-        $fixtureFile = dirname(__DIR__, 4) . '/Fixture/TestReporter/SampleTest.php';
+        $fixtureFile = dirname(__DIR__, 5) . '/fixtures/TestReporter/SampleTest.php';
         $formatter = new TestIssueFormatter(new AgentDetector(), dirname(__DIR__, 5));
         $output = $formatter->format([
             new TestIssue(TestIssue::TYPE_FAILED, 'T::m', 'SampleTest::testGetName', $fixtureFile, 11, 'Fail'),

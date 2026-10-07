@@ -34,7 +34,7 @@ final class NoPrivateMethodInTestClassRuleTest extends RuleTestCase
 
     public function testProcessNodePrivateMethodInRestrictedTestClassIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/NoPrivateMethodInTestClass/WithPrivateMethod.php'], [
+        $this->analyse([__DIR__ . '/../../../../fixtures/NoPrivateMethodInTestClass/WithPrivateMethod.php'], [
             [
                 'Inline private method helper() into the test method or move it to a dedicated collaborator. Tests\\Unit and Tests\\Integration classes may contain only test methods, data providers, and framework overrides.',
                 16,
@@ -44,6 +44,6 @@ final class NoPrivateMethodInTestClassRuleTest extends RuleTestCase
 
     public function testProcessNodePrivateMethodInNonTestClassIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../Fixture/NoPrivateMethodInTestClass/NonTestWithPrivate.php'], []);
+        $this->analyse([__DIR__ . '/../../../../fixtures/NoPrivateMethodInTestClass/NonTestWithPrivate.php'], []);
     }
 }

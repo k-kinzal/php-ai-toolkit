@@ -50,7 +50,7 @@ final class ForbiddenNamespaceRuleTest extends RuleTestCase
 
     public function testProcessNodeForbiddenNamespacesAreReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbiddenNamespace/WithForbiddenNamespaces.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbiddenNamespace/WithForbiddenNamespaces.php'], [
             [
                 'Move code out of namespace "Tests\Support". Use a namespace outside forbidden test prefix "Tests\Support", or inline setup in each test.',
                 5,
@@ -96,7 +96,7 @@ final class ForbiddenNamespaceRuleTest extends RuleTestCase
 
     public function testProcessNodeAllowedNamespacesAreNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbiddenNamespace/WithoutForbiddenNamespaces.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbiddenNamespace/WithoutForbiddenNamespaces.php'], []);
     }
 
     public function testNormalizeConvertsSeparatorsAndTrimsNamespaceBoundaries(): void
@@ -128,6 +128,6 @@ final class ForbiddenNamespaceRuleWithoutConfiguredPrefixesTest extends RuleTest
 
     public function testProcessNodeWithoutConfiguredPrefixesDoesNotReport(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/ForbiddenNamespace/WithForbiddenNamespaces.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbiddenNamespace/WithForbiddenNamespaces.php'], []);
     }
 }

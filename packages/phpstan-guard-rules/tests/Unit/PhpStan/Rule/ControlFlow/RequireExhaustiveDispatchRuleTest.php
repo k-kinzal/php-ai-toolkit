@@ -49,7 +49,7 @@ final class RequireExhaustiveDispatchRuleTest extends RuleTestCase
 
     public function testProcessNodeReportsSwitchOverEnum(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/RequireExhaustiveDispatch/EnumSwitchDispatch.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/EnumSwitchDispatch.php'], [
             [
                 'Switch statement does not handle Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Clubs. Write a "case" for each of those values: the subject holds a closed set of values and this switch has no "default", so those fall through it unhandled.',
                 11,
@@ -67,7 +67,7 @@ final class RequireExhaustiveDispatchRuleTest extends RuleTestCase
 
     public function testProcessNodeReportsMatchOverEnum(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/RequireExhaustiveDispatch/EnumMatchDispatch.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/EnumMatchDispatch.php'], [
             [
                 'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 18,
@@ -97,7 +97,7 @@ final class RequireExhaustiveDispatchRuleTest extends RuleTestCase
 
     public function testProcessNodeReportsDispatchOverClassUnion(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/RequireExhaustiveDispatch/ShapeDispatch.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/ShapeDispatch.php'], [
             [
                 'Match expression sends \'Tests\\\\Fixture\\\\RequireExhaustiveDispatch\\\\Triangle\' to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 54,
@@ -107,7 +107,7 @@ final class RequireExhaustiveDispatchRuleTest extends RuleTestCase
 
     public function testProcessNodeReportsDispatchOverConstantSubject(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/RequireExhaustiveDispatch/ConstantSubjectDispatch.php'], [
+        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/ConstantSubjectDispatch.php'], [
             [
                 'Match expression sends \'safe\', \'dry\' to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 20,
@@ -129,6 +129,6 @@ final class RequireExhaustiveDispatchRuleTest extends RuleTestCase
 
     public function testProcessNodeIgnoresDispatchOverOpenSubject(): void
     {
-        $this->analyse([__DIR__ . '/../../../../Fixture/RequireExhaustiveDispatch/OpenSubjectDispatch.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/OpenSubjectDispatch.php'], []);
     }
 }

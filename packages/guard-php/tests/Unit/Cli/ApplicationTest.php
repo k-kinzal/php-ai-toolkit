@@ -11,7 +11,13 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Cli\Application
- * @uses \Guard\Cli\Arguments
+ * @uses \Guard\Cli\ClosureOutput
+ * @uses \Guard\Cli\Command\ApplyCommand
+ * @uses \Guard\Cli\Command\CheckCommand
+ * @uses \Guard\Cli\Command\GuardCommand
+ * @uses \Guard\Cli\Command\InitCommand
+ * @uses \Guard\Cli\GuardConsole
+ * @uses \Guard\Cli\PolicyRun
  * @uses \Guard\Collect\Collector
  * @uses \Guard\Collect\DirectoryListing
  * @uses \Guard\Collect\FileRecord
@@ -198,7 +204,13 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Source
  */
 #[CoversClass(\Guard\Cli\Application::class)]
-#[UsesClass(\Guard\Cli\Arguments::class)]
+#[UsesClass(\Guard\Cli\ClosureOutput::class)]
+#[UsesClass(\Guard\Cli\Command\ApplyCommand::class)]
+#[UsesClass(\Guard\Cli\Command\CheckCommand::class)]
+#[UsesClass(\Guard\Cli\Command\GuardCommand::class)]
+#[UsesClass(\Guard\Cli\Command\InitCommand::class)]
+#[UsesClass(\Guard\Cli\GuardConsole::class)]
+#[UsesClass(\Guard\Cli\PolicyRun::class)]
 #[UsesClass(\Guard\Collect\Collector::class)]
 #[UsesClass(\Guard\Collect\DirectoryListing::class)]
 #[UsesClass(\Guard\Collect\FileRecord::class)]
@@ -446,19 +458,94 @@ final class ApplicationTest extends TestCase
         self::assertStringContainsString('blocked', $output);
     }
 
-    /**
-     * @throws JsonException
-     * @throws \Nette\Neon\Exception
-     */
-    public function testExecuteShowsCommandUsage(): void
+    public function testRunListsTheCommandsForHelpWithoutACommand(): void
     {
         $output = '';
         $app = new \Guard\Cli\Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
             $output .= $text;
         });
-        self::assertSame(0, $app->execute(['command' => '--help', 'config' => 'guard.yaml', 'format' => 'text', 'dryRun' => false, 'imports' => null]));
-        self::assertStringContainsString('check|apply|init', $output);
-        self::assertStringContainsString('--import', $output);
+        self::assertSame(0, $app->run(['--help']));
+        self::assertStringContainsString('Running guard without a command runs check.', $output);
+        self::assertStringContainsString('Available commands:', $output);
+        self::assertMatchesRegularExpression('/^  apply +Repair /m', $output);
+        self::assertMatchesRegularExpression('/^  check +Check /m', $output);
+        self::assertMatchesRegularExpression('/^  init +Create /m', $output);
+    }
+    public function testRunShowsTheHelpOfOneCommand(): void
+    {
+        $output = '';
+        $app = new \Guard\Cli\Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
+            $output .= $text;
+        });
+        self::assertSame(0, $app->run(['init', '--help']));
+        self::assertStringContainsString('--import=IMPORT', $output);
+        self::assertStringContainsString('Presets: metrics, structure', $output);
+    }
+    public function testRunReportsTheVersion(): void
+    {
+        $output = '';
+        $app = new \Guard\Cli\Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
+            $output .= $text;
+        });
+        self::assertSame(0, $app->run(['--version']));
+        self::assertSame("guard 1.0.0\n", $output);
+    }
+    public function testRunRejectsAnUnknownOptionWithAPointerToTheCommandHelp(): void
+    {
+        $output = '';
+        $app = new \Guard\Cli\Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
+            $output .= $text;
+        });
+        self::assertSame(2, $app->run(['apply', '--bogus']));
+        self::assertSame("Guard error: The \"--bogus\" option does not exist.\nRun \"guard apply --help\" to see its options.\n", $output);
+    }
+    public function testRunReadsAnOptionValueGivenAsTheNextArgument(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-cli-' . uniqid();
+        mkdir($root);
+        file_put_contents($root . '/team.yaml', "version: 1\n");
+        $output = '';
+        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+            $output .= $text;
+        });
+        self::assertSame(0, $app->run(['check', '-c', 'team.yaml', '--format', 'json']));
+        self::assertStringContainsString('"success": true', $output);
+    }
+    public function testRunKeepsErrorsButNotTheReportWhenQuiet(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-cli-' . uniqid();
+        mkdir($root);
+        file_put_contents($root . '/guard.yaml', "version: 1\n");
+        $output = '';
+        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+            $output .= $text;
+        });
+        self::assertSame(0, $app->run(['check', '--quiet']));
+        self::assertSame('', $output);
+        self::assertSame(2, $app->run(['check', '--quiet', '--config=missing.yaml']));
+        self::assertStringStartsWith('Guard error: Guard configuration not found:', $output);
+        self::assertSame(0, $app->run(['check']));
+        self::assertStringEndsWith("Guard passed.\n", $output);
+    }
+    public function testConsoleHasTheGuardCommands(): void
+    {
+        $console = (new \Guard\Cli\Application(sys_get_temp_dir()))->console();
+        self::assertSame('guard', $console->getName());
+        self::assertTrue($console->has('check'));
+        self::assertTrue($console->has('apply'));
+        self::assertTrue($console->has('init'));
+    }
+    public function testOutputWritesToTheProcessStreamsWithoutAnInjectedSink(): void
+    {
+        self::assertInstanceOf(\Symfony\Component\Console\Output\ConsoleOutput::class, (new \Guard\Cli\Application(sys_get_temp_dir()))->output());
+    }
+    public function testOutputWritesToTheInjectedSink(): void
+    {
+        $output = '';
+        (new \Guard\Cli\Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
+            $output .= $text;
+        }))->output()->writeln('<info>raw</info>');
+        self::assertSame("raw\n", $output);
     }
     public function testRunMalformedInputPreventsEarlierPlannedWrites(): void
     {

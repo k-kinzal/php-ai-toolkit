@@ -899,22 +899,15 @@
     ],
     "args": [
         {
-            "exit": 0,
-            "output": "Usage: guard check|apply|init [--config=guard.yaml] [--format=text|json]\ninit accepts --import=NAME[,NAME]. Apply accepts --dry-run. Required violations exit 1; warnings exit 0; invalid input exits 2.\n",
+            "exit": 2,
+            "output": "Guard error: Command \"bad\" is not defined.\nRun \"guard list\" to see the available commands.\n",
             "files": {
                 "guard.yaml": "version: 1\n"
             }
         },
         {
             "exit": 2,
-            "output": "Guard error: Unknown command \"bad\". Use guard check, guard apply or guard init.\n",
-            "files": {
-                "guard.yaml": "version: 1\n"
-            }
-        },
-        {
-            "exit": 2,
-            "output": "Guard error: Provide a non-empty --config path and --format=text or --format=json.\n",
+            "output": "Guard error: Unsupported --format \"bad\". Use --format=text or --format=json.\n",
             "files": {
                 "guard.yaml": "version: 1\n"
             }

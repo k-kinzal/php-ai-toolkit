@@ -48,6 +48,6 @@ if ($workingDirectory === false) {
     $workingDirectory = dirname(__DIR__);
 }
 
-$app = new Application($workingDirectory, static function (string $message): void { fwrite(STDOUT, $message); });
+$app = new Application($workingDirectory);
 
-exit($app->run(array_slice($argv, 1)));
+exit($app->console()->run());

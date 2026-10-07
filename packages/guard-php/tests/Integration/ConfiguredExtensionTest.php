@@ -23,7 +23,13 @@ use Tests\Support\XmlSchemaExample;
  * @covers \Guard\Document\XmlDocument
  * @medium
  * @uses \Guard\Cli\Application
- * @uses \Guard\Cli\Arguments
+ * @uses \Guard\Cli\ClosureOutput
+ * @uses \Guard\Cli\Command\ApplyCommand
+ * @uses \Guard\Cli\Command\CheckCommand
+ * @uses \Guard\Cli\Command\GuardCommand
+ * @uses \Guard\Cli\Command\InitCommand
+ * @uses \Guard\Cli\GuardConsole
+ * @uses \Guard\Cli\PolicyRun
  * @uses \Guard\Collect\Collector
  * @uses \Guard\Collect\DirectoryListing
  * @uses \Guard\Collect\FileRecord
@@ -215,7 +221,13 @@ use Tests\Support\XmlSchemaExample;
 #[CoversClass(\Guard\Document\XmlDocument::class)]
 #[\PHPUnit\Framework\Attributes\Medium]
 #[\PHPUnit\Framework\Attributes\UsesClass(Application::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Arguments::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\ClosureOutput::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\ApplyCommand::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\CheckCommand::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\GuardCommand::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\InitCommand::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\GuardConsole::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\PolicyRun::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(Collector::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\DirectoryListing::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileRecord::class)]

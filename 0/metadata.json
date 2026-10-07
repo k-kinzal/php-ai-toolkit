@@ -1,0 +1,84 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4BJFYGEVQVHK92RHB0DMJB4",
+  "session_id": "01a1168f-3605-78e3-80c9-00bb46a6b31d",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-07T16:17:41.718198Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "save_step_count": 3,
+  "files_touched": [
+    "packages/phpstan-guard-rules/composer.json"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "8ca165329d01",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 355358,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 13887744,
+    "output_tokens": 96424,
+    "api_call_count": 117
+  },
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-07T16:17:41.239142Z",
+    "agent_lines": 0,
+    "agent_removed": 1,
+    "human_added": 1,
+    "human_modified": 2,
+    "human_removed": 0,
+    "total_committed": 2,
+    "total_lines_changed": 4,
+    "agent_percentage": 25,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2101,
+      "agent_lines_removed": 558
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 37,
+      "user_lines_removed": 40,
+      "agent_lines_added": 2363,
+      "agent_lines_removed": 564,
+      "user_added_per_file": {
+        "packages/guard-php/src/Cli/Command/RulesCommand.php": 3,
+        "packages/guard-php/src/Config/RuleCatalog.php": 10,
+        "packages/guard-php/src/Reporting/RuleDescription.php": 3,
+        "packages/guard-php/src/Reporting/RuleReporter.php": 3,
+        "packages/guard-php/tests/Unit/Cli/Command/FixCommandTest.php": 2,
+        "packages/guard-php/tests/Unit/Cli/Command/RulesCommandTest.php": 5,
+        "packages/guard-php/tests/Unit/Config/RuleCatalogTest.php": 8,
+        "packages/guard-php/tests/Unit/Reporting/RuleDescriptionTest.php": 1,
+        "packages/guard-php/tests/Unit/Reporting/RuleReporterTest.php": 2
+      },
+      "user_removed_per_file": {
+        "packages/guard-php/src/Cli/Command/RulesCommand.php": 3,
+        "packages/guard-php/src/Config/RuleCatalog.php": 17,
+        "packages/guard-php/src/Reporting/RuleDescription.php": 3,
+        "packages/guard-php/src/Reporting/RuleReporter.php": 3,
+        "packages/guard-php/tests/Unit/Cli/Command/FixCommandTest.php": 2,
+        "packages/guard-php/tests/Unit/Cli/Command/RulesCommandTest.php": 3,
+        "packages/guard-php/tests/Unit/Config/RuleCatalogTest.php": 6,
+        "packages/guard-php/tests/Unit/Reporting/RuleDescriptionTest.php": 1,
+        "packages/guard-php/tests/Unit/Reporting/RuleReporterTest.php": 2
+      }
+    }
+  ]
+}

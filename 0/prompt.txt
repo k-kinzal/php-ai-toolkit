@@ -1,0 +1,35 @@
+いくつか修正を行います。
+まず、guard rulesで現在有効なルールを表示できるようにしてください。
+またルールにはなぜそうするのか理由を記載し、それを表示できるべきです。このあたりヒューマンリーダブルな表示とjsonなどの機械的な表示、--queryオプションを持ってください。
+
+次にcheckがヒューマンリーダブルではありません。JS系に慣れた人間からするとリッチさに不足があります。
+またfix可能な違反なのかどうかなどを知りたいです。
+
+次にapplyをfixに置き換えてください。
+またapply --dry-runを試しましたがcheckと全く同じ表示に何の役にも立たないとなりました。ヒューマンリーダブルで見やすく何が変更されるのかがわかるようにしてください。
+
+AI Reporterを作ってるプロジェクトなのでformat=aiをサポートし、AIからの呼び出しならそれがデフォルトで表示するようにしてください。
+
+あと「Help:
+  Checks every policy in the policy file and reports each violated required
+  rule as an error and each recommendation as a warning. No file is changed;
+  run "guard apply" to repair what can be repaired.
+  
+  Running guard without a command runs check.
+  
+  Exit codes:
+    0  passed, or only warnings
+    1  a required rule is violated
+    2  invalid command line, policy or input document」が全コマンドに入っていてノイズなので削除ください。
+
+---
+
+あー。すみません。reasonというかより厳密にいうなら何が問題で、どう治すべきかを記載して欲しいという感じです。PHPStanのカスタムルールと同じ形ですね。じゃないと直し方がわからないので。
+
+---
+
+これはmetricやstructureなども同じで、guard-phpが扱うルールにおいては全て理由とどうすべきかを明示する必要があります。
+
+あとcheckでfix可能な一覧とか絞りたいかもです。--queryとかeasyなオプションでfixのみ、errorのみ、warningのみとかそういう簡易絞り込みできると嬉しいかもです。
+
+もう一つ完全な思いつきですがbaseline生成もあると嬉しそうです。というかないと実運用で困りそうかなと。

@@ -16,16 +16,16 @@ vendor/bin/docgen
 Exit codes:
 
 - `0`: documentation generated
-- `2`: configuration or runtime error
+- `2`: invalid command line, configuration, or runtime error
 
 Without options, the project root and `packages/*` are documented into `build/docs`.
 
 **There is no configuration file.** A run is described by its options alone: `--packages=GLOBS` and `--exclude=GLOBS`
 (what is scanned), `--vendor[=GLOBS]` and `--vendor-dev[=GLOBS]` (document installed runtime and dev dependencies),
-`--output=DIR`, `--title=TEXT`, `--deptrac=FILE`, `--coverage=DIR` (PHPUnit `--coverage-xml` report),
+`--output=DIR` (`-o`), `--title=TEXT`, `--deptrac=FILE`, `--coverage=DIR` (PHPUnit `--coverage-xml` report),
 `--base-url=URL` (the address the site is published at), `--repository=URL` (the repository every page links back
 to), `--diff=RANGE` / `--base=REVISION` / `--head=REVISION` (compare two git revisions),
-`--public-api` (generate only explicitly public API), `--serve[=HOST:PORT]` (preview the generated site locally), `--memory-limit=VALUE`, `--jobs=N`,
+`--public-api` (generate only explicitly public API), `--serve[=HOST:PORT]` (preview the generated site locally), `--memory-limit=VALUE`, `--jobs=N` (`-j`),
 `--cache-dir=DIR`, `--no-cache`, and `--clear-cache`.
 
 Documenting a large dependency tree needs more memory than the common 128M default, so the limit is raised to 512M
@@ -154,7 +154,16 @@ own packages declare, which is the answer where a repository has moved, where th
 where the site is generated from a checkout that is not the published one. An address that is not an absolute
 `http` or `https` URL is rejected.
 
-An unknown option is rejected with an error, and `docgen --help` lists every option there is.
+`--base` and `--head` override the matching side of `--diff`, so `--diff=main --head=feature` compares `main` with
+`feature`.
+
+DocGen is a Symfony Console command, so the usual console options work as well: `-q` / `--quiet` keeps only errors
+and warnings, `-v` adds detail, `--no-ansi` turns colour off, and `-V` / `--version` prints the version. An option
+value may follow its option either after `=` or as the next argument, such as `--output build/site` or `-o build/site`.
+Messages go to standard output; warnings and errors go to standard error.
+
+An unknown option, an option without its value, or a stray argument is rejected in one line on standard error that
+names the problem and points at `docgen --help`, which lists every option there is, and the run exits 2.
 
 ## Scope Semantics
 

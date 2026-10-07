@@ -14,29 +14,11 @@ use Toolkit\DocGen\Cli\DocGenHelpText;
 #[CoversClass(DocGenHelpText::class)]
 final class DocGenHelpTextTest extends TestCase
 {
-    public function testTextDescribesUsageLine(): void
+    public function testTextJoinsThePurposeTheExamplesAndTheExitCodes(): void
     {
-        self::assertStringContainsString('Usage: docgen', (new DocGenHelpText())->text());
-    }
+        $help = new DocGenHelpText();
 
-    public function testTextListsEveryOption(): void
-    {
-        $text = (new DocGenHelpText())->text();
-
-        self::assertStringContainsString('--packages=GLOBS', $text);
-        self::assertStringContainsString('--exclude=GLOBS', $text);
-        self::assertStringContainsString('--output', $text);
-        self::assertStringContainsString('--title=TEXT', $text);
-        self::assertStringContainsString('--vendor[=GLOBS]', $text);
-        self::assertStringContainsString('--vendor-dev[=GLOBS]', $text);
-        self::assertStringContainsString('--deptrac=FILE', $text);
-        self::assertStringContainsString('--coverage', $text);
-        self::assertStringContainsString('--base-url=URL', $text);
-        self::assertStringContainsString('--repository=URL', $text);
-        self::assertStringContainsString('--diff=RANGE', $text);
-        self::assertStringContainsString('--serve', $text);
-        self::assertStringContainsString('-h, --help', $text);
-        self::assertStringContainsString('-V, --version', $text);
+        self::assertSame($help->purpose() . "\n\n" . $help->examples() . "\n\n" . $help->exitCodes(), $help->text());
     }
 
     public function testTextNamesNoConfigurationFile(): void
@@ -46,49 +28,25 @@ final class DocGenHelpTextTest extends TestCase
 
     public function testPurposeStatesWhatDocGenDoes(): void
     {
-        self::assertStringContainsString('Usage: docgen [options]', (new DocGenHelpText())->purpose());
+        $purpose = (new DocGenHelpText())->purpose();
+
+        self::assertStringStartsWith('Generates a static HTML documentation site', $purpose);
+        self::assertStringContainsString('may be repeated', $purpose);
     }
 
-    public function testScopeOptionsListWhatIsDocumented(): void
+    public function testExamplesShowCommandLines(): void
     {
-        $text = (new DocGenHelpText())->scopeOptions();
+        $examples = (new DocGenHelpText())->examples();
 
-        self::assertStringContainsString('--packages=GLOBS', $text);
-        self::assertStringContainsString('--exclude=GLOBS', $text);
-        self::assertStringContainsString('--output=DIR', $text);
-        self::assertStringContainsString('--title=TEXT', $text);
+        self::assertStringStartsWith('Examples:', $examples);
+        self::assertStringContainsString('docgen --diff=main', $examples);
     }
 
-    public function testSiteOptionsListWhatThePagesSayAboutTheProject(): void
+    public function testExitCodesNameEveryOutcome(): void
     {
-        $text = (new DocGenHelpText())->siteOptions();
+        $codes = (new DocGenHelpText())->exitCodes();
 
-        self::assertStringContainsString('--deptrac=FILE', $text);
-        self::assertStringContainsString('--coverage=DIR', $text);
-        self::assertStringContainsString('--base-url=URL', $text);
-        self::assertStringContainsString('--repository=URL', $text);
-    }
-
-    public function testDiffOptionsListTheComparedRevisions(): void
-    {
-        $text = (new DocGenHelpText())->diffOptions();
-
-        self::assertStringContainsString('--diff=RANGE', $text);
-        self::assertStringContainsString('--base=REVISION', $text);
-        self::assertStringContainsString('--head=REVISION', $text);
-    }
-
-    public function testCacheOptionsListWhatIsRememberedBetweenRuns(): void
-    {
-        $text = (new DocGenHelpText())->cacheOptions();
-
-        self::assertStringContainsString('--cache-dir=DIR', $text);
-        self::assertStringContainsString('--no-cache', $text);
-        self::assertStringContainsString('--clear-cache', $text);
-    }
-
-    public function testRunOptionsListHowARunIsCarriedOut(): void
-    {
-        self::assertStringContainsString('--jobs=N', (new DocGenHelpText())->runOptions());
+        self::assertStringContainsString('0  documentation generated', $codes);
+        self::assertStringContainsString('2  invalid command line', $codes);
     }
 }

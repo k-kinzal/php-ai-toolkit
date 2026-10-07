@@ -4,84 +4,77 @@ declare(strict_types=1);
 
 namespace Toolkit\DocGen\Cli;
 
-use function array_shift;
-
 use Closure;
-
-use function sprintf;
-
-use Toolkit\DocGen\DocGenException;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * CLI entry point for DocGen.
+ *
+ * It builds the Symfony Console application for a project directory and
+ * runs it in-process, writing to the process streams or to injected sinks.
  */
 final class Application
 {
-    private const VERSION = '1.0.0';
+    /** @readonly */
+    private string $workingDirectory;
 
     /** @readonly */
-    private DocGenOutputWriter $writer;
+    private ?Closure $stdout;
 
     /** @readonly */
-    private DocGenCliArgumentParser $argumentParser;
-
-    /** @readonly */
-    private DocGenHelpText $helpText;
-
-    /** @readonly */
-    private DocGenGenerationRunner $generationRunner;
+    private ?Closure $stderr;
 
     /**
      * Creates the DocGen CLI application for a project working directory.
+     *
+     * @param ?Closure(string): void $stdout receives standard output, or null for the process stream
+     * @param ?Closure(string): void $stderr receives standard error, or null for the process stream
      */
-    public function __construct(
-        /** @readonly */
-        private string $workingDirectory,
-        ?Closure $stdout = null,
-        ?Closure $stderr = null,
-        ?DocGenCliArgumentParser $argumentParser = null,
-        ?DocGenHelpText $helpText = null,
-        ?DocGenGenerationRunner $generationRunner = null,
-    ) {
-        $this->writer = new DocGenOutputWriter($stdout, $stderr);
-        $this->argumentParser = $argumentParser ?? new DocGenCliArgumentParser();
-        $this->helpText = $helpText ?? new DocGenHelpText();
-        $this->generationRunner = $generationRunner ?? new DocGenGenerationRunner(
-            $this->workingDirectory,
-            null,
-            null,
-            $this->writer,
-        );
+    public function __construct(string $workingDirectory, ?Closure $stdout = null, ?Closure $stderr = null)
+    {
+        $this->workingDirectory = $workingDirectory;
+        $this->stdout = $stdout;
+        $this->stderr = $stderr;
     }
 
     /**
      * Runs the CLI with raw process arguments.
      *
-     * @param list<string> $argv
+     * @param list<string> $argv the arguments, starting with the executable name
      */
     public function run(array $argv): int
     {
-        array_shift($argv);
-        try {
-            $arguments = $this->argumentParser->parse($argv);
-        } catch (DocGenException $exception) {
-            $this->writer->writeError(sprintf("DocGen error: %s\n", $exception->getMessage()));
+        return $this->console()->doRun(new ArgvInput($argv), $this->output());
+    }
 
-            return 2;
+    /**
+     * Builds the console application that runs the docgen command.
+     */
+    public function console(): DocGenConsole
+    {
+        return new DocGenConsole($this->workingDirectory);
+    }
+
+    /**
+     * Returns the output the run writes to: the process streams, or the injected sinks.
+     */
+    public function output(): OutputInterface
+    {
+        if ($this->stdout === null && $this->stderr === null) {
+            return new ConsoleOutput();
         }
 
-        if ($arguments['help']) {
-            $this->writer->write($this->helpText->text());
+        $writer = new DocGenOutputWriter($this->stdout, $this->stderr);
 
-            return 0;
-        }
-
-        if ($arguments['version']) {
-            $this->writer->write(sprintf("docgen %s\n", self::VERSION));
-
-            return 0;
-        }
-
-        return $this->generationRunner->run($arguments);
+        return new ClosureOutput(
+            static function (string $message) use ($writer): void {
+                $writer->write($message);
+            },
+            new ClosureOutput(static function (string $message) use ($writer): void {
+                $writer->writeError($message);
+            }),
+        );
     }
 }

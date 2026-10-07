@@ -7,6 +7,7 @@ namespace Tests\Unit\DocGen\Cli;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
 use Toolkit\DocGen\Analysis\Diff\ClassLikeMerger;
 use Toolkit\DocGen\Analysis\Diff\DiffKey;
@@ -63,8 +64,11 @@ use Toolkit\DocGen\Cache\RenderCache;
 use Toolkit\DocGen\Cache\SourceFileKey;
 use Toolkit\DocGen\Cache\ToolkitFingerprint;
 use Toolkit\DocGen\Cli\Application;
+use Toolkit\DocGen\Cli\ClosureOutput;
 use Toolkit\DocGen\Cli\DocGenCliArgumentParser;
+use Toolkit\DocGen\Cli\DocGenCommand;
 use Toolkit\DocGen\Cli\DocGenConfigFactory;
+use Toolkit\DocGen\Cli\DocGenConsole;
 use Toolkit\DocGen\Cli\DocGenGenerationRunner;
 use Toolkit\DocGen\Cli\DocGenHelpText;
 use Toolkit\DocGen\Cli\DocGenMemoryLimit;
@@ -173,7 +177,10 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffWorkspace
  * @uses \Toolkit\DocGen\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Cli\ClosureOutput
  * @uses \Toolkit\DocGen\Cli\DocGenCliArgumentParser
+ * @uses \Toolkit\DocGen\Cli\DocGenCommand
+ * @uses \Toolkit\DocGen\Cli\DocGenConsole
  * @uses \Toolkit\DocGen\Config\DocGenConfig
  * @uses \Toolkit\DocGen\Cli\DocGenConfigFactory
  * @uses \Toolkit\DocGen\DocGenException
@@ -310,7 +317,10 @@ use Toolkit\DocGen\Render\TypeRenderContext;
 #[UsesClass(DiffWorkspace::class)]
 #[UsesClass(DiscoveredPackage::class)]
 #[UsesClass(DocBlockReader::class)]
+#[UsesClass(ClosureOutput::class)]
 #[UsesClass(DocGenCliArgumentParser::class)]
+#[UsesClass(DocGenCommand::class)]
+#[UsesClass(DocGenConsole::class)]
 #[UsesClass(DocGenConfig::class)]
 #[UsesClass(DocGenConfigFactory::class)]
 #[UsesClass(DocGenException::class)]
@@ -431,12 +441,15 @@ final class ApplicationTest extends TestCase
         });
 
         self::assertSame(0, $app->run(['docgen', '--help']));
-        self::assertStringContainsString('Usage: docgen', $output);
+        self::assertStringContainsString('docgen [options]', $output);
+        self::assertStringContainsString('--packages=PACKAGES', $output);
+        self::assertStringContainsString('-o, --output=OUTPUT', $output);
+        self::assertStringContainsString('Exit codes:', $output);
 
         $output = '';
 
         self::assertSame(0, $app->run(['docgen', '-V']));
-        self::assertStringContainsString('docgen 1.0.0', $output);
+        self::assertSame("docgen 1.0.0\n", $output);
     }
 
     public function testRunRejectsUnknownOption(): void
@@ -450,12 +463,83 @@ final class ApplicationTest extends TestCase
         });
 
         self::assertSame(2, $app->run(['docgen', '--bogus']));
-        self::assertStringContainsString('Unknown option: --bogus', $errors);
+        self::assertSame("DocGen error: The \"--bogus\" option does not exist.\nRun \"docgen --help\" to see every option.\n", $errors);
+    }
+
+    public function testRunRejectsUnexpectedArgument(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-cli-' . uniqid('', true);
+        mkdir($dir, 0777, true);
+
+        $errors = '';
+        $app = new Application($dir, stderr: static function (string $message) use (&$errors): void {
+            $errors .= $message;
+        });
+
+        self::assertSame(2, $app->run(['docgen', 'help']));
+        self::assertStringContainsString('DocGen error: No arguments expected, got "help".', $errors);
+    }
+
+    public function testRunRejectsMalformedOptionValue(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-cli-' . uniqid('', true);
+        mkdir($dir, 0777, true);
+
+        $output = '';
+        $errors = '';
+        $app = new Application(
+            $dir,
+            static function (string $message) use (&$output): void {
+                $output .= $message;
+            },
+            static function (string $message) use (&$errors): void {
+                $errors .= $message;
+            },
+        );
+
+        self::assertSame(2, $app->run(['docgen', '--jobs=0']));
+        self::assertSame('', $output);
+        self::assertStringContainsString('DocGen error: Invalid --jobs value: 0.', $errors);
+    }
+
+    public function testRunKeepsErrorsWhenQuiet(): void
+    {
+        $dir = sys_get_temp_dir() . '/docgen-cli-' . uniqid('', true);
+        mkdir($dir, 0777, true);
+
+        $output = '';
+        $errors = '';
+        $app = new Application(
+            $dir,
+            static function (string $message) use (&$output): void {
+                $output .= $message;
+            },
+            static function (string $message) use (&$errors): void {
+                $errors .= $message;
+            },
+        );
+
+        self::assertSame(2, $app->run(['docgen', '--quiet']));
+        self::assertSame('', $output);
+        self::assertStringContainsString('DocGen error: No composer packages found.', $errors);
+    }
+
+    public function testOutputWritesToTheProcessStreamsWithoutInjectedSinks(): void
+    {
+        self::assertInstanceOf(ConsoleOutput::class, (new Application(sys_get_temp_dir()))->output());
+    }
+
+    public function testConsoleRunsTheDocgenCommandOfTheWorkingDirectory(): void
+    {
+        $console = (new Application(sys_get_temp_dir()))->console();
+
+        self::assertSame('docgen', $console->getName());
+        self::assertInstanceOf(DocGenCommand::class, $console->find('docgen'));
     }
 
     public function testRunGeneratesDocumentationSite(): void
     {
-        $dir = sys_get_temp_dir() . '/docgen-cli-' . uniqid('', true);
+        $dir = sys_get_temp_dir() . '/docgen-cli-<comment>-' . uniqid('', true);
         mkdir($dir . '/src', 0777, true);
         file_put_contents($dir . '/composer.json', <<<'JSON'
 {
@@ -491,6 +575,7 @@ PHP);
 
         self::assertSame(0, $app->run(['docgen']));
         self::assertStringContainsString('Generated', $output);
+        self::assertStringContainsString('docgen-cli-<comment>-', $output);
         self::assertSame('', $errors);
         self::assertFileExists($dir . '/build/docs/index.html');
     }

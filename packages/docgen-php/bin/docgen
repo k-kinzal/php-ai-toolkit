@@ -50,4 +50,4 @@ if ($workingDirectory === false) {
 
 $app = new Application($workingDirectory);
 
-exit($app->run($argv));
+exit($app->console()->run());

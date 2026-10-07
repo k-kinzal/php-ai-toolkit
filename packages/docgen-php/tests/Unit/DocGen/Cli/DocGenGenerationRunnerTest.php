@@ -479,7 +479,7 @@ PHP);
             },
         ));
 
-        self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+        self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false]));
         self::assertStringContainsString('Generated', $output);
         self::assertStringContainsString('build/docs', $output);
         self::assertSame('', $errors);
@@ -522,7 +522,7 @@ PHP);
         ));
 
         $previous = ini_get('memory_limit');
-        $exitCode = $runner->run(['packages' => null, 'vendor' => ['vendor'], 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => DocGenMemoryLimit::FLOOR, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]);
+        $exitCode = $runner->run(['packages' => null, 'vendor' => ['vendor'], 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => DocGenMemoryLimit::FLOOR, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false]);
         $applied = ini_get('memory_limit');
         ini_set('memory_limit', $previous);
 
@@ -563,7 +563,7 @@ PHP);
             },
         ));
 
-        self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => 'public/site', 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+        self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => 'public/site', 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false]));
         self::assertStringContainsString('public/site', $output);
         self::assertFileExists($dir . '/public/site/index.html');
     }
@@ -580,7 +580,7 @@ PHP);
         $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(static function (): void {
         }));
 
-        self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => 1, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => true, 'help' => false, 'version' => false]));
+        self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => 1, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => true]));
         self::assertFileDoesNotExist($dir . '/build/docgen-cache/stale.cache');
     }
 
@@ -630,7 +630,7 @@ PHP);
         );
 
         try {
-            self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => $previewAddress, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+            self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => $previewAddress, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false]));
             self::assertStringContainsString('Serving documentation at http://' . $previewAddress, $output);
             self::assertStringContainsString(' -S ', $command);
             self::assertStringContainsString($previewAddress, $command);
@@ -653,7 +653,7 @@ PHP);
             },
         ));
 
-        self::assertSame(2, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false]));
+        self::assertSame(2, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false]));
         self::assertStringContainsString('DocGen error: No composer packages found.', $errors);
     }
 
@@ -817,7 +817,7 @@ PHP);
         file_put_contents($dir . '/composer.json', '{"name": "acme/demo", "autoload": {"psr-4": {"Acme\\\\Demo\\\\": "src/"}}}');
         file_put_contents($dir . '/src/Greeter.php', "<?php\n\nnamespace Acme\\Demo;\n\nfinal class Greeter\n{\n}\n");
         $output = '';
-        $arguments = ['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => 1, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false];
+        $arguments = ['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => 1, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false];
         $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;

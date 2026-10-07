@@ -7,6 +7,9 @@ namespace Tests\Unit\DocGen\Cli;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Exception\RuntimeException;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\ArrayInput;
 use Toolkit\DocGen\Cli\DocGenCliArgumentParser;
 use Toolkit\DocGen\Config\BaseUrl;
 use Toolkit\DocGen\Config\RepositoryUrl;
@@ -27,7 +30,7 @@ final class DocGenCliArgumentParserTest extends TestCase
     public function testParseReturnsInactiveDefaults(): void
     {
         self::assertSame(
-            ['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'publicApi' => false, 'noCache' => false, 'clearCache' => false, 'help' => false, 'version' => false],
+            ['packages' => ['.', 'packages/*'], 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => 'build/docs', 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => 'build/docgen-cache', 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'publicApi' => false, 'noCache' => false, 'clearCache' => false],
             (new DocGenCliArgumentParser())->parse([]),
         );
     }
@@ -78,69 +81,6 @@ final class DocGenCliArgumentParserTest extends TestCase
         (new DocGenCliArgumentParser())->parse(['--diff=..HEAD']);
     }
 
-    public function testIsValueOptionRecognizesEveryOptionThatCarriesAValue(): void
-    {
-        $parser = new DocGenCliArgumentParser();
-
-        self::assertTrue($parser->isValueOption('--diff'));
-        self::assertTrue($parser->isValueOption('--base=main'));
-        self::assertTrue($parser->isValueOption('--head=HEAD'));
-        self::assertTrue($parser->isValueOption('--output=build'));
-        self::assertTrue($parser->isValueOption('--packages=.'));
-        self::assertTrue($parser->isValueOption('--exclude=tests/Fixture/*'));
-        self::assertTrue($parser->isValueOption('--title=Docs'));
-        self::assertTrue($parser->isValueOption('--deptrac=deptrac.yaml'));
-        self::assertTrue($parser->isValueOption('--repository'));
-        self::assertTrue($parser->isValueOption('--memory-limit'));
-        self::assertFalse($parser->isValueOption('--serve'));
-        self::assertFalse($parser->isValueOption('--diffuse'));
-    }
-
-    public function testOptionNameStripsThePrefixAndTheInlineValue(): void
-    {
-        $parser = new DocGenCliArgumentParser();
-
-        self::assertSame('diff', $parser->optionName('--diff=main..HEAD'));
-        self::assertSame('base', $parser->optionName('--base'));
-    }
-
-    public function testApplyValueOptionAssignsEveryOptionThatDescribesTheSite(): void
-    {
-        $parser = new DocGenCliArgumentParser();
-        $defaults = $parser->parse([]);
-
-        self::assertSame(['.', 'packages/*'], $parser->applyValueOption($defaults, 'packages', '.,packages/*')['packages']);
-        self::assertSame(['tests/Fixture/*'], $parser->applyValueOption($defaults, 'exclude', 'tests/Fixture/*')['exclude']);
-        self::assertSame('build/site', $parser->applyValueOption($defaults, 'output', 'build/site')['output']);
-        self::assertSame('My Project', $parser->applyValueOption($defaults, 'title', 'My Project')['title']);
-        self::assertSame('conf/deptrac.yaml', $parser->applyValueOption($defaults, 'deptrac', 'conf/deptrac.yaml')['deptrac']);
-        self::assertSame('build/cov', $parser->applyValueOption($defaults, 'coverage', 'build/cov')['coverage']);
-        self::assertSame('https://example.github.io/project', $parser->applyValueOption($defaults, 'base-url', 'https://example.github.io/project/')['baseUrl']);
-        self::assertSame('https://github.com/example/project', $parser->applyValueOption($defaults, 'repository', 'https://github.com/example/project/')['repository']);
-    }
-
-    public function testApplyValueOptionHandsTheRunOptionsOn(): void
-    {
-        $parser = new DocGenCliArgumentParser();
-        $defaults = $parser->parse([]);
-
-        self::assertSame('1G', $parser->applyValueOption($defaults, 'memory-limit', '1G')['memoryLimit']);
-        self::assertSame('v2', $parser->applyValueOption($defaults, 'diff', 'v1..v2')['head']);
-    }
-
-    public function testApplyRunOptionAssignsEveryOptionThatDecidesHowARunIsCarriedOut(): void
-    {
-        $parser = new DocGenCliArgumentParser();
-        $defaults = $parser->parse([]);
-
-        self::assertSame('1G', $parser->applyRunOption($defaults, 'memory-limit', '1G')['memoryLimit']);
-        self::assertSame(4, $parser->applyRunOption($defaults, 'jobs', '4')['jobs']);
-        self::assertSame('.docgen', $parser->applyRunOption($defaults, 'cache-dir', '.docgen')['cacheDir']);
-        self::assertSame('main', $parser->applyRunOption($defaults, 'base', 'main')['base']);
-        self::assertSame('HEAD', $parser->applyRunOption($defaults, 'head', 'HEAD')['head']);
-        self::assertSame('v2', $parser->applyRunOption($defaults, 'diff', 'v1..v2')['head']);
-    }
-
     public function testRevisionRangeKeepsAnEarlierHeadWhenTheRangeOmitsOne(): void
     {
         $parser = new DocGenCliArgumentParser();
@@ -155,18 +95,6 @@ final class DocGenCliArgumentParserTest extends TestCase
         $parser = new DocGenCliArgumentParser();
 
         self::assertSame('main', $parser->validated($parser->parse(['--base=main']))['base']);
-    }
-
-    public function testParseRecognizesHelpOptions(): void
-    {
-        self::assertTrue((new DocGenCliArgumentParser())->parse(['--help'])['help']);
-        self::assertTrue((new DocGenCliArgumentParser())->parse(['-h'])['help']);
-    }
-
-    public function testParseRecognizesVersionOptions(): void
-    {
-        self::assertTrue((new DocGenCliArgumentParser())->parse(['--version'])['version']);
-        self::assertTrue((new DocGenCliArgumentParser())->parse(['-V'])['version']);
     }
 
     public function testParseReadsMemoryLimitValue(): void
@@ -290,16 +218,6 @@ final class DocGenCliArgumentParserTest extends TestCase
         (new DocGenCliArgumentParser())->parse(['--vendor-dev=']);
     }
 
-    public function testVendorGlobsExpandsBareOptionToMatchAll(): void
-    {
-        self::assertSame(['*'], (new DocGenCliArgumentParser())->vendorGlobs('--vendor-dev', '--vendor-dev'));
-    }
-
-    public function testVendorGlobsSplitsInlineValue(): void
-    {
-        self::assertSame(['acme/*', 'other/lib'], (new DocGenCliArgumentParser())->vendorGlobs('--vendor=acme/*,other/lib', '--vendor'));
-    }
-
     public function testParseReadsInlineOptionValues(): void
     {
         $options = (new DocGenCliArgumentParser())->parse(['--title=Docs', '--output=public/docs', '--coverage=build/coverage-xml']);
@@ -311,12 +229,11 @@ final class DocGenCliArgumentParserTest extends TestCase
 
     public function testParseReadsSeparateOptionValues(): void
     {
-        $options = (new DocGenCliArgumentParser())->parse(['--deptrac', 'conf/deptrac.yaml', '--output', 'site', '--coverage', 'cov', '--help']);
+        $options = (new DocGenCliArgumentParser())->parse(['--deptrac', 'conf/deptrac.yaml', '--output', 'site', '--coverage', 'cov']);
 
         self::assertSame('conf/deptrac.yaml', $options['deptrac']);
         self::assertSame('site', $options['output']);
         self::assertSame('cov', $options['coverage']);
-        self::assertTrue($options['help']);
     }
 
     public function testParseReadsThePackageAndExcludeGlobs(): void
@@ -369,62 +286,77 @@ final class DocGenCliArgumentParserTest extends TestCase
 
     public function testParseRejectsMissingOptionValue(): void
     {
-        $this->expectException(DocGenException::class);
-        $this->expectExceptionMessage('Option --output requires a value.');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('The "--output" option requires a value.');
 
         (new DocGenCliArgumentParser())->parse(['--output']);
     }
 
-    public function testParseRejectsUnknownOption(): void
+    public function testParseRejectsEmptyOptionValue(): void
     {
         $this->expectException(DocGenException::class);
-        $this->expectExceptionMessage('Unknown option: --bogus');
+        $this->expectExceptionMessage('Option --output requires a value, such as --output=VALUE.');
+
+        (new DocGenCliArgumentParser())->parse(['--output=']);
+    }
+
+    public function testParseRejectsUnknownOption(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('The "--bogus" option does not exist.');
 
         (new DocGenCliArgumentParser())->parse(['--bogus']);
     }
 
-    public function testValueOptionReturnsInlineValue(): void
+    public function testParseRejectsArguments(): void
     {
-        self::assertSame('build/site', (new DocGenCliArgumentParser())->valueOption('--output=build/site', 'output'));
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('No arguments expected, got "src".');
+
+        (new DocGenCliArgumentParser())->parse(['src']);
     }
 
-    public function testValueOptionReturnsNullForEmptyOrForeignArgument(): void
+    public function testParseReadsTheShortOptions(): void
     {
-        self::assertNull((new DocGenCliArgumentParser())->valueOption('--output=', 'output'));
-        self::assertNull((new DocGenCliArgumentParser())->valueOption('--coverage=cov', 'output'));
-        self::assertNull((new DocGenCliArgumentParser())->valueOption('--output', 'output'));
+        $options = (new DocGenCliArgumentParser())->parse(['-o', 'public/docs', '-j2']);
+
+        self::assertSame('public/docs', $options['output']);
+        self::assertSame(2, $options['jobs']);
     }
 
-    public function testTakeReturnsInlineValue(): void
+    public function testParseLetsBaseAndHeadOverrideTheSidesOfTheDiffRange(): void
     {
-        self::assertSame('build/site', (new DocGenCliArgumentParser())->take(['--output=build/site'], 0, 'output'));
+        $parser = new DocGenCliArgumentParser();
+
+        self::assertSame(['v1', 'feature'], array_values(array_intersect_key($parser->parse(['--diff=v1', '--head=feature']), ['base' => 0, 'head' => 0])));
+        self::assertSame(['main', 'v2'], array_values(array_intersect_key($parser->parse(['--base=main', '--diff=v1..v2']), ['base' => 0, 'head' => 0])));
     }
 
-    public function testTakeReturnsFollowingArgument(): void
+    public function testParseAddsABareVendorToTheGlobsOfTheOtherOccurrences(): void
     {
-        self::assertSame('build/site', (new DocGenCliArgumentParser())->take(['--output', 'build/site'], 0, 'output'));
+        self::assertSame(['acme/*', '*'], (new DocGenCliArgumentParser())->parse(['--vendor=acme/*', '--vendor'])['vendor']);
     }
 
-    public function testTakeRejectsMissingValue(): void
+    public function testParseReadsAServeAddressGivenAsTheNextArgument(): void
     {
-        $this->expectException(DocGenException::class);
-        $this->expectExceptionMessage('Option --coverage requires a value.');
+        $parser = new DocGenCliArgumentParser();
 
-        (new DocGenCliArgumentParser())->take(['--coverage'], 0, 'coverage');
+        self::assertSame('127.0.0.1:9001', $parser->parse(['--serve', '9001'])['serve']);
+        self::assertSame('127.0.0.1:8090', $parser->parse(['--serve', '--no-cache'])['serve']);
+        self::assertNull($parser->parse([])['serve']);
     }
 
-    public function testTakeRejectsOptionLikeValue(): void
+    public function testDefinitionDeclaresEveryOptionOfTheCommand(): void
     {
-        $this->expectException(DocGenException::class);
-        $this->expectExceptionMessage('Option --output requires a value.');
+        $definition = (new DocGenCliArgumentParser())->definition();
 
-        (new DocGenCliArgumentParser())->take(['--output', '--serve'], 0, 'output');
-    }
-
-    public function testConsumedDistinguishesInlineAndSeparateValues(): void
-    {
-        self::assertSame(0, (new DocGenCliArgumentParser())->consumed('--output=build/site'));
-        self::assertSame(1, (new DocGenCliArgumentParser())->consumed('--output'));
+        self::assertSame(
+            ['packages', 'exclude', 'vendor', 'vendor-dev', 'output', 'title', 'public-api', 'deptrac', 'coverage', 'base-url', 'repository', 'diff', 'base', 'head', 'cache-dir', 'no-cache', 'clear-cache', 'serve', 'memory-limit', 'jobs'],
+            array_keys($definition->getOptions()),
+        );
+        self::assertSame('output', $definition->getOptionForShortcut('o')->getName());
+        self::assertSame('jobs', $definition->getOptionForShortcut('j')->getName());
+        self::assertSame([], $definition->getArguments());
     }
 
     public function testGlobListTrimsAndDropsEmptySegments(): void
@@ -448,14 +380,6 @@ final class DocGenCliArgumentParserTest extends TestCase
         (new DocGenCliArgumentParser())->globList('', '--exclude', 'path glob');
     }
 
-    public function testAppendGlobsAddsToWhatTheEarlierOccurrencesNamed(): void
-    {
-        $parser = new DocGenCliArgumentParser();
-
-        self::assertSame(['a/*'], $parser->appendGlobs(null, ['a/*']));
-        self::assertSame(['a/*', 'b/*'], $parser->appendGlobs(['a/*'], ['b/*']));
-    }
-
     public function testAddressExpandsBarePort(): void
     {
         self::assertSame('127.0.0.1:8090', (new DocGenCliArgumentParser())->address('8090'));
@@ -473,5 +397,71 @@ final class DocGenCliArgumentParserTest extends TestCase
         $this->expectExceptionMessage('Invalid --serve address: not valid. Use HOST:PORT or a port number.');
 
         (new DocGenCliArgumentParser())->address('not valid');
+    }
+
+    public function testReadReadsInputBoundToTheDefinition(): void
+    {
+        $parser = new DocGenCliArgumentParser();
+        $options = $parser->read(new ArrayInput(['--title' => 'Docs', '-j' => '3', '--no-cache' => true], $parser->definition()));
+
+        self::assertSame('Docs', $options['title']);
+        self::assertSame(3, $options['jobs']);
+        self::assertTrue($options['noCache']);
+        self::assertFalse($options['clearCache']);
+    }
+
+    public function testTextReturnsTheValueOrNullWhenTheOptionIsAbsent(): void
+    {
+        $parser = new DocGenCliArgumentParser();
+        $input = new ArgvInput(['docgen', '--title=Docs'], $parser->definition());
+
+        self::assertSame('Docs', $parser->text($input, 'title'));
+        self::assertNull($parser->text($input, 'deptrac'));
+    }
+
+    public function testTextRejectsABlankValue(): void
+    {
+        $parser = new DocGenCliArgumentParser();
+
+        $this->expectException(DocGenException::class);
+        $this->expectExceptionMessage('Option --title requires a value, such as --title=VALUE.');
+
+        $parser->text(new ArgvInput(['docgen', '--title= '], $parser->definition()), 'title');
+    }
+
+    public function testGlobsAddsUpEveryOccurrenceOrIsNullWithoutOne(): void
+    {
+        $parser = new DocGenCliArgumentParser();
+        $input = new ArgvInput(['docgen', '--exclude=a/*,b/*', '--exclude', 'c/*'], $parser->definition());
+
+        self::assertSame(['a/*', 'b/*', 'c/*'], $parser->globs($input, 'exclude', 'path glob'));
+        self::assertNull($parser->globs(new ArgvInput(['docgen'], $parser->definition()), 'exclude', 'path glob'));
+    }
+
+    public function testVendorGlobsExpandsABareOccurrenceToMatchAll(): void
+    {
+        $parser = new DocGenCliArgumentParser();
+        $input = new ArgvInput(['docgen', '--vendor-dev', '--vendor-dev=phpunit/*'], $parser->definition());
+
+        self::assertSame(['*', 'phpunit/*'], $parser->vendorGlobs($input, 'vendor-dev'));
+        self::assertNull($parser->vendorGlobs($input, 'vendor'));
+    }
+
+    public function testValuesListsABareOccurrenceAsNull(): void
+    {
+        $parser = new DocGenCliArgumentParser();
+        $input = new ArgvInput(['docgen', '--vendor', '--vendor=acme/*'], $parser->definition());
+
+        self::assertSame([null, 'acme/*'], $parser->values($input, 'vendor'));
+        self::assertSame([], $parser->values($input, 'vendor-dev'));
+    }
+
+    public function testServeIsNullUnlessTheSiteIsServed(): void
+    {
+        $parser = new DocGenCliArgumentParser();
+
+        self::assertNull($parser->serve(new ArgvInput(['docgen'], $parser->definition())));
+        self::assertSame('127.0.0.1:8090', $parser->serve(new ArgvInput(['docgen', '--serve'], $parser->definition())));
+        self::assertSame('localhost:8000', $parser->serve(new ArgvInput(['docgen', '--serve=localhost:8000'], $parser->definition())));
     }
 }

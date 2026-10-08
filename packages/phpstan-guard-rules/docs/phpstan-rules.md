@@ -10,6 +10,7 @@ Rules applied to all code.
 |------|-------------|------------------|
 | [ForbiddenCommentRule](rules/ForbiddenCommentRule.md) | Forbids `@phpstan-ignore` and `@infection-ignore-all` comments | `customRules.phpstanIgnoreComment`, `customRules.infectionIgnoreAllComment` |
 | [ForbidFileTermRule](rules/ForbidFileTermRule.md) | Forbids configured literal terms in files matching restricted path patterns | `customRules.forbiddenFileTerm` |
+| [ForbidDependencyRule](rules/ForbidDependencyRule.md) | Forbids symbol and file-reading dependencies between configured paths; isolates root examples by default | `customRules.forbiddenDependency` |
 | [ForbiddenMagicMethodCallRule](rules/ForbiddenMagicMethodCallRule.md) | Forbids direct calls to magic methods | `customRules.forbiddenMagicMethodCall` |
 | [ForbiddenNamespaceRule](rules/ForbiddenNamespaceRule.md) | Forbids configured namespace prefixes such as `Tests\Support`, `Tests\Helper`, `Tests\Util`, and `Tests\Fixture` | `customRules.forbiddenNamespace` |
 | [OverrideMustHaveAttributeRule](rules/OverrideMustHaveAttributeRule.md) | Requires `#[Override]` attribute on overridden methods | `customRules.overrideMustHaveAttribute` |
@@ -103,6 +104,9 @@ The following values can be customized under `parameters.toolkit` in a project's
 | `srcMarker` | `'/src/'` | Source code path marker |
 | `unitTestMarker` | `'/tests/Unit/'` | Unit test path marker |
 | `forbiddenTermsByPath` | `[]` | Map of restricted file path patterns to case-insensitive literal terms forbidden anywhere in matching files |
+| `dependencyProjectRoot` | `%currentWorkingDirectory%` | Absolute root for dependency boundary patterns |
+| `forbiddenDependencies` | Outside files → root `example/**`, `examples/**` | Directed `from`, optional `excludeFrom`, and `to` path policies |
+| `dependencyFileReaders` | `[]` | Additional function or `Class::method` file readers with argument `position` and `name`; built-ins remain active |
 | `forbiddenNamespacePrefixes` | `['Tests\Support', 'Tests\Supports', 'Tests\Helper', 'Tests\Helpers', 'Tests\Util', 'Tests\Utils', 'Tests\Utility', 'Tests\Utilities', 'Tests\Fixture', 'Tests\Fixtures']` | Namespace prefixes to forbid |
 | `forbiddenClassLikeNameSuffixes` | See [`rules.neon`](../rules.neon) | Class-like declaration name suffixes to forbid |
 | `broadCatchAllowedPaths` | `[]` | fnmatch patterns of boundary files allowed to catch `Throwable`, `Exception`, and the `LogicException`/`Error` families |

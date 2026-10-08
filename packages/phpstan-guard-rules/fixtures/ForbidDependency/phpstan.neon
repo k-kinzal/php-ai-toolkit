@@ -1,0 +1,9 @@
+parameters:
+    scanDirectories:
+        - Project/examples
+        - Project/src
+    toolkit:
+        forbiddenDependencies:
+            -
+                from: ['src/**']
+                to: ['tests/**']

@@ -23,7 +23,7 @@ final class Recommendations
             $path = $this->existing($root, ['phpstan.neon', 'phpstan.neon.dist']);
             if ($path !== null) {
                 $rules[] = $this->exact('phpstan.level', $path, 'neon', '/parameters/level', 'max');
-                if (isset($packages['k-kinzal/phpstan-guard-rules']) || isset($packages['k-kinzal/php-ai-toolkit'])) {
+                if (isset($packages['k-kinzal/phpstan-guard-rules'])) {
                     $rules[] = $this->exact('phpstan.all-rules', $path, 'neon', '/parameters/toolkit/allRules', true);
                 }
             }

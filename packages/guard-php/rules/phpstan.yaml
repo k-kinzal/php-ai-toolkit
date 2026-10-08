@@ -26,7 +26,6 @@ configuration:
     level: required
     assert:
       contains_any:
-        - k-kinzal/php-ai-toolkit/rules.neon
         - k-kinzal/phpstan-guard-rules/rules.neon
         - rules.neon
   -
@@ -38,6 +37,5 @@ configuration:
     level: required
     assert:
       contains_any:
-        - k-kinzal/php-ai-toolkit/extension.neon
         - k-kinzal/phpstan-ai-formatter/extension.neon
         - extension.neon

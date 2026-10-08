@@ -113,7 +113,7 @@ final class PresetSelector
         }
         $names = ['phpstan'];
         $packages = (new ToolDetector())->packages($root);
-        if (isset($packages['k-kinzal/phpstan-guard-rules']) || isset($packages['k-kinzal/php-ai-toolkit'])) {
+        if (isset($packages['k-kinzal/phpstan-guard-rules'])) {
             $names[] = 'phpstan-guard-rules';
         }
 

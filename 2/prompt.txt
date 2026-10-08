@@ -1,0 +1,2 @@
+デフォルトルールにk-kinzal/php-ai-toolkit/rules.neon、k-kinzal/php-ai-toolkit/extension.neonといった古い記法が残っています。削除ください。
+基本的にある程度できたところでguard-phpをpackagistに公開して利用可能にするので不要です。

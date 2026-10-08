@@ -1,9 +1,12 @@
 {
   "cli_version": "0.10.3",
   "checkpoint_id": "01M4CDZYXB155GR6KQZNDNFCXH",
+  "session_id": "01a1171c-1bcf-78e1-9372-4a841b39eefd",
   "strategy": "manual-commit",
+  "created_at": "2026-10-08T00:18:21.549591Z",
   "branch": "main",
-  "checkpoints_count": 6,
+  "checkpoints_count": 1,
+  "save_step_count": 1,
   "files_touched": [
     "README.md",
     "packages/docgen-php/composer.json",
@@ -51,20 +54,13 @@
     "packages/guard-php/skills/setup-toolkit-doc-guard/SKILL.md",
     "packages/guard-php/skills/setup-toolkit-loc-guard/SKILL.md",
     "packages/guard-php/skills/setup-toolkit-tree-guard/SKILL.md",
-    "packages/guard-php/src/Cli/BaselineFile.php",
-    "packages/guard-php/src/Cli/CheckRun.php",
     "packages/guard-php/src/Cli/Command/ApplyCommand.php",
-    "packages/guard-php/src/Cli/Command/BaselineCommand.php",
     "packages/guard-php/src/Cli/Command/CheckCommand.php",
-    "packages/guard-php/src/Cli/Command/FixCommand.php",
     "packages/guard-php/src/Cli/Command/GuardCommand.php",
     "packages/guard-php/src/Cli/Command/InitCommand.php",
-    "packages/guard-php/src/Cli/Command/RulesCommand.php",
-    "packages/guard-php/src/Cli/FormatDetector.php",
     "packages/guard-php/src/Cli/GuardConsole.php",
     "packages/guard-php/src/Cli/PolicyRun.php",
     "packages/guard-php/src/Config/ImportResolver.php",
-    "packages/guard-php/src/Config/RuleCatalog.php",
     "packages/guard-php/src/Config/RuleReader.php",
     "packages/guard-php/src/Policy/DirectoryEntries.php",
     "packages/guard-php/src/Policy/FieldConstraints.php",
@@ -77,30 +73,15 @@
     "packages/guard-php/src/Policy/MetricLimits.php",
     "packages/guard-php/src/Policy/Rule.php",
     "packages/guard-php/src/Policy/RuleEvaluator.php",
-    "packages/guard-php/src/Reporting/Baseline.php",
-    "packages/guard-php/src/Reporting/BaselineMatch.php",
-    "packages/guard-php/src/Reporting/ChangeDiff.php",
-    "packages/guard-php/src/Reporting/FieldMessage.php",
-    "packages/guard-php/src/Reporting/Filtering/FindingFilter.php",
-    "packages/guard-php/src/Reporting/Filtering/ReportScope.php",
     "packages/guard-php/src/Reporting/Finding.php",
     "packages/guard-php/src/Reporting/Reporter.php",
-    "packages/guard-php/src/Reporting/RuleDescription.php",
-    "packages/guard-php/src/Reporting/RuleMessages.php",
-    "packages/guard-php/src/Reporting/RuleReporter.php",
     "packages/guard-php/tests/Integration/BehaviorTest.php",
     "packages/guard-php/tests/Integration/CollectorScopeTest.php",
     "packages/guard-php/tests/Unit/Cli/ApplicationTest.php",
-    "packages/guard-php/tests/Unit/Cli/BaselineFileTest.php",
-    "packages/guard-php/tests/Unit/Cli/CheckRunTest.php",
     "packages/guard-php/tests/Unit/Cli/Command/ApplyCommandTest.php",
-    "packages/guard-php/tests/Unit/Cli/Command/BaselineCommandTest.php",
     "packages/guard-php/tests/Unit/Cli/Command/CheckCommandTest.php",
-    "packages/guard-php/tests/Unit/Cli/Command/FixCommandTest.php",
     "packages/guard-php/tests/Unit/Cli/Command/GuardCommandTest.php",
     "packages/guard-php/tests/Unit/Cli/Command/InitCommandTest.php",
-    "packages/guard-php/tests/Unit/Cli/Command/RulesCommandTest.php",
-    "packages/guard-php/tests/Unit/Cli/FormatDetectorTest.php",
     "packages/guard-php/tests/Unit/Cli/GuardConsoleTest.php",
     "packages/guard-php/tests/Unit/Cli/PolicyRunTest.php",
     "packages/guard-php/tests/Unit/Collect/CollectorTest.php",
@@ -113,7 +94,6 @@
     "packages/guard-php/tests/Unit/Collect/Filesystem/SelectionRootsTest.php",
     "packages/guard-php/tests/Unit/Collect/Filesystem/SnapshotTest.php",
     "packages/guard-php/tests/Unit/Config/ConfigurationLoaderTest.php",
-    "packages/guard-php/tests/Unit/Config/RuleCatalogTest.php",
     "packages/guard-php/tests/Unit/Config/RuleReaderTest.php",
     "packages/guard-php/tests/Unit/Config/SchemaTest.php",
     "packages/guard-php/tests/Unit/Execution/PipelineTest.php",
@@ -129,16 +109,7 @@
     "packages/guard-php/tests/Unit/Policy/MetricLimitsTest.php",
     "packages/guard-php/tests/Unit/Policy/PolicyTest.php",
     "packages/guard-php/tests/Unit/Policy/RuleEvaluatorTest.php",
-    "packages/guard-php/tests/Unit/Reporting/BaselineMatchTest.php",
-    "packages/guard-php/tests/Unit/Reporting/BaselineTest.php",
-    "packages/guard-php/tests/Unit/Reporting/ChangeDiffTest.php",
-    "packages/guard-php/tests/Unit/Reporting/FieldMessageTest.php",
-    "packages/guard-php/tests/Unit/Reporting/Filtering/FindingFilterTest.php",
-    "packages/guard-php/tests/Unit/Reporting/Filtering/ReportScopeTest.php",
     "packages/guard-php/tests/Unit/Reporting/ReporterTest.php",
-    "packages/guard-php/tests/Unit/Reporting/RuleDescriptionTest.php",
-    "packages/guard-php/tests/Unit/Reporting/RuleMessagesTest.php",
-    "packages/guard-php/tests/Unit/Reporting/RuleReporterTest.php",
     "packages/phpstan-ai-formatter/composer.json",
     "packages/phpstan-ai-formatter/guard.yaml",
     "packages/phpstan-guard-rules/composer.json",
@@ -146,41 +117,41 @@
     "packages/phpunit-ai-reporter/composer.json",
     "packages/phpunit-ai-reporter/guard.yaml"
   ],
-  "sessions": [
-    {
-      "metadata": "/0/metadata.json",
-      "transcript": "/0/full.jsonl",
-      "compact_transcript": "/0/transcript.jsonl",
-      "content_hash": "/0/content_hash.txt",
-      "prompt": "/0/prompt.txt"
-    },
-    {
-      "metadata": "/1/metadata.json",
-      "transcript": "/1/full.jsonl",
-      "compact_transcript": "/1/transcript.jsonl",
-      "content_hash": "/1/content_hash.txt",
-      "prompt": "/1/prompt.txt"
-    },
-    {
-      "metadata": "/2/metadata.json",
-      "transcript": "/2/full.jsonl",
-      "compact_transcript": "/2/transcript.jsonl",
-      "content_hash": "/2/content_hash.txt",
-      "prompt": "/2/prompt.txt"
-    },
-    {
-      "metadata": "/3/metadata.json",
-      "transcript": "/3/full.jsonl",
-      "compact_transcript": "/3/transcript.jsonl",
-      "content_hash": "/3/content_hash.txt",
-      "prompt": "/3/prompt.txt"
-    }
-  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "0e9c3c664728",
+  "checkpoint_transcript_start": 418,
+  "transcript_lines_at_start": 418,
+  "compact_transcript_start": 54,
   "token_usage": {
-    "input_tokens": 540064,
+    "input_tokens": 4507,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 15619072,
-    "output_tokens": 101674,
-    "api_call_count": 139
-  }
+    "cache_read_tokens": 1078784,
+    "output_tokens": 1513,
+    "api_call_count": 10
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T00:18:21.387006Z",
+    "agent_lines": 1309,
+    "agent_removed": 571,
+    "human_added": 2457,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 3766,
+    "total_lines_changed": 4337,
+    "agent_percentage": 43.347936361540235,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
 }

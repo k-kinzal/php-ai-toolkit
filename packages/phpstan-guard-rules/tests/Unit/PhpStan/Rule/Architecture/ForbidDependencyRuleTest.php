@@ -76,7 +76,7 @@ final class ForbidDependencyRuleTest extends RuleTestCase
     {
         $class = 'Tests\Fixture\ForbidDependency\Project\examples\ExampleService';
         $message = static fn (string $symbol): string => sprintf(
-            'Forbidden dependency from "tests/symbols.php" to "examples/ExampleService.php" via %s (target pattern "examples/**"). Remove this dependency; move reusable code or data to an allowed path, or create caller-owned test input under fixtures/.',
+            'Forbidden dependency from "tests/symbols.php" to "examples/ExampleService.php" via %s (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
             $symbol,
         );
         $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/tests/symbols.php'], [
@@ -112,7 +112,7 @@ final class ForbidDependencyRuleTest extends RuleTestCase
     public function testProcessNodeFindsInheritanceTraitsAttributesAndProperties(): void
     {
         $message = static fn (string $class): string => sprintf(
-            'Forbidden dependency from "tests/Derived.php" to "examples/%s.php" via Tests\Fixture\ForbidDependency\Project\examples\%s (target pattern "examples/**"). Remove this dependency; move reusable code or data to an allowed path, or create caller-owned test input under fixtures/.',
+            'Forbidden dependency from "tests/Derived.php" to "examples/%s.php" via Tests\Fixture\ForbidDependency\Project\examples\%s (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
             $class,
             $class,
         );
@@ -127,8 +127,8 @@ final class ForbidDependencyRuleTest extends RuleTestCase
 
     public function testProcessNodeFindsIncludesBuiltinsAndRegisteredFileReaders(): void
     {
-        $message = static fn (string $target, string $reader, string $pattern = 'examples/**'): string => sprintf(
-            'Forbidden dependency from "tests/reads.php" to "%s" via %s (target pattern "%s"). Remove this dependency; move reusable code or data to an allowed path, or create caller-owned test input under fixtures/.',
+        $message = static fn (string $target, string $reader, string $pattern = '*/**'): string => sprintf(
+            'Forbidden dependency from "tests/reads.php" to "%s" via %s (target pattern "%s"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
             $target,
             $reader,
             $pattern,
@@ -147,17 +147,65 @@ final class ForbidDependencyRuleTest extends RuleTestCase
             [$message('examples/input.json', 'Tests\Fixture\ForbidDependency\Project\src\Reader::read()'), 19],
             [$message('examples/input.json', 'Tests\Fixture\ForbidDependency\Project\src\read_config()'), 20],
             [$message('examples/input.json', 'file_get_contents()'), 21],
-            [$message('example/local.php', 'include/require', 'example/**'), 22],
+            [$message('example/local.php', 'include/require'), 22],
         ]);
     }
 
-    public function testProcessNodeAllowsDocumentationUncertainPathsAndUnrelatedDirectories(): void
+    public function testProcessNodeAllowsDocumentationUncertainPathsAndPermittedDirectories(): void
     {
         $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/tests/allowed.php'], []);
     }
 
-    public function testProcessNodeAllowsDependenciesOriginatingInsideExamples(): void
+    public function testProcessNodeAllowsExamplesToUseTheirOwnFilesAndProductionCode(): void
     {
         $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/example/local.php'], []);
+    }
+
+    public function testProcessNodeForbidsProductionDependenciesOnTestsAndExamples(): void
+    {
+        $message = static fn (string $target): string => sprintf(
+            'Forbidden dependency from "src/dependencies.php" to "%s" via file_get_contents() (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
+            $target,
+        );
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/src/dependencies.php'], [
+            [$message('tests/input.json'), 8],
+            [$message('examples/input.json'), 9],
+        ]);
+    }
+
+    public function testProcessNodeForbidsExamplesFromReusingOtherRootDirectories(): void
+    {
+        $message = static fn (string $target): string => sprintf(
+            'Forbidden dependency from "examples/dependencies.php" to "%s" via file_get_contents() (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
+            $target,
+        );
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/examples/dependencies.php'], [
+            [$message('example/local.php'), 7],
+            [$message('tests/input.json'), 8],
+        ]);
+    }
+
+    public function testProcessNodeAutomaticallyAppliesTheBoundaryToNewRootDirectories(): void
+    {
+        $message = static fn (string $target): string => sprintf(
+            'Forbidden dependency from "bench/dependencies.php" to "%s" via file_get_contents() (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
+            $target,
+        );
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/bench/dependencies.php'], [
+            [$message('tests/input.json'), 7],
+            [$message('examples/input.json'), 8],
+        ]);
+    }
+
+    public function testProcessNodeRequiresExplicitPoliciesForSharedFixtures(): void
+    {
+        $message = static fn (string $target): string => sprintf(
+            'Forbidden dependency from "tests/other_directories.php" to "%s" via file_get_contents() (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
+            $target,
+        );
+        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/tests/other_directories.php'], [
+            [$message('fixtures/input.json'), 5],
+            [$message('examples-backup/input.json'), 6],
+        ]);
     }
 }

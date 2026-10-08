@@ -1,6 +1,7 @@
 includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
     - vendor/k-kinzal/phpstan-guard-rules/rules.neon
+    - vendor/k-kinzal/phpstan-guard-rules/allow-test-fixtures.neon
     - extension.neon
 
 parameters:

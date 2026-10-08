@@ -1,6 +1,7 @@
 includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
     - rules.neon
+    - allow-test-fixtures.neon
     - vendor/k-kinzal/phpstan-ai-formatter/extension.neon
 
 parameters:

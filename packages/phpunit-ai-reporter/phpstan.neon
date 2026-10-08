@@ -14,5 +14,18 @@ parameters:
         - phpstan-stubs/bootstrap.php
     toolkit:
         allRules: true
+        # Analysis-only stubs declare legacy PHPUnit symbols unavailable in this runtime.
+        forbiddenDependencies!:
+            -
+                from: ['*/**']
+                excludeFrom: ['tests/**', 'vendor/**']
+                to: ['*/**']
+                excludeTo: ['src/**', 'vendor/**', 'phpstan-stubs/**']
+                allowSameRootDirectory: true
+            -
+                from: ['tests/**']
+                to: ['*/**']
+                excludeTo: ['src/**', 'vendor/**', 'fixtures/**', 'phpstan-stubs/**']
+                allowSameRootDirectory: true
         broadCatchAllowedPaths:
             - src/Doctest/Executor/ExpressionEvaluator.php

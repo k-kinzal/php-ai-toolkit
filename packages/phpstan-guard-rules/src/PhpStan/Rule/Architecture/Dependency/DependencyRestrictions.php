@@ -10,14 +10,20 @@ namespace Toolkit\PhpStan\Rule\Architecture\Dependency;
 final class DependencyRestrictions
 {
     /**
-     * @var list<array{from: list<string>, excludeFrom?: list<string>, to: list<string>}>
+     * @var list<array{from: list<string>, excludeFrom?: list<string>, to: list<string>, excludeTo?: list<string>, allowSameRootDirectory?: bool}>
      */
     public const DEFAULTS = [
-        ['from' => ['**'], 'excludeFrom' => ['example/**', 'examples/**'], 'to' => ['example/**', 'examples/**']],
+        [
+            'from' => ['*/**'],
+            'excludeFrom' => ['vendor/**'],
+            'to' => ['*/**'],
+            'excludeTo' => ['src/**', 'vendor/**'],
+            'allowSameRootDirectory' => true,
+        ],
     ];
 
     /**
-     * @param list<array{from: list<string>, excludeFrom?: list<string>, to: list<string>}> $restrictions
+     * @param list<array{from: list<string>, excludeFrom?: list<string>, to: list<string>, excludeTo?: list<string>, allowSameRootDirectory?: bool}> $restrictions
      */
     public function __construct(
         private DependencyPath $paths,
@@ -47,7 +53,9 @@ final class DependencyRestrictions
     {
         foreach ($this->restrictions as $restriction) {
             if (!$this->paths->matches($source, $restriction['from'])
-                || $this->paths->matches($source, $restriction['excludeFrom'] ?? [])) {
+                || $this->paths->matches($source, $restriction['excludeFrom'] ?? [])
+                || $this->paths->matches($target, $restriction['excludeTo'] ?? [])
+                || (($restriction['allowSameRootDirectory'] ?? false) && $this->paths->sameRootDirectory($source, $target))) {
                 continue;
             }
             foreach ($restriction['to'] as $pattern) {

@@ -8,15 +8,29 @@
 
 ## Default Policy
 
-Files outside the project-root `example/` and `examples/` directories must not
-depend on files inside either directory. Tests receive no exemption. References
-originating inside either example directory are allowed, including references
-to production code and other examples.
+Each project-root directory is a dependency boundary. Code may depend on files
+inside its own root directory and inside `src/`, but must not reuse files from
+other root directories. This applies to both PHP symbols and file-reading APIs.
+New directories receive the same boundary without enumerating them in config.
 
-Examples should remain independently editable documentation. Reusing their
-classes, bootstrap scripts, or input data in tests makes example changes alter
-the tests' prerequisites. Put reusable production code in an allowed source
-directory and create test-owned inputs under `fixtures/`.
+| Source | Allowed project directories |
+|--------|-----------------------------|
+| `src/**` | `src/**` |
+| `tests/**` | `tests/**`, `src/**` |
+| `examples/**` | `examples/**`, `src/**` |
+| `bench/**` | `bench/**`, `src/**` |
+| Any other root directory | That directory and `src/**` |
+
+The boundary uses the first path segment, so `tests/Unit` may reference
+`tests/Integration`. `example/` and `examples/` are separate boundaries and cannot
+reference each other. `fixtures/`, `config/`, and `resources/` are also separate
+boundaries: sharing their contents requires an explicit project policy.
+
+`vendor/` is exempt as both a source and destination so Composer library use is
+permitted. Files directly at the project root, such as `composer.json` and
+`bootstrap.php`, are outside this directory boundary in both directions. Paths
+outside the configured project are also outside the policy's scope. These are
+project architecture checks, not a filesystem sandbox.
 
 The distributed configuration is:
 
@@ -26,45 +40,75 @@ parameters:
         dependencyProjectRoot: %currentWorkingDirectory%
         forbiddenDependencies:
             -
-                from: ['**']
-                excludeFrom: ['example/**', 'examples/**']
-                to: ['example/**', 'examples/**']
+                from: ['*/**']
+                excludeFrom: ['vendor/**']
+                to: ['*/**']
+                excludeTo: ['src/**', 'vendor/**']
+                allowSameRootDirectory: true
 ```
 
 Run PHPStan from the project root, or set `dependencyProjectRoot` to the absolute
 project directory when invoking PHPStan from another directory. Paths do not
 infer their root from namespace names, nested Composer files, or arbitrary
-occurrences of `examples` in a filename.
+occurrences of a directory name in a filename.
 
 ## Custom Boundaries
 
-Each policy has `from` and `to` lists of root-relative glob patterns and an
-optional `excludeFrom` list. A dependency is forbidden when its source matches
-`from`, does not match `excludeFrom`, and its resolved destination matches `to`.
-Exclusions affect only their own policy. Overlapping policies produce one
-finding per destination at a reference node.
+Each policy has `from` and `to` lists of root-relative glob patterns. Optional
+`excludeFrom` and `excludeTo` lists exempt sources and destinations respectively.
+`allowSameRootDirectory: true` also exempts references within the same project-root
+directory; its default is `false` for custom policies.
 
-For example, add a rule preventing production code from reusing test files:
+A dependency is forbidden if its source matches `from`, its destination matches
+`to`, and none of that policy's exemptions apply. Exemptions affect only their
+own policy. Overlapping policies produce one finding per destination at a
+reference node.
+
+For example, add a narrower restriction within `src/`:
 
 ```neon
 parameters:
     toolkit:
         forbiddenDependencies:
             -
-                from: ['src/**']
-                excludeFrom: ['src/TestBridge/**']
-                to: ['tests/**', 'fixtures/**']
+                from: ['src/Public/**']
+                to: ['src/Internal/**']
 ```
 
-PHPStan merges list configuration, so this adds to the default example boundary.
-Use `forbiddenDependencies!:` when deliberately replacing the entire list, or
+PHPStan merges list configuration, so this adds to the root-directory boundary.
+Appending an exemption does not relax another policy. Use
+`forbiddenDependencies!:` when deliberately replacing the entire list, or
 `forbiddenDependencies!: []` for an empty policy list.
+
+Projects that intentionally keep test-owned files in root `fixtures/` can
+explicitly include the provided policy after `rules.neon`:
+
+```neon
+includes:
+    - vendor/k-kinzal/phpstan-guard-rules/rules.neon
+    - vendor/k-kinzal/phpstan-guard-rules/allow-test-fixtures.neon
+```
+
+This replaces the default policy list with the same boundaries plus permission
+for `tests/**` to reference `fixtures/**`. It does not allow `src/`, `examples/`,
+or other directories to reference fixtures. Add further custom restrictions
+after this include. The toolkit's own packages opt into this exception for their
+existing test fixtures; it is not part of the distributed default.
+
+Other project-owned support directories, including compatibility declarations
+loaded through PHPStan bootstrap files, also need an explicit policy when their
+declaration files are resolved outside `src/`, `vendor/`, or the caller's root.
+
+To permit another shared directory for selected callers, replace the policies
+with a general boundary excluding those callers, followed by a caller-specific
+policy that adds the shared directory to `excludeTo`. The opt-in fixtures policy
+provides a complete example of this arrangement.
 
 Matching is case-sensitive and anchored at the project root. `*` matches within
 one path segment, `**` crosses directory boundaries, `**/` also matches zero
 directories, and `?` matches one non-separator character. Separators and `.`/`..`
-segments are normalized; existing symlink destinations are also checked.
-`examples/**` does not match `examples-backup/` or `vendor/package/examples/`.
+segments are normalized; existing symlink destinations are also checked. A
+symlink crossing root directories does not receive the same-directory exemption.
 
 ## Symbol Dependencies
 
@@ -114,7 +158,8 @@ file_get_contents(dirname(__DIR__) . '/examples/input.json'); // Forbidden.
 file_get_contents(filename: __DIR__ . '/../examples/input.json'); // Forbidden.
 
 echo 'See examples/input.json'; // An explanation, not a file dependency.
-file_get_contents(__DIR__ . '/../fixtures/input.json'); // Allowed by default.
+file_get_contents(__DIR__ . '/data/input.json'); // Same tests/ directory: allowed.
+file_get_contents(__DIR__ . '/../fixtures/input.json'); // Requires an explicit policy.
 ```
 
 The path evaluator handles string literals, `__DIR__`, `__FILE__`, concatenation,

@@ -82,6 +82,26 @@ final class DependencyPath
     }
 
     /**
+     * Allows dependencies within one root directory, without treating cross-directory symlinks as local.
+     */
+    public function sameRootDirectory(string $source, string $target): bool
+    {
+        $directories = [];
+        foreach ([$source, $target] as $path) {
+            $roots = [];
+            foreach ($this->relativePaths($path) as $relative) {
+                $parts = explode('/', $relative, 2);
+                if (count($parts) === 2) {
+                    $roots[] = $parts[0];
+                }
+            }
+            $directories[] = array_values(array_unique($roots));
+        }
+
+        return count($directories[0]) === 1 && $directories[0] === $directories[1];
+    }
+
+    /**
      * Accepts absolute local paths and local file URLs, without guessing runtime cwd.
      */
     public function localFile(string $path): ?string

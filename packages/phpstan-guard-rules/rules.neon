@@ -49,6 +49,8 @@ parametersSchema:
             from: listOf(string())
             ?excludeFrom: listOf(string())
             to: listOf(string())
+            ?excludeTo: listOf(string())
+            ?allowSameRootDirectory: bool()
         ]))
         dependencyFileReaders: arrayOf(structure([position: schema(int(), min(0)), name: schema(string(), min(1))]))
         forbiddenNamespacePrefixes: listOf(string())
@@ -154,9 +156,11 @@ parameters:
         dependencyProjectRoot: %currentWorkingDirectory%
         forbiddenDependencies:
             -
-                from: ['**']
-                excludeFrom: ['example/**', 'examples/**']
-                to: ['example/**', 'examples/**']
+                from: ['*/**']
+                excludeFrom: ['vendor/**']
+                to: ['*/**']
+                excludeTo: ['src/**', 'vendor/**']
+                allowSameRootDirectory: true
         dependencyFileReaders: []
         forbiddenNamespacePrefixes:
             - 'Tests\Fixture'

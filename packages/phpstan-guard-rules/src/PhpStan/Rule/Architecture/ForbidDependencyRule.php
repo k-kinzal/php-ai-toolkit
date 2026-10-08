@@ -32,7 +32,7 @@ final class ForbidDependencyRule implements Rule
     private FileDependencyResolver $files;
 
     /**
-     * @param list<array{from: list<string>, excludeFrom?: list<string>, to: list<string>}> $forbiddenDependencies
+     * @param list<array{from: list<string>, excludeFrom?: list<string>, to: list<string>, excludeTo?: list<string>, allowSameRootDirectory?: bool}> $forbiddenDependencies
      * @param array<string, array{position: int, name: string}> $dependencyFileReaders
      */
     public function __construct(
@@ -76,7 +76,7 @@ final class ForbidDependencyRule implements Rule
                 continue;
             }
             $errors[] = RuleErrorBuilder::message(sprintf(
-                'Forbidden dependency from "%s" to "%s" via %s (target pattern "%s"). Remove this dependency; move reusable code or data to an allowed path, or create caller-owned test input under fixtures/.',
+                'Forbidden dependency from "%s" to "%s" via %s (target pattern "%s"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
                 $this->paths->display($source),
                 $this->paths->display($target),
                 $description,

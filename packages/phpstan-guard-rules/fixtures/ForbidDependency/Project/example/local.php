@@ -2,6 +2,6 @@
 
 namespace Tests\Fixture\ForbidDependency\Project\example;
 
-require __DIR__ . '/../examples/ExampleService.php';
-echo file_get_contents(__DIR__ . '/../examples/input.json');
-new \Tests\Fixture\ForbidDependency\Project\examples\ExampleService();
+require __DIR__ . '/../src/Reader.php';
+echo file_get_contents(__FILE__);
+new \Tests\Fixture\ForbidDependency\Project\src\Reader();

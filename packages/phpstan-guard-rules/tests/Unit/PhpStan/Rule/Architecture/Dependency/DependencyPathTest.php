@@ -43,6 +43,17 @@ final class DependencyPathTest extends TestCase
         self::assertSame('/elsewhere/demo.php', (new DependencyPath('/project'))->display('/elsewhere/demo.php'));
     }
 
+    public function testSameRootDirectoryUsesTheFirstSegmentAndRejectsRootFiles(): void
+    {
+        $paths = new DependencyPath('/project');
+
+        self::assertTrue($paths->sameRootDirectory('/project/tests/Unit/Test.php', '/project/tests/Integration/input.php'));
+        self::assertFalse($paths->sameRootDirectory('/project/example/demo.php', '/project/examples/demo.php'));
+        self::assertFalse($paths->sameRootDirectory('/project/tests/Test.php', '/project/tests/../fixtures/input.json'));
+        self::assertFalse($paths->sameRootDirectory('/project/bootstrap.php', '/project/config.php'));
+        self::assertFalse($paths->sameRootDirectory('/outside/tests/Test.php', '/project/tests/Test.php'));
+    }
+
     public function testLocalFileRejectsRuntimeRelativePathsAndRemoteStreams(): void
     {
         $paths = new DependencyPath('/project');

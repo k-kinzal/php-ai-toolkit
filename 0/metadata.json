@@ -1,0 +1,68 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4CG2GKMXE3K80VJ3V3YFA5B",
+  "session_id": "01a116ca-a639-7051-a8bd-f040dfc664ad",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T00:54:36.901541Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/docgen-php/phpstan.neon",
+    "packages/guard-php/phpstan.neon",
+    "packages/phpstan-ai-formatter/phpstan.neon",
+    "packages/phpstan-guard-rules/allow-test-fixtures.neon",
+    "packages/phpstan-guard-rules/docs/rules/ForbidDependencyRule.md",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/bench/dependencies.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/example/local.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/examples/dependencies.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/src/dependencies.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/tests/allowed.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/tests/other_directories.php",
+    "packages/phpstan-guard-rules/phpstan.neon",
+    "packages/phpstan-guard-rules/rules.neon",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Architecture/Dependency/DependencyPath.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Architecture/Dependency/DependencyRestrictions.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Architecture/ForbidDependencyRule.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Architecture/Dependency/DependencyPathTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Architecture/Dependency/DependencyRestrictionsTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Architecture/ForbidDependencyRuleTest.php",
+    "packages/phpunit-ai-reporter/phpstan.neon"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "d543ae668ae3",
+  "checkpoint_transcript_start": 392,
+  "transcript_lines_at_start": 392,
+  "compact_transcript_start": 47,
+  "token_usage": {
+    "input_tokens": 47970,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 3537024,
+    "output_tokens": 21886,
+    "api_call_count": 18
+  },
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T00:54:36.759164Z",
+    "agent_lines": 307,
+    "agent_removed": 53,
+    "human_added": 2,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 309,
+    "total_lines_changed": 364,
+    "agent_percentage": 98.9010989010989,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4CG2GKMXE3K80VJ3V3YFA5B",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/docgen-php/phpstan.neon",
+    "packages/guard-php/phpstan.neon",
+    "packages/phpstan-ai-formatter/phpstan.neon",
+    "packages/phpstan-guard-rules/allow-test-fixtures.neon",
+    "packages/phpstan-guard-rules/docs/rules/ForbidDependencyRule.md",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/bench/dependencies.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/example/local.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/examples/dependencies.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/src/dependencies.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/tests/allowed.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/tests/other_directories.php",
+    "packages/phpstan-guard-rules/phpstan.neon",
+    "packages/phpstan-guard-rules/rules.neon",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Architecture/Dependency/DependencyPath.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Architecture/Dependency/DependencyRestrictions.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Architecture/ForbidDependencyRule.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Architecture/Dependency/DependencyPathTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Architecture/Dependency/DependencyRestrictionsTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Architecture/ForbidDependencyRuleTest.php",
+    "packages/phpunit-ai-reporter/phpstan.neon"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 47970,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 3537024,
+    "output_tokens": 21886,
+    "api_call_count": 18
+  }
+}

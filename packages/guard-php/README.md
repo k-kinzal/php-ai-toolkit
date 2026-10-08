@@ -18,7 +18,6 @@ See the documentation:
 - [Documents](docs/documents.md): Markdown headings, outlines, badges, exact content and undeclared documents
 - [Configuration Fields](docs/fields.md): Assertions and repairs for values in tool configuration files
 - [Extensions](docs/extensions.md): Custom policies and structures
-- [Architecture](docs/architecture.md): Responsibilities and dependency directions
 
 ```sh
 vendor/bin/guard init

@@ -37,7 +37,7 @@ The imports supply the shipped rules; the rest of the file changes only what thi
 | `structure` | no | Directory rules. See [structure](structure.md). |
 | `documentation` | no | Markdown document declarations. See [documents](documents.md). |
 | `configuration` | no | Rules for values in tool configuration files. See [configuration fields](fields.md). |
-| `extensions` | no | Policy or structurer classes and their named constructor arguments, as `Class: {options}`. See [extensions](extensions.md). |
+| `extensions` | no | Extension classes and their options, as `Class: {options}`. See [extensions](extensions.md). |
 
 Unknown keys, invalid types, contradictory bounds and two `configuration` rules with the same `id` in one file are errors with exit code `2`. Error messages name a section by the file it came from historically, such as `tree.yaml` for `structure` or `doc-guard.yaml` for `documentation`.
 

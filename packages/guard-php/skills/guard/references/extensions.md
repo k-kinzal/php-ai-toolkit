@@ -28,7 +28,7 @@ Write one only when the built-in sections cannot express the decision:
 - Declare every file in `inputs()` and read only what `evaluate()` receives. A policy must not touch the file system; Guard reads each file once, intersects every selection with the collection scope, and caches structures for all policies.
 - Request the structure you need, such as `text`, `xml` or `php.tokens`, instead of parsing bytes yourself. Request no structure when metadata is enough, so the file is not read.
 - Select by `files` when the policy must report a missing file; a `files` selection lists a missing path so the policy can report it, while `patterns` and `descendants` return only what exists.
-- Prefix finding rule IDs with the project or package name, such as `app.strict-types`. Configured components use their class names as registration IDs; request custom structures with `CustomStructurer::class`.
+- Prefix the rule IDs and the registered policy and structure IDs with the project or package name, such as `app.strict-types`.
 - Write messages the way the built-in ones are written: the file and the offending symbol, what is expected, how to fix it, and that changing the rule needs a human to update `guard.yaml`.
 - Choose the level per finding: `required` for decisions that hold the quality bar, `recommended` for preferences.
 - Propose `FileChange` values only when `$context->repair` is `true`, and only for a change with exactly one correct result. Return the required findings that the policy could not repair as blocking, so `fix` does not write a half-repaired project.
@@ -36,13 +36,13 @@ Write one only when the built-in sections cannot express the decision:
 
 ## Registering an extension
 
-- Implement `Guard\Policy\Policy` or `Guard\Structure\Structurer` directly. Options are named constructor arguments; validate their meaning in the constructor and throw `Guard\Diagnostic\PolicyException` for invalid values. Unknown names and invalid argument types fail with exit code `2`.
+- Implement `ConfigurableExtension` when the extension takes options, validate them with `Guard\Config\Schema`, and throw `Guard\Policy\PolicyException` for unknown or invalid ones, so a typo fails with exit code `2` instead of switching a check off.
 - Give the options the narrowest defaults that still check the project, such as `src/**/*.php`.
 - Make the class autoloadable, for example through `autoload-dev`, and name it in `guard.yaml`. Guard loads only the classes named there, in order, after the built-in policies.
-- Test the policy through `Guard\Execution\Pipeline::run($configuration, $configPath, $repair)` or `Guard\Cli\Application` against fixture projects: one that passes, one per finding, and one that `fix` repairs. Use `Guard\Execution\Registry::defaults($configuration->policies)` when a supplied registry must include the built-in policies.
+- Test the policy through `Guard\Execution\Pipeline::run(Context)` or `Guard\Cli\Application` against fixture projects: one that passes, one per finding, and one that `fix` repairs. Register `BuiltinExtension` first when the test needs the built-in policies.
 
 ```yaml
 extensions:
-  App\Guard\StrictTypesPolicy:
+  App\Guard\StrictTypesExtension:
     files: ['src/**/*.php']
 ```

@@ -1,0 +1,36 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4D7YV8R3GTV71CVNXWVSRSK",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/docgen-php/guard.yaml",
+    "packages/guard-php/guard.yaml",
+    "packages/guard-php/rules/infection.yaml",
+    "packages/guard-php/rules/phpunit13.yaml",
+    "packages/phpstan-ai-formatter/guard.yaml",
+    "packages/phpstan-guard-rules/guard.yaml",
+    "packages/phpunit-ai-reporter/guard.yaml",
+    "packages/phpunit-ai-reporter/skills/setup-toolkit-phpunit/SKILL.md",
+    "packages/phpunit-ai-reporter/skills/setup-toolkit-phpunit/phpunit.xml.dist",
+    "skills/setup-toolkit-infection/SKILL.md",
+    "skills/setup-toolkit-infection/infection.json5"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 138998,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2014208,
+    "output_tokens": 16337,
+    "api_call_count": 23
+  }
+}

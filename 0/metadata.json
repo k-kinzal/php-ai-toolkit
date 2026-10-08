@@ -1,0 +1,65 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4D7YV8R3GTV71CVNXWVSRSK",
+  "session_id": "01a11a46-95d5-75f3-9ff1-006914c1d0dd",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T07:52:05.173022Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "packages/docgen-php/guard.yaml",
+    "packages/guard-php/guard.yaml",
+    "packages/guard-php/rules/infection.yaml",
+    "packages/guard-php/rules/phpunit13.yaml",
+    "packages/phpstan-ai-formatter/guard.yaml",
+    "packages/phpstan-guard-rules/guard.yaml",
+    "packages/phpunit-ai-reporter/guard.yaml",
+    "packages/phpunit-ai-reporter/skills/setup-toolkit-phpunit/SKILL.md",
+    "packages/phpunit-ai-reporter/skills/setup-toolkit-phpunit/phpunit.xml.dist",
+    "skills/setup-toolkit-infection/SKILL.md",
+    "skills/setup-toolkit-infection/infection.json5"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "fa73c3ab383e",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 138998,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2014208,
+    "output_tokens": 16337,
+    "api_call_count": 23
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T07:52:04.926841Z",
+    "agent_lines": 24,
+    "agent_removed": 104,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 24,
+    "total_lines_changed": 128,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 24,
+      "agent_lines_removed": 104
+    }
+  ]
+}

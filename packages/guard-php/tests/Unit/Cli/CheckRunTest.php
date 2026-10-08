@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cli;
 
+use Closure;
+use FilesystemIterator;
 use Guard\Cli\Command\CheckCommand;
 use Guard\Cli\PolicyRun;
 use Guard\Execution\FileChange;
@@ -14,8 +16,10 @@ use Guard\Reporting\Finding;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 use Symfony\Component\Console\Tester\CommandTester;
-use Tests\Support\CallbackPolicy;
 
 /**
  * @covers \Guard\Cli\CheckRun
@@ -105,11 +109,62 @@ final class CheckRunTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('providerFormats')]
     public function testRunFiltersOnlyTheDisplayAndKeepsHiddenErrorsInTheExitStatus(string $format, string $status): void
     {
-        $project = new \Tests\Support\Project(['guard.yaml' => "version: 1\n"]);
+        $project = new class (['guard.yaml' => "version: 1\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         $error = new Finding('a', 'problem', 'required', 'Wrong value. Set it to 1.');
         $warning = new Finding('b', 'suggestion', 'recommended', 'Wrong value. Set it to 2.', true);
         $registry = new Registry();
-        $registry->addPolicy('test', new CallbackPolicy([], static fn (): Plan => new Plan([$error, $warning], [])));
+        $registry->addPolicy('test', new class ([], static fn (): Plan => new Plan([$error, $warning], [])) implements \Guard\Policy\Policy {
+            /** @param array<string, \Guard\Collect\Input> $inputs
+             * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): Plan $callback
+             */
+            public function __construct(private array $inputs, private Closure $callback)
+            {
+            }
+            public function inputs(\Guard\Execution\Context $context): array
+            {
+                return $this->inputs;
+            }
+            public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): Plan
+            {
+                return ($this->callback)($inputs, $context);
+            }
+        });
         $tester = new CommandTester(new CheckCommand($project->root, $registry));
         try {
             self::assertSame(1, $tester->execute(['--level' => 'warning', '--fixable' => true, '--format' => $format]));
@@ -137,7 +192,43 @@ final class CheckRunTest extends TestCase
 
     public function testBaselinePathDistinguishesDefaultExplicitAndDisabledBaselines(): void
     {
-        $project = new \Tests\Support\Project(['guard.yaml' => "version: 1\n"]);
+        $project = new class (['guard.yaml' => "version: 1\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             $command = new CheckCommand($project->root);
             $input = new \Symfony\Component\Console\Input\ArrayInput([], $command->getDefinition());

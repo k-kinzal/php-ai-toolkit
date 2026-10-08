@@ -93,7 +93,7 @@ final class LegacyDoctestSuiteTest extends TestCase
 
     public function testDoctestProviderNamesEveryExampleTheEnvironmentSelects(): void
     {
-        putenv('DOCTEST_DIRECTORIES=' . dirname(__DIR__, 4) . '/fixtures/Doctest/project/src');
+        putenv('DOCTEST_DIRECTORIES=' . dirname(__DIR__, 4) . '/tests/Doctest/project/src');
         putenv('DOCTEST_EXCLUDE=*/Nested/*');
 
         $provided = iterator_to_array(LegacyDoctestSuite::doctestProvider());

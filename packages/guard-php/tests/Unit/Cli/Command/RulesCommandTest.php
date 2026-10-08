@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cli\Command;
 
+use FilesystemIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
+
 /**
  * @covers \Guard\Cli\Command\RulesCommand
  * @uses \Guard\Config\ConfigurationLoader
@@ -52,7 +57,43 @@ final class RulesCommandTest extends \PHPUnit\Framework\TestCase
 {
     public function testRunFiltersTheResolvedRulesAndRejectsEmptyQueries(): void
     {
-        $project = new \Tests\Support\Project(['guard.yaml' => "version: 1\nconfiguration:\n  - {id: workers, file: app.json, select: /workers, message: Bound concurrency. Set /workers to 2., assert: {equals: 2}}\n"]);
+        $project = new class (['guard.yaml' => "version: 1\nconfiguration:\n  - {id: workers, file: app.json, select: /workers, message: Bound concurrency. Set /workers to 2., assert: {equals: 2}}\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             $tester = new \Symfony\Component\Console\Tester\CommandTester(new \Guard\Cli\Command\RulesCommand($project->root));
             self::assertSame(0, $tester->execute(['--query' => 'CONCURRENCY', '--format' => 'text']));

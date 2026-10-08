@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Collect\Filesystem;
 
+use FilesystemIterator;
 use Guard\Collect\Collector;
 use Guard\Collect\Filesystem\ScopedRoots;
 use Guard\Collect\Filesystem\Snapshot;
@@ -17,9 +18,9 @@ use Guard\Structure\Php\MetricParser;
 use Guard\Structure\Php\TokenParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\CountingFilesystem;
-use Tests\Support\CountingStructurer;
-use Tests\Support\Project;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Collect\Filesystem\ScopedRoots
@@ -355,10 +356,72 @@ final class ScopedRootsTest extends TestCase
 {
     public function testEntryRejectsLiteralSymlinkParentsEvenWhenTheirTargetsAreIncluded(): void
     {
-        $project = new Project(['src/actual/data.xml' => '<a/>']);
+        $project = new class (['src/actual/data.xml' => '<a/>']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             symlink($project->root . '/src/actual', $project->root . '/src/alias');
-            $filesystem = new CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $sets = (new Collector($filesystem))->collect($project->root, [
                 'exact' => new Input(new Selection('files', ['src/alias/data.xml']), 'xml'),
                 'pattern' => new Input(new Selection('patterns', ['src/alias/*.xml']), 'xml'),
@@ -374,10 +437,82 @@ final class ScopedRootsTest extends TestCase
     }
     public function testSeedIntersectsPhpMarkdownAndXmlDemandsBeforeTheSharedTraversal(): void
     {
-        $project = new Project(['src/A.php' => '<?php echo 1;', 'src/generated/B.php' => 'ignored', 'docs/A.md' => '# A', 'README.md' => '# Root', 'assets/app.xml' => '<app/>', 'assets/unread.txt' => 'unused', 'vendor/X.xml' => '<broken', 'outside/Z.php' => 'unused']);
+        $project = new class (['src/A.php' => '<?php echo 1;', 'src/generated/B.php' => 'ignored', 'docs/A.md' => '# A', 'README.md' => '# Root', 'assets/app.xml' => '<app/>', 'assets/unread.txt' => 'unused', 'vendor/X.xml' => '<broken', 'outside/Z.php' => 'unused']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            $filesystem = new CountingFilesystem();
-            $xml = new CountingStructurer(new DocumentStructurer('xml'));
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
+            $xml = new class (new DocumentStructurer('xml')) implements \Guard\Structure\Structurer {
+                public int $calls = 0;
+                public function __construct(private \Guard\Structure\Structurer $inner)
+                {
+                }
+                public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+                {
+                    $this->calls++;
+                    return $this->inner->structure($source);
+                }
+            };
             $sets = (new Collector($filesystem))->collect($project->root, [
                 'php' => new Input(new Selection('patterns', ['**/*.php']), 'php.metrics'),
                 'md' => new Input(new Selection('patterns', ['README.md', 'docs/**/*.md']), 'markdown.headings'),
@@ -402,9 +537,71 @@ final class ScopedRootsTest extends TestCase
 
     public function testStartUsesBothLiteralPrefixesAndPrunesImpossibleGlobDescendants(): void
     {
-        $project = new Project(['src/lib/Only.php' => '<?php', 'src/lib/deep/Only.php' => 'unused', 'unrelated/X.php' => 'unused']);
+        $project = new class (['src/lib/Only.php' => '<?php', 'src/lib/deep/Only.php' => 'unused', 'unrelated/X.php' => 'unused']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            $filesystem = new CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $sets = (new Collector($filesystem))->collect($project->root, ['files' => new Input(new Selection('patterns', ['src/lib/**/*.php']))], [], new Scope(['src/*/Only.php']));
             self::assertSame(['src/lib/Only.php'], array_keys($sets['files']->files));
             self::assertSame([realpath($project->root) . '/src/lib' => 1], $filesystem->listings);
@@ -417,9 +614,71 @@ final class ScopedRootsTest extends TestCase
 
     public function testExactCannotWidenTheBoundaryOrReadExcludedMalformedDocuments(): void
     {
-        $project = new Project(['src/keep.json' => '{}', 'src/skip.json' => '{', 'outside.json' => '{']);
+        $project = new class (['src/keep.json' => '{}', 'src/skip.json' => '{', 'outside.json' => '{']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            $filesystem = new CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $sets = (new Collector($filesystem))->collect($project->root, ['files' => new Input(new Selection('files', ['./src/keep.json', 'src/skip.json', '/outside/file.json', 'outside.json']), 'json')], ['json' => new DocumentStructurer('json')], new Scope(['src'], ['src/skip.json']));
             self::assertSame(['./src/keep.json'], array_keys($sets['files']->files));
             self::assertCount(1, $filesystem->reads);
@@ -433,7 +692,33 @@ final class ScopedRootsTest extends TestCase
 
     public function testPositionsReplaysPrefixesWithoutEnumeratingParents(): void
     {
-        $filesystem = new CountingFilesystem();
+        $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+            /** @var array<string, int> */
+            public array $listings = [];
+            /** @var array<string, int> */
+            public array $reads = [];
+            /** @var array<string, int> */
+            public array $inspections = [];
+            public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+            {
+                $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+            }
+            public function entries(string $path): array|false
+            {
+                $key = realpath($path);
+                $key = $key === false ? $path : $key;
+                $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+            }
+            public function read(string $path): string|false
+            {
+                $key = realpath($path);
+                $key = $key === false ? $path : $key;
+                $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+            }
+        };
         $roots = new ScopedRoots(new Snapshot($filesystem), new ScopeMatcher('/root', '/root', new Scope()));
         self::assertSame([0], $roots->positions(['**', '*.xml'], 'assets/nested', true));
         self::assertSame([2], $roots->positions(['**', '*.xml'], 'assets/file.xml', false));
@@ -443,9 +728,71 @@ final class ScopedRootsTest extends TestCase
 
     public function testSeedKeepsMissingExactFilesAndEmptyScopesDistinct(): void
     {
-        $project = new Project();
+        $project = new class () {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            $filesystem = new CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $collector = new Collector($filesystem);
             $inputs = ['file' => new Input(new Selection('files', ['README.md']))];
             $missing = $collector->collect($project->root, $inputs, [], new Scope(['README.md']));
@@ -460,9 +807,71 @@ final class ScopedRootsTest extends TestCase
 
     public function testStartConstrainsDirectoryListingsAndRecursiveSuffixRequests(): void
     {
-        $project = new Project(['src/A.php' => '<?php', 'src/B.txt' => 'text', 'src/excluded/X.php' => 'unused', 'vendor/X.php' => 'unused']);
+        $project = new class (['src/A.php' => '<?php', 'src/B.txt' => 'text', 'src/excluded/X.php' => 'unused', 'vendor/X.php' => 'unused']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            $filesystem = new CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $sets = (new Collector($filesystem))->collect($project->root, [
                 'dirs' => new Input(new Selection('directories', ['.'])),
                 'php' => new Input(new Selection('descendants', ['.'], [], '.php')),
@@ -480,10 +889,72 @@ final class ScopedRootsTest extends TestCase
 
     public function testStartDoesNotReadThroughSymlinksOrLiteralAliasesOutsideTheScope(): void
     {
-        $project = new Project(['src/A.xml' => '<a/>', 'vendor/B.xml' => '<broken']);
+        $project = new class (['src/A.xml' => '<a/>', 'vendor/B.xml' => '<broken']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             symlink($project->root . '/vendor', $project->root . '/src/alias');
-            $filesystem = new CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $sets = (new Collector($filesystem))->collect($project->root, ['files' => new Input(new Selection('patterns', ['src/**/*.xml', 'src/alias/B.xml']), 'xml')], ['xml' => new DocumentStructurer('xml')], new Scope(['src']));
             self::assertSame(['src/A.xml'], array_keys($sets['files']->files));
             self::assertCount(1, $filesystem->reads);

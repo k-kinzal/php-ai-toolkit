@@ -76,7 +76,7 @@ final class ForbidDependencyRule implements Rule
                 continue;
             }
             $errors[] = RuleErrorBuilder::message(sprintf(
-                'Forbidden dependency from "%s" to "%s" via %s (target pattern "%s"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
+                'Forbidden dependency from "%s" to "%s" via %s (target pattern "%s"). Remove the reference or move the referenced code/data to an allowed path.',
                 $this->paths->display($source),
                 $this->paths->display($target),
                 $description,

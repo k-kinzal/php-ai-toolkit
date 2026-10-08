@@ -22,11 +22,10 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/",
-            "Tests\\Fixture\\": "fixtures/"
+            "Tests\\": "tests/"
         },
         "classmap": [
-            "fixtures/"
+            "tests/PhpStan/"
         ],
         "exclude-from-classmap": [
             "vendor/marc-mabe/php-enum/stubs/Stringable.php"

@@ -34,7 +34,7 @@ final class NoReflectionInTestClassRuleTest extends RuleTestCase
 
     public function testProcessNodeReflectionInTestClassIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/NoReflectionInTestClass/WithReflection.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoReflectionInTestClass/WithReflection.php'], [
             [
                 'Replace ReflectionClass usage with assertions against public behavior. Test classes must not use Reflection.',
                 17,
@@ -48,6 +48,6 @@ final class NoReflectionInTestClassRuleTest extends RuleTestCase
 
     public function testProcessNodeReflectionInNonTestClassIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/NoReflectionInTestClass/NonTestWithReflection.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoReflectionInTestClass/NonTestWithReflection.php'], []);
     }
 }

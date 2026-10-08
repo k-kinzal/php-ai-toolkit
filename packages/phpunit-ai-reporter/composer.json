@@ -17,7 +17,8 @@
             "Tests\\": "tests/"
         },
         "classmap": [
-            "fixtures/"
+            "tests/Doctest/",
+            "tests/TestReporter/"
         ],
         "exclude-from-classmap": [
             "vendor/marc-mabe/php-enum/stubs/Stringable.php"

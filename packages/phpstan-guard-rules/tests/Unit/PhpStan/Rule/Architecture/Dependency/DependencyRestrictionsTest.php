@@ -28,6 +28,9 @@ final class DependencyRestrictionsTest extends TestCase
         self::assertSame('*/**', $restrictions->violation('/project/src/Client.php', '/project/tests/input.php'));
         self::assertSame('*/**', $restrictions->violation('/project/tests/ClientTest.php', '/project/fixtures/input.json'));
         self::assertSame('*/**', $restrictions->violation('/project/bench/run.php', '/project/tests/input.php'));
+        self::assertSame('*/**', $restrictions->violation('/project/tests/ClientTest.php', '/project/test-support/Project.php'));
+        self::assertSame('*/**', $restrictions->violation('/project/src/Client.php', '/project/fixtures/input.json'));
+        self::assertSame('*/**', $restrictions->violation('/project/src/Client.php', '/project/test-support/Project.php'));
     }
 
     public function testViolationDefaultsAllowTheSameRootSourcesAndExternalLibraries(): void
@@ -68,13 +71,13 @@ final class DependencyRestrictionsTest extends TestCase
     public function testViolationTargetExceptionsApplyOnlyToTheirOwnPolicy(): void
     {
         $restrictions = new DependencyRestrictions(new DependencyPath('/project'), [
-            ['from' => ['tests/**'], 'to' => ['*/**'], 'excludeTo' => ['fixtures/**'], 'allowSameRootDirectory' => true],
-            ['from' => ['tests/**'], 'to' => ['fixtures/private/**']],
+            ['from' => ['tests/**'], 'to' => ['*/**'], 'excludeTo' => ['src/**'], 'allowSameRootDirectory' => true],
+            ['from' => ['tests/**'], 'to' => ['src/Internal/**']],
         ]);
 
-        self::assertNull($restrictions->violation('/project/tests/Test.php', '/project/fixtures/input.json'));
-        self::assertNull($restrictions->violation('/project/tests/Unit/Test.php', '/project/tests/Support.php'));
-        self::assertSame('fixtures/private/**', $restrictions->violation('/project/tests/Test.php', '/project/fixtures/private/input.json'));
+        self::assertNull($restrictions->violation('/project/tests/Test.php', '/project/src/Service.php'));
+        self::assertNull($restrictions->violation('/project/tests/Unit/Test.php', '/project/tests/Integration/ClientTest.php'));
+        self::assertSame('src/Internal/**', $restrictions->violation('/project/tests/Test.php', '/project/src/Internal/Service.php'));
         self::assertSame('*/**', $restrictions->violation('/project/tests/Test.php', '/project/examples/input.json'));
     }
 

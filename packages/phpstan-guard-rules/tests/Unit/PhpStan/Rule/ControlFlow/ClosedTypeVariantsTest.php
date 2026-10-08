@@ -28,7 +28,7 @@ final class ClosedTypeVariantsTest extends PHPStanTestCase
     public function testValuesListsTheCasesOfAnEnum(): void
     {
         self::createReflectionProvider();
-        $suit = 'Tests\Fixture\RequireExhaustiveDispatch\Suit';
+        $suit = 'Tests\PhpStan\RequireExhaustiveDispatch\Suit';
 
         $variants = (new ClosedTypeVariants())->values(new ObjectType($suit));
 

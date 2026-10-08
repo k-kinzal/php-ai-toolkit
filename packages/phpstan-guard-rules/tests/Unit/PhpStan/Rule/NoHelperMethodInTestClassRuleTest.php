@@ -44,7 +44,7 @@ final class NoHelperMethodInTestClassRuleTest extends RuleTestCase
 
     public function testProcessNodeHelperMethodIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/NoHelperMethodInTestClass/WithHelper.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoHelperMethodInTestClass/WithHelper.php'], [
             [
                 'Move method buildUser() out of Tests\Unit\Fixture\NoHelperMethodInTestClass\WithHelper or make it a test, data provider, or framework override.',
                 16,
@@ -54,6 +54,6 @@ final class NoHelperMethodInTestClassRuleTest extends RuleTestCase
 
     public function testProcessNodeOverrideAndProviderAreNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/NoHelperMethodInTestClass/CleanTestClass.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoHelperMethodInTestClass/CleanTestClass.php'], []);
     }
 }

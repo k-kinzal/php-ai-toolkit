@@ -8,8 +8,8 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Testing\PHPStanTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
-use Tests\Fixture\RequireExhaustiveDispatch\MasterCard;
-use Tests\Fixture\RequireExhaustiveDispatch\Payment;
+use Tests\PhpStan\RequireExhaustiveDispatch\MasterCard;
+use Tests\PhpStan\RequireExhaustiveDispatch\Payment;
 use Toolkit\PhpStan\Rule\ControlFlow\ClassAncestorCollector;
 
 /**
@@ -72,7 +72,7 @@ final class ClassAncestorCollectorTest extends PHPStanTestCase
     public function testProcessNodeSkipsADeclarationReflectionDoesNotKnow(): void
     {
         $node = new \PhpParser\Node\Stmt\Class_('Absent');
-        $node->namespacedName = new \PhpParser\Node\Name\FullyQualified('Tests\\Fixture\\RequireExhaustiveDispatch\\Absent');
+        $node->namespacedName = new \PhpParser\Node\Name\FullyQualified('Tests\\PhpStan\\RequireExhaustiveDispatch\\Absent');
 
         self::assertNull((new ClassAncestorCollector(self::createReflectionProvider()))->processNode($node, self::createStub(Scope::class)));
     }

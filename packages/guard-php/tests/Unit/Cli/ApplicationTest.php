@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cli;
 
+use FilesystemIterator;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Cli\Application
@@ -683,10 +687,43 @@ final class ApplicationTest extends TestCase
 
     public function testRunReportsFixabilityMessagesAndDiffsWithoutWritingDuringPreview(): void
     {
-        $project = new \Tests\Support\Project([
-            'app.json' => '{"workers":0}',
-            'guard.yaml' => "version: 1\nconfiguration:\n  - {id: workers, file: app.json, select: /workers, message: Bound concurrency. Set /workers to 2., assert: {equals: 2}}\n  - {id: missing, file: absent.json, select: /x, assert: {equals: 1}}\n",
-        ]);
+        $project = new class (['app.json' => '{"workers":0}', 'guard.yaml' => "version: 1\nconfiguration:\n  - {id: workers, file: app.json, select: /workers, message: Bound concurrency. Set /workers to 2., assert: {equals: 2}}\n  - {id: missing, file: absent.json, select: /x, assert: {equals: 1}}\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         $output = '';
         $application = new \Guard\Cli\Application($project->root, static function (string $text) use (&$output): void {
             $output .= $text;
@@ -715,7 +752,43 @@ final class ApplicationTest extends TestCase
 
     public function testRunExplicitHumanFormatOverridesAgentDetection(): void
     {
-        $project = new \Tests\Support\Project(['guard.yaml' => "version: 1\n"]);
+        $project = new class (['guard.yaml' => "version: 1\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         $before = getenv('AI_AGENT');
         $output = '';
         $application = new \Guard\Cli\Application($project->root, static function (string $text) use (&$output): void {
@@ -740,11 +813,43 @@ final class ApplicationTest extends TestCase
 
     public function testRunBaselinesEveryPolicyAndDetectsWorseningMetrics(): void
     {
-        $project = new \Tests\Support\Project([
-            'src/A.php' => "<?php\n// first\n// second\n// third\n",
-            'app.json' => '{"workers":0}',
-            'guard.yaml' => "version: 1\nmetrics:\n  source: [src]\n  profiles:\n    small:\n      limits:\n        file: {lines: 2}\n  default: small\nstructure:\n  paths: [src]\n  directories:\n    - {path: src, require: [README.md]}\ndocumentation:\n  files:\n    README.md: {headings: ['# Project']}\nconfiguration:\n  - {id: workers, file: app.json, select: /workers, assert: {equals: 2}}\n",
-        ]);
+        $project = new class (['src/A.php' => "<?php\n// first\n// second\n// third\n", 'app.json' => '{"workers":0}', 'guard.yaml' => "version: 1\nmetrics:\n  source: [src]\n  profiles:\n    small:\n      limits:\n        file: {lines: 2}\n  default: small\nstructure:\n  paths: [src]\n  directories:\n    - {path: src, require: [README.md]}\ndocumentation:\n  files:\n    README.md: {headings: ['# Project']}\nconfiguration:\n  - {id: workers, file: app.json, select: /workers, assert: {equals: 2}}\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         $output = '';
         $app = new \Guard\Cli\Application($project->root, static function (string $text) use (&$output): void {
             $output .= $text;
@@ -779,10 +884,43 @@ final class ApplicationTest extends TestCase
 
     public function testRunFixRepairsBaselinedViolationsAndCheckReportsUnmatchedEntries(): void
     {
-        $project = new \Tests\Support\Project([
-            'app.json' => '{"workers":0}',
-            'guard.yaml' => "version: 1\nconfiguration:\n  - {id: workers, file: app.json, select: /workers, assert: {equals: 2}}\n",
-        ]);
+        $project = new class (['app.json' => '{"workers":0}', 'guard.yaml' => "version: 1\nconfiguration:\n  - {id: workers, file: app.json, select: /workers, assert: {equals: 2}}\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         $output = '';
         $app = new \Guard\Cli\Application($project->root, static function (string $text) use (&$output): void {
             $output .= $text;
@@ -802,7 +940,43 @@ final class ApplicationTest extends TestCase
 
     public function testRunRejectsMissingAndMalformedBaselinesUnlessDisabled(): void
     {
-        $project = new \Tests\Support\Project(['config/team.yaml' => "version: 1\n", 'config/guard-baseline.json' => '{']);
+        $project = new class (['config/team.yaml' => "version: 1\n", 'config/guard-baseline.json' => '{']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         $output = '';
         $app = new \Guard\Cli\Application($project->root, static function (string $text) use (&$output): void {
             $output .= $text;

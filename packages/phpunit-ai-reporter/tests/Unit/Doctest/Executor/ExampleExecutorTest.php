@@ -60,9 +60,9 @@ final class ExampleExecutorTest extends TestCase
 {
     public function testExecuteRunsAnExampleWhoseAssertionsHold(): void
     {
-        $path = (string) realpath(__DIR__ . '/../../../../fixtures/Doctest/project/src/Calculator.php');
-        $target = new Target(TargetKind::CLASS_LIKE, $path, '/** */', 'Calculator', 12, 'Tests\Fixture\Doctest\Project');
-        $code = "\$calculator = new \\Tests\\Fixture\\Doctest\\Project\\Calculator();\n\$calculator->add(1, 2) // => 3";
+        $path = (string) realpath(__DIR__ . '/../../../../tests/Doctest/project/src/Calculator.php');
+        $target = new Target(TargetKind::CLASS_LIKE, $path, '/** */', 'Calculator', 12, 'Tests\Doctest\Project');
+        $code = "\$calculator = new \\Tests\\Doctest\\Project\\Calculator();\n\$calculator->add(1, 2) // => 3";
 
         $result = (new ExampleExecutor())->execute(new Example($code, $target, 14, 0));
 
@@ -71,10 +71,10 @@ final class ExampleExecutorTest extends TestCase
 
     public function testExecuteReportsAnExampleThatDocumentsTheWrongValue(): void
     {
-        $path = (string) realpath(__DIR__ . '/../../../../fixtures/Doctest/project/src/Calculator.php');
-        $target = new Target(TargetKind::CLASS_LIKE, $path, '/** */', 'Calculator', 12, 'Tests\Fixture\Doctest\Project');
+        $path = (string) realpath(__DIR__ . '/../../../../tests/Doctest/project/src/Calculator.php');
+        $target = new Target(TargetKind::CLASS_LIKE, $path, '/** */', 'Calculator', 12, 'Tests\Doctest\Project');
 
-        $result = (new ExampleExecutor())->execute(new Example('(new \\Tests\\Fixture\\Doctest\\Project\\Calculator())->add(1, 2) // => 4', $target, 14, 0));
+        $result = (new ExampleExecutor())->execute(new Example('(new \\Tests\\Doctest\\Project\\Calculator())->add(1, 2) // => 4', $target, 14, 0));
 
         self::assertFalse($result->passed);
         self::assertStringContainsString('Values do not match', $result->getErrorMessage());
@@ -82,7 +82,7 @@ final class ExampleExecutorTest extends TestCase
 
     public function testExecuteParsedRunsEveryStatementAndCollectsFailures(): void
     {
-        $path = (string) realpath(__DIR__ . '/../../../../fixtures/Doctest/project/src/Calculator.php');
+        $path = (string) realpath(__DIR__ . '/../../../../tests/Doctest/project/src/Calculator.php');
         $target = new Target(TargetKind::CLASS_LIKE, $path, '/** */', 'Calculator', 12);
         $example = new Example('x', $target, 14, 0);
         $parsed = new ParsedExample($example, [

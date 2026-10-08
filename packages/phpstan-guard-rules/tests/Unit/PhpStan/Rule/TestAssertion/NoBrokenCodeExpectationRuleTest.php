@@ -58,7 +58,7 @@ final class NoBrokenCodeExpectationRuleTest extends RuleTestCase
 
     public function testProcessNodeBrokenCodeExpectationsAreReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/NoBrokenCodeExpectation/WithBrokenCodeExpectation.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/NoBrokenCodeExpectation/WithBrokenCodeExpectation.php'], [
             [
                 'Delete this test case instead of expecting "Throwable" in expectException(): Throwable matches every failure, so a passing test says nothing about what the code under test did. Keep only expectations for failures the code under test declares as behavior, such as a RuntimeException subclass.',
                 18,
@@ -84,11 +84,11 @@ final class NoBrokenCodeExpectationRuleTest extends RuleTestCase
 
     public function testProcessNodeBehaviorExpectationsAreNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/NoBrokenCodeExpectation/WithBehaviorExpectation.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/NoBrokenCodeExpectation/WithBehaviorExpectation.php'], []);
     }
 
     public function testProcessNodeOutsideTestNamespaceIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/NoBrokenCodeExpectation/NonTestClass.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/NoBrokenCodeExpectation/NonTestClass.php'], []);
     }
 }

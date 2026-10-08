@@ -3,7 +3,8 @@
     <description>Checks compatibility with the declared PHP support range.</description>
     <file>src</file>
     <file>tests</file>
-    <exclude-pattern>*/fixtures/*</exclude-pattern>
+    <exclude-pattern>*/tests/Doctest/*</exclude-pattern>
+    <exclude-pattern>*/tests/TestReporter/*</exclude-pattern>
     <config name="testVersion" value="8.0-"/>
     <rule ref="PHPCompatibility"/>
 </ruleset>

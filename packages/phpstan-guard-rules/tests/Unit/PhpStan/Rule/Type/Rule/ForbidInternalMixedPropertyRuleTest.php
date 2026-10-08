@@ -38,13 +38,13 @@ final class ForbidInternalMixedPropertyRuleTest extends RuleTestCase
     public function testProcessNodeHonorsStoredPropertyVisibility(): void
     {
         $guidance = ': this declaration is internal or scope-restricted, so it must state a deterministic PHPStan type. Validate arbitrary input at an unrestricted public boundary, then pass the narrowed type inward.';
-        $prefix = 'Tests\Fixture\ForbidInternalMixedType\\';
-        $this->analyse([__DIR__ . '/../../../../../../fixtures/ForbidInternalMixedType/ForbiddenMixedTypes.php'], [
+        $prefix = 'Tests\PhpStan\ForbidInternalMixedType\\';
+        $this->analyse([__DIR__ . '/../../../../../../tests/PhpStan/ForbidInternalMixedType/ForbiddenMixedTypes.php'], [
             ['Replace concrete mixed type "array<string, mixed>" in property type of ' . $prefix . 'RestrictedTypes::$values' . $guidance, 16],
             ['Replace concrete mixed type "mixed" in property type of ' . $prefix . 'PublicContainer::$state' . $guidance, 33],
             ['Replace concrete mixed type "mixed" in property type of ' . $prefix . 'PublicContainer::$promotedState' . $guidance, 39],
             ['Replace concrete mixed type "mixed" in property type of ' . $prefix . 'MemberRestrictedTypes::$value' . $guidance, 79],
         ]);
-        $this->analyse([__DIR__ . '/../../../../../../fixtures/ForbidInternalMixedType/AllowedMixedTypes.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../../tests/PhpStan/ForbidInternalMixedType/AllowedMixedTypes.php'], []);
     }
 }

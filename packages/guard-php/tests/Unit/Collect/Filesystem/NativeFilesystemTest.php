@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Collect\Filesystem;
 
+use FilesystemIterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Collect\Filesystem\NativeFilesystem
@@ -237,7 +241,43 @@ final class NativeFilesystemTest extends TestCase
 {
     public function testInspectDistinguishesMissingFilesAndSymlinks(): void
     {
-        $project = new \Tests\Support\Project(['a' => 'bytes']);
+        $project = new class (['a' => 'bytes']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             symlink($project->root . '/a', $project->root . '/link');
             $filesystem = new \Guard\Collect\Filesystem\NativeFilesystem();
@@ -252,7 +292,43 @@ final class NativeFilesystemTest extends TestCase
     }
     public function testEntriesOmitsDotEntriesAndReportsMissingDirectories(): void
     {
-        $project = new \Tests\Support\Project(['b' => '', 'a' => '']);
+        $project = new class (['b' => '', 'a' => '']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             $filesystem = new \Guard\Collect\Filesystem\NativeFilesystem();
             self::assertSame(['a', 'b'], $filesystem->entries($project->root));
@@ -263,7 +339,43 @@ final class NativeFilesystemTest extends TestCase
     }
     public function testReadPreservesBytesAndReportsMissingFiles(): void
     {
-        $project = new \Tests\Support\Project(['file' => "\x00\r\n"]);
+        $project = new class (['file' => "\x00\r\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             $filesystem = new \Guard\Collect\Filesystem\NativeFilesystem();
             self::assertSame("\x00\r\n", $filesystem->read($project->root . '/file'));

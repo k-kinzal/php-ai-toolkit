@@ -8,7 +8,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Tests\Fixture\DocGen\PublicApiFixture;
 use Toolkit\DocGen\Analysis\Diff\DiffIndex;
 use Toolkit\DocGen\Analysis\Diff\DiffKey;
 use Toolkit\DocGen\Analysis\Diff\DiffLine;
@@ -395,7 +394,42 @@ final class SiteRendererTest extends TestCase
     #[DataProvider('providerPublicApiScopes')]
     public function testRenderPublicApiTablesMatchEachPageScopeInBothModes(bool $publicApi, string $scope, array $expected): void
     {
-        $model = PublicApiFixture::model('/tmp/none', $publicApi);
+        $buildModel = static function (string $root, bool $publicApi): ProjectModel {
+            $public = new DocBlock('Published API.', '', [], null, null, [], [], [], [], [], [], null, false, '', ['PUBLIC']);
+            $restricted = new DocBlock('Implementation.', '', [], null, null, [], [], [], [], [], [], null, false, '', ['namespace']);
+            $classes = [];
+            $table = new SymbolTable();
+            $assignments = [];
+            foreach ([
+                ['Client', 'Demo\\Api', 'class', 'demo/pkg', $public, false, 'Domain'],
+                ['Contract', 'Demo\\Api', 'interface', 'demo/pkg', $public, false, 'Domain'],
+                ['Extension', 'Demo\\Api', 'trait', 'demo/pkg', $public, false, 'Domain'],
+                ['Status', 'Demo\\Api', 'enum', 'demo/pkg', $public, false, 'Domain'],
+                ['Service', 'Demo\\Other', 'class', 'demo/pkg', $public, false, 'Application'],
+                ['Helper', 'Demo\\Internal', 'class', 'demo/pkg', $restricted, false, 'Internal'],
+                ['Foreign', 'Other', 'class', 'other/pkg', $public, false, 'Domain'],
+                ['ApiTest', 'Demo\\Tests', 'class', 'demo/pkg', $public, true, 'Domain'],
+            ] as [$name, $namespace, $kind, $package, $doc, $dev, $layer]) {
+                $classLike = new ClassLikeDoc($namespace . '\\' . $name, $name, $namespace, $kind, $package, 'src/' . $name . '.php', 1, 2, false, false, [], [], [], [], [], [], [], null, $doc, [], $dev);
+                $classes[] = $classLike;
+                $table->registerClassLike($classLike);
+                $assignments[strtolower($classLike->fqcn)] = [$layer];
+            }
+            $functions = [
+                new FunctionDoc('Demo\\Api\\connect', 'connect', 'Demo\\Api', 'demo/pkg', 'src/connect.php', 1, 2, [], new TypeSignature('\\Demo\\Internal\\Helper', null), $public, [], false),
+                new FunctionDoc('Demo\\Internal\\hidden', 'hidden', 'Demo\\Internal', 'demo/pkg', 'src/hidden.php', 1, 2, [], new TypeSignature(null, null), null, [], false),
+            ];
+            foreach ($functions as $function) {
+                $table->registerFunction($function);
+            }
+            $packages = [
+                new DiscoveredPackage(new ComposerManifest($root, 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false),
+                new DiscoveredPackage(new ComposerManifest($root, 'other/pkg', 'Other package', ['Other\\' => ['src']], [], [], [], []), false),
+            ];
+
+            return new ProjectModel('Demo Docs', $root, $packages, new PackageGraph([]), $classes, $functions, $table, new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, $assignments, null, [], [], null, null, $publicApi);
+        };
+        $model = $buildModel('/tmp/none', $publicApi);
         $services = (new SiteRenderer())->services($model);
         $pages = [
             'package' => (new PackagePage())->render($services, $model->packages[0], null),
@@ -433,16 +467,58 @@ final class SiteRendererTest extends TestCase
 
     public function testRenderSwitchingToPublicApiRemovesPrivatePagesAndReusesTheFilteredSite(): void
     {
+        $buildModel = static function (string $root, bool $publicApi): ProjectModel {
+            $public = new DocBlock('Published API.', '', [], null, null, [], [], [], [], [], [], null, false, '', ['PUBLIC']);
+            $restricted = new DocBlock('Implementation.', '', [], null, null, [], [], [], [], [], [], null, false, '', ['namespace']);
+            $classes = [];
+            $table = new SymbolTable();
+            $assignments = [];
+            foreach ([
+                ['Client', 'Demo\\Api', 'class', 'demo/pkg', $public, false, 'Domain'],
+                ['Contract', 'Demo\\Api', 'interface', 'demo/pkg', $public, false, 'Domain'],
+                ['Extension', 'Demo\\Api', 'trait', 'demo/pkg', $public, false, 'Domain'],
+                ['Status', 'Demo\\Api', 'enum', 'demo/pkg', $public, false, 'Domain'],
+                ['Service', 'Demo\\Other', 'class', 'demo/pkg', $public, false, 'Application'],
+                ['Helper', 'Demo\\Internal', 'class', 'demo/pkg', $restricted, false, 'Internal'],
+                ['Foreign', 'Other', 'class', 'other/pkg', $public, false, 'Domain'],
+                ['ApiTest', 'Demo\\Tests', 'class', 'demo/pkg', $public, true, 'Domain'],
+            ] as [$name, $namespace, $kind, $package, $doc, $dev, $layer]) {
+                $classLike = new ClassLikeDoc($namespace . '\\' . $name, $name, $namespace, $kind, $package, 'src/' . $name . '.php', 1, 2, false, false, [], [], [], [], [], [], [], null, $doc, [], $dev);
+                $classes[] = $classLike;
+                $table->registerClassLike($classLike);
+                $assignments[strtolower($classLike->fqcn)] = [$layer];
+            }
+            $functions = [
+                new FunctionDoc('Demo\\Api\\connect', 'connect', 'Demo\\Api', 'demo/pkg', 'src/connect.php', 1, 2, [], new TypeSignature('\\Demo\\Internal\\Helper', null), $public, [], false),
+                new FunctionDoc('Demo\\Internal\\hidden', 'hidden', 'Demo\\Internal', 'demo/pkg', 'src/hidden.php', 1, 2, [], new TypeSignature(null, null), null, [], false),
+            ];
+            foreach ($functions as $function) {
+                $table->registerFunction($function);
+            }
+            $packages = [
+                new DiscoveredPackage(new ComposerManifest($root, 'demo/pkg', 'Demo package', ['Demo\\' => ['src']], [], [], [], []), false),
+                new DiscoveredPackage(new ComposerManifest($root, 'other/pkg', 'Other package', ['Other\\' => ['src']], [], [], [], []), false),
+            ];
+
+            return new ProjectModel('Demo Docs', $root, $packages, new PackageGraph([]), $classes, $functions, $table, new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, $assignments, null, [], [], null, null, $publicApi);
+        };
         $dir = sys_get_temp_dir() . '/docgen-public-cache-' . bin2hex(random_bytes(4));
         mkdir($dir . '/src', 0777, true);
-        $full = PublicApiFixture::model($dir, false);
-        PublicApiFixture::writeSources($full);
+        $full = $buildModel($dir, false);
+        (static function (ProjectModel $model): void {
+            foreach ($model->classLikes as $classLike) {
+                file_put_contents($model->root . '/' . $classLike->file, '<?php // ' . $classLike->fqcn);
+            }
+            foreach ($model->functions as $function) {
+                file_put_contents($model->root . '/' . $function->file, '<?php // ' . $function->fqn);
+            }
+        })($full);
         $renderer = new SiteRenderer();
         $out = $dir . '/site';
         $cache = new RenderCache($dir . '/cache', $out);
         $renderer->render($full, $out, null, 1, $cache);
         self::assertFileExists($out . '/demo/pkg/Demo/Internal/class.Helper.html');
-        $public = PublicApiFixture::model($dir, true);
+        $public = $buildModel($dir, true);
         $again = new RenderCache($dir . '/cache', $out);
         $again->load();
         $count = $renderer->render($public, $out, null, 1, $again);

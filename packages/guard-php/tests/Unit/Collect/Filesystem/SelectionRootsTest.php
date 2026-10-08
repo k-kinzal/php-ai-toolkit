@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Collect\Filesystem;
 
+use FilesystemIterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RuntimeException;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Collect\Filesystem\SelectionRoots
@@ -253,9 +258,89 @@ final class SelectionRootsTest extends TestCase
 {
     public function testSeedExactFilesDoesNotQueueOrScanAnyDirectory(): void
     {
-        $project = new \Tests\Support\Project(['a.json' => '{}']);
+        $project = new class (['a.json' => '{}']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+            /**
+             * @return array<array-key, string>
+             * @throws RuntimeException
+             */
+            public function files(): array
+            {
+                $files = [];
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS)) as $file) {
+                    if ($file instanceof SplFileInfo && $file->isFile()) {
+                        $source = file_get_contents($file->getPathname());
+                        if ($source === false) {
+                            throw new RuntimeException('Cannot read test fixture ' . $file->getPathname());
+                        }
+                        $files[substr($file->getPathname(), strlen($this->root) + 1)] = $source;
+                    }
+                }
+                ksort($files, SORT_STRING);
+                return $files;
+            }
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            $filesystem = new \Tests\Support\CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $queue = new \Guard\Collect\Filesystem\WalkQueue();
             $result = new \Guard\Collect\Filesystem\QueryResult();
             (new \Guard\Collect\Filesystem\SelectionRoots(new \Guard\Collect\Filesystem\Snapshot($filesystem)))->seed($project->root, 'input', new \Guard\Collect\Selection('files', ['a.json'], [], '', true, ''), $queue, $result);

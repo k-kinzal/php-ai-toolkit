@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Extension;
 
+use Closure;
+use FilesystemIterator;
 use Guard\Extension\Registry;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\Project;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Cli\Application
@@ -427,11 +431,80 @@ final class ExtensionTest extends TestCase
      */
     public function testRegisterExtensionDeclaresFilesAndCliReportsItsPolicy(): void
     {
-        $project = new Project(['guard.yaml' => "version: 1\nstructure: {paths: [.], directories: []}\n"]);
+        $project = new class (['guard.yaml' => "version: 1\nstructure: {paths: [.], directories: []}\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+            /**
+             * @throws JsonException
+             */
+            public function context(bool $repair = false): \Guard\Execution\Context
+            {
+                $path = $this->root . '/guard.yaml';
+                $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new \Guard\Config\Configuration($this->root, []);
+                return new \Guard\Execution\Context($config, $path, $repair);
+            }
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             $registry = new Registry();
             (new \Guard\Extension\BuiltinExtension($project->context()->configuration))->register($registry);
-            $extension = new \Tests\Support\RequiredReadmeExtension();
+            $extension = new class () implements \Guard\Extension\Extension {
+                public function register(Registry $registry): void
+                {
+                    $registry->addPolicy('readme', new class (['readme' => new \Guard\Collect\Input(new \Guard\Collect\Selection('files', ['README.md'], [], '', false, ''), null)], static function (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan {
+                        $file = $inputs->get('readme')->files['README.md'] ?? null;
+                        $exists = $file === null || $file->file->entry->file;
+                        return new \Guard\Execution\Plan($exists ? [] : [new \Guard\Reporting\Finding('README.md', 'readme.required', 'required', 'Create README.md.')], []);
+                    }) implements \Guard\Policy\Policy
+                    {
+                        /** @param array<string, \Guard\Collect\Input> $inputs
+                         * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): \Guard\Execution\Plan $callback
+                         */
+                        public function __construct(private array $inputs, private Closure $callback)
+                        {
+                        }
+                        public function inputs(\Guard\Execution\Context $context): array
+                        {
+                            return $this->inputs;
+                        }
+                        public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan
+                        {
+                            return ($this->callback)($inputs, $context);
+                        }
+                    });
+                }
+            };
             $extension->register($registry);
             $output = '';
             $app = new \Guard\Cli\Application($project->root, static function (string $text) use (&$output): void {

@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
+use FilesystemIterator;
 use Guard\Cli\Application;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\BehaviorCases;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RuntimeException;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Cli\Application
@@ -462,7 +466,75 @@ final class BehaviorTest extends TestCase
     #[DataProvider('providerScenarios')]
     public function testMatchesPreRefactorOutputExitCodesAndEveryFileByte(array $scenario, array $expected): void
     {
-        self::assertSame($expected, (new BehaviorCases())->run($scenario));
+        $package = dirname(__DIR__, 2);
+        $project = new class ($scenario['files']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+            /**
+             * @return array<array-key, string>
+             * @throws RuntimeException
+             */
+            public function files(): array
+            {
+                $files = [];
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS)) as $file) {
+                    if ($file instanceof SplFileInfo && $file->isFile()) {
+                        $source = file_get_contents($file->getPathname());
+                        if ($source === false) {
+                            throw new RuntimeException('Cannot read test fixture ' . $file->getPathname());
+                        }
+                        $files[substr($file->getPathname(), strlen($this->root) + 1)] = $source;
+                    }
+                }
+                ksort($files, SORT_STRING);
+                return $files;
+            }
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
+        try {
+            $results = array_map(static function (array $command) use ($project, $package): array {
+                $output = '';
+                $application = new Application($project->root, static function (string $text) use (&$output): void {
+                    $output .= $text;
+                });
+                $exit = $application->run($command);
+                return ['exit' => $exit, 'output' => str_replace([$project->root, $package], ['<project>', '<package>'], $output), 'files' => $project->files()];
+            }, $scenario['commands']);
+            self::assertSame($expected, $results);
+        } finally {
+            $project->remove();
+        }
     }
     /**
      * @return iterable<string, array{array{name: string, files: array<array-key, string>, commands: list<list<string>>}, list<array{exit: int, output: string, files: array<array-key, string>}>}>
@@ -470,6 +542,34 @@ final class BehaviorTest extends TestCase
      */
     public static function providerScenarios(): iterable
     {
-        return (new BehaviorCases())->scenarios();
+        $base = __DIR__ . '/Behavior/';
+        $source = file_get_contents($base . 'scenarios.json');
+        $expectedSource = file_get_contents($base . 'expected.json');
+        if ($source === false || $expectedSource === false) {
+            throw new RuntimeException('Missing guard characterization fixtures.');
+        }
+        /** @var list<array{name: string, files: array<array-key, string>, commands: list<list<string>>}> $scenarios */
+        $scenarios = json_decode($source, true, 512, JSON_THROW_ON_ERROR);
+        /** @var array<string, list<array{exit: int, output: string, files: array<array-key, string>}>> $expected */
+        $expected = json_decode($expectedSource, true, 512, JSON_THROW_ON_ERROR);
+        $yamlVersion = \Composer\InstalledVersions::getVersion('symfony/yaml');
+        $yamlMajor = $yamlVersion === null ? '' : explode('.', $yamlVersion)[0];
+        $yamlMinor = $yamlVersion === null ? '' : implode('.', array_slice(explode('.', $yamlVersion), 0, 2));
+        $variant = $base . 'expected-yaml' . $yamlMinor . '.json';
+        if (!is_file($variant)) {
+            $variant = $base . 'expected-yaml' . $yamlMajor . '.json';
+        }
+        if (is_file($variant)) {
+            $variantSource = file_get_contents($variant);
+            if ($variantSource === false) {
+                throw new RuntimeException('Cannot read YAML-version characterization fixture.');
+            }
+            /** @var array<string, list<array{exit: int, output: string, files: array<array-key, string>}>> $overrides */
+            $overrides = json_decode($variantSource, true, 512, JSON_THROW_ON_ERROR);
+            $expected = array_replace($expected, $overrides);
+        }
+        foreach ($scenarios as $scenario) {
+            yield $scenario['name'] => [$scenario, $expected[$scenario['name']]];
+        }
     }
 }

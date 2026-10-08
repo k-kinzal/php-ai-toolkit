@@ -33,7 +33,7 @@ final class OverrideMustHaveAttributeRuleTest extends RuleTestCase
 
     public function testProcessNodeOverrideWithoutAttributeIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/OverrideMustHaveAttribute/WithoutAttribute.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/OverrideMustHaveAttribute/WithoutAttribute.php'], [
             [
                 'Add #[\\Override] to override method doSomething().',
                 16,
@@ -43,16 +43,16 @@ final class OverrideMustHaveAttributeRuleTest extends RuleTestCase
 
     public function testProcessNodeOverrideWithAttributeIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/OverrideMustHaveAttribute/WithAttribute.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/OverrideMustHaveAttribute/WithAttribute.php'], []);
     }
 
     public function testProcessNodeAbstractImplementationIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/OverrideMustHaveAttribute/AbstractImpl.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/OverrideMustHaveAttribute/AbstractImpl.php'], []);
     }
 
     public function testProcessNodeConstructorAndPrivateParentMethodAreNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/OverrideMustHaveAttribute/WithoutOverridableParent.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/OverrideMustHaveAttribute/WithoutOverridableParent.php'], []);
     }
 }

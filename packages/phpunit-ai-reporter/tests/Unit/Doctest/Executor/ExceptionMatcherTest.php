@@ -9,7 +9,7 @@ use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Tests\Fixture\Doctest\RuntimeException as CollidingRuntimeException;
+use Tests\Doctest\RuntimeException as CollidingRuntimeException;
 use Toolkit\Doctest\Executor\ExceptionMatcher;
 
 /**

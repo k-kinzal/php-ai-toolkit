@@ -24,7 +24,8 @@ New directories receive the same boundary without enumerating them in config.
 The boundary uses the first path segment, so `tests/Unit` may reference
 `tests/Integration`. `example/` and `examples/` are separate boundaries and cannot
 reference each other. `fixtures/`, `config/`, and `resources/` are also separate
-boundaries: sharing their contents requires an explicit project policy.
+boundaries. Test inputs belong inside `tests/`; do not create a separate root
+directory and exempt it from the boundary to share test-only code or data.
 
 `vendor/` is exempt as both a source and destination so Composer library use is
 permitted. Files directly at the project root, such as `composer.json` and
@@ -79,30 +80,6 @@ PHPStan merges list configuration, so this adds to the root-directory boundary.
 Appending an exemption does not relax another policy. Use
 `forbiddenDependencies!:` when deliberately replacing the entire list, or
 `forbiddenDependencies!: []` for an empty policy list.
-
-Projects that intentionally keep test-owned files in root `fixtures/` can
-explicitly include the provided policy after `rules.neon`:
-
-```neon
-includes:
-    - vendor/k-kinzal/phpstan-guard-rules/rules.neon
-    - vendor/k-kinzal/phpstan-guard-rules/allow-test-fixtures.neon
-```
-
-This replaces the default policy list with the same boundaries plus permission
-for `tests/**` to reference `fixtures/**`. It does not allow `src/`, `examples/`,
-or other directories to reference fixtures. Add further custom restrictions
-after this include. The toolkit's own packages opt into this exception for their
-existing test fixtures; it is not part of the distributed default.
-
-Other project-owned support directories, including compatibility declarations
-loaded through PHPStan bootstrap files, also need an explicit policy when their
-declaration files are resolved outside `src/`, `vendor/`, or the caller's root.
-
-To permit another shared directory for selected callers, replace the policies
-with a general boundary excluding those callers, followed by a caller-specific
-policy that adds the shared directory to `excludeTo`. The opt-in fixtures policy
-provides a complete example of this arrangement.
 
 Matching is case-sensitive and anchored at the project root. `*` matches within
 one path segment, `**` crosses directory boundaries, `**/` also matches zero
@@ -159,7 +136,7 @@ file_get_contents(filename: __DIR__ . '/../examples/input.json'); // Forbidden.
 
 echo 'See examples/input.json'; // An explanation, not a file dependency.
 file_get_contents(__DIR__ . '/data/input.json'); // Same tests/ directory: allowed.
-file_get_contents(__DIR__ . '/../fixtures/input.json'); // Requires an explicit policy.
+file_get_contents(__DIR__ . '/../fixtures/input.json'); // Forbidden: keep test inputs inside tests/.
 ```
 
 The path evaluator handles string literals, `__DIR__`, `__FILE__`, concatenation,

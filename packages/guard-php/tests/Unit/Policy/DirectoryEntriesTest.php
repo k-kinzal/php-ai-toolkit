@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy;
 
+use FilesystemIterator;
 use Guard\Config\Configuration;
 use Guard\Execution\Context;
 use Guard\Policy\PolicyException;
@@ -11,7 +12,9 @@ use Guard\Reporting\Finding;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\Project;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Policy\DirectoryEntries
@@ -347,9 +350,60 @@ final class DirectoryEntriesTest extends TestCase
      */
     public function testEvaluateOverlappingRulesRunIndependentlyWithoutReadingTheTreeAgain(): void
     {
-        $project = new Project(['src/one.php' => '<?php', 'guard.yaml' => "version: 1\nstructure:\n  paths: [src]\n  directories:\n    - {path: src, allow: ['*.txt']}\n    - {path: 'src/**', file_case: pascal}\n"]);
+        $project = new class (['src/one.php' => '<?php', 'guard.yaml' => "version: 1\nstructure:\n  paths: [src]\n  directories:\n    - {path: src, allow: ['*.txt']}\n    - {path: 'src/**', file_case: pascal}\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+            /**
+             * @throws JsonException
+             */
+            public function context(bool $repair = false): Context
+            {
+                $path = $this->root . '/guard.yaml';
+                $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new Configuration($this->root, []);
+                return new Context($config, $path, $repair);
+            }
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            [$policy, $subject, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'directory-entries', false);
+            $context = $project->context(false);
+            $registry = new \Guard\Extension\Registry();
+            (new \Guard\Extension\BuiltinExtension($context->configuration))->register($registry);
+            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Extension\PolicyBinding $binding): bool => $binding->id === 'directory-entries'));
+            self::assertCount(1, $bindings);
+            $policy = $bindings[0]->policy;
+            $subject = new \Guard\Collect\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
+            $subject->validate();
             unlink($project->root . '/src/one.php');
             rmdir($project->root . '/src');
             $plan = $policy->evaluate($subject, $context);

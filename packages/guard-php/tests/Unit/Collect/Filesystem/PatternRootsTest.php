@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Collect\Filesystem;
 
+use FilesystemIterator;
 use Guard\Collect\Collector;
 use Guard\Collect\Input;
 use Guard\Collect\Selection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\CountingFilesystem;
-use Tests\Support\Project;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Collect\Filesystem\PatternRoots
@@ -268,9 +270,71 @@ final class PatternRootsTest extends TestCase
 {
     public function testSeedSkipsLiteralAncestorsAndDoesNotScanForExactPatterns(): void
     {
-        $project = new Project(['docs/deep/A.md' => '# A', 'README.md' => '# Root', 'unrelated/a' => 'unused']);
+        $project = new class (['docs/deep/A.md' => '# A', 'README.md' => '# Root', 'unrelated/a' => 'unused']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            $filesystem = new CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $sets = (new Collector($filesystem))->collect($project->root, [
                 'pattern' => new Input(new Selection('patterns', ['docs/deep/*.md'])),
                 'exact' => new Input(new Selection('patterns', ['README.md'])),

@@ -50,7 +50,7 @@ final class ForbiddenCommentRuleTest extends RuleTestCase
 
     public function testProcessNodePhpstanIgnoreNextLineIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/ForbiddenComment/PhpstanIgnoreNextLine.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/ForbiddenComment/PhpstanIgnoreNextLine.php'], [
             [
                 'Remove phpstan-ignore comment "/** @phpstan-ignore-next-line */". Re-run PHPStan and fix the revealed error. AI agents must not edit ignoreErrors; ask a human operator only when suppression is genuinely justified.',
                 5,
@@ -64,7 +64,7 @@ final class ForbiddenCommentRuleTest extends RuleTestCase
 
     public function testProcessNodePhpstanIgnoreBareIsReported(): void
     {
-        $errors = $this->gatherAnalyserErrors([__DIR__ . '/../../../../fixtures/ForbiddenComment/PhpstanIgnoreBare.php']);
+        $errors = $this->gatherAnalyserErrors([__DIR__ . '/../../../../tests/PhpStan/ForbiddenComment/PhpstanIgnoreBare.php']);
         $messages = array_map(static fn (Error $error): string => sprintf('%d: %s', (int) $error->getLine(), $error->getMessage()), $errors);
         sort($messages);
 
@@ -76,7 +76,7 @@ final class ForbiddenCommentRuleTest extends RuleTestCase
 
     public function testProcessNodeInfectionIgnoreAllIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/ForbiddenComment/InfectionIgnoreAll.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/ForbiddenComment/InfectionIgnoreAll.php'], [
             [
                 'Remove infection-ignore-all comment "/** @infection-ignore-all */". Run mutation testing and strengthen assertions or add focused tests. Ask a human operator only when an exception is genuinely justified.',
                 5,
@@ -86,6 +86,6 @@ final class ForbiddenCommentRuleTest extends RuleTestCase
 
     public function testProcessNodeNormalCommentsAreNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/ForbiddenComment/NormalComments.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/ForbiddenComment/NormalComments.php'], []);
     }
 }

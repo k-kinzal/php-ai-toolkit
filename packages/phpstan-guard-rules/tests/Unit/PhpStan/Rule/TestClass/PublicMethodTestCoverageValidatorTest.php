@@ -34,7 +34,7 @@ final class PublicMethodTestCoverageValidatorTest extends TestCase
     public function testErrorsReturnsPublicMethodWithoutTestError(): void
     {
         $method = new \PhpParser\Node\Stmt\ClassMethod('getResult', ['flags' => Class_::MODIFIER_PUBLIC]);
-        $sourceFile = __DIR__ . '/../../../../../fixtures/TestNamingConvention/src/UncoveredService.php';
+        $sourceFile = __DIR__ . '/../../../../../tests/PhpStan/TestNamingConvention/src/UncoveredService.php';
 
         $errors = (new PublicMethodTestCoverageValidator())->errors($method, $sourceFile);
 

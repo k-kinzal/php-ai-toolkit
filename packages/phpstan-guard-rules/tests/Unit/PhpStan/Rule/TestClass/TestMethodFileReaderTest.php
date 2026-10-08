@@ -18,7 +18,7 @@ final class TestMethodFileReaderTest extends TestCase
     {
         self::assertSame(
             ['testProcessReturnsTrue', 'testGetNameReturnsString'],
-            (new TestMethodFileReader())->methodNames(__DIR__ . '/../../../../../fixtures/TestNamingConvention/tests/Unit/CoveredServiceTest.php'),
+            (new TestMethodFileReader())->methodNames(__DIR__ . '/../../../../../tests/PhpStan/TestNamingConvention/tests/Unit/CoveredServiceTest.php'),
         );
     }
 }

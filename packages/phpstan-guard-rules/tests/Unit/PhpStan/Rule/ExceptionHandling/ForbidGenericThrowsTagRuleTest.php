@@ -33,7 +33,7 @@ final class ForbidGenericThrowsTagRuleTest extends RuleTestCase
 
     public function testProcessNodeGenericThrowsTagsAreReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidGenericThrowsTag/WithGenericThrowsTag.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidGenericThrowsTag/WithGenericThrowsTag.php'], [
             [
                 'Replace "@throws \Exception" on withGenericException() with the concrete exception types the method can raise. A generic @throws tag gives callers nothing to catch selectively and defeats checked-exception analysis.',
                 16,
@@ -51,6 +51,6 @@ final class ForbidGenericThrowsTagRuleTest extends RuleTestCase
 
     public function testProcessNodeConcreteThrowsTagsAreNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidGenericThrowsTag/WithConcreteThrowsTag.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidGenericThrowsTag/WithConcreteThrowsTag.php'], []);
     }
 }

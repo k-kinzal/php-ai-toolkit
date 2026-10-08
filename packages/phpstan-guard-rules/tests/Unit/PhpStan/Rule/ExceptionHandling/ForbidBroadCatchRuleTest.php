@@ -33,7 +33,7 @@ final class ForbidBroadCatchRuleTest extends RuleTestCase
     #[Override]
     protected function getRule(): Rule
     {
-        return new ForbidBroadCatchRule(['fixtures/ForbidBroadCatch/WithAllowedBroadCatch.php']);
+        return new ForbidBroadCatchRule(['tests/PhpStan/ForbidBroadCatch/WithAllowedBroadCatch.php']);
     }
 
     public function testGetNodeTypeReturnsExpectedClass(): void
@@ -43,7 +43,7 @@ final class ForbidBroadCatchRuleTest extends RuleTestCase
 
     public function testProcessNodeBroadCatchesAreReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidBroadCatch/WithBroadCatch.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidBroadCatch/WithBroadCatch.php'], [
             [
                 'Catch a specific exception type instead of "Throwable": catch (Throwable) intercepts every failure, including programmer errors. If this catch is an intentional top-level boundary handler, add its file path to toolkit.broadCatchAllowedPaths.',
                 21,
@@ -73,11 +73,11 @@ final class ForbidBroadCatchRuleTest extends RuleTestCase
 
     public function testProcessNodeSpecificCatchesAreNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidBroadCatch/WithSpecificCatch.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidBroadCatch/WithSpecificCatch.php'], []);
     }
 
     public function testProcessNodeAllowedBoundaryPathIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidBroadCatch/WithAllowedBroadCatch.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidBroadCatch/WithAllowedBroadCatch.php'], []);
     }
 }

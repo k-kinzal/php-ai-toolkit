@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
+use FilesystemIterator;
 use Guard\Cli\Application;
 use Guard\Collect\Collector;
 use Guard\Execution\Pipeline;
 use Guard\Reporting\Finding;
+use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\CountingFilesystem;
-use Tests\Support\Project;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RuntimeException;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Execution\Pipeline
@@ -435,12 +439,51 @@ final class CollectorScopeTest extends TestCase
 {
     public function testImportsReplaceIncludeAndRetainUnspecifiedCollectorExclusions(): void
     {
-        $project = new Project([
-            'guard.yaml' => "version: 1\nimports: [preset.yaml]\ncollect: {include: [lib]}\n",
-            'preset.yaml' => "collect: {include: [src], exclude: ['lib/generated']}\nmetrics: {source: [missing-legacy-root], exclude: [lib], profiles: {standard: {limits: {file: {lines: 1}}}}}\n",
-            'lib/B.php' => '<?php',
-            'lib/generated/A.php' => "<?php\necho 1;\necho 2;\n",
-        ]);
+        $project = new class (['guard.yaml' => "version: 1\nimports: [preset.yaml]\ncollect: {include: [lib]}\n", 'preset.yaml' => "collect: {include: [src], exclude: ['lib/generated']}\nmetrics: {source: [missing-legacy-root], exclude: [lib], profiles: {standard: {limits: {file: {lines: 1}}}}}\n", 'lib/B.php' => '<?php', 'lib/generated/A.php' => "<?php\necho 1;\necho 2;\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+            /**
+             * @throws JsonException
+             */
+            public function context(bool $repair = false): \Guard\Execution\Context
+            {
+                $path = $this->root . '/guard.yaml';
+                $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new \Guard\Config\Configuration($this->root, []);
+                return new \Guard\Execution\Context($config, $path, $repair);
+            }
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             $context = $project->context();
             self::assertSame(['lib'], $context->configuration->scope->include);
@@ -453,11 +496,61 @@ final class CollectorScopeTest extends TestCase
 
     public function testApplyCannotRepairExplicitFilesOutsideTheCollectorScope(): void
     {
-        $project = new Project([
-            'guard.yaml' => "version: 1\ncollect: {include: ['*.json'], exclude: [blocked.json]}\nconfiguration:\n  - {id: allowed, file: app.json, select: /mode, assert: {equals: A}}\n  - {id: excluded, file: blocked.json, select: /mode, assert: {equals: A}}\n",
-            'app.json' => '{"mode":"B"}',
-            'blocked.json' => '{',
-        ]);
+        $project = new class (['guard.yaml' => "version: 1\ncollect: {include: ['*.json'], exclude: [blocked.json]}\nconfiguration:\n  - {id: allowed, file: app.json, select: /mode, assert: {equals: A}}\n  - {id: excluded, file: blocked.json, select: /mode, assert: {equals: A}}\n", 'app.json' => '{"mode":"B"}', 'blocked.json' => '{']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+            /**
+             * @return array<array-key, string>
+             * @throws RuntimeException
+             */
+            public function files(): array
+            {
+                $files = [];
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS)) as $file) {
+                    if ($file instanceof SplFileInfo && $file->isFile()) {
+                        $source = file_get_contents($file->getPathname());
+                        if ($source === false) {
+                            throw new RuntimeException('Cannot read test fixture ' . $file->getPathname());
+                        }
+                        $files[substr($file->getPathname(), strlen($this->root) + 1)] = $source;
+                    }
+                }
+                ksort($files, SORT_STRING);
+                return $files;
+            }
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             $output = '';
             $app = new Application($project->root, static function (string $text) use (&$output): void {
@@ -473,12 +566,79 @@ final class CollectorScopeTest extends TestCase
 
     public function testEmptyCollectorIncludesDisableEveryTargetWithoutContentReads(): void
     {
-        $project = new Project([
-            'guard.yaml' => "version: 1\ncollect: {include: []}\nconfiguration:\n  - {id: missing, file: missing.json, select: /mode, assert: {equals: A}}\n",
-            'invalid.xml' => '<broken',
-        ]);
+        $project = new class (['guard.yaml' => "version: 1\ncollect: {include: []}\nconfiguration:\n  - {id: missing, file: missing.json, select: /mode, assert: {equals: A}}\n", 'invalid.xml' => '<broken']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+            /**
+             * @throws JsonException
+             */
+            public function context(bool $repair = false): \Guard\Execution\Context
+            {
+                $path = $this->root . '/guard.yaml';
+                $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new \Guard\Config\Configuration($this->root, []);
+                return new \Guard\Execution\Context($config, $path, $repair);
+            }
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            $filesystem = new CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             self::assertSame([], (new Pipeline(null, new Collector($filesystem)))->run($project->context())->findings);
             self::assertSame([], $filesystem->inspections);
             self::assertSame([], $filesystem->listings);

@@ -47,7 +47,7 @@ final class NoControlFlowInTestMethodRuleTest extends RuleTestCase
 
     public function testProcessNodeControlFlowInTestMethodIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/NoControlFlowInTestMethod/WithControlFlow.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoControlFlowInTestMethod/WithControlFlow.php'], [
             [
                 'Split test method testWithIf() so it contains no "if" statement. Use separate tests or a data provider for each case.',
                 14,
@@ -61,11 +61,11 @@ final class NoControlFlowInTestMethodRuleTest extends RuleTestCase
 
     public function testProcessNodeControlFlowInClosureIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/NoControlFlowInTestMethod/WithNestedScope.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoControlFlowInTestMethod/WithNestedScope.php'], []);
     }
 
     public function testProcessNodeNonTestClassIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/NoControlFlowInTestMethod/NonTestClass.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoControlFlowInTestMethod/NonTestClass.php'], []);
     }
 }

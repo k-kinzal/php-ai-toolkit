@@ -49,17 +49,17 @@ final class RequireExhaustiveDispatchRuleTest extends RuleTestCase
 
     public function testProcessNodeReportsSwitchOverEnum(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/EnumSwitchDispatch.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/RequireExhaustiveDispatch/EnumSwitchDispatch.php'], [
             [
-                'Switch statement does not handle Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Clubs. Write a "case" for each of those values: the subject holds a closed set of values and this switch has no "default", so those fall through it unhandled.',
+                'Switch statement does not handle Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Clubs. Write a "case" for each of those values: the subject holds a closed set of values and this switch has no "default", so those fall through it unhandled.',
                 11,
             ],
             [
-                'Switch statement sends Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" case. Write a "case" for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                'Switch statement sends Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" case. Write a "case" for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 23,
             ],
             [
-                'Switch statement sends Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" case. Write a "case" for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                'Switch statement sends Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" case. Write a "case" for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 70,
             ],
         ]);
@@ -67,29 +67,29 @@ final class RequireExhaustiveDispatchRuleTest extends RuleTestCase
 
     public function testProcessNodeReportsMatchOverEnum(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/EnumMatchDispatch.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/RequireExhaustiveDispatch/EnumMatchDispatch.php'], [
             [
-                'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                'Match expression sends Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 18,
             ],
             [
-                'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                'Match expression sends Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 46,
             ],
             [
-                'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                'Match expression sends Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 69,
             ],
             [
-                'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                'Match expression sends Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 77,
             ],
             [
-                'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                'Match expression sends Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 85,
             ],
             [
-                'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\Fixture\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                'Match expression sends Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Diamonds, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Spades, Tests\\PhpStan\\RequireExhaustiveDispatch\\Suit::Clubs to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 95,
             ],
         ]);
@@ -97,9 +97,9 @@ final class RequireExhaustiveDispatchRuleTest extends RuleTestCase
 
     public function testProcessNodeReportsDispatchOverClassUnion(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/ShapeDispatch.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/RequireExhaustiveDispatch/ShapeDispatch.php'], [
             [
-                'Match expression sends \'Tests\\\\Fixture\\\\RequireExhaustiveDispatch\\\\Triangle\' to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                'Match expression sends \'Tests\\\\PhpStan\\\\RequireExhaustiveDispatch\\\\Triangle\' to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 54,
             ],
         ]);
@@ -107,7 +107,7 @@ final class RequireExhaustiveDispatchRuleTest extends RuleTestCase
 
     public function testProcessNodeReportsDispatchOverConstantSubject(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/ConstantSubjectDispatch.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/RequireExhaustiveDispatch/ConstantSubjectDispatch.php'], [
             [
                 'Match expression sends \'safe\', \'dry\' to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 20,
@@ -129,6 +129,6 @@ final class RequireExhaustiveDispatchRuleTest extends RuleTestCase
 
     public function testProcessNodeIgnoresDispatchOverOpenSubject(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/OpenSubjectDispatch.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/RequireExhaustiveDispatch/OpenSubjectDispatch.php'], []);
     }
 }

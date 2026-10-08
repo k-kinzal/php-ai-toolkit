@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Collect\Filesystem;
 
+use FilesystemIterator;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Collect\Filesystem\Discovery
@@ -272,10 +276,72 @@ final class DiscoveryTest extends TestCase
      */
     public function testValidateRejectsConfinedGlobSymlinksBeforeReadingFiles(): void
     {
-        $project = new \Tests\Support\Project(['data.xml' => '<data/>']);
+        $project = new class (['data.xml' => '<data/>']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             symlink($project->root . '/data.xml', $project->root . '/alias.xml');
-            $filesystem = new \Tests\Support\CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $input = new \Guard\Collect\Input(new \Guard\Collect\Selection('patterns', ['*.xml'], [], '', true), 'xml');
             $sets = (new \Guard\Collect\Collector($filesystem))->collect($project->root, ['xml' => $input], ['xml' => new \Guard\Structure\DocumentStructurer('xml')]);
             self::assertSame([], $filesystem->reads);
@@ -293,9 +359,71 @@ final class DiscoveryTest extends TestCase
      */
     public function testValidateRejectsAForbiddenGlobMatchBeforeReadingFiles(): void
     {
-        $project = new \Tests\Support\Project(['data.xml' => '<data/>']);
+        $project = new class (['data.xml' => '<data/>']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            $filesystem = new \Tests\Support\CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $selection = new \Guard\Collect\Selection('patterns', ['data.xml'], [], '', false, '', $project->root . '/data.xml', 'Do not select the policy file.');
             $sets = (new \Guard\Collect\Collector($filesystem))->collect($project->root, ['xml' => new \Guard\Collect\Input($selection, 'xml')], ['xml' => new \Guard\Structure\DocumentStructurer('xml')]);
             self::assertSame([], $filesystem->reads);
@@ -311,10 +439,72 @@ final class DiscoveryTest extends TestCase
      */
     public function testDiscoverPreservesHiddenLiteralSegmentsDoubleStarsAndLinkSemantics(): void
     {
-        $project = new \Tests\Support\Project(['docs/A.md' => '# A', 'docs/nested/B.md' => '# B', 'docs/.hidden/C.md' => '# C', 'docs/.dot.md' => '# Dot']);
+        $project = new class (['docs/A.md' => '# A', 'docs/nested/B.md' => '# B', 'docs/.hidden/C.md' => '# C', 'docs/.dot.md' => '# Dot']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             symlink($project->root . '/docs/nested', $project->root . '/docs/link');
-            $filesystem = new \Tests\Support\CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $inputs = [
                 'p0' => new \Guard\Collect\Input(new \Guard\Collect\Selection('patterns', ['docs/**/*.md'], [], '', false, ''), null),
                 'p1' => new \Guard\Collect\Input(new \Guard\Collect\Selection('patterns', ['docs/.hidden/*.md'], [], '', false, ''), null),
@@ -340,7 +530,43 @@ final class DiscoveryTest extends TestCase
      */
     public function testDiscoverKeepsExclusionsLocalToEachSelection(): void
     {
-        $project = new \Tests\Support\Project(['src/Keep.php' => '<?php', 'src/Skip/Other.php' => '<?php']);
+        $project = new class (['src/Keep.php' => '<?php', 'src/Skip/Other.php' => '<?php']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             $inputs = [
                 'exclude' => new \Guard\Collect\Input(new \Guard\Collect\Selection('directories', ['src'], ['src/Skip'], '', false, ''), null),

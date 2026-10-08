@@ -1,7 +1,6 @@
 includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
     - vendor/k-kinzal/phpstan-guard-rules/rules.neon
-    - vendor/k-kinzal/phpstan-guard-rules/allow-test-fixtures.neon
     - vendor/k-kinzal/phpstan-ai-formatter/extension.neon
 
 parameters:
@@ -9,8 +8,6 @@ parameters:
     paths:
         - src
         - tests/Unit
-    excludePaths:
-        - fixtures
     toolkit:
         allRules: true
         broadCatchAllowedPaths:

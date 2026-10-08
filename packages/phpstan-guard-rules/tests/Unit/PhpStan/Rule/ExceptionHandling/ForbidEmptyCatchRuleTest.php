@@ -33,7 +33,7 @@ final class ForbidEmptyCatchRuleTest extends RuleTestCase
 
     public function testProcessNodeEmptyCatchIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidEmptyCatch/WithEmptyCatch.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidEmptyCatch/WithEmptyCatch.php'], [
             [
                 'Handle the caught RuntimeException in this empty catch block: rethrow it, wrap it in a more specific exception with $previous, or log it and recover. An empty catch silently discards the failure.',
                 16,
@@ -47,6 +47,6 @@ final class ForbidEmptyCatchRuleTest extends RuleTestCase
 
     public function testProcessNodeHandledCatchIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidEmptyCatch/WithHandledCatch.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidEmptyCatch/WithHandledCatch.php'], []);
     }
 }

@@ -11,8 +11,6 @@
 /infection.json5  export-ignore
 /guard.yaml       export-ignore
 /packages/*/tests/ export-ignore
-/packages/*/fixtures/ export-ignore
-/packages/*/test-support/ export-ignore
 /deptrac.yaml     export-ignore
 /deptrac.php      export-ignore
 /phpcs.xml.dist   export-ignore

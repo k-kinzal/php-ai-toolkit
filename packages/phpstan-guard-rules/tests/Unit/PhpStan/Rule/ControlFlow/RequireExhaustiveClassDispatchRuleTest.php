@@ -167,19 +167,19 @@ final class RequireExhaustiveClassDispatchRuleTest extends RuleTestCase
     public function testProcessNodeReportsTheClassesADispatchLeavesOut(): void
     {
         $this->analyse([
-            __DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/Hierarchy.php',
-            __DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/HierarchyDispatch.php',
+            __DIR__ . '/../../../../../tests/PhpStan/RequireExhaustiveDispatch/Hierarchy.php',
+            __DIR__ . '/../../../../../tests/PhpStan/RequireExhaustiveDispatch/HierarchyDispatch.php',
         ], [
             [
-                'Match expression sends Tests\\Fixture\\RequireExhaustiveDispatch\\BankTransfer, Tests\\Fixture\\RequireExhaustiveDispatch\\Wallet to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                'Match expression sends Tests\\PhpStan\\RequireExhaustiveDispatch\\BankTransfer, Tests\\PhpStan\\RequireExhaustiveDispatch\\Wallet to its "default" arm. Write an arm for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 11,
             ],
             [
-                'Switch statement does not handle Tests\\Fixture\\RequireExhaustiveDispatch\\BankTransfer, Tests\\Fixture\\RequireExhaustiveDispatch\\Wallet. Write a "case" for each of those values: the subject holds a closed set of values and this switch has no "default", so those fall through it unhandled.',
+                'Switch statement does not handle Tests\\PhpStan\\RequireExhaustiveDispatch\\BankTransfer, Tests\\PhpStan\\RequireExhaustiveDispatch\\Wallet. Write a "case" for each of those values: the subject holds a closed set of values and this switch has no "default", so those fall through it unhandled.',
                 31,
             ],
             [
-                'Switch statement sends Tests\\Fixture\\RequireExhaustiveDispatch\\MasterCard to its "default" case. Write a "case" for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                'Switch statement sends Tests\\PhpStan\\RequireExhaustiveDispatch\\MasterCard to its "default" case. Write a "case" for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 43,
             ],
         ]);
@@ -188,11 +188,11 @@ final class RequireExhaustiveClassDispatchRuleTest extends RuleTestCase
     public function testProcessNodeReadsAClassNameDispatchOverAUnionOfFinalClasses(): void
     {
         $this->analyse([
-            __DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/Shapes.php',
-            __DIR__ . '/../../../../../fixtures/RequireExhaustiveDispatch/ShapeDispatch.php',
+            __DIR__ . '/../../../../../tests/PhpStan/RequireExhaustiveDispatch/Shapes.php',
+            __DIR__ . '/../../../../../tests/PhpStan/RequireExhaustiveDispatch/ShapeDispatch.php',
         ], [
             [
-                'Switch statement sends Tests\\Fixture\\RequireExhaustiveDispatch\\Square, Tests\\Fixture\\RequireExhaustiveDispatch\\Triangle to its "default" case. Write a "case" for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
+                'Switch statement sends Tests\\PhpStan\\RequireExhaustiveDispatch\\Square, Tests\\PhpStan\\RequireExhaustiveDispatch\\Triangle to its "default" case. Write a "case" for each of those values so that a value added to the closed type is reported here instead of silently taking "default".',
                 63,
             ],
         ]);

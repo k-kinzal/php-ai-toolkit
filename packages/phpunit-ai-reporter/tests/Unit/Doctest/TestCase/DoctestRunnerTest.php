@@ -7,13 +7,12 @@ namespace Tests\Unit\Doctest\TestCase;
 use function array_keys;
 use function iterator_to_array;
 
+use Override;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
-use Tests\Fixture\Doctest\EmptyDoctestSuite;
-use Tests\Fixture\Doctest\FixtureDoctestSuite;
 use Toolkit\Doctest\Parser\Example;
 use Toolkit\Doctest\TestCase\DoctestRunner;
 
@@ -27,15 +26,35 @@ final class DoctestRunnerTest extends TestCase
 {
     public function testConfigureIsWhatTheSuiteStates(): void
     {
-        $config = FixtureDoctestSuite::configure();
+        $suite = new class ('testDocblockExample') extends DoctestRunner {
+            /**
+             * Returns the configuration selecting the fixture project sources.
+             */
+            #[Override]
+            public static function configure(): \Toolkit\Doctest\Configuration\Configuration
+            {
+                return new \Toolkit\Doctest\Configuration\Configuration(directories: [dirname(__DIR__, 4) . '/tests/Doctest/project/src'], excludePatterns: ['*/Nested/*']);
+            }
+        };
+        $config = $suite::configure();
 
-        self::assertStringEndsWith('fixtures/Doctest/project/src', $config->getDirectories()[0]);
+        self::assertStringEndsWith('tests/Doctest/project/src', $config->getDirectories()[0]);
         self::assertSame(['*/Nested/*'], $config->getExcludePatterns());
     }
 
     public function testDoctestProviderNamesEveryExampleAfterItsTarget(): void
     {
-        $provided = iterator_to_array(FixtureDoctestSuite::doctestProvider());
+        $suite = new class ('testDocblockExample') extends DoctestRunner {
+            /**
+             * Returns the configuration selecting the fixture project sources.
+             */
+            #[Override]
+            public static function configure(): \Toolkit\Doctest\Configuration\Configuration
+            {
+                return new \Toolkit\Doctest\Configuration\Configuration(directories: [dirname(__DIR__, 4) . '/tests/Doctest/project/src'], excludePatterns: ['*/Nested/*']);
+            }
+        };
+        $provided = iterator_to_array($suite::doctestProvider());
 
         self::assertSame(
             [
@@ -54,24 +73,54 @@ final class DoctestRunnerTest extends TestCase
 
     public function testDoctestProviderReturnsSkipCaseWhenNoExamplesExist(): void
     {
+        $emptySuite = new class ('testDocblockExample') extends DoctestRunner {
+            /**
+             * Returns a configuration that intentionally discovers no examples.
+             */
+            #[Override]
+            public static function configure(): \Toolkit\Doctest\Configuration\Configuration
+            {
+                return new \Toolkit\Doctest\Configuration\Configuration(directories: []);
+            }
+        };
         self::assertSame(
             ['No doctest examples found' => [null]],
-            iterator_to_array(EmptyDoctestSuite::doctestProvider()),
+            iterator_to_array($emptySuite::doctestProvider()),
         );
     }
 
     public function testTestDocblockExamplePassesWhenNoExamplesExist(): void
     {
+        $emptySuite = new class ('testDocblockExample') extends DoctestRunner {
+            /**
+             * Returns a configuration that intentionally discovers no examples.
+             */
+            #[Override]
+            public static function configure(): \Toolkit\Doctest\Configuration\Configuration
+            {
+                return new \Toolkit\Doctest\Configuration\Configuration(directories: []);
+            }
+        };
         $this->expectNotToPerformAssertions();
-        $case = new EmptyDoctestSuite('testDocblockExample');
+        $case = $emptySuite;
 
         $case->testDocblockExample(null);
     }
 
     public function testTestDocblockExamplePassesForAnExampleThatHolds(): void
     {
-        $provided = iterator_to_array(FixtureDoctestSuite::doctestProvider());
-        $case = new FixtureDoctestSuite('testDocblockExample');
+        $suite = new class ('testDocblockExample') extends DoctestRunner {
+            /**
+             * Returns the configuration selecting the fixture project sources.
+             */
+            #[Override]
+            public static function configure(): \Toolkit\Doctest\Configuration\Configuration
+            {
+                return new \Toolkit\Doctest\Configuration\Configuration(directories: [dirname(__DIR__, 4) . '/tests/Doctest/project/src'], excludePatterns: ['*/Nested/*']);
+            }
+        };
+        $provided = iterator_to_array($suite::doctestProvider());
+        $case = $suite;
         $before = Assert::getCount();
 
         $case->testDocblockExample($provided['Calculator::add() example #1: Adding two numbers'][0]);
@@ -81,14 +130,24 @@ final class DoctestRunnerTest extends TestCase
 
     public function testTestDocblockExampleFailsWithTheDoctestReport(): void
     {
+        $suite = new class ('testDocblockExample') extends DoctestRunner {
+            /**
+             * Returns the configuration selecting the fixture project sources.
+             */
+            #[Override]
+            public static function configure(): \Toolkit\Doctest\Configuration\Configuration
+            {
+                return new \Toolkit\Doctest\Configuration\Configuration(directories: [dirname(__DIR__, 4) . '/tests/Doctest/project/src'], excludePatterns: ['*/Nested/*']);
+            }
+        };
         $target = new \Toolkit\Doctest\Scanner\Target(
             \Toolkit\Doctest\Scanner\TargetKind::CLASS_LIKE,
-            (string) realpath(__DIR__ . '/../../../../fixtures/Doctest/project/src/Calculator.php'),
+            (string) realpath(__DIR__ . '/../../../../tests/Doctest/project/src/Calculator.php'),
             '/** */',
             'Calculator',
             12,
         );
-        $case = new FixtureDoctestSuite('testDocblockExample');
+        $case = $suite;
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('Values do not match');

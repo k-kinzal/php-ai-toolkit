@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cli\Command;
 
+use Closure;
 use Guard\Cli\Command\FixCommand;
 use Guard\Cli\PolicyRun;
 use Guard\Execution\FileChange;
@@ -15,7 +16,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
-use Tests\Support\CallbackPolicy;
 
 /**
  * @covers \Guard\Cli\Command\FixCommand
@@ -102,7 +102,22 @@ final class FixCommandTest extends TestCase
         file_put_contents($root . '/guard.yaml', "version: 1\n");
         file_put_contents($root . '/a.txt', 'old');
         $registry = new Registry();
-        $registry->addPolicy('rewrite', new CallbackPolicy([], static fn (): Plan => new Plan([], [new FileChange($root . '/a.txt', 'old', 'new')])));
+        $registry->addPolicy('rewrite', new class ([], static fn (): Plan => new Plan([], [new FileChange($root . '/a.txt', 'old', 'new')])) implements \Guard\Policy\Policy {
+            /** @param array<string, \Guard\Collect\Input> $inputs
+             * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): Plan $callback
+             */
+            public function __construct(private array $inputs, private Closure $callback)
+            {
+            }
+            public function inputs(\Guard\Execution\Context $context): array
+            {
+                return $this->inputs;
+            }
+            public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): Plan
+            {
+                return ($this->callback)($inputs, $context);
+            }
+        });
         $tester = new CommandTester(new FixCommand($root, $registry));
 
         self::assertSame(0, $tester->execute([]));
@@ -117,7 +132,22 @@ final class FixCommandTest extends TestCase
         file_put_contents($root . '/guard.yaml', "version: 1\n");
         file_put_contents($root . '/a.txt', 'old');
         $registry = new Registry();
-        $registry->addPolicy('rewrite', new CallbackPolicy([], static fn (): Plan => new Plan([], [new FileChange($root . '/a.txt', 'old', 'new')])));
+        $registry->addPolicy('rewrite', new class ([], static fn (): Plan => new Plan([], [new FileChange($root . '/a.txt', 'old', 'new')])) implements \Guard\Policy\Policy {
+            /** @param array<string, \Guard\Collect\Input> $inputs
+             * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): Plan $callback
+             */
+            public function __construct(private array $inputs, private Closure $callback)
+            {
+            }
+            public function inputs(\Guard\Execution\Context $context): array
+            {
+                return $this->inputs;
+            }
+            public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): Plan
+            {
+                return ($this->callback)($inputs, $context);
+            }
+        });
         $tester = new CommandTester(new FixCommand($root, $registry));
 
         self::assertSame(0, $tester->execute(['--dry-run' => true, '--format' => 'text']));

@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy;
 
+use FilesystemIterator;
 use Guard\Config\Configuration;
 use Guard\Execution\Context;
 use Guard\Policy\PolicyException;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\Project;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RuntimeException;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Policy\FieldConstraints
@@ -346,9 +350,78 @@ final class FieldConstraintsTest extends TestCase
      */
     public function testEvaluateConflictsBlockWritesAfterAllRulesAreRechecked(): void
     {
-        $project = new Project(['app.json' => '{"mode":"C"}', 'guard.yaml' => "version: 1\nconfiguration:\n  - {id: a, file: app.json, select: /mode, assert: {equals: A}}\n  - {id: b, file: app.json, select: /mode, assert: {equals: B}}\n"]);
+        $project = new class (['app.json' => '{"mode":"C"}', 'guard.yaml' => "version: 1\nconfiguration:\n  - {id: a, file: app.json, select: /mode, assert: {equals: A}}\n  - {id: b, file: app.json, select: /mode, assert: {equals: B}}\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+            /**
+             * @throws JsonException
+             */
+            public function context(bool $repair = false): Context
+            {
+                $path = $this->root . '/guard.yaml';
+                $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new Configuration($this->root, []);
+                return new Context($config, $path, $repair);
+            }
+            /**
+             * @return array<array-key, string>
+             * @throws RuntimeException
+             */
+            public function files(): array
+            {
+                $files = [];
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS)) as $file) {
+                    if ($file instanceof SplFileInfo && $file->isFile()) {
+                        $source = file_get_contents($file->getPathname());
+                        if ($source === false) {
+                            throw new RuntimeException('Cannot read test fixture ' . $file->getPathname());
+                        }
+                        $files[substr($file->getPathname(), strlen($this->root) + 1)] = $source;
+                    }
+                }
+                ksort($files, SORT_STRING);
+                return $files;
+            }
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            [$policy, $subject, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'field-constraints', true);
+            $context = $project->context(true);
+            $registry = new \Guard\Extension\Registry();
+            (new \Guard\Extension\BuiltinExtension($context->configuration))->register($registry);
+            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Extension\PolicyBinding $binding): bool => $binding->id === 'field-constraints'));
+            self::assertCount(1, $bindings);
+            $policy = $bindings[0]->policy;
+            $subject = new \Guard\Collect\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
+            $subject->validate();
             $plan = $policy->evaluate($subject, $context);
             self::assertCount(1, $plan->findings);
             self::assertSame('a', $plan->findings[0]->rule);
@@ -367,9 +440,60 @@ final class FieldConstraintsTest extends TestCase
      */
     public function testPlanAlreadyCompliantDocumentIsByteIdentical(): void
     {
-        $project = new Project(['app.yaml' => "# Keep this comment\nmode: A\n", 'guard.yaml' => "version: 1\nconfiguration:\n  - {id: a, file: app.yaml, select: /mode, assert: {one_of: [A, B]}, repair: B}\n"]);
+        $project = new class (['app.yaml' => "# Keep this comment\nmode: A\n", 'guard.yaml' => "version: 1\nconfiguration:\n  - {id: a, file: app.yaml, select: /mode, assert: {one_of: [A, B]}, repair: B}\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+            /**
+             * @throws JsonException
+             */
+            public function context(bool $repair = false): Context
+            {
+                $path = $this->root . '/guard.yaml';
+                $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new Configuration($this->root, []);
+                return new Context($config, $path, $repair);
+            }
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            [$policy, $subject, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'field-constraints', true);
+            $context = $project->context(true);
+            $registry = new \Guard\Extension\Registry();
+            (new \Guard\Extension\BuiltinExtension($context->configuration))->register($registry);
+            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Extension\PolicyBinding $binding): bool => $binding->id === 'field-constraints'));
+            self::assertCount(1, $bindings);
+            $policy = $bindings[0]->policy;
+            $subject = new \Guard\Collect\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
+            $subject->validate();
             $plan = $policy->evaluate($subject, $context);
             self::assertSame([], $plan->findings);
             self::assertSame([], $plan->changes);
@@ -383,9 +507,60 @@ final class FieldConstraintsTest extends TestCase
      */
     public function testEvaluateXmlRepairsDoNotMutateTheSnapshotOrReadTheFileAgain(): void
     {
-        $project = new Project(['app.xml' => '<app value="0"/>', 'guard.yaml' => "version: 1\nconfiguration:\n  - {id: a, file: app.xml, select: /app/@value, assert: {equals: '1'}}\n"]);
+        $project = new class (['app.xml' => '<app value="0"/>', 'guard.yaml' => "version: 1\nconfiguration:\n  - {id: a, file: app.xml, select: /app/@value, assert: {equals: '1'}}\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+            /**
+             * @throws JsonException
+             */
+            public function context(bool $repair = false): Context
+            {
+                $path = $this->root . '/guard.yaml';
+                $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new Configuration($this->root, []);
+                return new Context($config, $path, $repair);
+            }
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            [$policy, $subject, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'field-constraints', true);
+            $context = $project->context(true);
+            $registry = new \Guard\Extension\Registry();
+            (new \Guard\Extension\BuiltinExtension($context->configuration))->register($registry);
+            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Extension\PolicyBinding $binding): bool => $binding->id === 'field-constraints'));
+            self::assertCount(1, $bindings);
+            $policy = $bindings[0]->policy;
+            $subject = new \Guard\Collect\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
+            $subject->validate();
             unlink($project->root . '/app.xml');
 
             $first = $policy->evaluate($subject, $context);
@@ -411,9 +586,60 @@ final class FieldConstraintsTest extends TestCase
      */
     public function testEvaluateReportsEachRuleOfAMissingTargetAtItsLevel(): void
     {
-        $project = new Project(['guard.yaml' => "version: 1\nconfiguration:\n  - {id: a, file: app.json, select: /mode, assert: {equals: A}}\n  - {id: b, file: app.json, select: /count, level: recommended, assert: {min: 1}, repair: 1}\n"]);
+        $project = new class (['guard.yaml' => "version: 1\nconfiguration:\n  - {id: a, file: app.json, select: /mode, assert: {equals: A}}\n  - {id: b, file: app.json, select: /count, level: recommended, assert: {min: 1}, repair: 1}\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+            /**
+             * @throws JsonException
+             */
+            public function context(bool $repair = false): Context
+            {
+                $path = $this->root . '/guard.yaml';
+                $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new Configuration($this->root, []);
+                return new Context($config, $path, $repair);
+            }
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            [$policy, $subject, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'field-constraints', true);
+            $context = $project->context(true);
+            $registry = new \Guard\Extension\Registry();
+            (new \Guard\Extension\BuiltinExtension($context->configuration))->register($registry);
+            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Extension\PolicyBinding $binding): bool => $binding->id === 'field-constraints'));
+            self::assertCount(1, $bindings);
+            $policy = $bindings[0]->policy;
+            $subject = new \Guard\Collect\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
+            $subject->validate();
             $plan = $policy->evaluate($subject, $context);
             self::assertSame(['a', 'b'], array_map(static fn (\Guard\Reporting\Finding $finding): string => $finding->rule, $plan->findings));
             self::assertSame(['required', 'recommended'], array_map(static fn (\Guard\Reporting\Finding $finding): string => $finding->level, $plan->findings));

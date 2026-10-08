@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy;
 
+use FilesystemIterator;
 use Guard\Config\Configuration;
 use Guard\Execution\Context;
 use Guard\Policy\PolicyException;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\Project;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Policy\HeadingStructure
@@ -376,9 +379,60 @@ final class HeadingStructureTest extends TestCase
      */
     public function testEvaluateChecksTheSnapshotAndFiltersDepthOnlyWhenApplyingThePolicy(): void
     {
-        $project = new Project(['README.md' => "Project\n=======\n\n### Added detail\n", 'extra.md' => '# Extra', 'guard.yaml' => "version: 1\ndocumentation:\n  files:\n    README.md: {headings: ['# Project'], max_level: 1}\n  scan: ['*.md', '**/*.md']\n"]);
+        $project = new class (['README.md' => "Project\n=======\n\n### Added detail\n", 'extra.md' => '# Extra', 'guard.yaml' => "version: 1\ndocumentation:\n  files:\n    README.md: {headings: ['# Project'], max_level: 1}\n  scan: ['*.md', '**/*.md']\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+            /**
+             * @throws JsonException
+             */
+            public function context(bool $repair = false): Context
+            {
+                $path = $this->root . '/guard.yaml';
+                $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new Configuration($this->root, []);
+                return new Context($config, $path, $repair);
+            }
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            [$policy, $subject, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'heading-structure', false);
+            $context = $project->context(false);
+            $registry = new \Guard\Extension\Registry();
+            (new \Guard\Extension\BuiltinExtension($context->configuration))->register($registry);
+            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Extension\PolicyBinding $binding): bool => $binding->id === 'heading-structure'));
+            self::assertCount(1, $bindings);
+            $policy = $bindings[0]->policy;
+            $subject = new \Guard\Collect\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
+            $subject->validate();
             unlink($project->root . '/README.md');
             unlink($project->root . '/extra.md');
             $plan = $policy->evaluate($subject, $context);
@@ -398,9 +452,60 @@ final class HeadingStructureTest extends TestCase
      */
     public function testUndeclaredRespectsExclusionsAndReportsFirstMatchOnce(): void
     {
-        $project = new Project(['README.md' => '# Main', 'extra.md' => '# Extra', 'skip.md' => '# Skip', 'guard.yaml' => "version: 1\ndocumentation:\n  files: {README.md: {headings: ['# Main']}}\n  scan: ['*.md', '**/*.md']\n  exclude: [skip.md]\n"]);
+        $project = new class (['README.md' => '# Main', 'extra.md' => '# Extra', 'skip.md' => '# Skip', 'guard.yaml' => "version: 1\ndocumentation:\n  files: {README.md: {headings: ['# Main']}}\n  scan: ['*.md', '**/*.md']\n  exclude: [skip.md]\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+            /**
+             * @throws JsonException
+             */
+            public function context(bool $repair = false): Context
+            {
+                $path = $this->root . '/guard.yaml';
+                $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new Configuration($this->root, []);
+                return new Context($config, $path, $repair);
+            }
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            [$policy, $inputs, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'heading-structure');
+            $context = $project->context(false);
+            $registry = new \Guard\Extension\Registry();
+            (new \Guard\Extension\BuiltinExtension($context->configuration))->register($registry);
+            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Extension\PolicyBinding $binding): bool => $binding->id === 'heading-structure'));
+            self::assertCount(1, $bindings);
+            $policy = $bindings[0]->policy;
+            $inputs = new \Guard\Collect\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
+            $inputs->validate();
             $plan = $policy->evaluate($inputs, $context);
             self::assertCount(1, $plan->findings);
             self::assertSame('extra.md', $plan->findings[0]->path);
@@ -442,18 +547,60 @@ final class HeadingStructureTest extends TestCase
      */
     public function testDocumentChecksOutlinesBadgesAndExactContent(): void
     {
-        $project = new Project([
-            'README.md' => "# Tool\n\n[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)\n\nOverview.\n\n## Requirements\n\n## Installation\n\n### Detail\n\n## License\n",
-            'CLAUDE.md' => "@AGENTS.md\n",
-            'AGENTS.md' => "# AGENTS\n\n## Supported Versions\n\n## Branching Strategy\n",
-            'guard.yaml' => "version: 1\ndocumentation:\n  files:\n"
-                . "    README.md:\n      outlines: {package: ['# *', '## Requirements', '## Getting Started', {heading: '## *', optional: true, repeat: true}, '## License']}\n"
-                . "      badges: [{name: PHP, image: 'https://img.shields.io/badge/php-*'}, {name: License, image: 'https://img.shields.io/badge/license-*'}]\n"
-                . "    CLAUDE.md: {content: '@AGENTS.md'}\n"
-                . "    AGENTS.md: {outlines: {agents: ['# AGENTS', '## Supported Versions', {heading: '## *', optional: true, repeat: true}]}}\n",
-        ]);
+        $project = new class (['README.md' => "# Tool\n\n[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)\n\nOverview.\n\n## Requirements\n\n## Installation\n\n### Detail\n\n## License\n", 'CLAUDE.md' => "@AGENTS.md\n", 'AGENTS.md' => "# AGENTS\n\n## Supported Versions\n\n## Branching Strategy\n", 'guard.yaml' => "version: 1\ndocumentation:\n  files:\n" . "    README.md:\n      outlines: {package: ['# *', '## Requirements', '## Getting Started', {heading: '## *', optional: true, repeat: true}, '## License']}\n" . "      badges: [{name: PHP, image: 'https://img.shields.io/badge/php-*'}, {name: License, image: 'https://img.shields.io/badge/license-*'}]\n" . "    CLAUDE.md: {content: '@AGENTS.md'}\n" . "    AGENTS.md: {outlines: {agents: ['# AGENTS', '## Supported Versions', {heading: '## *', optional: true, repeat: true}]}}\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+            /**
+             * @throws JsonException
+             */
+            public function context(bool $repair = false): Context
+            {
+                $path = $this->root . '/guard.yaml';
+                $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new Configuration($this->root, []);
+                return new Context($config, $path, $repair);
+            }
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            [$policy, $inputs, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'heading-structure');
+            $context = $project->context(false);
+            $registry = new \Guard\Extension\Registry();
+            (new \Guard\Extension\BuiltinExtension($context->configuration))->register($registry);
+            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Extension\PolicyBinding $binding): bool => $binding->id === 'heading-structure'));
+            self::assertCount(1, $bindings);
+            $policy = $bindings[0]->policy;
+            $inputs = new \Guard\Collect\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
+            $inputs->validate();
             $plan = $policy->evaluate($inputs, $context);
             $rules = array_map(static fn (\Guard\Reporting\Finding $finding): string => $finding->path . ' ' . $finding->rule, $plan->findings);
 
@@ -476,9 +623,60 @@ final class HeadingStructureTest extends TestCase
      */
     public function testDocumentReportsAMissingDocumentInsteadOfItsChecks(): void
     {
-        $project = new Project(['guard.yaml' => "version: 1\ndocumentation:\n  files:\n    CLAUDE.md: {content: '@AGENTS.md'}\n"]);
+        $project = new class (['guard.yaml' => "version: 1\ndocumentation:\n  files:\n    CLAUDE.md: {content: '@AGENTS.md'}\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+            /**
+             * @throws JsonException
+             */
+            public function context(bool $repair = false): Context
+            {
+                $path = $this->root . '/guard.yaml';
+                $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new Configuration($this->root, []);
+                return new Context($config, $path, $repair);
+            }
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            [$policy, $inputs, $context] = (new \Tests\Support\PreparedPolicy())->prepare($project, 'heading-structure');
+            $context = $project->context(false);
+            $registry = new \Guard\Extension\Registry();
+            (new \Guard\Extension\BuiltinExtension($context->configuration))->register($registry);
+            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Extension\PolicyBinding $binding): bool => $binding->id === 'heading-structure'));
+            self::assertCount(1, $bindings);
+            $policy = $bindings[0]->policy;
+            $inputs = new \Guard\Collect\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
+            $inputs->validate();
             $plan = $policy->evaluate($inputs, $context);
 
             self::assertCount(1, $plan->findings);

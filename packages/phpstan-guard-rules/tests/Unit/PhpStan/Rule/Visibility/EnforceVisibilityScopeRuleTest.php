@@ -80,17 +80,17 @@ final class EnforceVisibilityScopeRuleTest extends RuleTestCase
 
     public function testProcessNodeReportsEveryUnusableTag(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/VisibilityScope/project/src/Invalid/MalformedTags.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/VisibilityScope/project/src/Invalid/MalformedTags.php'], [
             [
-                'Fix "@visibility parrent" on class Tests\Fixture\VisibilityScope\Invalid\MalformedTags: one bare lowercase word is read as a scope keyword, and "parrent" is not one of "public", "root", "parent", "namespace"; write the keyword you meant, or write "\parrent" to name the namespace.',
+                'Fix "@visibility parrent" on class Tests\PhpStan\VisibilityScope\Invalid\MalformedTags: one bare lowercase word is read as a scope keyword, and "parrent" is not one of "public", "root", "parent", "namespace"; write the keyword you meant, or write "\parrent" to name the namespace.',
                 10,
             ],
             [
-                'Remove either "@visibility public" or the narrowing @visibility tags on constant Tests\Fixture\VisibilityScope\Invalid\MalformedTags::MIXED: "public" makes the declaration visible everywhere, so keeping both leaves the narrower tags with no effect.',
+                'Remove either "@visibility public" or the narrowing @visibility tags on constant Tests\PhpStan\VisibilityScope\Invalid\MalformedTags::MIXED: "public" makes the declaration visible everywhere, so keeping both leaves the narrower tags with no effect.',
                 16,
             ],
             [
-                'Fix "@visibility 123bad" on method Tests\Fixture\VisibilityScope\Invalid\MalformedTags::unusable(): the scope has to be "public", "root", "parent", "namespace", or a namespace name such as "App\Domain".',
+                'Fix "@visibility 123bad" on method Tests\PhpStan\VisibilityScope\Invalid\MalformedTags::unusable(): the scope has to be "public", "root", "parent", "namespace", or a namespace name such as "App\Domain".',
                 21,
             ],
         ]);
@@ -99,31 +99,31 @@ final class EnforceVisibilityScopeRuleTest extends RuleTestCase
     public function testRuleReportsEveryWrittenReferenceOutsideClassScope(): void
     {
         $this->analyse([
-            __DIR__ . '/../../../../../fixtures/VisibilityScope/project/src/Package/NamespaceScoped.php',
-            __DIR__ . '/../../../../../fixtures/VisibilityScope/project/src/Outside/OutsideCaller.php',
+            __DIR__ . '/../../../../../tests/PhpStan/VisibilityScope/project/src/Package/NamespaceScoped.php',
+            __DIR__ . '/../../../../../tests/PhpStan/VisibilityScope/project/src/Outside/OutsideCaller.php',
         ], [
             [
-                'Class Tests\Fixture\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\Fixture\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\Fixture\VisibilityScope\Package" and its sub-namespaces. Move this instantiation into that namespace, or widen the declaration to "@visibility Tests\Fixture\VisibilityScope".',
+                'Class Tests\PhpStan\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\PhpStan\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Package" and its sub-namespaces. Move this instantiation into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope".',
                 17,
             ],
             [
-                'Class Tests\Fixture\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\Fixture\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\Fixture\VisibilityScope\Package" and its sub-namespaces. Move this constant access into that namespace, or widen the declaration to "@visibility Tests\Fixture\VisibilityScope".',
+                'Class Tests\PhpStan\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\PhpStan\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Package" and its sub-namespaces. Move this constant access into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope".',
                 22,
             ],
             [
-                'Class Tests\Fixture\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\Fixture\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\Fixture\VisibilityScope\Package" and its sub-namespaces. Move this static property access into that namespace, or widen the declaration to "@visibility Tests\Fixture\VisibilityScope".',
+                'Class Tests\PhpStan\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\PhpStan\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Package" and its sub-namespaces. Move this static property access into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope".',
                 27,
             ],
             [
-                'Class Tests\Fixture\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\Fixture\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\Fixture\VisibilityScope\Package" and its sub-namespaces. Move this static call into that namespace, or widen the declaration to "@visibility Tests\Fixture\VisibilityScope".',
+                'Class Tests\PhpStan\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\PhpStan\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Package" and its sub-namespaces. Move this static call into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope".',
                 32,
             ],
             [
-                'Class Tests\Fixture\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\Fixture\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\Fixture\VisibilityScope\Package" and its sub-namespaces. Move this instanceof check into that namespace, or widen the declaration to "@visibility Tests\Fixture\VisibilityScope".',
+                'Class Tests\PhpStan\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\PhpStan\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Package" and its sub-namespaces. Move this instanceof check into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope".',
                 37,
             ],
             [
-                'Class Tests\Fixture\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\Fixture\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\Fixture\VisibilityScope\Package" and its sub-namespaces. Move this class name reference into that namespace, or widen the declaration to "@visibility Tests\Fixture\VisibilityScope".',
+                'Class Tests\PhpStan\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\PhpStan\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Package" and its sub-namespaces. Move this class name reference into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope".',
                 42,
             ],
         ]);

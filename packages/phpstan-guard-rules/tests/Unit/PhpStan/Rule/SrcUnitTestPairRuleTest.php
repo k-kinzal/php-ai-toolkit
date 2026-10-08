@@ -33,7 +33,7 @@ final class SrcUnitTestPairRuleTest extends RuleTestCase
 
     public function testProcessNodeSourceFileWithoutTestIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/SrcUnitTestPairRule/project/src/MissingTest.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/SrcUnitTestPairRule/project/src/MissingTest.php'], [
             [
                 'Create unit test file "tests/Unit/MissingTestTest.php" for source file "src/MissingTest.php".',
                 1,
@@ -43,12 +43,12 @@ final class SrcUnitTestPairRuleTest extends RuleTestCase
 
     public function testProcessNodeSourceFileWithTestIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/SrcUnitTestPairRule/project/src/HasTest.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/SrcUnitTestPairRule/project/src/HasTest.php'], []);
     }
 
     public function testProcessNodeTestFileWithoutSourceIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/SrcUnitTestPairRule/project/tests/Unit/OrphanedTest.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/SrcUnitTestPairRule/project/tests/Unit/OrphanedTest.php'], [
             [
                 'Create source file "src/Orphaned.php" for unit test file "tests/Unit/OrphanedTest.php", or remove the stale test.',
                 1,
@@ -58,6 +58,6 @@ final class SrcUnitTestPairRuleTest extends RuleTestCase
 
     public function testProcessNodeTestFileWithSourceIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/SrcUnitTestPairRule/project/tests/Unit/HasTestTest.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/SrcUnitTestPairRule/project/tests/Unit/HasTestTest.php'], []);
     }
 }

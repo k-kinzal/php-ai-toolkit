@@ -12,16 +12,3 @@ parameters:
         - tests/Unit
     toolkit:
         allRules: true
-        # Fixtures and test-support belong to test callers only.
-        forbiddenDependencies!:
-            -
-                from: ['*/**']
-                excludeFrom: ['tests/**', 'vendor/**']
-                to: ['*/**']
-                excludeTo: ['src/**', 'vendor/**']
-                allowSameRootDirectory: true
-            -
-                from: ['tests/**']
-                to: ['*/**']
-                excludeTo: ['src/**', 'vendor/**', 'fixtures/**', 'test-support/**']
-                allowSameRootDirectory: true

@@ -49,7 +49,7 @@ final class RequireThrowsTagOnDirectThrowRuleTest extends RuleTestCase
 
     public function testProcessNodeUndeclaredThrowsAreReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireThrowsTagOnDirectThrow/WithUndeclaredThrow.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/RequireThrowsTagOnDirectThrow/WithUndeclaredThrow.php'], [
             [
                 'Declare "@throws \RuntimeException" in the PHPDoc of withoutTag() or catch the exception inside the method. The exception thrown here escapes withoutTag() without being declared.',
                 14,
@@ -71,12 +71,12 @@ final class RequireThrowsTagOnDirectThrowRuleTest extends RuleTestCase
 
     public function testProcessNodeDeclaredOrCaughtThrowsAreNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireThrowsTagOnDirectThrow/WithDeclaredOrCaughtThrow.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/RequireThrowsTagOnDirectThrow/WithDeclaredOrCaughtThrow.php'], []);
     }
 
     public function testProcessNodeGenericThrowAsksForAConcreteExceptionClass(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireThrowsTagOnDirectThrow/WithGenericThrow.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/RequireThrowsTagOnDirectThrow/WithGenericThrow.php'], [
             [
                 'Throw a concrete exception class here instead of \Exception, then declare it with "@throws" in the PHPDoc of throwsException(). Declaring "@throws \Exception" is rejected as a generic tag and catching \Exception is rejected as a broad catch, so neither of those resolves this.',
                 13,

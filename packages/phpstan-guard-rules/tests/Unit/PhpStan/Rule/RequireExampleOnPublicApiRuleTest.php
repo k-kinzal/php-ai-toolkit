@@ -33,7 +33,7 @@ final class RequireExampleOnPublicApiRuleTest extends RuleTestCase
 
     public function testProcessNodeClassDeclaredPublicWithoutExampleIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/RequireExampleOnPublicApi/MissingClassExample.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/RequireExampleOnPublicApi/MissingClassExample.php'], [
             [
                 'Add an @example block to class MissingClassExample: it is declared public API with "@visibility public", so it must document at least one example doctest can run. Write the example as an "@example" tag followed by indented code lines, or as a fenced php block, and assert on it with "// => value", "// Output: text", or "// throws ExceptionClass".',
                 12,
@@ -43,7 +43,7 @@ final class RequireExampleOnPublicApiRuleTest extends RuleTestCase
 
     public function testProcessNodeMembersDeclaredPublicWithoutExampleAreReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/RequireExampleOnPublicApi/MissingMemberExample.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/RequireExampleOnPublicApi/MissingMemberExample.php'], [
             [
                 'Add an @example block to constant MissingMemberExample::VERSION: it is declared public API with "@visibility public", so it must document at least one example doctest can run. Write the example as an "@example" tag followed by indented code lines, or as a fenced php block, and assert on it with "// => value", "// Output: text", or "// throws ExceptionClass".',
                 17,
@@ -61,7 +61,7 @@ final class RequireExampleOnPublicApiRuleTest extends RuleTestCase
 
     public function testProcessNodeEnumCaseDeclaredPublicWithoutExampleIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/RequireExampleOnPublicApi/MissingEnumCaseExample.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/RequireExampleOnPublicApi/MissingEnumCaseExample.php'], [
             [
                 'Add an @example block to enum case MissingEnumCaseExample::Only: it is declared public API with "@visibility public", so it must document at least one example doctest can run. Write the example as an "@example" tag followed by indented code lines, or as a fenced php block, and assert on it with "// => value", "// Output: text", or "// throws ExceptionClass".',
                 17,
@@ -71,12 +71,12 @@ final class RequireExampleOnPublicApiRuleTest extends RuleTestCase
 
     public function testProcessNodeDocumentedExamplesAreNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/RequireExampleOnPublicApi/DocumentedExamples.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/RequireExampleOnPublicApi/DocumentedExamples.php'], []);
     }
 
     public function testProcessNodeDisplayOnlyExampleDoesNotSatisfyTheRequirement(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/RequireExampleOnPublicApi/InlineExampleOnly.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/RequireExampleOnPublicApi/InlineExampleOnly.php'], [
             [
                 'Add an @example block to class InlineExampleOnly: it is declared public API with "@visibility public", so it must document at least one example doctest can run. Write the example as an "@example" tag followed by indented code lines, or as a fenced php block, and assert on it with "// => value", "// Output: text", or "// throws ExceptionClass".',
                 14,
@@ -86,16 +86,16 @@ final class RequireExampleOnPublicApiRuleTest extends RuleTestCase
 
     public function testProcessNodeUntaggedDeclarationIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/RequireExampleOnPublicApi/UntaggedApi.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/RequireExampleOnPublicApi/UntaggedApi.php'], []);
     }
 
     public function testProcessNodeNarrowedVisibilityIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/RequireExampleOnPublicApi/ScopedApi.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/RequireExampleOnPublicApi/ScopedApi.php'], []);
     }
 
     public function testProcessNodeClassInRestrictedTestNamespaceIsSkipped(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/RequireExampleOnPublicApi/TestClassInRestrictedNamespace.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/RequireExampleOnPublicApi/TestClassInRestrictedNamespace.php'], []);
     }
 }

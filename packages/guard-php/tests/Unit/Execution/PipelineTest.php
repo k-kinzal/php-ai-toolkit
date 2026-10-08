@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
+use Closure;
+use FilesystemIterator;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Execution\Pipeline
@@ -348,23 +353,127 @@ final class PipelineTest extends TestCase
      */
     public function testRunStructuresAllInputsBeforePoliciesAndReusesOneFileAcrossExtensions(): void
     {
-        $project = new \Tests\Support\Project(['A.md' => '# Before']);
+        $project = new class (['A.md' => '# Before']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             $registry = new \Guard\Extension\Registry();
-            $parser = new \Tests\Support\CountingStructurer(new \Guard\Structure\Markdown\HeadingStructurer());
+            $parser = new class (new \Guard\Structure\Markdown\HeadingStructurer()) implements \Guard\Structure\Structurer {
+                public int $calls = 0;
+                public function __construct(private \Guard\Structure\Structurer $inner)
+                {
+                }
+                public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+                {
+                    $this->calls++;
+                    return $this->inner->structure($source);
+                }
+            };
             $registry->addStructure('headings', $parser);
             $input = ['file' => new \Guard\Collect\Input(new \Guard\Collect\Selection('files', ['A.md'], [], '', false, ''), 'headings')];
             $seen = [];
-            $registry->addPolicy('first', new \Tests\Support\CallbackPolicy($input, static function (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context) use ($project, &$seen): \Guard\Execution\Plan {
+            $registry->addPolicy('first', new class ($input, static function (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context) use ($project, &$seen): \Guard\Execution\Plan {
                 $seen[] = $inputs->get('file')->files['A.md']->value();
                 unlink($project->root . '/A.md');
                 return new \Guard\Execution\Plan([new \Guard\Reporting\Finding('A.md', 'first', 'required', 'First')], []);
-            }), 10);
-            $registry->addPolicy('second', new \Tests\Support\CallbackPolicy($input, static function (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context) use (&$seen): \Guard\Execution\Plan {
+            }) implements \Guard\Policy\Policy
+            {
+                /** @param array<string, \Guard\Collect\Input> $inputs
+                 * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): \Guard\Execution\Plan $callback
+                 */
+                public function __construct(private array $inputs, private Closure $callback)
+                {
+                }
+                public function inputs(\Guard\Execution\Context $context): array
+                {
+                    return $this->inputs;
+                }
+                public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan
+                {
+                    return ($this->callback)($inputs, $context);
+                }
+            }, 10);
+            $registry->addPolicy('second', new class ($input, static function (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context) use (&$seen): \Guard\Execution\Plan {
                 $seen[] = $inputs->get('file')->files['A.md']->value();
                 return new \Guard\Execution\Plan([new \Guard\Reporting\Finding('A.md', 'second', 'required', 'Second')], []);
-            }), 0);
-            $filesystem = new \Tests\Support\CountingFilesystem();
+            }) implements \Guard\Policy\Policy
+            {
+                /** @param array<string, \Guard\Collect\Input> $inputs
+                 * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): \Guard\Execution\Plan $callback
+                 */
+                public function __construct(private array $inputs, private Closure $callback)
+                {
+                }
+                public function inputs(\Guard\Execution\Context $context): array
+                {
+                    return $this->inputs;
+                }
+                public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan
+                {
+                    return ($this->callback)($inputs, $context);
+                }
+            }, 0);
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $context = new \Guard\Execution\Context(new \Guard\Config\Configuration($project->root, []), $project->root . '/guard.yaml', false);
             $plan = (new \Guard\Execution\Pipeline($registry, new \Guard\Collect\Collector($filesystem)))->run($context);
             self::assertSame($seen[0], $seen[1]);
@@ -384,8 +493,38 @@ final class PipelineTest extends TestCase
         $registry = new \Guard\Extension\Registry();
         $source = new \Guard\Reporting\Finding('a', 'size', 'required', 'Split a.');
         $blocking = new \Guard\Reporting\Finding('b', 'value', 'required', 'Repair b.');
-        $registry->addPolicy('source', new \Tests\Support\CallbackPolicy([], static fn (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan => new \Guard\Execution\Plan([$source], [])));
-        $registry->addPolicy('config', new \Tests\Support\CallbackPolicy([], static fn (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan => new \Guard\Execution\Plan([$blocking], [], [$blocking])));
+        $registry->addPolicy('source', new class ([], static fn (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan => new \Guard\Execution\Plan([$source], [])) implements \Guard\Policy\Policy {
+            /** @param array<string, \Guard\Collect\Input> $inputs
+             * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): \Guard\Execution\Plan $callback
+             */
+            public function __construct(private array $inputs, private Closure $callback)
+            {
+            }
+            public function inputs(\Guard\Execution\Context $context): array
+            {
+                return $this->inputs;
+            }
+            public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan
+            {
+                return ($this->callback)($inputs, $context);
+            }
+        });
+        $registry->addPolicy('config', new class ([], static fn (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan => new \Guard\Execution\Plan([$blocking], [], [$blocking])) implements \Guard\Policy\Policy {
+            /** @param array<string, \Guard\Collect\Input> $inputs
+             * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): \Guard\Execution\Plan $callback
+             */
+            public function __construct(private array $inputs, private Closure $callback)
+            {
+            }
+            public function inputs(\Guard\Execution\Context $context): array
+            {
+                return $this->inputs;
+            }
+            public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan
+            {
+                return ($this->callback)($inputs, $context);
+            }
+        });
         $plan = (new \Guard\Execution\Pipeline($registry))->run(new \Guard\Execution\Context(new \Guard\Config\Configuration('/unused', []), '/unused/guard.yaml', false));
         self::assertSame([$source, $blocking], $plan->findings);
         self::assertSame([$blocking], $plan->blockingFindings);

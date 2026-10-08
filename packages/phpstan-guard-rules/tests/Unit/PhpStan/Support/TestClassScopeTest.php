@@ -22,7 +22,7 @@ final class TestClassScopeTest extends PHPStanTestCase
     {
         $scope = self::createStub(Scope::class);
         $scope->method('getClassReflection')->willReturn(
-            self::createReflectionProvider()->getClass('Tests\Fixture\TestClassScope\ClassInTestNamespace')
+            self::createReflectionProvider()->getClass('Tests\PhpStan\TestClassScope\ClassInTestNamespace')
         );
 
         $testClassScope = new TestClassScope();
@@ -68,7 +68,7 @@ final class TestClassScopeTest extends PHPStanTestCase
     {
         $scope = self::createStub(Scope::class);
         $scope->method('getClassReflection')->willReturn(
-            self::createReflectionProvider()->getClass('Tests\Fixture\TestClassScope\ClassInTestNamespace')
+            self::createReflectionProvider()->getClass('Tests\PhpStan\TestClassScope\ClassInTestNamespace')
         );
 
         $testClassScope = new TestClassScope();

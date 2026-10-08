@@ -34,7 +34,7 @@ final class NoPropertyInTestClassRuleTest extends RuleTestCase
 
     public function testProcessNodePropertyInRestrictedTestClassIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/NoPropertyInTestClass/WithProperty.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoPropertyInTestClass/WithProperty.php'], [
             [
                 'Move property $name into local variables inside the test methods that use it. Tests\\Unit and Tests\\Integration classes must not declare properties.',
                 11,
@@ -44,6 +44,6 @@ final class NoPropertyInTestClassRuleTest extends RuleTestCase
 
     public function testProcessNodePropertyInNonTestClassIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/NoPropertyInTestClass/NonTestWithProperty.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoPropertyInTestClass/NonTestWithProperty.php'], []);
     }
 }

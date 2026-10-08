@@ -31,7 +31,7 @@ final class VisibilityPublicUnusedErrorExtensionTest extends TestCase
 {
     public function testShouldIgnoreSuppressesUnusedPublicDeclaration(): void
     {
-        $file = __DIR__ . '/../../../../../fixtures/VisibilityPublicUnused/Declarations.php';
+        $file = __DIR__ . '/../../../../../tests/PhpStan/VisibilityPublicUnused/Declarations.php';
         $error = Error::decode([
             'message' => 'Method is unused.',
             'file' => $file,
@@ -57,7 +57,7 @@ final class VisibilityPublicUnusedErrorExtensionTest extends TestCase
 
     public function testShouldIgnoreKeepsUnusedInternalDeclaration(): void
     {
-        $file = __DIR__ . '/../../../../../fixtures/VisibilityPublicUnused/Declarations.php';
+        $file = __DIR__ . '/../../../../../tests/PhpStan/VisibilityPublicUnused/Declarations.php';
         $error = Error::decode([
             'message' => 'Method is unused.',
             'file' => $file,
@@ -83,7 +83,7 @@ final class VisibilityPublicUnusedErrorExtensionTest extends TestCase
 
     public function testShouldIgnoreKeepsUnrelatedPublicDeclarationError(): void
     {
-        $file = __DIR__ . '/../../../../../fixtures/VisibilityPublicUnused/Declarations.php';
+        $file = __DIR__ . '/../../../../../tests/PhpStan/VisibilityPublicUnused/Declarations.php';
         $error = Error::decode([
             'message' => 'Return type is wrong.',
             'file' => $file,

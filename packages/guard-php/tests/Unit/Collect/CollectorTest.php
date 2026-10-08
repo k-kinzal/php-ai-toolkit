@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Collect;
 
+use FilesystemIterator;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Collect\Collector
@@ -310,9 +314,71 @@ final class CollectorTest extends TestCase
 {
     public function testCollectAppliesGlobExclusionsToTraversalLiteralRootsAndExactPatterns(): void
     {
-        $project = new \Tests\Support\Project(['src/a.xml' => '<a/>', 'src/nested/b.xml' => '<b/>', 'src/skip/c.xml' => '<broken', 'src/c.json' => '{']);
+        $project = new class (['src/a.xml' => '<a/>', 'src/nested/b.xml' => '<b/>', 'src/skip/c.xml' => '<broken', 'src/c.json' => '{']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            $filesystem = new \Tests\Support\CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $inputs = [
                 'xml' => new \Guard\Collect\Input(new \Guard\Collect\Selection('patterns', ['src/**/*', 'src/skip/*.xml', 'src/skip/c.xml', 'src/c.json'], ['src/skip'], '.xml'), 'xml'),
                 'metadata' => new \Guard\Collect\Input(new \Guard\Collect\Selection('files', ['src/skip/c.xml'])),
@@ -333,13 +399,105 @@ final class CollectorTest extends TestCase
      */
     public function testCollectCombinesOverlappingRootsPatternsAliasesAndFormatsWithoutRepeatedIo(): void
     {
-        $project = new \Tests\Support\Project(['src/A.php' => '<?php $config->setRiskyAllowed(true);', 'src/Sub/B.php' => '<?php echo 1;', 'src/notes.md' => '# Notes', 'src/unread.txt' => 'metadata only', 'ignored/large.txt' => 'not selected']);
+        $project = new class (['src/A.php' => '<?php $config->setRiskyAllowed(true);', 'src/Sub/B.php' => '<?php echo 1;', 'src/notes.md' => '# Notes', 'src/unread.txt' => 'metadata only', 'ignored/large.txt' => 'not selected']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             symlink($project->root . '/src/A.php', $project->root . '/alias.php');
-            $filesystem = new \Tests\Support\CountingFilesystem();
-            $tokens = new \Tests\Support\CountingStructurer(new \Guard\Structure\Php\TokenParser());
-            $metrics = new \Tests\Support\CountingStructurer(new \Guard\Structure\Php\MetricParser());
-            $literal = new \Tests\Support\CountingStructurer(new \Guard\Structure\DocumentStructurer('php'));
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
+            $tokens = new class (new \Guard\Structure\Php\TokenParser()) implements \Guard\Structure\Structurer {
+                public int $calls = 0;
+                public function __construct(private \Guard\Structure\Structurer $inner)
+                {
+                }
+                public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+                {
+                    $this->calls++;
+                    return $this->inner->structure($source);
+                }
+            };
+            $metrics = new class (new \Guard\Structure\Php\MetricParser()) implements \Guard\Structure\Structurer {
+                public int $calls = 0;
+                public function __construct(private \Guard\Structure\Structurer $inner)
+                {
+                }
+                public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+                {
+                    $this->calls++;
+                    return $this->inner->structure($source);
+                }
+            };
+            $literal = new class (new \Guard\Structure\DocumentStructurer('php')) implements \Guard\Structure\Structurer {
+                public int $calls = 0;
+                public function __construct(private \Guard\Structure\Structurer $inner)
+                {
+                }
+                public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+                {
+                    $this->calls++;
+                    return $this->inner->structure($source);
+                }
+            };
             $inputs = [
                 'metrics' => new \Guard\Collect\Input(new \Guard\Collect\Selection('descendants', ['src', 'src/Sub', 'src'], [], '.php', false, 'missing'), 'php.metrics'),
                 'pattern' => new \Guard\Collect\Input(new \Guard\Collect\Selection('patterns', ['src/**/*.php', 'src/*/*.php', 'src/*.php'], [], '', false, ''), 'php.metrics'),
@@ -371,9 +529,71 @@ final class CollectorTest extends TestCase
      */
     public function testCollectReadsExactFilesWithoutScanningDirectoriesAndDoesNotCacheAcrossRuns(): void
     {
-        $project = new \Tests\Support\Project(['a.json' => '{"x":1}']);
+        $project = new class (['a.json' => '{"x":1}']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
-            $filesystem = new \Tests\Support\CountingFilesystem();
+            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+                /** @var array<string, int> */
+                public array $listings = [];
+                /** @var array<string, int> */
+                public array $reads = [];
+                /** @var array<string, int> */
+                public array $inspections = [];
+                public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+                {
+                    $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                }
+                public function entries(string $path): array|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                }
+                public function read(string $path): string|false
+                {
+                    $key = realpath($path);
+                    $key = $key === false ? $path : $key;
+                    $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                }
+            };
             $collector = new \Guard\Collect\Collector($filesystem);
             $input = ['a' => new \Guard\Collect\Input(new \Guard\Collect\Selection('files', ['a.json'], [], '', false, ''), 'json')];
             $structures = ['json' => new \Guard\Structure\DocumentStructurer('json')];
@@ -397,8 +617,44 @@ final class CollectorTest extends TestCase
      */
     public function testCollectDoesNoWorkForUnusedFormatsOrNoInputs(): void
     {
-        $filesystem = new \Tests\Support\CountingFilesystem();
-        $parser = new \Tests\Support\CountingStructurer(new \Guard\Structure\Php\TokenParser());
+        $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+            /** @var array<string, int> */
+            public array $listings = [];
+            /** @var array<string, int> */
+            public array $reads = [];
+            /** @var array<string, int> */
+            public array $inspections = [];
+            public function inspect(string $path): \Guard\Collect\Filesystem\Entry
+            {
+                $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
+                return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+            }
+            public function entries(string $path): array|false
+            {
+                $key = realpath($path);
+                $key = $key === false ? $path : $key;
+                $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
+                return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+            }
+            public function read(string $path): string|false
+            {
+                $key = realpath($path);
+                $key = $key === false ? $path : $key;
+                $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
+                return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+            }
+        };
+        $parser = new class (new \Guard\Structure\Php\TokenParser()) implements \Guard\Structure\Structurer {
+            public int $calls = 0;
+            public function __construct(private \Guard\Structure\Structurer $inner)
+            {
+            }
+            public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+            {
+                $this->calls++;
+                return $this->inner->structure($source);
+            }
+        };
         self::assertSame([], (new \Guard\Collect\Collector($filesystem))->collect('/not-used', [], ['php.tokens' => $parser]));
         self::assertSame([], $filesystem->inspections);
         self::assertSame([], $filesystem->reads);

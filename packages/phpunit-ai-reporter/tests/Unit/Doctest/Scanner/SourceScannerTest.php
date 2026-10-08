@@ -27,17 +27,17 @@ final class SourceScannerTest extends TestCase
 {
     public function testScanFileFindsTheDocumentedClassAndItsMethods(): void
     {
-        $path = (string) realpath(__DIR__ . '/../../../../fixtures/Doctest/project/src/Calculator.php');
+        $path = (string) realpath(__DIR__ . '/../../../../tests/Doctest/project/src/Calculator.php');
 
         $targets = iterator_to_array((new SourceScanner())->scanFile($path), false);
 
         self::assertSame(
             [
-                'Tests\Fixture\Doctest\Project\Calculator',
-                'Tests\Fixture\Doctest\Project\Calculator::add()',
-                'Tests\Fixture\Doctest\Project\Calculator::divide()',
-                'Tests\Fixture\Doctest\Project\Calculator::printSum()',
-                'Tests\Fixture\Doctest\Project\Calculator::shape()',
+                'Tests\Doctest\Project\Calculator',
+                'Tests\Doctest\Project\Calculator::add()',
+                'Tests\Doctest\Project\Calculator::divide()',
+                'Tests\Doctest\Project\Calculator::printSum()',
+                'Tests\Doctest\Project\Calculator::shape()',
             ],
             array_map(static fn (Target $target): string => $target->getFullyQualifiedName(), $targets),
         );

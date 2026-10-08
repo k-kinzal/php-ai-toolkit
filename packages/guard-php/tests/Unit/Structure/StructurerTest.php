@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Structure;
 
+use Closure;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -80,7 +81,16 @@ final class StructurerTest extends TestCase
      */
     public function testStructureCustomProducerCanConsumeAlreadyReadContent(): void
     {
-        $parser = new \Tests\Support\CallbackStructurer(static fn (\Guard\Structure\Source $source): \Guard\Structure\Subject => new \Guard\Structure\Markdown\HeadingList((new \Guard\Structure\Markdown\HeadingParser())->parse($source->text())));
+        $parser = new class (static fn (\Guard\Structure\Source $source): \Guard\Structure\Subject => new \Guard\Structure\Markdown\HeadingList((new \Guard\Structure\Markdown\HeadingParser())->parse($source->text()))) implements \Guard\Structure\Structurer {
+            /** @param Closure(\Guard\Structure\Source): \Guard\Structure\Subject $callback */
+            public function __construct(private Closure $callback)
+            {
+            }
+            public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+            {
+                return ($this->callback)($source);
+            }
+        };
         $source = new \Guard\Structure\Source('# Extension', ['extension' => $parser]);
         self::assertInstanceOf(\Guard\Structure\Markdown\HeadingList::class, $source->structure('extension'));
     }

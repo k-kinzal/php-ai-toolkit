@@ -21,7 +21,6 @@ use RuntimeException;
 
 use function substr_count;
 
-use Tests\Fixture\TestReporter\PhpUnitFixtureProcess;
 use Toolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener;
 use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter;
 use Toolkit\PhpUnit\TestReporter\TestIssueCollector;
@@ -222,14 +221,34 @@ final class LegacyAiTestReporterListenerTest extends TestCase
         unset($environment['PARATEST']);
         $environment = array_merge($environment, ['AI_AGENT' => '1']);
 
-        $result = PhpUnitFixtureProcess::runListener($environment);
+        $configurationFile = dirname(__DIR__, 5) . '/tests/TestReporter/phpunit-listener.xml.dist';
+        $phpunitPackage = \Composer\InstalledVersions::getInstallPath('phpunit/phpunit');
+        self::assertIsString($phpunitPackage);
+        $pipes = [];
+        $process = proc_open(
+            [PHP_BINARY, $phpunitPackage . '/phpunit', '--configuration', $configurationFile, '--colors=never'],
+            [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+            $pipes,
+            dirname($configurationFile),
+            $environment,
+        );
+        self::assertIsResource($process);
+        fclose($pipes[0]);
+        $stdout = stream_get_contents($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+        $exitCode = proc_close($process);
+        self::assertIsString($stdout);
+        self::assertIsString($stderr);
+        $output = $stdout . $stderr;
 
-        self::assertNotSame(0, $result->exitCode());
-        self::assertStringContainsString('--- PHPUnit: 1 failure, 1 error, 1 risky ---', $result->output());
-        self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testFails', $result->output());
-        self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testErrors', $result->output());
-        self::assertStringContainsString('Tests\Fixture\TestReporter\FailingTest::testIsRisky', $result->output());
-        self::assertStringContainsString('fixture error', $result->output());
+        self::assertNotSame(0, $exitCode);
+        self::assertStringContainsString('--- PHPUnit: 1 failure, 1 error, 1 risky ---', $output);
+        self::assertStringContainsString('Tests\TestReporter\FailingTest::testFails', $output);
+        self::assertStringContainsString('Tests\TestReporter\FailingTest::testErrors', $output);
+        self::assertStringContainsString('Tests\TestReporter\FailingTest::testIsRisky', $output);
+        self::assertStringContainsString('fixture error', $output);
     }
 
     public function testStartTestSuiteTracksDepthSoNestedSuitesWriteReportOnceThroughPhpUnitRunner(): void
@@ -238,9 +257,29 @@ final class LegacyAiTestReporterListenerTest extends TestCase
         unset($environment['PARATEST']);
         $environment = array_merge($environment, ['AI_AGENT' => '1']);
 
-        $result = PhpUnitFixtureProcess::runListener($environment);
+        $configurationFile = dirname(__DIR__, 5) . '/tests/TestReporter/phpunit-listener.xml.dist';
+        $phpunitPackage = \Composer\InstalledVersions::getInstallPath('phpunit/phpunit');
+        self::assertIsString($phpunitPackage);
+        $pipes = [];
+        $process = proc_open(
+            [PHP_BINARY, $phpunitPackage . '/phpunit', '--configuration', $configurationFile, '--colors=never'],
+            [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+            $pipes,
+            dirname($configurationFile),
+            $environment,
+        );
+        self::assertIsResource($process);
+        fclose($pipes[0]);
+        $stdout = stream_get_contents($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+        $exitCode = proc_close($process);
+        self::assertIsString($stdout);
+        self::assertIsString($stderr);
+        $output = $stdout . $stderr;
 
-        self::assertNotSame(0, $result->exitCode());
-        self::assertSame(1, substr_count($result->output(), '--- PHPUnit: 1 failure, 1 error, 1 risky ---'));
+        self::assertNotSame(0, $exitCode);
+        self::assertSame(1, substr_count($output, '--- PHPUnit: 1 failure, 1 error, 1 risky ---'));
     }
 }

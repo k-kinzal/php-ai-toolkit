@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Extension;
 
+use Closure;
 use Guard\Extension\BuiltinExtension;
 use Guard\Extension\ExtensionLoader;
 use Guard\Extension\Registry;
@@ -11,7 +12,6 @@ use Guard\Policy\PolicyException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\RequiredReadmeExtension;
 
 /**
  * @covers \Guard\Extension\ExtensionLoader
@@ -167,14 +167,66 @@ final class ExtensionLoaderTest extends TestCase
 {
     public function testRegisterLoadsAnOptionlessExtension(): void
     {
+        $extension = new class () implements \Guard\Extension\Extension {
+            public function register(Registry $registry): void
+            {
+                $registry->addPolicy('readme', new class (['readme' => new \Guard\Collect\Input(new \Guard\Collect\Selection('files', ['README.md'], [], '', false, ''), null)], static function (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan {
+                    $file = $inputs->get('readme')->files['README.md'] ?? null;
+                    $exists = $file === null || $file->file->entry->file;
+                    return new \Guard\Execution\Plan($exists ? [] : [new \Guard\Reporting\Finding('README.md', 'readme.required', 'required', 'Create README.md.')], []);
+                }) implements \Guard\Policy\Policy
+                {
+                    /** @param array<string, \Guard\Collect\Input> $inputs
+                     * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): \Guard\Execution\Plan $callback
+                     */
+                    public function __construct(private array $inputs, private Closure $callback)
+                    {
+                    }
+                    public function inputs(\Guard\Execution\Context $context): array
+                    {
+                        return $this->inputs;
+                    }
+                    public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan
+                    {
+                        return ($this->callback)($inputs, $context);
+                    }
+                });
+            }
+        };
         $registry = new Registry();
-        (new ExtensionLoader())->register([RequiredReadmeExtension::class => []], $registry);
+        (new ExtensionLoader())->register([$extension::class => []], $registry);
         self::assertSame('readme', $registry->policies()[0]->id);
     }
 
     public function testCreateReturnsAnExtensionWithoutRegisteringIt(): void
     {
-        self::assertInstanceOf(RequiredReadmeExtension::class, (new ExtensionLoader())->create(RequiredReadmeExtension::class, []));
+        $extension = new class () implements \Guard\Extension\Extension {
+            public function register(Registry $registry): void
+            {
+                $registry->addPolicy('readme', new class (['readme' => new \Guard\Collect\Input(new \Guard\Collect\Selection('files', ['README.md'], [], '', false, ''), null)], static function (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan {
+                    $file = $inputs->get('readme')->files['README.md'] ?? null;
+                    $exists = $file === null || $file->file->entry->file;
+                    return new \Guard\Execution\Plan($exists ? [] : [new \Guard\Reporting\Finding('README.md', 'readme.required', 'required', 'Create README.md.')], []);
+                }) implements \Guard\Policy\Policy
+                {
+                    /** @param array<string, \Guard\Collect\Input> $inputs
+                     * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): \Guard\Execution\Plan $callback
+                     */
+                    public function __construct(private array $inputs, private Closure $callback)
+                    {
+                    }
+                    public function inputs(\Guard\Execution\Context $context): array
+                    {
+                        return $this->inputs;
+                    }
+                    public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan
+                    {
+                        return ($this->callback)($inputs, $context);
+                    }
+                });
+            }
+        };
+        self::assertInstanceOf($extension::class, (new ExtensionLoader())->create($extension::class, []));
     }
 
     /**
@@ -198,15 +250,46 @@ final class ExtensionLoaderTest extends TestCase
         yield 'missing' => ['Missing\\GuardExtension', [], 'composer dump-autoload'];
         yield 'wrong contract' => [Registry::class, [], 'must implement Guard\\Extension\\Extension'];
         yield 'required constructor' => [BuiltinExtension::class, [], 'public no-argument constructor'];
-        yield 'unsupported options' => [RequiredReadmeExtension::class, ['typo' => true], 'Implement fromOptions()'];
+        $extension = new class () implements \Guard\Extension\Extension {
+            public function register(Registry $registry): void
+            {
+            }
+        };
+        yield 'unsupported options' => [$extension::class, ['typo' => true], 'Implement fromOptions()'];
     }
 
     public function testRegisterReportsRegistrationConflictsWithTheirExtensionClass(): void
     {
         $registry = new Registry();
-        (new RequiredReadmeExtension())->register($registry);
+        $extension = new class () implements \Guard\Extension\Extension {
+            public function register(Registry $registry): void
+            {
+                $registry->addPolicy('readme', new class (['readme' => new \Guard\Collect\Input(new \Guard\Collect\Selection('files', ['README.md'], [], '', false, ''), null)], static function (\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan {
+                    $file = $inputs->get('readme')->files['README.md'] ?? null;
+                    $exists = $file === null || $file->file->entry->file;
+                    return new \Guard\Execution\Plan($exists ? [] : [new \Guard\Reporting\Finding('README.md', 'readme.required', 'required', 'Create README.md.')], []);
+                }) implements \Guard\Policy\Policy
+                {
+                    /** @param array<string, \Guard\Collect\Input> $inputs
+                     * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): \Guard\Execution\Plan $callback
+                     */
+                    public function __construct(private array $inputs, private Closure $callback)
+                    {
+                    }
+                    public function inputs(\Guard\Execution\Context $context): array
+                    {
+                        return $this->inputs;
+                    }
+                    public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): \Guard\Execution\Plan
+                    {
+                        return ($this->callback)($inputs, $context);
+                    }
+                });
+            }
+        };
+        $extension->register($registry);
         $this->expectException(PolicyException::class);
-        $this->expectExceptionMessage('Extension "' . RequiredReadmeExtension::class . '": Policy id "readme"');
-        (new ExtensionLoader())->register([RequiredReadmeExtension::class => []], $registry);
+        $this->expectExceptionMessage('Extension "' . $extension::class . '": Policy id "readme"');
+        (new ExtensionLoader())->register([$extension::class => []], $registry);
     }
 }

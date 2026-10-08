@@ -49,7 +49,7 @@ final class ForbidSingleLinePhpDocRuleTest extends RuleTestCase
 
     public function testProcessNodeSingleLinePhpDocIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidSingleLinePhpDoc/WithSingleLineDoc.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/ForbidSingleLinePhpDoc/WithSingleLineDoc.php'], [
             [
                 'Rewrite PHPDoc "/** Single-line class doc. */" as a multi-line block with /** and */ on their own lines.',
                 7,
@@ -71,6 +71,6 @@ final class ForbidSingleLinePhpDocRuleTest extends RuleTestCase
 
     public function testProcessNodeMultiLinePhpDocIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidSingleLinePhpDoc/WithMultiLineDoc.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/ForbidSingleLinePhpDoc/WithMultiLineDoc.php'], []);
     }
 }

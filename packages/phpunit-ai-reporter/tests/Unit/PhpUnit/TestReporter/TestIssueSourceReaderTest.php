@@ -19,7 +19,7 @@ final class TestIssueSourceReaderTest extends TestCase
     public function testReadReturnsRequestedSourceLine(): void
     {
         $reader = new TestIssueSourceReader();
-        $file = dirname(__DIR__, 4) . '/fixtures/TestReporter/SampleTest.php';
+        $file = dirname(__DIR__, 4) . '/tests/TestReporter/SampleTest.php';
 
         self::assertSame("        self::assertSame('John', \$this->service->getName());", $reader->read($file, 11));
     }

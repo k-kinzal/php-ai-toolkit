@@ -53,7 +53,7 @@ final class ForbidDependencyRuleTest extends RuleTestCase
     {
         return [
             __DIR__ . '/../../../../../rules.neon',
-            __DIR__ . '/../../../../../fixtures/ForbidDependency/phpstan.neon',
+            __DIR__ . '/../../../../../tests/PhpStan/ForbidDependency/phpstan.neon',
         ];
     }
 
@@ -62,30 +62,30 @@ final class ForbidDependencyRuleTest extends RuleTestCase
     {
         return new ForbidDependencyRule(
             self::createReflectionProvider(),
-            __DIR__ . '/../../../../../fixtures/ForbidDependency/Project',
+            __DIR__ . '/../../../../../tests/PhpStan/ForbidDependency/Project',
             DependencyRestrictions::DEFAULTS,
             [
-                'Tests\Fixture\ForbidDependency\Project\src\Reader::load' => ['position' => 0, 'name' => 'path'],
-                'Tests\Fixture\ForbidDependency\Project\src\Reader::read' => ['position' => 0, 'name' => 'path'],
-                'Tests\Fixture\ForbidDependency\Project\src\read_config' => ['position' => 0, 'name' => 'path'],
+                'Tests\PhpStan\ForbidDependency\Project\src\Reader::load' => ['position' => 0, 'name' => 'path'],
+                'Tests\PhpStan\ForbidDependency\Project\src\Reader::read' => ['position' => 0, 'name' => 'path'],
+                'Tests\PhpStan\ForbidDependency\Project\src\read_config' => ['position' => 0, 'name' => 'path'],
             ],
         );
     }
 
     public function testProcessNodeFindsAliasedSymbolsAndTypedInstanceCalls(): void
     {
-        $class = 'Tests\Fixture\ForbidDependency\Project\examples\ExampleService';
+        $class = 'Tests\PhpStan\ForbidDependency\Project\examples\ExampleService';
         $message = static fn (string $symbol): string => sprintf(
-            'Forbidden dependency from "tests/symbols.php" to "examples/ExampleService.php" via %s (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
+            'Forbidden dependency from "tests/symbols.php" to "examples/ExampleService.php" via %s (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path.',
             $symbol,
         );
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/tests/symbols.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidDependency/Project/tests/symbols.php'], [
             [$message($class . '::__construct()'), 9],
             [$message($class . '::create()'), 10],
             [$message($class), 11],
             [$message($class), 12],
-            [$message('Tests\Fixture\ForbidDependency\Project\examples\sample()'), 13],
-            [$message('Tests\Fixture\ForbidDependency\Project\examples\SAMPLE'), 14],
+            [$message('Tests\PhpStan\ForbidDependency\Project\examples\sample()'), 13],
+            [$message('Tests\PhpStan\ForbidDependency\Project\examples\SAMPLE'), 14],
             [$message($class), 16],
             [$message($class), 16],
             [$message($class . '::run()'), 18],
@@ -112,11 +112,11 @@ final class ForbidDependencyRuleTest extends RuleTestCase
     public function testProcessNodeFindsInheritanceTraitsAttributesAndProperties(): void
     {
         $message = static fn (string $class): string => sprintf(
-            'Forbidden dependency from "tests/Derived.php" to "examples/%s.php" via Tests\Fixture\ForbidDependency\Project\examples\%s (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
+            'Forbidden dependency from "tests/Derived.php" to "examples/%s.php" via Tests\PhpStan\ForbidDependency\Project\examples\%s (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path.',
             $class,
             $class,
         );
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/tests/Derived.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidDependency/Project/tests/Derived.php'], [
             [$message('ExampleAttribute'), 10],
             [$message('ExampleContract'), 10],
             [$message('ExampleService'), 10],
@@ -128,12 +128,12 @@ final class ForbidDependencyRuleTest extends RuleTestCase
     public function testProcessNodeFindsIncludesBuiltinsAndRegisteredFileReaders(): void
     {
         $message = static fn (string $target, string $reader, string $pattern = '*/**'): string => sprintf(
-            'Forbidden dependency from "tests/reads.php" to "%s" via %s (target pattern "%s"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
+            'Forbidden dependency from "tests/reads.php" to "%s" via %s (target pattern "%s"). Remove the reference or move the referenced code/data to an allowed path.',
             $target,
             $reader,
             $pattern,
         );
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/tests/reads.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidDependency/Project/tests/reads.php'], [
             [$message('examples/ExampleService.php', 'include/require'), 9],
             [$message('examples/ExampleContract.php', 'include/require'), 10],
             [$message('examples/input.json', 'file_get_contents()'), 11],
@@ -143,9 +143,9 @@ final class ForbidDependencyRuleTest extends RuleTestCase
             [$message('examples/input.json', 'readfile()'), 15],
             [$message('examples/input.json', 'hash_file()'), 16],
             [$message('examples/input.json', 'SplFileObject::__construct()'), 17],
-            [$message('examples/input.json', 'Tests\Fixture\ForbidDependency\Project\src\Reader::load()'), 18],
-            [$message('examples/input.json', 'Tests\Fixture\ForbidDependency\Project\src\Reader::read()'), 19],
-            [$message('examples/input.json', 'Tests\Fixture\ForbidDependency\Project\src\read_config()'), 20],
+            [$message('examples/input.json', 'Tests\PhpStan\ForbidDependency\Project\src\Reader::load()'), 18],
+            [$message('examples/input.json', 'Tests\PhpStan\ForbidDependency\Project\src\Reader::read()'), 19],
+            [$message('examples/input.json', 'Tests\PhpStan\ForbidDependency\Project\src\read_config()'), 20],
             [$message('examples/input.json', 'file_get_contents()'), 21],
             [$message('example/local.php', 'include/require'), 22],
         ]);
@@ -153,21 +153,21 @@ final class ForbidDependencyRuleTest extends RuleTestCase
 
     public function testProcessNodeAllowsDocumentationUncertainPathsAndPermittedDirectories(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/tests/allowed.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidDependency/Project/tests/allowed.php'], []);
     }
 
     public function testProcessNodeAllowsExamplesToUseTheirOwnFilesAndProductionCode(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/example/local.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidDependency/Project/example/local.php'], []);
     }
 
     public function testProcessNodeForbidsProductionDependenciesOnTestsAndExamples(): void
     {
         $message = static fn (string $target): string => sprintf(
-            'Forbidden dependency from "src/dependencies.php" to "%s" via file_get_contents() (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
+            'Forbidden dependency from "src/dependencies.php" to "%s" via file_get_contents() (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path.',
             $target,
         );
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/src/dependencies.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidDependency/Project/src/dependencies.php'], [
             [$message('tests/input.json'), 8],
             [$message('examples/input.json'), 9],
         ]);
@@ -176,10 +176,10 @@ final class ForbidDependencyRuleTest extends RuleTestCase
     public function testProcessNodeForbidsExamplesFromReusingOtherRootDirectories(): void
     {
         $message = static fn (string $target): string => sprintf(
-            'Forbidden dependency from "examples/dependencies.php" to "%s" via file_get_contents() (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
+            'Forbidden dependency from "examples/dependencies.php" to "%s" via file_get_contents() (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path.',
             $target,
         );
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/examples/dependencies.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidDependency/Project/examples/dependencies.php'], [
             [$message('example/local.php'), 7],
             [$message('tests/input.json'), 8],
         ]);
@@ -188,24 +188,26 @@ final class ForbidDependencyRuleTest extends RuleTestCase
     public function testProcessNodeAutomaticallyAppliesTheBoundaryToNewRootDirectories(): void
     {
         $message = static fn (string $target): string => sprintf(
-            'Forbidden dependency from "bench/dependencies.php" to "%s" via file_get_contents() (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
+            'Forbidden dependency from "bench/dependencies.php" to "%s" via file_get_contents() (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path.',
             $target,
         );
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/bench/dependencies.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidDependency/Project/bench/dependencies.php'], [
             [$message('tests/input.json'), 7],
             [$message('examples/input.json'), 8],
         ]);
     }
 
-    public function testProcessNodeRequiresExplicitPoliciesForSharedFixtures(): void
+    public function testProcessNodeForbidsRootFixturesAndTestSupport(): void
     {
         $message = static fn (string $target): string => sprintf(
-            'Forbidden dependency from "tests/other_directories.php" to "%s" via file_get_contents() (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path. Configure an explicit dependency policy if sharing is intentional.',
+            'Forbidden dependency from "tests/other_directories.php" to "%s" via file_get_contents() (target pattern "*/**"). Remove the reference or move the referenced code/data to an allowed path.',
             $target,
         );
-        $this->analyse([__DIR__ . '/../../../../../fixtures/ForbidDependency/Project/tests/other_directories.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/ForbidDependency/Project/tests/other_directories.php'], [
             [$message('fixtures/input.json'), 5],
             [$message('examples-backup/input.json'), 6],
+            [$message('test-support/input.json'), 7],
+            [str_replace('file_get_contents()', 'include/require', $message('test-support/bootstrap.php')), 8],
         ]);
     }
 }

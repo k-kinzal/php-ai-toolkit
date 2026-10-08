@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cli;
 
+use Closure;
 use Guard\Cli\PolicyRun;
 use Guard\Execution\FileChange;
 use Guard\Execution\Plan;
@@ -15,7 +16,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Tests\Support\CallbackPolicy;
 
 /**
  * @covers \Guard\Cli\PolicyRun
@@ -105,7 +105,22 @@ final class PolicyRunTest extends TestCase
         file_put_contents($root . '/guard.yaml', "version: 1\n");
         file_put_contents($root . '/a.txt', 'old');
         $registry = new Registry();
-        $registry->addPolicy('rewrite', new CallbackPolicy([], static fn (): Plan => new Plan([], [new FileChange($root . '/a.txt', 'old', 'new')])));
+        $registry->addPolicy('rewrite', new class ([], static fn (): Plan => new Plan([], [new FileChange($root . '/a.txt', 'old', 'new')])) implements \Guard\Policy\Policy {
+            /** @param array<string, \Guard\Collect\Input> $inputs
+             * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): Plan $callback
+             */
+            public function __construct(private array $inputs, private Closure $callback)
+            {
+            }
+            public function inputs(\Guard\Execution\Context $context): array
+            {
+                return $this->inputs;
+            }
+            public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): Plan
+            {
+                return ($this->callback)($inputs, $context);
+            }
+        });
         $output = new BufferedOutput();
 
         self::assertSame(0, (new PolicyRun($registry))->run($root . '/guard.yaml', 'text', true, false, $output));
@@ -124,7 +139,22 @@ final class PolicyRunTest extends TestCase
         file_put_contents($root . '/guard.yaml', "version: 1\n");
         file_put_contents($root . '/a.txt', 'old');
         $registry = new Registry();
-        $registry->addPolicy('rewrite', new CallbackPolicy([], static fn (): Plan => new Plan([], [new FileChange($root . '/a.txt', 'old', 'new')])));
+        $registry->addPolicy('rewrite', new class ([], static fn (): Plan => new Plan([], [new FileChange($root . '/a.txt', 'old', 'new')])) implements \Guard\Policy\Policy {
+            /** @param array<string, \Guard\Collect\Input> $inputs
+             * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): Plan $callback
+             */
+            public function __construct(private array $inputs, private Closure $callback)
+            {
+            }
+            public function inputs(\Guard\Execution\Context $context): array
+            {
+                return $this->inputs;
+            }
+            public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): Plan
+            {
+                return ($this->callback)($inputs, $context);
+            }
+        });
         $output = new BufferedOutput();
 
         self::assertSame(0, (new PolicyRun($registry))->run($root . '/guard.yaml', 'text', true, true, $output));
@@ -144,7 +174,22 @@ final class PolicyRunTest extends TestCase
         file_put_contents($root . '/a.txt', 'old');
         $finding = new Finding('a.txt', 'example.blocked', 'required', 'Fix a.txt by hand.');
         $registry = new Registry();
-        $registry->addPolicy('rewrite', new CallbackPolicy([], static fn (): Plan => new Plan([$finding], [new FileChange($root . '/a.txt', 'old', 'new')], [$finding])));
+        $registry->addPolicy('rewrite', new class ([], static fn (): Plan => new Plan([$finding], [new FileChange($root . '/a.txt', 'old', 'new')], [$finding])) implements \Guard\Policy\Policy {
+            /** @param array<string, \Guard\Collect\Input> $inputs
+             * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): Plan $callback
+             */
+            public function __construct(private array $inputs, private Closure $callback)
+            {
+            }
+            public function inputs(\Guard\Execution\Context $context): array
+            {
+                return $this->inputs;
+            }
+            public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): Plan
+            {
+                return ($this->callback)($inputs, $context);
+            }
+        });
         $output = new BufferedOutput();
 
         self::assertSame(1, (new PolicyRun($registry))->run($root . '/guard.yaml', 'text', true, false, $output));
@@ -163,7 +208,22 @@ final class PolicyRunTest extends TestCase
         file_put_contents($root . '/guard.yaml', "version: 1\n");
         $finding = new Finding('a.php', 'example.tag', 'recommended', 'Start the file with <?php.');
         $registry = new Registry();
-        $registry->addPolicy('tag', new CallbackPolicy([], static fn (): Plan => new Plan([$finding], [])));
+        $registry->addPolicy('tag', new class ([], static fn (): Plan => new Plan([$finding], [])) implements \Guard\Policy\Policy {
+            /** @param array<string, \Guard\Collect\Input> $inputs
+             * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): Plan $callback
+             */
+            public function __construct(private array $inputs, private Closure $callback)
+            {
+            }
+            public function inputs(\Guard\Execution\Context $context): array
+            {
+                return $this->inputs;
+            }
+            public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): Plan
+            {
+                return ($this->callback)($inputs, $context);
+            }
+        });
         $output = new BufferedOutput();
 
         self::assertSame(0, (new PolicyRun($registry))->run($root . '/guard.yaml', 'text', false, false, $output));

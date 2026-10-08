@@ -42,9 +42,9 @@ final class ForbiddenFileTermInspectorTest extends TestCase
 
     public function testErrorsReportsTheSameTermOncePerLineAcrossOverlappingPolicies(): void
     {
-        $fixture = __DIR__ . '/../../../../../fixtures/ForbidFileTerm/BackendLeak.php';
+        $fixture = __DIR__ . '/../../../../../tests/PhpStan/ForbidFileTerm/BackendLeak.php';
         $inspector = new ForbiddenFileTermInspector(new ForbiddenFileTermRestrictions([
-            'fixtures/ForbidFileTerm/*' => ['mysql'],
+            'tests/PhpStan/ForbidFileTerm/*' => ['mysql'],
             'Fixture/ForbidFileTerm/*' => ['MYSQL'],
         ]));
 

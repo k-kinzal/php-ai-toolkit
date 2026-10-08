@@ -43,7 +43,7 @@ final class ForbidDescriptivePhpDocInTestClassRuleTest extends RuleTestCase
 
     public function testProcessNodeDescriptivePhpDocOnTestMethodIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidDescriptivePhpDocInTestClass/WithDescriptivePhpDoc.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/ForbidDescriptivePhpDocInTestClass/WithDescriptivePhpDoc.php'], [
             [
                 'Remove descriptive text from PHPDoc on method WithDescriptivePhpDoc::testFooReturnsCorrectValue(). Keep only annotations such as @dataProvider.',
                 12,
@@ -53,7 +53,7 @@ final class ForbidDescriptivePhpDocInTestClassRuleTest extends RuleTestCase
 
     public function testProcessNodeDescriptionWithTagIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidDescriptivePhpDocInTestClass/WithDescriptionAndTag.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/ForbidDescriptivePhpDocInTestClass/WithDescriptionAndTag.php'], [
             [
                 'Remove descriptive text from PHPDoc on method WithDescriptionAndTag::testCalculation(). Keep only annotations such as @dataProvider.',
                 14,
@@ -63,22 +63,22 @@ final class ForbidDescriptivePhpDocInTestClassRuleTest extends RuleTestCase
 
     public function testProcessNodeAnnotationOnlyPhpDocIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidDescriptivePhpDocInTestClass/WithAnnotationOnly.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/ForbidDescriptivePhpDocInTestClass/WithAnnotationOnly.php'], []);
     }
 
     public function testProcessNodeNoPhpDocIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidDescriptivePhpDocInTestClass/WithNoPhpDoc.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/ForbidDescriptivePhpDocInTestClass/WithNoPhpDoc.php'], []);
     }
 
     public function testProcessNodeNonTestClassIsNotReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidDescriptivePhpDocInTestClass/NonTestClass.php'], []);
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/ForbidDescriptivePhpDocInTestClass/NonTestClass.php'], []);
     }
 
     public function testProcessNodeDescriptiveClassDocIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidDescriptivePhpDocInTestClass/WithDescriptiveClassDoc.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/ForbidDescriptivePhpDocInTestClass/WithDescriptiveClassDoc.php'], [
             [
                 'Remove descriptive text from PHPDoc on test class WithDescriptiveClassDoc. Keep only annotations such as @extends.',
                 10,
@@ -88,7 +88,7 @@ final class ForbidDescriptivePhpDocInTestClassRuleTest extends RuleTestCase
 
     public function testProcessNodeDescriptiveHelperMethodDocIsReported(): void
     {
-        $this->analyse([__DIR__ . '/../../../../fixtures/ForbidDescriptivePhpDocInTestClass/WithDescriptiveHelperDoc.php'], [
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/ForbidDescriptivePhpDocInTestClass/WithDescriptiveHelperDoc.php'], [
             [
                 'Remove descriptive text from PHPDoc on method WithDescriptiveHelperDoc::setUp(). Keep only annotations such as @dataProvider.',
                 12,

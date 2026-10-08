@@ -18,8 +18,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/",
-            "Tests\\Support\\": "test-support/"
+            "Tests\\": "tests/"
         },
         "exclude-from-classmap": [
             "vendor/marc-mabe/php-enum/stubs/Stringable.php"

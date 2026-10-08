@@ -47,7 +47,7 @@ final class RequireListForArrayLiteralRuleTest extends RuleTestCase
 
     public function testProcessNodeReportsPropertyAndReturnListDeclarations(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireListForArrayLiteral/WithArrayIntListType.php'], [
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/RequireListForArrayLiteral/WithArrayIntListType.php'], [
             [
                 'Replace "array<int, string>" with "list<string>" in @var on $names; $names is initialized with a non-empty list literal, so declare its zero-based contiguous keys as part of the property type.',
                 10,
@@ -81,7 +81,7 @@ final class RequireListForArrayLiteralRuleTest extends RuleTestCase
 
     public function testProcessNodeIgnoresParametersAndNonListOrUncertainValues(): void
     {
-        $this->analyse([__DIR__ . '/../../../../../fixtures/RequireListForArrayLiteral/WithoutArrayIntListType.php'], []);
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/RequireListForArrayLiteral/WithoutArrayIntListType.php'], []);
     }
 
     public function testPropertyErrorsNamesTheInitializedProperty(): void

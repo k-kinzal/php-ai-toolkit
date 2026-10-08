@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Structure;
 
+use Closure;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -126,14 +127,34 @@ final class SourceTest extends TestCase
      */
     public function testStructureSharesDependenciesAndCachesFailures(): void
     {
-        $tokens = new \Tests\Support\CountingStructurer(new \Guard\Structure\Php\TokenParser());
+        $tokens = new class (new \Guard\Structure\Php\TokenParser()) implements \Guard\Structure\Structurer {
+            public int $calls = 0;
+            public function __construct(private \Guard\Structure\Structurer $inner)
+            {
+            }
+            public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+            {
+                $this->calls++;
+                return $this->inner->structure($source);
+            }
+        };
         $source = new \Guard\Structure\Source('<?php $x->setRiskyAllowed(true);', ['php.tokens' => $tokens, 'metrics' => new \Guard\Structure\Php\MetricParser(), 'php' => new \Guard\Structure\DocumentStructurer('php')]);
         self::assertSame($source->structure('metrics'), $source->structure('metrics'));
         $document = $source->structure('php');
         self::assertInstanceOf(\Guard\Structure\ParsedDocument::class, $document);
         self::assertTrue($document->copy()->read('/riskyAllowed')->value);
         self::assertSame(1, $tokens->calls);
-        $broken = new \Tests\Support\CountingStructurer(new \Guard\Structure\DocumentStructurer('json'));
+        $broken = new class (new \Guard\Structure\DocumentStructurer('json')) implements \Guard\Structure\Structurer {
+            public int $calls = 0;
+            public function __construct(private \Guard\Structure\Structurer $inner)
+            {
+            }
+            public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+            {
+                $this->calls++;
+                return $this->inner->structure($source);
+            }
+        };
         $invalid = new \Guard\Structure\Source('{', ['json' => $broken]);
         try {
             $invalid->structure('json');
@@ -155,7 +176,16 @@ final class SourceTest extends TestCase
      */
     public function testStructureRejectsCircularDependenciesWithAnActionableError(): void
     {
-        $parser = new \Tests\Support\CallbackStructurer(static fn (\Guard\Structure\Source $source): \Guard\Structure\Subject => $source->structure('cycle'));
+        $parser = new class (static fn (\Guard\Structure\Source $source): \Guard\Structure\Subject => $source->structure('cycle')) implements \Guard\Structure\Structurer {
+            /** @param Closure(\Guard\Structure\Source): \Guard\Structure\Subject $callback */
+            public function __construct(private Closure $callback)
+            {
+            }
+            public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+            {
+                return ($this->callback)($source);
+            }
+        };
         $this->expectException(\Guard\Policy\PolicyException::class);
         $this->expectExceptionMessage('circular dependency');
         (new \Guard\Structure\Source('', ['cycle' => $parser]))->structure('cycle');

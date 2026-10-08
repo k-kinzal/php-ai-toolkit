@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cli\Command;
 
+use Closure;
+use FilesystemIterator;
 use Guard\Cli\PolicyRun;
 use Guard\Execution\FileChange;
 use Guard\Execution\Plan;
@@ -13,8 +15,10 @@ use Guard\Reporting\Finding;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 use Symfony\Component\Console\Tester\CommandTester;
-use Tests\Support\CallbackPolicy;
 
 /**
  * @covers \Guard\Cli\Command\BaselineCommand
@@ -98,10 +102,61 @@ final class BaselineCommandTest extends TestCase
 {
     public function testExecuteCapturesAllDiagnosticsAndNeverRepairsProjectFiles(): void
     {
-        $project = new \Tests\Support\Project(['guard.yaml' => "version: 1\n", 'a.txt' => 'old']);
+        $project = new class (['guard.yaml' => "version: 1\n", 'a.txt' => 'old']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         $finding = new Finding('a.txt', 'problem', 'required', 'Old content. Replace it with new.', true);
         $registry = new Registry();
-        $registry->addPolicy('test', new CallbackPolicy([], static fn (): Plan => new Plan([$finding], [new FileChange($project->root . '/a.txt', 'old', 'new')])));
+        $registry->addPolicy('test', new class ([], static fn (): Plan => new Plan([$finding], [new FileChange($project->root . '/a.txt', 'old', 'new')])) implements \Guard\Policy\Policy {
+            /** @param array<string, \Guard\Collect\Input> $inputs
+             * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): Plan $callback
+             */
+            public function __construct(private array $inputs, private Closure $callback)
+            {
+            }
+            public function inputs(\Guard\Execution\Context $context): array
+            {
+                return $this->inputs;
+            }
+            public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): Plan
+            {
+                return ($this->callback)($inputs, $context);
+            }
+        });
         $tester = new CommandTester(new \Guard\Cli\Command\BaselineCommand($project->root, $registry));
         try {
             self::assertSame(0, $tester->execute(['--format' => 'json', '--output' => 'custom.json']));
@@ -119,11 +174,63 @@ final class BaselineCommandTest extends TestCase
 
     public function testExecutePreservesTheOldBaselineWhenEvaluationFails(): void
     {
-        $project = new \Tests\Support\Project(['guard.yaml' => "version: 1\n", 'guard-baseline.json' => '{"version":1,"entries":[]}']);
+        $project = new class (['guard.yaml' => "version: 1\n", 'guard-baseline.json' => '{"version":1,"entries":[]}']) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         $registry = new Registry();
-        $registry->addPolicy('test', new CallbackPolicy([], static function (): Plan {
+        $registry->addPolicy('test', new class ([], static function (): Plan {
             throw new PolicyException('Invalid input. Correct it.');
-        }));
+        }) implements \Guard\Policy\Policy
+        {
+            /** @param array<string, \Guard\Collect\Input> $inputs
+             * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): Plan $callback
+             */
+            public function __construct(private array $inputs, private Closure $callback)
+            {
+            }
+            public function inputs(\Guard\Execution\Context $context): array
+            {
+                return $this->inputs;
+            }
+            public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): Plan
+            {
+                return ($this->callback)($inputs, $context);
+            }
+        });
         try {
             $tester = new CommandTester(new \Guard\Cli\Command\BaselineCommand($project->root, $registry));
             self::assertSame(2, $tester->execute([]));

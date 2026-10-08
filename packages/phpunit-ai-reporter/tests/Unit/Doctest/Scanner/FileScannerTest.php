@@ -22,7 +22,7 @@ final class FileScannerTest extends TestCase
 {
     public function testScanWalksConfiguredDirectoriesAndSkipsMissingOnes(): void
     {
-        $root = (string) realpath(__DIR__ . '/../../../../fixtures/Doctest/project/src');
+        $root = (string) realpath(__DIR__ . '/../../../../tests/Doctest/project/src');
         $config = new Configuration(directories: ['/does/not/exist', $root]);
 
         $files = iterator_to_array((new FileScanner($config))->scan(), false);
@@ -32,7 +32,7 @@ final class FileScannerTest extends TestCase
 
     public function testScanHonoursExcludePatterns(): void
     {
-        $root = (string) realpath(__DIR__ . '/../../../../fixtures/Doctest/project/src');
+        $root = (string) realpath(__DIR__ . '/../../../../tests/Doctest/project/src');
         $config = new Configuration(directories: [$root], excludePatterns: ['*/Nested/*']);
 
         $files = iterator_to_array((new FileScanner($config))->scan(), false);
@@ -42,7 +42,7 @@ final class FileScannerTest extends TestCase
 
     public function testScanYieldsConfiguredFilesAndSkipsMissingOnes(): void
     {
-        $file = (string) realpath(__DIR__ . '/../../../../fixtures/Doctest/project/src/Calculator.php');
+        $file = (string) realpath(__DIR__ . '/../../../../tests/Doctest/project/src/Calculator.php');
         $config = new Configuration(files: ['/does/not/exist.php', $file]);
 
         self::assertSame([$file], iterator_to_array((new FileScanner($config))->scan(), false));
@@ -50,7 +50,7 @@ final class FileScannerTest extends TestCase
 
     public function testScanDirectoryReturnsTheSortedPhpFilesBelowIt(): void
     {
-        $root = (string) realpath(__DIR__ . '/../../../../fixtures/Doctest/project/src');
+        $root = (string) realpath(__DIR__ . '/../../../../tests/Doctest/project/src');
         $scanner = new FileScanner(new Configuration());
 
         $files = iterator_to_array($scanner->scanDirectory($root), false);

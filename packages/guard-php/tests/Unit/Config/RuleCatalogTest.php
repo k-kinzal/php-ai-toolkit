@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Config;
 
+use FilesystemIterator;
 use JsonException;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 /**
  * @covers \Guard\Config\RuleCatalog
@@ -85,10 +89,43 @@ final class RuleCatalogTest extends \PHPUnit\Framework\TestCase
      */
     public function testLoadResolvesOverridesWithoutOpeningTheTarget(): void
     {
-        $project = new \Tests\Support\Project([
-            'base.yaml' => "configuration:\n  - {id: value, file: missing.json, select: /value, message: Original, assert: {equals: 1}}\n",
-            'guard.yaml' => "version: 1\nimports: [base.yaml]\nconfiguration:\n  - {id: value, message: 'Override {select} in {file} must {expectation}. {fix}', file: renamed.json, assert: {equals: 2}, level: recommended}\n",
-        ]);
+        $project = new class (['base.yaml' => "configuration:\n  - {id: value, file: missing.json, select: /value, message: Original, assert: {equals: 1}}\n", 'guard.yaml' => "version: 1\nimports: [base.yaml]\nconfiguration:\n  - {id: value, message: 'Override {select} in {file} must {expectation}. {fix}', file: renamed.json, assert: {equals: 2}, level: recommended}\n"]) {
+            public string $root;
+            /**
+             * @param array<array-key, string> $files
+             */
+            public function __construct(array $files = [])
+            {
+                $this->root = sys_get_temp_dir() . '/guard-contract-' . uniqid('', true);
+                mkdir($this->root);
+                foreach ($files as $path => $source) {
+                    $this->write((string) $path, $source);
+                }
+            }
+            public function write(string $path, string $source): void
+            {
+                $directory = dirname($this->root . '/' . $path);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                file_put_contents($this->root . '/' . $path, $source);
+            }
+
+
+            public function remove(): void
+            {
+                foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->root, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        if ($file->isDir() && !$file->isLink()) {
+                            rmdir($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
+                    }
+                }
+                rmdir($this->root);
+            }
+        };
         try {
             $rules = (new \Guard\Config\RuleCatalog())->load($project->root . '/guard.yaml');
             self::assertCount(1, $rules);

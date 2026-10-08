@@ -33,7 +33,7 @@ final class AiErrorRendererTest extends ErrorFormatterTestCase
             new ErrorGrouping(),
             new ErrorCollectionSummary(),
         );
-        $file = __DIR__ . '/../../../../fixtures/ErrorFormatter/SampleSource.php';
+        $file = __DIR__ . '/../../../../tests/PhpStan/ErrorFormatter/SampleSource.php';
 
         $formatter->format(new AnalysisResult([
             new Error('Property.', $file, 9, true, null, null, 'Remove it.', null, null, 'custom.a'),
@@ -51,7 +51,7 @@ final class AiErrorRendererTest extends ErrorFormatterTestCase
             new ErrorGrouping(),
             new ErrorCollectionSummary(),
         );
-        $file = __DIR__ . '/../../../../fixtures/ErrorFormatter/SampleSource.php';
+        $file = __DIR__ . '/../../../../tests/PhpStan/ErrorFormatter/SampleSource.php';
 
         $formatter->flat($this->getOutput(), [
             new Error('Property.', $file, 9, true, null, null, null, null, null, 'custom.a'),
@@ -68,7 +68,7 @@ final class AiErrorRendererTest extends ErrorFormatterTestCase
             new ErrorGrouping(),
             new ErrorCollectionSummary(),
         );
-        $file = __DIR__ . '/../../../../fixtures/ErrorFormatter/SampleSource.php';
+        $file = __DIR__ . '/../../../../tests/PhpStan/ErrorFormatter/SampleSource.php';
 
         $formatter->deduplicated($this->getOutput(), [
             new Error('Property.', $file, 9, true, null, null, null, null, null, 'custom.a'),

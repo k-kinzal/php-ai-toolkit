@@ -38,7 +38,7 @@ final class ForbidInternalMixedClosureRuleTest extends RuleTestCase
     public function testProcessNodeReportsClosureSignature(): void
     {
         $guidance = ': this declaration is internal or scope-restricted, so it must state a deterministic PHPStan type. Validate arbitrary input at an unrestricted public boundary, then pass the narrowed type inward.';
-        $this->analyse([__DIR__ . '/../../../../../../fixtures/ForbidInternalMixedType/ForbiddenMixedTypes.php'], [
+        $this->analyse([__DIR__ . '/../../../../../../tests/PhpStan/ForbidInternalMixedType/ForbiddenMixedTypes.php'], [
             ['Replace concrete mixed type "mixed" in parameter $input of anonymous function' . $guidance, 53],
             ['Replace concrete mixed type "mixed" in return type of anonymous function' . $guidance, 53],
         ]);

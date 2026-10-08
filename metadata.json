@@ -1,0 +1,54 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4CFA17Q0Y52KNX68KVZ7700",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/phpstan-guard-rules/docs/phpstan-rules.md",
+    "packages/phpstan-guard-rules/docs/rules/ForbidDependencyRule.md",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/example/local.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/examples/ExampleAttribute.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/examples/ExampleContract.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/examples/ExampleService.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/examples/ExampleTrait.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/examples/input.json",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/src/Reader.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/tests/Derived.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/tests/allowed.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/tests/reads.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/Project/tests/symbols.php",
+    "packages/phpstan-guard-rules/fixtures/ForbidDependency/phpstan.neon",
+    "packages/phpstan-guard-rules/rules.neon",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Architecture/Dependency/DependencyCallResolver.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Architecture/Dependency/DependencyPath.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Architecture/Dependency/DependencyPathExpression.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Architecture/Dependency/DependencyRestrictions.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Architecture/Dependency/FileDependencyResolver.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Architecture/Dependency/SymbolDependencyResolver.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Architecture/ForbidDependencyRule.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Architecture/Dependency/DependencyCallResolverTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Architecture/Dependency/DependencyPathExpressionTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Architecture/Dependency/DependencyPathTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Architecture/Dependency/DependencyRestrictionsTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Architecture/Dependency/FileDependencyResolverTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Architecture/Dependency/SymbolDependencyResolverTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Architecture/ForbidDependencyRuleTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 156696,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 4272000,
+    "output_tokens": 43290,
+    "api_call_count": 35
+  }
+}

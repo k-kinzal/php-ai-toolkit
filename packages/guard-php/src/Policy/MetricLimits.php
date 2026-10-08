@@ -66,7 +66,7 @@ final class MetricLimits implements Policy
             }
             $metrics = new SourceMetrics(new \Guard\Structure\Php\FileMetric\FileMetric($assignment->relativePath, $metrics->file->physicalLines, $metrics->file->nonCommentLines), $metrics->classes, $metrics->functions, true);
             foreach ((new Limit\MetricLimitInspector())->violations($metrics, $assignment->policy->limits, $assignment->policy->name) as $violation) {
-                $findings[] = new Finding($violation->path, 'metrics.' . $violation->rule, 'required', $violation->message);
+                $findings[] = new Finding($violation->path, 'metrics.' . $violation->rule, 'required', (new \Guard\Reporting\RuleMessages())->diagnostic('metrics.' . $violation->rule, $violation->message));
             }
         }
         return new Plan($findings, []);

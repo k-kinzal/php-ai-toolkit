@@ -1,6 +1,6 @@
 # Configuration Fields
 
-The `configuration` section checks single values in the configuration files of other tools: the PHPStan level, a PHPUnit attribute, a Composer setting. An agent that cannot make a check pass can lower that check instead; a field rule turns such an edit into a failure. Rules that know the correct value repair it with `guard apply`.
+The `configuration` section checks single values in the configuration files of other tools: the PHPStan level, a PHPUnit attribute, a Composer setting. An agent that cannot make a check pass can lower that check instead; a field rule turns such an edit into a failure. Rules that know the correct value repair it with `guard fix`.
 
 ## Example
 
@@ -27,7 +27,7 @@ configuration:
     assert: {min: 80}
 ```
 
-`guard apply` sets the PHPStan level to `max`, `sort-packages` to `true` and `failOnWarning` to `"true"`. Nothing can repair a `minMsi` below 80, because `infection.json5` is check-only and `min` names no single value. Until someone raises it, `apply` writes none of the other repairs either. See [Repairs](#repairs).
+`guard fix` sets the PHPStan level to `max`, `sort-packages` to `true` and `failOnWarning` to `"true"`. Nothing can repair a `minMsi` below 80, because `infection.json5` is check-only and `min` names no single value. Until someone raises it, `fix` writes none of the other repairs either. See [Repairs](#repairs).
 
 ## Fields
 
@@ -39,7 +39,8 @@ configuration:
 | `assert` | yes | One or more [assertions](#assertions). All must hold. |
 | `format` | no | `json`, `yaml`, `yml`, `neon`, `toml`, `xml`, `json5` or `php`. Default: the file extension. Set it for names such as `phpunit.xml.dist`. |
 | `level` | no | `required` (default) fails the check; `recommended` warns. |
-| `repair` | no | The value `apply` writes when the field is wrong. See [Repairs](#repairs). |
+| `message` | no | Diagnostic describing the problem and the edit that resolves it. Supports `{file}`, `{select}`, `{expectation}` and `{fix}` placeholders. |
+| `repair` | no | The value `fix` writes when the field is wrong. See [Repairs](#repairs). |
 
 A target file that does not exist is reported at the rule's level and names the field it should contain. A file outside the [collection scope](configuration.md#collection-scope) is skipped.
 
@@ -72,9 +73,11 @@ A missing field fails every assertion except `absent`, even `equals: null`: an e
 
 In a JSON Pointer, `/` inside a key is written `~1` and `~` is written `~0`. A pointer into a list addresses an existing index; Guard does not extend lists or replace a scalar parent with a mapping. An XPath that matches several nodes is an error.
 
+A rule may include a non-empty `message` describing the problem and the required edit. Guard displays the same diagnostic in `rules`, `check` and remaining `fix` findings, with placeholders resolved after imports and overrides. If omitted, Guard generates a concrete diagnostic from the assertions. See [Rule messages](cli.md#rule-messages).
+
 ## Repairs
 
-`equals` is its own repair. Every other assertion needs an explicit `repair` before `apply` can change the field, and the repair must satisfy all assertions of the rule:
+`equals` is its own repair. Every other assertion needs an explicit `repair` before `fix` can change the field, and the repair must satisfy all assertions of the rule:
 
 ```yaml
 - id: application.driver
@@ -86,7 +89,7 @@ In a JSON Pointer, `/` inside a key is written `~1` and `~` is written `~0`. A p
 
 A field that already satisfies the rule is kept, so `pgsql` is not replaced by `mysql`. Without a repair, or in a `json5` or `php` file, the finding stays and names the required change. Both levels are repaired.
 
-Guard plans the changes to every file, then checks rules that touch the same file against the planned result. While a required rule stays unsatisfied, `apply` writes no file at all and reports the planned files as `blocked`. A missing mapping key is created along its pointer, and a missing XML attribute on its existing element.
+Guard plans the changes to every file, then checks rules that touch the same file against the planned result. While a required rule stays unsatisfied, `fix` writes no file at all and reports the planned files as `blocked`. A missing mapping key is created along its pointer, and a missing XML attribute on its existing element.
 
 ### Writing
 

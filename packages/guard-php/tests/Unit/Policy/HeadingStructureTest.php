@@ -189,6 +189,7 @@ use Tests\Support\Project;
  * @uses \Guard\Structure\Source
  * @uses \Guard\Structure\Text
  * @uses \Guard\Structure\TextStructurer
+ * @uses \Guard\Reporting\FieldMessage
  */
 #[CoversClass(\Guard\Policy\HeadingStructure::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Collector::class)]
@@ -366,6 +367,7 @@ use Tests\Support\Project;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Badge\BadgeStructurer::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Text::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\TextStructurer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\FieldMessage::class)]
 final class HeadingStructureTest extends TestCase
 {
     /**

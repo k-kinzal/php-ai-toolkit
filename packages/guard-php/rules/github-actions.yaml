@@ -1,6 +1,7 @@
 configuration:
   -
     id: github-actions.permissions
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: .github/workflows/ci.yml
     format: yaml
     select: /permissions/contents

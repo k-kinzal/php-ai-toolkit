@@ -43,6 +43,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Php\TokenParser
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
+ * @uses \Guard\Reporting\FieldMessage
  */
 #[CoversClass(\Guard\Extension\Registry::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\DirectoryListing::class)]
@@ -79,6 +80,7 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\TokenParser::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\FieldMessage::class)]
 final class RegistryTest extends TestCase
 {
     public function testAddStructureRejectsDuplicateIdsWithoutReplacingTheOriginal(): void

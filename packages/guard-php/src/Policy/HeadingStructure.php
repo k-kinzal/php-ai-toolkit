@@ -70,7 +70,7 @@ final class HeadingStructure implements Policy
         }
         $findings = [];
         foreach (array_merge($violations, $this->undeclared($inputs)) as $violation) {
-            $findings[] = new Finding($violation->path, 'documentation.' . $violation->rule, 'required', $violation->message);
+            $findings[] = new Finding($violation->path, 'documentation.' . $violation->rule, 'required', (new \Guard\Reporting\RuleMessages())->diagnostic('documentation.' . $violation->rule, $violation->message));
         }
         return new Plan($findings, []);
     }

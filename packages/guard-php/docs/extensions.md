@@ -89,7 +89,7 @@ The third argument lists exclusions. Paths are relative to the main `guard.yaml`
 | `$changes` | `FileChange` values with the absolute path, the content that was read and the replacement. Propose them only when `$context->repair` is `true`. |
 | `$blocking` | Findings that stop every write of the run, typically the required findings this policy could not repair. |
 
-Guard writes the changes only during `guard apply`, and only when no policy returned a required blocking finding. Identical changes to one file are merged; different changes to one file fail the run before anything is written.
+Guard writes the changes only during `guard fix`, and only when no policy returned a required blocking finding. Identical changes to one file are merged; different changes to one file fail the run before anything is written.
 
 Write messages the way the built-in ones are written: name the file and the offending symbol, say what is expected, and say how to fix it.
 

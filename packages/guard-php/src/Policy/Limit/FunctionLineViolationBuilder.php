@@ -38,7 +38,7 @@ final class FunctionLineViolationBuilder
                 $metric->kind . '_lines',
                 $metric->lineCount(),
                 $limit,
-                sprintf('%s %s has %d physical lines; maximum is %d.', $metric->kind, $metric->name, $metric->lineCount(), $limit),
+                sprintf('%s %s has %d physical lines; maximum is %d. Extract unrelated responsibilities into smaller units until each meets the limit, preserving behavior and tests.', $metric->kind, $metric->name, $metric->lineCount(), $limit),
                 $policy,
             ),
         ];

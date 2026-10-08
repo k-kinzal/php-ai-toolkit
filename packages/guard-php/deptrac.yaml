@@ -28,6 +28,8 @@ deptrac:
         - type: directory
           value: 'src/Reporting/[^/]+(?<!Reporter)\.php'
         - type: directory
+          value: 'src/Reporting/Filtering/.*'
+        - type: directory
           value: 'src/Structure/(Subject|Structurer|Source|ParsedDocument)\.php'
     - name: Collection
       collectors:
@@ -56,7 +58,7 @@ deptrac:
     - name: Configuration
       collectors:
         - type: directory
-          value: 'src/Config/(ConfigurationLoader|ImportResolver|DocumentMerger|RuleReader)\.php'
+          value: 'src/Config/(ConfigurationLoader|ImportResolver|DocumentMerger|RuleReader|RuleCatalog)\.php'
     - name: Extension
       collectors:
         - type: directory
@@ -68,7 +70,7 @@ deptrac:
     - name: Reporting
       collectors:
         - type: directory
-          value: 'src/Reporting/Reporter\.php'
+          value: 'src/Reporting/(Reporter|RuleReporter)\.php'
     - name: Initialization
       collectors:
         - type: directory

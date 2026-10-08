@@ -43,6 +43,7 @@ configuration:
       equals: random
   -
     id: phpunit13.resolveDependencies
+    message: 'PHPUnit dependency resolution at {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@resolveDependencies

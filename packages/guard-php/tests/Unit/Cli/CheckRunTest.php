@@ -1,0 +1,157 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\Cli;
+
+use Guard\Cli\Command\CheckCommand;
+use Guard\Cli\PolicyRun;
+use Guard\Execution\FileChange;
+use Guard\Execution\Plan;
+use Guard\Extension\Registry;
+use Guard\Policy\PolicyException;
+use Guard\Reporting\Finding;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Tester\CommandTester;
+use Tests\Support\CallbackPolicy;
+
+/**
+ * @covers \Guard\Cli\CheckRun
+ * @uses \Guard\Cli\Command\CheckCommand
+ * @uses \Guard\Collect\Filesystem\Discovery
+ * @uses \Guard\Collect\Filesystem\Snapshot
+ * @uses \Guard\Collect\Filesystem\WalkQueue
+ * @uses \Guard\Config\Reader\ExtensionConfigReader
+ * @uses \Guard\Config\RuleReader
+ * @uses \Guard\Extension\ExtensionLoader
+ * @uses \Guard\Extension\PolicyBinding
+ * @uses \Guard\Policy\FieldConstraints
+ * @uses \Guard\Cli\FormatDetector
+ * @uses \Guard\Cli\Command\GuardCommand
+ * @uses \Guard\Cli\PolicyRun
+ * @uses \Guard\Collect\Collector
+ * @uses \Guard\Collect\InputSet
+ * @uses \Guard\Config\Configuration
+ * @uses \Guard\Config\ConfigurationLoader
+ * @uses \Guard\Config\DocumentMerger
+ * @uses \Guard\Config\ImportResolver
+ * @uses \Guard\Config\Schema
+ * @uses \Guard\Document\DataDocument
+ * @uses \Guard\Execution\AtomicWriter
+ * @uses \Guard\Execution\ChangeSet
+ * @uses \Guard\Execution\Context
+ * @uses \Guard\Execution\FileChange
+ * @uses \Guard\Execution\Pipeline
+ * @uses \Guard\Execution\Plan
+ * @uses \Guard\Extension\Registry
+ * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Reporting\ChangeDiff
+ * @uses \Guard\Reporting\RuleMessages
+ * @uses \Guard\Reporting\Reporter
+ * @uses \Guard\Cli\BaselineFile
+ * @uses \Guard\Cli\Command\BaselineCommand
+ * @uses \Guard\Reporting\Baseline
+ * @uses \Guard\Reporting\BaselineMatch
+ * @uses \Guard\Reporting\Filtering\FindingFilter
+ * @uses \Guard\Reporting\Filtering\ReportScope
+ */
+#[CoversClass(\Guard\Cli\CheckRun::class)]
+#[UsesClass(CheckCommand::class)]
+#[UsesClass(\Guard\Collect\Filesystem\Discovery::class)]
+#[UsesClass(\Guard\Collect\Filesystem\Snapshot::class)]
+#[UsesClass(\Guard\Collect\Filesystem\WalkQueue::class)]
+#[UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
+#[UsesClass(\Guard\Config\RuleReader::class)]
+#[UsesClass(\Guard\Extension\ExtensionLoader::class)]
+#[UsesClass(\Guard\Extension\PolicyBinding::class)]
+#[UsesClass(\Guard\Policy\FieldConstraints::class)]
+#[UsesClass(\Guard\Cli\Command\GuardCommand::class)]
+#[UsesClass(PolicyRun::class)]
+#[UsesClass(\Guard\Collect\Collector::class)]
+#[UsesClass(\Guard\Collect\InputSet::class)]
+#[UsesClass(\Guard\Config\Configuration::class)]
+#[UsesClass(\Guard\Config\ConfigurationLoader::class)]
+#[UsesClass(\Guard\Config\DocumentMerger::class)]
+#[UsesClass(\Guard\Config\ImportResolver::class)]
+#[UsesClass(\Guard\Config\Schema::class)]
+#[UsesClass(\Guard\Document\DataDocument::class)]
+#[UsesClass(\Guard\Execution\AtomicWriter::class)]
+#[UsesClass(\Guard\Execution\ChangeSet::class)]
+#[UsesClass(\Guard\Execution\Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(\Guard\Execution\Pipeline::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(Registry::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Finding::class)]
+#[UsesClass(\Guard\Reporting\Reporter::class)]
+#[UsesClass(\Guard\Reporting\ChangeDiff::class)]
+#[UsesClass(\Guard\Reporting\RuleMessages::class)]
+#[UsesClass(\Guard\Cli\FormatDetector::class)]
+#[UsesClass(\Guard\Cli\BaselineFile::class)]
+#[UsesClass(\Guard\Cli\Command\BaselineCommand::class)]
+#[UsesClass(\Guard\Reporting\Baseline::class)]
+#[UsesClass(\Guard\Reporting\BaselineMatch::class)]
+#[UsesClass(\Guard\Reporting\Filtering\FindingFilter::class)]
+#[UsesClass(\Guard\Reporting\Filtering\ReportScope::class)]
+final class CheckRunTest extends TestCase
+{
+    /**
+     * @dataProvider providerFormats
+     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerFormats')]
+    public function testRunFiltersOnlyTheDisplayAndKeepsHiddenErrorsInTheExitStatus(string $format, string $status): void
+    {
+        $project = new \Tests\Support\Project(['guard.yaml' => "version: 1\n"]);
+        $error = new Finding('a', 'problem', 'required', 'Wrong value. Set it to 1.');
+        $warning = new Finding('b', 'suggestion', 'recommended', 'Wrong value. Set it to 2.', true);
+        $registry = new Registry();
+        $registry->addPolicy('test', new CallbackPolicy([], static fn (): Plan => new Plan([$error, $warning], [])));
+        $tester = new CommandTester(new CheckCommand($project->root, $registry));
+        try {
+            self::assertSame(1, $tester->execute(['--level' => 'warning', '--fixable' => true, '--format' => $format]));
+            self::assertStringContainsString('suggestion', $tester->getDisplay());
+            self::assertStringNotContainsString('Wrong value. Set it to 1.', $tester->getDisplay());
+            self::assertStringContainsString($status, $tester->getDisplay());
+            self::assertSame(1, $tester->execute(['--query' => 'no-match', '--format' => 'text']));
+            self::assertStringContainsString('Showing 0 of 2', $tester->getDisplay());
+            self::assertSame(2, $tester->execute(['--query' => ' ']));
+            self::assertSame(2, $tester->execute(['--level' => 'fatal']));
+        } finally {
+            $project->remove();
+        }
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function providerFormats(): iterable
+    {
+        yield 'human' => ['text', 'Guard found required violations.'];
+        yield 'ai' => ['ai', 'Guard found required violations.'];
+        yield 'json' => ['json', '"success": false'];
+    }
+
+    public function testBaselinePathDistinguishesDefaultExplicitAndDisabledBaselines(): void
+    {
+        $project = new \Tests\Support\Project(['guard.yaml' => "version: 1\n"]);
+        try {
+            $command = new CheckCommand($project->root);
+            $input = new \Symfony\Component\Console\Input\ArrayInput([], $command->getDefinition());
+            $run = new \Guard\Cli\CheckRun();
+            self::assertNull($run->baselinePath($project->root . '/guard.yaml', $input));
+            $project->write('guard-baseline.json', '{"version":1,"entries":[]}');
+            self::assertSame($project->root . '/guard-baseline.json', $run->baselinePath($project->root . '/guard.yaml', $input));
+            $input->setOption('no-baseline', true);
+            self::assertNull($run->baselinePath($project->root . '/guard.yaml', $input));
+            $input->setOption('baseline', 'explicit.json');
+            $this->expectException(PolicyException::class);
+            $run->baselinePath($project->root . '/guard.yaml', $input);
+        } finally {
+            $project->remove();
+        }
+    }
+}

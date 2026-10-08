@@ -1,6 +1,7 @@
 configuration:
   -
     id: phpcs.ruleset
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: phpcs.xml.dist
     format: xml
     select: /ruleset/rule/@ref
@@ -9,6 +10,7 @@ configuration:
       equals: PHPCompatibility
   -
     id: phpcs.test-version
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: phpcs.xml.dist
     format: xml
     select: /ruleset/config[@name="testVersion"]/@name

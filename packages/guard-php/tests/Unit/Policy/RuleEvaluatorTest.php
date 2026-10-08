@@ -39,6 +39,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Policy\PolicyException
  * @uses \Guard\Policy\Rule
  * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Reporting\FieldMessage
  */
 #[CoversClass(\Guard\Policy\RuleEvaluator::class)]
 #[UsesClass(\Guard\Collect\DirectoryListing::class)]
@@ -69,6 +70,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Guard\Policy\PolicyException::class)]
 #[UsesClass(\Guard\Policy\Rule::class)]
 #[UsesClass(\Guard\Reporting\Finding::class)]
+#[UsesClass(\Guard\Reporting\FieldMessage::class)]
 final class RuleEvaluatorTest extends TestCase
 {
     /**
@@ -89,6 +91,6 @@ final class RuleEvaluatorTest extends TestCase
         $rule = (new \Guard\Config\RuleReader())->rule(['id' => 'mode', 'file' => 'x.json', 'select' => '/mode', 'assert' => ['equals' => 'A']]);
         $finding = (new \Guard\Policy\RuleEvaluator())->finding($rule);
         self::assertStringContainsString('/mode', $finding->message);
-        self::assertStringContainsString('guard apply', $finding->message);
+        self::assertStringContainsString('guard fix', $finding->message);
     }
 }

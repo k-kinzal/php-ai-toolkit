@@ -4,7 +4,7 @@ An AI agent that is asked to make a test pass will also lengthen a method, add a
 
 ## Policies
 
-| Section | What it checks | Rule IDs | Repaired by `apply` |
+| Section | What it checks | Rule IDs | Repaired by `fix` |
 |---------|----------------|----------|---------------------|
 | `metrics` | Lines and cyclomatic complexity of PHP files, classes, functions and methods. See [metrics](metrics.md). | `metrics.*` | no |
 | `structure` | What each directory may contain, how entries are named, and how many there are. See [structure](structure.md). | `structure.*` | no |
@@ -20,7 +20,7 @@ Every finding is either required or recommended. A required finding is reported 
 
 ## What is repaired
 
-`guard apply` only writes configuration fields. A field has one value that satisfies its rule, or a declared fallback, so writing it is a deterministic edit. Splitting a method, renaming a class or rewriting a section is not, so those findings remain until someone edits the code or the document.
+`guard fix` only writes configuration fields. A field has one value that satisfies its rule, or a declared fallback, so writing it is a deterministic edit. Splitting a method, renaming a class or rewriting a section is not, so those findings remain until someone edits the code or the document.
 
 Each message names the offending file and symbol, what the policy expects, and how to comply. It also says that changing the declaration itself needs a human to update `guard.yaml`, so an agent fixes the project instead of the policy.
 
@@ -28,7 +28,7 @@ Each message names the offending file and symbol, what the policy expects, and h
 
 1. Run `guard init` to write a `guard.yaml` that imports the presets matching the project. See [init](cli.md#init).
 2. Review the file, adjust thresholds and declarations in the [configuration](configuration.md), and commit it.
-3. Run `guard apply --dry-run`, then `guard apply`, to bring the tool configuration in line.
+3. Run `guard fix --dry-run`, then `guard fix`, to bring the tool configuration in line.
 4. Fix the remaining findings in code and documents until `guard check` passes.
 5. Run `guard check` in CI. When a finding reflects a deliberate decision, a human changes `guard.yaml` in the same change.
 

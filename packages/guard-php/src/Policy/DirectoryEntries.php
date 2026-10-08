@@ -46,7 +46,7 @@ final class DirectoryEntries implements Policy
             foreach ($listings as $listing) {
                 if ((new DirectoryPatternMatcher())->matches($rule->path, $listing->relativePath)) {
                     foreach ((new DirectoryRuleInspector())->inspect($rule, $listing, $listings) as $violation) {
-                        $findings[] = new Finding($violation->path, 'structure.' . $violation->rule, 'required', $violation->message);
+                        $findings[] = new Finding($violation->path, 'structure.' . $violation->rule, 'required', (new \Guard\Reporting\RuleMessages())->diagnostic('structure.' . $violation->rule, $violation->message));
                     }
                 }
             }

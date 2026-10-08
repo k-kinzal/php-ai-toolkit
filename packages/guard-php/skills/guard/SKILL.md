@@ -2,7 +2,7 @@
 name: guard
 description: >-
   Work in a PHP project governed by Guard (k-kinzal/guard-php). Use when
-  `guard check` or `guard apply` reports findings, when a change must keep
+  `guard check` or `guard fix` reports findings, when a change must keep
   passing Guard, or when writing or reviewing rules in guard.yaml: source
   metrics (`metrics.*`), directory structure (`structure.*`), Markdown
   documents (`documentation.*`), configuration fields, and extension policies.
@@ -40,7 +40,7 @@ When a finding reflects a deliberate decision, stop, explain the finding and the
    | the rule's own `id`, such as `phpstan.level` | `configuration` | [Configuration fields](references/configuration.md) |
    | an ID chosen by the extension, such as `app.strict-types` | `extensions` | [Extensions](references/extensions.md) |
 
-4. Run `vendor/bin/guard apply --dry-run`, then `vendor/bin/guard apply`, when configuration findings remain. `apply` writes configuration fields only; metric, structure and document findings always need a manual edit.
+4. Run `vendor/bin/guard fix --dry-run`, then `vendor/bin/guard fix`, when configuration findings remain. `fix` writes configuration fields only; metric, structure and document findings always need a manual edit.
 5. Fix the remaining findings in code and documents, following the reference, and run `guard check` again until it exits `0`.
 6. Run the project's other gates afterwards. A split method or a moved class must still pass the tests, PHPStan and Deptrac.
 

@@ -72,17 +72,7 @@ final class InitCommand extends GuardCommand
         $this->setDescription('Create a policy file with the presets that fit the project');
         $this->addConfigOption();
         $this->addOption('import', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Import only these presets, comma-separated or repeated, instead of detecting them');
-        $this->setHelp(sprintf(<<<'TEXT'
-            Writes a policy file for the project and refuses to overwrite one that
-            exists. Without --import, the presets are selected from the tools and
-            documents the project has; --import names them instead.
 
-            Presets: %s
-
-            Exit codes:
-              0  policy file created
-              2  invalid command line, existing policy file or unknown preset
-            TEXT, implode(', ', (new PresetCatalog())->names())));
     }
 
     /**

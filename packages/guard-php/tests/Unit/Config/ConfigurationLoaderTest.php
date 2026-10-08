@@ -120,6 +120,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Php\FileMetric\FileMetric
  * @uses \Guard\Structure\Php\FunctionMetric\FunctionMetric
  * @uses \Guard\Structure\Php\SourceMetrics
+ * @uses \Guard\Reporting\FieldMessage
  */
 #[CoversClass(\Guard\Config\ConfigurationLoader::class)]
 #[UsesClass(\Guard\Collect\DirectoryListing::class)]
@@ -231,6 +232,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Guard\Structure\Php\FileMetric\FileMetric::class)]
 #[UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetric::class)]
 #[UsesClass(\Guard\Structure\Php\SourceMetrics::class)]
+#[UsesClass(\Guard\Reporting\FieldMessage::class)]
 final class ConfigurationLoaderTest extends TestCase
 {
     /**

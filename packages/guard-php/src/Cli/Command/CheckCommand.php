@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Guard\Cli\Command;
 
-use Guard\Cli\PolicyRun;
+use Guard\Cli\CheckRun;
 use Guard\Extension\Registry;
 use Override;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -32,18 +33,12 @@ final class CheckCommand extends GuardCommand
         $this->setDescription('Check the project against its policy without changing any file');
         $this->addConfigOption();
         $this->addFormatOption();
-        $this->setHelp(<<<'TEXT'
-            Checks every policy in the policy file and reports each violated required
-            rule as an error and each recommendation as a warning. No file is changed;
-            run "guard apply" to repair what can be repaired.
+        $this->addOption('query', null, InputOption::VALUE_REQUIRED, 'Search rule IDs, paths and messages; display only');
+        $this->addOption('fixable', null, InputOption::VALUE_NONE, 'Show only automatically fixable violations; display only');
+        $this->addOption('level', null, InputOption::VALUE_REQUIRED, 'Show only error or warning diagnostics; display only');
+        $this->addOption('baseline', null, InputOption::VALUE_REQUIRED, 'Baseline path relative to the policy file; defaults to guard-baseline.json if present');
+        $this->addOption('no-baseline', null, InputOption::VALUE_NONE, 'Report all violations without applying a baseline');
 
-            Running guard without a command runs check.
-
-            Exit codes:
-              0  passed, or only warnings
-              1  a required rule is violated
-              2  invalid command line, policy or input document
-            TEXT);
     }
 
     /**
@@ -52,6 +47,6 @@ final class CheckCommand extends GuardCommand
     #[Override]
     protected function handle(InputInterface $input, OutputInterface $output): int
     {
-        return (new PolicyRun($this->registry))->run($this->configPath($input), $this->format($input), false, false, $output);
+        return (new CheckRun($this->registry))->run($this->configPath($input), $this->format($input), $input, $output);
     }
 }

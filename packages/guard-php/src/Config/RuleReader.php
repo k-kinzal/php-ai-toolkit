@@ -46,7 +46,7 @@ final class RuleReader
     public function rule($entry): Rule
     {
         $schema = new Schema();
-        $data = $schema->mapping($entry, ['id', 'file', 'format', 'select', 'level', 'assert', 'repair'], 'configuration rule');
+        $data = $schema->mapping($entry, ['id', 'file', 'format', 'select', 'level', 'assert', 'repair', 'message'], 'configuration rule');
         $id = $schema->string($data['id'] ?? null, 'rule.id');
         $file = $schema->string($data['file'] ?? null, $id . '.file');
         $format = $this->format($schema->string($data['format'] ?? pathinfo($file, PATHINFO_EXTENSION), $id . '.format'), $id);
@@ -62,7 +62,11 @@ final class RuleReader
         if ($repairable && !(new Constraint())->accepts(new Selection(true, $candidate), $assertions)) {
             throw new PolicyException($id . ': repair must satisfy every assertion. Correct the repair or conflicting assertions.');
         }
-        return new Rule($id, $file, $format, $select, $level, $assertions, $repair, $repairable);
+        $message = array_key_exists('message', $data) ? $schema->string($data['message'], $id . '.message') : '';
+        if (array_key_exists('message', $data) && trim($message) === '') {
+            throw new PolicyException($id . '.message must describe the problem and how to fix it.');
+        }
+        return new Rule($id, $file, $format, $select, $level, $assertions, $repair, $repairable, $message);
     }
 
     /**

@@ -18,6 +18,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @covers \Guard\Cli\Command\InitCommand
+ * @uses \Guard\Cli\FormatDetector
  * @uses \Guard\Cli\Command\GuardCommand
  * @uses \Guard\Init\Initializer
  * @uses \Guard\Init\PresetCatalog
@@ -28,6 +29,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 #[UsesClass(Initializer::class)]
 #[UsesClass(PresetCatalog::class)]
 #[UsesClass(PolicyException::class)]
+#[UsesClass(\Guard\Cli\FormatDetector::class)]
 final class InitCommandTest extends TestCase
 {
     public function testConfigureListsThePresetsInTheHelp(): void
@@ -35,9 +37,9 @@ final class InitCommandTest extends TestCase
         $command = new InitCommand('/project');
 
         self::assertSame('init', $command->getName());
+        self::assertSame('', $command->getHelp());
         self::assertTrue($command->getDefinition()->getOption('import')->isArray());
         self::assertFalse($command->getDefinition()->hasOption('format'));
-        self::assertStringContainsString('Presets: ' . implode(', ', (new PresetCatalog())->names()), $command->getHelp());
     }
 
     public function testCompleteSuggestsThePresetNames(): void

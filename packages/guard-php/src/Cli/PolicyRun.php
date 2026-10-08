@@ -7,6 +7,7 @@ namespace Guard\Cli;
 use Guard\Config\ConfigurationLoader;
 use Guard\Execution\AtomicWriter;
 use Guard\Execution\Context;
+use Guard\Execution\FileChange;
 use Guard\Execution\Pipeline;
 use Guard\Extension\Registry;
 use Guard\Reporting\Reporter;
@@ -44,14 +45,23 @@ final class PolicyRun
         $plan = (new Pipeline($this->registry))->run(new Context($config, $path, $repair));
         $reporter = new Reporter();
         $blocked = $reporter->hasErrors($plan->blockingFindings);
-        $action = $dryRun ? 'would change' : 'changed';
+        $action = $repair ? ($dryRun ? 'would change' : 'changed') : 'checked';
         if ($repair && !$dryRun && !$blocked) {
             (new AtomicWriter())->apply($plan->changes);
         }
-        if ($blocked) {
+        if ($repair && $blocked) {
             $action = 'blocked';
         }
-        $output->write($reporter->render($plan->findings, $plan->changes, $format, $action), false, OutputInterface::OUTPUT_RAW);
+        $root = rtrim($config->root, '/') . '/';
+        $resolved = realpath($config->root);
+        $resolvedRoot = rtrim($resolved === false ? $config->root : $resolved, '/') . '/';
+        $changes = $format === 'json' ? $plan->changes : array_map(static fn (FileChange $change): FileChange => new FileChange(
+            str_starts_with($change->path, $root) ? substr($change->path, strlen($root))
+                : (str_starts_with($change->path, $resolvedRoot) ? substr($change->path, strlen($resolvedRoot)) : $change->path),
+            $change->original,
+            $change->replacement,
+        ), $plan->changes);
+        $output->write($reporter->render($plan->findings, $changes, $format, $action, $output->isDecorated()), false, OutputInterface::OUTPUT_RAW);
 
         return $reporter->hasErrors($plan->findings) ? 1 : 0;
     }

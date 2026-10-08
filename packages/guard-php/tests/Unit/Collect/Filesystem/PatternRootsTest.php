@@ -137,6 +137,7 @@ use Tests\Support\Project;
  * @uses \Guard\Structure\Php\FunctionMetric\FunctionMetric
  * @uses \Guard\Structure\Php\SourceMetrics
  * @uses \Guard\Structure\Source
+ * @uses \Guard\Reporting\FieldMessage
  */
 #[CoversClass(\Guard\Collect\Filesystem\PatternRoots::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(Collector::class)]
@@ -262,6 +263,7 @@ use Tests\Support\Project;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetric::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\SourceMetrics::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\FieldMessage::class)]
 final class PatternRootsTest extends TestCase
 {
     public function testSeedSkipsLiteralAncestorsAndDoesNotScanForExactPatterns(): void

@@ -1,6 +1,7 @@
 configuration:
   -
     id: infection.min-msi
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: infection.json5
     format: json5
     select: /minMsi
@@ -9,6 +10,7 @@ configuration:
       equals: 80
   -
     id: infection.min-covered-msi
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: infection.json5
     format: json5
     select: /minCoveredMsi
@@ -17,6 +19,7 @@ configuration:
       equals: 80
   -
     id: infection.default-mutators
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: infection.json5
     format: json5
     select: /mutators/@default
@@ -25,6 +28,7 @@ configuration:
       equals: true
   -
     id: infection.timeouts-as-escaped
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: infection.json5
     format: json5
     select: /timeoutsAsEscaped

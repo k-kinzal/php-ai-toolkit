@@ -25,6 +25,13 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @uses \Guard\Cli\ClosureOutput
  * @uses \Guard\Cli\Command\CheckCommand
  * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Cli\CheckRun
+ * @uses \Guard\Cli\BaselineFile
+ * @uses \Guard\Cli\Command\BaselineCommand
+ * @uses \Guard\Reporting\Baseline
+ * @uses \Guard\Reporting\BaselineMatch
+ * @uses \Guard\Reporting\Filtering\FindingFilter
+ * @uses \Guard\Reporting\Filtering\ReportScope
  */
 #[CoversClass(GuardCommand::class)]
 #[UsesClass(\Guard\Cli\PolicyRun::class)]
@@ -33,6 +40,13 @@ use Symfony\Component\Console\Tester\CommandTester;
 #[UsesClass(ClosureOutput::class)]
 #[UsesClass(CheckCommand::class)]
 #[UsesClass(PolicyException::class)]
+#[UsesClass(\Guard\Cli\CheckRun::class)]
+#[UsesClass(\Guard\Cli\BaselineFile::class)]
+#[UsesClass(\Guard\Cli\Command\BaselineCommand::class)]
+#[UsesClass(\Guard\Reporting\Baseline::class)]
+#[UsesClass(\Guard\Reporting\BaselineMatch::class)]
+#[UsesClass(\Guard\Reporting\Filtering\FindingFilter::class)]
+#[UsesClass(\Guard\Reporting\Filtering\ReportScope::class)]
 final class GuardCommandTest extends TestCase
 {
     public function testRunReportsAnUnknownOptionWithAPointerToTheHelpOfTheCommand(): void
@@ -54,7 +68,7 @@ final class GuardCommandTest extends TestCase
 
     public function testCompleteSuggestsTheReportFormats(): void
     {
-        self::assertSame(['text', 'json'], (new CommandCompletionTester(new CheckCommand('/project')))->complete(['--format=']));
+        self::assertSame(['text', 'human', 'ai', 'json'], (new CommandCompletionTester(new CheckCommand('/project')))->complete(['--format=']));
     }
 
     public function testConfigPathResolvesARelativePathAgainstTheProjectDirectory(): void
@@ -80,7 +94,7 @@ final class GuardCommandTest extends TestCase
     {
         $command = new CheckCommand('/project');
 
-        self::assertSame('text', $command->format(new ArrayInput([], $command->getDefinition())));
+        self::assertSame('text', $command->format(new ArrayInput(['--format' => 'text'], $command->getDefinition())));
         self::assertSame('json', $command->format(new ArrayInput(['--format' => 'json'], $command->getDefinition())));
     }
 
@@ -89,7 +103,7 @@ final class GuardCommandTest extends TestCase
         $command = new CheckCommand('/project');
 
         $this->expectException(PolicyException::class);
-        $this->expectExceptionMessage('Unsupported --format "xml". Use --format=text or --format=json.');
+        $this->expectExceptionMessage('Unsupported --format "xml". Use --format=text, human, ai or json.');
 
         $command->format(new ArrayInput(['--format' => 'xml'], $command->getDefinition()));
     }

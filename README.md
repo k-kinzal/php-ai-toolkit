@@ -28,7 +28,7 @@ The repository contains five Composer packages. Each one carries its own analysi
 
 | Directory | Composer package | Responsibility |
 | --- | --- | --- |
-| `packages/guard-php` | `k-kinzal/guard-php` | `guard check`, `guard apply`, `guard init` |
+| `packages/guard-php` | `k-kinzal/guard-php` | `guard check`, `guard fix`, `guard init` |
 | `packages/docgen-php` | `k-kinzal/docgen-php` | `docgen` and site assets |
 | `packages/phpstan-guard-rules` | `k-kinzal/phpstan-guard-rules` | PHPStan rules and strict configuration |
 | `packages/phpunit-ai-reporter` | `k-kinzal/phpunit-ai-reporter` | PHPUnit reporting, Doctest and shared output detection |
@@ -56,8 +56,8 @@ Generate and verify the project policy. A project is configured correctly when `
 ```sh
 vendor/bin/guard init
 vendor/bin/guard check
-vendor/bin/guard apply --dry-run
-vendor/bin/guard apply
+vendor/bin/guard fix --dry-run
+vendor/bin/guard fix
 ```
 
 `guard.yaml` configures source metrics, directory rules, Markdown structure and

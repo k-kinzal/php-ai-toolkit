@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Guard\Cli;
 
-use Guard\Cli\Command\ApplyCommand;
+use Guard\Cli\Command\BaselineCommand;
 use Guard\Cli\Command\CheckCommand;
+use Guard\Cli\Command\FixCommand;
 use Guard\Cli\Command\GuardCommand;
 use Guard\Cli\Command\InitCommand;
+use Guard\Cli\Command\RulesCommand;
 use Guard\Extension\Registry;
 use Override;
 use Symfony\Component\Console\Application as ConsoleApplication;
@@ -20,7 +22,7 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * The Symfony Console application with the check, apply and init commands.
+ * The Symfony Console application with the check, fix, rules and init commands.
  *
  * Help, version, verbosity, colour and shell completion behave as in every
  * other Symfony Console tool. guard alone runs check, guard --help lists
@@ -41,8 +43,10 @@ final class GuardConsole extends ConsoleApplication
         parent::__construct('guard', self::VERSION);
         $this->setAutoExit(false);
         $this->setCommandLoader(new FactoryCommandLoader([
+            'baseline' => static fn (): BaselineCommand => new BaselineCommand($directory, $registry),
             'check' => static fn (): CheckCommand => new CheckCommand($directory, $registry),
-            'apply' => static fn (): ApplyCommand => new ApplyCommand($directory, $registry),
+            'fix' => static fn (): FixCommand => new FixCommand($directory, $registry),
+            'rules' => static fn (): RulesCommand => new RulesCommand($directory),
             'init' => static fn (): InitCommand => new InitCommand($directory),
         ]));
         $this->setDefaultCommand('check');

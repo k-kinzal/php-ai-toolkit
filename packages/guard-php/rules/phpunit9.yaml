@@ -1,6 +1,7 @@
 configuration:
   -
     id: phpunit9.executionOrder
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@executionOrder
@@ -9,6 +10,7 @@ configuration:
       equals: 'depends,random'
   -
     id: phpunit9.verbose
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@verbose
@@ -17,6 +19,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.forceCoversAnnotation
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@forceCoversAnnotation
@@ -25,6 +28,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.beStrictAboutCoversAnnotation
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@beStrictAboutCoversAnnotation
@@ -33,6 +37,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.convertDeprecationsToExceptions
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@convertDeprecationsToExceptions
@@ -41,6 +46,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.convertErrorsToExceptions
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@convertErrorsToExceptions
@@ -49,6 +55,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.convertNoticesToExceptions
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@convertNoticesToExceptions
@@ -57,6 +64,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.convertWarningsToExceptions
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@convertWarningsToExceptions
@@ -65,6 +73,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.beStrictAboutResourceUsageDuringSmallTests
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@beStrictAboutResourceUsageDuringSmallTests
@@ -73,6 +82,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.failOnEmptyTestSuite
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@failOnEmptyTestSuite
@@ -81,6 +91,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.failOnIncomplete
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@failOnIncomplete
@@ -89,6 +100,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.failOnRisky
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@failOnRisky
@@ -97,6 +109,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.failOnSkipped
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@failOnSkipped
@@ -105,6 +118,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.failOnWarning
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@failOnWarning
@@ -113,6 +127,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.beStrictAboutTodoAnnotatedTests
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@beStrictAboutTodoAnnotatedTests
@@ -121,6 +136,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.beStrictAboutChangesToGlobalState
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@beStrictAboutChangesToGlobalState
@@ -129,6 +145,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.beStrictAboutOutputDuringTests
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@beStrictAboutOutputDuringTests
@@ -137,6 +154,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.beStrictAboutTestsThatDoNotTestAnything
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@beStrictAboutTestsThatDoNotTestAnything
@@ -145,6 +163,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.enforceTimeLimit
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@enforceTimeLimit
@@ -153,6 +172,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.timeoutForSmallTests
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@timeoutForSmallTests
@@ -161,6 +181,7 @@ configuration:
       equals: '1'
   -
     id: phpunit9.timeoutForMediumTests
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@timeoutForMediumTests
@@ -169,6 +190,7 @@ configuration:
       equals: '10'
   -
     id: phpunit9.timeoutForLargeTests
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/@timeoutForLargeTests
@@ -177,6 +199,7 @@ configuration:
       equals: '60'
   -
     id: phpunit9.reporter
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/listeners/listener/@class
@@ -185,6 +208,7 @@ configuration:
       equals: 'Toolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener'
   -
     id: phpunit9.includeUncoveredFiles
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/coverage/@includeUncoveredFiles
@@ -193,6 +217,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit9.disableCodeCoverageIgnore
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/coverage/@disableCodeCoverageIgnore

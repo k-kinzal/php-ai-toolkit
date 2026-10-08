@@ -38,6 +38,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Policy\RuleEvaluator
  * @uses \Guard\Reporting\Finding
  * @uses \Guard\Structure\ParsedDocument
+ * @uses \Guard\Reporting\FieldMessage
  */
 #[CoversClass(\Guard\Extension\PolicyBinding::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\DirectoryListing::class)]
@@ -69,6 +70,7 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\RuleEvaluator::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Finding::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\ParsedDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\FieldMessage::class)]
 final class PolicyBindingTest extends TestCase
 {
     /**

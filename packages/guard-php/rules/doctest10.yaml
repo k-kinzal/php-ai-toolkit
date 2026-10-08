@@ -1,6 +1,7 @@
 configuration:
   -
     id: doctest10.suite
+    message: 'Doctest configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit10.xml.dist
     format: xml
     select: /phpunit/testsuites/testsuite[@name="doctest"]/file
@@ -9,6 +10,7 @@ configuration:
       contains: src/Doctest/DoctestSuite.php
   -
     id: doctest10.extension
+    message: 'Doctest configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit10.xml.dist
     format: xml
     select: '/phpunit/extensions/bootstrap[@class="Toolkit\Doctest\DoctestExtension"]/@class'

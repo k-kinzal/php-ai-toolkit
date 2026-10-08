@@ -38,7 +38,7 @@ final class FunctionComplexityViolationBuilder
             $metric->cyclomaticComplexity,
             $limit,
             sprintf(
-                '%s %s has cyclomatic complexity %d; maximum is %d.',
+                '%s %s has cyclomatic complexity %d; maximum is %d. Simplify branches or extract independent operations into focused methods until each meets the limit, preserving behavior and tests.',
                 $metric->kind,
                 $metric->name,
                 $metric->cyclomaticComplexity,

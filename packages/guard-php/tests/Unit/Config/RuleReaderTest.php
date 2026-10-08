@@ -157,4 +157,13 @@ final class RuleReaderTest extends TestCase
         self::assertFalse($php->repairable);
         self::assertFalse($json5->repairable);
     }
+    /**
+     * @throws JsonException
+     */
+    public function testRuleRejectsAWhitespaceOnlyMessage(): void
+    {
+        $this->expectException(\Guard\Policy\PolicyException::class);
+        $this->expectExceptionMessage('workers.message must describe the problem and how to fix it.');
+        (new \Guard\Config\RuleReader())->rule(['id' => 'workers', 'file' => 'app.json', 'select' => '/workers', 'assert' => ['equals' => 2], 'message' => '  ']);
+    }
 }

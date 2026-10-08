@@ -63,7 +63,7 @@ final class TotalFileCountInspectorTest extends TestCase
         self::assertSame('max_total_files', $violations[0]->rule);
         self::assertSame(3, $violations[0]->actual);
         self::assertSame(2, $violations[0]->limit);
-        self::assertSame('Directory "src" contains 3 files in total but the limit is 2. Restructure or split the subtree.', $violations[0]->message);
+        self::assertSame('Directory "src" contains 3 files in total but the limit is 2. Move independent groups outside this subtree or merge related files until the total meets the limit; adding subdirectories inside it does not reduce the total.', $violations[0]->message);
     }
 
     public function testInspectCountsWholeProjectFromRootOnce(): void

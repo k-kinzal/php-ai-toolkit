@@ -53,6 +53,6 @@ final class TotalFileCountInspector
             return [];
         }
 
-        return [new DirectoryViolation($listing->relativePath, 'max_total_files', $rule->path, $total, $rule->maxTotalFiles, sprintf('Directory "%s" contains %d files in total but the limit is %d. Restructure or split the subtree.', $listing->relativePath, $total, $rule->maxTotalFiles))];
+        return [new DirectoryViolation($listing->relativePath, 'max_total_files', $rule->path, $total, $rule->maxTotalFiles, sprintf('Directory "%s" contains %d files in total but the limit is %d. Move independent groups outside this subtree or merge related files until the total meets the limit; adding subdirectories inside it does not reduce the total.', $listing->relativePath, $total, $rule->maxTotalFiles))];
     }
 }

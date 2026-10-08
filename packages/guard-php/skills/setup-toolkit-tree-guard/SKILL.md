@@ -13,6 +13,6 @@ Import `vendor/k-kinzal/guard-php/rules/structure.yaml` when adopting the standa
 
 Set `structure.paths` and exclusions for the project. `structure.directories` rules all apply independently when their path patterns match. `src/**` includes `src` itself; `allow: []` forbids files, while omitting `allow` imposes no file-name restriction. Keep required files, naming conventions, subtree limits and existing exclusions intact.
 
-Add or retain a Composer `guard` script running `guard check`, and include `@guard` in the existing lint sequence without removing other gates. Use `guard check --format=json` for machine-readable output and `guard apply --dry-run` to inspect configuration repairs. Source metrics, directory contents and document headings require manual changes.
+Add or retain a Composer `guard` script running `guard check`, and include `@guard` in the existing lint sequence without removing other gates. Use `guard check --format=json` for machine-readable output and `guard fix --dry-run` to inspect configuration repairs. Source metrics, directory contents and document headings require manual changes.
 
 Validate with `vendor/bin/guard check`. Success and recommendations exit 0, required violations exit 1, invalid configuration or operational errors exit 2. The standalone `loc-guard`, `tree-guard` and `doc-guard` executables no longer exist. Legacy YAML templates in this skill, where present, are migration references; use the shipped Guard preset for new setup.

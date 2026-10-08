@@ -1,6 +1,7 @@
 configuration:
   -
     id: phpunit13.beStrictAboutChangesToGlobalState
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@beStrictAboutChangesToGlobalState
@@ -9,6 +10,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.beStrictAboutOutputDuringTests
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@beStrictAboutOutputDuringTests
@@ -17,6 +19,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.beStrictAboutTestsThatDoNotTestAnything
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@beStrictAboutTestsThatDoNotTestAnything
@@ -25,6 +28,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.enforceTimeLimit
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@enforceTimeLimit
@@ -33,6 +37,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.timeoutForSmallTests
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@timeoutForSmallTests
@@ -41,6 +46,7 @@ configuration:
       equals: '1'
   -
     id: phpunit13.timeoutForMediumTests
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@timeoutForMediumTests
@@ -49,6 +55,7 @@ configuration:
       equals: '10'
   -
     id: phpunit13.timeoutForLargeTests
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@timeoutForLargeTests
@@ -57,6 +64,7 @@ configuration:
       equals: '60'
   -
     id: phpunit13.executionOrder
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@executionOrder
@@ -65,6 +73,7 @@ configuration:
       equals: 'depends,random'
   -
     id: phpunit13.requireCoverageMetadata
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@requireCoverageMetadata
@@ -73,6 +82,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.beStrictAboutCoverageMetadata
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@beStrictAboutCoverageMetadata
@@ -81,6 +91,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.failOnAllIssues
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@failOnAllIssues
@@ -89,6 +100,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.displayDetailsOnAllIssues
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@displayDetailsOnAllIssues
@@ -97,6 +109,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.requireSealedMockObjects
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@requireSealedMockObjects
@@ -105,6 +118,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.shortenArraysForExportThreshold
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/@shortenArraysForExportThreshold
@@ -113,6 +127,7 @@ configuration:
       equals: '0'
   -
     id: phpunit13.reporter
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: '/phpunit/extensions/bootstrap[@class="Toolkit\PhpUnit\TestReporter\AiTestReporterExtension"]/@class'
@@ -121,6 +136,7 @@ configuration:
       equals: 'Toolkit\PhpUnit\TestReporter\AiTestReporterExtension'
   -
     id: phpunit13.ignoreIndirectDeprecations
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/source/@ignoreIndirectDeprecations
@@ -129,6 +145,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.restrictNotices
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/source/@restrictNotices
@@ -137,6 +154,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.restrictWarnings
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/source/@restrictWarnings
@@ -145,6 +163,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.ignoreSuppressionOfDeprecations
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/source/@ignoreSuppressionOfDeprecations
@@ -153,6 +172,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.ignoreSuppressionOfPhpDeprecations
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/source/@ignoreSuppressionOfPhpDeprecations
@@ -161,6 +181,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.ignoreSuppressionOfErrors
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/source/@ignoreSuppressionOfErrors
@@ -169,6 +190,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.ignoreSuppressionOfNotices
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/source/@ignoreSuppressionOfNotices
@@ -177,6 +199,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.ignoreSuppressionOfPhpNotices
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/source/@ignoreSuppressionOfPhpNotices
@@ -185,6 +208,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.ignoreSuppressionOfWarnings
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/source/@ignoreSuppressionOfWarnings
@@ -193,6 +217,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.ignoreSuppressionOfPhpWarnings
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/source/@ignoreSuppressionOfPhpWarnings
@@ -201,6 +226,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.includeUncoveredFiles
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/coverage/@includeUncoveredFiles
@@ -209,6 +235,7 @@ configuration:
       equals: 'true'
   -
     id: phpunit13.disableCodeCoverageIgnore
+    message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit.xml.dist
     format: xml
     select: /phpunit/coverage/@disableCodeCoverageIgnore

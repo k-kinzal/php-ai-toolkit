@@ -11,21 +11,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -41,21 +45,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -71,21 +79,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -101,21 +113,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -131,21 +147,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -161,21 +181,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -191,21 +215,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -221,21 +249,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -252,21 +284,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -282,21 +318,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -313,21 +353,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -343,21 +387,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -372,21 +420,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -404,21 +456,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -435,21 +491,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -464,21 +524,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -495,21 +559,25 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -531,13 +599,14 @@
         "--format=bad"
       ],
       [
-        "apply",
+        "fix",
         "--dry-run",
         "--format=json"
       ],
       [
         "check",
-        "--config=missing.yaml"
+        "--config=missing.yaml",
+        "--format=text"
       ]
     ]
   },
@@ -552,7 +621,8 @@
         "--import="
       ],
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "init",
@@ -572,7 +642,8 @@
         "init"
       ],
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "init"
@@ -595,14 +666,16 @@
         "init"
       ],
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ]
     ]
   },
@@ -615,18 +688,21 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ]
     ]
   },
@@ -638,18 +714,21 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ]
     ]
   },
@@ -661,18 +740,21 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ]
     ]
   },
@@ -684,18 +766,21 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ]
     ]
   },
@@ -708,7 +793,8 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
@@ -724,10 +810,12 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
-        "apply"
+        "fix",
+        "--format=text"
       ],
       [
         "check",
@@ -745,15 +833,17 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",
         "--format=json"
       ],
       [
-        "apply",
-        "--dry-run"
+        "fix",
+        "--dry-run",
+        "--format=text"
       ]
     ]
   },
@@ -765,7 +855,8 @@
     },
     "commands": [
       [
-        "check"
+        "check",
+        "--format=text"
       ],
       [
         "check",

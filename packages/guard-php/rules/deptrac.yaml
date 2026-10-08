@@ -1,6 +1,7 @@
 configuration:
   -
     id: deptrac.config
+    message: 'Configuration field {select} in {file} must {expectation}. Add a deptrac mapping containing paths, named layers with collectors, and a ruleset describing the permitted dependencies.'
     file: deptrac.yaml
     format: yaml
     select: /deptrac
@@ -9,6 +10,7 @@ configuration:
       present: true
   -
     id: deptrac.script
+    message: 'Configuration field {select} in {file} must {expectation}. Add a deptrac command to the scripts object, for example "deptrac": "deptrac analyse --config-file=deptrac.yaml".'
     file: composer.json
     format: json
     select: /scripts/deptrac

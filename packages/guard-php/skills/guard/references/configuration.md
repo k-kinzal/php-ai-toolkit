@@ -1,14 +1,14 @@
 # Configuration fields
 
-The `configuration` section checks single values in the configuration files of other tools, such as the PHPStan level, a PHPUnit attribute or a Composer setting. An agent that cannot make a check pass can lower the check instead; a field rule turns that edit into a finding. Rules that know the correct value are repaired by `guard apply`. The semantics are in [the configuration fields reference](../../../docs/fields.md).
+The `configuration` section checks single values in the configuration files of other tools, such as the PHPStan level, a PHPUnit attribute or a Composer setting. An agent that cannot make a check pass can lower the check instead; a field rule turns that edit into a finding. Rules that know the correct value are repaired by `guard fix`. The semantics are in [the configuration fields reference](../../../docs/fields.md).
 
 ## Resolving findings
 
 The finding's rule ID is the rule's `id`, such as `phpstan.level` or `phpunit13.executionOrder`. Its message names the file, the selected field and the assertion.
 
-1. Run `vendor/bin/guard apply --dry-run` to see which files `apply` would change.
-2. When files are reported as `blocked`, a required rule has no repair or targets a check-only format (`json5`, `php`). Edit that field by hand to a value that satisfies the assertion, then run the dry run again. While one required rule stays unsatisfied, `apply` writes no file at all.
-3. Run `vendor/bin/guard apply`, and review the diff. A rewritten JSON, YAML, NEON or TOML file loses its comments and may change its indentation; restore a comment that documents a decision.
+1. Run `vendor/bin/guard fix --dry-run` to see which files `fix` would change.
+2. When files are reported as `blocked`, a required rule has no repair or targets a check-only format (`json5`, `php`). Edit that field by hand to a value that satisfies the assertion, then run the dry run again. While one required rule stays unsatisfied, `fix` writes no file at all.
+3. Run `vendor/bin/guard fix`, and review the diff. A rewritten JSON, YAML, NEON or TOML file loses its comments and may change its indentation; restore a comment that documents a decision.
 4. Run the tool whose configuration changed. A raised PHPStan level or a stricter PHPUnit attribute usually reports new problems; fix them in code and tests.
 
 | Finding | Practice |
@@ -47,3 +47,9 @@ configuration:
     assert: {one_of: [mysql, pgsql]}
     repair: mysql
 ```
+
+## Display filters and baselines
+
+`guard check --fixable`, `--level=error|warning`, and `--query=TEXT` combine as display filters. They never change the exit status: hidden required violations still fail.
+
+`guard baseline` records all current diagnostics into `guard-baseline.json` beside the policy. `check` automatically uses it; `--no-baseline` audits all violations, and `--baseline=FILE` selects a custom file relative to the policy directory. `baseline --output=FILE` regenerates a custom baseline. Entries match exact paths, rule IDs, severity and messages with occurrence counts, so new occurrences and changed metric values remain visible. Review baseline diffs before committing; regeneration also records new violations. `fix` still repairs baselined violations and does not bypass repair conflicts.

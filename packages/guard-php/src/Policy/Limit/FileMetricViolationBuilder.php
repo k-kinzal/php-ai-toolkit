@@ -30,7 +30,7 @@ final class FileMetricViolationBuilder
                 'file_lines',
                 $file->physicalLines,
                 $limits->maxFileLines,
-                sprintf('File has %d physical lines; maximum is %d.', $file->physicalLines, $limits->maxFileLines),
+                sprintf('File has %d physical lines; maximum is %d. Move independent declarations into separate files until each meets the limit, preserving behavior and tests.', $file->physicalLines, $limits->maxFileLines),
                 $policy,
             );
         }
@@ -42,7 +42,7 @@ final class FileMetricViolationBuilder
                 'file_ncloc',
                 $file->nonCommentLines,
                 $limits->maxFileNcloc,
-                sprintf('File has %d non-comment lines of code; maximum is %d.', $file->nonCommentLines, $limits->maxFileNcloc),
+                sprintf('File has %d non-comment lines of code; maximum is %d. Move independent declarations into separate files until each meets the limit, preserving behavior and tests.', $file->nonCommentLines, $limits->maxFileNcloc),
                 $policy,
             );
         }

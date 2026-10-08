@@ -21,9 +21,11 @@ See the documentation:
 
 ```sh
 vendor/bin/guard init
+vendor/bin/guard rules
 vendor/bin/guard check
-vendor/bin/guard apply --dry-run
-vendor/bin/guard apply
+vendor/bin/guard check --fixable
+vendor/bin/guard fix --dry-run
+vendor/bin/guard fix
 ```
 
 When the project has no `docs/` directory, `guard init` automatically imports

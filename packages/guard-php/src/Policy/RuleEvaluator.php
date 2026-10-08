@@ -33,10 +33,13 @@ final class RuleEvaluator
      * Describes the rule and its repair without printing the current value.
      * @throws JsonException
      */
-    public function finding(Rule $rule): Finding
+    public function finding(Rule $rule, bool $repairAttempted = false): Finding
     {
-        $expectation = json_encode($rule->assertions, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        $instruction = $rule->repairable ? 'Run guard apply to set the configured repair.' : 'Set a compliant value or add a repair value satisfying every assertion.';
-        return new Finding($rule->file, $rule->id, $rule->level, $rule->select . ' must satisfy ' . $expectation . '. ' . $instruction);
+        $message = (new \Guard\Reporting\FieldMessage())->render($rule);
+        if ($repairAttempted && $rule->repairable) {
+            $message = $rule->select . ' in ' . $rule->file . ' still violates its constraints after the configured repair. '
+                . 'Resolve the conflicting assertions or repairs for this file in guard.yaml before running guard fix again.';
+        }
+        return new Finding($rule->file, $rule->id, $rule->level, $message, $rule->repairable && !$repairAttempted);
     }
 }

@@ -10,6 +10,7 @@ namespace Guard\Reporting;
  * @property-read string $path
  * @property-read string $rule
  * @property-read string $level
+ * @property-read bool $fixable
  * @property-read string $message
  */
 final class Finding
@@ -30,6 +31,8 @@ final class Finding
         private string $level,
         /** @readonly */
         private string $message,
+        /** @readonly */
+        private bool $fixable = false,
     ) {
     }
 
@@ -43,6 +46,7 @@ final class Finding
             'rule' => $this->rule,
             'level' => $this->level,
             'message' => $this->message,
+            'fixable' => $this->fixable,
             default => null,
         };
     }

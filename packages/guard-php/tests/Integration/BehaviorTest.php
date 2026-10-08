@@ -14,8 +14,9 @@ use Tests\Support\BehaviorCases;
 /**
  * @covers \Guard\Cli\Application
  * @uses \Guard\Cli\ClosureOutput
- * @uses \Guard\Cli\Command\ApplyCommand
+ * @uses \Guard\Cli\Command\FixCommand
  * @uses \Guard\Cli\Command\CheckCommand
+ * @uses \Guard\Cli\FormatDetector
  * @uses \Guard\Cli\Command\GuardCommand
  * @uses \Guard\Cli\Command\InitCommand
  * @uses \Guard\Cli\GuardConsole
@@ -167,6 +168,8 @@ use Tests\Support\BehaviorCases;
  * @uses \Guard\Reporting\HeadingViolation
  * @uses \Guard\Reporting\HeadingViolationFactory
  * @uses \Guard\Reporting\MetricViolation
+ * @uses \Guard\Reporting\ChangeDiff
+ * @uses \Guard\Reporting\RuleMessages
  * @uses \Guard\Reporting\Reporter
  * @uses \Guard\Structure\DocumentStructurer
  * @uses \Guard\Structure\Markdown\AtxHeadingMatcher
@@ -219,10 +222,19 @@ use Tests\Support\BehaviorCases;
  * @uses \Guard\Structure\Source
  * @uses \Guard\Structure\Text
  * @uses \Guard\Structure\TextStructurer
+ * @uses \Guard\Cli\Command\RulesCommand
+ * @uses \Guard\Reporting\FieldMessage
+ * @uses \Guard\Cli\CheckRun
+ * @uses \Guard\Cli\BaselineFile
+ * @uses \Guard\Cli\Command\BaselineCommand
+ * @uses \Guard\Reporting\Baseline
+ * @uses \Guard\Reporting\BaselineMatch
+ * @uses \Guard\Reporting\Filtering\FindingFilter
+ * @uses \Guard\Reporting\Filtering\ReportScope
  */
 #[CoversClass(Application::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\ClosureOutput::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\ApplyCommand::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\FixCommand::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\CheckCommand::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\GuardCommand::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\InitCommand::class)]
@@ -427,6 +439,18 @@ use Tests\Support\BehaviorCases;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Badge\BadgeStructurer::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Text::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\TextStructurer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\ChangeDiff::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\RuleMessages::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\FormatDetector::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\RulesCommand::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\FieldMessage::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\CheckRun::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\BaselineFile::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\BaselineCommand::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Baseline::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\BaselineMatch::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Filtering\FindingFilter::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Filtering\ReportScope::class)]
 final class BehaviorTest extends TestCase
 {
     /**

@@ -1,6 +1,7 @@
 configuration:
   -
     id: phpstan.level
+    message: 'PHPStan configuration field {select} in {file} must {expectation}. {fix}'
     file: phpstan.neon
     format: neon
     select: /parameters/level
@@ -9,6 +10,7 @@ configuration:
       equals: max
   -
     id: phpstan.strict-rules
+    message: 'PHPStan configuration field {select} in {file} must {expectation}. {fix}'
     file: phpstan.neon
     format: neon
     select: /includes
@@ -17,6 +19,7 @@ configuration:
       contains: phpstan/phpstan-strict-rules/rules.neon
   -
     id: phpstan.rules
+    message: 'PHPStan configuration field {select} in {file} must {expectation}. {fix}'
     file: phpstan.neon
     format: neon
     select: /includes
@@ -28,6 +31,7 @@ configuration:
         - rules.neon
   -
     id: phpstan.extension
+    message: 'PHPStan configuration field {select} in {file} must {expectation}. {fix}'
     file: phpstan.neon
     format: neon
     select: /includes

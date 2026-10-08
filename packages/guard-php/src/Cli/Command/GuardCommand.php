@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Guard\Cli\Command;
 
+use Guard\Cli\FormatDetector;
 use Guard\Policy\PolicyException;
 use JsonException;
 use Nette\Neon\Exception as NeonException;
@@ -35,7 +36,7 @@ abstract class GuardCommand extends Command
     /**
      * The report formats --format accepts.
      */
-    public const FORMATS = ['text', 'json'];
+    public const FORMATS = ['text', 'human', 'ai', 'json'];
 
     /**
      * The exit code of an invalid command line, policy or input document.
@@ -102,8 +103,11 @@ abstract class GuardCommand extends Command
     public function format(InputInterface $input): string
     {
         $format = $input->getOption('format');
+        if ($format === null) {
+            return (new FormatDetector())->detect();
+        }
         if (!is_string($format) || !in_array($format, self::FORMATS, true)) {
-            throw new PolicyException(sprintf('Unsupported --format "%s". Use --format=text or --format=json.', is_string($format) ? $format : ''));
+            throw new PolicyException(sprintf('Unsupported --format "%s". Use --format=text, human, ai or json.', is_string($format) ? $format : ''));
         }
 
         return $format;
@@ -131,7 +135,7 @@ abstract class GuardCommand extends Command
      */
     protected function addFormatOption(): void
     {
-        $this->addOption('format', null, InputOption::VALUE_REQUIRED, 'Report format: text or json', 'text');
+        $this->addOption('format', null, InputOption::VALUE_REQUIRED, 'Report format: text (human), ai or json; defaults to ai in agent sessions');
     }
 
     /**

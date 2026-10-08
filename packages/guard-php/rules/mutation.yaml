@@ -1,6 +1,7 @@
 configuration:
   -
     id: mutation.permissions
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: .github/workflows/mutation.yml
     format: yaml
     select: /permissions/contents
@@ -9,6 +10,7 @@ configuration:
       equals: read
   -
     id: mutation.min-msi
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: .github/workflows/mutation.yml
     format: yaml
     select: /jobs/mutation
@@ -17,6 +19,7 @@ configuration:
       contains: '--min-msi=0'
   -
     id: mutation.min-covered-msi
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: .github/workflows/mutation.yml
     format: yaml
     select: /jobs/mutation
@@ -25,6 +28,7 @@ configuration:
       contains: '--min-covered-msi=0'
   -
     id: mutation.threshold
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: .github/workflows/mutation.yml
     format: yaml
     select: /jobs/mutation
@@ -33,6 +37,7 @@ configuration:
       contains: MIN_MSI=80
   -
     id: mutation.covered-threshold
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: .github/workflows/mutation.yml
     format: yaml
     select: /jobs/mutation

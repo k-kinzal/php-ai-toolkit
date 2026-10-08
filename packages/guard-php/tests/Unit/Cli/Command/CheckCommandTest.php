@@ -27,6 +27,7 @@ use Tests\Support\CallbackPolicy;
  * @uses \Guard\Extension\ExtensionLoader
  * @uses \Guard\Extension\PolicyBinding
  * @uses \Guard\Policy\FieldConstraints
+ * @uses \Guard\Cli\FormatDetector
  * @uses \Guard\Cli\Command\GuardCommand
  * @uses \Guard\Cli\PolicyRun
  * @uses \Guard\Collect\Collector
@@ -46,7 +47,16 @@ use Tests\Support\CallbackPolicy;
  * @uses \Guard\Extension\Registry
  * @uses \Guard\Policy\PolicyException
  * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Reporting\ChangeDiff
+ * @uses \Guard\Reporting\RuleMessages
  * @uses \Guard\Reporting\Reporter
+ * @uses \Guard\Cli\CheckRun
+ * @uses \Guard\Cli\BaselineFile
+ * @uses \Guard\Cli\Command\BaselineCommand
+ * @uses \Guard\Reporting\Baseline
+ * @uses \Guard\Reporting\BaselineMatch
+ * @uses \Guard\Reporting\Filtering\FindingFilter
+ * @uses \Guard\Reporting\Filtering\ReportScope
  */
 #[CoversClass(CheckCommand::class)]
 #[UsesClass(\Guard\Collect\Filesystem\Discovery::class)]
@@ -77,6 +87,16 @@ use Tests\Support\CallbackPolicy;
 #[UsesClass(PolicyException::class)]
 #[UsesClass(Finding::class)]
 #[UsesClass(\Guard\Reporting\Reporter::class)]
+#[UsesClass(\Guard\Reporting\ChangeDiff::class)]
+#[UsesClass(\Guard\Reporting\RuleMessages::class)]
+#[UsesClass(\Guard\Cli\FormatDetector::class)]
+#[UsesClass(\Guard\Cli\CheckRun::class)]
+#[UsesClass(\Guard\Cli\BaselineFile::class)]
+#[UsesClass(\Guard\Cli\Command\BaselineCommand::class)]
+#[UsesClass(\Guard\Reporting\Baseline::class)]
+#[UsesClass(\Guard\Reporting\BaselineMatch::class)]
+#[UsesClass(\Guard\Reporting\Filtering\FindingFilter::class)]
+#[UsesClass(\Guard\Reporting\Filtering\ReportScope::class)]
 final class CheckCommandTest extends TestCase
 {
     public function testConfigureDeclaresTheOptionsAndTheExitCodes(): void
@@ -85,10 +105,9 @@ final class CheckCommandTest extends TestCase
 
         self::assertSame('check', $command->getName());
         self::assertSame('c', $command->getDefinition()->getOption('config')->getShortcut());
-        self::assertSame('text', $command->getDefinition()->getOption('format')->getDefault());
+        self::assertNull($command->getDefinition()->getOption('format')->getDefault());
+        self::assertSame('', $command->getHelp());
         self::assertFalse($command->getDefinition()->hasOption('dry-run'));
-        self::assertStringContainsString('Running guard without a command runs check.', $command->getHelp());
-        self::assertStringContainsString('1  a required rule is violated', $command->getHelp());
     }
 
     public function testExecuteReportsWithoutWritingTheRepairs(): void

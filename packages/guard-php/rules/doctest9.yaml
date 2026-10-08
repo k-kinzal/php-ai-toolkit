@@ -1,6 +1,7 @@
 configuration:
   -
     id: doctest9.suite
+    message: 'Doctest configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/testsuites/testsuite[@name="doctest"]/file
@@ -9,6 +10,7 @@ configuration:
       contains: src/Doctest/Legacy/LegacyDoctestSuite.php
   -
     id: doctest9.directories
+    message: 'Doctest source directories at {select} in {file} must {expectation}. Add <env name=\"DOCTEST_DIRECTORIES\" value=\"src\"/> inside the php element, replacing src with the source directories containing executable PHPDoc examples.'
     file: phpunit9.xml.dist
     format: xml
     select: /phpunit/php/env[@name="DOCTEST_DIRECTORIES"]/@value

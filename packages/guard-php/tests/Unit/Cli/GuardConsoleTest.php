@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Cli;
 
 use Guard\Cli\ClosureOutput;
-use Guard\Cli\Command\ApplyCommand;
 use Guard\Cli\Command\CheckCommand;
+use Guard\Cli\Command\FixCommand;
 use Guard\Cli\Command\GuardCommand;
 use Guard\Cli\Command\InitCommand;
 use Guard\Cli\GuardConsole;
@@ -21,19 +21,37 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @covers \Guard\Cli\GuardConsole
  * @uses \Guard\Cli\ClosureOutput
- * @uses \Guard\Cli\Command\ApplyCommand
+ * @uses \Guard\Cli\Command\FixCommand
  * @uses \Guard\Cli\Command\CheckCommand
+ * @uses \Guard\Cli\FormatDetector
  * @uses \Guard\Cli\Command\GuardCommand
  * @uses \Guard\Cli\Command\InitCommand
  * @uses \Guard\Init\PresetCatalog
+ * @uses \Guard\Cli\Command\RulesCommand
+ * @uses \Guard\Cli\CheckRun
+ * @uses \Guard\Cli\BaselineFile
+ * @uses \Guard\Cli\Command\BaselineCommand
+ * @uses \Guard\Reporting\Baseline
+ * @uses \Guard\Reporting\BaselineMatch
+ * @uses \Guard\Reporting\Filtering\FindingFilter
+ * @uses \Guard\Reporting\Filtering\ReportScope
  */
 #[CoversClass(GuardConsole::class)]
 #[UsesClass(ClosureOutput::class)]
-#[UsesClass(ApplyCommand::class)]
+#[UsesClass(FixCommand::class)]
 #[UsesClass(CheckCommand::class)]
 #[UsesClass(GuardCommand::class)]
 #[UsesClass(InitCommand::class)]
 #[UsesClass(PresetCatalog::class)]
+#[UsesClass(\Guard\Cli\FormatDetector::class)]
+#[UsesClass(\Guard\Cli\Command\RulesCommand::class)]
+#[UsesClass(\Guard\Cli\CheckRun::class)]
+#[UsesClass(\Guard\Cli\BaselineFile::class)]
+#[UsesClass(\Guard\Cli\Command\BaselineCommand::class)]
+#[UsesClass(\Guard\Reporting\Baseline::class)]
+#[UsesClass(\Guard\Reporting\BaselineMatch::class)]
+#[UsesClass(\Guard\Reporting\Filtering\FindingFilter::class)]
+#[UsesClass(\Guard\Reporting\Filtering\ReportScope::class)]
 final class GuardConsoleTest extends TestCase
 {
     public function testGetHelpSaysWhatGuardDoes(): void
@@ -66,7 +84,7 @@ final class GuardConsoleTest extends TestCase
         $output = new BufferedOutput();
 
         self::assertSame(0, (new GuardConsole(sys_get_temp_dir()))->doRun(new ArgvInput(['guard', 'check', '--help']), $output));
-        self::assertStringContainsString('1  a required rule is violated', $output->fetch());
+        self::assertStringNotContainsString('Help:', $output->fetch());
     }
 
     public function testDoRunRunsACommandItsNameAbbreviates(): void
@@ -123,7 +141,7 @@ final class GuardConsoleTest extends TestCase
         $console = new GuardConsole(sys_get_temp_dir());
 
         self::assertNull($console->unknownCommand('check'));
-        self::assertNull($console->unknownCommand('ap'));
+        self::assertNull($console->unknownCommand('fi'));
         self::assertNull($console->unknownCommand('_complete'));
     }
 

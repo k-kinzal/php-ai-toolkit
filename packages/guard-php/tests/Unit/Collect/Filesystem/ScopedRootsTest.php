@@ -185,6 +185,7 @@ use Tests\Support\Project;
  * @uses \Guard\Structure\Php\Token\TokenLineCounter
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
+ * @uses \Guard\Reporting\FieldMessage
  */
 #[CoversClass(ScopedRoots::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(Collector::class)]
@@ -349,6 +350,7 @@ use Tests\Support\Project;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\FieldMessage::class)]
 final class ScopedRootsTest extends TestCase
 {
     public function testEntryRejectsLiteralSymlinkParentsEvenWhenTheirTargetsAreIncluded(): void

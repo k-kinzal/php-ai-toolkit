@@ -192,6 +192,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Php\Token\TokenLineCounter
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
+ * @uses \Guard\Reporting\FieldMessage
  */
 #[CoversClass(\Guard\Init\Initializer::class)]
 #[UsesClass(\Guard\Collect\Collector::class)]
@@ -375,6 +376,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
 #[UsesClass(\Guard\Structure\Php\Tokens::class)]
 #[UsesClass(\Guard\Structure\Source::class)]
+#[UsesClass(\Guard\Reporting\FieldMessage::class)]
 final class InitializerTest extends TestCase
 {
     /**

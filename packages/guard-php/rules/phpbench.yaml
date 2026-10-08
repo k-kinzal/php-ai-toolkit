@@ -1,6 +1,7 @@
 configuration:
   -
     id: phpbench.script
+    message: 'Configuration field {select} in {file} must {expectation}. Add a bench command to the scripts object, for example "bench": "phpbench run".'
     file: composer.json
     format: json
     select: /scripts/bench
@@ -9,6 +10,7 @@ configuration:
       present: true
   -
     id: phpbench.file
+    message: 'Configuration field {select} in {file} must {expectation}. Add runner.path with the directory containing the project benchmarks, for example "runner.path": "benchmarks".'
     file: phpbench.json.dist
     format: json
     select: /runner.path

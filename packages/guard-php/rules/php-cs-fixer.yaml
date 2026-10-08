@@ -1,6 +1,7 @@
 configuration:
   -
     id: php-cs-fixer.risky-allowed
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /riskyAllowed
@@ -9,6 +10,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.psr12
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/@PSR12
@@ -17,6 +19,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.declare-strict-types
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/declare_strict_types
@@ -25,6 +28,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.strict-param
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/strict_param
@@ -33,6 +37,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.strict-comparison
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/strict_comparison
@@ -41,6 +46,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.array-syntax
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/array_syntax/syntax
@@ -49,6 +55,7 @@ configuration:
       equals: short
   -
     id: php-cs-fixer.no-unused-imports
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/no_unused_imports
@@ -57,6 +64,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.ordered-imports
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/ordered_imports/sort_algorithm
@@ -65,6 +73,7 @@ configuration:
       equals: alpha
   -
     id: php-cs-fixer.single-quote
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/single_quote
@@ -73,6 +82,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.trailing-comma
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/trailing_comma_in_multiline
@@ -81,6 +91,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.no-empty-statement
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/no_empty_statement
@@ -89,6 +100,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.no-superfluous-elseif
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/no_superfluous_elseif
@@ -97,6 +109,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.no-useless-else
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/no_useless_else
@@ -105,6 +118,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.void-return
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/void_return
@@ -113,6 +127,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.no-alias-functions
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/no_alias_functions
@@ -121,6 +136,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.no-mixed-echo-print
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/no_mixed_echo_print/use
@@ -129,6 +145,7 @@ configuration:
       equals: echo
   -
     id: php-cs-fixer.import-classes
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/global_namespace_import/import_classes
@@ -137,6 +154,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.import-constants
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/global_namespace_import/import_constants
@@ -145,6 +163,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.import-functions
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/global_namespace_import/import_functions
@@ -153,6 +172,7 @@ configuration:
       equals: true
   -
     id: php-cs-fixer.fully-qualified-strict-types
+    message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
     select: /rules/fully_qualified_strict_types

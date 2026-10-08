@@ -12,16 +12,16 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * guard apply: repairs what the policy can repair and reports what remains.
+ * guard fix: repairs what the policy can repair and reports what remains.
  */
-final class ApplyCommand extends GuardCommand
+final class FixCommand extends GuardCommand
 {
     /**
      * Creates the command for a project directory.
      */
     public function __construct(string $directory, private ?Registry $registry = null)
     {
-        parent::__construct($directory, 'apply');
+        parent::__construct($directory, 'fix');
     }
 
     /**
@@ -34,17 +34,7 @@ final class ApplyCommand extends GuardCommand
         $this->addConfigOption();
         $this->addFormatOption();
         $this->addOption('dry-run', null, InputOption::VALUE_NONE, 'List the files that would change without writing them');
-        $this->setHelp(<<<'TEXT'
-            Writes the repairs the policy defines, then reports the violations that
-            remain. Repairs are written all together or not at all: while a required
-            violation cannot be repaired, nothing is written and the report says
-            "blocked". Use --dry-run to see the changes first.
 
-            Exit codes:
-              0  passed, or only warnings remain
-              1  a required rule is still violated
-              2  invalid command line, policy or input document
-            TEXT);
     }
 
     /**

@@ -72,7 +72,7 @@
         "deptrac": "deptrac analyse --config-file=deptrac.yaml",
         "infection": "infection --threads=max",
         "guard": "guard check",
-        "guard:apply": "guard apply",
+        "guard:fix": "guard fix",
         "docgen": "@php bin/docgen --exclude=fixtures/*"
     },
     "scripts-descriptions": {

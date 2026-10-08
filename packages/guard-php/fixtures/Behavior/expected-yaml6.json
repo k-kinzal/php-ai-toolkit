@@ -2,7 +2,7 @@
     "yaml-object-list-types": [
         {
             "exit": 1,
-            "output": "error: app.yaml [value] /value must satisfy {\"equals\":1}. Run guard apply to set the configured repair.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\napp.yaml\n  error: value  fixable\n    /value in app.yaml must equal 1. Set /value in app.yaml to 1. Run guard fix to apply the configured repair.\n\n1 error · 0 warnings · 1 fixable · 1 file with findings\nPreview repairs: guard fix --dry-run\nGuard found required violations.\n",
             "files": {
                 "app.yaml": "# preserve when compliant\nvalue: 0\nmap: {}\nitems: []\nnothing: null\nlist: [{a: 1}, {b: true}]\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, select: /value, assert: {equals: 1}}\n"
@@ -10,7 +10,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.yaml\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/value must satisfy {\\\"equals\\\":1}. Run guard apply to set the configured repair.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.yaml\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/value in app.yaml must equal 1. Set /value in app.yaml to 1. Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 1,\n        \"warnings\": 0,\n        \"fixable\": 1\n    }\n}\n",
             "files": {
                 "app.yaml": "# preserve when compliant\nvalue: 0\nmap: {}\nitems: []\nnothing: null\nlist: [{a: 1}, {b: true}]\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, select: /value, assert: {equals: 1}}\n"
@@ -18,7 +18,7 @@
         },
         {
             "exit": 0,
-            "output": "would change: <project>/app.yaml\nGuard passed.\n",
+            "output": "\nGuard fix\n\nwould change: app.yaml\n  --- a/app.yaml\n  +++ b/app.yaml\n  @@ -1,6 +1,9 @@\n  -# preserve when compliant\n  -value: 0\n  -map: {}\n  -items: []\n  -nothing: null\n  -list: [{a: 1}, {b: true}]\n  +value: 1\n  +map: {  }\n  +items: []\n  +nothing: null\n  +list:\n  +  -\n  +    a: 1\n  +  -\n  +    b: true\n\n0 errors · 0 warnings · 0 fixable · 1 file would change\nDry run: no files were written. Run guard fix to apply these changes.\nGuard passed.\n",
             "files": {
                 "app.yaml": "# preserve when compliant\nvalue: 0\nmap: {}\nitems: []\nnothing: null\nlist: [{a: 1}, {b: true}]\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, select: /value, assert: {equals: 1}}\n"
@@ -26,7 +26,7 @@
         },
         {
             "exit": 0,
-            "output": "changed: <project>/app.yaml\nGuard passed.\n",
+            "output": "\nGuard fix\n\nchanged: app.yaml\n  --- a/app.yaml\n  +++ b/app.yaml\n  @@ -1,6 +1,9 @@\n  -# preserve when compliant\n  -value: 0\n  -map: {}\n  -items: []\n  -nothing: null\n  -list: [{a: 1}, {b: true}]\n  +value: 1\n  +map: {  }\n  +items: []\n  +nothing: null\n  +list:\n  +  -\n  +    a: 1\n  +  -\n  +    b: true\n\n0 errors · 0 warnings · 0 fixable · 1 file changed\nGuard passed.\n",
             "files": {
                 "app.yaml": "value: 1\nmap: {  }\nitems: []\nnothing: null\nlist:\n  -\n    a: 1\n  -\n    b: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, select: /value, assert: {equals: 1}}\n"

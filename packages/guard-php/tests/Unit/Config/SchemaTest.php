@@ -57,4 +57,5 @@ final class SchemaTest extends TestCase
         (new \Guard\Config\Schema())->strings('src', 'metrics.source');
     }
 
+
 }

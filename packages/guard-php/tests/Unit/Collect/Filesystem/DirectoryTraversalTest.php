@@ -129,6 +129,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Php\FileMetric\FileMetric
  * @uses \Guard\Structure\Php\FunctionMetric\FunctionMetric
  * @uses \Guard\Structure\Php\SourceMetrics
+ * @uses \Guard\Reporting\FieldMessage
  */
 #[CoversClass(\Guard\Collect\Filesystem\DirectoryTraversal::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\DirectoryListing::class)]
@@ -251,6 +252,7 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FileMetric\FileMetric::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetric::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\SourceMetrics::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\FieldMessage::class)]
 final class DirectoryTraversalTest extends TestCase
 {
     public function testEntryRejectsOutOfScopePathsBeforeInspectingTheirMetadata(): void

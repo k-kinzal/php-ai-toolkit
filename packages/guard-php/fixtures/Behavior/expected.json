@@ -2,7 +2,7 @@
     "all-policies": [
         {
             "exit": 1,
-            "output": "error: src/Example.php [metrics.file_lines] File has 4 physical lines; maximum is 1.\nerror: src/Example.php [metrics.file_ncloc] File has 3 non-comment lines of code; maximum is 1.\nerror: src/Example.php [metrics.class_lines] class Example has 3 physical lines; maximum is 1.\nerror: src/Example.php [metrics.cyclomatic_complexity] method Example::run has cyclomatic complexity 2; maximum is 1.\nerror: src [structure.max_files] Directory \"src\" contains 2 files but the limit is 1. Move or merge files until at most 1 remain.\nerror: src/bad.txt [structure.disallowed_file] File \"src/bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it.\nerror: src/Required.php [structure.missing_required_file] Directory \"src\" is missing required file \"Required.php\". Create it.\nerror: README.md [documentation.changed_heading_level] Heading \"### Details\" is level 3, but guard.yaml declares \"## Details\" at level 2 in README.md. Restore the declared level; changing the nesting of sections requires a human to update guard.yaml.\nerror: README.md [documentation.renamed_heading] Heading \"# Wrong\" replaces the declared heading \"# Expected\" in README.md. Restore the declared heading and edit only the section content; renaming a section requires a human to update guard.yaml.\nerror: MISSING.md [documentation.missing_document] Declared document MISSING.md does not exist. Restore the document; removing or renaming a document requires a human to update guard.yaml.\nerror: docs/extra.md [documentation.undeclared_document] Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\nerror: app.json [count] /count must satisfy {\"min\":1}. Run guard apply to set the configured repair.\nwarning: app.json [mode] /mode must satisfy {\"equals\":\"new\"}. Run guard apply to set the configured repair.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\nsrc/Example.php\n  error: metrics.file_lines  manual\n    File has 4 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: metrics.file_ncloc  manual\n    File has 3 non-comment lines of code; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: metrics.class_lines  manual\n    class Example has 3 physical lines; maximum is 1. Extract unrelated responsibilities into smaller units until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: metrics.cyclomatic_complexity  manual\n    method Example::run has cyclomatic complexity 2; maximum is 1. Simplify branches or extract independent operations into focused methods until each meets the limit, preserving behavior and tests. Too many independent execution paths make behavior harder to reason about and test.\n\nsrc\n  error: structure.max_files  manual\n    Directory \"src\" contains 2 files but the limit is 1. Move or merge files until at most 1 remain. Oversized directories make related files and their ownership harder to locate.\n\nsrc/bad.txt\n  error: structure.disallowed_file  manual\n    File \"src/bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it. The declared directory layout keeps files within their intended architectural boundaries.\n\nsrc/Required.php\n  error: structure.missing_required_file  manual\n    Directory \"src\" is missing required file \"Required.php\". Create it. Required files provide the entry points or project guidance expected at this location.\n\nREADME.md\n  error: documentation.changed_heading_level  manual\n    Heading \"### Details\" is level 3, but guard.yaml declares \"## Details\" at level 2 in README.md. Restore the declared level; changing the nesting of sections requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n  error: documentation.renamed_heading  manual\n    Heading \"# Wrong\" replaces the declared heading \"# Expected\" in README.md. Restore the declared heading and edit only the section content; renaming a section requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\nMISSING.md\n  error: documentation.missing_document  manual\n    Declared document MISSING.md does not exist. Restore the document; removing or renaming a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\ndocs/extra.md\n  error: documentation.undeclared_document  manual\n    Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\napp.json\n  error: count  fixable\n    /count in app.json must be at least 1. Set /count in app.json to 2. Run guard fix to apply the configured repair.\n  warning: mode  fixable\n    /mode in app.json must equal \"new\". Set /mode in app.json to \"new\". Run guard fix to apply the configured repair.\n\n12 errors · 1 warning · 2 fixable · 8 files with findings\nPreview repairs: guard fix --dry-run\nGuard found required violations.\n",
             "files": {
                 "README.md": "# Wrong\n\n### Details\n",
                 "app.json": "{\"count\":0,\"mode\":\"old\",\"keep\":true}",
@@ -14,7 +14,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.file_lines\",\n            \"level\": \"error\",\n            \"message\": \"File has 4 physical lines; maximum is 1.\"\n        },\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.file_ncloc\",\n            \"level\": \"error\",\n            \"message\": \"File has 3 non-comment lines of code; maximum is 1.\"\n        },\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.class_lines\",\n            \"level\": \"error\",\n            \"message\": \"class Example has 3 physical lines; maximum is 1.\"\n        },\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.cyclomatic_complexity\",\n            \"level\": \"error\",\n            \"message\": \"method Example::run has cyclomatic complexity 2; maximum is 1.\"\n        },\n        {\n            \"path\": \"src\",\n            \"rule\": \"structure.max_files\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src\\\" contains 2 files but the limit is 1. Move or merge files until at most 1 remain.\"\n        },\n        {\n            \"path\": \"src/bad.txt\",\n            \"rule\": \"structure.disallowed_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"src/bad.txt\\\" does not match any allowed pattern (*.php). Rename, move, or delete it.\"\n        },\n        {\n            \"path\": \"src/Required.php\",\n            \"rule\": \"structure.missing_required_file\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src\\\" is missing required file \\\"Required.php\\\". Create it.\"\n        },\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.changed_heading_level\",\n            \"level\": \"error\",\n            \"message\": \"Heading \\\"### Details\\\" is level 3, but guard.yaml declares \\\"## Details\\\" at level 2 in README.md. Restore the declared level; changing the nesting of sections requires a human to update guard.yaml.\"\n        },\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.renamed_heading\",\n            \"level\": \"error\",\n            \"message\": \"Heading \\\"# Wrong\\\" replaces the declared heading \\\"# Expected\\\" in README.md. Restore the declared heading and edit only the section content; renaming a section requires a human to update guard.yaml.\"\n        },\n        {\n            \"path\": \"MISSING.md\",\n            \"rule\": \"documentation.missing_document\",\n            \"level\": \"error\",\n            \"message\": \"Declared document MISSING.md does not exist. Restore the document; removing or renaming a document requires a human to update guard.yaml.\"\n        },\n        {\n            \"path\": \"docs/extra.md\",\n            \"rule\": \"documentation.undeclared_document\",\n            \"level\": \"error\",\n            \"message\": \"Document docs/extra.md matches the scan pattern \\\"**/*.md\\\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\"\n        },\n        {\n            \"path\": \"app.json\",\n            \"rule\": \"count\",\n            \"level\": \"error\",\n            \"message\": \"/count must satisfy {\\\"min\\\":1}. Run guard apply to set the configured repair.\"\n        },\n        {\n            \"path\": \"app.json\",\n            \"rule\": \"mode\",\n            \"level\": \"warning\",\n            \"message\": \"/mode must satisfy {\\\"equals\\\":\\\"new\\\"}. Run guard apply to set the configured repair.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.file_lines\",\n            \"level\": \"error\",\n            \"message\": \"File has 4 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.file_ncloc\",\n            \"level\": \"error\",\n            \"message\": \"File has 3 non-comment lines of code; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.class_lines\",\n            \"level\": \"error\",\n            \"message\": \"class Example has 3 physical lines; maximum is 1. Extract unrelated responsibilities into smaller units until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.cyclomatic_complexity\",\n            \"level\": \"error\",\n            \"message\": \"method Example::run has cyclomatic complexity 2; maximum is 1. Simplify branches or extract independent operations into focused methods until each meets the limit, preserving behavior and tests. Too many independent execution paths make behavior harder to reason about and test.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src\",\n            \"rule\": \"structure.max_files\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src\\\" contains 2 files but the limit is 1. Move or merge files until at most 1 remain. Oversized directories make related files and their ownership harder to locate.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/bad.txt\",\n            \"rule\": \"structure.disallowed_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"src/bad.txt\\\" does not match any allowed pattern (*.php). Rename, move, or delete it. The declared directory layout keeps files within their intended architectural boundaries.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/Required.php\",\n            \"rule\": \"structure.missing_required_file\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src\\\" is missing required file \\\"Required.php\\\". Create it. Required files provide the entry points or project guidance expected at this location.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.changed_heading_level\",\n            \"level\": \"error\",\n            \"message\": \"Heading \\\"### Details\\\" is level 3, but guard.yaml declares \\\"## Details\\\" at level 2 in README.md. Restore the declared level; changing the nesting of sections requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.renamed_heading\",\n            \"level\": \"error\",\n            \"message\": \"Heading \\\"# Wrong\\\" replaces the declared heading \\\"# Expected\\\" in README.md. Restore the declared heading and edit only the section content; renaming a section requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"MISSING.md\",\n            \"rule\": \"documentation.missing_document\",\n            \"level\": \"error\",\n            \"message\": \"Declared document MISSING.md does not exist. Restore the document; removing or renaming a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"docs/extra.md\",\n            \"rule\": \"documentation.undeclared_document\",\n            \"level\": \"error\",\n            \"message\": \"Document docs/extra.md matches the scan pattern \\\"**/*.md\\\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"app.json\",\n            \"rule\": \"count\",\n            \"level\": \"error\",\n            \"message\": \"/count in app.json must be at least 1. Set /count in app.json to 2. Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        },\n        {\n            \"path\": \"app.json\",\n            \"rule\": \"mode\",\n            \"level\": \"warning\",\n            \"message\": \"/mode in app.json must equal \\\"new\\\". Set /mode in app.json to \\\"new\\\". Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 12,\n        \"warnings\": 1,\n        \"fixable\": 2\n    }\n}\n",
             "files": {
                 "README.md": "# Wrong\n\n### Details\n",
                 "app.json": "{\"count\":0,\"mode\":\"old\",\"keep\":true}",
@@ -26,7 +26,7 @@
         },
         {
             "exit": 1,
-            "output": "error: src/Example.php [metrics.file_lines] File has 4 physical lines; maximum is 1.\nerror: src/Example.php [metrics.file_ncloc] File has 3 non-comment lines of code; maximum is 1.\nerror: src/Example.php [metrics.class_lines] class Example has 3 physical lines; maximum is 1.\nerror: src/Example.php [metrics.cyclomatic_complexity] method Example::run has cyclomatic complexity 2; maximum is 1.\nerror: src [structure.max_files] Directory \"src\" contains 2 files but the limit is 1. Move or merge files until at most 1 remain.\nerror: src/bad.txt [structure.disallowed_file] File \"src/bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it.\nerror: src/Required.php [structure.missing_required_file] Directory \"src\" is missing required file \"Required.php\". Create it.\nerror: README.md [documentation.changed_heading_level] Heading \"### Details\" is level 3, but guard.yaml declares \"## Details\" at level 2 in README.md. Restore the declared level; changing the nesting of sections requires a human to update guard.yaml.\nerror: README.md [documentation.renamed_heading] Heading \"# Wrong\" replaces the declared heading \"# Expected\" in README.md. Restore the declared heading and edit only the section content; renaming a section requires a human to update guard.yaml.\nerror: MISSING.md [documentation.missing_document] Declared document MISSING.md does not exist. Restore the document; removing or renaming a document requires a human to update guard.yaml.\nerror: docs/extra.md [documentation.undeclared_document] Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\nwould change: <project>/app.json\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nsrc/Example.php\n  error: metrics.file_lines  manual\n    File has 4 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: metrics.file_ncloc  manual\n    File has 3 non-comment lines of code; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: metrics.class_lines  manual\n    class Example has 3 physical lines; maximum is 1. Extract unrelated responsibilities into smaller units until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: metrics.cyclomatic_complexity  manual\n    method Example::run has cyclomatic complexity 2; maximum is 1. Simplify branches or extract independent operations into focused methods until each meets the limit, preserving behavior and tests. Too many independent execution paths make behavior harder to reason about and test.\n\nsrc\n  error: structure.max_files  manual\n    Directory \"src\" contains 2 files but the limit is 1. Move or merge files until at most 1 remain. Oversized directories make related files and their ownership harder to locate.\n\nsrc/bad.txt\n  error: structure.disallowed_file  manual\n    File \"src/bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it. The declared directory layout keeps files within their intended architectural boundaries.\n\nsrc/Required.php\n  error: structure.missing_required_file  manual\n    Directory \"src\" is missing required file \"Required.php\". Create it. Required files provide the entry points or project guidance expected at this location.\n\nREADME.md\n  error: documentation.changed_heading_level  manual\n    Heading \"### Details\" is level 3, but guard.yaml declares \"## Details\" at level 2 in README.md. Restore the declared level; changing the nesting of sections requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n  error: documentation.renamed_heading  manual\n    Heading \"# Wrong\" replaces the declared heading \"# Expected\" in README.md. Restore the declared heading and edit only the section content; renaming a section requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\nMISSING.md\n  error: documentation.missing_document  manual\n    Declared document MISSING.md does not exist. Restore the document; removing or renaming a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\ndocs/extra.md\n  error: documentation.undeclared_document  manual\n    Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\nwould change: app.json\n  --- a/app.json\n  +++ b/app.json\n  @@ -1,1 +1,5 @@\n  -{\"count\":0,\"mode\":\"old\",\"keep\":true}\n  \\ No newline at end of file\n  +{\n  +    \"count\": 2,\n  +    \"mode\": \"new\",\n  +    \"keep\": true\n  +}\n\n11 errors · 0 warnings · 0 fixable · 1 file would change\nDry run: no files were written. Run guard fix to apply these changes.\nGuard found required violations.\n",
             "files": {
                 "README.md": "# Wrong\n\n### Details\n",
                 "app.json": "{\"count\":0,\"mode\":\"old\",\"keep\":true}",
@@ -38,7 +38,7 @@
         },
         {
             "exit": 1,
-            "output": "error: src/Example.php [metrics.file_lines] File has 4 physical lines; maximum is 1.\nerror: src/Example.php [metrics.file_ncloc] File has 3 non-comment lines of code; maximum is 1.\nerror: src/Example.php [metrics.class_lines] class Example has 3 physical lines; maximum is 1.\nerror: src/Example.php [metrics.cyclomatic_complexity] method Example::run has cyclomatic complexity 2; maximum is 1.\nerror: src [structure.max_files] Directory \"src\" contains 2 files but the limit is 1. Move or merge files until at most 1 remain.\nerror: src/bad.txt [structure.disallowed_file] File \"src/bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it.\nerror: src/Required.php [structure.missing_required_file] Directory \"src\" is missing required file \"Required.php\". Create it.\nerror: README.md [documentation.changed_heading_level] Heading \"### Details\" is level 3, but guard.yaml declares \"## Details\" at level 2 in README.md. Restore the declared level; changing the nesting of sections requires a human to update guard.yaml.\nerror: README.md [documentation.renamed_heading] Heading \"# Wrong\" replaces the declared heading \"# Expected\" in README.md. Restore the declared heading and edit only the section content; renaming a section requires a human to update guard.yaml.\nerror: MISSING.md [documentation.missing_document] Declared document MISSING.md does not exist. Restore the document; removing or renaming a document requires a human to update guard.yaml.\nerror: docs/extra.md [documentation.undeclared_document] Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\nchanged: <project>/app.json\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nsrc/Example.php\n  error: metrics.file_lines  manual\n    File has 4 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: metrics.file_ncloc  manual\n    File has 3 non-comment lines of code; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: metrics.class_lines  manual\n    class Example has 3 physical lines; maximum is 1. Extract unrelated responsibilities into smaller units until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: metrics.cyclomatic_complexity  manual\n    method Example::run has cyclomatic complexity 2; maximum is 1. Simplify branches or extract independent operations into focused methods until each meets the limit, preserving behavior and tests. Too many independent execution paths make behavior harder to reason about and test.\n\nsrc\n  error: structure.max_files  manual\n    Directory \"src\" contains 2 files but the limit is 1. Move or merge files until at most 1 remain. Oversized directories make related files and their ownership harder to locate.\n\nsrc/bad.txt\n  error: structure.disallowed_file  manual\n    File \"src/bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it. The declared directory layout keeps files within their intended architectural boundaries.\n\nsrc/Required.php\n  error: structure.missing_required_file  manual\n    Directory \"src\" is missing required file \"Required.php\". Create it. Required files provide the entry points or project guidance expected at this location.\n\nREADME.md\n  error: documentation.changed_heading_level  manual\n    Heading \"### Details\" is level 3, but guard.yaml declares \"## Details\" at level 2 in README.md. Restore the declared level; changing the nesting of sections requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n  error: documentation.renamed_heading  manual\n    Heading \"# Wrong\" replaces the declared heading \"# Expected\" in README.md. Restore the declared heading and edit only the section content; renaming a section requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\nMISSING.md\n  error: documentation.missing_document  manual\n    Declared document MISSING.md does not exist. Restore the document; removing or renaming a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\ndocs/extra.md\n  error: documentation.undeclared_document  manual\n    Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\nchanged: app.json\n  --- a/app.json\n  +++ b/app.json\n  @@ -1,1 +1,5 @@\n  -{\"count\":0,\"mode\":\"old\",\"keep\":true}\n  \\ No newline at end of file\n  +{\n  +    \"count\": 2,\n  +    \"mode\": \"new\",\n  +    \"keep\": true\n  +}\n\n11 errors · 0 warnings · 0 fixable · 1 file changed\nGuard found required violations.\n",
             "files": {
                 "README.md": "# Wrong\n\n### Details\n",
                 "app.json": "{\n    \"count\": 2,\n    \"mode\": \"new\",\n    \"keep\": true\n}\n",
@@ -50,7 +50,7 @@
         },
         {
             "exit": 1,
-            "output": "error: src/Example.php [metrics.file_lines] File has 4 physical lines; maximum is 1.\nerror: src/Example.php [metrics.file_ncloc] File has 3 non-comment lines of code; maximum is 1.\nerror: src/Example.php [metrics.class_lines] class Example has 3 physical lines; maximum is 1.\nerror: src/Example.php [metrics.cyclomatic_complexity] method Example::run has cyclomatic complexity 2; maximum is 1.\nerror: src [structure.max_files] Directory \"src\" contains 2 files but the limit is 1. Move or merge files until at most 1 remain.\nerror: src/bad.txt [structure.disallowed_file] File \"src/bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it.\nerror: src/Required.php [structure.missing_required_file] Directory \"src\" is missing required file \"Required.php\". Create it.\nerror: README.md [documentation.changed_heading_level] Heading \"### Details\" is level 3, but guard.yaml declares \"## Details\" at level 2 in README.md. Restore the declared level; changing the nesting of sections requires a human to update guard.yaml.\nerror: README.md [documentation.renamed_heading] Heading \"# Wrong\" replaces the declared heading \"# Expected\" in README.md. Restore the declared heading and edit only the section content; renaming a section requires a human to update guard.yaml.\nerror: MISSING.md [documentation.missing_document] Declared document MISSING.md does not exist. Restore the document; removing or renaming a document requires a human to update guard.yaml.\nerror: docs/extra.md [documentation.undeclared_document] Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nsrc/Example.php\n  error: metrics.file_lines  manual\n    File has 4 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: metrics.file_ncloc  manual\n    File has 3 non-comment lines of code; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: metrics.class_lines  manual\n    class Example has 3 physical lines; maximum is 1. Extract unrelated responsibilities into smaller units until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: metrics.cyclomatic_complexity  manual\n    method Example::run has cyclomatic complexity 2; maximum is 1. Simplify branches or extract independent operations into focused methods until each meets the limit, preserving behavior and tests. Too many independent execution paths make behavior harder to reason about and test.\n\nsrc\n  error: structure.max_files  manual\n    Directory \"src\" contains 2 files but the limit is 1. Move or merge files until at most 1 remain. Oversized directories make related files and their ownership harder to locate.\n\nsrc/bad.txt\n  error: structure.disallowed_file  manual\n    File \"src/bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it. The declared directory layout keeps files within their intended architectural boundaries.\n\nsrc/Required.php\n  error: structure.missing_required_file  manual\n    Directory \"src\" is missing required file \"Required.php\". Create it. Required files provide the entry points or project guidance expected at this location.\n\nREADME.md\n  error: documentation.changed_heading_level  manual\n    Heading \"### Details\" is level 3, but guard.yaml declares \"## Details\" at level 2 in README.md. Restore the declared level; changing the nesting of sections requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n  error: documentation.renamed_heading  manual\n    Heading \"# Wrong\" replaces the declared heading \"# Expected\" in README.md. Restore the declared heading and edit only the section content; renaming a section requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\nMISSING.md\n  error: documentation.missing_document  manual\n    Declared document MISSING.md does not exist. Restore the document; removing or renaming a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\ndocs/extra.md\n  error: documentation.undeclared_document  manual\n    Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\n11 errors · 0 warnings · 0 fixable · 0 files changed\nGuard found required violations.\n",
             "files": {
                 "README.md": "# Wrong\n\n### Details\n",
                 "app.json": "{\n    \"count\": 2,\n    \"mode\": \"new\",\n    \"keep\": true\n}\n",
@@ -62,7 +62,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.file_lines\",\n            \"level\": \"error\",\n            \"message\": \"File has 4 physical lines; maximum is 1.\"\n        },\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.file_ncloc\",\n            \"level\": \"error\",\n            \"message\": \"File has 3 non-comment lines of code; maximum is 1.\"\n        },\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.class_lines\",\n            \"level\": \"error\",\n            \"message\": \"class Example has 3 physical lines; maximum is 1.\"\n        },\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.cyclomatic_complexity\",\n            \"level\": \"error\",\n            \"message\": \"method Example::run has cyclomatic complexity 2; maximum is 1.\"\n        },\n        {\n            \"path\": \"src\",\n            \"rule\": \"structure.max_files\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src\\\" contains 2 files but the limit is 1. Move or merge files until at most 1 remain.\"\n        },\n        {\n            \"path\": \"src/bad.txt\",\n            \"rule\": \"structure.disallowed_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"src/bad.txt\\\" does not match any allowed pattern (*.php). Rename, move, or delete it.\"\n        },\n        {\n            \"path\": \"src/Required.php\",\n            \"rule\": \"structure.missing_required_file\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src\\\" is missing required file \\\"Required.php\\\". Create it.\"\n        },\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.changed_heading_level\",\n            \"level\": \"error\",\n            \"message\": \"Heading \\\"### Details\\\" is level 3, but guard.yaml declares \\\"## Details\\\" at level 2 in README.md. Restore the declared level; changing the nesting of sections requires a human to update guard.yaml.\"\n        },\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.renamed_heading\",\n            \"level\": \"error\",\n            \"message\": \"Heading \\\"# Wrong\\\" replaces the declared heading \\\"# Expected\\\" in README.md. Restore the declared heading and edit only the section content; renaming a section requires a human to update guard.yaml.\"\n        },\n        {\n            \"path\": \"MISSING.md\",\n            \"rule\": \"documentation.missing_document\",\n            \"level\": \"error\",\n            \"message\": \"Declared document MISSING.md does not exist. Restore the document; removing or renaming a document requires a human to update guard.yaml.\"\n        },\n        {\n            \"path\": \"docs/extra.md\",\n            \"rule\": \"documentation.undeclared_document\",\n            \"level\": \"error\",\n            \"message\": \"Document docs/extra.md matches the scan pattern \\\"**/*.md\\\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.file_lines\",\n            \"level\": \"error\",\n            \"message\": \"File has 4 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.file_ncloc\",\n            \"level\": \"error\",\n            \"message\": \"File has 3 non-comment lines of code; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.class_lines\",\n            \"level\": \"error\",\n            \"message\": \"class Example has 3 physical lines; maximum is 1. Extract unrelated responsibilities into smaller units until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/Example.php\",\n            \"rule\": \"metrics.cyclomatic_complexity\",\n            \"level\": \"error\",\n            \"message\": \"method Example::run has cyclomatic complexity 2; maximum is 1. Simplify branches or extract independent operations into focused methods until each meets the limit, preserving behavior and tests. Too many independent execution paths make behavior harder to reason about and test.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src\",\n            \"rule\": \"structure.max_files\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src\\\" contains 2 files but the limit is 1. Move or merge files until at most 1 remain. Oversized directories make related files and their ownership harder to locate.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/bad.txt\",\n            \"rule\": \"structure.disallowed_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"src/bad.txt\\\" does not match any allowed pattern (*.php). Rename, move, or delete it. The declared directory layout keeps files within their intended architectural boundaries.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/Required.php\",\n            \"rule\": \"structure.missing_required_file\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src\\\" is missing required file \\\"Required.php\\\". Create it. Required files provide the entry points or project guidance expected at this location.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.changed_heading_level\",\n            \"level\": \"error\",\n            \"message\": \"Heading \\\"### Details\\\" is level 3, but guard.yaml declares \\\"## Details\\\" at level 2 in README.md. Restore the declared level; changing the nesting of sections requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.renamed_heading\",\n            \"level\": \"error\",\n            \"message\": \"Heading \\\"# Wrong\\\" replaces the declared heading \\\"# Expected\\\" in README.md. Restore the declared heading and edit only the section content; renaming a section requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"MISSING.md\",\n            \"rule\": \"documentation.missing_document\",\n            \"level\": \"error\",\n            \"message\": \"Declared document MISSING.md does not exist. Restore the document; removing or renaming a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"docs/extra.md\",\n            \"rule\": \"documentation.undeclared_document\",\n            \"level\": \"error\",\n            \"message\": \"Document docs/extra.md matches the scan pattern \\\"**/*.md\\\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 11,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "README.md": "# Wrong\n\n### Details\n",
                 "app.json": "{\n    \"count\": 2,\n    \"mode\": \"new\",\n    \"keep\": true\n}\n",
@@ -76,7 +76,7 @@
     "json": [
         {
             "exit": 1,
-            "output": "error: app.json [value] /value must satisfy {\"equals\":1}. Run guard apply to set the configured repair.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\napp.json\n  error: value  fixable\n    /value in app.json must equal 1. Set /value in app.json to 1. Run guard fix to apply the configured repair.\n\n1 error · 0 warnings · 1 fixable · 1 file with findings\nPreview repairs: guard fix --dry-run\nGuard found required violations.\n",
             "files": {
                 "app.json": "{\"value\":0,\"keep\":true}",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, format: json, select: /value, assert: {equals: 1}}\n"
@@ -84,7 +84,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.json\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/value must satisfy {\\\"equals\\\":1}. Run guard apply to set the configured repair.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.json\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/value in app.json must equal 1. Set /value in app.json to 1. Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 1,\n        \"warnings\": 0,\n        \"fixable\": 1\n    }\n}\n",
             "files": {
                 "app.json": "{\"value\":0,\"keep\":true}",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, format: json, select: /value, assert: {equals: 1}}\n"
@@ -92,7 +92,7 @@
         },
         {
             "exit": 0,
-            "output": "would change: <project>/app.json\nGuard passed.\n",
+            "output": "\nGuard fix\n\nwould change: app.json\n  --- a/app.json\n  +++ b/app.json\n  @@ -1,1 +1,4 @@\n  -{\"value\":0,\"keep\":true}\n  \\ No newline at end of file\n  +{\n  +    \"value\": 1,\n  +    \"keep\": true\n  +}\n\n0 errors · 0 warnings · 0 fixable · 1 file would change\nDry run: no files were written. Run guard fix to apply these changes.\nGuard passed.\n",
             "files": {
                 "app.json": "{\"value\":0,\"keep\":true}",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, format: json, select: /value, assert: {equals: 1}}\n"
@@ -100,7 +100,7 @@
         },
         {
             "exit": 0,
-            "output": "changed: <project>/app.json\nGuard passed.\n",
+            "output": "\nGuard fix\n\nchanged: app.json\n  --- a/app.json\n  +++ b/app.json\n  @@ -1,1 +1,4 @@\n  -{\"value\":0,\"keep\":true}\n  \\ No newline at end of file\n  +{\n  +    \"value\": 1,\n  +    \"keep\": true\n  +}\n\n0 errors · 0 warnings · 0 fixable · 1 file changed\nGuard passed.\n",
             "files": {
                 "app.json": "{\n    \"value\": 1,\n    \"keep\": true\n}\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, format: json, select: /value, assert: {equals: 1}}\n"
@@ -108,7 +108,7 @@
         },
         {
             "exit": 0,
-            "output": "Guard passed.\n",
+            "output": "\nGuard fix\n\n0 errors · 0 warnings · 0 fixable · 0 files changed\nGuard passed.\n",
             "files": {
                 "app.json": "{\n    \"value\": 1,\n    \"keep\": true\n}\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, format: json, select: /value, assert: {equals: 1}}\n"
@@ -116,7 +116,7 @@
         },
         {
             "exit": 0,
-            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": true\n}\n",
+            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": true,\n    \"summary\": {\n        \"errors\": 0,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "app.json": "{\n    \"value\": 1,\n    \"keep\": true\n}\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, format: json, select: /value, assert: {equals: 1}}\n"
@@ -176,7 +176,7 @@
     "yaml": [
         {
             "exit": 1,
-            "output": "error: app.yaml [value] /value must satisfy {\"equals\":1}. Run guard apply to set the configured repair.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\napp.yaml\n  error: value  fixable\n    /value in app.yaml must equal 1. Set /value in app.yaml to 1. Run guard fix to apply the configured repair.\n\n1 error · 0 warnings · 1 fixable · 1 file with findings\nPreview repairs: guard fix --dry-run\nGuard found required violations.\n",
             "files": {
                 "app.yaml": "value: 0\nkeep: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, format: yaml, select: /value, assert: {equals: 1}}\n"
@@ -184,7 +184,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.yaml\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/value must satisfy {\\\"equals\\\":1}. Run guard apply to set the configured repair.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.yaml\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/value in app.yaml must equal 1. Set /value in app.yaml to 1. Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 1,\n        \"warnings\": 0,\n        \"fixable\": 1\n    }\n}\n",
             "files": {
                 "app.yaml": "value: 0\nkeep: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, format: yaml, select: /value, assert: {equals: 1}}\n"
@@ -192,7 +192,7 @@
         },
         {
             "exit": 0,
-            "output": "would change: <project>/app.yaml\nGuard passed.\n",
+            "output": "\nGuard fix\n\nwould change: app.yaml\n  --- a/app.yaml\n  +++ b/app.yaml\n  @@ -1,2 +1,2 @@\n  -value: 0\n  +value: 1\n   keep: true\n\n0 errors · 0 warnings · 0 fixable · 1 file would change\nDry run: no files were written. Run guard fix to apply these changes.\nGuard passed.\n",
             "files": {
                 "app.yaml": "value: 0\nkeep: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, format: yaml, select: /value, assert: {equals: 1}}\n"
@@ -200,7 +200,7 @@
         },
         {
             "exit": 0,
-            "output": "changed: <project>/app.yaml\nGuard passed.\n",
+            "output": "\nGuard fix\n\nchanged: app.yaml\n  --- a/app.yaml\n  +++ b/app.yaml\n  @@ -1,2 +1,2 @@\n  -value: 0\n  +value: 1\n   keep: true\n\n0 errors · 0 warnings · 0 fixable · 1 file changed\nGuard passed.\n",
             "files": {
                 "app.yaml": "value: 1\nkeep: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, format: yaml, select: /value, assert: {equals: 1}}\n"
@@ -208,7 +208,7 @@
         },
         {
             "exit": 0,
-            "output": "Guard passed.\n",
+            "output": "\nGuard fix\n\n0 errors · 0 warnings · 0 fixable · 0 files changed\nGuard passed.\n",
             "files": {
                 "app.yaml": "value: 1\nkeep: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, format: yaml, select: /value, assert: {equals: 1}}\n"
@@ -216,7 +216,7 @@
         },
         {
             "exit": 0,
-            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": true\n}\n",
+            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": true,\n    \"summary\": {\n        \"errors\": 0,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "app.yaml": "value: 1\nkeep: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, format: yaml, select: /value, assert: {equals: 1}}\n"
@@ -226,7 +226,7 @@
     "neon": [
         {
             "exit": 1,
-            "output": "error: app.neon [value] /value must satisfy {\"equals\":1}. Run guard apply to set the configured repair.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\napp.neon\n  error: value  fixable\n    /value in app.neon must equal 1. Set /value in app.neon to 1. Run guard fix to apply the configured repair.\n\n1 error · 0 warnings · 1 fixable · 1 file with findings\nPreview repairs: guard fix --dry-run\nGuard found required violations.\n",
             "files": {
                 "app.neon": "value: 0\nkeep: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.neon, format: neon, select: /value, assert: {equals: 1}}\n"
@@ -234,7 +234,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.neon\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/value must satisfy {\\\"equals\\\":1}. Run guard apply to set the configured repair.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.neon\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/value in app.neon must equal 1. Set /value in app.neon to 1. Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 1,\n        \"warnings\": 0,\n        \"fixable\": 1\n    }\n}\n",
             "files": {
                 "app.neon": "value: 0\nkeep: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.neon, format: neon, select: /value, assert: {equals: 1}}\n"
@@ -242,7 +242,7 @@
         },
         {
             "exit": 0,
-            "output": "would change: <project>/app.neon\nGuard passed.\n",
+            "output": "\nGuard fix\n\nwould change: app.neon\n  --- a/app.neon\n  +++ b/app.neon\n  @@ -1,2 +1,2 @@\n  -value: 0\n  +value: 1\n   keep: true\n\n0 errors · 0 warnings · 0 fixable · 1 file would change\nDry run: no files were written. Run guard fix to apply these changes.\nGuard passed.\n",
             "files": {
                 "app.neon": "value: 0\nkeep: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.neon, format: neon, select: /value, assert: {equals: 1}}\n"
@@ -250,7 +250,7 @@
         },
         {
             "exit": 0,
-            "output": "changed: <project>/app.neon\nGuard passed.\n",
+            "output": "\nGuard fix\n\nchanged: app.neon\n  --- a/app.neon\n  +++ b/app.neon\n  @@ -1,2 +1,2 @@\n  -value: 0\n  +value: 1\n   keep: true\n\n0 errors · 0 warnings · 0 fixable · 1 file changed\nGuard passed.\n",
             "files": {
                 "app.neon": "value: 1\nkeep: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.neon, format: neon, select: /value, assert: {equals: 1}}\n"
@@ -258,7 +258,7 @@
         },
         {
             "exit": 0,
-            "output": "Guard passed.\n",
+            "output": "\nGuard fix\n\n0 errors · 0 warnings · 0 fixable · 0 files changed\nGuard passed.\n",
             "files": {
                 "app.neon": "value: 1\nkeep: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.neon, format: neon, select: /value, assert: {equals: 1}}\n"
@@ -266,7 +266,7 @@
         },
         {
             "exit": 0,
-            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": true\n}\n",
+            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": true,\n    \"summary\": {\n        \"errors\": 0,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "app.neon": "value: 1\nkeep: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.neon, format: neon, select: /value, assert: {equals: 1}}\n"
@@ -276,7 +276,7 @@
     "toml": [
         {
             "exit": 1,
-            "output": "error: app.toml [value] /value must satisfy {\"equals\":1}. Run guard apply to set the configured repair.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\napp.toml\n  error: value  fixable\n    /value in app.toml must equal 1. Set /value in app.toml to 1. Run guard fix to apply the configured repair.\n\n1 error · 0 warnings · 1 fixable · 1 file with findings\nPreview repairs: guard fix --dry-run\nGuard found required violations.\n",
             "files": {
                 "app.toml": "value = 0\nkeep = true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.toml, format: toml, select: /value, assert: {equals: 1}}\n"
@@ -284,7 +284,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.toml\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/value must satisfy {\\\"equals\\\":1}. Run guard apply to set the configured repair.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.toml\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/value in app.toml must equal 1. Set /value in app.toml to 1. Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 1,\n        \"warnings\": 0,\n        \"fixable\": 1\n    }\n}\n",
             "files": {
                 "app.toml": "value = 0\nkeep = true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.toml, format: toml, select: /value, assert: {equals: 1}}\n"
@@ -292,7 +292,7 @@
         },
         {
             "exit": 0,
-            "output": "would change: <project>/app.toml\nGuard passed.\n",
+            "output": "\nGuard fix\n\nwould change: app.toml\n  --- a/app.toml\n  +++ b/app.toml\n  @@ -1,2 +1,2 @@\n  -value = 0\n  -keep = true\n  +\"value\" = 1\n  +\"keep\" = true\n\n0 errors · 0 warnings · 0 fixable · 1 file would change\nDry run: no files were written. Run guard fix to apply these changes.\nGuard passed.\n",
             "files": {
                 "app.toml": "value = 0\nkeep = true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.toml, format: toml, select: /value, assert: {equals: 1}}\n"
@@ -300,7 +300,7 @@
         },
         {
             "exit": 0,
-            "output": "changed: <project>/app.toml\nGuard passed.\n",
+            "output": "\nGuard fix\n\nchanged: app.toml\n  --- a/app.toml\n  +++ b/app.toml\n  @@ -1,2 +1,2 @@\n  -value = 0\n  -keep = true\n  +\"value\" = 1\n  +\"keep\" = true\n\n0 errors · 0 warnings · 0 fixable · 1 file changed\nGuard passed.\n",
             "files": {
                 "app.toml": "\"value\" = 1\n\"keep\" = true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.toml, format: toml, select: /value, assert: {equals: 1}}\n"
@@ -308,7 +308,7 @@
         },
         {
             "exit": 0,
-            "output": "Guard passed.\n",
+            "output": "\nGuard fix\n\n0 errors · 0 warnings · 0 fixable · 0 files changed\nGuard passed.\n",
             "files": {
                 "app.toml": "\"value\" = 1\n\"keep\" = true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.toml, format: toml, select: /value, assert: {equals: 1}}\n"
@@ -316,7 +316,7 @@
         },
         {
             "exit": 0,
-            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": true\n}\n",
+            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": true,\n    \"summary\": {\n        \"errors\": 0,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "app.toml": "\"value\" = 1\n\"keep\" = true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.toml, format: toml, select: /value, assert: {equals: 1}}\n"
@@ -326,7 +326,7 @@
     "xml": [
         {
             "exit": 1,
-            "output": "error: app.xml [value] /app/@value must satisfy {\"equals\":\"1\"}. Run guard apply to set the configured repair.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\napp.xml\n  error: value  fixable\n    /app/@value in app.xml must equal \"1\". Set /app/@value in app.xml to \"1\". Run guard fix to apply the configured repair.\n\n1 error · 0 warnings · 1 fixable · 1 file with findings\nPreview repairs: guard fix --dry-run\nGuard found required violations.\n",
             "files": {
                 "app.xml": "<app value=\"0\"><keep/></app>",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.xml, format: xml, select: /app/@value, assert: {equals: '1'}}\n"
@@ -334,7 +334,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.xml\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/app/@value must satisfy {\\\"equals\\\":\\\"1\\\"}. Run guard apply to set the configured repair.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.xml\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/app/@value in app.xml must equal \\\"1\\\". Set /app/@value in app.xml to \\\"1\\\". Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 1,\n        \"warnings\": 0,\n        \"fixable\": 1\n    }\n}\n",
             "files": {
                 "app.xml": "<app value=\"0\"><keep/></app>",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.xml, format: xml, select: /app/@value, assert: {equals: '1'}}\n"
@@ -342,7 +342,7 @@
         },
         {
             "exit": 0,
-            "output": "would change: <project>/app.xml\nGuard passed.\n",
+            "output": "\nGuard fix\n\nwould change: app.xml\n  --- a/app.xml\n  +++ b/app.xml\n  @@ -1,1 +1,2 @@\n  -<app value=\"0\"><keep/></app>\n  \\ No newline at end of file\n  +<?xml version=\"1.0\"?>\n  +<app value=\"1\"><keep/></app>\n\n0 errors · 0 warnings · 0 fixable · 1 file would change\nDry run: no files were written. Run guard fix to apply these changes.\nGuard passed.\n",
             "files": {
                 "app.xml": "<app value=\"0\"><keep/></app>",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.xml, format: xml, select: /app/@value, assert: {equals: '1'}}\n"
@@ -350,7 +350,7 @@
         },
         {
             "exit": 0,
-            "output": "changed: <project>/app.xml\nGuard passed.\n",
+            "output": "\nGuard fix\n\nchanged: app.xml\n  --- a/app.xml\n  +++ b/app.xml\n  @@ -1,1 +1,2 @@\n  -<app value=\"0\"><keep/></app>\n  \\ No newline at end of file\n  +<?xml version=\"1.0\"?>\n  +<app value=\"1\"><keep/></app>\n\n0 errors · 0 warnings · 0 fixable · 1 file changed\nGuard passed.\n",
             "files": {
                 "app.xml": "<?xml version=\"1.0\"?>\n<app value=\"1\"><keep/></app>\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.xml, format: xml, select: /app/@value, assert: {equals: '1'}}\n"
@@ -358,7 +358,7 @@
         },
         {
             "exit": 0,
-            "output": "Guard passed.\n",
+            "output": "\nGuard fix\n\n0 errors · 0 warnings · 0 fixable · 0 files changed\nGuard passed.\n",
             "files": {
                 "app.xml": "<?xml version=\"1.0\"?>\n<app value=\"1\"><keep/></app>\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.xml, format: xml, select: /app/@value, assert: {equals: '1'}}\n"
@@ -366,7 +366,7 @@
         },
         {
             "exit": 0,
-            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": true\n}\n",
+            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": true,\n    \"summary\": {\n        \"errors\": 0,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "app.xml": "<?xml version=\"1.0\"?>\n<app value=\"1\"><keep/></app>\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.xml, format: xml, select: /app/@value, assert: {equals: '1'}}\n"
@@ -376,7 +376,7 @@
     "php": [
         {
             "exit": 1,
-            "output": "error: settings.php [value] /return/value must satisfy {\"equals\":1}. Set a compliant value or add a repair value satisfying every assertion.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\nsettings.php\n  error: value  manual\n    /return/value in settings.php must equal 1. Set the /value option to 1 in the literal array passed to setRules() in settings.php.\n\n1 error · 0 warnings · 0 fixable · 1 file with findings\nGuard found required violations.\n",
             "files": {
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: settings.php, format: php, select: /return/value, assert: {equals: 1}}\n",
                 "settings.php": "<?php\nreturn ['value' => 0, 'keep' => true];\n"
@@ -384,7 +384,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"settings.php\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/return/value must satisfy {\\\"equals\\\":1}. Set a compliant value or add a repair value satisfying every assertion.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"settings.php\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/return/value in settings.php must equal 1. Set the /value option to 1 in the literal array passed to setRules() in settings.php.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 1,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: settings.php, format: php, select: /return/value, assert: {equals: 1}}\n",
                 "settings.php": "<?php\nreturn ['value' => 0, 'keep' => true];\n"
@@ -392,7 +392,7 @@
         },
         {
             "exit": 1,
-            "output": "error: settings.php [value] /return/value must satisfy {\"equals\":1}. Set a compliant value or add a repair value satisfying every assertion.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nsettings.php\n  error: value  manual\n    /return/value in settings.php must equal 1. Set the /value option to 1 in the literal array passed to setRules() in settings.php.\n\n1 error · 0 warnings · 0 fixable · 0 files blocked\nRepairs blocked by required configuration violations. No files were written; diffs show the proposed changes.\nGuard found required violations.\n",
             "files": {
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: settings.php, format: php, select: /return/value, assert: {equals: 1}}\n",
                 "settings.php": "<?php\nreturn ['value' => 0, 'keep' => true];\n"
@@ -400,7 +400,7 @@
         },
         {
             "exit": 1,
-            "output": "error: settings.php [value] /return/value must satisfy {\"equals\":1}. Set a compliant value or add a repair value satisfying every assertion.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nsettings.php\n  error: value  manual\n    /return/value in settings.php must equal 1. Set the /value option to 1 in the literal array passed to setRules() in settings.php.\n\n1 error · 0 warnings · 0 fixable · 0 files blocked\nRepairs blocked by required configuration violations. No files were written; diffs show the proposed changes.\nGuard found required violations.\n",
             "files": {
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: settings.php, format: php, select: /return/value, assert: {equals: 1}}\n",
                 "settings.php": "<?php\nreturn ['value' => 0, 'keep' => true];\n"
@@ -408,7 +408,7 @@
         },
         {
             "exit": 1,
-            "output": "error: settings.php [value] /return/value must satisfy {\"equals\":1}. Set a compliant value or add a repair value satisfying every assertion.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nsettings.php\n  error: value  manual\n    /return/value in settings.php must equal 1. Set the /value option to 1 in the literal array passed to setRules() in settings.php.\n\n1 error · 0 warnings · 0 fixable · 0 files blocked\nRepairs blocked by required configuration violations. No files were written; diffs show the proposed changes.\nGuard found required violations.\n",
             "files": {
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: settings.php, format: php, select: /return/value, assert: {equals: 1}}\n",
                 "settings.php": "<?php\nreturn ['value' => 0, 'keep' => true];\n"
@@ -416,7 +416,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"settings.php\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/return/value must satisfy {\\\"equals\\\":1}. Set a compliant value or add a repair value satisfying every assertion.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"settings.php\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/return/value in settings.php must equal 1. Set the /value option to 1 in the literal array passed to setRules() in settings.php.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 1,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: settings.php, format: php, select: /return/value, assert: {equals: 1}}\n",
                 "settings.php": "<?php\nreturn ['value' => 0, 'keep' => true];\n"
@@ -426,7 +426,7 @@
     "conflict": [
         {
             "exit": 1,
-            "output": "error: a.json [first] /value must satisfy {\"equals\":1}. Run guard apply to set the configured repair.\nerror: b.json [second] /value must satisfy {\"equals\":1}. Run guard apply to set the configured repair.\nerror: b.json [conflict] /value must satisfy {\"equals\":2}. Run guard apply to set the configured repair.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\na.json\n  error: first  fixable\n    /value in a.json must equal 1. Set /value in a.json to 1. Run guard fix to apply the configured repair.\n\nb.json\n  error: second  fixable\n    /value in b.json must equal 1. Set /value in b.json to 1. Run guard fix to apply the configured repair.\n  error: conflict  fixable\n    /value in b.json must equal 2. Set /value in b.json to 2. Run guard fix to apply the configured repair.\n\n3 errors · 0 warnings · 3 fixable · 2 files with findings\nPreview repairs: guard fix --dry-run\nGuard found required violations.\n",
             "files": {
                 "a.json": "{\"value\":0}",
                 "b.json": "{\"value\":0}",
@@ -435,7 +435,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"a.json\",\n            \"rule\": \"first\",\n            \"level\": \"error\",\n            \"message\": \"/value must satisfy {\\\"equals\\\":1}. Run guard apply to set the configured repair.\"\n        },\n        {\n            \"path\": \"b.json\",\n            \"rule\": \"second\",\n            \"level\": \"error\",\n            \"message\": \"/value must satisfy {\\\"equals\\\":1}. Run guard apply to set the configured repair.\"\n        },\n        {\n            \"path\": \"b.json\",\n            \"rule\": \"conflict\",\n            \"level\": \"error\",\n            \"message\": \"/value must satisfy {\\\"equals\\\":2}. Run guard apply to set the configured repair.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"a.json\",\n            \"rule\": \"first\",\n            \"level\": \"error\",\n            \"message\": \"/value in a.json must equal 1. Set /value in a.json to 1. Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        },\n        {\n            \"path\": \"b.json\",\n            \"rule\": \"second\",\n            \"level\": \"error\",\n            \"message\": \"/value in b.json must equal 1. Set /value in b.json to 1. Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        },\n        {\n            \"path\": \"b.json\",\n            \"rule\": \"conflict\",\n            \"level\": \"error\",\n            \"message\": \"/value in b.json must equal 2. Set /value in b.json to 2. Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 3,\n        \"warnings\": 0,\n        \"fixable\": 3\n    }\n}\n",
             "files": {
                 "a.json": "{\"value\":0}",
                 "b.json": "{\"value\":0}",
@@ -444,7 +444,7 @@
         },
         {
             "exit": 1,
-            "output": "error: b.json [second] /value must satisfy {\"equals\":1}. Run guard apply to set the configured repair.\nblocked: <project>/a.json\nblocked: <project>/b.json\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nb.json\n  error: second  manual\n    /value in b.json still violates its constraints after the configured repair. Resolve the conflicting assertions or repairs for this file in guard.yaml before running guard fix again.\n\nblocked: a.json\n  --- a/a.json\n  +++ b/a.json\n  @@ -1,1 +1,3 @@\n  -{\"value\":0}\n  \\ No newline at end of file\n  +{\n  +    \"value\": 1\n  +}\n\nblocked: b.json\n  --- a/b.json\n  +++ b/b.json\n  @@ -1,1 +1,3 @@\n  -{\"value\":0}\n  \\ No newline at end of file\n  +{\n  +    \"value\": 2\n  +}\n\n1 error · 0 warnings · 0 fixable · 2 files blocked\nRepairs blocked by required configuration violations. No files were written; diffs show the proposed changes.\nGuard found required violations.\n",
             "files": {
                 "a.json": "{\"value\":0}",
                 "b.json": "{\"value\":0}",
@@ -453,7 +453,7 @@
         },
         {
             "exit": 1,
-            "output": "error: b.json [second] /value must satisfy {\"equals\":1}. Run guard apply to set the configured repair.\nblocked: <project>/a.json\nblocked: <project>/b.json\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nb.json\n  error: second  manual\n    /value in b.json still violates its constraints after the configured repair. Resolve the conflicting assertions or repairs for this file in guard.yaml before running guard fix again.\n\nblocked: a.json\n  --- a/a.json\n  +++ b/a.json\n  @@ -1,1 +1,3 @@\n  -{\"value\":0}\n  \\ No newline at end of file\n  +{\n  +    \"value\": 1\n  +}\n\nblocked: b.json\n  --- a/b.json\n  +++ b/b.json\n  @@ -1,1 +1,3 @@\n  -{\"value\":0}\n  \\ No newline at end of file\n  +{\n  +    \"value\": 2\n  +}\n\n1 error · 0 warnings · 0 fixable · 2 files blocked\nRepairs blocked by required configuration violations. No files were written; diffs show the proposed changes.\nGuard found required violations.\n",
             "files": {
                 "a.json": "{\"value\":0}",
                 "b.json": "{\"value\":0}",
@@ -462,7 +462,7 @@
         },
         {
             "exit": 1,
-            "output": "error: b.json [second] /value must satisfy {\"equals\":1}. Run guard apply to set the configured repair.\nblocked: <project>/a.json\nblocked: <project>/b.json\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nb.json\n  error: second  manual\n    /value in b.json still violates its constraints after the configured repair. Resolve the conflicting assertions or repairs for this file in guard.yaml before running guard fix again.\n\nblocked: a.json\n  --- a/a.json\n  +++ b/a.json\n  @@ -1,1 +1,3 @@\n  -{\"value\":0}\n  \\ No newline at end of file\n  +{\n  +    \"value\": 1\n  +}\n\nblocked: b.json\n  --- a/b.json\n  +++ b/b.json\n  @@ -1,1 +1,3 @@\n  -{\"value\":0}\n  \\ No newline at end of file\n  +{\n  +    \"value\": 2\n  +}\n\n1 error · 0 warnings · 0 fixable · 2 files blocked\nRepairs blocked by required configuration violations. No files were written; diffs show the proposed changes.\nGuard found required violations.\n",
             "files": {
                 "a.json": "{\"value\":0}",
                 "b.json": "{\"value\":0}",
@@ -471,7 +471,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"a.json\",\n            \"rule\": \"first\",\n            \"level\": \"error\",\n            \"message\": \"/value must satisfy {\\\"equals\\\":1}. Run guard apply to set the configured repair.\"\n        },\n        {\n            \"path\": \"b.json\",\n            \"rule\": \"second\",\n            \"level\": \"error\",\n            \"message\": \"/value must satisfy {\\\"equals\\\":1}. Run guard apply to set the configured repair.\"\n        },\n        {\n            \"path\": \"b.json\",\n            \"rule\": \"conflict\",\n            \"level\": \"error\",\n            \"message\": \"/value must satisfy {\\\"equals\\\":2}. Run guard apply to set the configured repair.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"a.json\",\n            \"rule\": \"first\",\n            \"level\": \"error\",\n            \"message\": \"/value in a.json must equal 1. Set /value in a.json to 1. Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        },\n        {\n            \"path\": \"b.json\",\n            \"rule\": \"second\",\n            \"level\": \"error\",\n            \"message\": \"/value in b.json must equal 1. Set /value in b.json to 1. Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        },\n        {\n            \"path\": \"b.json\",\n            \"rule\": \"conflict\",\n            \"level\": \"error\",\n            \"message\": \"/value in b.json must equal 2. Set /value in b.json to 2. Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 3,\n        \"warnings\": 0,\n        \"fixable\": 3\n    }\n}\n",
             "files": {
                 "a.json": "{\"value\":0}",
                 "b.json": "{\"value\":0}",
@@ -482,7 +482,7 @@
     "recommended": [
         {
             "exit": 0,
-            "output": "warning: app.json [value] /value must satisfy {\"min\":1}. Set a compliant value or add a repair value satisfying every assertion.\nGuard passed.\n",
+            "output": "\nGuard check\n\napp.json\n  warning: value  manual\n    /value in app.json must be at least 1. Set /value in app.json to a number greater than or equal to 1.\n\n0 errors · 1 warning · 0 fixable · 1 file with findings\nGuard passed.\n",
             "files": {
                 "app.json": "{\"value\":0}",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, select: /value, level: recommended, assert: {min: 1}}\n"
@@ -490,7 +490,7 @@
         },
         {
             "exit": 0,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.json\",\n            \"rule\": \"value\",\n            \"level\": \"warning\",\n            \"message\": \"/value must satisfy {\\\"min\\\":1}. Set a compliant value or add a repair value satisfying every assertion.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": true\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.json\",\n            \"rule\": \"value\",\n            \"level\": \"warning\",\n            \"message\": \"/value in app.json must be at least 1. Set /value in app.json to a number greater than or equal to 1.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": true,\n    \"summary\": {\n        \"errors\": 0,\n        \"warnings\": 1,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "app.json": "{\"value\":0}",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, select: /value, level: recommended, assert: {min: 1}}\n"
@@ -498,7 +498,7 @@
         },
         {
             "exit": 0,
-            "output": "warning: app.json [value] /value must satisfy {\"min\":1}. Set a compliant value or add a repair value satisfying every assertion.\nGuard passed.\n",
+            "output": "\nGuard fix\n\napp.json\n  warning: value  manual\n    /value in app.json must be at least 1. Set /value in app.json to a number greater than or equal to 1.\n\n0 errors · 1 warning · 0 fixable · 0 files would change\nDry run: no files were written. Run guard fix to apply these changes.\nGuard passed.\n",
             "files": {
                 "app.json": "{\"value\":0}",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, select: /value, level: recommended, assert: {min: 1}}\n"
@@ -506,7 +506,7 @@
         },
         {
             "exit": 0,
-            "output": "warning: app.json [value] /value must satisfy {\"min\":1}. Set a compliant value or add a repair value satisfying every assertion.\nGuard passed.\n",
+            "output": "\nGuard fix\n\napp.json\n  warning: value  manual\n    /value in app.json must be at least 1. Set /value in app.json to a number greater than or equal to 1.\n\n0 errors · 1 warning · 0 fixable · 0 files changed\nGuard passed.\n",
             "files": {
                 "app.json": "{\"value\":0}",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, select: /value, level: recommended, assert: {min: 1}}\n"
@@ -514,7 +514,7 @@
         },
         {
             "exit": 0,
-            "output": "warning: app.json [value] /value must satisfy {\"min\":1}. Set a compliant value or add a repair value satisfying every assertion.\nGuard passed.\n",
+            "output": "\nGuard fix\n\napp.json\n  warning: value  manual\n    /value in app.json must be at least 1. Set /value in app.json to a number greater than or equal to 1.\n\n0 errors · 1 warning · 0 fixable · 0 files changed\nGuard passed.\n",
             "files": {
                 "app.json": "{\"value\":0}",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, select: /value, level: recommended, assert: {min: 1}}\n"
@@ -522,7 +522,7 @@
         },
         {
             "exit": 0,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.json\",\n            \"rule\": \"value\",\n            \"level\": \"warning\",\n            \"message\": \"/value must satisfy {\\\"min\\\":1}. Set a compliant value or add a repair value satisfying every assertion.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": true\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.json\",\n            \"rule\": \"value\",\n            \"level\": \"warning\",\n            \"message\": \"/value in app.json must be at least 1. Set /value in app.json to a number greater than or equal to 1.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": true,\n    \"summary\": {\n        \"errors\": 0,\n        \"warnings\": 1,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "app.json": "{\"value\":0}",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.json, select: /value, level: recommended, assert: {min: 1}}\n"
@@ -682,7 +682,7 @@
     "docs-exclusion": [
         {
             "exit": 1,
-            "output": "error: docs/extra.md [documentation.undeclared_document] Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\ndocs/extra.md\n  error: documentation.undeclared_document  manual\n    Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\n1 error · 0 warnings · 0 fixable · 1 file with findings\nGuard found required violations.\n",
             "files": {
                 "README.md": "# Main\n\n```md\n# Ignored\n```\n\nDetails\n-------\n",
                 "docs/extra.md": "# Extra\n",
@@ -692,7 +692,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"docs/extra.md\",\n            \"rule\": \"documentation.undeclared_document\",\n            \"level\": \"error\",\n            \"message\": \"Document docs/extra.md matches the scan pattern \\\"**/*.md\\\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"docs/extra.md\",\n            \"rule\": \"documentation.undeclared_document\",\n            \"level\": \"error\",\n            \"message\": \"Document docs/extra.md matches the scan pattern \\\"**/*.md\\\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 1,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "README.md": "# Main\n\n```md\n# Ignored\n```\n\nDetails\n-------\n",
                 "docs/extra.md": "# Extra\n",
@@ -702,7 +702,7 @@
         },
         {
             "exit": 1,
-            "output": "error: docs/extra.md [documentation.undeclared_document] Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\ndocs/extra.md\n  error: documentation.undeclared_document  manual\n    Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\n1 error · 0 warnings · 0 fixable · 0 files would change\nDry run: no files were written. Run guard fix to apply these changes.\nGuard found required violations.\n",
             "files": {
                 "README.md": "# Main\n\n```md\n# Ignored\n```\n\nDetails\n-------\n",
                 "docs/extra.md": "# Extra\n",
@@ -712,7 +712,7 @@
         },
         {
             "exit": 1,
-            "output": "error: docs/extra.md [documentation.undeclared_document] Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\ndocs/extra.md\n  error: documentation.undeclared_document  manual\n    Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\n1 error · 0 warnings · 0 fixable · 0 files changed\nGuard found required violations.\n",
             "files": {
                 "README.md": "# Main\n\n```md\n# Ignored\n```\n\nDetails\n-------\n",
                 "docs/extra.md": "# Extra\n",
@@ -722,7 +722,7 @@
         },
         {
             "exit": 1,
-            "output": "error: docs/extra.md [documentation.undeclared_document] Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\ndocs/extra.md\n  error: documentation.undeclared_document  manual\n    Document docs/extra.md matches the scan pattern \"**/*.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\n1 error · 0 warnings · 0 fixable · 0 files changed\nGuard found required violations.\n",
             "files": {
                 "README.md": "# Main\n\n```md\n# Ignored\n```\n\nDetails\n-------\n",
                 "docs/extra.md": "# Extra\n",
@@ -732,7 +732,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"docs/extra.md\",\n            \"rule\": \"documentation.undeclared_document\",\n            \"level\": \"error\",\n            \"message\": \"Document docs/extra.md matches the scan pattern \\\"**/*.md\\\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"docs/extra.md\",\n            \"rule\": \"documentation.undeclared_document\",\n            \"level\": \"error\",\n            \"message\": \"Document docs/extra.md matches the scan pattern \\\"**/*.md\\\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 1,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "README.md": "# Main\n\n```md\n# Ignored\n```\n\nDetails\n-------\n",
                 "docs/extra.md": "# Extra\n",
@@ -744,7 +744,7 @@
     "tree-overlap": [
         {
             "exit": 1,
-            "output": "error: src/one/a_bad.txt [structure.disallowed_file] File \"src/one/a_bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it.\nerror: src/index.php [structure.missing_required_file] Directory \"src\" is missing required file \"index.php\". Create it.\nerror: src/one/a_bad.txt [structure.file_case] File name \"a_bad.txt\" in \"src/one\" does not follow the pascal convention. Rename it.\nerror: src/one/index.php [structure.missing_required_file] Directory \"src/one\" is missing required file \"index.php\". Create it.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\nsrc/one/a_bad.txt\n  error: structure.disallowed_file  manual\n    File \"src/one/a_bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it. The declared directory layout keeps files within their intended architectural boundaries.\n  error: structure.file_case  manual\n    File name \"a_bad.txt\" in \"src/one\" does not follow the pascal convention. Rename it. Consistent names make paths predictable and reduce mistakes when referring to files across platforms.\n\nsrc/index.php\n  error: structure.missing_required_file  manual\n    Directory \"src\" is missing required file \"index.php\". Create it. Required files provide the entry points or project guidance expected at this location.\n\nsrc/one/index.php\n  error: structure.missing_required_file  manual\n    Directory \"src/one\" is missing required file \"index.php\". Create it. Required files provide the entry points or project guidance expected at this location.\n\n4 errors · 0 warnings · 0 fixable · 3 files with findings\nGuard found required violations.\n",
             "files": {
                 "guard.yaml": "version: 1\nstructure:\n  paths: [src]\n  directories:\n    - {path: '**', allow: ['*.php'], max_depth: 1}\n    - {path: 'src/**', require: [index.php], file_case: pascal}\n",
                 "src/one/A.php": "<?php",
@@ -753,7 +753,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"src/one/a_bad.txt\",\n            \"rule\": \"structure.disallowed_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"src/one/a_bad.txt\\\" does not match any allowed pattern (*.php). Rename, move, or delete it.\"\n        },\n        {\n            \"path\": \"src/index.php\",\n            \"rule\": \"structure.missing_required_file\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src\\\" is missing required file \\\"index.php\\\". Create it.\"\n        },\n        {\n            \"path\": \"src/one/a_bad.txt\",\n            \"rule\": \"structure.file_case\",\n            \"level\": \"error\",\n            \"message\": \"File name \\\"a_bad.txt\\\" in \\\"src/one\\\" does not follow the pascal convention. Rename it.\"\n        },\n        {\n            \"path\": \"src/one/index.php\",\n            \"rule\": \"structure.missing_required_file\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src/one\\\" is missing required file \\\"index.php\\\". Create it.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"src/one/a_bad.txt\",\n            \"rule\": \"structure.disallowed_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"src/one/a_bad.txt\\\" does not match any allowed pattern (*.php). Rename, move, or delete it. The declared directory layout keeps files within their intended architectural boundaries.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/index.php\",\n            \"rule\": \"structure.missing_required_file\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src\\\" is missing required file \\\"index.php\\\". Create it. Required files provide the entry points or project guidance expected at this location.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/one/a_bad.txt\",\n            \"rule\": \"structure.file_case\",\n            \"level\": \"error\",\n            \"message\": \"File name \\\"a_bad.txt\\\" in \\\"src/one\\\" does not follow the pascal convention. Rename it. Consistent names make paths predictable and reduce mistakes when referring to files across platforms.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/one/index.php\",\n            \"rule\": \"structure.missing_required_file\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src/one\\\" is missing required file \\\"index.php\\\". Create it. Required files provide the entry points or project guidance expected at this location.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 4,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "guard.yaml": "version: 1\nstructure:\n  paths: [src]\n  directories:\n    - {path: '**', allow: ['*.php'], max_depth: 1}\n    - {path: 'src/**', require: [index.php], file_case: pascal}\n",
                 "src/one/A.php": "<?php",
@@ -762,7 +762,7 @@
         },
         {
             "exit": 1,
-            "output": "error: src/one/a_bad.txt [structure.disallowed_file] File \"src/one/a_bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it.\nerror: src/index.php [structure.missing_required_file] Directory \"src\" is missing required file \"index.php\". Create it.\nerror: src/one/a_bad.txt [structure.file_case] File name \"a_bad.txt\" in \"src/one\" does not follow the pascal convention. Rename it.\nerror: src/one/index.php [structure.missing_required_file] Directory \"src/one\" is missing required file \"index.php\". Create it.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nsrc/one/a_bad.txt\n  error: structure.disallowed_file  manual\n    File \"src/one/a_bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it. The declared directory layout keeps files within their intended architectural boundaries.\n  error: structure.file_case  manual\n    File name \"a_bad.txt\" in \"src/one\" does not follow the pascal convention. Rename it. Consistent names make paths predictable and reduce mistakes when referring to files across platforms.\n\nsrc/index.php\n  error: structure.missing_required_file  manual\n    Directory \"src\" is missing required file \"index.php\". Create it. Required files provide the entry points or project guidance expected at this location.\n\nsrc/one/index.php\n  error: structure.missing_required_file  manual\n    Directory \"src/one\" is missing required file \"index.php\". Create it. Required files provide the entry points or project guidance expected at this location.\n\n4 errors · 0 warnings · 0 fixable · 0 files would change\nDry run: no files were written. Run guard fix to apply these changes.\nGuard found required violations.\n",
             "files": {
                 "guard.yaml": "version: 1\nstructure:\n  paths: [src]\n  directories:\n    - {path: '**', allow: ['*.php'], max_depth: 1}\n    - {path: 'src/**', require: [index.php], file_case: pascal}\n",
                 "src/one/A.php": "<?php",
@@ -771,7 +771,7 @@
         },
         {
             "exit": 1,
-            "output": "error: src/one/a_bad.txt [structure.disallowed_file] File \"src/one/a_bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it.\nerror: src/index.php [structure.missing_required_file] Directory \"src\" is missing required file \"index.php\". Create it.\nerror: src/one/a_bad.txt [structure.file_case] File name \"a_bad.txt\" in \"src/one\" does not follow the pascal convention. Rename it.\nerror: src/one/index.php [structure.missing_required_file] Directory \"src/one\" is missing required file \"index.php\". Create it.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nsrc/one/a_bad.txt\n  error: structure.disallowed_file  manual\n    File \"src/one/a_bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it. The declared directory layout keeps files within their intended architectural boundaries.\n  error: structure.file_case  manual\n    File name \"a_bad.txt\" in \"src/one\" does not follow the pascal convention. Rename it. Consistent names make paths predictable and reduce mistakes when referring to files across platforms.\n\nsrc/index.php\n  error: structure.missing_required_file  manual\n    Directory \"src\" is missing required file \"index.php\". Create it. Required files provide the entry points or project guidance expected at this location.\n\nsrc/one/index.php\n  error: structure.missing_required_file  manual\n    Directory \"src/one\" is missing required file \"index.php\". Create it. Required files provide the entry points or project guidance expected at this location.\n\n4 errors · 0 warnings · 0 fixable · 0 files changed\nGuard found required violations.\n",
             "files": {
                 "guard.yaml": "version: 1\nstructure:\n  paths: [src]\n  directories:\n    - {path: '**', allow: ['*.php'], max_depth: 1}\n    - {path: 'src/**', require: [index.php], file_case: pascal}\n",
                 "src/one/A.php": "<?php",
@@ -780,7 +780,7 @@
         },
         {
             "exit": 1,
-            "output": "error: src/one/a_bad.txt [structure.disallowed_file] File \"src/one/a_bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it.\nerror: src/index.php [structure.missing_required_file] Directory \"src\" is missing required file \"index.php\". Create it.\nerror: src/one/a_bad.txt [structure.file_case] File name \"a_bad.txt\" in \"src/one\" does not follow the pascal convention. Rename it.\nerror: src/one/index.php [structure.missing_required_file] Directory \"src/one\" is missing required file \"index.php\". Create it.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nsrc/one/a_bad.txt\n  error: structure.disallowed_file  manual\n    File \"src/one/a_bad.txt\" does not match any allowed pattern (*.php). Rename, move, or delete it. The declared directory layout keeps files within their intended architectural boundaries.\n  error: structure.file_case  manual\n    File name \"a_bad.txt\" in \"src/one\" does not follow the pascal convention. Rename it. Consistent names make paths predictable and reduce mistakes when referring to files across platforms.\n\nsrc/index.php\n  error: structure.missing_required_file  manual\n    Directory \"src\" is missing required file \"index.php\". Create it. Required files provide the entry points or project guidance expected at this location.\n\nsrc/one/index.php\n  error: structure.missing_required_file  manual\n    Directory \"src/one\" is missing required file \"index.php\". Create it. Required files provide the entry points or project guidance expected at this location.\n\n4 errors · 0 warnings · 0 fixable · 0 files changed\nGuard found required violations.\n",
             "files": {
                 "guard.yaml": "version: 1\nstructure:\n  paths: [src]\n  directories:\n    - {path: '**', allow: ['*.php'], max_depth: 1}\n    - {path: 'src/**', require: [index.php], file_case: pascal}\n",
                 "src/one/A.php": "<?php",
@@ -789,7 +789,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"src/one/a_bad.txt\",\n            \"rule\": \"structure.disallowed_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"src/one/a_bad.txt\\\" does not match any allowed pattern (*.php). Rename, move, or delete it.\"\n        },\n        {\n            \"path\": \"src/index.php\",\n            \"rule\": \"structure.missing_required_file\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src\\\" is missing required file \\\"index.php\\\". Create it.\"\n        },\n        {\n            \"path\": \"src/one/a_bad.txt\",\n            \"rule\": \"structure.file_case\",\n            \"level\": \"error\",\n            \"message\": \"File name \\\"a_bad.txt\\\" in \\\"src/one\\\" does not follow the pascal convention. Rename it.\"\n        },\n        {\n            \"path\": \"src/one/index.php\",\n            \"rule\": \"structure.missing_required_file\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src/one\\\" is missing required file \\\"index.php\\\". Create it.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"src/one/a_bad.txt\",\n            \"rule\": \"structure.disallowed_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"src/one/a_bad.txt\\\" does not match any allowed pattern (*.php). Rename, move, or delete it. The declared directory layout keeps files within their intended architectural boundaries.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/index.php\",\n            \"rule\": \"structure.missing_required_file\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src\\\" is missing required file \\\"index.php\\\". Create it. Required files provide the entry points or project guidance expected at this location.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/one/a_bad.txt\",\n            \"rule\": \"structure.file_case\",\n            \"level\": \"error\",\n            \"message\": \"File name \\\"a_bad.txt\\\" in \\\"src/one\\\" does not follow the pascal convention. Rename it. Consistent names make paths predictable and reduce mistakes when referring to files across platforms.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/one/index.php\",\n            \"rule\": \"structure.missing_required_file\",\n            \"level\": \"error\",\n            \"message\": \"Directory \\\"src/one\\\" is missing required file \\\"index.php\\\". Create it. Required files provide the entry points or project guidance expected at this location.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 4,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "guard.yaml": "version: 1\nstructure:\n  paths: [src]\n  directories:\n    - {path: '**', allow: ['*.php'], max_depth: 1}\n    - {path: 'src/**', require: [index.php], file_case: pascal}\n",
                 "src/one/A.php": "<?php",
@@ -844,7 +844,7 @@
     "imports": [
         {
             "exit": 0,
-            "output": "Guard passed.\n",
+            "output": "\nGuard check\n\n0 errors · 0 warnings · 0 fixable · 0 files with findings\nGuard passed.\n",
             "files": {
                 "base.yaml": "metrics:\n  source: [src]\n  profiles: {standard: {limits: {file: {lines: 1}}}}\n  default: standard\n",
                 "guard.yaml": "version: 1\nimports: [base.yaml]\nmetrics:\n  profiles: {standard: {limits: {file: {lines: 10}}}}\n",
@@ -853,7 +853,7 @@
         },
         {
             "exit": 0,
-            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": true\n}\n",
+            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": true,\n    \"summary\": {\n        \"errors\": 0,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "base.yaml": "metrics:\n  source: [src]\n  profiles: {standard: {limits: {file: {lines: 1}}}}\n  default: standard\n",
                 "guard.yaml": "version: 1\nimports: [base.yaml]\nmetrics:\n  profiles: {standard: {limits: {file: {lines: 10}}}}\n",
@@ -862,7 +862,7 @@
         },
         {
             "exit": 0,
-            "output": "Guard passed.\n",
+            "output": "\nGuard fix\n\n0 errors · 0 warnings · 0 fixable · 0 files would change\nDry run: no files were written. Run guard fix to apply these changes.\nGuard passed.\n",
             "files": {
                 "base.yaml": "metrics:\n  source: [src]\n  profiles: {standard: {limits: {file: {lines: 1}}}}\n  default: standard\n",
                 "guard.yaml": "version: 1\nimports: [base.yaml]\nmetrics:\n  profiles: {standard: {limits: {file: {lines: 10}}}}\n",
@@ -871,7 +871,7 @@
         },
         {
             "exit": 0,
-            "output": "Guard passed.\n",
+            "output": "\nGuard fix\n\n0 errors · 0 warnings · 0 fixable · 0 files changed\nGuard passed.\n",
             "files": {
                 "base.yaml": "metrics:\n  source: [src]\n  profiles: {standard: {limits: {file: {lines: 1}}}}\n  default: standard\n",
                 "guard.yaml": "version: 1\nimports: [base.yaml]\nmetrics:\n  profiles: {standard: {limits: {file: {lines: 10}}}}\n",
@@ -880,7 +880,7 @@
         },
         {
             "exit": 0,
-            "output": "Guard passed.\n",
+            "output": "\nGuard fix\n\n0 errors · 0 warnings · 0 fixable · 0 files changed\nGuard passed.\n",
             "files": {
                 "base.yaml": "metrics:\n  source: [src]\n  profiles: {standard: {limits: {file: {lines: 1}}}}\n  default: standard\n",
                 "guard.yaml": "version: 1\nimports: [base.yaml]\nmetrics:\n  profiles: {standard: {limits: {file: {lines: 10}}}}\n",
@@ -889,7 +889,7 @@
         },
         {
             "exit": 0,
-            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": true\n}\n",
+            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": true,\n    \"summary\": {\n        \"errors\": 0,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "base.yaml": "metrics:\n  source: [src]\n  profiles: {standard: {limits: {file: {lines: 1}}}}\n  default: standard\n",
                 "guard.yaml": "version: 1\nimports: [base.yaml]\nmetrics:\n  profiles: {standard: {limits: {file: {lines: 10}}}}\n",
@@ -907,14 +907,14 @@
         },
         {
             "exit": 2,
-            "output": "Guard error: Unsupported --format \"bad\". Use --format=text or --format=json.\n",
+            "output": "Guard error: Unsupported --format \"bad\". Use --format=text, human, ai or json.\n",
             "files": {
                 "guard.yaml": "version: 1\n"
             }
         },
         {
             "exit": 0,
-            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"action\": \"would change\",\n    \"success\": true\n}\n",
+            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"would change\",\n    \"success\": true,\n    \"summary\": {\n        \"errors\": 0,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "guard.yaml": "version: 1\n"
             }
@@ -963,7 +963,7 @@
         },
         {
             "exit": 1,
-            "output": "error: README.md [documentation.missing_outline_heading] Heading \"## Requirements\" required by outline \"library\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after the first level-1 heading. Add the section at that position; changing the outline requires a human to update guard.yaml.\nerror: README.md [documentation.missing_outline_heading] Heading \"## Installation\" required by outline \"library\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after \"## Requirements\". Add the section at that position; changing the outline requires a human to update guard.yaml.\nerror: README.md [documentation.missing_outline_heading] Heading \"## License\" required by outline \"library\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after \"## Usage\". Add the section at that position; changing the outline requires a human to update guard.yaml.\nerror: README.md [documentation.missing_badges] README.md has no badge block directly below its title \"# Project\". Place the badges on the lines after the \"# \" title, separated from it by one blank line, in the order guard.yaml declares: docs (optional), workflow (optional, repeatable), Packagist (optional), PHP, License, DeepWiki (optional); changing the badges requires a human to update guard.yaml.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\nREADME.md\n  error: documentation.missing_outline_heading  manual\n    Heading \"## Requirements\" required by outline \"library\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after the first level-1 heading. Add the section at that position; changing the outline requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n  error: documentation.missing_outline_heading  manual\n    Heading \"## Installation\" required by outline \"library\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after \"## Requirements\". Add the section at that position; changing the outline requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n  error: documentation.missing_outline_heading  manual\n    Heading \"## License\" required by outline \"library\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after \"## Usage\". Add the section at that position; changing the outline requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n  error: documentation.missing_badges  manual\n    README.md has no badge block directly below its title \"# Project\". Place the badges on the lines after the \"# \" title, separated from it by one blank line, in the order guard.yaml declares: docs (optional), workflow (optional, repeatable), Packagist (optional), PHP, License, DeepWiki (optional); changing the badges requires a human to update guard.yaml. A consistent badge block keeps project status links discoverable and avoids misleading duplicates.\n\n4 errors · 0 warnings · 0 fixable · 1 file with findings\nGuard found required violations.\n",
             "files": {
                 "README.md": "# Project\n\n## Usage\n",
                 "docs/.gitkeep": "",
@@ -999,7 +999,7 @@
         },
         {
             "exit": 1,
-            "output": "error: README.md [documentation.missing_outline_heading] Heading \"## Packages\" required by outline \"monorepo\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after the first level-1 heading. Add the section at that position; changing the outline requires a human to update guard.yaml.\nerror: README.md [documentation.missing_outline_heading] Heading \"## License\" required by outline \"monorepo\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after \"## Related Projects\". Add the section at that position; changing the outline requires a human to update guard.yaml.\nerror: README.md [documentation.missing_badges] README.md has no badge block directly below its title \"# Project\". Place the badges on the lines after the \"# \" title, separated from it by one blank line, in the order guard.yaml declares: docs (optional), workflow (optional, repeatable), Packagist (optional), PHP, License, DeepWiki (optional); changing the badges requires a human to update guard.yaml.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\nREADME.md\n  error: documentation.missing_outline_heading  manual\n    Heading \"## Packages\" required by outline \"monorepo\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after the first level-1 heading. Add the section at that position; changing the outline requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n  error: documentation.missing_outline_heading  manual\n    Heading \"## License\" required by outline \"monorepo\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after \"## Related Projects\". Add the section at that position; changing the outline requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n  error: documentation.missing_badges  manual\n    README.md has no badge block directly below its title \"# Project\". Place the badges on the lines after the \"# \" title, separated from it by one blank line, in the order guard.yaml declares: docs (optional), workflow (optional, repeatable), Packagist (optional), PHP, License, DeepWiki (optional); changing the badges requires a human to update guard.yaml. A consistent badge block keeps project status links discoverable and avoids misleading duplicates.\n\n3 errors · 0 warnings · 0 fixable · 1 file with findings\nGuard found required violations.\n",
             "files": {
                 "README.md": "# Project\n",
                 "doc-guard.yaml": "documents: {README.md: {headings: ['# Project']}}\nscan: ['*.md']\n",
@@ -1013,7 +1013,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.missing_outline_heading\",\n            \"level\": \"error\",\n            \"message\": \"Heading \\\"## Packages\\\" required by outline \\\"monorepo\\\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after the first level-1 heading. Add the section at that position; changing the outline requires a human to update guard.yaml.\"\n        },\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.missing_outline_heading\",\n            \"level\": \"error\",\n            \"message\": \"Heading \\\"## License\\\" required by outline \\\"monorepo\\\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after \\\"## Related Projects\\\". Add the section at that position; changing the outline requires a human to update guard.yaml.\"\n        },\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.missing_badges\",\n            \"level\": \"error\",\n            \"message\": \"README.md has no badge block directly below its title \\\"# Project\\\". Place the badges on the lines after the \\\"# \\\" title, separated from it by one blank line, in the order guard.yaml declares: docs (optional), workflow (optional, repeatable), Packagist (optional), PHP, License, DeepWiki (optional); changing the badges requires a human to update guard.yaml.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.missing_outline_heading\",\n            \"level\": \"error\",\n            \"message\": \"Heading \\\"## Packages\\\" required by outline \\\"monorepo\\\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after the first level-1 heading. Add the section at that position; changing the outline requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.missing_outline_heading\",\n            \"level\": \"error\",\n            \"message\": \"Heading \\\"## License\\\" required by outline \\\"monorepo\\\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after \\\"## Related Projects\\\". Add the section at that position; changing the outline requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"README.md\",\n            \"rule\": \"documentation.missing_badges\",\n            \"level\": \"error\",\n            \"message\": \"README.md has no badge block directly below its title \\\"# Project\\\". Place the badges on the lines after the \\\"# \\\" title, separated from it by one blank line, in the order guard.yaml declares: docs (optional), workflow (optional, repeatable), Packagist (optional), PHP, License, DeepWiki (optional); changing the badges requires a human to update guard.yaml. A consistent badge block keeps project status links discoverable and avoids misleading duplicates.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 3,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "README.md": "# Project\n",
                 "doc-guard.yaml": "documents: {README.md: {headings: ['# Project']}}\nscan: ['*.md']\n",
@@ -1027,7 +1027,7 @@
         },
         {
             "exit": 1,
-            "output": "error: README.md [documentation.missing_outline_heading] Heading \"## Packages\" required by outline \"monorepo\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after the first level-1 heading. Add the section at that position; changing the outline requires a human to update guard.yaml.\nerror: README.md [documentation.missing_outline_heading] Heading \"## License\" required by outline \"monorepo\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after \"## Related Projects\". Add the section at that position; changing the outline requires a human to update guard.yaml.\nerror: README.md [documentation.missing_badges] README.md has no badge block directly below its title \"# Project\". Place the badges on the lines after the \"# \" title, separated from it by one blank line, in the order guard.yaml declares: docs (optional), workflow (optional, repeatable), Packagist (optional), PHP, License, DeepWiki (optional); changing the badges requires a human to update guard.yaml.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nREADME.md\n  error: documentation.missing_outline_heading  manual\n    Heading \"## Packages\" required by outline \"monorepo\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after the first level-1 heading. Add the section at that position; changing the outline requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n  error: documentation.missing_outline_heading  manual\n    Heading \"## License\" required by outline \"monorepo\" (the closest of the declared outlines cli, library, monorepo) is missing from README.md; guard.yaml declares it after \"## Related Projects\". Add the section at that position; changing the outline requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n  error: documentation.missing_badges  manual\n    README.md has no badge block directly below its title \"# Project\". Place the badges on the lines after the \"# \" title, separated from it by one blank line, in the order guard.yaml declares: docs (optional), workflow (optional, repeatable), Packagist (optional), PHP, License, DeepWiki (optional); changing the badges requires a human to update guard.yaml. A consistent badge block keeps project status links discoverable and avoids misleading duplicates.\n\n3 errors · 0 warnings · 0 fixable · 0 files changed\nGuard found required violations.\n",
             "files": {
                 "README.md": "# Project\n",
                 "doc-guard.yaml": "documents: {README.md: {headings: ['# Project']}}\nscan: ['*.md']\n",
@@ -1115,7 +1115,7 @@
     "yaml-object-list-types": [
         {
             "exit": 1,
-            "output": "error: app.yaml [value] /value must satisfy {\"equals\":1}. Run guard apply to set the configured repair.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\napp.yaml\n  error: value  fixable\n    /value in app.yaml must equal 1. Set /value in app.yaml to 1. Run guard fix to apply the configured repair.\n\n1 error · 0 warnings · 1 fixable · 1 file with findings\nPreview repairs: guard fix --dry-run\nGuard found required violations.\n",
             "files": {
                 "app.yaml": "# preserve when compliant\nvalue: 0\nmap: {}\nitems: []\nnothing: null\nlist: [{a: 1}, {b: true}]\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, select: /value, assert: {equals: 1}}\n"
@@ -1123,7 +1123,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.yaml\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/value must satisfy {\\\"equals\\\":1}. Run guard apply to set the configured repair.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"app.yaml\",\n            \"rule\": \"value\",\n            \"level\": \"error\",\n            \"message\": \"/value in app.yaml must equal 1. Set /value in app.yaml to 1. Run guard fix to apply the configured repair.\",\n            \"fixable\": true\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 1,\n        \"warnings\": 0,\n        \"fixable\": 1\n    }\n}\n",
             "files": {
                 "app.yaml": "# preserve when compliant\nvalue: 0\nmap: {}\nitems: []\nnothing: null\nlist: [{a: 1}, {b: true}]\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, select: /value, assert: {equals: 1}}\n"
@@ -1131,7 +1131,7 @@
         },
         {
             "exit": 0,
-            "output": "would change: <project>/app.yaml\nGuard passed.\n",
+            "output": "\nGuard fix\n\nwould change: app.yaml\n  --- a/app.yaml\n  +++ b/app.yaml\n  @@ -1,6 +1,9 @@\n  -# preserve when compliant\n  -value: 0\n  -map: {}\n  -items: []\n  -nothing: null\n  -list: [{a: 1}, {b: true}]\n  +value: 1\n  +map: {}\n  +items: []\n  +nothing: null\n  +list:\n  +  -\n  +    a: 1\n  +  -\n  +    b: true\n\n0 errors · 0 warnings · 0 fixable · 1 file would change\nDry run: no files were written. Run guard fix to apply these changes.\nGuard passed.\n",
             "files": {
                 "app.yaml": "# preserve when compliant\nvalue: 0\nmap: {}\nitems: []\nnothing: null\nlist: [{a: 1}, {b: true}]\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, select: /value, assert: {equals: 1}}\n"
@@ -1139,7 +1139,7 @@
         },
         {
             "exit": 0,
-            "output": "changed: <project>/app.yaml\nGuard passed.\n",
+            "output": "\nGuard fix\n\nchanged: app.yaml\n  --- a/app.yaml\n  +++ b/app.yaml\n  @@ -1,6 +1,9 @@\n  -# preserve when compliant\n  -value: 0\n  -map: {}\n  -items: []\n  -nothing: null\n  -list: [{a: 1}, {b: true}]\n  +value: 1\n  +map: {}\n  +items: []\n  +nothing: null\n  +list:\n  +  -\n  +    a: 1\n  +  -\n  +    b: true\n\n0 errors · 0 warnings · 0 fixable · 1 file changed\nGuard passed.\n",
             "files": {
                 "app.yaml": "value: 1\nmap: {}\nitems: []\nnothing: null\nlist:\n  -\n    a: 1\n  -\n    b: true\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: app.yaml, select: /value, assert: {equals: 1}}\n"
@@ -1149,7 +1149,7 @@
     "php-literal": [
         {
             "exit": 1,
-            "output": "error: fixer.php [risky] /riskyAllowed must satisfy {\"equals\":true}. Set a compliant value or add a repair value satisfying every assertion.\nerror: fixer.php [strict] /rules/strict_comparison must satisfy {\"equals\":true}. Set a compliant value or add a repair value satisfying every assertion.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\nfixer.php\n  error: risky  manual\n    /riskyAllowed in fixer.php must equal true. Call setRiskyAllowed(true) in fixer.php.\n  error: strict  manual\n    /rules/strict_comparison in fixer.php must equal true. Set the strict_comparison option to true in the literal array passed to setRules() in fixer.php.\n\n2 errors · 0 warnings · 0 fixable · 1 file with findings\nGuard found required violations.\n",
             "files": {
                 "fixer.php": "<?php\nreturn (new Config())->setRiskyAllowed(false)->setRules(['strict_comparison' => false]);\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: risky, file: fixer.php, format: php, select: /riskyAllowed, assert: {equals: true}}\n  - {id: strict, file: fixer.php, format: php, select: /rules/strict_comparison, assert: {equals: true}}\n"
@@ -1157,7 +1157,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"fixer.php\",\n            \"rule\": \"risky\",\n            \"level\": \"error\",\n            \"message\": \"/riskyAllowed must satisfy {\\\"equals\\\":true}. Set a compliant value or add a repair value satisfying every assertion.\"\n        },\n        {\n            \"path\": \"fixer.php\",\n            \"rule\": \"strict\",\n            \"level\": \"error\",\n            \"message\": \"/rules/strict_comparison must satisfy {\\\"equals\\\":true}. Set a compliant value or add a repair value satisfying every assertion.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"blocked\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"fixer.php\",\n            \"rule\": \"risky\",\n            \"level\": \"error\",\n            \"message\": \"/riskyAllowed in fixer.php must equal true. Call setRiskyAllowed(true) in fixer.php.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"fixer.php\",\n            \"rule\": \"strict\",\n            \"level\": \"error\",\n            \"message\": \"/rules/strict_comparison in fixer.php must equal true. Set the strict_comparison option to true in the literal array passed to setRules() in fixer.php.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 2,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "fixer.php": "<?php\nreturn (new Config())->setRiskyAllowed(false)->setRules(['strict_comparison' => false]);\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: risky, file: fixer.php, format: php, select: /riskyAllowed, assert: {equals: true}}\n  - {id: strict, file: fixer.php, format: php, select: /rules/strict_comparison, assert: {equals: true}}\n"
@@ -1165,7 +1165,7 @@
         },
         {
             "exit": 1,
-            "output": "error: fixer.php [risky] /riskyAllowed must satisfy {\"equals\":true}. Set a compliant value or add a repair value satisfying every assertion.\nerror: fixer.php [strict] /rules/strict_comparison must satisfy {\"equals\":true}. Set a compliant value or add a repair value satisfying every assertion.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nfixer.php\n  error: risky  manual\n    /riskyAllowed in fixer.php must equal true. Call setRiskyAllowed(true) in fixer.php.\n  error: strict  manual\n    /rules/strict_comparison in fixer.php must equal true. Set the strict_comparison option to true in the literal array passed to setRules() in fixer.php.\n\n2 errors · 0 warnings · 0 fixable · 0 files blocked\nRepairs blocked by required configuration violations. No files were written; diffs show the proposed changes.\nGuard found required violations.\n",
             "files": {
                 "fixer.php": "<?php\nreturn (new Config())->setRiskyAllowed(false)->setRules(['strict_comparison' => false]);\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: risky, file: fixer.php, format: php, select: /riskyAllowed, assert: {equals: true}}\n  - {id: strict, file: fixer.php, format: php, select: /rules/strict_comparison, assert: {equals: true}}\n"
@@ -1173,7 +1173,7 @@
         },
         {
             "exit": 1,
-            "output": "error: fixer.php [risky] /riskyAllowed must satisfy {\"equals\":true}. Set a compliant value or add a repair value satisfying every assertion.\nerror: fixer.php [strict] /rules/strict_comparison must satisfy {\"equals\":true}. Set a compliant value or add a repair value satisfying every assertion.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\nfixer.php\n  error: risky  manual\n    /riskyAllowed in fixer.php must equal true. Call setRiskyAllowed(true) in fixer.php.\n  error: strict  manual\n    /rules/strict_comparison in fixer.php must equal true. Set the strict_comparison option to true in the literal array passed to setRules() in fixer.php.\n\n2 errors · 0 warnings · 0 fixable · 0 files blocked\nRepairs blocked by required configuration violations. No files were written; diffs show the proposed changes.\nGuard found required violations.\n",
             "files": {
                 "fixer.php": "<?php\nreturn (new Config())->setRiskyAllowed(false)->setRules(['strict_comparison' => false]);\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: risky, file: fixer.php, format: php, select: /riskyAllowed, assert: {equals: true}}\n  - {id: strict, file: fixer.php, format: php, select: /rules/strict_comparison, assert: {equals: true}}\n"
@@ -1183,7 +1183,7 @@
     "numeric-discovery-pattern": [
         {
             "exit": 1,
-            "output": "error: 123 [documentation.undeclared_document] Document 123 matches the scan pattern \"123\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\n123\n  error: documentation.undeclared_document  manual\n    Document 123 matches the scan pattern \"123\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\n1 error · 0 warnings · 0 fixable · 1 file with findings\nGuard found required violations.\n",
             "files": {
                 "123": "# Numeric name\n",
                 "README.md": "# Project\n",
@@ -1192,7 +1192,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"123\",\n            \"rule\": \"documentation.undeclared_document\",\n            \"level\": \"error\",\n            \"message\": \"Document 123 matches the scan pattern \\\"123\\\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"123\",\n            \"rule\": \"documentation.undeclared_document\",\n            \"level\": \"error\",\n            \"message\": \"Document 123 matches the scan pattern \\\"123\\\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 1,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "123": "# Numeric name\n",
                 "README.md": "# Project\n",
@@ -1203,7 +1203,7 @@
     "yaml-aliases": [
         {
             "exit": 1,
-            "output": "error: app.yaml [alias] /first/value must satisfy {\"equals\":1}. Run guard apply to set the configured repair.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\napp.yaml\n  error: alias  fixable\n    /first/value in app.yaml must equal 1. Set /first/value in app.yaml to 1. Run guard fix to apply the configured repair.\n\n1 error · 0 warnings · 1 fixable · 1 file with findings\nPreview repairs: guard fix --dry-run\nGuard found required violations.\n",
             "files": {
                 "app.yaml": "first: &alias {value: 0}\nsecond: *alias\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: alias, file: app.yaml, select: /first/value, assert: {equals: 1}}\n"
@@ -1211,7 +1211,7 @@
         },
         {
             "exit": 0,
-            "output": "changed: <project>/app.yaml\nGuard passed.\n",
+            "output": "\nGuard fix\n\nchanged: app.yaml\n  --- a/app.yaml\n  +++ b/app.yaml\n  @@ -1,2 +1,4 @@\n  -first: &alias {value: 0}\n  -second: *alias\n  +first:\n  +  value: 1\n  +second:\n  +  value: 1\n\n0 errors · 0 warnings · 0 fixable · 1 file changed\nGuard passed.\n",
             "files": {
                 "app.yaml": "first:\n  value: 1\nsecond:\n  value: 1\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: alias, file: app.yaml, select: /first/value, assert: {equals: 1}}\n"
@@ -1219,7 +1219,7 @@
         },
         {
             "exit": 0,
-            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": true\n}\n",
+            "output": "{\n    \"findings\": [],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": true,\n    \"summary\": {\n        \"errors\": 0,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "app.yaml": "first:\n  value: 1\nsecond:\n  value: 1\n",
                 "guard.yaml": "version: 1\nconfiguration:\n  - {id: alias, file: app.yaml, select: /first/value, assert: {equals: 1}}\n"
@@ -1229,7 +1229,7 @@
     "root-spellings-and-literal-discovery": [
         {
             "exit": 1,
-            "output": "error: ./src/A.php [metrics.file_lines] File has 3 physical lines; maximum is 1.\nerror: src/A.php [metrics.file_lines] File has 3 physical lines; maximum is 1.\nerror: ./src/A.php [structure.denied_file] File \"./src/A.php\" matches denied pattern \"*.php\". Rename or remove it.\nerror: src/A.php [structure.denied_file] File \"src/A.php\" matches denied pattern \"*.php\". Rename or remove it.\nerror: docs/../README.md [documentation.undeclared_document] Document docs/../README.md matches the scan pattern \"docs/../README.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\n./src/A.php\n  error: metrics.file_lines  manual\n    File has 3 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: structure.denied_file  manual\n    File \"./src/A.php\" matches denied pattern \"*.php\". Rename or remove it. The declared directory layout keeps files within their intended architectural boundaries.\n\nsrc/A.php\n  error: metrics.file_lines  manual\n    File has 3 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: structure.denied_file  manual\n    File \"src/A.php\" matches denied pattern \"*.php\". Rename or remove it. The declared directory layout keeps files within their intended architectural boundaries.\n\ndocs/../README.md\n  error: documentation.undeclared_document  manual\n    Document docs/../README.md matches the scan pattern \"docs/../README.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\n5 errors · 0 warnings · 0 fixable · 3 files with findings\nGuard found required violations.\n",
             "files": {
                 "README.md": "# Root\n",
                 "docs/placeholder.txt": "placeholder",
@@ -1239,7 +1239,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"./src/A.php\",\n            \"rule\": \"metrics.file_lines\",\n            \"level\": \"error\",\n            \"message\": \"File has 3 physical lines; maximum is 1.\"\n        },\n        {\n            \"path\": \"src/A.php\",\n            \"rule\": \"metrics.file_lines\",\n            \"level\": \"error\",\n            \"message\": \"File has 3 physical lines; maximum is 1.\"\n        },\n        {\n            \"path\": \"./src/A.php\",\n            \"rule\": \"structure.denied_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"./src/A.php\\\" matches denied pattern \\\"*.php\\\". Rename or remove it.\"\n        },\n        {\n            \"path\": \"src/A.php\",\n            \"rule\": \"structure.denied_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"src/A.php\\\" matches denied pattern \\\"*.php\\\". Rename or remove it.\"\n        },\n        {\n            \"path\": \"docs/../README.md\",\n            \"rule\": \"documentation.undeclared_document\",\n            \"level\": \"error\",\n            \"message\": \"Document docs/../README.md matches the scan pattern \\\"docs/../README.md\\\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"./src/A.php\",\n            \"rule\": \"metrics.file_lines\",\n            \"level\": \"error\",\n            \"message\": \"File has 3 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/A.php\",\n            \"rule\": \"metrics.file_lines\",\n            \"level\": \"error\",\n            \"message\": \"File has 3 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"./src/A.php\",\n            \"rule\": \"structure.denied_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"./src/A.php\\\" matches denied pattern \\\"*.php\\\". Rename or remove it. The declared directory layout keeps files within their intended architectural boundaries.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"src/A.php\",\n            \"rule\": \"structure.denied_file\",\n            \"level\": \"error\",\n            \"message\": \"File \\\"src/A.php\\\" matches denied pattern \\\"*.php\\\". Rename or remove it. The declared directory layout keeps files within their intended architectural boundaries.\",\n            \"fixable\": false\n        },\n        {\n            \"path\": \"docs/../README.md\",\n            \"rule\": \"documentation.undeclared_document\",\n            \"level\": \"error\",\n            \"message\": \"Document docs/../README.md matches the scan pattern \\\"docs/../README.md\\\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 5,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "README.md": "# Root\n",
                 "docs/placeholder.txt": "placeholder",
@@ -1249,7 +1249,7 @@
         },
         {
             "exit": 1,
-            "output": "error: ./src/A.php [metrics.file_lines] File has 3 physical lines; maximum is 1.\nerror: src/A.php [metrics.file_lines] File has 3 physical lines; maximum is 1.\nerror: ./src/A.php [structure.denied_file] File \"./src/A.php\" matches denied pattern \"*.php\". Rename or remove it.\nerror: src/A.php [structure.denied_file] File \"src/A.php\" matches denied pattern \"*.php\". Rename or remove it.\nerror: docs/../README.md [documentation.undeclared_document] Document docs/../README.md matches the scan pattern \"docs/../README.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml.\nGuard found required violations.\n",
+            "output": "\nGuard fix\n\n./src/A.php\n  error: metrics.file_lines  manual\n    File has 3 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: structure.denied_file  manual\n    File \"./src/A.php\" matches denied pattern \"*.php\". Rename or remove it. The declared directory layout keeps files within their intended architectural boundaries.\n\nsrc/A.php\n  error: metrics.file_lines  manual\n    File has 3 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n  error: structure.denied_file  manual\n    File \"src/A.php\" matches denied pattern \"*.php\". Rename or remove it. The declared directory layout keeps files within their intended architectural boundaries.\n\ndocs/../README.md\n  error: documentation.undeclared_document  manual\n    Document docs/../README.md matches the scan pattern \"docs/../README.md\" but is not declared in guard.yaml. Move its content into an existing section of a declared document and delete the file; adding a document requires a human to update guard.yaml. The declared document structure keeps information discoverable and prevents required project guidance from being lost or fragmented.\n\n5 errors · 0 warnings · 0 fixable · 0 files would change\nDry run: no files were written. Run guard fix to apply these changes.\nGuard found required violations.\n",
             "files": {
                 "README.md": "# Root\n",
                 "docs/placeholder.txt": "placeholder",
@@ -1261,7 +1261,7 @@
     "dot-root-source": [
         {
             "exit": 1,
-            "output": "error: ./src/A.php [metrics.file_lines] File has 3 physical lines; maximum is 1.\nGuard found required violations.\n",
+            "output": "\nGuard check\n\n./src/A.php\n  error: metrics.file_lines  manual\n    File has 3 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\n\n1 error · 0 warnings · 0 fixable · 1 file with findings\nGuard found required violations.\n",
             "files": {
                 "guard.yaml": "version: 1\nmetrics:\n  source: ['./']\n  profiles:\n    standard: {limits: {file: {lines: 1}}}\n  default: standard\n",
                 "src/A.php": "<?php\n\n\n"
@@ -1269,7 +1269,7 @@
         },
         {
             "exit": 1,
-            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"./src/A.php\",\n            \"rule\": \"metrics.file_lines\",\n            \"level\": \"error\",\n            \"message\": \"File has 3 physical lines; maximum is 1.\"\n        }\n    ],\n    \"changes\": [],\n    \"action\": \"changed\",\n    \"success\": false\n}\n",
+            "output": "{\n    \"findings\": [\n        {\n            \"path\": \"./src/A.php\",\n            \"rule\": \"metrics.file_lines\",\n            \"level\": \"error\",\n            \"message\": \"File has 3 physical lines; maximum is 1. Move independent declarations into separate files until each meets the limit, preserving behavior and tests. Oversized source units hide unrelated responsibilities and make changes harder to review.\",\n            \"fixable\": false\n        }\n    ],\n    \"changes\": [],\n    \"diffs\": [],\n    \"action\": \"checked\",\n    \"success\": false,\n    \"summary\": {\n        \"errors\": 1,\n        \"warnings\": 0,\n        \"fixable\": 0\n    }\n}\n",
             "files": {
                 "guard.yaml": "version: 1\nmetrics:\n  source: ['./']\n  profiles:\n    standard: {limits: {file: {lines: 1}}}\n  default: standard\n",
                 "src/A.php": "<?php\n\n\n"

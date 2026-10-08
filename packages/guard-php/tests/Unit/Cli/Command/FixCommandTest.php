@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cli\Command;
 
-use Guard\Cli\Command\ApplyCommand;
+use Guard\Cli\Command\FixCommand;
 use Guard\Cli\PolicyRun;
 use Guard\Execution\FileChange;
 use Guard\Execution\Plan;
@@ -18,7 +18,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Tests\Support\CallbackPolicy;
 
 /**
- * @covers \Guard\Cli\Command\ApplyCommand
+ * @covers \Guard\Cli\Command\FixCommand
  * @uses \Guard\Collect\Filesystem\Discovery
  * @uses \Guard\Collect\Filesystem\Snapshot
  * @uses \Guard\Collect\Filesystem\WalkQueue
@@ -27,6 +27,7 @@ use Tests\Support\CallbackPolicy;
  * @uses \Guard\Extension\ExtensionLoader
  * @uses \Guard\Extension\PolicyBinding
  * @uses \Guard\Policy\FieldConstraints
+ * @uses \Guard\Cli\FormatDetector
  * @uses \Guard\Cli\Command\GuardCommand
  * @uses \Guard\Cli\PolicyRun
  * @uses \Guard\Collect\Collector
@@ -46,9 +47,11 @@ use Tests\Support\CallbackPolicy;
  * @uses \Guard\Extension\Registry
  * @uses \Guard\Policy\PolicyException
  * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Reporting\ChangeDiff
+ * @uses \Guard\Reporting\RuleMessages
  * @uses \Guard\Reporting\Reporter
  */
-#[CoversClass(ApplyCommand::class)]
+#[CoversClass(FixCommand::class)]
 #[UsesClass(\Guard\Collect\Filesystem\Discovery::class)]
 #[UsesClass(\Guard\Collect\Filesystem\Snapshot::class)]
 #[UsesClass(\Guard\Collect\Filesystem\WalkQueue::class)]
@@ -77,17 +80,19 @@ use Tests\Support\CallbackPolicy;
 #[UsesClass(PolicyException::class)]
 #[UsesClass(Finding::class)]
 #[UsesClass(\Guard\Reporting\Reporter::class)]
-final class ApplyCommandTest extends TestCase
+#[UsesClass(\Guard\Reporting\ChangeDiff::class)]
+#[UsesClass(\Guard\Reporting\RuleMessages::class)]
+#[UsesClass(\Guard\Cli\FormatDetector::class)]
+final class FixCommandTest extends TestCase
 {
     public function testConfigureDeclaresTheDryRunAndTheExitCodes(): void
     {
-        $command = new ApplyCommand('/project');
+        $command = new FixCommand('/project');
 
-        self::assertSame('apply', $command->getName());
+        self::assertSame('fix', $command->getName());
+        self::assertSame('', $command->getHelp());
         self::assertFalse($command->getDefinition()->getOption('dry-run')->acceptValue());
         self::assertTrue($command->getDefinition()->hasOption('format'));
-        self::assertStringContainsString('"blocked"', $command->getHelp());
-        self::assertStringContainsString('1  a required rule is still violated', $command->getHelp());
     }
 
     public function testExecuteWritesTheRepairs(): void
@@ -98,11 +103,11 @@ final class ApplyCommandTest extends TestCase
         file_put_contents($root . '/a.txt', 'old');
         $registry = new Registry();
         $registry->addPolicy('rewrite', new CallbackPolicy([], static fn (): Plan => new Plan([], [new FileChange($root . '/a.txt', 'old', 'new')])));
-        $tester = new CommandTester(new ApplyCommand($root, $registry));
+        $tester = new CommandTester(new FixCommand($root, $registry));
 
         self::assertSame(0, $tester->execute([]));
         self::assertSame('new', file_get_contents($root . '/a.txt'));
-        self::assertStringContainsString('changed: ' . $root . '/a.txt', $tester->getDisplay());
+        self::assertStringContainsString('changed: a.txt', $tester->getDisplay());
     }
 
     public function testExecuteListsTheRepairsOfADryRunWithoutWritingThem(): void
@@ -113,10 +118,13 @@ final class ApplyCommandTest extends TestCase
         file_put_contents($root . '/a.txt', 'old');
         $registry = new Registry();
         $registry->addPolicy('rewrite', new CallbackPolicy([], static fn (): Plan => new Plan([], [new FileChange($root . '/a.txt', 'old', 'new')])));
-        $tester = new CommandTester(new ApplyCommand($root, $registry));
+        $tester = new CommandTester(new FixCommand($root, $registry));
 
-        self::assertSame(0, $tester->execute(['--dry-run' => true]));
+        self::assertSame(0, $tester->execute(['--dry-run' => true, '--format' => 'text']));
         self::assertSame('old', file_get_contents($root . '/a.txt'));
-        self::assertStringContainsString('would change: ' . $root . '/a.txt', $tester->getDisplay());
+        self::assertStringContainsString('would change: a.txt', $tester->getDisplay());
+        self::assertStringContainsString('-old', $tester->getDisplay());
+        self::assertStringContainsString('+new', $tester->getDisplay());
+        self::assertStringContainsString('Dry run: no files were written.', $tester->getDisplay());
     }
 }

@@ -174,6 +174,7 @@ use Tests\Support\Project;
  * @uses \Guard\Structure\Php\Token\TokenLineCounter
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
+ * @uses \Guard\Reporting\FieldMessage
  */
 #[CoversClass(\Guard\Policy\FieldConstraints::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Collector::class)]
@@ -336,6 +337,7 @@ use Tests\Support\Project;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\FieldMessage::class)]
 final class FieldConstraintsTest extends TestCase
 {
     /**
@@ -415,7 +417,7 @@ final class FieldConstraintsTest extends TestCase
             $plan = $policy->evaluate($subject, $context);
             self::assertSame(['a', 'b'], array_map(static fn (\Guard\Reporting\Finding $finding): string => $finding->rule, $plan->findings));
             self::assertSame(['required', 'recommended'], array_map(static fn (\Guard\Reporting\Finding $finding): string => $finding->level, $plan->findings));
-            self::assertSame('app.json does not exist, but this rule checks /mode in it. Create app.json with a compliant value; removing the rule requires a human to update guard.yaml.', $plan->findings[0]->message);
+            self::assertSame('app.json does not exist. Create it with the required configuration: /mode in app.json must equal "A". Set /mode in app.json to "A". Removing the rule requires a human to update guard.yaml.', $plan->findings[0]->message);
             self::assertSame([], $plan->changes);
             self::assertSame($plan->findings, $plan->blockingFindings);
         } finally {
@@ -434,7 +436,10 @@ final class FieldConstraintsTest extends TestCase
 
         self::assertCount(1, $findings);
         self::assertSame('app.json', $findings[0]->path);
-        self::assertStringEndsWith('removing the rule requires a human to update custom.yaml.', $findings[0]->message);
+        self::assertFalse($findings[0]->fixable);
+        self::assertStringContainsString('Add the missing field /x in app.json.', $findings[0]->message);
+        self::assertStringNotContainsString('Run guard fix', $findings[0]->message);
+        self::assertStringEndsWith('Removing the rule requires a human to update custom.yaml.', $findings[0]->message);
     }
 
     /**

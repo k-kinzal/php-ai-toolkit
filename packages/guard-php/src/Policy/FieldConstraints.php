@@ -23,7 +23,9 @@ use RuntimeException;
  */
 final class FieldConstraints implements Policy
 {
-    /** @var list<non-empty-list<Rule>> */
+    /**
+     * @var list<non-empty-list<Rule>>
+     */
     private array $groups;
     /**
      * @param list<Rule> $rules
@@ -79,6 +81,7 @@ final class FieldConstraints implements Policy
     }
     /**
      * Reports every rule of a target file that does not exist, at each rule's own level.
+     * @throws JsonException
      *
      * @param list<Rule> $rules
      * @return list<Finding>
@@ -87,7 +90,7 @@ final class FieldConstraints implements Policy
     {
         $findings = [];
         foreach ($rules as $rule) {
-            $findings[] = new Finding($rule->file, $rule->id, $rule->level, $rule->file . ' does not exist, but this rule checks ' . $rule->select . ' in it. Create ' . $rule->file . ' with a compliant value; removing the rule requires a human to update ' . $configName . '.');
+            $findings[] = new Finding($rule->file, $rule->id, $rule->level, $rule->file . ' does not exist. Create it with the required configuration: ' . (new \Guard\Reporting\FieldMessage())->render($rule, false) . ' Removing the rule requires a human to update ' . $configName . '.', false);
         }
         return $findings;
     }
@@ -122,7 +125,7 @@ final class FieldConstraints implements Policy
         $findings = [];
         foreach ($rules as $rule) {
             if (!$evaluator->accepts($rule, $document)) {
-                $findings[] = $evaluator->finding($rule);
+                $findings[] = $evaluator->finding($rule, $repair);
             }
         }
         return new Plan($findings, $changed ? [new FileChange($file->file->path, $original, $document->encode())] : [], $findings);

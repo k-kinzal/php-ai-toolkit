@@ -1,6 +1,7 @@
 configuration:
   -
     id: composer.sort-packages
+    message: 'Composer configuration field {select} in {file} must {expectation}. {fix}'
     file: composer.json
     format: json
     select: /config/sort-packages
@@ -9,6 +10,7 @@ configuration:
       equals: true
   -
     id: composer.autoload-check
+    message: 'Composer configuration field {select} in {file} must {expectation}. {fix}'
     file: composer.json
     format: json
     select: /scripts/autoload:check
@@ -17,6 +19,7 @@ configuration:
       equals: composer dump-autoload --optimize --strict-psr --strict-ambiguous
   -
     id: composer.format-check
+    message: 'Composer configuration field {select} in {file} must {expectation}. {fix}'
     file: composer.json
     format: json
     select: /scripts/format:check
@@ -25,6 +28,7 @@ configuration:
       contains: --allow-risky=yes
   -
     id: composer.phpstan
+    message: 'Composer configuration field {select} in {file} must {expectation}. Add a phpstan command to the scripts object, for example "phpstan": "phpstan analyse --memory-limit=512M".'
     file: composer.json
     format: json
     select: /scripts/phpstan
@@ -33,6 +37,7 @@ configuration:
       present: true
   -
     id: composer.compat
+    message: 'Composer configuration field {select} in {file} must {expectation}. Add a compat command to the scripts object, for example "compat": "phpcs".'
     file: composer.json
     format: json
     select: /scripts/compat
@@ -41,6 +46,7 @@ configuration:
       present: true
   -
     id: composer.guard
+    message: 'Composer configuration field {select} in {file} must {expectation}. Add a guard command to the scripts object, for example "guard": "guard check".'
     file: composer.json
     format: json
     select: /scripts/guard
@@ -49,6 +55,7 @@ configuration:
       present: true
   -
     id: composer.deptrac
+    message: 'Composer configuration field {select} in {file} must {expectation}. Add a deptrac command to the scripts object, for example "deptrac": "deptrac analyse --config-file=deptrac.yaml".'
     file: composer.json
     format: json
     select: /scripts/deptrac
@@ -57,6 +64,7 @@ configuration:
       present: true
   -
     id: composer.test-unit
+    message: 'Composer configuration field {select} in {file} must {expectation}. Add a test:unit command to the scripts object that runs the project PHPUnit suite, for example "test:unit": "phpunit".'
     file: composer.json
     format: json
     select: /scripts/test:unit
@@ -65,6 +73,7 @@ configuration:
       present: true
   -
     id: composer.lint-starts-with-autoload
+    message: 'Composer configuration field {select} in {file} must {expectation}. {fix}'
     file: composer.json
     format: json
     select: /scripts/lint/0
@@ -73,6 +82,7 @@ configuration:
       equals: '@autoload:check'
   -
     id: composer.describe-autoload-check
+    message: 'The script description at {select} in {file} must {expectation}. Add a scripts-descriptions entry explaining what the corresponding Composer command checks or generates.'
     file: composer.json
     format: json
     select: /scripts-descriptions/autoload:check
@@ -81,6 +91,7 @@ configuration:
       present: true
   -
     id: composer.describe-format-check
+    message: 'The script description at {select} in {file} must {expectation}. Add a scripts-descriptions entry explaining what the corresponding Composer command checks or generates.'
     file: composer.json
     format: json
     select: /scripts-descriptions/format:check
@@ -89,6 +100,7 @@ configuration:
       present: true
   -
     id: composer.describe-phpstan
+    message: 'The script description at {select} in {file} must {expectation}. Add a scripts-descriptions entry explaining what the corresponding Composer command checks or generates.'
     file: composer.json
     format: json
     select: /scripts-descriptions/phpstan
@@ -97,6 +109,7 @@ configuration:
       present: true
   -
     id: composer.describe-compat
+    message: 'The script description at {select} in {file} must {expectation}. Add a scripts-descriptions entry explaining what the corresponding Composer command checks or generates.'
     file: composer.json
     format: json
     select: /scripts-descriptions/compat
@@ -105,6 +118,7 @@ configuration:
       present: true
   -
     id: composer.describe-guard
+    message: 'The script description at {select} in {file} must {expectation}. Add a scripts-descriptions entry explaining what the corresponding Composer command checks or generates.'
     file: composer.json
     format: json
     select: /scripts-descriptions/guard
@@ -113,6 +127,7 @@ configuration:
       present: true
   -
     id: composer.describe-deptrac
+    message: 'The script description at {select} in {file} must {expectation}. Add a scripts-descriptions entry explaining what the corresponding Composer command checks or generates.'
     file: composer.json
     format: json
     select: /scripts-descriptions/deptrac
@@ -121,6 +136,7 @@ configuration:
       present: true
   -
     id: composer.describe-test-unit
+    message: 'The script description at {select} in {file} must {expectation}. Add a scripts-descriptions entry explaining what the corresponding Composer command checks or generates.'
     file: composer.json
     format: json
     select: /scripts-descriptions/test:unit
@@ -129,6 +145,7 @@ configuration:
       present: true
   -
     id: composer.describe-lint
+    message: 'The script description at {select} in {file} must {expectation}. Add a scripts-descriptions entry explaining what the corresponding Composer command checks or generates.'
     file: composer.json
     format: json
     select: /scripts-descriptions/lint

@@ -15,10 +15,14 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class ImportResolver
 {
-    /** @var list<string> */
+    /**
+     * @var list<string>
+     */
     private array $seen = [];
 
-    /** @var list<string> */
+    /**
+     * @var list<string>
+     */
     private array $paths = [];
 
     /**

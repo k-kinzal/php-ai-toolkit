@@ -1,6 +1,7 @@
 configuration:
   -
     id: fuzz.smoke
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: composer.json
     format: json
     select: /scripts/fuzz:smoke
@@ -9,6 +10,7 @@ configuration:
       contains: '--max-runs=100'
   -
     id: fuzz.lint
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: composer.json
     format: json
     select: /scripts/lint
@@ -17,6 +19,7 @@ configuration:
       not_contains: php-fuzzer
   -
     id: fuzz.workflow
+    message: 'The workflow jobs mapping at {select} in {file} must {expectation}. Add a CI job that checks out the project, installs its PHP dependencies and runs composer fuzz:smoke.'
     file: .github/workflows/fuzz.yml
     format: yaml
     select: /jobs

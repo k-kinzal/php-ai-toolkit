@@ -44,6 +44,8 @@ use Tests\Support\CallbackPolicy;
  * @uses \Guard\Extension\Registry
  * @uses \Guard\Policy\PolicyException
  * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Reporting\ChangeDiff
+ * @uses \Guard\Reporting\RuleMessages
  * @uses \Guard\Reporting\Reporter
  */
 #[CoversClass(PolicyRun::class)]
@@ -73,6 +75,8 @@ use Tests\Support\CallbackPolicy;
 #[UsesClass(PolicyException::class)]
 #[UsesClass(Finding::class)]
 #[UsesClass(\Guard\Reporting\Reporter::class)]
+#[UsesClass(\Guard\Reporting\ChangeDiff::class)]
+#[UsesClass(\Guard\Reporting\RuleMessages::class)]
 final class PolicyRunTest extends TestCase
 {
     /**
@@ -106,7 +110,7 @@ final class PolicyRunTest extends TestCase
 
         self::assertSame(0, (new PolicyRun($registry))->run($root . '/guard.yaml', 'text', true, false, $output));
         self::assertSame('new', file_get_contents($root . '/a.txt'));
-        self::assertStringContainsString('changed: ' . $root . '/a.txt', $output->fetch());
+        self::assertStringContainsString('changed: a.txt', $output->fetch());
     }
 
     /**
@@ -125,7 +129,7 @@ final class PolicyRunTest extends TestCase
 
         self::assertSame(0, (new PolicyRun($registry))->run($root . '/guard.yaml', 'text', true, true, $output));
         self::assertSame('old', file_get_contents($root . '/a.txt'));
-        self::assertStringContainsString('would change: ' . $root . '/a.txt', $output->fetch());
+        self::assertStringContainsString('would change: a.txt', $output->fetch());
     }
 
     /**
@@ -145,7 +149,7 @@ final class PolicyRunTest extends TestCase
 
         self::assertSame(1, (new PolicyRun($registry))->run($root . '/guard.yaml', 'text', true, false, $output));
         self::assertSame('old', file_get_contents($root . '/a.txt'));
-        self::assertStringContainsString('blocked: ' . $root . '/a.txt', $output->fetch());
+        self::assertStringContainsString('blocked: a.txt', $output->fetch());
     }
 
     /**

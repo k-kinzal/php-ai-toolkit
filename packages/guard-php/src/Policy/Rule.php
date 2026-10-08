@@ -16,6 +16,7 @@ use JsonException;
  * @property-read string $level
  * @property-read array<string, mixed> $assertions
  * @property-read mixed $repair
+ * @property-read string $message
  * @property-read bool $repairable
  */
 final class Rule
@@ -53,6 +54,8 @@ final class Rule
         mixed $repair,
         /** @readonly */
         private bool $repairable,
+        /** @readonly */
+        private string $message = '',
     ) {
         $this->repairJson = json_encode($repair, JSON_THROW_ON_ERROR | JSON_PRESERVE_ZERO_FRACTION);
         $this->assertionsJson = json_encode($assertions, JSON_THROW_ON_ERROR | JSON_PRESERVE_ZERO_FRACTION);
@@ -73,6 +76,7 @@ final class Rule
             'assertions' => json_decode($this->assertionsJson, true, 512, JSON_THROW_ON_ERROR),
             'repair' => json_decode($this->repairJson, false, 512, JSON_THROW_ON_ERROR),
             'repairable' => $this->repairable,
+            'message' => $this->message,
             default => null,
         };
     }

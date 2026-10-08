@@ -1,6 +1,7 @@
 configuration:
   -
     id: pbt.test-unit
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: composer.json
     format: json
     select: /scripts/test:unit
@@ -9,6 +10,7 @@ configuration:
       contains: '--exclude-group=pbt'
   -
     id: pbt.test-pbt
+    message: 'Configuration field {select} in {file} must {expectation}. {fix}'
     file: composer.json
     format: json
     select: /scripts/test:pbt

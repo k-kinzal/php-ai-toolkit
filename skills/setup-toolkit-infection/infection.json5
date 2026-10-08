@@ -12,7 +12,7 @@
     "minMsi": 80,
     "minCoveredMsi": 80,
     "timeout": 30,
-    "timeoutsAsEscaped": false,
+    "timeoutsAsEscaped": true,
     "tmpDir": "build/infection-tmp",
     "logs": {
         "text": "build/infection/escaped.log",

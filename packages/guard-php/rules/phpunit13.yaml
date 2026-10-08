@@ -70,7 +70,16 @@ configuration:
     select: /phpunit/@executionOrder
     level: required
     assert:
-      equals: 'depends,random'
+      equals: random
+  -
+    id: phpunit13.resolveDependencies
+    message: 'PHPUnit dependency resolution at {select} in {file} must {expectation}. {fix}'
+    file: phpunit.xml.dist
+    format: xml
+    select: /phpunit/@resolveDependencies
+    level: required
+    assert:
+      equals: 'true'
   -
     id: phpunit13.requireCoverageMetadata
     message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'

@@ -154,7 +154,6 @@ value:
 
 | Attribute | Required value | If existing is weaker |
 |-----------|---------------|----------------------|
-| `executionOrder` | `depends,random` | Override. Fixed order hides test dependencies. |
 | `requireCoverageMetadata` | `true` | Override. Without it, coverage numbers are inaccurate. |
 | `beStrictAboutCoverageMetadata` | `true` | Override. |
 | `beStrictAboutChangesToGlobalState` | `true` | Override. |
@@ -178,6 +177,8 @@ Apply only the row for the installed major:
 
 | PHPUnit | Required setting | Reason |
 |---------|------------------|--------|
+| 10.5–12 | `executionOrder="depends,random"` | Randomizes execution while respecting declared dependencies. |
+| 13 | `executionOrder="random"` and `resolveDependencies="true"` | Randomizes execution while respecting declared dependencies through PHPUnit 13's separate attribute. |
 | 10.5 | `<source restrictDeprecations="true">` | PHPUnit 10's supported way to exclude third-party-only deprecations; removed in PHPUnit 11. |
 | 11–13 | `<source ignoreIndirectDeprecations="true">` | Keeps self and direct deprecations actionable while ignoring deprecations triggered only inside third-party code. |
 | 11–13 | `shortenArraysForExportThreshold="0"` | Keeps complete arrays in failure output instead of hiding elements. |
@@ -382,8 +383,8 @@ script rather than an optional extra.
 Each ParaTest worker is a separate PHP process, so the suite has to hold up
 without a shared runtime: no test reading a static property another test set, no
 two tests writing the same fixture path, no class assuming it runs after some
-other class. `executionOrder="depends,random"` already looks for that coupling
-inside one process; splitting the suite checks it across the process boundary,
+other class. Random execution with dependency resolution already looks for that
+coupling inside one process; splitting the suite checks it across the process boundary,
 which no PHPUnit setting reaches. This matters most for AI-written tests, where
 shared temporary paths and static caches are a routine shortcut.
 

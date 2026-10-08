@@ -34,4 +34,4 @@ configuration:
     select: /timeoutsAsEscaped
     level: required
     assert:
-      equals: false
+      equals: true

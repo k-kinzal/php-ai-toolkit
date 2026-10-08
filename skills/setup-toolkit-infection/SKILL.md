@@ -217,13 +217,12 @@ only when a new mutation-scope decision remains unresolved.
 
 ## Timeouts
 
-Keep Infection's default timeout classification, which the shipped file states
-explicitly as `"timeoutsAsEscaped": false`: timed-out mutants count as detected,
-because loop-condition mutations can create infinite loops. Switch it to `true`
-only when the project explicitly chooses that policy for a suite whose covering
-tests can legitimately exceed the timeout, such as tests that start database
-containers, and say why beside the setting. Do not add `maxTimeouts` or a
-zero-timeout post-check without that decision.
+Use the toolkit's fixed `"timeoutsAsEscaped": true` policy: a timed-out mutant
+does not count as detected and cannot improve the mutation score. This is
+stricter than Infection's default. Loop-condition mutations can create infinite
+loops, so this policy can also leave those mutants classified as escaped; inspect
+the report rather than changing the classification to raise the score. Do not add
+`maxTimeouts` or a zero-timeout post-check without an explicit project decision.
 
 `timeout` is an operational value. Measure the covered initial suite and the
 largest selected test set, then allow runner headroom. Infection may skip mutants

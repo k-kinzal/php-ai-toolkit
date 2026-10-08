@@ -7,14 +7,14 @@ namespace Tests\Unit\DocGen\Git;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 use Toolkit\DocGen\Git\GitCommandRunner;
 use Toolkit\DocGen\Git\GitWorktree;
 use Toolkit\DocGen\Git\TempDirectory;
 
 /**
  * @covers \Toolkit\DocGen\Git\GitWorktree
- * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Diagnostic\DocGenException
  * @uses \Toolkit\DocGen\Git\GitCommandRunner
  * @uses \Toolkit\DocGen\Git\TempDirectory
  */

@@ -15,7 +15,8 @@ use function realpath;
 use function rtrim;
 
 use Toolkit\DocGen\Config\DocGenConfig;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
+use Toolkit\DocGen\Model\Package\DiscoveredPackage;
 
 use function usort;
 

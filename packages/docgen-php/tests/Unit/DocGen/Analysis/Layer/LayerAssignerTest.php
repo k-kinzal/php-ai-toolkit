@@ -9,17 +9,17 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Layer\LayerAssigner;
-use Toolkit\DocGen\Analysis\Layer\LayerCollector;
-use Toolkit\DocGen\Analysis\Layer\LayerDefinition;
-use Toolkit\DocGen\Analysis\Layer\LayerModel;
-use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Model\Layer\LayerCollector;
+use Toolkit\DocGen\Model\Layer\LayerDefinition;
+use Toolkit\DocGen\Model\Layer\LayerModel;
+use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Layer\LayerAssigner
- * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
- * @uses \Toolkit\DocGen\Analysis\Layer\LayerCollector
- * @uses \Toolkit\DocGen\Analysis\Layer\LayerDefinition
- * @uses \Toolkit\DocGen\Analysis\Layer\LayerModel
+ * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Model\Layer\LayerCollector
+ * @uses \Toolkit\DocGen\Model\Layer\LayerDefinition
+ * @uses \Toolkit\DocGen\Model\Layer\LayerModel
  */
 #[CoversClass(LayerAssigner::class)]
 #[UsesClass(ClassLikeDoc::class)]

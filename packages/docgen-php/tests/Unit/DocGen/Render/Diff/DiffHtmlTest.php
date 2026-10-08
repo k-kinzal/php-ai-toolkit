@@ -7,16 +7,16 @@ namespace Tests\Unit\DocGen\Render\Diff;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Analysis\Diff\DiffIndex;
-use Toolkit\DocGen\Analysis\Diff\DiffKey;
-use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Diff\DiffIndex;
+use Toolkit\DocGen\Diff\DiffKey;
+use Toolkit\DocGen\Diff\DiffStatus;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 
 /**
  * @covers \Toolkit\DocGen\Render\Diff\DiffHtml
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffIndex
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Diff\DiffIndex
+ * @uses \Toolkit\DocGen\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Diff\DiffStatus
  */
 #[CoversClass(DiffHtml::class)]
 #[UsesClass(DiffIndex::class)]

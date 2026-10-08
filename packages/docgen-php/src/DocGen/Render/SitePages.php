@@ -11,8 +11,8 @@ use function ksort;
 use function strrpos;
 use function substr;
 
-use Toolkit\DocGen\Analysis\ProjectModel;
-use Toolkit\DocGen\Package\DiscoveredPackage;
+use Toolkit\DocGen\Model\Package\DiscoveredPackage;
+use Toolkit\DocGen\Model\ProjectModel;
 
 /**
  * Answers which pages a site has and what they are written from.

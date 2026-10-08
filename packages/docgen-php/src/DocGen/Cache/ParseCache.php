@@ -11,8 +11,8 @@ use function scandir;
 use function substr;
 use function time;
 
-use Toolkit\DocGen\Analysis\Parse\FileSymbols;
-use Toolkit\DocGen\Analysis\Reference\Usage;
+use Toolkit\DocGen\Model\Reference\Usage;
+use Toolkit\DocGen\Model\Symbol\FileSymbols;
 
 use function touch;
 use function unlink;

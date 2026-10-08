@@ -6,8 +6,8 @@ namespace Toolkit\DocGen\Analysis\Parse\Builder;
 
 use PhpParser\Node\Stmt\ClassConst;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
-use Toolkit\DocGen\Analysis\Model\ConstantDoc;
 use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
+use Toolkit\DocGen\Model\Symbol\ConstantDoc;
 
 /**
  * Builds constant models from php-parser class constant nodes.

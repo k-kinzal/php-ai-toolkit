@@ -7,8 +7,8 @@ namespace Toolkit\DocGen\Render\Page\Component;
 use function count;
 use function sprintf;
 
-use Toolkit\DocGen\Analysis\Diff\DiffKey;
-use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Diff\DiffKey;
+use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Render\RenderKit;
 use Toolkit\DocGen\Render\TypeRenderContext;
 
@@ -34,7 +34,7 @@ final class PrivateSurfaceHtml
     /**
      * Collects the private members of a class-like symbol.
      *
-     * @return list<\Toolkit\DocGen\Analysis\Model\ConstantDoc|\Toolkit\DocGen\Analysis\Model\PropertyDoc|\Toolkit\DocGen\Analysis\Model\MethodDoc>
+     * @return list<\Toolkit\DocGen\Model\Symbol\ConstantDoc|\Toolkit\DocGen\Model\Symbol\PropertyDoc|\Toolkit\DocGen\Model\Symbol\MethodDoc>
      */
     public function members(ClassLikeDoc $classLike): array
     {

@@ -8,7 +8,7 @@ use Closure;
 
 use function strlen;
 
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 use Toolkit\DocGen\Filesystem\SiteFileWriter;
 
 /**

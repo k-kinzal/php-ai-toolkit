@@ -7,20 +7,18 @@ namespace Tests\Unit\DocGen\Render\Signature;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Analysis\Diff\DiffKey;
-use Toolkit\DocGen\Analysis\Diff\DiffStatus;
-use Toolkit\DocGen\Analysis\Diff\LineDiffer;
-use Toolkit\DocGen\Analysis\Doctest\AssertionScanner;
-use Toolkit\DocGen\Analysis\Doctest\DoctestExtractor;
-use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\ProjectModel;
-use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
-use Toolkit\DocGen\Analysis\Reference\SymbolTable;
-use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use Toolkit\DocGen\Analysis\Reference\UsageIndex;
-use Toolkit\DocGen\Package\ComposerManifest;
-use Toolkit\DocGen\Package\DiscoveredPackage;
-use Toolkit\DocGen\Package\PackageGraph;
+use Toolkit\DocGen\Diff\DiffKey;
+use Toolkit\DocGen\Diff\DiffStatus;
+use Toolkit\DocGen\Diff\LineDiffer;
+use Toolkit\DocGen\Model\Package\ComposerManifest;
+use Toolkit\DocGen\Model\Package\DiscoveredPackage;
+use Toolkit\DocGen\Model\Package\PackageGraph;
+use Toolkit\DocGen\Model\ProjectModel;
+use Toolkit\DocGen\Model\Reference\HierarchyIndex;
+use Toolkit\DocGen\Model\Reference\SymbolTable;
+use Toolkit\DocGen\Model\Reference\TestCaseIndex;
+use Toolkit\DocGen\Model\Reference\UsageIndex;
+use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parallel\WorkerCount;
 use Toolkit\DocGen\Parallel\WorkerPool;
 use Toolkit\DocGen\Parallel\WorkScheduler;
@@ -28,6 +26,8 @@ use Toolkit\DocGen\Render\AssetPublisher;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 use Toolkit\DocGen\Render\Diff\MarkdownDiffHtml;
 use Toolkit\DocGen\Render\Diff\SourceDiffHtml;
+use Toolkit\DocGen\Render\Doctest\AssertionScanner;
+use Toolkit\DocGen\Render\Doctest\DoctestExtractor;
 use Toolkit\DocGen\Render\HtmlText;
 use Toolkit\DocGen\Render\MarkdownInline;
 use Toolkit\DocGen\Render\MarkdownRenderer;
@@ -66,38 +66,38 @@ use Toolkit\DocGen\Render\TypeHtml;
 /**
  * @covers \Toolkit\DocGen\Render\Signature\SidebarDigest
  * @uses \Toolkit\DocGen\Render\Page\AllItemsPage
- * @uses \Toolkit\DocGen\Analysis\Doctest\AssertionScanner
+ * @uses \Toolkit\DocGen\Render\Doctest\AssertionScanner
  * @uses \Toolkit\DocGen\Render\AssetPublisher
- * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Render\Page\ClassLikePage
- * @uses \Toolkit\DocGen\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
- * @uses \Toolkit\DocGen\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Render\Page\Component\DocTextHtml
- * @uses \Toolkit\DocGen\Analysis\Doctest\DoctestExtractor
+ * @uses \Toolkit\DocGen\Render\Doctest\DoctestExtractor
  * @uses \Toolkit\DocGen\Render\Page\Component\DocumentListHtml
  * @uses \Toolkit\DocGen\Render\Page\DocumentPage
  * @uses \Toolkit\DocGen\Render\Page\FunctionPage
  * @uses \Toolkit\DocGen\Render\Page\Component\GraphSvg
- * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
  * @uses \Toolkit\DocGen\Render\HtmlText
  * @uses \Toolkit\DocGen\Render\Page\IndexPage
  * @uses \Toolkit\DocGen\Render\Page\LayerPage
- * @uses \Toolkit\DocGen\Analysis\Diff\LineDiffer
+ * @uses \Toolkit\DocGen\Diff\LineDiffer
  * @uses \Toolkit\DocGen\Render\Diff\MarkdownDiffHtml
  * @uses \Toolkit\DocGen\Render\MarkdownInline
  * @uses \Toolkit\DocGen\Render\MarkdownRenderer
  * @uses \Toolkit\DocGen\Render\Page\Component\MemberHtml
  * @uses \Toolkit\DocGen\Render\Page\NamespacePage
- * @uses \Toolkit\DocGen\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Model\Package\PackageGraph
  * @uses \Toolkit\DocGen\Render\Page\PackagePage
  * @uses \Toolkit\DocGen\Render\PageChrome
  * @uses \Toolkit\DocGen\Render\Signature\PageSignature
  * @uses \Toolkit\DocGen\Render\PhpHighlighter
  * @uses \Toolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml
- * @uses \Toolkit\DocGen\Analysis\ProjectModel
+ * @uses \Toolkit\DocGen\Model\ProjectModel
  * @uses \Toolkit\DocGen\Render\Page\Component\RelationsHtml
  * @uses \Toolkit\DocGen\Render\RenderKit
  * @uses \Toolkit\DocGen\Render\SearchIndexBuilder
@@ -112,10 +112,10 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\Page\SymbolIndex
  * @uses \Toolkit\DocGen\Render\Page\Component\SymbolListHtml
  * @uses \Toolkit\DocGen\Render\Page\Component\SymbolRow
- * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
  * @uses \Toolkit\DocGen\Render\TypeHtml
- * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
  * @uses \Toolkit\DocGen\Parallel\WorkScheduler
  * @uses \Toolkit\DocGen\Parallel\WorkerCount
  * @uses \Toolkit\DocGen\Parallel\WorkerPool

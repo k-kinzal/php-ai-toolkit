@@ -10,18 +10,18 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
 use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
-use Toolkit\DocGen\Analysis\Coverage\MethodCoverage;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 use Toolkit\DocGen\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Model\Coverage\CoverageIndex;
+use Toolkit\DocGen\Model\Coverage\MethodCoverage;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Coverage\CoverageReader
- * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageIndex
- * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Model\Coverage\CoverageIndex
+ * @uses \Toolkit\DocGen\Diagnostic\DocGenException
  * @uses \Toolkit\DocGen\Filesystem\DocGenPathResolver
- * @uses \Toolkit\DocGen\Analysis\Coverage\MethodCoverage
+ * @uses \Toolkit\DocGen\Model\Coverage\MethodCoverage
  */
 #[CoversClass(CoverageReader::class)]
 #[UsesClass(CoverageIndex::class)]

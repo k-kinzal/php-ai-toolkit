@@ -8,8 +8,8 @@ use function count;
 use function in_array;
 use function sprintf;
 
-use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Model\ClassLikeKind;
+use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Model\Symbol\ClassLikeKind;
 use Toolkit\DocGen\Render\RenderKit;
 
 /**

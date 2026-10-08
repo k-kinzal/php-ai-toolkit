@@ -9,20 +9,20 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
-use Toolkit\DocGen\Analysis\Model\DocBlock;
-use Toolkit\DocGen\Analysis\Model\DocTag;
-use Toolkit\DocGen\Analysis\Model\TemplateDoc;
-use Toolkit\DocGen\Analysis\Model\TypeAliasDoc;
+use Toolkit\DocGen\Model\Symbol\DocBlock;
+use Toolkit\DocGen\Model\Symbol\DocTag;
+use Toolkit\DocGen\Model\Symbol\TemplateDoc;
+use Toolkit\DocGen\Model\Symbol\TypeAliasDoc;
 use Toolkit\Mutation\MutationContract;
 use Toolkit\Mutation\MutationContractReader;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \Toolkit\DocGen\Analysis\Model\DocBlock
- * @uses \Toolkit\DocGen\Analysis\Model\DocTag
+ * @uses \Toolkit\DocGen\Model\Symbol\DocBlock
+ * @uses \Toolkit\DocGen\Model\Symbol\DocTag
  * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
- * @uses \Toolkit\DocGen\Analysis\Model\TemplateDoc
- * @uses \Toolkit\DocGen\Analysis\Model\TypeAliasDoc
+ * @uses \Toolkit\DocGen\Model\Symbol\TemplateDoc
+ * @uses \Toolkit\DocGen\Model\Symbol\TypeAliasDoc
  */
 #[CoversClass(DocBlockReader::class)]
 #[UsesClass(DocBlock::class)]

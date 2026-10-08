@@ -16,7 +16,7 @@ final class SymbolRowTest extends TestCase
 {
     public function testStoresKindNameFqcnPageSummaryLayersAndNamespace(): void
     {
-        $row = new SymbolRow('class', 'Engine', 'Demo\Core\Engine', 'demo/pkg/Demo/Core/class.Engine.html', 'Engine summary.', ['Domain'], 'Demo\Core', \Toolkit\DocGen\Analysis\Diff\DiffStatus::SAME, ['public']);
+        $row = new SymbolRow('class', 'Engine', 'Demo\Core\Engine', 'demo/pkg/Demo/Core/class.Engine.html', 'Engine summary.', ['Domain'], 'Demo\Core', \Toolkit\DocGen\Diff\DiffStatus::SAME, ['public']);
 
         self::assertSame('class', $row->kind);
         self::assertSame('Engine', $row->name);

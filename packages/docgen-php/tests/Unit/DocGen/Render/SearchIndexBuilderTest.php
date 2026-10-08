@@ -7,42 +7,42 @@ namespace Tests\Unit\DocGen\Render;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Analysis\Diff\DiffKey;
-use Toolkit\DocGen\Analysis\Diff\DiffStatus;
-use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Model\ConstantDoc;
-use Toolkit\DocGen\Analysis\Model\DocBlock;
-use Toolkit\DocGen\Analysis\Model\FunctionDoc;
-use Toolkit\DocGen\Analysis\Model\MethodDoc;
-use Toolkit\DocGen\Analysis\Model\TypeSignature;
-use Toolkit\DocGen\Analysis\ProjectModel;
-use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
-use Toolkit\DocGen\Analysis\Reference\SymbolTable;
-use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use Toolkit\DocGen\Analysis\Reference\UsageIndex;
-use Toolkit\DocGen\Package\PackageGraph;
+use Toolkit\DocGen\Diff\DiffKey;
+use Toolkit\DocGen\Diff\DiffStatus;
+use Toolkit\DocGen\Model\Package\PackageGraph;
+use Toolkit\DocGen\Model\ProjectModel;
+use Toolkit\DocGen\Model\Reference\HierarchyIndex;
+use Toolkit\DocGen\Model\Reference\SymbolTable;
+use Toolkit\DocGen\Model\Reference\TestCaseIndex;
+use Toolkit\DocGen\Model\Reference\UsageIndex;
+use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Model\Symbol\ConstantDoc;
+use Toolkit\DocGen\Model\Symbol\DocBlock;
+use Toolkit\DocGen\Model\Symbol\FunctionDoc;
+use Toolkit\DocGen\Model\Symbol\MethodDoc;
+use Toolkit\DocGen\Model\Symbol\TypeSignature;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 use Toolkit\DocGen\Render\SearchIndexBuilder;
 use Toolkit\DocGen\Render\SiteUrl;
 
 /**
  * @covers \Toolkit\DocGen\Render\SearchIndexBuilder
- * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
- * @uses \Toolkit\DocGen\Analysis\Model\ConstantDoc
+ * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Model\Symbol\ConstantDoc
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
- * @uses \Toolkit\DocGen\Analysis\Model\DocBlock
- * @uses \Toolkit\DocGen\Analysis\Model\FunctionDoc
- * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
- * @uses \Toolkit\DocGen\Analysis\Model\MethodDoc
- * @uses \Toolkit\DocGen\Package\PackageGraph
- * @uses \Toolkit\DocGen\Analysis\ProjectModel
+ * @uses \Toolkit\DocGen\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Model\Symbol\DocBlock
+ * @uses \Toolkit\DocGen\Model\Symbol\FunctionDoc
+ * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Model\Symbol\MethodDoc
+ * @uses \Toolkit\DocGen\Model\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Model\ProjectModel
  * @uses \Toolkit\DocGen\Render\SiteUrl
- * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
- * @uses \Toolkit\DocGen\Analysis\Model\TypeSignature
- * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
  */
 #[CoversClass(SearchIndexBuilder::class)]
 #[UsesClass(ClassLikeDoc::class)]

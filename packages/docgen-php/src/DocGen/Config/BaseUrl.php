@@ -8,7 +8,7 @@ use function preg_match;
 use function rtrim;
 use function sprintf;
 
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 
 use function trim;
 

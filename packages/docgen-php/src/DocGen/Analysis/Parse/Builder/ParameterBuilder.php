@@ -8,13 +8,13 @@ use function is_string;
 
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Param;
-use Toolkit\DocGen\Analysis\Model\DocBlock;
-use Toolkit\DocGen\Analysis\Model\DocTag;
-use Toolkit\DocGen\Analysis\Model\ParameterDoc;
-use Toolkit\DocGen\Analysis\Model\TypeSignature;
 use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
 use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
+use Toolkit\DocGen\Model\Symbol\DocBlock;
+use Toolkit\DocGen\Model\Symbol\DocTag;
+use Toolkit\DocGen\Model\Symbol\ParameterDoc;
+use Toolkit\DocGen\Model\Symbol\TypeSignature;
 
 /**
  * Builds parameter models from php-parser parameter nodes.

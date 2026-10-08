@@ -7,12 +7,12 @@ namespace Tests\Unit\DocGen\Render;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Model\Reference\SymbolTable;
 use Toolkit\DocGen\Render\TypeRenderContext;
 
 /**
  * @covers \Toolkit\DocGen\Render\TypeRenderContext
- * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
  */
 #[CoversClass(TypeRenderContext::class)]
 #[UsesClass(SymbolTable::class)]

@@ -6,8 +6,8 @@ namespace Toolkit\DocGen\Render\Diff;
 
 use function sprintf;
 
-use Toolkit\DocGen\Analysis\Diff\DiffLine;
-use Toolkit\DocGen\Analysis\Diff\LineDiffer;
+use Toolkit\DocGen\Diff\DiffLine;
+use Toolkit\DocGen\Diff\LineDiffer;
 use Toolkit\DocGen\Render\RenderKit;
 
 /**

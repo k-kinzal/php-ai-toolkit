@@ -12,8 +12,8 @@ use Toolkit\DocGen\Analysis\Parse\AstParser;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use Toolkit\DocGen\Analysis\Reference\LocalTypeMap;
 use Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner;
-use Toolkit\DocGen\Analysis\Reference\Usage;
 use Toolkit\DocGen\Analysis\Reference\UsageCollector;
+use Toolkit\DocGen\Model\Reference\Usage;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Reference\UsageCollector
@@ -21,7 +21,7 @@ use Toolkit\DocGen\Analysis\Reference\UsageCollector;
  * @uses \Toolkit\DocGen\Analysis\Reference\LocalTypeMap
  * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  * @uses \Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner
- * @uses \Toolkit\DocGen\Analysis\Reference\Usage
+ * @uses \Toolkit\DocGen\Model\Reference\Usage
  */
 #[CoversClass(UsageCollector::class)]
 #[UsesClass(AstParser::class)]

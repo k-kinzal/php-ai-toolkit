@@ -11,13 +11,13 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
-use Toolkit\DocGen\Analysis\Model\PropertyDoc;
-use Toolkit\DocGen\Analysis\Model\TypeSignature;
 use Toolkit\DocGen\Analysis\Parse\AstParser;
 use Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder;
 use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use Toolkit\DocGen\Model\Symbol\PropertyDoc;
+use Toolkit\DocGen\Model\Symbol\TypeSignature;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
@@ -27,8 +27,8 @@ use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
  * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
  * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
- * @uses \Toolkit\DocGen\Analysis\Model\PropertyDoc
- * @uses \Toolkit\DocGen\Analysis\Model\TypeSignature
+ * @uses \Toolkit\DocGen\Model\Symbol\PropertyDoc
+ * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
  */
 #[CoversClass(PropertyBuilder::class)]
 #[UsesClass(AstParser::class)]

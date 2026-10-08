@@ -14,7 +14,7 @@ use function scandir;
 use function sprintf;
 use function sys_get_temp_dir;
 
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 
 use function uniqid;
 use function unlink;

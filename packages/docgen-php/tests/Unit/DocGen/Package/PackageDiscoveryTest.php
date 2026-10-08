@@ -9,24 +9,24 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Config\DocGenConfig;
 use Toolkit\DocGen\Config\RepositoryUrl;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
+use Toolkit\DocGen\Model\Package\ComposerManifest;
+use Toolkit\DocGen\Model\Package\DiscoveredPackage;
 use Toolkit\DocGen\Package\ComposerLockReader;
-use Toolkit\DocGen\Package\ComposerManifest;
 use Toolkit\DocGen\Package\ComposerManifestReader;
 use Toolkit\DocGen\Package\DevPackageResolver;
-use Toolkit\DocGen\Package\DiscoveredPackage;
 use Toolkit\DocGen\Package\PackageDiscovery;
 use Toolkit\DocGen\Package\VendorPackageLocator;
 
 /**
  * @covers \Toolkit\DocGen\Package\PackageDiscovery
  * @uses \Toolkit\DocGen\Package\ComposerLockReader
- * @uses \Toolkit\DocGen\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Package\ComposerManifestReader
  * @uses \Toolkit\DocGen\Package\DevPackageResolver
- * @uses \Toolkit\DocGen\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Config\DocGenConfig
- * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Diagnostic\DocGenException
  * @uses \Toolkit\DocGen\Config\RepositoryUrl
  * @uses \Toolkit\DocGen\Package\VendorPackageLocator
  */

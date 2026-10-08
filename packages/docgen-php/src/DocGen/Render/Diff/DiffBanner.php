@@ -6,7 +6,7 @@ namespace Toolkit\DocGen\Render\Diff;
 
 use function sprintf;
 
-use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Diff\DiffStatus;
 use Toolkit\DocGen\Render\RenderKit;
 
 /**

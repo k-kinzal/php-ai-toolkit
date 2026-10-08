@@ -9,11 +9,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Config\BaseUrl;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 
 /**
  * @covers \Toolkit\DocGen\Config\BaseUrl
- * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Diagnostic\DocGenException
  */
 #[CoversClass(BaseUrl::class)]
 #[UsesClass(DocGenException::class)]

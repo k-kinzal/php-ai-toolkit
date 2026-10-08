@@ -13,12 +13,12 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Toolkit\DocGen\Cli\DocGenCliArgumentParser;
 use Toolkit\DocGen\Config\BaseUrl;
 use Toolkit\DocGen\Config\RepositoryUrl;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 
 /**
  * @covers \Toolkit\DocGen\Cli\DocGenCliArgumentParser
  * @uses \Toolkit\DocGen\Config\BaseUrl
- * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Diagnostic\DocGenException
  * @uses \Toolkit\DocGen\Config\RepositoryUrl
  */
 #[CoversClass(DocGenCliArgumentParser::class)]

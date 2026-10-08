@@ -8,7 +8,7 @@ use function explode;
 use function sprintf;
 use function str_replace;
 
-use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Diff\DiffStatus;
 use Toolkit\DocGen\Render\Diff\DiffBanner;
 use Toolkit\DocGen\Render\Diff\SourceDiffHtml;
 use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;

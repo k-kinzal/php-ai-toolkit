@@ -7,13 +7,13 @@ namespace Tests\Unit\DocGen\Git;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 use Toolkit\DocGen\Git\GitCommandRunner;
 use Toolkit\DocGen\Git\GitRepository;
 
 /**
  * @covers \Toolkit\DocGen\Git\GitRepository
- * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Diagnostic\DocGenException
  * @uses \Toolkit\DocGen\Git\GitCommandRunner
  */
 #[CoversClass(GitRepository::class)]

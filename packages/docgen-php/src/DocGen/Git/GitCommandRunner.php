@@ -11,7 +11,7 @@ use function exec;
 use function implode;
 use function sprintf;
 
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 
 use function trim;
 

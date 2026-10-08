@@ -9,7 +9,7 @@ use Closure;
 use function dirname;
 use function sprintf;
 
-use Toolkit\DocGen\Analysis\Model\MarkdownDoc;
+use Toolkit\DocGen\Model\Symbol\MarkdownDoc;
 use Toolkit\DocGen\Render\Diff\DiffBanner;
 use Toolkit\DocGen\Render\Diff\MarkdownDiffHtml;
 use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;

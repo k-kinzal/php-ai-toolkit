@@ -7,24 +7,24 @@ namespace Tests\Unit\DocGen\Render\Page;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Analysis\Diff\DiffIndex;
-use Toolkit\DocGen\Analysis\Diff\DiffKey;
-use Toolkit\DocGen\Analysis\Diff\DiffStatus;
-use Toolkit\DocGen\Analysis\Doctest\AssertionScanner;
-use Toolkit\DocGen\Analysis\Doctest\DoctestExtractor;
-use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Model\DocBlock;
-use Toolkit\DocGen\Analysis\Model\FunctionDoc;
-use Toolkit\DocGen\Analysis\Model\TypeSignature;
-use Toolkit\DocGen\Analysis\ProjectModel;
-use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
-use Toolkit\DocGen\Analysis\Reference\SymbolTable;
-use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use Toolkit\DocGen\Analysis\Reference\UsageIndex;
-use Toolkit\DocGen\Package\ComposerManifest;
-use Toolkit\DocGen\Package\DiscoveredPackage;
-use Toolkit\DocGen\Package\PackageGraph;
+use Toolkit\DocGen\Diff\DiffIndex;
+use Toolkit\DocGen\Diff\DiffKey;
+use Toolkit\DocGen\Diff\DiffStatus;
+use Toolkit\DocGen\Model\Package\ComposerManifest;
+use Toolkit\DocGen\Model\Package\DiscoveredPackage;
+use Toolkit\DocGen\Model\Package\PackageGraph;
+use Toolkit\DocGen\Model\ProjectModel;
+use Toolkit\DocGen\Model\Reference\HierarchyIndex;
+use Toolkit\DocGen\Model\Reference\SymbolTable;
+use Toolkit\DocGen\Model\Reference\TestCaseIndex;
+use Toolkit\DocGen\Model\Reference\UsageIndex;
+use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Model\Symbol\DocBlock;
+use Toolkit\DocGen\Model\Symbol\FunctionDoc;
+use Toolkit\DocGen\Model\Symbol\TypeSignature;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
+use Toolkit\DocGen\Render\Doctest\AssertionScanner;
+use Toolkit\DocGen\Render\Doctest\DoctestExtractor;
 use Toolkit\DocGen\Render\HtmlText;
 use Toolkit\DocGen\Render\MarkdownInline;
 use Toolkit\DocGen\Render\MarkdownRenderer;
@@ -37,31 +37,31 @@ use Toolkit\DocGen\Render\TypeHtml;
 
 /**
  * @covers \Toolkit\DocGen\Render\Page\SymbolIndex
- * @uses \Toolkit\DocGen\Analysis\Doctest\AssertionScanner
- * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
- * @uses \Toolkit\DocGen\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Render\Doctest\AssertionScanner
+ * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffIndex
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
- * @uses \Toolkit\DocGen\Package\DiscoveredPackage
- * @uses \Toolkit\DocGen\Analysis\Model\DocBlock
- * @uses \Toolkit\DocGen\Analysis\Doctest\DoctestExtractor
- * @uses \Toolkit\DocGen\Analysis\Model\FunctionDoc
- * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Diff\DiffIndex
+ * @uses \Toolkit\DocGen\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Model\Symbol\DocBlock
+ * @uses \Toolkit\DocGen\Render\Doctest\DoctestExtractor
+ * @uses \Toolkit\DocGen\Model\Symbol\FunctionDoc
+ * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
  * @uses \Toolkit\DocGen\Render\HtmlText
  * @uses \Toolkit\DocGen\Render\MarkdownInline
  * @uses \Toolkit\DocGen\Render\MarkdownRenderer
- * @uses \Toolkit\DocGen\Package\PackageGraph
- * @uses \Toolkit\DocGen\Analysis\ProjectModel
+ * @uses \Toolkit\DocGen\Model\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Model\ProjectModel
  * @uses \Toolkit\DocGen\Render\RenderKit
  * @uses \Toolkit\DocGen\Render\SiteUrl
  * @uses \Toolkit\DocGen\Render\Page\Component\SymbolRow
- * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
  * @uses \Toolkit\DocGen\Render\TypeHtml
- * @uses \Toolkit\DocGen\Analysis\Model\TypeSignature
- * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
  */
 #[CoversClass(SymbolIndex::class)]
 #[UsesClass(AssertionScanner::class)]

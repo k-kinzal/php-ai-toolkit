@@ -6,7 +6,7 @@ namespace Toolkit\DocGen\Git;
 
 use function sprintf;
 
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 
 /**
  * Answers the repository questions a diff run asks before checking out.

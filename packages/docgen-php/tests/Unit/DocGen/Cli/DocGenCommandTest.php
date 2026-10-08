@@ -14,7 +14,7 @@ use Toolkit\DocGen\Cli\DocGenHelpText;
 use Toolkit\DocGen\Cli\DocGenOutputWriter;
 use Toolkit\DocGen\Config\BaseUrl;
 use Toolkit\DocGen\Config\RepositoryUrl;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 
 /**
  * @covers \Toolkit\DocGen\Cli\DocGenCommand
@@ -23,7 +23,7 @@ use Toolkit\DocGen\DocGenException;
  * @uses \Toolkit\DocGen\Cli\DocGenOutputWriter
  * @uses \Toolkit\DocGen\Config\BaseUrl
  * @uses \Toolkit\DocGen\Config\RepositoryUrl
- * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Diagnostic\DocGenException
  */
 #[CoversClass(DocGenCommand::class)]
 #[UsesClass(DocGenCliArgumentParser::class)]

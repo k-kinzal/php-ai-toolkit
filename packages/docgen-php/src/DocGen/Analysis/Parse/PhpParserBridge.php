@@ -10,7 +10,7 @@ use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use ReflectionClass;
 use ReflectionException;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 
 /**
  * Creates a PHP parser for both nikic/php-parser 4 and 5.

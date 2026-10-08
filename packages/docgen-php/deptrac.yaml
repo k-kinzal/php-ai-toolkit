@@ -1,13 +1,75 @@
 deptrac:
   paths:
     - ./src
-  exclude_files:
-    - '#.*/tests?/.*#'
-    - '#.*/vendor/.*#'
   layers:
-    - name: DocGen
+    - name: Diagnostic
       collectors:
         - type: directory
-          value: src/DocGen/.*
+          value: 'src/DocGen/Diagnostic/.*'
+    - name: Mutation
+      collectors:
+        - type: directory
+          value: 'src/Mutation/.*'
+    - name: Model
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Model/.*'
+    - name: Filesystem
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Filesystem/.*'
+    - name: Parallel
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Parallel/.*'
+    - name: Git
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Git/.*'
+    - name: Config
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Config/.*'
+    - name: Package
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Package/.*'
+    - name: Cache
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Cache/.*'
+    - name: Analysis
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Analysis/.*'
+    - name: Diff
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Diff/.*'
+    - name: Execution
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Execution/.*'
+    - name: Render
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Render/.*'
+    - name: Cli
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Cli/.*'
   ruleset:
-    DocGen: ~
+    Diagnostic: []
+    Mutation: []
+    Model: [Mutation]
+    Filesystem: [Diagnostic]
+    Parallel: [Diagnostic]
+    Git: [Diagnostic]
+    Config: [Diagnostic]
+    Package: [Diagnostic, Model, Config]
+    Cache: [Diagnostic, Model, Filesystem]
+    Analysis: [Diagnostic, Mutation, Model, Filesystem, Parallel, Config, Package, Cache]
+    Diff: [Model]
+    Execution: [Diagnostic, Model, Filesystem, Git, Config, Package, Cache, Analysis, Diff]
+    Render: [Diagnostic, Model, Filesystem, Parallel, Cache, Diff]
+    Cli: [Diagnostic, Model, Filesystem, Git, Config, Cache, Execution, Render]

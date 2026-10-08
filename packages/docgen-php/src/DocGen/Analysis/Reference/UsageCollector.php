@@ -38,6 +38,8 @@ use PhpParser\NodeVisitor;
 
 use function strtolower;
 
+use Toolkit\DocGen\Model\Reference\Usage;
+
 /**
  * AST visitor that records references to documented symbols.
  *

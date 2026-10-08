@@ -14,6 +14,7 @@ use function substr;
 use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
 use Toolkit\DocGen\Render\Page\Component\SidebarHtml;
 use Toolkit\DocGen\Render\Page\Component\SymbolListHtml;
+use Toolkit\DocGen\Render\Page\Component\SymbolRow;
 use Toolkit\DocGen\Render\PageChrome;
 use Toolkit\DocGen\Render\RenderKit;
 

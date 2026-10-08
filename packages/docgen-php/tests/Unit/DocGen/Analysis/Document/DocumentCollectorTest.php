@@ -8,21 +8,21 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Document\DocumentCollector;
-use Toolkit\DocGen\Analysis\Model\MarkdownDoc;
 use Toolkit\DocGen\Config\DocGenConfig;
 use Toolkit\DocGen\Filesystem\DocGenPathResolver;
 use Toolkit\DocGen\Filesystem\MarkdownFileFinder;
 use Toolkit\DocGen\Filesystem\SourceFileFinder;
-use Toolkit\DocGen\Package\ComposerManifest;
-use Toolkit\DocGen\Package\DiscoveredPackage;
+use Toolkit\DocGen\Model\Package\ComposerManifest;
+use Toolkit\DocGen\Model\Package\DiscoveredPackage;
+use Toolkit\DocGen\Model\Symbol\MarkdownDoc;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Document\DocumentCollector
- * @uses \Toolkit\DocGen\Package\ComposerManifest
- * @uses \Toolkit\DocGen\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Config\DocGenConfig
  * @uses \Toolkit\DocGen\Filesystem\DocGenPathResolver
- * @uses \Toolkit\DocGen\Analysis\Model\MarkdownDoc
+ * @uses \Toolkit\DocGen\Model\Symbol\MarkdownDoc
  * @uses \Toolkit\DocGen\Filesystem\MarkdownFileFinder
  * @uses \Toolkit\DocGen\Filesystem\SourceFileFinder
  */

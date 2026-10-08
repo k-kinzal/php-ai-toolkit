@@ -8,17 +8,17 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Layer\DeptracConfigReader;
-use Toolkit\DocGen\Analysis\Layer\LayerCollector;
-use Toolkit\DocGen\Analysis\Layer\LayerDefinition;
-use Toolkit\DocGen\Analysis\Layer\LayerModel;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
+use Toolkit\DocGen\Model\Layer\LayerCollector;
+use Toolkit\DocGen\Model\Layer\LayerDefinition;
+use Toolkit\DocGen\Model\Layer\LayerModel;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Layer\DeptracConfigReader
- * @uses \Toolkit\DocGen\DocGenException
- * @uses \Toolkit\DocGen\Analysis\Layer\LayerCollector
- * @uses \Toolkit\DocGen\Analysis\Layer\LayerDefinition
- * @uses \Toolkit\DocGen\Analysis\Layer\LayerModel
+ * @uses \Toolkit\DocGen\Diagnostic\DocGenException
+ * @uses \Toolkit\DocGen\Model\Layer\LayerCollector
+ * @uses \Toolkit\DocGen\Model\Layer\LayerDefinition
+ * @uses \Toolkit\DocGen\Model\Layer\LayerModel
  */
 #[CoversClass(DeptracConfigReader::class)]
 #[UsesClass(DocGenException::class)]

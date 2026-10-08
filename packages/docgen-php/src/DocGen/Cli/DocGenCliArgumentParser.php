@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Toolkit\DocGen\Config\BaseUrl;
 use Toolkit\DocGen\Config\DocGenConfig;
 use Toolkit\DocGen\Config\RepositoryUrl;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 
 use function trim;
 

@@ -15,11 +15,11 @@ use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\Trait_;
 use PhpParser\Node\Stmt\TraitUse;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
-use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Model\ClassLikeKind;
-use Toolkit\DocGen\Analysis\Model\PropertyDoc;
 use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
+use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Model\Symbol\ClassLikeKind;
+use Toolkit\DocGen\Model\Symbol\PropertyDoc;
 
 /**
  * Builds class-like models from php-parser declarations.
@@ -187,7 +187,7 @@ final class ClassLikeBuilder
      * Constructor-promoted parameters are added to the property list so the
      * documented property surface is complete.
      *
-     * @return array{constants: list<\Toolkit\DocGen\Analysis\Model\ConstantDoc>, properties: list<PropertyDoc>, methods: list<\Toolkit\DocGen\Analysis\Model\MethodDoc>, cases: list<\Toolkit\DocGen\Analysis\Model\EnumCaseDoc>}
+     * @return array{constants: list<\Toolkit\DocGen\Model\Symbol\ConstantDoc>, properties: list<PropertyDoc>, methods: list<\Toolkit\DocGen\Model\Symbol\MethodDoc>, cases: list<\Toolkit\DocGen\Model\Symbol\EnumCaseDoc>}
      */
     public function members(ClassLike $node): array
     {
@@ -223,7 +223,7 @@ final class ClassLikeBuilder
     /**
      * Builds property models for constructor-promoted parameters.
      *
-     * @param list<\Toolkit\DocGen\Analysis\Model\ParameterDoc> $parameters
+     * @param list<\Toolkit\DocGen\Model\Symbol\ParameterDoc> $parameters
      *
      * @return list<PropertyDoc>
      */

@@ -15,18 +15,19 @@ use PhpParser\NodeTraverser;
 use function sprintf;
 use function strtolower;
 
-use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Model\FunctionDoc;
-use Toolkit\DocGen\Analysis\Reference\Usage;
 use Toolkit\DocGen\Analysis\Reference\UsageCollector;
 use Toolkit\DocGen\Cache\ParseCache;
 use Toolkit\DocGen\Cache\SourceFileKey;
 use Toolkit\DocGen\Cache\ToolkitFingerprint;
 use Toolkit\DocGen\Config\DocGenConfig;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 use Toolkit\DocGen\Filesystem\DocGenPathResolver;
 use Toolkit\DocGen\Filesystem\SourceFileFinder;
-use Toolkit\DocGen\Package\DiscoveredPackage;
+use Toolkit\DocGen\Model\Package\DiscoveredPackage;
+use Toolkit\DocGen\Model\Reference\Usage;
+use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Model\Symbol\FileSymbols;
+use Toolkit\DocGen\Model\Symbol\FunctionDoc;
 use Toolkit\DocGen\Parallel\WorkerPool;
 use Toolkit\DocGen\Parallel\WorkScheduler;
 

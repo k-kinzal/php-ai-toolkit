@@ -10,11 +10,11 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Output\OutputInterface;
 use Toolkit\DocGen\Cli\ClosureOutput;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 
 /**
  * @covers \Toolkit\DocGen\Cli\ClosureOutput
- * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Diagnostic\DocGenException
  */
 #[CoversClass(ClosureOutput::class)]
 #[UsesClass(DocGenException::class)]

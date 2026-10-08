@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\DocGen\Render\Page\Component;
 
-use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Diff\DiffStatus;
 
 /**
  * One symbol entry of a navigation or index listing.

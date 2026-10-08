@@ -7,7 +7,9 @@ namespace Toolkit\DocGen\Analysis\Layer;
 use function preg_match;
 use function str_replace;
 
-use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
+use Toolkit\DocGen\Model\Layer\LayerCollector;
+use Toolkit\DocGen\Model\Layer\LayerModel;
+use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
 
 /**
  * Assigns documented classes to deptrac layers.

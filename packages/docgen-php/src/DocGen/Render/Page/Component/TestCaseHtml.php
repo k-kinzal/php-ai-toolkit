@@ -9,7 +9,7 @@ use function sprintf;
 use function strrchr;
 use function substr;
 
-use Toolkit\DocGen\Analysis\Reference\TestCase;
+use Toolkit\DocGen\Model\Reference\TestCase;
 use Toolkit\DocGen\Render\RenderKit;
 
 /**

@@ -10,6 +10,7 @@ use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Namespace_;
 use Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
 use Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder;
+use Toolkit\DocGen\Model\Symbol\FileSymbols;
 
 /**
  * Collects all documented symbols from one parsed source file.

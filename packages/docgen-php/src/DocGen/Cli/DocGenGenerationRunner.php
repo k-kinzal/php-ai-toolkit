@@ -7,17 +7,17 @@ namespace Toolkit\DocGen\Cli;
 use function count;
 use function sprintf;
 
-use Toolkit\DocGen\Analysis\Diff\DiffWorkspace;
-use Toolkit\DocGen\Analysis\ProjectAnalyzer;
-use Toolkit\DocGen\Analysis\ProjectModel;
 use Toolkit\DocGen\Cache\CacheStore;
 use Toolkit\DocGen\Cache\GenerationCache;
 use Toolkit\DocGen\Cache\ParseCache;
 use Toolkit\DocGen\Cache\RenderCache;
 use Toolkit\DocGen\Config\DocGenConfig;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
+use Toolkit\DocGen\Execution\DiffWorkspace;
+use Toolkit\DocGen\Execution\ProjectAnalyzer;
 use Toolkit\DocGen\Filesystem\DocGenPathResolver;
 use Toolkit\DocGen\Git\RevisionRange;
+use Toolkit\DocGen\Model\ProjectModel;
 use Toolkit\DocGen\Render\SiteRenderer;
 use Toolkit\DocGen\Render\Social\SocialCard;
 

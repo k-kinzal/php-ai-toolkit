@@ -9,11 +9,11 @@ use function implode;
 use function serialize;
 use function strtolower;
 
-use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Model\FunctionDoc;
-use Toolkit\DocGen\Analysis\Model\MarkdownDoc;
 use Toolkit\DocGen\Cache\ToolkitFingerprint;
-use Toolkit\DocGen\Package\DiscoveredPackage;
+use Toolkit\DocGen\Model\Package\DiscoveredPackage;
+use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Model\Symbol\FunctionDoc;
+use Toolkit\DocGen\Model\Symbol\MarkdownDoc;
 use Toolkit\DocGen\Render\Page\Component\DocumentListHtml;
 use Toolkit\DocGen\Render\Page\SymbolIndex;
 use Toolkit\DocGen\Render\RenderKit;

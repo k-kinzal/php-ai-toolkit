@@ -8,7 +8,7 @@ use function file_exists;
 use function is_dir;
 use function symlink;
 
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 
 /**
  * Checks a commit out into a throwaway worktree next to the project.

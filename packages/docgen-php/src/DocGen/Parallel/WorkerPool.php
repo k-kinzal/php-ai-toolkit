@@ -34,7 +34,7 @@ use function strpos;
 use function substr;
 
 use Throwable;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 
 use function unserialize;
 

@@ -7,18 +7,18 @@ namespace Tests\Unit\DocGen\Cache;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Analysis\Model\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Parse\FileSymbols;
-use Toolkit\DocGen\Analysis\Reference\Usage;
 use Toolkit\DocGen\Cache\CacheStore;
 use Toolkit\DocGen\Cache\ParseCache;
+use Toolkit\DocGen\Model\Reference\Usage;
+use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Model\Symbol\FileSymbols;
 
 /**
  * @covers \Toolkit\DocGen\Cache\ParseCache
  * @uses \Toolkit\DocGen\Cache\CacheStore
- * @uses \Toolkit\DocGen\Analysis\Model\ClassLikeDoc
- * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbols
- * @uses \Toolkit\DocGen\Analysis\Reference\Usage
+ * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Model\Symbol\FileSymbols
+ * @uses \Toolkit\DocGen\Model\Reference\Usage
  */
 #[CoversClass(ParseCache::class)]
 #[UsesClass(CacheStore::class)]

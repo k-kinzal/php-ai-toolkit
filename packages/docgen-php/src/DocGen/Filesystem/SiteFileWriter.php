@@ -10,7 +10,7 @@ use function is_dir;
 use function mkdir;
 use function sprintf;
 
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
 
 /**
  * Writes generated files below the site output directory.

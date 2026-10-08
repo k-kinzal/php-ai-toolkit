@@ -7,7 +7,7 @@ namespace Toolkit\DocGen\Render\Page\Component;
 use function count;
 use function sprintf;
 
-use Toolkit\DocGen\Analysis\Model\MarkdownDoc;
+use Toolkit\DocGen\Model\Symbol\MarkdownDoc;
 use Toolkit\DocGen\Render\MarkdownLinks;
 use Toolkit\DocGen\Render\RenderKit;
 

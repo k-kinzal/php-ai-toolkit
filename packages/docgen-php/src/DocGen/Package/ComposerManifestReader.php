@@ -17,7 +17,8 @@ use function sprintf;
 use function str_replace;
 
 use Toolkit\DocGen\Config\RepositoryUrl;
-use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Diagnostic\DocGenException;
+use Toolkit\DocGen\Model\Package\ComposerManifest;
 
 /**
  * Reads composer.json files into ComposerManifest values.

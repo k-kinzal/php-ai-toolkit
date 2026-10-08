@@ -9,14 +9,14 @@ use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Config\RepositoryUrl;
-use Toolkit\DocGen\DocGenException;
-use Toolkit\DocGen\Package\ComposerManifest;
+use Toolkit\DocGen\Diagnostic\DocGenException;
+use Toolkit\DocGen\Model\Package\ComposerManifest;
 use Toolkit\DocGen\Package\ComposerManifestReader;
 
 /**
  * @covers \Toolkit\DocGen\Package\ComposerManifestReader
- * @uses \Toolkit\DocGen\Package\ComposerManifest
- * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Diagnostic\DocGenException
  * @uses \Toolkit\DocGen\Config\RepositoryUrl
  */
 #[CoversClass(ComposerManifestReader::class)]

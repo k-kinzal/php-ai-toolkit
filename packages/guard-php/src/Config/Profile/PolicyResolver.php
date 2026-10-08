@@ -6,8 +6,9 @@ namespace Guard\Config\Profile;
 
 use function array_keys;
 
-use Guard\Config\Value\LimitConfig;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\LimitConfig;
+use Guard\Policy\Definition\PolicyConfig;
 
 use function implode;
 use function sprintf;

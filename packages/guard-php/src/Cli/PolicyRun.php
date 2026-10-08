@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Guard\Cli;
 
 use Guard\Config\ConfigurationLoader;
-use Guard\Execution\AtomicWriter;
-use Guard\Execution\Context;
-use Guard\Execution\FileChange;
 use Guard\Execution\Pipeline;
-use Guard\Extension\Registry;
+use Guard\Execution\Registry;
+use Guard\Policy\FileChange;
+use Guard\Repair\AtomicWriter;
 use Guard\Reporting\Reporter;
 use JsonException;
 use Nette\Neon\Exception as NeonException;
@@ -22,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class PolicyRun
 {
     /**
-     * Creates a run with the policies an extension registry provides, or the configured ones.
+     * Creates a run with the policies a registry provides, or the configured ones.
      */
     public function __construct(private ?Registry $registry = null)
     {
@@ -42,7 +41,7 @@ final class PolicyRun
     public function run(string $path, string $format, bool $repair, bool $dryRun, OutputInterface $output): int
     {
         $config = (new ConfigurationLoader())->load($path);
-        $plan = (new Pipeline($this->registry))->run(new Context($config, $path, $repair));
+        $plan = (new Pipeline($this->registry))->run($config, $path, $repair);
         $reporter = new Reporter();
         $blocked = $reporter->hasErrors($plan->blockingFindings);
         $action = $repair ? ($dryRun ? 'would change' : 'changed') : 'checked';

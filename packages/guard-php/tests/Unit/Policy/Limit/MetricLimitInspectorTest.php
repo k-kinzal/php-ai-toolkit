@@ -9,29 +9,29 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Policy\Limit\MetricLimitInspector
- * @uses \Guard\Collect\DirectoryListing
- * @uses \Guard\Collect\FileRecord
- * @uses \Guard\Collect\FileSet
- * @uses \Guard\Collect\Filesystem\Entry
- * @uses \Guard\Collect\Input
- * @uses \Guard\Collect\InputSet
- * @uses \Guard\Collect\Selection
- * @uses \Guard\Collect\StructuredFile
+ * @uses \Guard\Input\DirectoryListing
+ * @uses \Guard\Input\FileRecord
+ * @uses \Guard\Input\FileSet
+ * @uses \Guard\Input\Entry
+ * @uses \Guard\Input\Input
+ * @uses \Guard\Input\InputSet
+ * @uses \Guard\Input\Selection
+ * @uses \Guard\Input\StructuredFile
  * @uses \Guard\Config\Configuration
- * @uses \Guard\Config\Value\LimitConfig
- * @uses \Guard\Execution\Context
- * @uses \Guard\Execution\FileChange
- * @uses \Guard\Execution\Plan
- * @uses \Guard\Extension\PolicyBinding
+ * @uses \Guard\Policy\Definition\LimitConfig
+ * @uses \Guard\Policy\Context
+ * @uses \Guard\Policy\FileChange
+ * @uses \Guard\Policy\Plan
+ * @uses \Guard\Policy\PolicyBinding
  * @uses \Guard\Policy\Limit\ClassLikeMetricLimit
  * @uses \Guard\Policy\Limit\ClassLikeMetricViolationBuilder
  * @uses \Guard\Policy\Limit\FileMetricViolationBuilder
  * @uses \Guard\Policy\Limit\FunctionComplexityViolationBuilder
  * @uses \Guard\Policy\Limit\FunctionLineViolationBuilder
  * @uses \Guard\Policy\Limit\FunctionMetricViolationBuilder
- * @uses \Guard\Policy\PolicyException
- * @uses \Guard\Reporting\Finding
- * @uses \Guard\Reporting\MetricViolation
+ * @uses \Guard\Diagnostic\PolicyException
+ * @uses \Guard\Diagnostic\Finding
+ * @uses \Guard\Policy\Diagnostic\MetricViolation
  * @uses \Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader
  * @uses \Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric
  * @uses \Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser
@@ -61,29 +61,29 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Source
  */
 #[CoversClass(\Guard\Policy\Limit\MetricLimitInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\DirectoryListing::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileRecord::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Entry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Input::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\InputSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\StructuredFile::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\DirectoryListing::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Entry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Input::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\InputSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Selection::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\StructuredFile::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\LimitConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Context::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Plan::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\PolicyBinding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\LimitConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Context::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FileChange::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Plan::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\ClassLikeMetricLimit::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\ClassLikeMetricViolationBuilder::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FileMetricViolationBuilder::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FunctionComplexityViolationBuilder::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FunctionLineViolationBuilder::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FunctionMetricViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Finding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\MetricViolation::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\Finding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\MetricViolation::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser::class)]
@@ -117,7 +117,7 @@ final class MetricLimitInspectorTest extends TestCase
     {
         $metrics = (new \Guard\Structure\Php\MetricParser())->parse("<?php\necho 1;\n", 'memory.php');
         $inspector = new \Guard\Policy\Limit\MetricLimitInspector();
-        self::assertSame([], $inspector->violations($metrics, \Guard\Config\Value\LimitConfig::fromValues(['file.lines' => 2, 'file.ncloc' => 1])));
-        self::assertCount(1, $inspector->violations($metrics, \Guard\Config\Value\LimitConfig::fromValues(['file.lines' => 1])));
+        self::assertSame([], $inspector->violations($metrics, \Guard\Policy\Definition\LimitConfig::fromValues(['file.lines' => 2, 'file.ncloc' => 1])));
+        self::assertCount(1, $inspector->violations($metrics, \Guard\Policy\Definition\LimitConfig::fromValues(['file.lines' => 1])));
     }
 }

@@ -6,7 +6,7 @@ namespace Guard\Config\Validation;
 
 use function array_key_exists;
 
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 
 use function is_array;
 use function is_string;

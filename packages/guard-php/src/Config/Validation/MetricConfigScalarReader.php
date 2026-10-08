@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Guard\Config\Validation;
 
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 
 use function is_int;
 use function is_string;

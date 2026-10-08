@@ -9,50 +9,50 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Collect\Filesystem\QueryResult
- * @uses \Guard\Collect\DirectoryListing
- * @uses \Guard\Collect\FileRecord
- * @uses \Guard\Collect\FileSet
- * @uses \Guard\Collect\Filesystem\Entry
- * @uses \Guard\Collect\Input
- * @uses \Guard\Collect\InputSet
- * @uses \Guard\Collect\Selection
- * @uses \Guard\Collect\StructuredFile
+ * @uses \Guard\Input\DirectoryListing
+ * @uses \Guard\Input\FileRecord
+ * @uses \Guard\Input\FileSet
+ * @uses \Guard\Input\Entry
+ * @uses \Guard\Input\Input
+ * @uses \Guard\Input\InputSet
+ * @uses \Guard\Input\Selection
+ * @uses \Guard\Input\StructuredFile
  * @uses \Guard\Config\Configuration
- * @uses \Guard\Execution\Context
- * @uses \Guard\Execution\FileChange
- * @uses \Guard\Execution\Plan
- * @uses \Guard\Extension\PolicyBinding
- * @uses \Guard\Policy\PolicyException
- * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Policy\Context
+ * @uses \Guard\Policy\FileChange
+ * @uses \Guard\Policy\Plan
+ * @uses \Guard\Policy\PolicyBinding
+ * @uses \Guard\Diagnostic\PolicyException
+ * @uses \Guard\Diagnostic\Finding
  */
 #[CoversClass(\Guard\Collect\Filesystem\QueryResult::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\DirectoryListing::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileRecord::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Entry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Input::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\InputSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\StructuredFile::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\DirectoryListing::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Entry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Input::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\InputSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Selection::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\StructuredFile::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Context::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Plan::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Finding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Context::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FileChange::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Plan::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\Finding::class)]
 final class QueryResultTest extends TestCase
 {
     public function testFileSetRestoresSelectionOrderAfterPhysicalFileGrouping(): void
     {
         $result = new \Guard\Collect\Filesystem\QueryResult();
-        $a = new \Guard\Collect\FileRecord('/root/A', 'A', new \Guard\Collect\Filesystem\Entry(false, true, false, '/root/A'));
-        $b = new \Guard\Collect\FileRecord('/root/B', 'B', new \Guard\Collect\Filesystem\Entry(false, true, false, '/root/B'));
+        $a = new \Guard\Input\FileRecord('/root/A', 'A', new \Guard\Input\Entry(false, true, false, '/root/A'));
+        $b = new \Guard\Input\FileRecord('/root/B', 'B', new \Guard\Input\Entry(false, true, false, '/root/B'));
         $result->addFile($b);
         $result->addFile($a);
-        $listing = new \Guard\Collect\DirectoryListing('src', ['A', 'B'], []);
+        $listing = new \Guard\Input\DirectoryListing('src', ['A', 'B'], []);
         $result->addDirectory($listing);
-        $values = ['B' => new \Guard\Collect\StructuredFile($b, true, null, null), 'A' => new \Guard\Collect\StructuredFile($a, true, null, null)];
+        $values = ['B' => new \Guard\Input\StructuredFile($b, true, null, null), 'A' => new \Guard\Input\StructuredFile($a, true, null, null)];
         $set = $result->fileSet($values);
         self::assertSame(['A', 'B'], array_keys($set->files));
         self::assertSame($values['A'], $set->files['A']);
@@ -64,7 +64,7 @@ final class QueryResultTest extends TestCase
     public function testAddFileDeduplicatesOverlappingRequestsByRelativePath(): void
     {
         $result = new \Guard\Collect\Filesystem\QueryResult();
-        $file = new \Guard\Collect\FileRecord('/root/A', 'A', new \Guard\Collect\Filesystem\Entry(false, true, false, '/root/A'));
+        $file = new \Guard\Input\FileRecord('/root/A', 'A', new \Guard\Input\Entry(false, true, false, '/root/A'));
         $result->addFile($file);
         $result->addFile($file);
         self::assertSame(['A' => $file], $result->files());
@@ -75,8 +75,8 @@ final class QueryResultTest extends TestCase
     public function testFilesReturnsTheEstablishedSortedOrder(): void
     {
         $result = new \Guard\Collect\Filesystem\QueryResult();
-        $result->addFile(new \Guard\Collect\FileRecord('/root/B', 'B', new \Guard\Collect\Filesystem\Entry(false, true, false, '/root/B')));
-        $result->addFile(new \Guard\Collect\FileRecord('/root/A', 'A', new \Guard\Collect\Filesystem\Entry(false, true, false, '/root/A')));
+        $result->addFile(new \Guard\Input\FileRecord('/root/B', 'B', new \Guard\Input\Entry(false, true, false, '/root/B')));
+        $result->addFile(new \Guard\Input\FileRecord('/root/A', 'A', new \Guard\Input\Entry(false, true, false, '/root/A')));
         self::assertSame(['A', 'B'], array_keys($result->files()));
     }
     /**
@@ -85,7 +85,7 @@ final class QueryResultTest extends TestCase
     public function testAddDirectoryKeepsOnlyOneListingForOverlappingRoots(): void
     {
         $result = new \Guard\Collect\Filesystem\QueryResult();
-        $listing = new \Guard\Collect\DirectoryListing('src', ['A.php'], []);
+        $listing = new \Guard\Input\DirectoryListing('src', ['A.php'], []);
         $result->addDirectory($listing);
         $result->addDirectory($listing);
         self::assertSame(['src' => $listing], $result->directories());
@@ -96,8 +96,8 @@ final class QueryResultTest extends TestCase
     public function testDirectoriesSortsListingsIndependentlyOfTraversalOrder(): void
     {
         $result = new \Guard\Collect\Filesystem\QueryResult();
-        $result->addDirectory(new \Guard\Collect\DirectoryListing('z', [], []));
-        $result->addDirectory(new \Guard\Collect\DirectoryListing('a', [], []));
+        $result->addDirectory(new \Guard\Input\DirectoryListing('z', [], []));
+        $result->addDirectory(new \Guard\Input\DirectoryListing('a', [], []));
         self::assertSame(['a', 'z'], array_keys($result->directories()));
     }
     /**
@@ -106,9 +106,9 @@ final class QueryResultTest extends TestCase
     public function testFailPreservesTheFirstSelectionError(): void
     {
         $result = new \Guard\Collect\Filesystem\QueryResult();
-        $first = new \Guard\Policy\PolicyException('First');
+        $first = new \Guard\Diagnostic\PolicyException('First');
         $result->fail($first);
-        $result->fail(new \Guard\Policy\PolicyException('Second'));
+        $result->fail(new \Guard\Diagnostic\PolicyException('Second'));
         self::assertSame($first, $result->failure());
     }
     /**

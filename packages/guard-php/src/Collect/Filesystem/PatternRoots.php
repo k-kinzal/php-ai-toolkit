@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Guard\Collect\Filesystem;
 
-use Guard\Collect\FileRecord;
 use Guard\Collect\Matching\SelectionFilter;
-use Guard\Collect\Selection;
+use Guard\Input\FileRecord;
+use Guard\Input\Path;
+use Guard\Input\Selection;
 
 /**
  * Compiles literal pattern prefixes into roots so unrelated ancestors are never scanned.

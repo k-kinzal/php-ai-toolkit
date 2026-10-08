@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Cli;
 
 use Guard\Cli\ClosureOutput;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @covers \Guard\Cli\ClosureOutput
- * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Diagnostic\PolicyException
  */
 #[CoversClass(ClosureOutput::class)]
 #[UsesClass(PolicyException::class)]

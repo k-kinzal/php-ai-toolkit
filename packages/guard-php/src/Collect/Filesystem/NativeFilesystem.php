@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Collect\Filesystem;
 
+use Guard\Input\Entry;
+
 /**
  * Performs the native filesystem operations used by a shared snapshot.
  */

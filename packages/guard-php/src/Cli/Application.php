@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Guard\Cli;
 
 use Closure;
-use Guard\Extension\Registry;
+use Guard\Execution\Registry;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;

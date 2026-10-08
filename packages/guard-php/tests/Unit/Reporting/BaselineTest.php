@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Reporting;
 
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
 use Guard\Reporting\Baseline;
-use Guard\Reporting\Finding;
 use JsonException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
  * @covers \Guard\Reporting\Baseline
- * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Diagnostic\Finding
  * @uses \Guard\Reporting\BaselineMatch
  * @uses \Guard\Config\Schema
- * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Diagnostic\PolicyException
  */
 #[\PHPUnit\Framework\Attributes\CoversClass(Baseline::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(Finding::class)]

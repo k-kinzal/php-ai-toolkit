@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Guard\Config;
 
-use Guard\Extension\PolicyBinding;
+use Guard\Policy\PolicyBinding;
 
 /** A project root and ordinary policy registrations, without tool-specific compartments.
  * @property-read string $root
  * @property-read list<PolicyBinding> $policies
  * @property-read array<string, array<string, mixed>> $extensions
- * @property-read ?\Guard\Collect\Scope $scope
+ * @property-read ?\Guard\Input\Scope $scope
  */
 final class Configuration
 {
@@ -26,7 +26,7 @@ final class Configuration
         /** @readonly */
         public array $extensions = [],
         /** @readonly */
-        private ?\Guard\Collect\Scope $scope = null,
+        private ?\Guard\Input\Scope $scope = null,
     ) {
     }
     /**

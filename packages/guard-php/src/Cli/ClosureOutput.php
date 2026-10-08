@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Guard\Cli;
 
 use Closure;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 use Override;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;

@@ -6,9 +6,9 @@ namespace Tests\Unit\Cli\Command;
 
 use Guard\Cli\Command\GuardCommand;
 use Guard\Cli\Command\InitCommand;
-use Guard\Init\Initializer;
-use Guard\Init\PresetCatalog;
-use Guard\Policy\PolicyException;
+use Guard\Config\Project\Initializer;
+use Guard\Config\Project\PresetCatalog;
+use Guard\Diagnostic\PolicyException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -20,9 +20,9 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @covers \Guard\Cli\Command\InitCommand
  * @uses \Guard\Cli\FormatDetector
  * @uses \Guard\Cli\Command\GuardCommand
- * @uses \Guard\Init\Initializer
- * @uses \Guard\Init\PresetCatalog
- * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Config\Project\Initializer
+ * @uses \Guard\Config\Project\PresetCatalog
+ * @uses \Guard\Diagnostic\PolicyException
  */
 #[CoversClass(InitCommand::class)]
 #[UsesClass(GuardCommand::class)]

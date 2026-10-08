@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Guard\Config\Reader;
 
 use Guard\Config\Schema;
-use Guard\Config\Value\DocumentationConfig;
+use Guard\Policy\Definition\DocumentationConfig;
 
 /**
  * Reads declared heading structures with the existing Markdown validation.

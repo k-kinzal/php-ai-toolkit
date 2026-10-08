@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Guard\Config\Reader;
 
-use Guard\Collect\Filesystem\Path as PathResolver;
-use Guard\Config\Value\DocumentConfig;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\Path as PathResolver;
+use Guard\Policy\Definition\DocumentConfig;
 
 use function is_array;
 use function is_string;

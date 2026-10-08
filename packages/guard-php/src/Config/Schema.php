@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Guard\Config;
 
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 
 /**
  * Validates configuration shapes without silently dropping misspelled keys.

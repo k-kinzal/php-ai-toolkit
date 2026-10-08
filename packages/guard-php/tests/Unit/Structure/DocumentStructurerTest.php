@@ -10,61 +10,61 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Structure\DocumentStructurer
- * @uses \Guard\Collect\DirectoryListing
- * @uses \Guard\Collect\FileRecord
- * @uses \Guard\Collect\FileSet
- * @uses \Guard\Collect\Filesystem\Entry
- * @uses \Guard\Collect\Input
- * @uses \Guard\Collect\InputSet
- * @uses \Guard\Collect\Selection
- * @uses \Guard\Collect\StructuredFile
+ * @uses \Guard\Input\DirectoryListing
+ * @uses \Guard\Input\FileRecord
+ * @uses \Guard\Input\FileSet
+ * @uses \Guard\Input\Entry
+ * @uses \Guard\Input\Input
+ * @uses \Guard\Input\InputSet
+ * @uses \Guard\Input\Selection
+ * @uses \Guard\Input\StructuredFile
  * @uses \Guard\Config\Configuration
- * @uses \Guard\Document\DataDocument
- * @uses \Guard\Document\DocumentNode
- * @uses \Guard\Document\Json5Reader
- * @uses \Guard\Document\PhpConfigReader
- * @uses \Guard\Document\PhpDocument
- * @uses \Guard\Document\Pointer
- * @uses \Guard\Document\Selection
- * @uses \Guard\Document\TomlEncoder
- * @uses \Guard\Document\XmlDocument
- * @uses \Guard\Execution\Context
- * @uses \Guard\Execution\FileChange
- * @uses \Guard\Execution\Plan
- * @uses \Guard\Extension\PolicyBinding
- * @uses \Guard\Policy\Constraint
- * @uses \Guard\Policy\PolicyException
- * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Structure\Document\DataDocument
+ * @uses \Guard\Structure\Document\DocumentNode
+ * @uses \Guard\Structure\Document\Json5Reader
+ * @uses \Guard\Structure\Document\PhpConfigReader
+ * @uses \Guard\Structure\Document\PhpDocument
+ * @uses \Guard\Structure\Document\Pointer
+ * @uses \Guard\Structure\Document\Selection
+ * @uses \Guard\Structure\Document\TomlEncoder
+ * @uses \Guard\Structure\Document\XmlDocument
+ * @uses \Guard\Policy\Context
+ * @uses \Guard\Policy\FileChange
+ * @uses \Guard\Policy\Plan
+ * @uses \Guard\Policy\PolicyBinding
+ * @uses \Guard\Structure\Document\Constraint
+ * @uses \Guard\Diagnostic\PolicyException
+ * @uses \Guard\Diagnostic\Finding
  * @uses \Guard\Structure\ParsedDocument
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
  */
 #[CoversClass(\Guard\Structure\DocumentStructurer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\DirectoryListing::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileRecord::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Entry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Input::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\InputSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\StructuredFile::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\DirectoryListing::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Entry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Input::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\InputSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Selection::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\StructuredFile::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\DataDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\DocumentNode::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Json5Reader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\PhpConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\PhpDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Pointer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\TomlEncoder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\XmlDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Context::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Plan::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Constraint::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Finding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DataDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DocumentNode::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Json5Reader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Pointer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Selection::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\TomlEncoder::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\XmlDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Context::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FileChange::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Plan::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Constraint::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\Finding::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\ParsedDocument::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]

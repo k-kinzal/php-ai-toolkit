@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy\Inspection;
 
-use Guard\Collect\DirectoryListing;
-use Guard\Collect\Filesystem\Path as PathResolver;
-use Guard\Config\Value\DirectoryRuleConfig;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Path as PathResolver;
+use Guard\Policy\Definition\DirectoryRuleConfig;
+use Guard\Policy\Diagnostic\DirectoryViolation;
 use Guard\Policy\Inspection\CaseConventionMatcher;
 use Guard\Policy\Inspection\FileNameInspector;
-use Guard\Reporting\DirectoryViolation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Policy\Inspection\FileNameInspector
- * @uses \Guard\Collect\DirectoryListing
- * @uses \Guard\Collect\Filesystem\Path
- * @uses \Guard\Config\Value\DirectoryRuleConfig
+ * @uses \Guard\Input\DirectoryListing
+ * @uses \Guard\Input\Path
+ * @uses \Guard\Policy\Definition\DirectoryRuleConfig
  * @uses \Guard\Policy\Inspection\CaseConventionMatcher
- * @uses \Guard\Reporting\DirectoryViolation
+ * @uses \Guard\Policy\Diagnostic\DirectoryViolation
  */
 #[CoversClass(FileNameInspector::class)]
 #[UsesClass(DirectoryListing::class)]

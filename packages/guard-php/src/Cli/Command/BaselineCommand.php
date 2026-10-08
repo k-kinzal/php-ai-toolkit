@@ -6,9 +6,8 @@ namespace Guard\Cli\Command;
 
 use Guard\Cli\BaselineFile;
 use Guard\Config\ConfigurationLoader;
-use Guard\Execution\Context;
 use Guard\Execution\Pipeline;
-use Guard\Extension\Registry;
+use Guard\Execution\Registry;
 use Guard\Reporting\Baseline;
 use Override;
 use Symfony\Component\Console\Input\InputInterface;
@@ -53,7 +52,7 @@ final class BaselineCommand extends GuardCommand
         $target = $file->path($path, is_string($requested) ? $requested : null);
         $file->validateTarget($target);
         $configuration = (new ConfigurationLoader())->load($path);
-        $plan = (new Pipeline($this->registry))->run(new Context($configuration, $path, false));
+        $plan = (new Pipeline($this->registry))->run($configuration, $path, false);
         $file->write($target, (new Baseline())->capture($plan->findings));
         $count = count($plan->findings);
         $message = $format === 'json'

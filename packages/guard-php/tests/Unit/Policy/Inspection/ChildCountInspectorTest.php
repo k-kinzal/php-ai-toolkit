@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy\Inspection;
 
-use Guard\Collect\DirectoryListing;
-use Guard\Config\Value\DirectoryRuleConfig;
+use Guard\Input\DirectoryListing;
+use Guard\Policy\Definition\DirectoryRuleConfig;
+use Guard\Policy\Diagnostic\DirectoryViolation;
 use Guard\Policy\Inspection\ChildCountInspector;
-use Guard\Reporting\DirectoryViolation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Policy\Inspection\ChildCountInspector
- * @uses \Guard\Collect\DirectoryListing
- * @uses \Guard\Config\Value\DirectoryRuleConfig
- * @uses \Guard\Reporting\DirectoryViolation
+ * @uses \Guard\Input\DirectoryListing
+ * @uses \Guard\Policy\Definition\DirectoryRuleConfig
+ * @uses \Guard\Policy\Diagnostic\DirectoryViolation
  */
 #[CoversClass(ChildCountInspector::class)]
 #[UsesClass(DirectoryListing::class)]

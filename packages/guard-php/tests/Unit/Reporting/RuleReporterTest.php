@@ -8,16 +8,16 @@ use JsonException;
 
 /**
  * @covers \Guard\Reporting\RuleReporter
- * @uses \Guard\Reporting\RuleDescription
+ * @uses \Guard\Policy\Diagnostic\RuleDescription
  */
 #[\PHPUnit\Framework\Attributes\CoversClass(\Guard\Reporting\RuleReporter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\RuleDescription::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\RuleDescription::class)]
 final class RuleReporterTest extends \PHPUnit\Framework\TestCase
 {
     public function testFilterSearchesMessagesAndPathsWithoutCaseSensitivity(): void
     {
-        $a = new \Guard\Reporting\RuleDescription('a', 'app.json', 'required', true, 'Prevent drift.');
-        $b = new \Guard\Reporting\RuleDescription('b', 'test.xml', 'recommended', false, 'Catch leaks.');
+        $a = new \Guard\Policy\Diagnostic\RuleDescription('a', 'app.json', 'required', true, 'Prevent drift.');
+        $b = new \Guard\Policy\Diagnostic\RuleDescription('b', 'test.xml', 'recommended', false, 'Catch leaks.');
         $reporter = new \Guard\Reporting\RuleReporter();
         self::assertSame([$a], $reporter->filter([$a, $b], 'DRIFT'));
         self::assertSame([$b], $reporter->filter([$a, $b], 'test.xml'));
@@ -30,7 +30,7 @@ final class RuleReporterTest extends \PHPUnit\Framework\TestCase
      */
     public function testRenderEscapesHumanMarkupAndKeepsJsonAndAiPlain(): void
     {
-        $rule = new \Guard\Reporting\RuleDescription('x', '<info>file</info>', 'required', true, '<error>literal</error>');
+        $rule = new \Guard\Policy\Diagnostic\RuleDescription('x', '<info>file</info>', 'required', true, '<error>literal</error>');
         $reporter = new \Guard\Reporting\RuleReporter();
         self::assertStringContainsString('<error>literal</error>', $reporter->render([$rule], 'text'));
         self::assertStringNotContainsString("\033", $reporter->render([$rule], 'ai', true));
@@ -42,7 +42,7 @@ final class RuleReporterTest extends \PHPUnit\Framework\TestCase
 
     public function testRowsPreservesTheSelectedOrder(): void
     {
-        $rule = new \Guard\Reporting\RuleDescription('id', 'target', 'required', false, 'Remove the unsupported entry.');
+        $rule = new \Guard\Policy\Diagnostic\RuleDescription('id', 'target', 'required', false, 'Remove the unsupported entry.');
         self::assertSame([$rule->toArray()], (new \Guard\Reporting\RuleReporter())->rows([$rule]));
     }
 

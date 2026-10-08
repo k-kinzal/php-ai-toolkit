@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Collect\Matching;
 
-use Guard\Collect\Selection;
+use Guard\Input\PathPatternMatcher;
+use Guard\Input\Selection;
 
 /**
  * Applies selection exclusions without touching the filesystem.

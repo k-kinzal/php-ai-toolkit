@@ -7,7 +7,8 @@ namespace Guard\Config\Profile;
 use Guard\Config\Validation\MetricConfigKeyValidator;
 use Guard\Config\Validation\MetricConfigScalarReader;
 use Guard\Config\Validation\MetricConfigStringListReader;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\ApplyRuleConfig;
 
 use function is_array;
 use function sprintf;

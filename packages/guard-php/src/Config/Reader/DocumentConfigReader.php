@@ -8,9 +8,9 @@ use function array_key_exists;
 use function array_values;
 
 use Guard\Config\Validation\HeadingConfigKeyValidator;
-use Guard\Config\Value\DeclaredHeading;
-use Guard\Config\Value\DocumentConfig;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\DeclaredHeading;
+use Guard\Policy\Definition\DocumentConfig;
 
 use function is_array;
 use function is_int;

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Config\Profile;
 
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\PolicyConfig;
 
 use function is_array;
 use function is_string;

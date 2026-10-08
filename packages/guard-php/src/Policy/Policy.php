@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Policy;
 
-use Guard\Collect\Input;
-use Guard\Collect\InputSet;
-use Guard\Execution\Context;
-use Guard\Execution\Plan;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
 use JsonException;
 use RuntimeException;
 

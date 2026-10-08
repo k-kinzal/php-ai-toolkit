@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Guard\Policy\Limit;
 
-use Guard\Config\Value\LimitConfig;
+use Guard\Policy\Definition\LimitConfig;
 use Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric;
 
 /**

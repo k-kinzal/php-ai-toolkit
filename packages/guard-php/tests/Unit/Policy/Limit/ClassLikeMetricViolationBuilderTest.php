@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy\Limit;
 
-use Guard\Config\Value\LimitConfig;
+use Guard\Policy\Definition\LimitConfig;
+use Guard\Policy\Diagnostic\MetricViolation;
 use Guard\Policy\Limit\ClassLikeMetricLimit;
 use Guard\Policy\Limit\ClassLikeMetricViolationBuilder;
-use Guard\Reporting\MetricViolation;
 use Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -15,9 +15,9 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Policy\Limit\ClassLikeMetricViolationBuilder
- * @uses \Guard\Config\Value\LimitConfig
+ * @uses \Guard\Policy\Definition\LimitConfig
  * @uses \Guard\Policy\Limit\ClassLikeMetricLimit
- * @uses \Guard\Reporting\MetricViolation
+ * @uses \Guard\Policy\Diagnostic\MetricViolation
  * @uses \Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric
  */
 #[CoversClass(ClassLikeMetricViolationBuilder::class)]

@@ -6,9 +6,9 @@ namespace Guard\Policy\Inspection;
 
 use function array_merge;
 
-use Guard\Collect\DirectoryListing;
-use Guard\Config\Value\DirectoryRuleConfig;
-use Guard\Reporting\DirectoryViolation;
+use Guard\Input\DirectoryListing;
+use Guard\Policy\Definition\DirectoryRuleConfig;
+use Guard\Policy\Diagnostic\DirectoryViolation;
 
 /**
  * Applies every constraint of one rule block to one matched directory.

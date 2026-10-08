@@ -7,9 +7,9 @@ namespace Guard\Policy\Comparison;
 use function array_values;
 use function count;
 
-use Guard\Config\Value\DeclaredHeading;
-use Guard\Reporting\HeadingViolation;
-use Guard\Reporting\HeadingViolationFactory;
+use Guard\Policy\Definition\DeclaredHeading;
+use Guard\Policy\Diagnostic\HeadingViolation;
+use Guard\Policy\Diagnostic\HeadingViolationFactory;
 use Guard\Structure\Markdown\Heading;
 
 /**

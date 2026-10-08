@@ -6,10 +6,10 @@ namespace Guard\Policy\Inspection;
 
 use function fnmatch;
 
-use Guard\Collect\DirectoryListing;
-use Guard\Collect\Filesystem\Path as PathResolver;
-use Guard\Config\Value\DirectoryRuleConfig;
-use Guard\Reporting\DirectoryViolation;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Path as PathResolver;
+use Guard\Policy\Definition\DirectoryRuleConfig;
+use Guard\Policy\Diagnostic\DirectoryViolation;
 
 use function implode;
 use function sprintf;

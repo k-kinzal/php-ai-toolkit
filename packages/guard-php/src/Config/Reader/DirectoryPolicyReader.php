@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Guard\Config\Reader;
 
 use Guard\Config\Schema;
-use Guard\Config\Value\StructureConfig;
+use Guard\Policy\Definition\StructureConfig;
 
 /**
  * Reads directory policies while retaining every existing directory constraint.

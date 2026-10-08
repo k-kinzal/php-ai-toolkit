@@ -1,92 +1,55 @@
 deptrac:
   paths:
     - ./src
-  exclude_files:
-    - '#.*/tests?/.*#'
-    - '#.*/vendor/.*#'
   layers:
-    - name: Foundation
+    - name: Diagnostic
       collectors:
         - type: directory
-          value: 'src/Config/(Value|Reader|Profile|Validation)/.*'
-        - type: directory
-          value: 'src/Config/(Configuration|Schema)\.php'
-        - type: directory
-          value: 'src/Document/.*'
-        - type: directory
-          value: 'src/Collect/[^/]+(?<!Collector)\.php'
-        - type: directory
-          value: 'src/Collect/Filesystem/(Entry|Path)\.php'
-        - type: directory
-          value: 'src/Collect/Matching/PathPatternMatcher\.php'
-        - type: directory
-          value: 'src/Execution/(Context|Plan|FileChange)\.php'
-        - type: directory
-          value: 'src/Extension/PolicyBinding\.php'
-        - type: directory
-          value: 'src/Policy/(Policy|PolicyException|Constraint|Rule)\.php'
-        - type: directory
-          value: 'src/Reporting/[^/]+(?<!Reporter)\.php'
-        - type: directory
-          value: 'src/Reporting/Filtering/.*'
-        - type: directory
-          value: 'src/Structure/(Subject|Structurer|Source|ParsedDocument)\.php'
-    - name: Collection
+          value: 'src/Diagnostic/.*'
+    - name: Structure
       collectors:
         - type: directory
-          value: 'src/Collect/Collector\.php'
-        - type: directory
-          value: 'src/Collect/Filesystem/(?!Entry\.php|Path\.php).*'
-        - type: directory
-          value: 'src/Collect/Matching/(GlobMatcher|SelectionFilter|ScopeMatcher)\.php'
-        - type: directory
-          value: 'src/Execution/TargetPath\.php'
-    - name: Structuring
+          value: 'src/Structure/.*'
+    - name: Input
       collectors:
         - type: directory
-          value: 'src/Structure/(Php|Markdown)/.*'
+          value: 'src/Input/.*'
+    - name: Collect
+      collectors:
         - type: directory
-          value: 'src/Structure/(DocumentStructurer|TextStructurer|Text)\.php'
+          value: 'src/Collect/.*'
     - name: Policy
       collectors:
         - type: directory
-          value: 'src/Policy/(Comparison|Inspection|Limit)/.*'
-        - type: directory
-          value: 'src/Policy/(MetricLimits|DirectoryEntries|HeadingStructure|FieldConstraints|RuleEvaluator)\.php'
-        - type: directory
-          value: 'src/Config/Assignment/.*'
-    - name: Configuration
+          value: 'src/Policy/.*'
+    - name: Repair
       collectors:
         - type: directory
-          value: 'src/Config/(ConfigurationLoader|ImportResolver|DocumentMerger|RuleReader|RuleCatalog)\.php'
-    - name: Extension
+          value: 'src/Repair/.*'
+    - name: Config
       collectors:
         - type: directory
-          value: 'src/Extension/(Registry|Extension|BuiltinExtension|ConfigurableExtension|ExtensionLoader)\.php'
+          value: 'src/Config/.*'
     - name: Execution
       collectors:
         - type: directory
-          value: 'src/Execution/(Pipeline|AtomicWriter|ChangeSet)\.php'
+          value: 'src/Execution/.*'
     - name: Reporting
       collectors:
         - type: directory
-          value: 'src/Reporting/(Reporter|RuleReporter)\.php'
-    - name: Initialization
-      collectors:
-        - type: directory
-          value: 'src/Init/.*'
+          value: 'src/Reporting/.*'
     - name: Cli
       collectors:
         - type: directory
           value: 'src/Cli/.*'
   ruleset:
-    Foundation: [Structuring]
-    Collection: [Foundation]
-    Structuring: [Foundation]
-    Policy: [Foundation, Structuring]
-    Configuration: [Foundation, Policy]
-    Extension: [Foundation, Structuring]
-    Execution: [Foundation, Collection, Extension]
-    Reporting: [Foundation]
-    Initialization: [Foundation, Structuring, Configuration]
-    Cli: [Foundation, Configuration, Extension, Execution, Reporting, Initialization]
+    Diagnostic: []
+    Structure: [Diagnostic]
+    Input: [Diagnostic, Structure]
+    Collect: [Diagnostic, Structure, Input]
+    Policy: [Diagnostic, Structure, Input]
+    Repair: [Diagnostic, Policy]
+    Config: [Diagnostic, Structure, Input, Policy]
+    Execution: [Diagnostic, Structure, Input, Collect, Policy, Repair, Config]
+    Reporting: [Diagnostic, Policy, Config]
+    Cli: [Diagnostic, Policy, Repair, Config, Execution, Reporting]

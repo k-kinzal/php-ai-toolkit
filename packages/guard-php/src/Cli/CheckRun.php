@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Guard\Cli;
 
 use Guard\Config\ConfigurationLoader;
-use Guard\Execution\Context;
+use Guard\Diagnostic\PolicyException;
 use Guard\Execution\Pipeline;
-use Guard\Extension\Registry;
-use Guard\Policy\PolicyException;
+use Guard\Execution\Registry;
 use Guard\Reporting\Baseline;
 use Guard\Reporting\Filtering\FindingFilter;
 use Guard\Reporting\Filtering\ReportScope;
@@ -51,7 +50,7 @@ final class CheckRun
             $file->validate($json, $baseline);
         }
         $configuration = (new ConfigurationLoader())->load($path);
-        $plan = (new Pipeline($this->registry))->run(new Context($configuration, $path, false));
+        $plan = (new Pipeline($this->registry))->run($configuration, $path, false);
         $match = $json === null ? null : (new Baseline())->filter($plan->findings, $json);
         $findings = $match === null ? $plan->findings : $match->findings;
         $visible = $filter->select($findings);

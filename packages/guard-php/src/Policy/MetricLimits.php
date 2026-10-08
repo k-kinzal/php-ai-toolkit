@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Guard\Policy;
 
-use Guard\Config\Assignment\FilePolicyAssigner;
-use Guard\Execution\Context;
-use Guard\Execution\Plan;
-use Guard\Reporting\Finding;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Assignment\FilePolicyAssigner;
 use Guard\Structure\Php\SourceMetrics;
 use JsonException;
 use RuntimeException;
@@ -20,18 +19,18 @@ final class MetricLimits implements Policy
     /**
      * Creates the MetricLimits with its declared dependencies.
      */
-    public function __construct(private \Guard\Config\Value\MetricsConfig $config)
+    public function __construct(private Definition\MetricsConfig $config)
     {
     }
     /**
-     * @return array<string, \Guard\Collect\Input>
+     * @return array<string, \Guard\Input\Input>
      */
     public function inputs(Context $context): array
     {
-        if ($context->configuration->scope !== null) {
-            return ['sources' => new \Guard\Collect\Input(new \Guard\Collect\Selection('patterns', ['**/*.php']), 'php.metrics')];
+        if ($context->scope !== null) {
+            return ['sources' => new \Guard\Input\Input(new \Guard\Input\Selection('patterns', ['**/*.php']), 'php.metrics')];
         }
-        return ['sources' => new \Guard\Collect\Input(new \Guard\Collect\Selection(
+        return ['sources' => new \Guard\Input\Input(new \Guard\Input\Selection(
             'descendants',
             $this->config->scan->roots,
             $this->config->scan->exclude,
@@ -45,7 +44,7 @@ final class MetricLimits implements Policy
      * @throws JsonException
      * @throws \Nette\Neon\Exception
      */
-    public function evaluate(\Guard\Collect\InputSet $inputs, Context $context): Plan
+    public function evaluate(\Guard\Input\InputSet $inputs, Context $context): Plan
     {
         $files = [];
         $values = [];
@@ -55,7 +54,7 @@ final class MetricLimits implements Policy
         }
         ksort($files);
         $findings = [];
-        foreach ((new FilePolicyAssigner())->assign($this->config, $files, $context->configuration->scope === null) as $assignment) {
+        foreach ((new FilePolicyAssigner())->assign($this->config, $files, $context->scope === null) as $assignment) {
             $value = $values[$assignment->path];
             if (!$value->readable) {
                 continue;
@@ -66,7 +65,7 @@ final class MetricLimits implements Policy
             }
             $metrics = new SourceMetrics(new \Guard\Structure\Php\FileMetric\FileMetric($assignment->relativePath, $metrics->file->physicalLines, $metrics->file->nonCommentLines), $metrics->classes, $metrics->functions, true);
             foreach ((new Limit\MetricLimitInspector())->violations($metrics, $assignment->policy->limits, $assignment->policy->name) as $violation) {
-                $findings[] = new Finding($violation->path, 'metrics.' . $violation->rule, 'required', (new \Guard\Reporting\RuleMessages())->diagnostic('metrics.' . $violation->rule, $violation->message));
+                $findings[] = new Finding($violation->path, 'metrics.' . $violation->rule, 'required', (new Diagnostic\RuleMessages())->diagnostic('metrics.' . $violation->rule, $violation->message));
             }
         }
         return new Plan($findings, []);

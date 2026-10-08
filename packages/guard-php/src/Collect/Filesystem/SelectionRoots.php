@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Guard\Collect\Filesystem;
 
-use Guard\Collect\FileRecord;
 use Guard\Collect\Matching\ScopeMatcher;
-use Guard\Collect\Selection;
-use Guard\Execution\TargetPath;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\FileRecord;
+use Guard\Input\Path;
+use Guard\Input\Selection;
 
 /**
  * Resolves selection roots and exact files before any directory traversal.

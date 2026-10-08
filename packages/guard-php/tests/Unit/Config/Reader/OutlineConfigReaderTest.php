@@ -7,9 +7,9 @@ namespace Tests\Unit\Config\Reader;
 use Guard\Config\Reader\DeclaredHeadingReader;
 use Guard\Config\Reader\OutlineConfigReader;
 use Guard\Config\Validation\HeadingConfigKeyValidator;
-use Guard\Config\Value\DeclaredHeading;
-use Guard\Config\Value\OutlineEntry;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\DeclaredHeading;
+use Guard\Policy\Definition\OutlineEntry;
 use Guard\Structure\Markdown\AtxHeadingMatcher;
 use Guard\Structure\Markdown\Heading;
 use Guard\Structure\Markdown\HeadingTextNormalizer;
@@ -21,9 +21,9 @@ use PHPUnit\Framework\TestCase;
  * @covers \Guard\Config\Reader\OutlineConfigReader
  * @uses \Guard\Config\Reader\DeclaredHeadingReader
  * @uses \Guard\Config\Validation\HeadingConfigKeyValidator
- * @uses \Guard\Config\Value\DeclaredHeading
- * @uses \Guard\Config\Value\OutlineEntry
- * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Policy\Definition\DeclaredHeading
+ * @uses \Guard\Policy\Definition\OutlineEntry
+ * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Structure\Markdown\AtxHeadingMatcher
  * @uses \Guard\Structure\Markdown\Heading
  * @uses \Guard\Structure\Markdown\HeadingTextNormalizer

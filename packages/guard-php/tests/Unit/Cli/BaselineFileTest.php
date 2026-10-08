@@ -6,7 +6,7 @@ namespace Tests\Unit\Cli;
 
 use FilesystemIterator;
 use Guard\Cli\BaselineFile;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 use Guard\Reporting\Baseline;
 use JsonException;
 use RecursiveDirectoryIterator;
@@ -18,7 +18,7 @@ use SplFileInfo;
  * @covers \Guard\Cli\BaselineFile
  * @uses \Guard\Reporting\Baseline
  * @uses \Guard\Config\Schema
- * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Diagnostic\PolicyException
  */
 #[\PHPUnit\Framework\Attributes\CoversClass(BaselineFile::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(Baseline::class)]

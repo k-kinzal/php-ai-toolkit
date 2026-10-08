@@ -7,7 +7,7 @@ namespace Tests\Unit\Cli\Command;
 use Guard\Cli\ClosureOutput;
 use Guard\Cli\Command\CheckCommand;
 use Guard\Cli\Command\GuardCommand;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +24,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @uses \Guard\Config\ImportResolver
  * @uses \Guard\Cli\ClosureOutput
  * @uses \Guard\Cli\Command\CheckCommand
- * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Cli\CheckRun
  * @uses \Guard\Cli\BaselineFile
  * @uses \Guard\Cli\Command\BaselineCommand

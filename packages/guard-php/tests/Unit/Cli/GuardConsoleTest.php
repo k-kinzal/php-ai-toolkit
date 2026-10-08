@@ -10,7 +10,7 @@ use Guard\Cli\Command\FixCommand;
 use Guard\Cli\Command\GuardCommand;
 use Guard\Cli\Command\InitCommand;
 use Guard\Cli\GuardConsole;
-use Guard\Init\PresetCatalog;
+use Guard\Config\Project\PresetCatalog;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @uses \Guard\Cli\FormatDetector
  * @uses \Guard\Cli\Command\GuardCommand
  * @uses \Guard\Cli\Command\InitCommand
- * @uses \Guard\Init\PresetCatalog
+ * @uses \Guard\Config\Project\PresetCatalog
  * @uses \Guard\Cli\Command\RulesCommand
  * @uses \Guard\Cli\CheckRun
  * @uses \Guard\Cli\BaselineFile

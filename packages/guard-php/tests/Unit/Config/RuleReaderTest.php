@@ -11,46 +11,46 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Config\RuleReader
- * @uses \Guard\Collect\DirectoryListing
- * @uses \Guard\Collect\FileRecord
- * @uses \Guard\Collect\FileSet
- * @uses \Guard\Collect\Filesystem\Entry
- * @uses \Guard\Collect\Input
- * @uses \Guard\Collect\InputSet
- * @uses \Guard\Collect\Selection
- * @uses \Guard\Collect\StructuredFile
+ * @uses \Guard\Input\DirectoryListing
+ * @uses \Guard\Input\FileRecord
+ * @uses \Guard\Input\FileSet
+ * @uses \Guard\Input\Entry
+ * @uses \Guard\Input\Input
+ * @uses \Guard\Input\InputSet
+ * @uses \Guard\Input\Selection
+ * @uses \Guard\Input\StructuredFile
  * @uses \Guard\Config\Configuration
  * @uses \Guard\Config\Schema
- * @uses \Guard\Document\Selection
- * @uses \Guard\Execution\Context
- * @uses \Guard\Execution\FileChange
- * @uses \Guard\Execution\Plan
- * @uses \Guard\Extension\PolicyBinding
- * @uses \Guard\Policy\Constraint
- * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Structure\Document\Selection
+ * @uses \Guard\Policy\Context
+ * @uses \Guard\Policy\FileChange
+ * @uses \Guard\Policy\Plan
+ * @uses \Guard\Policy\PolicyBinding
+ * @uses \Guard\Structure\Document\Constraint
+ * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Policy\Rule
- * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Diagnostic\Finding
  */
 #[CoversClass(\Guard\Config\RuleReader::class)]
-#[UsesClass(\Guard\Collect\DirectoryListing::class)]
-#[UsesClass(\Guard\Collect\FileRecord::class)]
-#[UsesClass(\Guard\Collect\FileSet::class)]
-#[UsesClass(\Guard\Collect\Filesystem\Entry::class)]
-#[UsesClass(\Guard\Collect\Input::class)]
-#[UsesClass(\Guard\Collect\InputSet::class)]
-#[UsesClass(\Guard\Collect\Selection::class)]
-#[UsesClass(\Guard\Collect\StructuredFile::class)]
+#[UsesClass(\Guard\Input\DirectoryListing::class)]
+#[UsesClass(\Guard\Input\FileRecord::class)]
+#[UsesClass(\Guard\Input\FileSet::class)]
+#[UsesClass(\Guard\Input\Entry::class)]
+#[UsesClass(\Guard\Input\Input::class)]
+#[UsesClass(\Guard\Input\InputSet::class)]
+#[UsesClass(\Guard\Input\Selection::class)]
+#[UsesClass(\Guard\Input\StructuredFile::class)]
 #[UsesClass(\Guard\Config\Configuration::class)]
 #[UsesClass(\Guard\Config\Schema::class)]
-#[UsesClass(\Guard\Document\Selection::class)]
-#[UsesClass(\Guard\Execution\Context::class)]
-#[UsesClass(\Guard\Execution\FileChange::class)]
-#[UsesClass(\Guard\Execution\Plan::class)]
-#[UsesClass(\Guard\Extension\PolicyBinding::class)]
-#[UsesClass(\Guard\Policy\Constraint::class)]
-#[UsesClass(\Guard\Policy\PolicyException::class)]
+#[UsesClass(\Guard\Structure\Document\Selection::class)]
+#[UsesClass(\Guard\Policy\Context::class)]
+#[UsesClass(\Guard\Policy\FileChange::class)]
+#[UsesClass(\Guard\Policy\Plan::class)]
+#[UsesClass(\Guard\Policy\PolicyBinding::class)]
+#[UsesClass(\Guard\Structure\Document\Constraint::class)]
+#[UsesClass(\Guard\Diagnostic\PolicyException::class)]
 #[UsesClass(\Guard\Policy\Rule::class)]
-#[UsesClass(\Guard\Reporting\Finding::class)]
+#[UsesClass(\Guard\Diagnostic\Finding::class)]
 final class RuleReaderTest extends TestCase
 {
     /**
@@ -58,7 +58,7 @@ final class RuleReaderTest extends TestCase
      */
     public function testRuleRejectsRepairOutsideAllowedValues(): void
     {
-        $this->expectException(\Guard\Policy\PolicyException::class);
+        $this->expectException(\Guard\Diagnostic\PolicyException::class);
         $this->expectExceptionMessage('repair must satisfy');
         (new \Guard\Config\RuleReader())->rule(['id' => 'mode', 'file' => 'x.json', 'select' => '/mode', 'assert' => ['one_of' => ['A', 'B']], 'repair' => 'C']);
     }
@@ -69,7 +69,7 @@ final class RuleReaderTest extends TestCase
     public function testReadRejectsDuplicateIds(): void
     {
         $entry = ['id' => 'mode', 'file' => 'x.json', 'select' => '/mode', 'assert' => ['equals' => 'A']];
-        $this->expectException(\Guard\Policy\PolicyException::class);
+        $this->expectException(\Guard\Diagnostic\PolicyException::class);
         $this->expectExceptionMessage('Duplicate');
         (new \Guard\Config\RuleReader())->read([$entry, $entry]);
     }
@@ -87,20 +87,20 @@ final class RuleReaderTest extends TestCase
 
     public function testAssertionsRejectsContradictoryBounds(): void
     {
-        $this->expectException(\Guard\Policy\PolicyException::class);
+        $this->expectException(\Guard\Diagnostic\PolicyException::class);
         (new \Guard\Config\RuleReader())->assertions(['min' => 3, 'max' => 1], 'workers');
     }
 
     public function testFormatRejectsAnUnknownDocument(): void
     {
-        $this->expectException(\Guard\Policy\PolicyException::class);
+        $this->expectException(\Guard\Diagnostic\PolicyException::class);
         $this->expectExceptionMessage('unsupported format');
         (new \Guard\Config\RuleReader())->format('csv', 'mode');
     }
 
     public function testLevelRejectsACustomSeverity(): void
     {
-        $this->expectException(\Guard\Policy\PolicyException::class);
+        $this->expectException(\Guard\Diagnostic\PolicyException::class);
         $this->expectExceptionMessage('level');
         (new \Guard\Config\RuleReader())->level('strict', 'mode');
     }
@@ -120,28 +120,28 @@ final class RuleReaderTest extends TestCase
 
     public function testBoundsRejectsANonNumericLimit(): void
     {
-        $this->expectException(\Guard\Policy\PolicyException::class);
+        $this->expectException(\Guard\Diagnostic\PolicyException::class);
         $this->expectExceptionMessage('must be a number');
         (new \Guard\Config\RuleReader())->bounds(['min' => '1'], 'workers');
     }
 
     public function testChoicesRejectsAnEmptyList(): void
     {
-        $this->expectException(\Guard\Policy\PolicyException::class);
+        $this->expectException(\Guard\Diagnostic\PolicyException::class);
         $this->expectExceptionMessage('one_of');
         (new \Guard\Config\RuleReader())->choices(['one_of' => []], 'mode');
     }
 
     public function testTextsRejectsAnEmptyNeedle(): void
     {
-        $this->expectException(\Guard\Policy\PolicyException::class);
+        $this->expectException(\Guard\Diagnostic\PolicyException::class);
         $this->expectExceptionMessage('contains_any');
         (new \Guard\Config\RuleReader())->texts(['contains_any' => ['']], 'includes');
     }
 
     public function testFlagsRejectsAbsentCombinedWithAnotherAssertion(): void
     {
-        $this->expectException(\Guard\Policy\PolicyException::class);
+        $this->expectException(\Guard\Diagnostic\PolicyException::class);
         $this->expectExceptionMessage('absent');
         (new \Guard\Config\RuleReader())->flags(['absent' => true, 'present' => true], 'group');
     }
@@ -162,7 +162,7 @@ final class RuleReaderTest extends TestCase
      */
     public function testRuleRejectsAWhitespaceOnlyMessage(): void
     {
-        $this->expectException(\Guard\Policy\PolicyException::class);
+        $this->expectException(\Guard\Diagnostic\PolicyException::class);
         $this->expectExceptionMessage('workers.message must describe the problem and how to fix it.');
         (new \Guard\Config\RuleReader())->rule(['id' => 'workers', 'file' => 'app.json', 'select' => '/workers', 'assert' => ['equals' => 2], 'message' => '  ']);
     }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Guard\Config;
 
 use Guard\Config\Reader\MetricPolicyReader;
-use Guard\Reporting\RuleDescription;
-use Guard\Reporting\RuleMessages;
+use Guard\Policy\Diagnostic\RuleDescription;
+use Guard\Policy\Diagnostic\RuleMessages;
 use JsonException;
 
 /**
@@ -60,7 +60,7 @@ final class RuleCatalog
                 $class,
                 'extension',
                 false,
-                'This extension supplies its own policies. Consult its documentation for individual diagnostics and remediation and repair capabilities.',
+                'This configured policy or structurer defines its own behavior. Consult its documentation for diagnostics, remediation and repair capabilities.',
                 $options
             );
         }
@@ -84,7 +84,7 @@ final class RuleCatalog
                 $rule->file,
                 $rule->level,
                 $rule->repairable,
-                (new \Guard\Reporting\FieldMessage())->render($rule),
+                (new \Guard\Policy\Diagnostic\FieldMessage())->render($rule),
                 $details
             );
         }

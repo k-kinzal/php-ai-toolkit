@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Reporting\Filtering;
 
+use Guard\Diagnostic\Finding;
 use Guard\Reporting\Filtering\ReportScope;
-use Guard\Reporting\Finding;
 
 /**
  * @covers \Guard\Reporting\Filtering\ReportScope
- * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Diagnostic\Finding
  */
 #[\PHPUnit\Framework\Attributes\CoversClass(ReportScope::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(Finding::class)]

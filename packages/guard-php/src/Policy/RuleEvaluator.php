@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Guard\Policy;
 
-use Guard\Document\DataDocument;
-use Guard\Document\PhpDocument;
-use Guard\Document\Selection;
-use Guard\Document\XmlDocument;
-use Guard\Reporting\Finding;
+use Guard\Diagnostic\Finding;
+use Guard\Structure\Document\Constraint;
+use Guard\Structure\Document\DataDocument;
+use Guard\Structure\Document\PhpDocument;
+use Guard\Structure\Document\Selection;
+use Guard\Structure\Document\XmlDocument;
 use JsonException;
 
 /**
@@ -35,7 +36,7 @@ final class RuleEvaluator
      */
     public function finding(Rule $rule, bool $repairAttempted = false): Finding
     {
-        $message = (new \Guard\Reporting\FieldMessage())->render($rule);
+        $message = (new Diagnostic\FieldMessage())->render($rule);
         if ($repairAttempted && $rule->repairable) {
             $message = $rule->select . ' in ' . $rule->file . ' still violates its constraints after the configured repair. '
                 . 'Resolve the conflicting assertions or repairs for this file in guard.yaml before running guard fix again.';

@@ -6,8 +6,8 @@ namespace Tests\Unit\Config\Reader;
 
 use Guard\Config\Reader\BadgeConfigReader;
 use Guard\Config\Validation\HeadingConfigKeyValidator;
-use Guard\Config\Value\BadgeEntry;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\BadgeEntry;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -15,8 +15,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \Guard\Config\Reader\BadgeConfigReader
  * @uses \Guard\Config\Validation\HeadingConfigKeyValidator
- * @uses \Guard\Config\Value\BadgeEntry
- * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Policy\Definition\BadgeEntry
+ * @uses \Guard\Diagnostic\PolicyException
  */
 #[CoversClass(BadgeConfigReader::class)]
 #[UsesClass(HeadingConfigKeyValidator::class)]

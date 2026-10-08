@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Guard\Collect\Filesystem;
 
-use Guard\Collect\DirectoryListing;
-use Guard\Collect\FileRecord;
-use Guard\Collect\FileSet;
-use Guard\Collect\StructuredFile;
+use Guard\Input\DirectoryListing;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\StructuredFile;
 use JsonException;
 use RuntimeException;
 

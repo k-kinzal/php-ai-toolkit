@@ -6,8 +6,8 @@ namespace Guard\Policy\Limit;
 
 use function array_merge;
 
-use Guard\Config\Value\LimitConfig;
-use Guard\Reporting\MetricViolation;
+use Guard\Policy\Definition\LimitConfig;
+use Guard\Policy\Diagnostic\MetricViolation;
 use Guard\Structure\Php\FunctionMetric\FunctionMetric;
 
 /**

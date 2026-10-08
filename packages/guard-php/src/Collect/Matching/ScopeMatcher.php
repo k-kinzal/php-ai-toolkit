@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Guard\Collect\Matching;
 
-use Guard\Collect\Filesystem\Entry;
-use Guard\Collect\Filesystem\Path;
-use Guard\Collect\Scope;
+use Guard\Input\Entry;
+use Guard\Input\Path;
+use Guard\Input\PathPatternMatcher;
+use Guard\Input\Scope;
 
 /**
  * Intersects input requests with the collector boundary before filesystem operations.

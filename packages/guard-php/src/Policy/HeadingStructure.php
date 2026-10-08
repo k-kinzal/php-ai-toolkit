@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Guard\Policy;
 
-use Guard\Collect\Input;
-use Guard\Collect\InputSet;
-use Guard\Collect\Selection;
-use Guard\Config\Value\DocumentationConfig;
-use Guard\Config\Value\DocumentConfig;
-use Guard\Execution\Context;
-use Guard\Execution\Plan;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
 use Guard\Policy\Comparison\BadgeComparator;
 use Guard\Policy\Comparison\HeadingStructureComparator;
 use Guard\Policy\Comparison\OutlineComparator;
-use Guard\Reporting\DocumentViolationFactory;
-use Guard\Reporting\Finding;
-use Guard\Reporting\HeadingViolation;
-use Guard\Reporting\HeadingViolationFactory;
+use Guard\Policy\Definition\DocumentationConfig;
+use Guard\Policy\Definition\DocumentConfig;
+use Guard\Policy\Diagnostic\DocumentViolationFactory;
+use Guard\Policy\Diagnostic\HeadingViolation;
+use Guard\Policy\Diagnostic\HeadingViolationFactory;
 use Guard\Structure\Markdown\Badge\BadgeBlock;
 use Guard\Structure\Markdown\Heading;
 use Guard\Structure\Markdown\HeadingList;
@@ -51,7 +50,7 @@ final class HeadingStructure implements Policy
                 $inputs['text' . $index] = new Input(new Selection('files', [$document->path], [], '', false, ''), 'text');
             }
         }
-        $inputs['excluded'] = new Input(new Selection('patterns', $context->configuration->scope === null ? $this->config->exclude : [], [], '', false, ''), null);
+        $inputs['excluded'] = new Input(new Selection('patterns', $context->scope === null ? $this->config->exclude : [], [], '', false, ''), null);
         foreach ($this->config->scan as $index => $pattern) {
             $inputs['scan' . $index] = new Input(new Selection('patterns', [$pattern], [], '', false, ''), null);
         }
@@ -70,7 +69,7 @@ final class HeadingStructure implements Policy
         }
         $findings = [];
         foreach (array_merge($violations, $this->undeclared($inputs)) as $violation) {
-            $findings[] = new Finding($violation->path, 'documentation.' . $violation->rule, 'required', (new \Guard\Reporting\RuleMessages())->diagnostic('documentation.' . $violation->rule, $violation->message));
+            $findings[] = new Finding($violation->path, 'documentation.' . $violation->rule, 'required', (new Diagnostic\RuleMessages())->diagnostic('documentation.' . $violation->rule, $violation->message));
         }
         return new Plan($findings, []);
     }

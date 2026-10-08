@@ -6,7 +6,7 @@ namespace Guard\Config\Validation;
 
 use function array_keys;
 
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 
 use function in_array;
 use function sprintf;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Config\Reader;
 
-use Guard\Config\Value\DirectoryRuleConfig;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\DirectoryRuleConfig;
 
 use function is_array;
 

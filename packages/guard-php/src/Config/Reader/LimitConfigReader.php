@@ -9,7 +9,7 @@ use function array_keys;
 
 use Guard\Config\Validation\MetricConfigKeyValidator;
 use Guard\Config\Validation\MetricConfigScalarReader;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 
 use function is_array;
 use function sprintf;

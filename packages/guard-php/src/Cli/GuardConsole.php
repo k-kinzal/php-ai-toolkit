@@ -10,7 +10,7 @@ use Guard\Cli\Command\FixCommand;
 use Guard\Cli\Command\GuardCommand;
 use Guard\Cli\Command\InitCommand;
 use Guard\Cli\Command\RulesCommand;
-use Guard\Extension\Registry;
+use Guard\Execution\Registry;
 use Override;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\CommandLoader\FactoryCommandLoader;

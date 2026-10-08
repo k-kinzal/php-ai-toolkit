@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Collect\Matching;
 
-use Guard\Collect\Filesystem\Entry;
 use Guard\Collect\Matching\ScopeMatcher;
-use Guard\Collect\Scope;
+use Guard\Input\Entry;
+use Guard\Input\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Collect\Matching\ScopeMatcher
- * @uses \Guard\Collect\Filesystem\Entry
- * @uses \Guard\Collect\Filesystem\Path
- * @uses \Guard\Collect\Matching\PathPatternMatcher
- * @uses \Guard\Collect\Scope
+ * @uses \Guard\Input\Entry
+ * @uses \Guard\Input\Path
+ * @uses \Guard\Input\PathPatternMatcher
+ * @uses \Guard\Input\Scope
  */
 #[CoversClass(ScopeMatcher::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(Entry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Path::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\PathPatternMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Path::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\PathPatternMatcher::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(Scope::class)]
 final class ScopeMatcherTest extends TestCase
 {

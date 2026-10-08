@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Guard\Policy;
 
-use Guard\Collect\Input;
-use Guard\Collect\InputSet;
-use Guard\Collect\Selection;
-use Guard\Collect\StructuredFile;
-use Guard\Document\DocumentFailure;
-use Guard\Execution\Context;
-use Guard\Execution\FileChange;
-use Guard\Execution\Plan;
-use Guard\Reporting\Finding;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Structure\Document\DocumentFailure;
 use Guard\Structure\ParsedDocument;
 use JsonException;
 use Nette\Neon\Exception as NeonException;
@@ -90,7 +88,7 @@ final class FieldConstraints implements Policy
     {
         $findings = [];
         foreach ($rules as $rule) {
-            $findings[] = new Finding($rule->file, $rule->id, $rule->level, $rule->file . ' does not exist. Create it with the required configuration: ' . (new \Guard\Reporting\FieldMessage())->render($rule, false) . ' Removing the rule requires a human to update ' . $configName . '.', false);
+            $findings[] = new Finding($rule->file, $rule->id, $rule->level, $rule->file . ' does not exist. Create it with the required configuration: ' . (new Diagnostic\FieldMessage())->render($rule, false) . ' Removing the rule requires a human to update ' . $configName . '.', false);
         }
         return $findings;
     }

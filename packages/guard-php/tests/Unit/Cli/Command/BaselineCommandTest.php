@@ -7,11 +7,11 @@ namespace Tests\Unit\Cli\Command;
 use Closure;
 use FilesystemIterator;
 use Guard\Cli\PolicyRun;
-use Guard\Execution\FileChange;
-use Guard\Execution\Plan;
-use Guard\Extension\Registry;
-use Guard\Policy\PolicyException;
-use Guard\Reporting\Finding;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Execution\Registry;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -27,31 +27,31 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @uses \Guard\Collect\Filesystem\WalkQueue
  * @uses \Guard\Config\Reader\ExtensionConfigReader
  * @uses \Guard\Config\RuleReader
- * @uses \Guard\Extension\ExtensionLoader
- * @uses \Guard\Extension\PolicyBinding
+ * @uses \Guard\Config\ComponentLoader
+ * @uses \Guard\Policy\PolicyBinding
  * @uses \Guard\Policy\FieldConstraints
  * @uses \Guard\Cli\FormatDetector
  * @uses \Guard\Cli\Command\GuardCommand
  * @uses \Guard\Cli\PolicyRun
  * @uses \Guard\Collect\Collector
- * @uses \Guard\Collect\InputSet
+ * @uses \Guard\Input\InputSet
  * @uses \Guard\Config\Configuration
  * @uses \Guard\Config\ConfigurationLoader
  * @uses \Guard\Config\DocumentMerger
  * @uses \Guard\Config\ImportResolver
  * @uses \Guard\Config\Schema
- * @uses \Guard\Document\DataDocument
- * @uses \Guard\Execution\AtomicWriter
- * @uses \Guard\Execution\ChangeSet
- * @uses \Guard\Execution\Context
- * @uses \Guard\Execution\FileChange
+ * @uses \Guard\Structure\Document\DataDocument
+ * @uses \Guard\Repair\AtomicWriter
+ * @uses \Guard\Repair\ChangeSet
+ * @uses \Guard\Policy\Context
+ * @uses \Guard\Policy\FileChange
  * @uses \Guard\Execution\Pipeline
- * @uses \Guard\Execution\Plan
- * @uses \Guard\Extension\Registry
- * @uses \Guard\Policy\PolicyException
- * @uses \Guard\Reporting\Finding
+ * @uses \Guard\Policy\Plan
+ * @uses \Guard\Execution\Registry
+ * @uses \Guard\Diagnostic\PolicyException
+ * @uses \Guard\Diagnostic\Finding
  * @uses \Guard\Reporting\ChangeDiff
- * @uses \Guard\Reporting\RuleMessages
+ * @uses \Guard\Policy\Diagnostic\RuleMessages
  * @uses \Guard\Reporting\Reporter
  * @uses \Guard\Cli\CheckRun
  * @uses \Guard\Cli\BaselineFile
@@ -66,22 +66,22 @@ use Symfony\Component\Console\Tester\CommandTester;
 #[UsesClass(\Guard\Collect\Filesystem\WalkQueue::class)]
 #[UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
 #[UsesClass(\Guard\Config\RuleReader::class)]
-#[UsesClass(\Guard\Extension\ExtensionLoader::class)]
-#[UsesClass(\Guard\Extension\PolicyBinding::class)]
+#[UsesClass(\Guard\Config\ComponentLoader::class)]
+#[UsesClass(\Guard\Policy\PolicyBinding::class)]
 #[UsesClass(\Guard\Policy\FieldConstraints::class)]
 #[UsesClass(\Guard\Cli\Command\GuardCommand::class)]
 #[UsesClass(PolicyRun::class)]
 #[UsesClass(\Guard\Collect\Collector::class)]
-#[UsesClass(\Guard\Collect\InputSet::class)]
+#[UsesClass(\Guard\Input\InputSet::class)]
 #[UsesClass(\Guard\Config\Configuration::class)]
 #[UsesClass(\Guard\Config\ConfigurationLoader::class)]
 #[UsesClass(\Guard\Config\DocumentMerger::class)]
 #[UsesClass(\Guard\Config\ImportResolver::class)]
 #[UsesClass(\Guard\Config\Schema::class)]
-#[UsesClass(\Guard\Document\DataDocument::class)]
-#[UsesClass(\Guard\Execution\AtomicWriter::class)]
-#[UsesClass(\Guard\Execution\ChangeSet::class)]
-#[UsesClass(\Guard\Execution\Context::class)]
+#[UsesClass(\Guard\Structure\Document\DataDocument::class)]
+#[UsesClass(\Guard\Repair\AtomicWriter::class)]
+#[UsesClass(\Guard\Repair\ChangeSet::class)]
+#[UsesClass(\Guard\Policy\Context::class)]
 #[UsesClass(FileChange::class)]
 #[UsesClass(\Guard\Execution\Pipeline::class)]
 #[UsesClass(Plan::class)]
@@ -90,7 +90,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 #[UsesClass(Finding::class)]
 #[UsesClass(\Guard\Reporting\Reporter::class)]
 #[UsesClass(\Guard\Reporting\ChangeDiff::class)]
-#[UsesClass(\Guard\Reporting\RuleMessages::class)]
+#[UsesClass(\Guard\Policy\Diagnostic\RuleMessages::class)]
 #[UsesClass(\Guard\Cli\FormatDetector::class)]
 #[UsesClass(\Guard\Cli\CheckRun::class)]
 #[UsesClass(\Guard\Cli\BaselineFile::class)]
@@ -142,17 +142,17 @@ final class BaselineCommandTest extends TestCase
         $finding = new Finding('a.txt', 'problem', 'required', 'Old content. Replace it with new.', true);
         $registry = new Registry();
         $registry->addPolicy('test', new class ([], static fn (): Plan => new Plan([$finding], [new FileChange($project->root . '/a.txt', 'old', 'new')])) implements \Guard\Policy\Policy {
-            /** @param array<string, \Guard\Collect\Input> $inputs
-             * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): Plan $callback
+            /** @param array<string, \Guard\Input\Input> $inputs
+             * @param Closure(\Guard\Input\InputSet, \Guard\Policy\Context): Plan $callback
              */
             public function __construct(private array $inputs, private Closure $callback)
             {
             }
-            public function inputs(\Guard\Execution\Context $context): array
+            public function inputs(\Guard\Policy\Context $context): array
             {
                 return $this->inputs;
             }
-            public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): Plan
+            public function evaluate(\Guard\Input\InputSet $inputs, \Guard\Policy\Context $context): Plan
             {
                 return ($this->callback)($inputs, $context);
             }
@@ -216,17 +216,17 @@ final class BaselineCommandTest extends TestCase
             throw new PolicyException('Invalid input. Correct it.');
         }) implements \Guard\Policy\Policy
         {
-            /** @param array<string, \Guard\Collect\Input> $inputs
-             * @param Closure(\Guard\Collect\InputSet, \Guard\Execution\Context): Plan $callback
+            /** @param array<string, \Guard\Input\Input> $inputs
+             * @param Closure(\Guard\Input\InputSet, \Guard\Policy\Context): Plan $callback
              */
             public function __construct(private array $inputs, private Closure $callback)
             {
             }
-            public function inputs(\Guard\Execution\Context $context): array
+            public function inputs(\Guard\Policy\Context $context): array
             {
                 return $this->inputs;
             }
-            public function evaluate(\Guard\Collect\InputSet $inputs, \Guard\Execution\Context $context): Plan
+            public function evaluate(\Guard\Input\InputSet $inputs, \Guard\Policy\Context $context): Plan
             {
                 return ($this->callback)($inputs, $context);
             }

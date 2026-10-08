@@ -9,12 +9,12 @@ use Guard\Config\Reader\ExtensionConfigReader;
 use Guard\Config\Reader\HeadingPolicyReader;
 use Guard\Config\Reader\MetricPolicyReader;
 use Guard\Config\Reader\ScopeConfigReader;
-use Guard\Extension\PolicyBinding;
+use Guard\Diagnostic\PolicyException;
 use Guard\Policy\DirectoryEntries;
 use Guard\Policy\FieldConstraints;
 use Guard\Policy\HeadingStructure;
 use Guard\Policy\MetricLimits;
-use Guard\Policy\PolicyException;
+use Guard\Policy\PolicyBinding;
 use JsonException;
 
 /**

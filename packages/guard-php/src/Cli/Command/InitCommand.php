@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Guard\Cli\Command;
 
-use Guard\Init\Initializer;
-use Guard\Init\PresetCatalog;
-use Guard\Policy\PolicyException;
+use Guard\Config\Project\Initializer;
+use Guard\Config\Project\PresetCatalog;
+use Guard\Diagnostic\PolicyException;
 use Override;
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;

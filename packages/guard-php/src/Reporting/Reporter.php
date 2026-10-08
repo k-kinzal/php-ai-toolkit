@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Reporting;
 
-use Guard\Execution\FileChange;
+use Guard\Diagnostic\Finding;
+use Guard\Policy\FileChange;
 use Guard\Reporting\Filtering\ReportScope;
 use JsonException;
 use Symfony\Component\Console\Formatter\OutputFormatter;

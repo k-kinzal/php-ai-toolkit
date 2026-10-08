@@ -7,8 +7,8 @@ namespace Guard\Config\Reader;
 use Guard\Config\Profile\ApplyConfigReader;
 use Guard\Config\Profile\PolicyListConfigReader;
 use Guard\Config\Schema;
-use Guard\Config\Value\MetricsConfig;
-use Guard\Config\Value\ScanConfig;
+use Guard\Policy\Definition\MetricsConfig;
+use Guard\Policy\Definition\ScanConfig;
 
 /**
  * Reads source selection and metric profiles for PHP structures and MetricLimits.

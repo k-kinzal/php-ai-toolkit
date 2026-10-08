@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Guard\Reporting;
 
+use Guard\Policy\Diagnostic\RuleDescription;
 use JsonException;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 

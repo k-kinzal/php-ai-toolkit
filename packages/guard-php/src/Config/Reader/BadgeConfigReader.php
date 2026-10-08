@@ -7,8 +7,8 @@ namespace Guard\Config\Reader;
 use function array_values;
 
 use Guard\Config\Validation\HeadingConfigKeyValidator;
-use Guard\Config\Value\BadgeEntry;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\BadgeEntry;
 
 use function is_array;
 use function is_bool;

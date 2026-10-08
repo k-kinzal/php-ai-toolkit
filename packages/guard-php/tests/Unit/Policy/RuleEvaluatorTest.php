@@ -11,66 +11,66 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Policy\RuleEvaluator
- * @uses \Guard\Collect\DirectoryListing
- * @uses \Guard\Collect\FileRecord
- * @uses \Guard\Collect\FileSet
- * @uses \Guard\Collect\Filesystem\Entry
- * @uses \Guard\Collect\Input
- * @uses \Guard\Collect\InputSet
- * @uses \Guard\Collect\Selection
- * @uses \Guard\Collect\StructuredFile
+ * @uses \Guard\Input\DirectoryListing
+ * @uses \Guard\Input\FileRecord
+ * @uses \Guard\Input\FileSet
+ * @uses \Guard\Input\Entry
+ * @uses \Guard\Input\Input
+ * @uses \Guard\Input\InputSet
+ * @uses \Guard\Input\Selection
+ * @uses \Guard\Input\StructuredFile
  * @uses \Guard\Config\Configuration
  * @uses \Guard\Config\RuleReader
  * @uses \Guard\Config\Schema
- * @uses \Guard\Document\DataDocument
- * @uses \Guard\Document\DocumentNode
- * @uses \Guard\Document\Json5Reader
- * @uses \Guard\Document\PhpConfigReader
- * @uses \Guard\Document\PhpDocument
- * @uses \Guard\Document\Pointer
- * @uses \Guard\Document\Selection
- * @uses \Guard\Document\TomlEncoder
- * @uses \Guard\Document\XmlDocument
- * @uses \Guard\Execution\Context
- * @uses \Guard\Execution\FileChange
- * @uses \Guard\Execution\Plan
- * @uses \Guard\Extension\PolicyBinding
- * @uses \Guard\Policy\Constraint
- * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Structure\Document\DataDocument
+ * @uses \Guard\Structure\Document\DocumentNode
+ * @uses \Guard\Structure\Document\Json5Reader
+ * @uses \Guard\Structure\Document\PhpConfigReader
+ * @uses \Guard\Structure\Document\PhpDocument
+ * @uses \Guard\Structure\Document\Pointer
+ * @uses \Guard\Structure\Document\Selection
+ * @uses \Guard\Structure\Document\TomlEncoder
+ * @uses \Guard\Structure\Document\XmlDocument
+ * @uses \Guard\Policy\Context
+ * @uses \Guard\Policy\FileChange
+ * @uses \Guard\Policy\Plan
+ * @uses \Guard\Policy\PolicyBinding
+ * @uses \Guard\Structure\Document\Constraint
+ * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Policy\Rule
- * @uses \Guard\Reporting\Finding
- * @uses \Guard\Reporting\FieldMessage
+ * @uses \Guard\Diagnostic\Finding
+ * @uses \Guard\Policy\Diagnostic\FieldMessage
  */
 #[CoversClass(\Guard\Policy\RuleEvaluator::class)]
-#[UsesClass(\Guard\Collect\DirectoryListing::class)]
-#[UsesClass(\Guard\Collect\FileRecord::class)]
-#[UsesClass(\Guard\Collect\FileSet::class)]
-#[UsesClass(\Guard\Collect\Filesystem\Entry::class)]
-#[UsesClass(\Guard\Collect\Input::class)]
-#[UsesClass(\Guard\Collect\InputSet::class)]
-#[UsesClass(\Guard\Collect\Selection::class)]
-#[UsesClass(\Guard\Collect\StructuredFile::class)]
+#[UsesClass(\Guard\Input\DirectoryListing::class)]
+#[UsesClass(\Guard\Input\FileRecord::class)]
+#[UsesClass(\Guard\Input\FileSet::class)]
+#[UsesClass(\Guard\Input\Entry::class)]
+#[UsesClass(\Guard\Input\Input::class)]
+#[UsesClass(\Guard\Input\InputSet::class)]
+#[UsesClass(\Guard\Input\Selection::class)]
+#[UsesClass(\Guard\Input\StructuredFile::class)]
 #[UsesClass(\Guard\Config\Configuration::class)]
 #[UsesClass(\Guard\Config\RuleReader::class)]
 #[UsesClass(\Guard\Config\Schema::class)]
-#[UsesClass(\Guard\Document\DataDocument::class)]
-#[UsesClass(\Guard\Document\DocumentNode::class)]
-#[UsesClass(\Guard\Document\Json5Reader::class)]
-#[UsesClass(\Guard\Document\PhpConfigReader::class)]
-#[UsesClass(\Guard\Document\PhpDocument::class)]
-#[UsesClass(\Guard\Document\Pointer::class)]
-#[UsesClass(\Guard\Document\Selection::class)]
-#[UsesClass(\Guard\Document\TomlEncoder::class)]
-#[UsesClass(\Guard\Document\XmlDocument::class)]
-#[UsesClass(\Guard\Execution\Context::class)]
-#[UsesClass(\Guard\Execution\FileChange::class)]
-#[UsesClass(\Guard\Execution\Plan::class)]
-#[UsesClass(\Guard\Extension\PolicyBinding::class)]
-#[UsesClass(\Guard\Policy\Constraint::class)]
-#[UsesClass(\Guard\Policy\PolicyException::class)]
+#[UsesClass(\Guard\Structure\Document\DataDocument::class)]
+#[UsesClass(\Guard\Structure\Document\DocumentNode::class)]
+#[UsesClass(\Guard\Structure\Document\Json5Reader::class)]
+#[UsesClass(\Guard\Structure\Document\PhpConfigReader::class)]
+#[UsesClass(\Guard\Structure\Document\PhpDocument::class)]
+#[UsesClass(\Guard\Structure\Document\Pointer::class)]
+#[UsesClass(\Guard\Structure\Document\Selection::class)]
+#[UsesClass(\Guard\Structure\Document\TomlEncoder::class)]
+#[UsesClass(\Guard\Structure\Document\XmlDocument::class)]
+#[UsesClass(\Guard\Policy\Context::class)]
+#[UsesClass(\Guard\Policy\FileChange::class)]
+#[UsesClass(\Guard\Policy\Plan::class)]
+#[UsesClass(\Guard\Policy\PolicyBinding::class)]
+#[UsesClass(\Guard\Structure\Document\Constraint::class)]
+#[UsesClass(\Guard\Diagnostic\PolicyException::class)]
 #[UsesClass(\Guard\Policy\Rule::class)]
-#[UsesClass(\Guard\Reporting\Finding::class)]
-#[UsesClass(\Guard\Reporting\FieldMessage::class)]
+#[UsesClass(\Guard\Diagnostic\Finding::class)]
+#[UsesClass(\Guard\Policy\Diagnostic\FieldMessage::class)]
 final class RuleEvaluatorTest extends TestCase
 {
     /**
@@ -79,7 +79,7 @@ final class RuleEvaluatorTest extends TestCase
     public function testAcceptsTreatsXmlBoundsNumerically(): void
     {
         $rule = new \Guard\Policy\Rule('count', 'x.xml', 'xml', '/x/@count', 'required', ['min' => 1], null, false);
-        $document = new \Guard\Document\XmlDocument('<x count="2"/>');
+        $document = new \Guard\Structure\Document\XmlDocument('<x count="2"/>');
         self::assertTrue((new \Guard\Policy\RuleEvaluator())->accepts($rule, $document));
     }
 

@@ -6,7 +6,9 @@ namespace Guard\Config\Profile;
 
 use Guard\Config\Validation\MetricConfigKeyValidator;
 use Guard\Config\Validation\MetricConfigScalarReader;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\ApplyConfig;
+use Guard\Policy\Definition\PolicyConfig;
 
 use function is_array;
 

@@ -8,10 +8,10 @@ use function array_map;
 use function array_merge;
 use function array_values;
 
-use Guard\Config\Value\DeclaredHeading;
-use Guard\Config\Value\DocumentConfig;
-use Guard\Reporting\HeadingViolation;
-use Guard\Reporting\HeadingViolationFactory;
+use Guard\Policy\Definition\DeclaredHeading;
+use Guard\Policy\Definition\DocumentConfig;
+use Guard\Policy\Diagnostic\HeadingViolation;
+use Guard\Policy\Diagnostic\HeadingViolationFactory;
 use Guard\Structure\Markdown\Heading;
 
 /**

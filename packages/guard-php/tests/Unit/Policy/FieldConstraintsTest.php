@@ -6,8 +6,8 @@ namespace Tests\Unit\Policy;
 
 use FilesystemIterator;
 use Guard\Config\Configuration;
-use Guard\Execution\Context;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Context;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -19,41 +19,41 @@ use SplFileInfo;
 /**
  * @covers \Guard\Policy\FieldConstraints
  * @uses \Guard\Collect\Collector
- * @uses \Guard\Collect\DirectoryListing
- * @uses \Guard\Collect\FileRecord
- * @uses \Guard\Collect\FileSet
+ * @uses \Guard\Input\DirectoryListing
+ * @uses \Guard\Input\FileRecord
+ * @uses \Guard\Input\FileSet
  * @uses \Guard\Collect\Filesystem\DirectoryTraversal
  * @uses \Guard\Collect\Filesystem\Discovery
- * @uses \Guard\Collect\Filesystem\Entry
+ * @uses \Guard\Input\Entry
  * @uses \Guard\Collect\Filesystem\NativeFilesystem
- * @uses \Guard\Collect\Filesystem\Path
+ * @uses \Guard\Input\Path
  * @uses \Guard\Collect\Filesystem\PatternRoots
  * @uses \Guard\Collect\Filesystem\QueryResult
  * @uses \Guard\Collect\Filesystem\Route
  * @uses \Guard\Collect\Filesystem\SelectionRoots
  * @uses \Guard\Collect\Filesystem\Snapshot
  * @uses \Guard\Collect\Filesystem\WalkQueue
- * @uses \Guard\Collect\Input
- * @uses \Guard\Collect\InputSet
+ * @uses \Guard\Input\Input
+ * @uses \Guard\Input\InputSet
  * @uses \Guard\Collect\Matching\GlobMatcher
- * @uses \Guard\Collect\Matching\PathPatternMatcher
+ * @uses \Guard\Input\PathPatternMatcher
  * @uses \Guard\Collect\Matching\SelectionFilter
- * @uses \Guard\Collect\Selection
- * @uses \Guard\Collect\StructuredFile
- * @uses \Guard\Config\Assignment\ApplyRuleMatcher
- * @uses \Guard\Config\Assignment\FilePolicyAssigner
- * @uses \Guard\Config\Assignment\FilePolicyAssignment
+ * @uses \Guard\Input\Selection
+ * @uses \Guard\Input\StructuredFile
+ * @uses \Guard\Policy\Assignment\ApplyRuleMatcher
+ * @uses \Guard\Policy\Assignment\FilePolicyAssigner
+ * @uses \Guard\Policy\Assignment\FilePolicyAssignment
  * @uses \Guard\Config\Configuration
  * @uses \Guard\Config\ConfigurationLoader
  * @uses \Guard\Config\DocumentMerger
  * @uses \Guard\Config\ImportResolver
- * @uses \Guard\Config\Profile\ApplyConfig
+ * @uses \Guard\Policy\Definition\ApplyConfig
  * @uses \Guard\Config\Profile\ApplyConfigReader
  * @uses \Guard\Config\Profile\ApplyPolicyUsageValidator
- * @uses \Guard\Config\Profile\ApplyRuleConfig
+ * @uses \Guard\Policy\Definition\ApplyRuleConfig
  * @uses \Guard\Config\Profile\ApplyRuleConfigReader
  * @uses \Guard\Config\Profile\ApplyRuleListConfigReader
- * @uses \Guard\Config\Profile\PolicyConfig
+ * @uses \Guard\Policy\Definition\PolicyConfig
  * @uses \Guard\Config\Profile\PolicyConfigReader
  * @uses \Guard\Config\Profile\PolicyDefinition
  * @uses \Guard\Config\Profile\PolicyListConfigReader
@@ -76,35 +76,34 @@ use SplFileInfo;
  * @uses \Guard\Config\Validation\MetricConfigKeyValidator
  * @uses \Guard\Config\Validation\MetricConfigScalarReader
  * @uses \Guard\Config\Validation\MetricConfigStringListReader
- * @uses \Guard\Config\Value\DeclaredHeading
- * @uses \Guard\Config\Value\DirectoryRuleConfig
- * @uses \Guard\Config\Value\DocumentConfig
- * @uses \Guard\Config\Value\DocumentationConfig
- * @uses \Guard\Config\Value\LimitConfig
- * @uses \Guard\Config\Value\MetricsConfig
- * @uses \Guard\Config\Value\ScanConfig
- * @uses \Guard\Config\Value\StructureConfig
- * @uses \Guard\Document\DataDocument
- * @uses \Guard\Document\DocumentFailure
- * @uses \Guard\Document\DocumentNode
- * @uses \Guard\Document\Json5Reader
- * @uses \Guard\Document\PhpConfigReader
- * @uses \Guard\Document\PhpDocument
- * @uses \Guard\Document\Pointer
- * @uses \Guard\Document\Selection
- * @uses \Guard\Document\TomlEncoder
- * @uses \Guard\Document\XmlDocument
- * @uses \Guard\Execution\Context
- * @uses \Guard\Execution\FileChange
- * @uses \Guard\Execution\Plan
- * @uses \Guard\Execution\TargetPath
- * @uses \Guard\Extension\BuiltinExtension
- * @uses \Guard\Extension\PolicyBinding
- * @uses \Guard\Extension\Registry
+ * @uses \Guard\Policy\Definition\DeclaredHeading
+ * @uses \Guard\Policy\Definition\DirectoryRuleConfig
+ * @uses \Guard\Policy\Definition\DocumentConfig
+ * @uses \Guard\Policy\Definition\DocumentationConfig
+ * @uses \Guard\Policy\Definition\LimitConfig
+ * @uses \Guard\Policy\Definition\MetricsConfig
+ * @uses \Guard\Policy\Definition\ScanConfig
+ * @uses \Guard\Policy\Definition\StructureConfig
+ * @uses \Guard\Structure\Document\DataDocument
+ * @uses \Guard\Structure\Document\DocumentFailure
+ * @uses \Guard\Structure\Document\DocumentNode
+ * @uses \Guard\Structure\Document\Json5Reader
+ * @uses \Guard\Structure\Document\PhpConfigReader
+ * @uses \Guard\Structure\Document\PhpDocument
+ * @uses \Guard\Structure\Document\Pointer
+ * @uses \Guard\Structure\Document\Selection
+ * @uses \Guard\Structure\Document\TomlEncoder
+ * @uses \Guard\Structure\Document\XmlDocument
+ * @uses \Guard\Policy\Context
+ * @uses \Guard\Policy\FileChange
+ * @uses \Guard\Policy\Plan
+ * @uses \Guard\Collect\Filesystem\TargetPath
+ * @uses \Guard\Execution\Registry
+ * @uses \Guard\Policy\PolicyBinding
  * @uses \Guard\Policy\Comparison\HeadingHunkClassifier
  * @uses \Guard\Policy\Comparison\HeadingSequenceAligner
  * @uses \Guard\Policy\Comparison\HeadingStructureComparator
- * @uses \Guard\Policy\Constraint
+ * @uses \Guard\Structure\Document\Constraint
  * @uses \Guard\Policy\DirectoryEntries
  * @uses \Guard\Policy\HeadingStructure
  * @uses \Guard\Policy\Inspection\CaseConventionMatcher
@@ -125,14 +124,14 @@ use SplFileInfo;
  * @uses \Guard\Policy\Limit\FunctionMetricViolationBuilder
  * @uses \Guard\Policy\Limit\MetricLimitInspector
  * @uses \Guard\Policy\MetricLimits
- * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Policy\Rule
  * @uses \Guard\Policy\RuleEvaluator
- * @uses \Guard\Reporting\DirectoryViolation
- * @uses \Guard\Reporting\Finding
- * @uses \Guard\Reporting\HeadingViolation
- * @uses \Guard\Reporting\HeadingViolationFactory
- * @uses \Guard\Reporting\MetricViolation
+ * @uses \Guard\Policy\Diagnostic\DirectoryViolation
+ * @uses \Guard\Diagnostic\Finding
+ * @uses \Guard\Policy\Diagnostic\HeadingViolation
+ * @uses \Guard\Policy\Diagnostic\HeadingViolationFactory
+ * @uses \Guard\Policy\Diagnostic\MetricViolation
  * @uses \Guard\Structure\DocumentStructurer
  * @uses \Guard\Structure\Markdown\AtxHeadingMatcher
  * @uses \Guard\Structure\Markdown\BlockMarkerMatcher
@@ -178,45 +177,45 @@ use SplFileInfo;
  * @uses \Guard\Structure\Php\Token\TokenLineCounter
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
- * @uses \Guard\Reporting\FieldMessage
+ * @uses \Guard\Policy\Diagnostic\FieldMessage
  */
 #[CoversClass(\Guard\Policy\FieldConstraints::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Collector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\DirectoryListing::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileRecord::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\FileSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\DirectoryListing::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileSet::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\DirectoryTraversal::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Discovery::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Entry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Entry::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\NativeFilesystem::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Path::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Path::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\PatternRoots::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\QueryResult::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Route::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\SelectionRoots::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Snapshot::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\WalkQueue::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Input::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\InputSet::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Input::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\InputSet::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\GlobMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\PathPatternMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\PathPatternMatcher::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\SelectionFilter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\StructuredFile::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Assignment\ApplyRuleMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Assignment\FilePolicyAssigner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Assignment\FilePolicyAssignment::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Selection::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\StructuredFile::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Assignment\ApplyRuleMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Assignment\FilePolicyAssigner::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Assignment\FilePolicyAssignment::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(Configuration::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ConfigurationLoader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\DocumentMerger::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ImportResolver::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\ApplyConfig::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyPolicyUsageValidator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyRuleConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\ApplyRuleConfig::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyRuleConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyRuleListConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\PolicyConfig::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyDefinition::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyListConfigReader::class)]
@@ -239,35 +238,34 @@ use SplFileInfo;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigKeyValidator::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigScalarReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigStringListReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\DeclaredHeading::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\DirectoryRuleConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\DocumentConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\DocumentationConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\LimitConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\MetricsConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\ScanConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Value\StructureConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\DataDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\DocumentFailure::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\DocumentNode::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Json5Reader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\PhpConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\PhpDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Pointer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\TomlEncoder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\XmlDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\DeclaredHeading::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\DirectoryRuleConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\DocumentConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\DocumentationConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\LimitConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\MetricsConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\ScanConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\StructureConfig::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DataDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DocumentFailure::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DocumentNode::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Json5Reader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpDocument::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Pointer::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Selection::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\TomlEncoder::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\XmlDocument::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(Context::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Plan::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\TargetPath::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\BuiltinExtension::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\Registry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FileChange::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Plan::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\TargetPath::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Execution\Registry::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\HeadingHunkClassifier::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\HeadingSequenceAligner::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\HeadingStructureComparator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Constraint::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Constraint::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\DirectoryEntries::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\HeadingStructure::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\CaseConventionMatcher::class)]
@@ -291,11 +289,11 @@ use SplFileInfo;
 #[\PHPUnit\Framework\Attributes\UsesClass(PolicyException::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Rule::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\RuleEvaluator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\DirectoryViolation::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\Finding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\HeadingViolation::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\HeadingViolationFactory::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\MetricViolation::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\DirectoryViolation::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\Finding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\HeadingViolation::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\HeadingViolationFactory::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\MetricViolation::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\DocumentStructurer::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\AtxHeadingMatcher::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\BlockMarkerMatcher::class)]
@@ -341,7 +339,7 @@ use SplFileInfo;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\FieldMessage::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\FieldMessage::class)]
 final class FieldConstraintsTest extends TestCase
 {
     /**
@@ -378,7 +376,7 @@ final class FieldConstraintsTest extends TestCase
             {
                 $path = $this->root . '/guard.yaml';
                 $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new Configuration($this->root, []);
-                return new Context($config, $path, $repair);
+                return new Context($config->root, $path, $repair, $config->scope);
             }
             /**
              * @return array<array-key, string>
@@ -415,12 +413,11 @@ final class FieldConstraintsTest extends TestCase
         };
         try {
             $context = $project->context(true);
-            $registry = new \Guard\Extension\Registry();
-            (new \Guard\Extension\BuiltinExtension($context->configuration))->register($registry);
-            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Extension\PolicyBinding $binding): bool => $binding->id === 'field-constraints'));
+            $registry = \Guard\Execution\Registry::defaults((new \Guard\Config\ConfigurationLoader())->load($context->configPath)->policies);
+            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Policy\PolicyBinding $binding): bool => $binding->id === 'field-constraints'));
             self::assertCount(1, $bindings);
             $policy = $bindings[0]->policy;
-            $subject = new \Guard\Collect\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
+            $subject = new \Guard\Input\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
             $subject->validate();
             $plan = $policy->evaluate($subject, $context);
             self::assertCount(1, $plan->findings);
@@ -468,7 +465,7 @@ final class FieldConstraintsTest extends TestCase
             {
                 $path = $this->root . '/guard.yaml';
                 $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new Configuration($this->root, []);
-                return new Context($config, $path, $repair);
+                return new Context($config->root, $path, $repair, $config->scope);
             }
 
             public function remove(): void
@@ -487,12 +484,11 @@ final class FieldConstraintsTest extends TestCase
         };
         try {
             $context = $project->context(true);
-            $registry = new \Guard\Extension\Registry();
-            (new \Guard\Extension\BuiltinExtension($context->configuration))->register($registry);
-            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Extension\PolicyBinding $binding): bool => $binding->id === 'field-constraints'));
+            $registry = \Guard\Execution\Registry::defaults((new \Guard\Config\ConfigurationLoader())->load($context->configPath)->policies);
+            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Policy\PolicyBinding $binding): bool => $binding->id === 'field-constraints'));
             self::assertCount(1, $bindings);
             $policy = $bindings[0]->policy;
-            $subject = new \Guard\Collect\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
+            $subject = new \Guard\Input\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
             $subject->validate();
             $plan = $policy->evaluate($subject, $context);
             self::assertSame([], $plan->findings);
@@ -535,7 +531,7 @@ final class FieldConstraintsTest extends TestCase
             {
                 $path = $this->root . '/guard.yaml';
                 $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new Configuration($this->root, []);
-                return new Context($config, $path, $repair);
+                return new Context($config->root, $path, $repair, $config->scope);
             }
 
             public function remove(): void
@@ -554,12 +550,11 @@ final class FieldConstraintsTest extends TestCase
         };
         try {
             $context = $project->context(true);
-            $registry = new \Guard\Extension\Registry();
-            (new \Guard\Extension\BuiltinExtension($context->configuration))->register($registry);
-            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Extension\PolicyBinding $binding): bool => $binding->id === 'field-constraints'));
+            $registry = \Guard\Execution\Registry::defaults((new \Guard\Config\ConfigurationLoader())->load($context->configPath)->policies);
+            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Policy\PolicyBinding $binding): bool => $binding->id === 'field-constraints'));
             self::assertCount(1, $bindings);
             $policy = $bindings[0]->policy;
-            $subject = new \Guard\Collect\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
+            $subject = new \Guard\Input\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
             $subject->validate();
             unlink($project->root . '/app.xml');
 
@@ -614,7 +609,7 @@ final class FieldConstraintsTest extends TestCase
             {
                 $path = $this->root . '/guard.yaml';
                 $config = is_file($path) ? (new \Guard\Config\ConfigurationLoader())->load($path) : new Configuration($this->root, []);
-                return new Context($config, $path, $repair);
+                return new Context($config->root, $path, $repair, $config->scope);
             }
 
             public function remove(): void
@@ -633,16 +628,15 @@ final class FieldConstraintsTest extends TestCase
         };
         try {
             $context = $project->context(true);
-            $registry = new \Guard\Extension\Registry();
-            (new \Guard\Extension\BuiltinExtension($context->configuration))->register($registry);
-            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Extension\PolicyBinding $binding): bool => $binding->id === 'field-constraints'));
+            $registry = \Guard\Execution\Registry::defaults((new \Guard\Config\ConfigurationLoader())->load($context->configPath)->policies);
+            $bindings = array_values(array_filter($registry->policies(), static fn (\Guard\Policy\PolicyBinding $binding): bool => $binding->id === 'field-constraints'));
             self::assertCount(1, $bindings);
             $policy = $bindings[0]->policy;
-            $subject = new \Guard\Collect\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
+            $subject = new \Guard\Input\InputSet((new \Guard\Collect\Collector())->collect($project->root, $policy->inputs($context), $registry->structures()));
             $subject->validate();
             $plan = $policy->evaluate($subject, $context);
-            self::assertSame(['a', 'b'], array_map(static fn (\Guard\Reporting\Finding $finding): string => $finding->rule, $plan->findings));
-            self::assertSame(['required', 'recommended'], array_map(static fn (\Guard\Reporting\Finding $finding): string => $finding->level, $plan->findings));
+            self::assertSame(['a', 'b'], array_map(static fn (\Guard\Diagnostic\Finding $finding): string => $finding->rule, $plan->findings));
+            self::assertSame(['required', 'recommended'], array_map(static fn (\Guard\Diagnostic\Finding $finding): string => $finding->level, $plan->findings));
             self::assertSame('app.json does not exist. Create it with the required configuration: /mode in app.json must equal "A". Set /mode in app.json to "A". Removing the rule requires a human to update guard.yaml.', $plan->findings[0]->message);
             self::assertSame([], $plan->changes);
             self::assertSame($plan->findings, $plan->blockingFindings);
@@ -675,7 +669,7 @@ final class FieldConstraintsTest extends TestCase
     public function testInputsDeclaresTheRequiredStructureWithoutFilesystemAccess(): void
     {
         $policy = new \Guard\Policy\FieldConstraints((new \Guard\Config\RuleReader())->read([['id' => 'x', 'file' => 'app.xml.dist', 'format' => 'xml', 'select' => '/app/@x', 'assert' => ['equals' => '1']]]));
-        $context = new Context(new Configuration('/none', []), '/none/guard.yaml', false);
+        $context = new Context('/none', '/none/guard.yaml', false);
         $inputs = $policy->inputs($context);
         self::assertSame('xml', $inputs['file0']->structure);
     }

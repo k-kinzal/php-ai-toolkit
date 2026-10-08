@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Guard\Cli\Command;
 
 use Guard\Config\RuleCatalog;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 use Guard\Reporting\RuleReporter;
 use Override;
 use Symfony\Component\Console\Input\InputInterface;

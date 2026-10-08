@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Guard\Config\Reader;
 
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 
 /**
  * Validates extension declarations without loading or executing their classes.

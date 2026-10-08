@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Collect\Filesystem;
 
+use Guard\Input\Entry;
+
 /**
  * The filesystem boundary used by collection, injectable for I/O verification.
  */

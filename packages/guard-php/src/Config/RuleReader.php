@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Guard\Config;
 
-use Guard\Document\Selection;
-use Guard\Policy\Constraint;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 use Guard\Policy\Rule;
+use Guard\Structure\Document\Constraint;
+use Guard\Structure\Document\Selection;
 use JsonException;
 
 /**

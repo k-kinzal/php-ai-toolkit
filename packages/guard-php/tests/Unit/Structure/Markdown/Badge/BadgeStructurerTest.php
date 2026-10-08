@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Structure\Markdown\Badge;
 
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 use Guard\Structure\Markdown\AtxHeadingMatcher;
 use Guard\Structure\Markdown\Badge\Badge;
 use Guard\Structure\Markdown\Badge\BadgeBlock;
@@ -34,7 +34,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Structure\Markdown\Badge\BadgeStructurer
- * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Structure\Markdown\AtxHeadingMatcher
  * @uses \Guard\Structure\Markdown\Badge\Badge
  * @uses \Guard\Structure\Markdown\Badge\BadgeBlock

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Guard\Cli;
 
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 use Guard\Reporting\Baseline;
 use JsonException;
 

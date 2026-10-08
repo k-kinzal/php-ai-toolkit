@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Guard\Collect\Filesystem;
 
-use Guard\Collect\Input;
 use Guard\Collect\Matching\ScopeMatcher;
-use Guard\Collect\Scope;
-use Guard\Collect\Selection;
-use Guard\Execution\TargetPath;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\Input;
+use Guard\Input\Scope;
+use Guard\Input\Selection;
 
 /**
  * Traverses the union of every registered selection in one shared directory queue.

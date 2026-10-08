@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Guard\Collect\Filesystem;
 
-use Guard\Collect\FileRecord;
 use Guard\Collect\Matching\GlobMatcher;
 use Guard\Collect\Matching\ScopeMatcher;
 use Guard\Collect\Matching\SelectionFilter;
-use Guard\Collect\Selection;
-use Guard\Execution\TargetPath;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\Path;
+use Guard\Input\Selection;
 
 /**
  * Starts each request at the intersection of collector includes and requested paths.

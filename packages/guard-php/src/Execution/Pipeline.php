@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Guard\Execution;
 
 use Guard\Collect\Collector;
-use Guard\Collect\Input;
-use Guard\Collect\InputSet;
-use Guard\Extension\BuiltinExtension;
-use Guard\Extension\ExtensionLoader;
-use Guard\Extension\PolicyBinding;
-use Guard\Extension\Registry;
+use Guard\Config\ComponentLoader;
+use Guard\Config\Configuration;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Policy\Context;
+use Guard\Policy\Plan;
+use Guard\Policy\Policy;
+use Guard\Policy\PolicyBinding;
+use Guard\Repair\ChangeSet;
 use JsonException;
 use RuntimeException;
 
@@ -30,13 +33,18 @@ final class Pipeline
      * @throws JsonException
      * @throws \Nette\Neon\Exception
      */
-    public function run(Context $context): Plan
+    public function run(Configuration $configuration, string $configPath, bool $repair = false): Plan
     {
-        $registry = $this->registry === null ? new Registry() : clone $this->registry;
-        if ($this->registry === null) {
-            (new BuiltinExtension($context->configuration))->register($registry);
+        $context = new Context($configuration->root, $configPath, $repair, $configuration->scope);
+        $registry = $this->registry === null ? Registry::defaults($configuration->policies) : clone $this->registry;
+        foreach ($configuration->extensions as $class => $options) {
+            $component = (new ComponentLoader())->create($class, $options);
+            if ($component instanceof Policy) {
+                $registry->addPolicy($class, $component);
+            } else {
+                $registry->addStructure($class, $component);
+            }
         }
-        (new ExtensionLoader())->register($context->configuration->extensions, $registry);
         /** @var array<string, Input> $requests */
         $requests = [];
         /** @var array<int, array<string, string>> $names */
@@ -50,7 +58,7 @@ final class Pipeline
                 $names[$index][$name] = $key;
             }
         }
-        $collected = ($this->collector ?? new Collector())->collect($context->configuration->root, $requests, $registry->structures(), $context->configuration->scope);
+        $collected = ($this->collector ?? new Collector())->collect($configuration->root, $requests, $registry->structures(), $configuration->scope);
         $plans = [];
         foreach ($bindings as $index => $binding) {
             $sets = [];

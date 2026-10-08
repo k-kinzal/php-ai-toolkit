@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Config\Reader;
 
-use Guard\Config\Value\DeclaredHeading;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\DeclaredHeading;
 use Guard\Structure\Markdown\AtxHeadingMatcher;
 
 use function is_string;

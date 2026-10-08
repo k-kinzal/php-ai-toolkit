@@ -18,19 +18,19 @@ use SplFileInfo;
  * @uses \Guard\Config\Configuration
  * @uses \Guard\Config\RuleReader
  * @uses \Guard\Config\Reader\ExtensionConfigReader
- * @uses \Guard\Extension\PolicyBinding
+ * @uses \Guard\Policy\PolicyBinding
  * @uses \Guard\Policy\Rule
- * @uses \Guard\Policy\Constraint
+ * @uses \Guard\Structure\Document\Constraint
  * @uses \Guard\Policy\FieldConstraints
- * @uses \Guard\Document\Selection
- * @uses \Guard\Reporting\RuleDescription
- * @uses \Guard\Reporting\RuleMessages
+ * @uses \Guard\Structure\Document\Selection
+ * @uses \Guard\Policy\Diagnostic\RuleDescription
+ * @uses \Guard\Policy\Diagnostic\RuleMessages
  * @uses \Guard\Cli\Command\GuardCommand
  * @uses \Guard\Cli\FormatDetector
  * @uses \Guard\Config\RuleCatalog
  * @uses \Guard\Reporting\RuleReporter
- * @uses \Guard\Policy\PolicyException
- * @uses \Guard\Reporting\FieldMessage
+ * @uses \Guard\Diagnostic\PolicyException
+ * @uses \Guard\Policy\Diagnostic\FieldMessage
  */
 #[\PHPUnit\Framework\Attributes\CoversClass(\Guard\Cli\Command\RulesCommand::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ConfigurationLoader::class)]
@@ -40,19 +40,19 @@ use SplFileInfo;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\RuleReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Extension\PolicyBinding::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Rule::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Constraint::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Constraint::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FieldConstraints::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Document\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\RuleDescription::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\RuleMessages::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Selection::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\RuleDescription::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\RuleMessages::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\GuardCommand::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\FormatDetector::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\RuleCatalog::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\RuleReporter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\FieldMessage::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\FieldMessage::class)]
 final class RulesCommandTest extends \PHPUnit\Framework\TestCase
 {
     public function testRunFiltersTheResolvedRulesAndRejectsEmptyQueries(): void

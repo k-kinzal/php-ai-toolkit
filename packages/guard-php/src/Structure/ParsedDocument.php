@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Guard\Structure;
 
-use Guard\Document\DataDocument;
-use Guard\Document\PhpDocument;
-use Guard\Document\XmlDocument;
+use Guard\Structure\Document\DataDocument;
+use Guard\Structure\Document\PhpDocument;
+use Guard\Structure\Document\XmlDocument;
 
 /**
  * A parsed configuration document shared by policies as an immutable input.

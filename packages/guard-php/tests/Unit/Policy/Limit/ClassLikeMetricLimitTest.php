@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy\Limit;
 
-use Guard\Config\Value\LimitConfig;
+use Guard\Policy\Definition\LimitConfig;
 use Guard\Policy\Limit\ClassLikeMetricLimit;
 use Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Policy\Limit\ClassLikeMetricLimit
- * @uses \Guard\Config\Value\LimitConfig
+ * @uses \Guard\Policy\Definition\LimitConfig
  * @uses \Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric
  */
 #[CoversClass(ClassLikeMetricLimit::class)]

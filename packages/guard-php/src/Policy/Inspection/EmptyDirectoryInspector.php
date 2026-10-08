@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Guard\Policy\Inspection;
 
-use Guard\Collect\DirectoryListing;
-use Guard\Config\Value\DirectoryRuleConfig;
-use Guard\Reporting\DirectoryViolation;
+use Guard\Input\DirectoryListing;
+use Guard\Policy\Definition\DirectoryRuleConfig;
+use Guard\Policy\Diagnostic\DirectoryViolation;
 
 use function sprintf;
 

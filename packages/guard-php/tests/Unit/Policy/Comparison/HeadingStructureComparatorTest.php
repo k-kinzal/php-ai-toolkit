@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy\Comparison;
 
-use Guard\Config\Value\DeclaredHeading;
-use Guard\Config\Value\DocumentConfig;
 use Guard\Policy\Comparison\HeadingHunkClassifier;
 use Guard\Policy\Comparison\HeadingSequenceAligner;
 use Guard\Policy\Comparison\HeadingStructureComparator;
-use Guard\Reporting\HeadingViolation;
-use Guard\Reporting\HeadingViolationFactory;
+use Guard\Policy\Definition\DeclaredHeading;
+use Guard\Policy\Definition\DocumentConfig;
+use Guard\Policy\Diagnostic\HeadingViolation;
+use Guard\Policy\Diagnostic\HeadingViolationFactory;
 use Guard\Structure\Markdown\Heading;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -18,12 +18,12 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Policy\Comparison\HeadingStructureComparator
- * @uses \Guard\Config\Value\DeclaredHeading
- * @uses \Guard\Config\Value\DocumentConfig
+ * @uses \Guard\Policy\Definition\DeclaredHeading
+ * @uses \Guard\Policy\Definition\DocumentConfig
  * @uses \Guard\Policy\Comparison\HeadingHunkClassifier
  * @uses \Guard\Policy\Comparison\HeadingSequenceAligner
- * @uses \Guard\Reporting\HeadingViolation
- * @uses \Guard\Reporting\HeadingViolationFactory
+ * @uses \Guard\Policy\Diagnostic\HeadingViolation
+ * @uses \Guard\Policy\Diagnostic\HeadingViolationFactory
  * @uses \Guard\Structure\Markdown\Heading
  */
 #[CoversClass(HeadingStructureComparator::class)]

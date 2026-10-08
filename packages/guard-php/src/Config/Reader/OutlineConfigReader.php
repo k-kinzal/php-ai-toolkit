@@ -9,9 +9,9 @@ use function array_slice;
 use function array_values;
 
 use Guard\Config\Validation\HeadingConfigKeyValidator;
-use Guard\Config\Value\DeclaredHeading;
-use Guard\Config\Value\OutlineEntry;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\DeclaredHeading;
+use Guard\Policy\Definition\OutlineEntry;
 
 use function is_array;
 use function is_bool;

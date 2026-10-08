@@ -7,7 +7,9 @@ namespace Guard\Config\Profile;
 use function array_keys;
 use function array_pop;
 
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\ApplyRuleConfig;
+use Guard\Policy\Definition\PolicyConfig;
 
 use function implode;
 use function sprintf;

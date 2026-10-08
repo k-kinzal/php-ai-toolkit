@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Collect\Filesystem;
 
+use Guard\Input\Entry;
+
 /**
  * Caches path facts and directory reads across every selection in one invocation.
  */

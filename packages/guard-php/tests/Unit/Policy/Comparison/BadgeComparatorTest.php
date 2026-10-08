@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy\Comparison;
 
-use Guard\Config\Value\BadgeEntry;
 use Guard\Policy\Comparison\BadgeComparator;
 use Guard\Policy\Comparison\SequenceMatcher;
 use Guard\Policy\Comparison\SequenceResult;
-use Guard\Reporting\DocumentViolationFactory;
-use Guard\Reporting\HeadingViolation;
+use Guard\Policy\Definition\BadgeEntry;
+use Guard\Policy\Diagnostic\DocumentViolationFactory;
+use Guard\Policy\Diagnostic\HeadingViolation;
 use Guard\Structure\Markdown\Badge\Badge;
 use Guard\Structure\Markdown\Badge\BadgeBlock;
 use Guard\Structure\Markdown\Heading;
@@ -19,11 +19,11 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Policy\Comparison\BadgeComparator
- * @uses \Guard\Config\Value\BadgeEntry
+ * @uses \Guard\Policy\Definition\BadgeEntry
  * @uses \Guard\Policy\Comparison\SequenceMatcher
  * @uses \Guard\Policy\Comparison\SequenceResult
- * @uses \Guard\Reporting\DocumentViolationFactory
- * @uses \Guard\Reporting\HeadingViolation
+ * @uses \Guard\Policy\Diagnostic\DocumentViolationFactory
+ * @uses \Guard\Policy\Diagnostic\HeadingViolation
  * @uses \Guard\Structure\Markdown\Badge\Badge
  * @uses \Guard\Structure\Markdown\Badge\BadgeBlock
  * @uses \Guard\Structure\Markdown\Heading

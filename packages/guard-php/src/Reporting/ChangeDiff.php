@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Guard\Reporting;
 
-use Guard\Execution\FileChange;
+use Guard\Policy\FileChange;
 
 /**
  * Builds a unified hunk with three context lines, retaining final-newline changes.

@@ -56,7 +56,7 @@ Exit code `2` prints a diagnostic to standard error starting with `Guard error:`
 
 ## Rule messages
 
-`rules` reads the policy without checking or opening the target files. It shows configured rules even when those files are missing or currently compliant. Metric profiles that are not selected by the default or an assignment, and disabled limits, are omitted. Scope, exclusions and assignments appear in the constraints; the list does not expand globs into current file matches. Configured extensions are identified separately by an `extension:` prefix; their internal rules and repair capabilities are defined by the extension itself.
+`rules` reads the policy without checking or opening the target files. It shows configured rules even when those files are missing or currently compliant. Metric profiles that are not selected by the default or an assignment, and disabled limits, are omitted. Scope, exclusions and assignments appear in the constraints; the list does not expand globs into current file matches. Configured extensions are identified separately by an `extension:` prefix; their diagnostics and repair capabilities are defined by the configured policy or structurer.
 
 ```console
 guard rules --query=phpstan.level --format=text

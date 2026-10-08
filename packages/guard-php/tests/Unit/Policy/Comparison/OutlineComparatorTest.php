@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy\Comparison;
 
-use Guard\Config\Value\DeclaredHeading;
-use Guard\Config\Value\DocumentConfig;
-use Guard\Config\Value\OutlineEntry;
 use Guard\Policy\Comparison\OutlineComparator;
 use Guard\Policy\Comparison\SequenceMatcher;
 use Guard\Policy\Comparison\SequenceResult;
-use Guard\Reporting\DocumentViolationFactory;
-use Guard\Reporting\HeadingViolation;
+use Guard\Policy\Definition\DeclaredHeading;
+use Guard\Policy\Definition\DocumentConfig;
+use Guard\Policy\Definition\OutlineEntry;
+use Guard\Policy\Diagnostic\DocumentViolationFactory;
+use Guard\Policy\Diagnostic\HeadingViolation;
 use Guard\Structure\Markdown\Heading;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -20,13 +20,13 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Policy\Comparison\OutlineComparator
- * @uses \Guard\Config\Value\DeclaredHeading
- * @uses \Guard\Config\Value\DocumentConfig
- * @uses \Guard\Config\Value\OutlineEntry
+ * @uses \Guard\Policy\Definition\DeclaredHeading
+ * @uses \Guard\Policy\Definition\DocumentConfig
+ * @uses \Guard\Policy\Definition\OutlineEntry
  * @uses \Guard\Policy\Comparison\SequenceMatcher
  * @uses \Guard\Policy\Comparison\SequenceResult
- * @uses \Guard\Reporting\DocumentViolationFactory
- * @uses \Guard\Reporting\HeadingViolation
+ * @uses \Guard\Policy\Diagnostic\DocumentViolationFactory
+ * @uses \Guard\Policy\Diagnostic\HeadingViolation
  * @uses \Guard\Structure\Markdown\Heading
  */
 #[CoversClass(OutlineComparator::class)]

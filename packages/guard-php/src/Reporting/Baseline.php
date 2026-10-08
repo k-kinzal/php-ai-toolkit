@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Guard\Reporting;
 
 use Guard\Config\Schema;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
 use JsonException;
 
 /**

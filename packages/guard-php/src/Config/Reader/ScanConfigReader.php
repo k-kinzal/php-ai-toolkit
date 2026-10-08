@@ -6,8 +6,8 @@ namespace Guard\Config\Reader;
 
 use Guard\Config\Validation\MetricConfigKeyValidator;
 use Guard\Config\Validation\MetricConfigStringListReader;
-use Guard\Config\Value\ScanConfig;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\ScanConfig;
 
 use function is_array;
 

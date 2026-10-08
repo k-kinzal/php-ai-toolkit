@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Reporting;
 
+use Guard\Diagnostic\Finding;
+
 /**
  * Current diagnostics after counted baseline entries have been consumed.
  */

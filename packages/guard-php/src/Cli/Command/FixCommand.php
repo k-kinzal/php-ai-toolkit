@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Guard\Cli\Command;
 
 use Guard\Cli\PolicyRun;
-use Guard\Extension\Registry;
+use Guard\Execution\Registry;
 use Override;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

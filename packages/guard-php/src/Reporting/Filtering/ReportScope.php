@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Guard\Reporting\Filtering;
 
-use Guard\Reporting\Finding;
+use Guard\Diagnostic\Finding;
 
 /**
  * Keeps the full check result visible when diagnostics are filtered or baselined.

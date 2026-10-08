@@ -12,3 +12,6 @@ parameters:
         - tests/Unit
     toolkit:
         allRules: true
+        # Constructor arguments cross from untyped YAML into external component code here.
+        broadCatchAllowedPaths:
+            - src/Config/ComponentLoader.php

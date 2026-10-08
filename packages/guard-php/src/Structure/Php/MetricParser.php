@@ -26,7 +26,7 @@ final class MetricParser implements \Guard\Structure\Structurer
     {
         $tokens = $source->structure('php.tokens');
         if (!$tokens instanceof Tokens) {
-            throw new \Guard\Policy\PolicyException('Structure php.tokens must return Tokens. Register TokenParser for that id.');
+            throw new \Guard\Diagnostic\PolicyException('Structure php.tokens must return Tokens. Register TokenParser for that id.');
         }
         return $this->measure($source->text(), $tokens->all(), '');
     }

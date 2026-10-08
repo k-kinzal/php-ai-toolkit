@@ -25,41 +25,41 @@ use SplFileInfo;
  * @uses \Guard\Cli\GuardConsole
  * @uses \Guard\Cli\PolicyRun
  * @uses \Guard\Collect\Collector
- * @uses \Guard\Collect\DirectoryListing
- * @uses \Guard\Collect\FileRecord
- * @uses \Guard\Collect\FileSet
+ * @uses \Guard\Input\DirectoryListing
+ * @uses \Guard\Input\FileRecord
+ * @uses \Guard\Input\FileSet
  * @uses \Guard\Collect\Filesystem\DirectoryTraversal
  * @uses \Guard\Collect\Filesystem\Discovery
- * @uses \Guard\Collect\Filesystem\Entry
+ * @uses \Guard\Input\Entry
  * @uses \Guard\Collect\Filesystem\NativeFilesystem
- * @uses \Guard\Collect\Filesystem\Path
+ * @uses \Guard\Input\Path
  * @uses \Guard\Collect\Filesystem\PatternRoots
  * @uses \Guard\Collect\Filesystem\QueryResult
  * @uses \Guard\Collect\Filesystem\Route
  * @uses \Guard\Collect\Filesystem\SelectionRoots
  * @uses \Guard\Collect\Filesystem\Snapshot
  * @uses \Guard\Collect\Filesystem\WalkQueue
- * @uses \Guard\Collect\Input
- * @uses \Guard\Collect\InputSet
+ * @uses \Guard\Input\Input
+ * @uses \Guard\Input\InputSet
  * @uses \Guard\Collect\Matching\GlobMatcher
- * @uses \Guard\Collect\Matching\PathPatternMatcher
+ * @uses \Guard\Input\PathPatternMatcher
  * @uses \Guard\Collect\Matching\SelectionFilter
- * @uses \Guard\Collect\Selection
- * @uses \Guard\Collect\StructuredFile
- * @uses \Guard\Config\Assignment\ApplyRuleMatcher
- * @uses \Guard\Config\Assignment\FilePolicyAssigner
- * @uses \Guard\Config\Assignment\FilePolicyAssignment
+ * @uses \Guard\Input\Selection
+ * @uses \Guard\Input\StructuredFile
+ * @uses \Guard\Policy\Assignment\ApplyRuleMatcher
+ * @uses \Guard\Policy\Assignment\FilePolicyAssigner
+ * @uses \Guard\Policy\Assignment\FilePolicyAssignment
  * @uses \Guard\Config\Configuration
  * @uses \Guard\Config\ConfigurationLoader
  * @uses \Guard\Config\DocumentMerger
  * @uses \Guard\Config\ImportResolver
- * @uses \Guard\Config\Profile\ApplyConfig
+ * @uses \Guard\Policy\Definition\ApplyConfig
  * @uses \Guard\Config\Profile\ApplyConfigReader
  * @uses \Guard\Config\Profile\ApplyPolicyUsageValidator
- * @uses \Guard\Config\Profile\ApplyRuleConfig
+ * @uses \Guard\Policy\Definition\ApplyRuleConfig
  * @uses \Guard\Config\Profile\ApplyRuleConfigReader
  * @uses \Guard\Config\Profile\ApplyRuleListConfigReader
- * @uses \Guard\Config\Profile\PolicyConfig
+ * @uses \Guard\Policy\Definition\PolicyConfig
  * @uses \Guard\Config\Profile\PolicyConfigReader
  * @uses \Guard\Config\Profile\PolicyDefinition
  * @uses \Guard\Config\Profile\PolicyListConfigReader
@@ -84,55 +84,54 @@ use SplFileInfo;
  * @uses \Guard\Config\Validation\MetricConfigKeyValidator
  * @uses \Guard\Config\Validation\MetricConfigScalarReader
  * @uses \Guard\Config\Validation\MetricConfigStringListReader
- * @uses \Guard\Config\Value\DeclaredHeading
- * @uses \Guard\Config\Value\DirectoryRuleConfig
- * @uses \Guard\Config\Value\DocumentConfig
- * @uses \Guard\Config\Value\DocumentationConfig
- * @uses \Guard\Config\Value\LimitConfig
- * @uses \Guard\Config\Value\MetricsConfig
- * @uses \Guard\Config\Value\ScanConfig
- * @uses \Guard\Config\Value\StructureConfig
- * @uses \Guard\Document\DataDocument
- * @uses \Guard\Document\DocumentFailure
- * @uses \Guard\Document\DocumentNode
- * @uses \Guard\Document\Json5Reader
- * @uses \Guard\Document\PhpConfigReader
- * @uses \Guard\Document\PhpDocument
- * @uses \Guard\Document\Pointer
- * @uses \Guard\Document\Selection
- * @uses \Guard\Document\TomlEncoder
- * @uses \Guard\Document\XmlDocument
- * @uses \Guard\Execution\AtomicWriter
- * @uses \Guard\Execution\ChangeSet
- * @uses \Guard\Execution\Context
- * @uses \Guard\Execution\FileChange
+ * @uses \Guard\Policy\Definition\DeclaredHeading
+ * @uses \Guard\Policy\Definition\DirectoryRuleConfig
+ * @uses \Guard\Policy\Definition\DocumentConfig
+ * @uses \Guard\Policy\Definition\DocumentationConfig
+ * @uses \Guard\Policy\Definition\LimitConfig
+ * @uses \Guard\Policy\Definition\MetricsConfig
+ * @uses \Guard\Policy\Definition\ScanConfig
+ * @uses \Guard\Policy\Definition\StructureConfig
+ * @uses \Guard\Structure\Document\DataDocument
+ * @uses \Guard\Structure\Document\DocumentFailure
+ * @uses \Guard\Structure\Document\DocumentNode
+ * @uses \Guard\Structure\Document\Json5Reader
+ * @uses \Guard\Structure\Document\PhpConfigReader
+ * @uses \Guard\Structure\Document\PhpDocument
+ * @uses \Guard\Structure\Document\Pointer
+ * @uses \Guard\Structure\Document\Selection
+ * @uses \Guard\Structure\Document\TomlEncoder
+ * @uses \Guard\Structure\Document\XmlDocument
+ * @uses \Guard\Repair\AtomicWriter
+ * @uses \Guard\Repair\ChangeSet
+ * @uses \Guard\Policy\Context
+ * @uses \Guard\Policy\FileChange
  * @uses \Guard\Execution\Pipeline
- * @uses \Guard\Execution\Plan
- * @uses \Guard\Execution\TargetPath
- * @uses \Guard\Extension\BuiltinExtension
- * @uses \Guard\Extension\ExtensionLoader
- * @uses \Guard\Extension\PolicyBinding
- * @uses \Guard\Extension\Registry
- * @uses \Guard\Init\Initializer
- * @uses \Guard\Init\LegacyMigration
- * @uses \Guard\Init\Legacy\DirectoryConfiguration
- * @uses \Guard\Init\Legacy\DirectoryReportConfig
- * @uses \Guard\Init\Legacy\DirectoryReportReader
- * @uses \Guard\Init\Legacy\HeadingConfiguration
- * @uses \Guard\Init\Legacy\HeadingReportConfig
- * @uses \Guard\Init\Legacy\HeadingReportReader
- * @uses \Guard\Init\Legacy\MetricConfiguration
- * @uses \Guard\Init\Legacy\MetricReportConfig
- * @uses \Guard\Init\Legacy\MetricReportReader
- * @uses \Guard\Init\PresetCatalog
- * @uses \Guard\Init\PresetOverrides
- * @uses \Guard\Init\PresetSelector
- * @uses \Guard\Init\Recommendations
- * @uses \Guard\Init\ToolDetector
+ * @uses \Guard\Policy\Plan
+ * @uses \Guard\Collect\Filesystem\TargetPath
+ * @uses \Guard\Execution\Registry
+ * @uses \Guard\Config\ComponentLoader
+ * @uses \Guard\Policy\PolicyBinding
+ * @uses \Guard\Config\Project\Initializer
+ * @uses \Guard\Config\Project\LegacyMigration
+ * @uses \Guard\Config\Project\Legacy\DirectoryConfiguration
+ * @uses \Guard\Config\Project\Legacy\DirectoryReportConfig
+ * @uses \Guard\Config\Project\Legacy\DirectoryReportReader
+ * @uses \Guard\Config\Project\Legacy\HeadingConfiguration
+ * @uses \Guard\Config\Project\Legacy\HeadingReportConfig
+ * @uses \Guard\Config\Project\Legacy\HeadingReportReader
+ * @uses \Guard\Config\Project\Legacy\MetricConfiguration
+ * @uses \Guard\Config\Project\Legacy\MetricReportConfig
+ * @uses \Guard\Config\Project\Legacy\MetricReportReader
+ * @uses \Guard\Config\Project\PresetCatalog
+ * @uses \Guard\Config\Project\PresetOverrides
+ * @uses \Guard\Config\Project\PresetSelector
+ * @uses \Guard\Config\Project\Recommendations
+ * @uses \Guard\Config\Project\ToolDetector
  * @uses \Guard\Policy\Comparison\HeadingHunkClassifier
  * @uses \Guard\Policy\Comparison\HeadingSequenceAligner
  * @uses \Guard\Policy\Comparison\HeadingStructureComparator
- * @uses \Guard\Policy\Constraint
+ * @uses \Guard\Structure\Document\Constraint
  * @uses \Guard\Policy\DirectoryEntries
  * @uses \Guard\Policy\FieldConstraints
  * @uses \Guard\Policy\HeadingStructure
@@ -154,16 +153,16 @@ use SplFileInfo;
  * @uses \Guard\Policy\Limit\FunctionMetricViolationBuilder
  * @uses \Guard\Policy\Limit\MetricLimitInspector
  * @uses \Guard\Policy\MetricLimits
- * @uses \Guard\Policy\PolicyException
+ * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Policy\Rule
  * @uses \Guard\Policy\RuleEvaluator
- * @uses \Guard\Reporting\DirectoryViolation
- * @uses \Guard\Reporting\Finding
- * @uses \Guard\Reporting\HeadingViolation
- * @uses \Guard\Reporting\HeadingViolationFactory
- * @uses \Guard\Reporting\MetricViolation
+ * @uses \Guard\Policy\Diagnostic\DirectoryViolation
+ * @uses \Guard\Diagnostic\Finding
+ * @uses \Guard\Policy\Diagnostic\HeadingViolation
+ * @uses \Guard\Policy\Diagnostic\HeadingViolationFactory
+ * @uses \Guard\Policy\Diagnostic\MetricViolation
  * @uses \Guard\Reporting\ChangeDiff
- * @uses \Guard\Reporting\RuleMessages
+ * @uses \Guard\Policy\Diagnostic\RuleMessages
  * @uses \Guard\Reporting\Reporter
  * @uses \Guard\Structure\DocumentStructurer
  * @uses \Guard\Structure\Markdown\AtxHeadingMatcher
@@ -211,7 +210,7 @@ use SplFileInfo;
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
  * @uses \Guard\Cli\Command\RulesCommand
- * @uses \Guard\Reporting\FieldMessage
+ * @uses \Guard\Policy\Diagnostic\FieldMessage
  * @uses \Guard\Cli\CheckRun
  * @uses \Guard\Cli\BaselineFile
  * @uses \Guard\Cli\Command\BaselineCommand
@@ -229,41 +228,41 @@ use SplFileInfo;
 #[UsesClass(\Guard\Cli\GuardConsole::class)]
 #[UsesClass(\Guard\Cli\PolicyRun::class)]
 #[UsesClass(\Guard\Collect\Collector::class)]
-#[UsesClass(\Guard\Collect\DirectoryListing::class)]
-#[UsesClass(\Guard\Collect\FileRecord::class)]
-#[UsesClass(\Guard\Collect\FileSet::class)]
+#[UsesClass(\Guard\Input\DirectoryListing::class)]
+#[UsesClass(\Guard\Input\FileRecord::class)]
+#[UsesClass(\Guard\Input\FileSet::class)]
 #[UsesClass(\Guard\Collect\Filesystem\DirectoryTraversal::class)]
 #[UsesClass(\Guard\Collect\Filesystem\Discovery::class)]
-#[UsesClass(\Guard\Collect\Filesystem\Entry::class)]
+#[UsesClass(\Guard\Input\Entry::class)]
 #[UsesClass(\Guard\Collect\Filesystem\NativeFilesystem::class)]
-#[UsesClass(\Guard\Collect\Filesystem\Path::class)]
+#[UsesClass(\Guard\Input\Path::class)]
 #[UsesClass(\Guard\Collect\Filesystem\PatternRoots::class)]
 #[UsesClass(\Guard\Collect\Filesystem\QueryResult::class)]
 #[UsesClass(\Guard\Collect\Filesystem\Route::class)]
 #[UsesClass(\Guard\Collect\Filesystem\SelectionRoots::class)]
 #[UsesClass(\Guard\Collect\Filesystem\Snapshot::class)]
 #[UsesClass(\Guard\Collect\Filesystem\WalkQueue::class)]
-#[UsesClass(\Guard\Collect\Input::class)]
-#[UsesClass(\Guard\Collect\InputSet::class)]
+#[UsesClass(\Guard\Input\Input::class)]
+#[UsesClass(\Guard\Input\InputSet::class)]
 #[UsesClass(\Guard\Collect\Matching\GlobMatcher::class)]
-#[UsesClass(\Guard\Collect\Matching\PathPatternMatcher::class)]
+#[UsesClass(\Guard\Input\PathPatternMatcher::class)]
 #[UsesClass(\Guard\Collect\Matching\SelectionFilter::class)]
-#[UsesClass(\Guard\Collect\Selection::class)]
-#[UsesClass(\Guard\Collect\StructuredFile::class)]
-#[UsesClass(\Guard\Config\Assignment\ApplyRuleMatcher::class)]
-#[UsesClass(\Guard\Config\Assignment\FilePolicyAssigner::class)]
-#[UsesClass(\Guard\Config\Assignment\FilePolicyAssignment::class)]
+#[UsesClass(\Guard\Input\Selection::class)]
+#[UsesClass(\Guard\Input\StructuredFile::class)]
+#[UsesClass(\Guard\Policy\Assignment\ApplyRuleMatcher::class)]
+#[UsesClass(\Guard\Policy\Assignment\FilePolicyAssigner::class)]
+#[UsesClass(\Guard\Policy\Assignment\FilePolicyAssignment::class)]
 #[UsesClass(\Guard\Config\Configuration::class)]
 #[UsesClass(\Guard\Config\ConfigurationLoader::class)]
 #[UsesClass(\Guard\Config\DocumentMerger::class)]
 #[UsesClass(\Guard\Config\ImportResolver::class)]
-#[UsesClass(\Guard\Config\Profile\ApplyConfig::class)]
+#[UsesClass(\Guard\Policy\Definition\ApplyConfig::class)]
 #[UsesClass(\Guard\Config\Profile\ApplyConfigReader::class)]
 #[UsesClass(\Guard\Config\Profile\ApplyPolicyUsageValidator::class)]
-#[UsesClass(\Guard\Config\Profile\ApplyRuleConfig::class)]
+#[UsesClass(\Guard\Policy\Definition\ApplyRuleConfig::class)]
 #[UsesClass(\Guard\Config\Profile\ApplyRuleConfigReader::class)]
 #[UsesClass(\Guard\Config\Profile\ApplyRuleListConfigReader::class)]
-#[UsesClass(\Guard\Config\Profile\PolicyConfig::class)]
+#[UsesClass(\Guard\Policy\Definition\PolicyConfig::class)]
 #[UsesClass(\Guard\Config\Profile\PolicyConfigReader::class)]
 #[UsesClass(\Guard\Config\Profile\PolicyDefinition::class)]
 #[UsesClass(\Guard\Config\Profile\PolicyListConfigReader::class)]
@@ -288,55 +287,54 @@ use SplFileInfo;
 #[UsesClass(\Guard\Config\Validation\MetricConfigKeyValidator::class)]
 #[UsesClass(\Guard\Config\Validation\MetricConfigScalarReader::class)]
 #[UsesClass(\Guard\Config\Validation\MetricConfigStringListReader::class)]
-#[UsesClass(\Guard\Config\Value\DeclaredHeading::class)]
-#[UsesClass(\Guard\Config\Value\DirectoryRuleConfig::class)]
-#[UsesClass(\Guard\Config\Value\DocumentConfig::class)]
-#[UsesClass(\Guard\Config\Value\DocumentationConfig::class)]
-#[UsesClass(\Guard\Config\Value\LimitConfig::class)]
-#[UsesClass(\Guard\Config\Value\MetricsConfig::class)]
-#[UsesClass(\Guard\Config\Value\ScanConfig::class)]
-#[UsesClass(\Guard\Config\Value\StructureConfig::class)]
-#[UsesClass(\Guard\Document\DataDocument::class)]
-#[UsesClass(\Guard\Document\DocumentFailure::class)]
-#[UsesClass(\Guard\Document\DocumentNode::class)]
-#[UsesClass(\Guard\Document\Json5Reader::class)]
-#[UsesClass(\Guard\Document\PhpConfigReader::class)]
-#[UsesClass(\Guard\Document\PhpDocument::class)]
-#[UsesClass(\Guard\Document\Pointer::class)]
-#[UsesClass(\Guard\Document\Selection::class)]
-#[UsesClass(\Guard\Document\TomlEncoder::class)]
-#[UsesClass(\Guard\Document\XmlDocument::class)]
-#[UsesClass(\Guard\Execution\AtomicWriter::class)]
-#[UsesClass(\Guard\Execution\ChangeSet::class)]
-#[UsesClass(\Guard\Execution\Context::class)]
-#[UsesClass(\Guard\Execution\FileChange::class)]
+#[UsesClass(\Guard\Policy\Definition\DeclaredHeading::class)]
+#[UsesClass(\Guard\Policy\Definition\DirectoryRuleConfig::class)]
+#[UsesClass(\Guard\Policy\Definition\DocumentConfig::class)]
+#[UsesClass(\Guard\Policy\Definition\DocumentationConfig::class)]
+#[UsesClass(\Guard\Policy\Definition\LimitConfig::class)]
+#[UsesClass(\Guard\Policy\Definition\MetricsConfig::class)]
+#[UsesClass(\Guard\Policy\Definition\ScanConfig::class)]
+#[UsesClass(\Guard\Policy\Definition\StructureConfig::class)]
+#[UsesClass(\Guard\Structure\Document\DataDocument::class)]
+#[UsesClass(\Guard\Structure\Document\DocumentFailure::class)]
+#[UsesClass(\Guard\Structure\Document\DocumentNode::class)]
+#[UsesClass(\Guard\Structure\Document\Json5Reader::class)]
+#[UsesClass(\Guard\Structure\Document\PhpConfigReader::class)]
+#[UsesClass(\Guard\Structure\Document\PhpDocument::class)]
+#[UsesClass(\Guard\Structure\Document\Pointer::class)]
+#[UsesClass(\Guard\Structure\Document\Selection::class)]
+#[UsesClass(\Guard\Structure\Document\TomlEncoder::class)]
+#[UsesClass(\Guard\Structure\Document\XmlDocument::class)]
+#[UsesClass(\Guard\Repair\AtomicWriter::class)]
+#[UsesClass(\Guard\Repair\ChangeSet::class)]
+#[UsesClass(\Guard\Policy\Context::class)]
+#[UsesClass(\Guard\Policy\FileChange::class)]
 #[UsesClass(\Guard\Execution\Pipeline::class)]
-#[UsesClass(\Guard\Execution\Plan::class)]
-#[UsesClass(\Guard\Execution\TargetPath::class)]
-#[UsesClass(\Guard\Extension\BuiltinExtension::class)]
-#[UsesClass(\Guard\Extension\ExtensionLoader::class)]
-#[UsesClass(\Guard\Extension\PolicyBinding::class)]
-#[UsesClass(\Guard\Extension\Registry::class)]
-#[UsesClass(\Guard\Init\Initializer::class)]
-#[UsesClass(\Guard\Init\LegacyMigration::class)]
-#[UsesClass(\Guard\Init\Legacy\DirectoryConfiguration::class)]
-#[UsesClass(\Guard\Init\Legacy\DirectoryReportConfig::class)]
-#[UsesClass(\Guard\Init\Legacy\DirectoryReportReader::class)]
-#[UsesClass(\Guard\Init\Legacy\HeadingConfiguration::class)]
-#[UsesClass(\Guard\Init\Legacy\HeadingReportConfig::class)]
-#[UsesClass(\Guard\Init\Legacy\HeadingReportReader::class)]
-#[UsesClass(\Guard\Init\Legacy\MetricConfiguration::class)]
-#[UsesClass(\Guard\Init\Legacy\MetricReportConfig::class)]
-#[UsesClass(\Guard\Init\Legacy\MetricReportReader::class)]
-#[UsesClass(\Guard\Init\PresetCatalog::class)]
-#[UsesClass(\Guard\Init\PresetOverrides::class)]
-#[UsesClass(\Guard\Init\PresetSelector::class)]
-#[UsesClass(\Guard\Init\Recommendations::class)]
-#[UsesClass(\Guard\Init\ToolDetector::class)]
+#[UsesClass(\Guard\Policy\Plan::class)]
+#[UsesClass(\Guard\Collect\Filesystem\TargetPath::class)]
+#[UsesClass(\Guard\Execution\Registry::class)]
+#[UsesClass(\Guard\Config\ComponentLoader::class)]
+#[UsesClass(\Guard\Policy\PolicyBinding::class)]
+#[UsesClass(\Guard\Config\Project\Initializer::class)]
+#[UsesClass(\Guard\Config\Project\LegacyMigration::class)]
+#[UsesClass(\Guard\Config\Project\Legacy\DirectoryConfiguration::class)]
+#[UsesClass(\Guard\Config\Project\Legacy\DirectoryReportConfig::class)]
+#[UsesClass(\Guard\Config\Project\Legacy\DirectoryReportReader::class)]
+#[UsesClass(\Guard\Config\Project\Legacy\HeadingConfiguration::class)]
+#[UsesClass(\Guard\Config\Project\Legacy\HeadingReportConfig::class)]
+#[UsesClass(\Guard\Config\Project\Legacy\HeadingReportReader::class)]
+#[UsesClass(\Guard\Config\Project\Legacy\MetricConfiguration::class)]
+#[UsesClass(\Guard\Config\Project\Legacy\MetricReportConfig::class)]
+#[UsesClass(\Guard\Config\Project\Legacy\MetricReportReader::class)]
+#[UsesClass(\Guard\Config\Project\PresetCatalog::class)]
+#[UsesClass(\Guard\Config\Project\PresetOverrides::class)]
+#[UsesClass(\Guard\Config\Project\PresetSelector::class)]
+#[UsesClass(\Guard\Config\Project\Recommendations::class)]
+#[UsesClass(\Guard\Config\Project\ToolDetector::class)]
 #[UsesClass(\Guard\Policy\Comparison\HeadingHunkClassifier::class)]
 #[UsesClass(\Guard\Policy\Comparison\HeadingSequenceAligner::class)]
 #[UsesClass(\Guard\Policy\Comparison\HeadingStructureComparator::class)]
-#[UsesClass(\Guard\Policy\Constraint::class)]
+#[UsesClass(\Guard\Structure\Document\Constraint::class)]
 #[UsesClass(\Guard\Policy\DirectoryEntries::class)]
 #[UsesClass(\Guard\Policy\FieldConstraints::class)]
 #[UsesClass(\Guard\Policy\HeadingStructure::class)]
@@ -358,14 +356,14 @@ use SplFileInfo;
 #[UsesClass(\Guard\Policy\Limit\FunctionMetricViolationBuilder::class)]
 #[UsesClass(\Guard\Policy\Limit\MetricLimitInspector::class)]
 #[UsesClass(\Guard\Policy\MetricLimits::class)]
-#[UsesClass(\Guard\Policy\PolicyException::class)]
+#[UsesClass(\Guard\Diagnostic\PolicyException::class)]
 #[UsesClass(\Guard\Policy\Rule::class)]
 #[UsesClass(\Guard\Policy\RuleEvaluator::class)]
-#[UsesClass(\Guard\Reporting\DirectoryViolation::class)]
-#[UsesClass(\Guard\Reporting\Finding::class)]
-#[UsesClass(\Guard\Reporting\HeadingViolation::class)]
-#[UsesClass(\Guard\Reporting\HeadingViolationFactory::class)]
-#[UsesClass(\Guard\Reporting\MetricViolation::class)]
+#[UsesClass(\Guard\Policy\Diagnostic\DirectoryViolation::class)]
+#[UsesClass(\Guard\Diagnostic\Finding::class)]
+#[UsesClass(\Guard\Policy\Diagnostic\HeadingViolation::class)]
+#[UsesClass(\Guard\Policy\Diagnostic\HeadingViolationFactory::class)]
+#[UsesClass(\Guard\Policy\Diagnostic\MetricViolation::class)]
 #[UsesClass(\Guard\Reporting\Reporter::class)]
 #[UsesClass(\Guard\Structure\DocumentStructurer::class)]
 #[UsesClass(\Guard\Structure\Markdown\AtxHeadingMatcher::class)]
@@ -413,10 +411,10 @@ use SplFileInfo;
 #[UsesClass(\Guard\Structure\Php\Tokens::class)]
 #[UsesClass(\Guard\Structure\Source::class)]
 #[UsesClass(\Guard\Reporting\ChangeDiff::class)]
-#[UsesClass(\Guard\Reporting\RuleMessages::class)]
+#[UsesClass(\Guard\Policy\Diagnostic\RuleMessages::class)]
 #[UsesClass(\Guard\Cli\FormatDetector::class)]
 #[UsesClass(\Guard\Cli\Command\RulesCommand::class)]
-#[UsesClass(\Guard\Reporting\FieldMessage::class)]
+#[UsesClass(\Guard\Policy\Diagnostic\FieldMessage::class)]
 #[UsesClass(\Guard\Cli\CheckRun::class)]
 #[UsesClass(\Guard\Cli\BaselineFile::class)]
 #[UsesClass(\Guard\Cli\Command\BaselineCommand::class)]

@@ -8,8 +8,8 @@ use function array_keys;
 
 use Guard\Config\Validation\DirectoryConfigScalarReader;
 use Guard\Config\Validation\DirectoryConfigStringListReader;
-use Guard\Config\Value\DirectoryRuleConfig;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Definition\DirectoryRuleConfig;
 
 use function in_array;
 use function is_array;

@@ -9,10 +9,10 @@ use function array_keys;
 use function array_map;
 use function array_values;
 
-use Guard\Config\Value\DocumentConfig;
-use Guard\Config\Value\OutlineEntry;
-use Guard\Reporting\DocumentViolationFactory;
-use Guard\Reporting\HeadingViolation;
+use Guard\Policy\Definition\DocumentConfig;
+use Guard\Policy\Definition\OutlineEntry;
+use Guard\Policy\Diagnostic\DocumentViolationFactory;
+use Guard\Policy\Diagnostic\HeadingViolation;
 use Guard\Structure\Markdown\Heading;
 
 use function implode;

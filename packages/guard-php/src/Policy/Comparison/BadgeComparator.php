@@ -7,9 +7,9 @@ namespace Guard\Policy\Comparison;
 use function array_map;
 use function array_unshift;
 
-use Guard\Config\Value\BadgeEntry;
-use Guard\Reporting\DocumentViolationFactory;
-use Guard\Reporting\HeadingViolation;
+use Guard\Policy\Definition\BadgeEntry;
+use Guard\Policy\Diagnostic\DocumentViolationFactory;
+use Guard\Policy\Diagnostic\HeadingViolation;
 use Guard\Structure\Markdown\Badge\Badge;
 use Guard\Structure\Markdown\Badge\BadgeBlock;
 

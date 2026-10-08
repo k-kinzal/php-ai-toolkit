@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Guard\Cli\Command;
 
 use Guard\Cli\FormatDetector;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 use JsonException;
 use Nette\Neon\Exception as NeonException;
 use Override;

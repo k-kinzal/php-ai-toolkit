@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Guard\Config\Reader;
 
-use Guard\Collect\Scope;
 use Guard\Config\Schema;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\Scope;
 
 /**
- * Reads the collector boundary independently of extension-specific file expectations.
+ * Reads the collector boundary independently of policy-specific file expectations.
  */
 final class ScopeConfigReader
 {

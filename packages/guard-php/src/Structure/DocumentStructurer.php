@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Guard\Structure;
 
-use Guard\Document\DataDocument;
-use Guard\Document\PhpDocument;
-use Guard\Document\XmlDocument;
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
+use Guard\Structure\Document\DataDocument;
+use Guard\Structure\Document\PhpDocument;
+use Guard\Structure\Document\XmlDocument;
 use Guard\Structure\Php\Tokens;
 use JsonException;
 use RuntimeException;

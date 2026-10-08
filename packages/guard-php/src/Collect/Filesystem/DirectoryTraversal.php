@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Guard\Collect\Filesystem;
 
-use Guard\Collect\DirectoryListing;
-use Guard\Collect\FileRecord;
-use Guard\Collect\Input;
 use Guard\Collect\Matching\GlobMatcher;
 use Guard\Collect\Matching\ScopeMatcher;
 use Guard\Collect\Matching\SelectionFilter;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\Input;
+use Guard\Input\Path;
 
 /**
  * Dispatches each directory entry to interested selections without rereading its metadata.

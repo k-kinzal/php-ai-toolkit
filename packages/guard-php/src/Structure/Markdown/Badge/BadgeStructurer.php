@@ -7,7 +7,7 @@ namespace Guard\Structure\Markdown\Badge;
 use function array_merge;
 use function count;
 
-use Guard\Policy\PolicyException;
+use Guard\Diagnostic\PolicyException;
 use Guard\Structure\Markdown\Heading;
 use Guard\Structure\Markdown\HeadingList;
 use Guard\Structure\Markdown\MarkdownLineSplitter;

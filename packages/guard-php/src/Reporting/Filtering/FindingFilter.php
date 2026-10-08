@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Reporting\Filtering;
 
-use Guard\Policy\PolicyException;
-use Guard\Reporting\Finding;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
 
 /**
  * Selects diagnostics for display without changing the result of the check.

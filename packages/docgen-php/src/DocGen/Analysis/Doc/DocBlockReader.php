@@ -24,10 +24,10 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 
 use function preg_split;
 
-use Toolkit\DocGen\Model\Symbol\DocBlock;
-use Toolkit\DocGen\Model\Symbol\DocTag;
-use Toolkit\DocGen\Model\Symbol\TemplateDoc;
-use Toolkit\DocGen\Model\Symbol\TypeAliasDoc;
+use Toolkit\DocGen\Analysis\Symbol\DocBlock;
+use Toolkit\DocGen\Analysis\Symbol\DocTag;
+use Toolkit\DocGen\Analysis\Symbol\TemplateDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeAliasDoc;
 
 use function trim;
 

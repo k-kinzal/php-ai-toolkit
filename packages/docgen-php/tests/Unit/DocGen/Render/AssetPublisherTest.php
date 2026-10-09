@@ -8,16 +8,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter;
-use Toolkit\DocGen\Model\DocGenException;
+use Toolkit\DocGen\DocGenException;
 use Toolkit\DocGen\Render\AssetPublisher;
+use Toolkit\DocGen\Render\Filesystem\SiteFileWriter;
 use Toolkit\DocGen\Render\Social\SocialCard;
 use Toolkit\DocGen\Render\Social\SocialCardText;
 
 /**
  * @covers \Toolkit\DocGen\Render\AssetPublisher
- * @uses \Toolkit\DocGen\Model\DocGenException
- * @uses \Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter
+ * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Render\Filesystem\SiteFileWriter
  * @uses \Toolkit\DocGen\Render\Social\SocialCard
  * @uses \Toolkit\DocGen\Render\Social\SocialCardText
  */

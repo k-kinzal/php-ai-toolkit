@@ -7,10 +7,6 @@ namespace Toolkit\DocGen\Analysis\Package;
 use function array_key_exists;
 use function array_keys;
 
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
-use Toolkit\DocGen\Model\Package\PackageDependency;
-use Toolkit\DocGen\Model\Package\PackageGraph;
-
 /**
  * Builds the dependency graph between the documented packages.
  *

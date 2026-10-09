@@ -8,8 +8,8 @@ use function file_get_contents;
 use function is_file;
 use function str_replace;
 
-use Toolkit\DocGen\Model\ProjectModel;
-use Toolkit\DocGen\Model\Symbol\MarkdownDoc;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Symbol\MarkdownDoc;
 
 /**
  * Merges the Markdown documents of two revisions.

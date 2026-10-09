@@ -8,8 +8,8 @@ use PhpParser\Node\Stmt\Property;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
-use Toolkit\DocGen\Model\Symbol\PropertyDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Symbol\PropertyDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 
 /**
  * Builds property models from php-parser property nodes.

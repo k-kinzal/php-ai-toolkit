@@ -8,8 +8,8 @@ use PhpParser\Node\Stmt\Function_;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 
 /**
  * Builds function models from php-parser function nodes.

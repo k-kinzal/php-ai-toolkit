@@ -15,15 +15,15 @@ use function strip_tags;
 use function strlen;
 
 use Toolkit\DocGen\Analysis\Diff\DiffStatus;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\ClassLikeKind;
-use Toolkit\DocGen\Model\Symbol\ConstantDoc;
-use Toolkit\DocGen\Model\Symbol\DocTag;
-use Toolkit\DocGen\Model\Symbol\EnumCaseDoc;
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
-use Toolkit\DocGen\Model\Symbol\MethodDoc;
-use Toolkit\DocGen\Model\Symbol\PropertyDoc;
-use Toolkit\DocGen\Model\Symbol\TemplateDoc;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeKind;
+use Toolkit\DocGen\Analysis\Symbol\ConstantDoc;
+use Toolkit\DocGen\Analysis\Symbol\DocTag;
+use Toolkit\DocGen\Analysis\Symbol\EnumCaseDoc;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Symbol\MethodDoc;
+use Toolkit\DocGen\Analysis\Symbol\PropertyDoc;
+use Toolkit\DocGen\Analysis\Symbol\TemplateDoc;
 use Toolkit\DocGen\Render\RenderKit;
 use Toolkit\DocGen\Render\TypeRenderContext;
 
@@ -188,7 +188,7 @@ final class SignatureHtml
     /**
      * Renders a callable head with its parameter list, wrapping when long.
      *
-     * @param list<\Toolkit\DocGen\Model\Symbol\ParameterDoc> $parameters
+     * @param list<\Toolkit\DocGen\Analysis\Symbol\ParameterDoc> $parameters
      * @param string $ownerKey the diff key the parameter states are under
      */
     public function callableSignature(RenderKit $services, string $head, array $parameters, string $returnSuffix, TypeRenderContext $context, string $ownerKey = ''): string
@@ -212,7 +212,7 @@ final class SignatureHtml
      * One of the two is displayed, so the plain view of a signature is
      * never a merged signature with a gap in it.
      *
-     * @param list<\Toolkit\DocGen\Model\Symbol\ParameterDoc> $parameters
+     * @param list<\Toolkit\DocGen\Analysis\Symbol\ParameterDoc> $parameters
      * @param string $ownerKey the diff key the parameter states are under
      * @param bool $headOnly whether the parameters the head dropped are skipped
      */
@@ -240,7 +240,7 @@ final class SignatureHtml
     /**
      * Reports whether the head revision dropped one of the parameters.
      *
-     * @param list<\Toolkit\DocGen\Model\Symbol\ParameterDoc> $parameters
+     * @param list<\Toolkit\DocGen\Analysis\Symbol\ParameterDoc> $parameters
      * @param string $ownerKey the diff key the parameter states are under
      */
     public function hasRemovedParameter(RenderKit $services, array $parameters, string $ownerKey): bool
@@ -259,7 +259,7 @@ final class SignatureHtml
      *
      * @param string $ownerKey the diff key the parameter states are under
      */
-    public function isRemovedParameter(RenderKit $services, \Toolkit\DocGen\Model\Symbol\ParameterDoc $parameter, string $ownerKey): bool
+    public function isRemovedParameter(RenderKit $services, \Toolkit\DocGen\Analysis\Symbol\ParameterDoc $parameter, string $ownerKey): bool
     {
         return $ownerKey !== ''
             && $services->diff->isActive()
@@ -274,7 +274,7 @@ final class SignatureHtml
      *
      * @param string $ownerKey the diff key the parameter states are under
      */
-    public function markedParameter(RenderKit $services, \Toolkit\DocGen\Model\Symbol\ParameterDoc $parameter, string $html, string $ownerKey): string
+    public function markedParameter(RenderKit $services, \Toolkit\DocGen\Analysis\Symbol\ParameterDoc $parameter, string $html, string $ownerKey): string
     {
         if ($ownerKey === '' || !$services->diff->isActive()) {
             return $html;
@@ -286,7 +286,7 @@ final class SignatureHtml
     /**
      * Renders one parameter with its most precise type.
      */
-    public function parameter(RenderKit $services, \Toolkit\DocGen\Model\Symbol\ParameterDoc $parameter, TypeRenderContext $context): string
+    public function parameter(RenderKit $services, \Toolkit\DocGen\Analysis\Symbol\ParameterDoc $parameter, TypeRenderContext $context): string
     {
         $html = '';
         if ($parameter->promotedVisibility !== null) {

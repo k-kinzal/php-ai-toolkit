@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\DocGen\Render;
 
-use Toolkit\DocGen\Model\ProjectModel;
-use Toolkit\DocGen\Model\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
 
 /**
  * Resolution context for rendering one page's type expressions.

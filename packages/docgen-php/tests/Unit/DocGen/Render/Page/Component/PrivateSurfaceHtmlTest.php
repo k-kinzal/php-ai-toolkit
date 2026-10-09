@@ -13,6 +13,7 @@ use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 use Toolkit\DocGen\Analysis\Diff\LineDiffer;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Analysis\Package\PackageGraph;
 use Toolkit\DocGen\Analysis\Parse\AstParser;
 use Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
 use Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder;
@@ -28,21 +29,20 @@ use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkerCount;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkerPool;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler;
-use Toolkit\DocGen\Model\Package\PackageGraph;
-use Toolkit\DocGen\Model\ProjectModel;
-use Toolkit\DocGen\Model\Reference\HierarchyIndex;
-use Toolkit\DocGen\Model\Reference\SymbolTable;
-use Toolkit\DocGen\Model\Reference\TestCaseIndex;
-use Toolkit\DocGen\Model\Reference\UsageIndex;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\ConstantDoc;
-use Toolkit\DocGen\Model\Symbol\FileSymbols;
-use Toolkit\DocGen\Model\Symbol\MethodDoc;
-use Toolkit\DocGen\Model\Symbol\PropertyDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\ConstantDoc;
+use Toolkit\DocGen\Analysis\Symbol\FileSymbols;
+use Toolkit\DocGen\Analysis\Symbol\MethodDoc;
+use Toolkit\DocGen\Analysis\Symbol\PropertyDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
+use Toolkit\DocGen\Parallel\WorkerCount;
+use Toolkit\DocGen\Parallel\WorkerPool;
+use Toolkit\DocGen\Parallel\WorkScheduler;
 use Toolkit\DocGen\Render\AssetPublisher;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 use Toolkit\DocGen\Render\Diff\MarkdownDiffHtml;
@@ -89,10 +89,10 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Render\AssetPublisher
  * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Render\Page\ClassLikePage
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ConstantDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ConstantDoc
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffIndex
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
@@ -104,11 +104,11 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector
- * @uses \Toolkit\DocGen\Model\Symbol\FileSymbols
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FileSymbols
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
  * @uses \Toolkit\DocGen\Render\Page\FunctionPage
  * @uses \Toolkit\DocGen\Render\Page\Component\GraphSvg
- * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
  * @uses \Toolkit\DocGen\Render\HtmlText
  * @uses \Toolkit\DocGen\Render\Page\IndexPage
  * @uses \Toolkit\DocGen\Render\Page\LayerPage
@@ -118,10 +118,10 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Render\MarkdownRenderer
  * @uses \Toolkit\DocGen\Render\Page\Component\MemberHtml
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\MethodDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\MethodDoc
  * @uses \Toolkit\DocGen\Render\Page\NamespacePage
  * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
- * @uses \Toolkit\DocGen\Model\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
  * @uses \Toolkit\DocGen\Render\Page\PackagePage
  * @uses \Toolkit\DocGen\Render\PageChrome
  * @uses \Toolkit\DocGen\Render\Signature\PageSignature
@@ -130,9 +130,9 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Render\PhpHighlighter
  * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
- * @uses \Toolkit\DocGen\Model\ProjectModel
+ * @uses \Toolkit\DocGen\Analysis\ProjectModel
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\PropertyDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\PropertyDoc
  * @uses \Toolkit\DocGen\Render\Page\Component\RelationsHtml
  * @uses \Toolkit\DocGen\Render\RenderKit
  * @uses \Toolkit\DocGen\Render\SearchIndexBuilder
@@ -147,16 +147,16 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Render\Page\SourcePage
  * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
  * @uses \Toolkit\DocGen\Render\Page\Component\SymbolListHtml
- * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
  * @uses \Toolkit\DocGen\Render\TypeHtml
  * @uses \Toolkit\DocGen\Render\TypeRenderContext
- * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
- * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerCount
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerPool
+ * @uses \Toolkit\DocGen\Parallel\WorkScheduler
+ * @uses \Toolkit\DocGen\Parallel\WorkerCount
+ * @uses \Toolkit\DocGen\Parallel\WorkerPool
  */
 #[CoversClass(PrivateSurfaceHtml::class)]
 #[UsesClass(AllItemsPage::class)]

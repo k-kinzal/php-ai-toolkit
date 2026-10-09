@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\DocGen\Analysis\Diff;
 
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
 
 /**
  * Merges the two revisions of one top-level function.
@@ -90,7 +90,7 @@ final class FunctionMerger
     /**
      * Rebuilds one function around its merged parameter list.
      *
-     * @param list<\Toolkit\DocGen\Model\Symbol\ParameterDoc> $parameters
+     * @param list<\Toolkit\DocGen\Analysis\Symbol\ParameterDoc> $parameters
      */
     public function rebuild(FunctionDoc $function, array $parameters): FunctionDoc
     {

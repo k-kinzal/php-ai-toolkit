@@ -10,18 +10,18 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
 use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
-use Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Model\Coverage\CoverageIndex;
-use Toolkit\DocGen\Model\Coverage\MethodCoverage;
-use Toolkit\DocGen\Model\DocGenException;
+use Toolkit\DocGen\Analysis\Coverage\MethodCoverage;
+use Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\DocGenException;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Coverage\CoverageReader
- * @uses \Toolkit\DocGen\Model\Coverage\CoverageIndex
- * @uses \Toolkit\DocGen\Model\DocGenException
- * @uses \Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver
- * @uses \Toolkit\DocGen\Model\Coverage\MethodCoverage
+ * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageIndex
+ * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver
+ * @uses \Toolkit\DocGen\Analysis\Coverage\MethodCoverage
  */
 #[CoversClass(CoverageReader::class)]
 #[UsesClass(CoverageIndex::class)]

@@ -8,7 +8,7 @@ use function count;
 use function sprintf;
 
 use Toolkit\DocGen\Analysis\Diff\DiffKey;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Render\RenderKit;
 use Toolkit\DocGen\Render\TypeRenderContext;
 
@@ -34,7 +34,7 @@ final class PrivateSurfaceHtml
     /**
      * Collects the private members of a class-like symbol.
      *
-     * @return list<\Toolkit\DocGen\Model\Symbol\ConstantDoc|\Toolkit\DocGen\Model\Symbol\PropertyDoc|\Toolkit\DocGen\Model\Symbol\MethodDoc>
+     * @return list<\Toolkit\DocGen\Analysis\Symbol\ConstantDoc|\Toolkit\DocGen\Analysis\Symbol\PropertyDoc|\Toolkit\DocGen\Analysis\Symbol\MethodDoc>
      */
     public function members(ClassLikeDoc $classLike): array
     {

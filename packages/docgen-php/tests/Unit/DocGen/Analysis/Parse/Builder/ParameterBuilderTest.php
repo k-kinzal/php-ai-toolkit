@@ -10,29 +10,29 @@ use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Doc\MutationContract;
 use Toolkit\DocGen\Analysis\Parse\AstParser;
 use Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder;
 use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
 use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
-use Toolkit\DocGen\Model\Mutation\MutationContract;
-use Toolkit\DocGen\Model\Symbol\DocBlock;
-use Toolkit\DocGen\Model\Symbol\DocTag;
-use Toolkit\DocGen\Model\Symbol\ParameterDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Symbol\DocBlock;
+use Toolkit\DocGen\Analysis\Symbol\DocTag;
+use Toolkit\DocGen\Analysis\Symbol\ParameterDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
- * @uses \Toolkit\DocGen\Model\Symbol\DocBlock
- * @uses \Toolkit\DocGen\Model\Symbol\DocTag
+ * @uses \Toolkit\DocGen\Analysis\Symbol\DocBlock
+ * @uses \Toolkit\DocGen\Analysis\Symbol\DocTag
  * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
- * @uses \Toolkit\DocGen\Model\Symbol\ParameterDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ParameterDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\ParameterModifiers
  * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
- * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
  */
 #[CoversClass(ParameterBuilder::class)]
 #[UsesClass(AstParser::class)]

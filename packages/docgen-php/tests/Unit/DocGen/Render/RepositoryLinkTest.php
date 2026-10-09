@@ -7,12 +7,12 @@ namespace Tests\Unit\DocGen\Render;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Model\Package\PackageGraph;
-use Toolkit\DocGen\Model\ProjectModel;
-use Toolkit\DocGen\Model\Reference\HierarchyIndex;
-use Toolkit\DocGen\Model\Reference\SymbolTable;
-use Toolkit\DocGen\Model\Reference\TestCaseIndex;
-use Toolkit\DocGen\Model\Reference\UsageIndex;
+use Toolkit\DocGen\Analysis\Package\PackageGraph;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 use Toolkit\DocGen\Render\Doctest\AssertionScanner;
 use Toolkit\DocGen\Render\Doctest\DoctestExtractor;
@@ -28,17 +28,17 @@ use Toolkit\DocGen\Render\TypeHtml;
 /**
  * @covers \Toolkit\DocGen\Render\RepositoryLink
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
- * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
  * @uses \Toolkit\DocGen\Render\HtmlText
  * @uses \Toolkit\DocGen\Render\MarkdownInline
  * @uses \Toolkit\DocGen\Render\MarkdownRenderer
- * @uses \Toolkit\DocGen\Model\Package\PackageGraph
- * @uses \Toolkit\DocGen\Model\ProjectModel
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\ProjectModel
  * @uses \Toolkit\DocGen\Render\RenderKit
- * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
  * @uses \Toolkit\DocGen\Render\TypeHtml
- * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  */
 #[CoversClass(RepositoryLink::class)]
 #[UsesClass(DiffHtml::class)]

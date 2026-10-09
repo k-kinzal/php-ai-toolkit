@@ -7,8 +7,6 @@ namespace Toolkit\DocGen\Analysis\Package;
 use function array_keys;
 use function count;
 
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
-
 /**
  * Decides which installed vendor packages are dev-only dependencies.
  *

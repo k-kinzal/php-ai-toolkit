@@ -24,21 +24,21 @@ use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
-use Toolkit\DocGen\Model\DocGenException;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\FileSymbols;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\FileSymbols;
+use Toolkit\DocGen\DocGenException;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Parse\AstParser
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
  * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \Toolkit\DocGen\Model\DocGenException
+ * @uses \Toolkit\DocGen\DocGenException
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector
- * @uses \Toolkit\DocGen\Model\Symbol\FileSymbols
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FileSymbols
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter

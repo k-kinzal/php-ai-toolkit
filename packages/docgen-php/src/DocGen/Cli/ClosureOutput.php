@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
-use Toolkit\DocGen\Model\DocGenException;
+use Toolkit\DocGen\DocGenException;
 
 /**
  * Console output that hands every written message to a closure.

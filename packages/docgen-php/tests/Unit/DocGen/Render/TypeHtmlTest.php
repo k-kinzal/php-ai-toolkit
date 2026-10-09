@@ -19,10 +19,10 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
-use Toolkit\DocGen\Model\Reference\SymbolTable;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\DocBlock;
-use Toolkit\DocGen\Model\Symbol\DocTag;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\DocBlock;
+use Toolkit\DocGen\Analysis\Symbol\DocTag;
 use Toolkit\DocGen\Render\HtmlText;
 use Toolkit\DocGen\Render\SiteUrl;
 use Toolkit\DocGen\Render\TypeHtml;
@@ -30,14 +30,14 @@ use Toolkit\DocGen\Render\TypeRenderContext;
 
 /**
  * @covers \Toolkit\DocGen\Render\TypeHtml
- * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
- * @uses \Toolkit\DocGen\Model\Symbol\DocBlock
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\DocBlock
  * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \Toolkit\DocGen\Model\Symbol\DocTag
+ * @uses \Toolkit\DocGen\Analysis\Symbol\DocTag
  * @uses \Toolkit\DocGen\Render\HtmlText
  * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Render\SiteUrl
- * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
  * @uses \Toolkit\DocGen\Render\TypeRenderContext
  */
 #[CoversClass(TypeHtml::class)]
@@ -50,7 +50,7 @@ use Toolkit\DocGen\Render\TypeRenderContext;
 #[UsesClass(SiteUrl::class)]
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TypeRenderContext::class)]
-#[UsesClass(\Toolkit\DocGen\Model\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\DocGen\Analysis\Doc\MutationContract::class)]
 #[UsesClass(\Toolkit\DocGen\Analysis\Doc\MutationContractReader::class)]
 final class TypeHtmlTest extends TestCase
 {

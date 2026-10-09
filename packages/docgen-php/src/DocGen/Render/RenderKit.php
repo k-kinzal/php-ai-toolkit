@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\DocGen\Render;
 
-use Toolkit\DocGen\Model\ProjectModel;
+use Toolkit\DocGen\Analysis\ProjectModel;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 use Toolkit\DocGen\Render\Doctest\AssertionScanner;
 use Toolkit\DocGen\Render\Doctest\DoctestExtractor;

@@ -16,8 +16,8 @@ use Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder;
 use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
-use Toolkit\DocGen\Model\Symbol\PropertyDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Symbol\PropertyDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
@@ -27,8 +27,8 @@ use Toolkit\DocGen\Model\Symbol\TypeSignature;
  * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
  * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
- * @uses \Toolkit\DocGen\Model\Symbol\PropertyDoc
- * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Symbol\PropertyDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
  */
 #[CoversClass(PropertyBuilder::class)]
 #[UsesClass(AstParser::class)]

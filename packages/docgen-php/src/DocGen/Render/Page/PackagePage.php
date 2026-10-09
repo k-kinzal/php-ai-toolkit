@@ -9,7 +9,7 @@ use function ksort;
 use function sprintf;
 use function str_starts_with;
 
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
+use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
 use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
 use Toolkit\DocGen\Render\Page\Component\DocumentListHtml;
 use Toolkit\DocGen\Render\Page\Component\GraphSvg;

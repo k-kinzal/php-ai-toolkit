@@ -7,12 +7,12 @@ namespace Toolkit\DocGen\Analysis\Diff;
 use function array_merge;
 use function strtolower;
 
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
-use Toolkit\DocGen\Model\ProjectModel;
-use Toolkit\DocGen\Model\Reference\HierarchyIndex;
-use Toolkit\DocGen\Model\Reference\SymbolTable;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
 
 /**
  * Diffs two analyzed revisions into one model the site is rendered from.

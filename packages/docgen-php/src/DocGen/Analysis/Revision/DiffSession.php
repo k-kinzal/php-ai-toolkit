@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Toolkit\DocGen\Analysis\Revision;
 
 use Toolkit\DocGen\Analysis\Diff\DiffIndex;
-use Toolkit\DocGen\Model\ProjectModel;
+use Toolkit\DocGen\Analysis\ProjectModel;
 
 /**
  * One opened comparison of two revisions.

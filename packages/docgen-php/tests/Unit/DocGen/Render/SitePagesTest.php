@@ -7,32 +7,32 @@ namespace Tests\Unit\DocGen\Render;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Model\Package\ComposerManifest;
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
-use Toolkit\DocGen\Model\Package\PackageGraph;
-use Toolkit\DocGen\Model\ProjectModel;
-use Toolkit\DocGen\Model\Reference\HierarchyIndex;
-use Toolkit\DocGen\Model\Reference\SymbolTable;
-use Toolkit\DocGen\Model\Reference\TestCaseIndex;
-use Toolkit\DocGen\Model\Reference\UsageIndex;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Package\ComposerManifest;
+use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
+use Toolkit\DocGen\Analysis\Package\PackageGraph;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 use Toolkit\DocGen\Render\SitePages;
 
 /**
  * @covers \Toolkit\DocGen\Render\SitePages
- * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
- * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
- * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
- * @uses \Toolkit\DocGen\Model\Symbol\FunctionDoc
- * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
- * @uses \Toolkit\DocGen\Model\Package\PackageGraph
- * @uses \Toolkit\DocGen\Model\ProjectModel
- * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
- * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
- * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Analysis\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FunctionDoc
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\ProjectModel
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  */
 #[CoversClass(SitePages::class)]
 #[UsesClass(ClassLikeDoc::class)]

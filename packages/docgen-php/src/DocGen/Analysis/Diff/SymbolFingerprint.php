@@ -7,15 +7,15 @@ namespace Toolkit\DocGen\Analysis\Diff;
 use function implode;
 use function preg_replace;
 
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\ConstantDoc;
-use Toolkit\DocGen\Model\Symbol\DocBlock;
-use Toolkit\DocGen\Model\Symbol\EnumCaseDoc;
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
-use Toolkit\DocGen\Model\Symbol\MethodDoc;
-use Toolkit\DocGen\Model\Symbol\ParameterDoc;
-use Toolkit\DocGen\Model\Symbol\PropertyDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\ConstantDoc;
+use Toolkit\DocGen\Analysis\Symbol\DocBlock;
+use Toolkit\DocGen\Analysis\Symbol\EnumCaseDoc;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Symbol\MethodDoc;
+use Toolkit\DocGen\Analysis\Symbol\ParameterDoc;
+use Toolkit\DocGen\Analysis\Symbol\PropertyDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 
 use function trim;
 

@@ -11,7 +11,7 @@ use function strtolower;
 
 use Toolkit\DocGen\Analysis\Diff\DiffKey;
 use Toolkit\DocGen\Analysis\Diff\DiffStatus;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Render\Diff\DiffBanner;
 use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
 use Toolkit\DocGen\Render\Page\Component\DocTextHtml;
@@ -161,7 +161,7 @@ final class ClassLikePage
     /**
      * Filters the members that are part of the documented public surface.
      *
-     * @template T of \Toolkit\DocGen\Model\Symbol\ConstantDoc|\Toolkit\DocGen\Model\Symbol\PropertyDoc|\Toolkit\DocGen\Model\Symbol\MethodDoc
+     * @template T of \Toolkit\DocGen\Analysis\Symbol\ConstantDoc|\Toolkit\DocGen\Analysis\Symbol\PropertyDoc|\Toolkit\DocGen\Analysis\Symbol\MethodDoc
      *
      * @param list<T> $members
      *
@@ -182,9 +182,9 @@ final class ClassLikePage
     /**
      * Filters enum cases out of a public API page when their scope is restricted.
      *
-     * @param list<\Toolkit\DocGen\Model\Symbol\EnumCaseDoc> $cases
+     * @param list<\Toolkit\DocGen\Analysis\Symbol\EnumCaseDoc> $cases
      *
-     * @return list<\Toolkit\DocGen\Model\Symbol\EnumCaseDoc>
+     * @return list<\Toolkit\DocGen\Analysis\Symbol\EnumCaseDoc>
      */
     public function visibleCases(array $cases, bool $publicApi = false): array
     {
@@ -201,7 +201,7 @@ final class ClassLikePage
     /**
      * Builds the type resolution context of this page.
      *
-     * @param list<\Toolkit\DocGen\Model\Symbol\TemplateDoc> $extraTemplates
+     * @param list<\Toolkit\DocGen\Analysis\Symbol\TemplateDoc> $extraTemplates
      */
     public function context(RenderKit $services, string $pagePath, ClassLikeDoc $classLike, array $extraTemplates): TypeRenderContext
     {
@@ -405,7 +405,7 @@ final class ClassLikePage
      * nothing touched steps aside when only changes are asked for, while a
      * section holding one new member stays and shows it.
      *
-     * @param list<\Toolkit\DocGen\Model\Symbol\ConstantDoc|\Toolkit\DocGen\Model\Symbol\PropertyDoc|\Toolkit\DocGen\Model\Symbol\MethodDoc|\Toolkit\DocGen\Model\Symbol\EnumCaseDoc> $members
+     * @param list<\Toolkit\DocGen\Analysis\Symbol\ConstantDoc|\Toolkit\DocGen\Analysis\Symbol\PropertyDoc|\Toolkit\DocGen\Analysis\Symbol\MethodDoc|\Toolkit\DocGen\Analysis\Symbol\EnumCaseDoc> $members
      */
     public function sectionMark(RenderKit $services, ClassLikeDoc $classLike, string $kind, array $members): string
     {
@@ -415,7 +415,7 @@ final class ClassLikePage
     /**
      * Combines the state of the members of one section.
      *
-     * @param list<\Toolkit\DocGen\Model\Symbol\ConstantDoc|\Toolkit\DocGen\Model\Symbol\PropertyDoc|\Toolkit\DocGen\Model\Symbol\MethodDoc|\Toolkit\DocGen\Model\Symbol\EnumCaseDoc> $members
+     * @param list<\Toolkit\DocGen\Analysis\Symbol\ConstantDoc|\Toolkit\DocGen\Analysis\Symbol\PropertyDoc|\Toolkit\DocGen\Analysis\Symbol\MethodDoc|\Toolkit\DocGen\Analysis\Symbol\EnumCaseDoc> $members
      */
     public function sectionStatus(RenderKit $services, ClassLikeDoc $classLike, string $kind, array $members): string
     {

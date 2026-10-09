@@ -24,38 +24,38 @@ use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\DocBlock;
-use Toolkit\DocGen\Model\Symbol\FileSymbols;
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
-use Toolkit\DocGen\Model\Symbol\ParameterDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\DocBlock;
+use Toolkit\DocGen\Analysis\Symbol\FileSymbols;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Symbol\ParameterDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 use Toolkit\DocGen\Render\Page\Component\SymbolDescription;
 
 /**
  * @covers \Toolkit\DocGen\Render\Page\Component\SymbolDescription
  * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\DocBlock
+ * @uses \Toolkit\DocGen\Analysis\Symbol\DocBlock
  * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector
- * @uses \Toolkit\DocGen\Model\Symbol\FileSymbols
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FileSymbols
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\FunctionDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FunctionDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ParameterDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ParameterDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\ParameterModifiers
  * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
- * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
  * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
  */
 #[CoversClass(SymbolDescription::class)]
@@ -82,7 +82,7 @@ use Toolkit\DocGen\Render\Page\Component\SymbolDescription;
 #[UsesClass(SymbolContext::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UseMapCollector::class)]
-#[UsesClass(\Toolkit\DocGen\Model\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\DocGen\Analysis\Doc\MutationContract::class)]
 #[UsesClass(\Toolkit\DocGen\Analysis\Doc\MutationContractReader::class)]
 final class SymbolDescriptionTest extends TestCase
 {

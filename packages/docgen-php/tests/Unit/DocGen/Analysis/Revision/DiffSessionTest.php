@@ -9,24 +9,24 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Diff\DiffIndex;
 use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Package\PackageGraph;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
 use Toolkit\DocGen\Analysis\Revision\DiffSession;
-use Toolkit\DocGen\Model\Package\PackageGraph;
-use Toolkit\DocGen\Model\ProjectModel;
-use Toolkit\DocGen\Model\Reference\HierarchyIndex;
-use Toolkit\DocGen\Model\Reference\SymbolTable;
-use Toolkit\DocGen\Model\Reference\TestCaseIndex;
-use Toolkit\DocGen\Model\Reference\UsageIndex;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Revision\DiffSession
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffIndex
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
- * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
- * @uses \Toolkit\DocGen\Model\Package\PackageGraph
- * @uses \Toolkit\DocGen\Model\ProjectModel
- * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
- * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\ProjectModel
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  */
 #[CoversClass(DiffSession::class)]
 #[UsesClass(DiffIndex::class)]

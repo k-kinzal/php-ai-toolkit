@@ -7,27 +7,27 @@ namespace Tests\Unit\DocGen\Analysis\Package;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Config\DocGenConfig;
+use Toolkit\DocGen\Analysis\Config\RepositoryUrl;
 use Toolkit\DocGen\Analysis\Package\ComposerLockReader;
+use Toolkit\DocGen\Analysis\Package\ComposerManifest;
 use Toolkit\DocGen\Analysis\Package\ComposerManifestReader;
 use Toolkit\DocGen\Analysis\Package\DevPackageResolver;
+use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
 use Toolkit\DocGen\Analysis\Package\PackageDiscovery;
 use Toolkit\DocGen\Analysis\Package\VendorPackageLocator;
-use Toolkit\DocGen\Model\Config\DocGenConfig;
-use Toolkit\DocGen\Model\Config\RepositoryUrl;
-use Toolkit\DocGen\Model\DocGenException;
-use Toolkit\DocGen\Model\Package\ComposerManifest;
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
+use Toolkit\DocGen\DocGenException;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Package\PackageDiscovery
  * @uses \Toolkit\DocGen\Analysis\Package\ComposerLockReader
- * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifestReader
  * @uses \Toolkit\DocGen\Analysis\Package\DevPackageResolver
- * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
- * @uses \Toolkit\DocGen\Model\Config\DocGenConfig
- * @uses \Toolkit\DocGen\Model\DocGenException
- * @uses \Toolkit\DocGen\Model\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Analysis\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Analysis\Config\DocGenConfig
+ * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Analysis\Config\RepositoryUrl
  * @uses \Toolkit\DocGen\Analysis\Package\VendorPackageLocator
  */
 #[CoversClass(PackageDiscovery::class)]

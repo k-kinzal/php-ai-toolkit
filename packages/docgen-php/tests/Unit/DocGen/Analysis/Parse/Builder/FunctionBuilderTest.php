@@ -25,10 +25,10 @@ use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
-use Toolkit\DocGen\Model\Symbol\FileSymbols;
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
-use Toolkit\DocGen\Model\Symbol\ParameterDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Symbol\FileSymbols;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Symbol\ParameterDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
@@ -39,18 +39,18 @@ use Toolkit\DocGen\Model\Symbol\TypeSignature;
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector
- * @uses \Toolkit\DocGen\Model\Symbol\FileSymbols
- * @uses \Toolkit\DocGen\Model\Symbol\FunctionDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FileSymbols
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FunctionDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ParameterDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ParameterDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\ParameterModifiers
  * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
- * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
  * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
  */
 #[CoversClass(FunctionBuilder::class)]

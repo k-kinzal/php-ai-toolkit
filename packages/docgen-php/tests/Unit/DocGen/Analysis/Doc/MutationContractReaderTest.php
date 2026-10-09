@@ -7,8 +7,8 @@ namespace Tests\Unit\DocGen\Analysis\Doc;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Doc\MutationContract;
 use Toolkit\DocGen\Analysis\Doc\MutationContractReader;
-use Toolkit\DocGen\Model\Mutation\MutationContract;
 use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 
 /**

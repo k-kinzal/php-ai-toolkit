@@ -6,7 +6,7 @@ namespace Toolkit\DocGen\Cli;
 
 use function realpath;
 
-use Toolkit\DocGen\Model\Config\DocGenConfig;
+use Toolkit\DocGen\Analysis\Config\DocGenConfig;
 
 /**
  * Builds the configuration of one run out of its command line.

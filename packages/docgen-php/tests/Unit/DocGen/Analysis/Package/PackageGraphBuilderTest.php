@@ -7,18 +7,18 @@ namespace Tests\Unit\DocGen\Analysis\Package;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Package\ComposerManifest;
+use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
+use Toolkit\DocGen\Analysis\Package\PackageDependency;
+use Toolkit\DocGen\Analysis\Package\PackageGraph;
 use Toolkit\DocGen\Analysis\Package\PackageGraphBuilder;
-use Toolkit\DocGen\Model\Package\ComposerManifest;
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
-use Toolkit\DocGen\Model\Package\PackageDependency;
-use Toolkit\DocGen\Model\Package\PackageGraph;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Package\PackageGraphBuilder
- * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
- * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
- * @uses \Toolkit\DocGen\Model\Package\PackageDependency
- * @uses \Toolkit\DocGen\Model\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Analysis\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageDependency
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
  */
 #[CoversClass(PackageGraphBuilder::class)]
 #[UsesClass(ComposerManifest::class)]

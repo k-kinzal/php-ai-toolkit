@@ -11,7 +11,7 @@ use PhpParser\NodeVisitor\NameResolver;
 
 use function sprintf;
 
-use Toolkit\DocGen\Model\DocGenException;
+use Toolkit\DocGen\DocGenException;
 
 /**
  * Parses PHP source into an AST with fully resolved names.

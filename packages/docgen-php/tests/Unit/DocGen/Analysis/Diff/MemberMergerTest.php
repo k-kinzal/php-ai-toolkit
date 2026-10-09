@@ -9,11 +9,11 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 use Toolkit\DocGen\Analysis\Diff\MemberMerger;
-use Toolkit\DocGen\Model\Symbol\ConstantDoc;
+use Toolkit\DocGen\Analysis\Symbol\ConstantDoc;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Diff\MemberMerger
- * @uses \Toolkit\DocGen\Model\Symbol\ConstantDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ConstantDoc
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
  */
 #[CoversClass(MemberMerger::class)]

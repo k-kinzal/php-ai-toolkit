@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\DocGen\Analysis\Package;
+
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Package\PackageDependency;
+
+/**
+ * @covers \Toolkit\DocGen\Analysis\Package\PackageDependency
+ */
+#[CoversClass(PackageDependency::class)]
+final class PackageDependencyTest extends TestCase
+{
+    public function testStoresEdgeData(): void
+    {
+        $dependency = new PackageDependency('acme/a', 'acme/b', 'require-dev');
+
+        self::assertSame('acme/a', $dependency->from);
+        self::assertSame('acme/b', $dependency->to);
+        self::assertSame('require-dev', $dependency->kind);
+    }
+
+    public function testStoresRequireKind(): void
+    {
+        $dependency = new PackageDependency('acme/app', 'acme/lib', 'require');
+
+        self::assertSame('require', $dependency->kind);
+    }
+}

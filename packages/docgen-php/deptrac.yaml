@@ -1,15 +1,16 @@
 deptrac:
   paths:
     - ./src
+  # DocGenException is shared at the package root and has no component boundary.
   layers:
-    - name: Model
+    - name: Cache
       collectors:
         - type: directory
-          value: 'src/DocGen/Model/.*'
-    - name: Infrastructure
+          value: 'src/DocGen/Cache/.*'
+    - name: Parallel
       collectors:
         - type: directory
-          value: 'src/DocGen/Infrastructure/.*'
+          value: 'src/DocGen/Parallel/.*'
     - name: Analysis
       collectors:
         - type: directory
@@ -23,8 +24,8 @@ deptrac:
         - type: directory
           value: 'src/DocGen/Cli/.*'
   ruleset:
-    Model: []
-    Infrastructure: [Model]
-    Analysis: [Model, Infrastructure]
-    Render: [Model, Infrastructure, Analysis]
-    Cli: [Model, Infrastructure, Analysis, Render]
+    Cache: []
+    Parallel: []
+    Analysis: [Cache, Parallel]
+    Render: [Analysis, Cache, Parallel]
+    Cli: [Analysis, Render, Cache]

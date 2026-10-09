@@ -17,10 +17,8 @@ use function scandir;
 use function sprintf;
 use function str_ends_with;
 
-use Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Model\Coverage\CoverageIndex;
-use Toolkit\DocGen\Model\Coverage\MethodCoverage;
-use Toolkit\DocGen\Model\DocGenException;
+use Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\DocGenException;
 
 use function trim;
 

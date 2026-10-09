@@ -13,8 +13,8 @@ use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 use Toolkit\DocGen\Analysis\Diff\LcsMatcher;
 use Toolkit\DocGen\Analysis\Diff\ParameterMerger;
 use Toolkit\DocGen\Analysis\Diff\SymbolFingerprint;
-use Toolkit\DocGen\Model\Symbol\ParameterDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Symbol\ParameterDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Diff\ParameterMerger
@@ -22,9 +22,9 @@ use Toolkit\DocGen\Model\Symbol\TypeSignature;
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
  * @uses \Toolkit\DocGen\Analysis\Diff\LcsMatcher
- * @uses \Toolkit\DocGen\Model\Symbol\ParameterDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ParameterDoc
  * @uses \Toolkit\DocGen\Analysis\Diff\SymbolFingerprint
- * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
  */
 #[CoversClass(ParameterMerger::class)]
 #[UsesClass(DiffIndex::class)]

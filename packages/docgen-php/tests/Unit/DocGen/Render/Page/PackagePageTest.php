@@ -12,6 +12,11 @@ use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 use Toolkit\DocGen\Analysis\Diff\LineDiffer;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Analysis\Layer\LayerModel;
+use Toolkit\DocGen\Analysis\Package\ComposerManifest;
+use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
+use Toolkit\DocGen\Analysis\Package\PackageDependency;
+use Toolkit\DocGen\Analysis\Package\PackageGraph;
 use Toolkit\DocGen\Analysis\Parse\AstParser;
 use Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
 use Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder;
@@ -27,25 +32,19 @@ use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
-use Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkerCount;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkerPool;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler;
-use Toolkit\DocGen\Model\Layer\LayerModel;
-use Toolkit\DocGen\Model\Package\ComposerManifest;
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
-use Toolkit\DocGen\Model\Package\PackageDependency;
-use Toolkit\DocGen\Model\Package\PackageGraph;
-use Toolkit\DocGen\Model\ProjectModel;
-use Toolkit\DocGen\Model\Reference\HierarchyIndex;
-use Toolkit\DocGen\Model\Reference\SymbolTable;
-use Toolkit\DocGen\Model\Reference\TestCaseIndex;
-use Toolkit\DocGen\Model\Reference\UsageIndex;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\ClassLikeKind;
-use Toolkit\DocGen\Model\Symbol\DocBlock;
-use Toolkit\DocGen\Model\Symbol\FileSymbols;
-use Toolkit\DocGen\Model\Symbol\MarkdownDoc;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeKind;
+use Toolkit\DocGen\Analysis\Symbol\DocBlock;
+use Toolkit\DocGen\Analysis\Symbol\FileSymbols;
+use Toolkit\DocGen\Analysis\Symbol\MarkdownDoc;
+use Toolkit\DocGen\Parallel\WorkerCount;
+use Toolkit\DocGen\Parallel\WorkerPool;
+use Toolkit\DocGen\Parallel\WorkScheduler;
 use Toolkit\DocGen\Render\AssetPublisher;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 use Toolkit\DocGen\Render\Diff\DiffModeControl;
@@ -53,6 +52,7 @@ use Toolkit\DocGen\Render\Diff\MarkdownDiffHtml;
 use Toolkit\DocGen\Render\Diff\SourceDiffHtml;
 use Toolkit\DocGen\Render\Doctest\AssertionScanner;
 use Toolkit\DocGen\Render\Doctest\DoctestExtractor;
+use Toolkit\DocGen\Render\Filesystem\SiteFileWriter;
 use Toolkit\DocGen\Render\HtmlText;
 use Toolkit\DocGen\Render\MarkdownInline;
 use Toolkit\DocGen\Render\MarkdownLinks;
@@ -102,17 +102,17 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
  * @uses \Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
- * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeKind
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeKind
  * @uses \Toolkit\DocGen\Render\Page\ClassLikePage
- * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
  * @uses \Toolkit\DocGen\Render\Diff\DiffModeControl
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
- * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
- * @uses \Toolkit\DocGen\Model\Symbol\DocBlock
+ * @uses \Toolkit\DocGen\Analysis\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Analysis\Symbol\DocBlock
  * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
  * @uses \Toolkit\DocGen\Render\Page\Component\DocTextHtml
  * @uses \Toolkit\DocGen\Render\Doctest\DoctestExtractor
@@ -122,18 +122,18 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\Page\Component\ExampleHtml
  * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector
- * @uses \Toolkit\DocGen\Model\Symbol\FileSymbols
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FileSymbols
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
  * @uses \Toolkit\DocGen\Render\Page\FunctionPage
  * @uses \Toolkit\DocGen\Render\Page\Component\GraphSvg
- * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
  * @uses \Toolkit\DocGen\Render\HtmlText
  * @uses \Toolkit\DocGen\Render\Page\IndexPage
- * @uses \Toolkit\DocGen\Model\Layer\LayerModel
+ * @uses \Toolkit\DocGen\Analysis\Layer\LayerModel
  * @uses \Toolkit\DocGen\Render\Page\LayerPage
  * @uses \Toolkit\DocGen\Analysis\Diff\LineDiffer
  * @uses \Toolkit\DocGen\Render\Diff\MarkdownDiffHtml
- * @uses \Toolkit\DocGen\Model\Symbol\MarkdownDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\MarkdownDoc
  * @uses \Toolkit\DocGen\Render\MarkdownInline
  * @uses \Toolkit\DocGen\Render\MarkdownLinks
  * @uses \Toolkit\DocGen\Render\MarkdownRenderer
@@ -141,8 +141,8 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
  * @uses \Toolkit\DocGen\Render\Page\NamespacePage
  * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
- * @uses \Toolkit\DocGen\Model\Package\PackageDependency
- * @uses \Toolkit\DocGen\Model\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageDependency
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
  * @uses \Toolkit\DocGen\Render\PageChrome
  * @uses \Toolkit\DocGen\Render\Signature\PageSignature
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
@@ -151,7 +151,7 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\PhpHighlighter
  * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  * @uses \Toolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml
- * @uses \Toolkit\DocGen\Model\ProjectModel
+ * @uses \Toolkit\DocGen\Analysis\ProjectModel
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
  * @uses \Toolkit\DocGen\Render\Page\Component\RelationsHtml
  * @uses \Toolkit\DocGen\Render\RenderKit
@@ -161,7 +161,7 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\Page\Component\SidebarHtml
  * @uses \Toolkit\DocGen\Render\Page\SidebarScope
  * @uses \Toolkit\DocGen\Render\Page\Component\SignatureHtml
- * @uses \Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter
+ * @uses \Toolkit\DocGen\Render\Filesystem\SiteFileWriter
  * @uses \Toolkit\DocGen\Render\SiteRenderer
  * @uses \Toolkit\DocGen\Render\SiteUrl
  * @uses \Toolkit\DocGen\Render\Social\SocialCard
@@ -172,15 +172,15 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\Page\SymbolIndex
  * @uses \Toolkit\DocGen\Render\Page\Component\SymbolListHtml
  * @uses \Toolkit\DocGen\Render\Page\Component\SymbolRow
- * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
  * @uses \Toolkit\DocGen\Render\TypeHtml
- * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  * @uses \Toolkit\DocGen\Render\Page\Component\UsageListHtml
  * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerCount
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerPool
+ * @uses \Toolkit\DocGen\Parallel\WorkScheduler
+ * @uses \Toolkit\DocGen\Parallel\WorkerCount
+ * @uses \Toolkit\DocGen\Parallel\WorkerPool
  */
 #[CoversClass(PackagePage::class)]
 #[UsesClass(AllItemsPage::class)]

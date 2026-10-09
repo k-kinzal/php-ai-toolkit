@@ -10,26 +10,25 @@ use function fnmatch;
 use function is_file;
 use function sprintf;
 
+use Toolkit\DocGen\Analysis\Cache\ParseCache;
+use Toolkit\DocGen\Analysis\Config\DocGenConfig;
+use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
 use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
 use Toolkit\DocGen\Analysis\Document\DocumentCollector;
+use Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver;
 use Toolkit\DocGen\Analysis\Layer\DeptracConfigReader;
 use Toolkit\DocGen\Analysis\Layer\LayerAssigner;
+use Toolkit\DocGen\Analysis\Layer\LayerModel;
+use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
 use Toolkit\DocGen\Analysis\Package\PackageDiscovery;
 use Toolkit\DocGen\Analysis\Package\PackageGraphBuilder;
 use Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
-use Toolkit\DocGen\Infrastructure\Cache\ParseCache;
-use Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Model\Config\DocGenConfig;
-use Toolkit\DocGen\Model\Coverage\CoverageIndex;
-use Toolkit\DocGen\Model\DocGenException;
-use Toolkit\DocGen\Model\Layer\LayerModel;
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
-use Toolkit\DocGen\Model\ProjectModel;
-use Toolkit\DocGen\Model\Reference\HierarchyIndex;
-use Toolkit\DocGen\Model\Reference\SymbolTable;
-use Toolkit\DocGen\Model\Reference\TestCaseIndex;
-use Toolkit\DocGen\Model\Reference\UsageIndex;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\DocGenException;
 
 /**
  * Runs the full analysis pipeline from configuration to project model.

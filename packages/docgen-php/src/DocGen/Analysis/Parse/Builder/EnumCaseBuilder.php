@@ -7,7 +7,7 @@ namespace Toolkit\DocGen\Analysis\Parse\Builder;
 use PhpParser\Node\Stmt\EnumCase;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
-use Toolkit\DocGen\Model\Symbol\EnumCaseDoc;
+use Toolkit\DocGen\Analysis\Symbol\EnumCaseDoc;
 
 /**
  * Builds enum case models from php-parser enum case nodes.

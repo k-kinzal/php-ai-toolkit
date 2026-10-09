@@ -33,7 +33,7 @@ use function strrpos;
 use function strtolower;
 use function substr;
 
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
 
 /**
  * Renders complete type expressions as linked, styled HTML.

@@ -11,10 +11,10 @@ use PhpParser\Node\Param;
 use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
 use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
-use Toolkit\DocGen\Model\Symbol\DocBlock;
-use Toolkit\DocGen\Model\Symbol\DocTag;
-use Toolkit\DocGen\Model\Symbol\ParameterDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Symbol\DocBlock;
+use Toolkit\DocGen\Analysis\Symbol\DocTag;
+use Toolkit\DocGen\Analysis\Symbol\ParameterDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 
 /**
  * Builds parameter models from php-parser parameter nodes.

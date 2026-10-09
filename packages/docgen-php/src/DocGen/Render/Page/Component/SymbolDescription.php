@@ -6,8 +6,8 @@ namespace Toolkit\DocGen\Render\Page\Component;
 
 use function sprintf;
 
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
 
 /**
  * Says in one sentence what one documented symbol is.

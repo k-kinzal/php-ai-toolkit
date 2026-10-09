@@ -15,9 +15,6 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use function preg_match;
 use function preg_replace;
 use function str_contains;
-
-use Toolkit\DocGen\Model\Mutation\MutationContract;
-
 use function trim;
 
 /**

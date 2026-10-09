@@ -24,7 +24,7 @@ use function substr;
 use function sys_get_temp_dir;
 use function tempnam;
 
-use Toolkit\DocGen\Model\DocGenException;
+use Toolkit\DocGen\DocGenException;
 
 use function unlink;
 

@@ -11,10 +11,7 @@ use function sprintf;
 
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
-use Toolkit\DocGen\Model\DocGenException;
-use Toolkit\DocGen\Model\Layer\LayerCollector;
-use Toolkit\DocGen\Model\Layer\LayerDefinition;
-use Toolkit\DocGen\Model\Layer\LayerModel;
+use Toolkit\DocGen\DocGenException;
 
 /**
  * Reads layer definitions and the ruleset from a deptrac.yaml file.

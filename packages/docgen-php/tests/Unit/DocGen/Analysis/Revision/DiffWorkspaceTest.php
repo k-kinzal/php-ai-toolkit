@@ -7,6 +7,9 @@ namespace Tests\Unit\DocGen\Analysis\Revision;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Cache\SourceFileKey;
+use Toolkit\DocGen\Analysis\Config\DocGenConfig;
+use Toolkit\DocGen\Analysis\Config\RepositoryUrl;
 use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
 use Toolkit\DocGen\Analysis\Diff\ClassLikeMerger;
 use Toolkit\DocGen\Analysis\Diff\DiffIndex;
@@ -22,10 +25,16 @@ use Toolkit\DocGen\Analysis\Diff\SymbolFingerprint;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use Toolkit\DocGen\Analysis\Document\DocumentCollector;
+use Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Analysis\Filesystem\MarkdownFileFinder;
+use Toolkit\DocGen\Analysis\Filesystem\SourceFileFinder;
 use Toolkit\DocGen\Analysis\Package\ComposerLockReader;
+use Toolkit\DocGen\Analysis\Package\ComposerManifest;
 use Toolkit\DocGen\Analysis\Package\ComposerManifestReader;
 use Toolkit\DocGen\Analysis\Package\DevPackageResolver;
+use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
 use Toolkit\DocGen\Analysis\Package\PackageDiscovery;
+use Toolkit\DocGen\Analysis\Package\PackageGraph;
 use Toolkit\DocGen\Analysis\Package\PackageGraphBuilder;
 use Toolkit\DocGen\Analysis\Package\VendorPackageLocator;
 use Toolkit\DocGen\Analysis\Parse\AstParser;
@@ -45,118 +54,109 @@ use Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
 use Toolkit\DocGen\Analysis\ProjectAnalyzer;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use Toolkit\DocGen\Analysis\Reference\LocalTypeMap;
 use Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\Usage;
 use Toolkit\DocGen\Analysis\Reference\UsageCollector;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
 use Toolkit\DocGen\Analysis\Revision\DiffSession;
 use Toolkit\DocGen\Analysis\Revision\DiffWorkspace;
-use Toolkit\DocGen\Infrastructure\Cache\SourceFileKey;
-use Toolkit\DocGen\Infrastructure\Cache\ToolkitFingerprint;
-use Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Infrastructure\Filesystem\MarkdownFileFinder;
-use Toolkit\DocGen\Infrastructure\Filesystem\SourceFileFinder;
-use Toolkit\DocGen\Infrastructure\Git\GitCommandRunner;
-use Toolkit\DocGen\Infrastructure\Git\GitRepository;
-use Toolkit\DocGen\Infrastructure\Git\GitWorktree;
-use Toolkit\DocGen\Infrastructure\Git\RevisionRange;
-use Toolkit\DocGen\Infrastructure\Git\TempDirectory;
-use Toolkit\DocGen\Infrastructure\Parallel\CpuCoreCounter;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkerCount;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkerPool;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler;
-use Toolkit\DocGen\Model\Config\DocGenConfig;
-use Toolkit\DocGen\Model\Config\RepositoryUrl;
-use Toolkit\DocGen\Model\DocGenException;
-use Toolkit\DocGen\Model\Package\ComposerManifest;
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
-use Toolkit\DocGen\Model\Package\PackageGraph;
-use Toolkit\DocGen\Model\ProjectModel;
-use Toolkit\DocGen\Model\Reference\HierarchyIndex;
-use Toolkit\DocGen\Model\Reference\SymbolTable;
-use Toolkit\DocGen\Model\Reference\TestCaseIndex;
-use Toolkit\DocGen\Model\Reference\Usage;
-use Toolkit\DocGen\Model\Reference\UsageIndex;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\FileSymbols;
-use Toolkit\DocGen\Model\Symbol\MethodDoc;
-use Toolkit\DocGen\Model\Symbol\ParameterDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Revision\Git\GitCommandRunner;
+use Toolkit\DocGen\Analysis\Revision\Git\GitRepository;
+use Toolkit\DocGen\Analysis\Revision\Git\GitWorktree;
+use Toolkit\DocGen\Analysis\Revision\Git\RevisionRange;
+use Toolkit\DocGen\Analysis\Revision\Git\TempDirectory;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\FileSymbols;
+use Toolkit\DocGen\Analysis\Symbol\MethodDoc;
+use Toolkit\DocGen\Analysis\Symbol\ParameterDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
+use Toolkit\DocGen\Cache\ToolkitFingerprint;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Parallel\CpuCoreCounter;
+use Toolkit\DocGen\Parallel\WorkerCount;
+use Toolkit\DocGen\Parallel\WorkerPool;
+use Toolkit\DocGen\Parallel\WorkScheduler;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Revision\DiffWorkspace
  * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Analysis\Diff\ClassLikeMerger
  * @uses \Toolkit\DocGen\Analysis\Package\ComposerLockReader
- * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifestReader
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
  * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageReader
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\CpuCoreCounter
+ * @uses \Toolkit\DocGen\Parallel\CpuCoreCounter
  * @uses \Toolkit\DocGen\Analysis\Package\DevPackageResolver
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffIndex
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
  * @uses \Toolkit\DocGen\Analysis\Revision\DiffSession
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
- * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Analysis\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \Toolkit\DocGen\Model\Config\DocGenConfig
- * @uses \Toolkit\DocGen\Model\DocGenException
- * @uses \Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver
+ * @uses \Toolkit\DocGen\Analysis\Config\DocGenConfig
+ * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver
  * @uses \Toolkit\DocGen\Analysis\Document\DocumentCollector
  * @uses \Toolkit\DocGen\Analysis\Diff\DocumentDiffer
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector
- * @uses \Toolkit\DocGen\Model\Symbol\FileSymbols
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FileSymbols
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
  * @uses \Toolkit\DocGen\Analysis\Diff\FunctionMerger
- * @uses \Toolkit\DocGen\Infrastructure\Git\GitCommandRunner
- * @uses \Toolkit\DocGen\Infrastructure\Git\GitRepository
- * @uses \Toolkit\DocGen\Infrastructure\Git\GitWorktree
- * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Analysis\Revision\Git\GitCommandRunner
+ * @uses \Toolkit\DocGen\Analysis\Revision\Git\GitRepository
+ * @uses \Toolkit\DocGen\Analysis\Revision\Git\GitWorktree
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
  * @uses \Toolkit\DocGen\Analysis\Diff\LcsMatcher
  * @uses \Toolkit\DocGen\Analysis\Reference\LocalTypeMap
- * @uses \Toolkit\DocGen\Infrastructure\Filesystem\MarkdownFileFinder
+ * @uses \Toolkit\DocGen\Analysis\Filesystem\MarkdownFileFinder
  * @uses \Toolkit\DocGen\Analysis\Diff\MemberMerger
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\MethodDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\MethodDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
  * @uses \Toolkit\DocGen\Analysis\Package\PackageDiscovery
- * @uses \Toolkit\DocGen\Model\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
  * @uses \Toolkit\DocGen\Analysis\Package\PackageGraphBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ParameterDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ParameterDoc
  * @uses \Toolkit\DocGen\Analysis\Diff\ParameterMerger
  * @uses \Toolkit\DocGen\Analysis\Parse\ParameterModifiers
  * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  * @uses \Toolkit\DocGen\Analysis\ProjectAnalyzer
  * @uses \Toolkit\DocGen\Analysis\Diff\ProjectDiffer
- * @uses \Toolkit\DocGen\Model\ProjectModel
+ * @uses \Toolkit\DocGen\Analysis\ProjectModel
  * @uses \Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
  * @uses \Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner
- * @uses \Toolkit\DocGen\Model\Config\RepositoryUrl
- * @uses \Toolkit\DocGen\Infrastructure\Git\RevisionRange
- * @uses \Toolkit\DocGen\Infrastructure\Filesystem\SourceFileFinder
- * @uses \Toolkit\DocGen\Infrastructure\Cache\SourceFileKey
+ * @uses \Toolkit\DocGen\Analysis\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Analysis\Revision\Git\RevisionRange
+ * @uses \Toolkit\DocGen\Analysis\Filesystem\SourceFileFinder
+ * @uses \Toolkit\DocGen\Analysis\Cache\SourceFileKey
  * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
  * @uses \Toolkit\DocGen\Analysis\Diff\SymbolFingerprint
- * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Infrastructure\Git\TempDirectory
- * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
- * @uses \Toolkit\DocGen\Infrastructure\Cache\ToolkitFingerprint
- * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
- * @uses \Toolkit\DocGen\Model\Reference\Usage
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Revision\Git\TempDirectory
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Cache\ToolkitFingerprint
+ * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Reference\Usage
  * @uses \Toolkit\DocGen\Analysis\Reference\UsageCollector
- * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
  * @uses \Toolkit\DocGen\Analysis\Package\VendorPackageLocator
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerCount
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerPool
+ * @uses \Toolkit\DocGen\Parallel\WorkScheduler
+ * @uses \Toolkit\DocGen\Parallel\WorkerCount
+ * @uses \Toolkit\DocGen\Parallel\WorkerPool
  */
 #[CoversClass(DiffWorkspace::class)]
 #[UsesClass(AstParser::class)]

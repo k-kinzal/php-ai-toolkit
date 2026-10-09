@@ -20,6 +20,9 @@ use Toolkit\DocGen\Analysis\Diff\ProjectDiffer;
 use Toolkit\DocGen\Analysis\Diff\SymbolFingerprint;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Analysis\Package\ComposerManifest;
+use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
+use Toolkit\DocGen\Analysis\Package\PackageGraph;
 use Toolkit\DocGen\Analysis\Parse\AstParser;
 use Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
 use Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder;
@@ -35,65 +38,62 @@ use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
-use Toolkit\DocGen\Model\Package\ComposerManifest;
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
-use Toolkit\DocGen\Model\Package\PackageGraph;
-use Toolkit\DocGen\Model\ProjectModel;
-use Toolkit\DocGen\Model\Reference\HierarchyIndex;
-use Toolkit\DocGen\Model\Reference\SymbolTable;
-use Toolkit\DocGen\Model\Reference\TestCaseIndex;
-use Toolkit\DocGen\Model\Reference\UsageIndex;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\DocBlock;
-use Toolkit\DocGen\Model\Symbol\FileSymbols;
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
-use Toolkit\DocGen\Model\Symbol\MethodDoc;
-use Toolkit\DocGen\Model\Symbol\ParameterDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\DocBlock;
+use Toolkit\DocGen\Analysis\Symbol\FileSymbols;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Symbol\MethodDoc;
+use Toolkit\DocGen\Analysis\Symbol\ParameterDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Diff\ProjectDiffer
  * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Analysis\Diff\ClassLikeMerger
- * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffIndex
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
- * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
- * @uses \Toolkit\DocGen\Model\Symbol\DocBlock
+ * @uses \Toolkit\DocGen\Analysis\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Analysis\Symbol\DocBlock
  * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
  * @uses \Toolkit\DocGen\Analysis\Diff\DocumentDiffer
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector
- * @uses \Toolkit\DocGen\Model\Symbol\FileSymbols
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FileSymbols
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\FunctionDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FunctionDoc
  * @uses \Toolkit\DocGen\Analysis\Diff\FunctionMerger
- * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
  * @uses \Toolkit\DocGen\Analysis\Diff\LcsMatcher
  * @uses \Toolkit\DocGen\Analysis\Diff\MemberMerger
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\MethodDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\MethodDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
- * @uses \Toolkit\DocGen\Model\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ParameterDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ParameterDoc
  * @uses \Toolkit\DocGen\Analysis\Diff\ParameterMerger
  * @uses \Toolkit\DocGen\Analysis\Parse\ParameterModifiers
  * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
- * @uses \Toolkit\DocGen\Model\ProjectModel
+ * @uses \Toolkit\DocGen\Analysis\ProjectModel
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
  * @uses \Toolkit\DocGen\Analysis\Diff\SymbolFingerprint
- * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
- * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
- * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
  */
 #[CoversClass(ProjectDiffer::class)]
@@ -139,7 +139,7 @@ use Toolkit\DocGen\Model\Symbol\TypeSignature;
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UsageIndex::class)]
 #[UsesClass(UseMapCollector::class)]
-#[UsesClass(\Toolkit\DocGen\Model\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\DocGen\Analysis\Doc\MutationContract::class)]
 #[UsesClass(\Toolkit\DocGen\Analysis\Doc\MutationContractReader::class)]
 final class ProjectDifferTest extends TestCase
 {

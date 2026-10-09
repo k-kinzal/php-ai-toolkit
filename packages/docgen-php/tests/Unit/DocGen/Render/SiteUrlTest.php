@@ -7,16 +7,16 @@ namespace Tests\Unit\DocGen\Render;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 use Toolkit\DocGen\Render\SiteUrl;
 
 /**
  * @covers \Toolkit\DocGen\Render\SiteUrl
- * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
- * @uses \Toolkit\DocGen\Model\Symbol\FunctionDoc
- * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FunctionDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
  */
 #[CoversClass(SiteUrl::class)]
 #[UsesClass(ClassLikeDoc::class)]

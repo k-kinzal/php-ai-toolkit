@@ -6,7 +6,7 @@ namespace Toolkit\DocGen\Render\Page;
 
 use function sprintf;
 
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
 use Toolkit\DocGen\Render\Diff\DiffBanner;
 use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
 use Toolkit\DocGen\Render\Page\Component\DocTextHtml;

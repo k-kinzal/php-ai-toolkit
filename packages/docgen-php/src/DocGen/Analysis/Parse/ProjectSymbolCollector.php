@@ -15,21 +15,21 @@ use PhpParser\NodeTraverser;
 use function sprintf;
 use function strtolower;
 
+use Toolkit\DocGen\Analysis\Cache\ParseCache;
+use Toolkit\DocGen\Analysis\Cache\SourceFileKey;
+use Toolkit\DocGen\Analysis\Config\DocGenConfig;
+use Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Analysis\Filesystem\SourceFileFinder;
+use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
+use Toolkit\DocGen\Analysis\Reference\Usage;
 use Toolkit\DocGen\Analysis\Reference\UsageCollector;
-use Toolkit\DocGen\Infrastructure\Cache\ParseCache;
-use Toolkit\DocGen\Infrastructure\Cache\SourceFileKey;
-use Toolkit\DocGen\Infrastructure\Cache\ToolkitFingerprint;
-use Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Infrastructure\Filesystem\SourceFileFinder;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkerPool;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler;
-use Toolkit\DocGen\Model\Config\DocGenConfig;
-use Toolkit\DocGen\Model\DocGenException;
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
-use Toolkit\DocGen\Model\Reference\Usage;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\FileSymbols;
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\FileSymbols;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
+use Toolkit\DocGen\Cache\ToolkitFingerprint;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Parallel\WorkerPool;
+use Toolkit\DocGen\Parallel\WorkScheduler;
 
 /**
  * Parses the sources of every documented package into symbol lists.

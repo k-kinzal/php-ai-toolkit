@@ -7,18 +7,18 @@ namespace Tests\Unit\DocGen\Cli;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Config\BaseUrl;
+use Toolkit\DocGen\Analysis\Config\DocGenConfig;
+use Toolkit\DocGen\Analysis\Config\RepositoryUrl;
 use Toolkit\DocGen\Cli\DocGenCliArgumentParser;
 use Toolkit\DocGen\Cli\DocGenConfigFactory;
-use Toolkit\DocGen\Model\Config\BaseUrl;
-use Toolkit\DocGen\Model\Config\DocGenConfig;
-use Toolkit\DocGen\Model\Config\RepositoryUrl;
 
 /**
  * @covers \Toolkit\DocGen\Cli\DocGenConfigFactory
- * @uses \Toolkit\DocGen\Model\Config\BaseUrl
+ * @uses \Toolkit\DocGen\Analysis\Config\BaseUrl
  * @uses \Toolkit\DocGen\Cli\DocGenCliArgumentParser
- * @uses \Toolkit\DocGen\Model\Config\DocGenConfig
- * @uses \Toolkit\DocGen\Model\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Analysis\Config\DocGenConfig
+ * @uses \Toolkit\DocGen\Analysis\Config\RepositoryUrl
  */
 #[CoversClass(DocGenConfigFactory::class)]
 #[UsesClass(BaseUrl::class)]

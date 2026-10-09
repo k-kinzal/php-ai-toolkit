@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Toolkit\DocGen\Analysis\Diff;
 
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\ConstantDoc;
-use Toolkit\DocGen\Model\Symbol\EnumCaseDoc;
-use Toolkit\DocGen\Model\Symbol\MethodDoc;
-use Toolkit\DocGen\Model\Symbol\PropertyDoc;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\ConstantDoc;
+use Toolkit\DocGen\Analysis\Symbol\EnumCaseDoc;
+use Toolkit\DocGen\Analysis\Symbol\MethodDoc;
+use Toolkit\DocGen\Analysis\Symbol\PropertyDoc;
 
 /**
  * Merges the two revisions of one class-like symbol into one page model.

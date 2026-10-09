@@ -9,11 +9,11 @@ use function file_get_contents;
 use function is_file;
 use function preg_match;
 
-use Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Infrastructure\Filesystem\MarkdownFileFinder;
-use Toolkit\DocGen\Model\Config\DocGenConfig;
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
-use Toolkit\DocGen\Model\Symbol\MarkdownDoc;
+use Toolkit\DocGen\Analysis\Config\DocGenConfig;
+use Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Analysis\Filesystem\MarkdownFileFinder;
+use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
+use Toolkit\DocGen\Analysis\Symbol\MarkdownDoc;
 
 /**
  * Collects the Markdown documents that belong to the analyzed repository.

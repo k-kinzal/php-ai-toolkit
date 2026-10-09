@@ -24,40 +24,40 @@ use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\ConstantDoc;
-use Toolkit\DocGen\Model\Symbol\FileSymbols;
-use Toolkit\DocGen\Model\Symbol\FunctionDoc;
-use Toolkit\DocGen\Model\Symbol\MethodDoc;
-use Toolkit\DocGen\Model\Symbol\ParameterDoc;
-use Toolkit\DocGen\Model\Symbol\PropertyDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\ConstantDoc;
+use Toolkit\DocGen\Analysis\Symbol\FileSymbols;
+use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
+use Toolkit\DocGen\Analysis\Symbol\MethodDoc;
+use Toolkit\DocGen\Analysis\Symbol\ParameterDoc;
+use Toolkit\DocGen\Analysis\Symbol\PropertyDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector
  * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ConstantDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ConstantDoc
  * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
- * @uses \Toolkit\DocGen\Model\Symbol\FileSymbols
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FileSymbols
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\FunctionDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FunctionDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\MethodDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\MethodDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ParameterDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ParameterDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\ParameterModifiers
  * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\PropertyDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\PropertyDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
- * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
  * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
  */
 #[CoversClass(FileSymbolCollector::class)]

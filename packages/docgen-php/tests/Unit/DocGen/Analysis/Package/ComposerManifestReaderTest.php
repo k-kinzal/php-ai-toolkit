@@ -8,16 +8,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Config\RepositoryUrl;
+use Toolkit\DocGen\Analysis\Package\ComposerManifest;
 use Toolkit\DocGen\Analysis\Package\ComposerManifestReader;
-use Toolkit\DocGen\Model\Config\RepositoryUrl;
-use Toolkit\DocGen\Model\DocGenException;
-use Toolkit\DocGen\Model\Package\ComposerManifest;
+use Toolkit\DocGen\DocGenException;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Package\ComposerManifestReader
- * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
- * @uses \Toolkit\DocGen\Model\DocGenException
- * @uses \Toolkit\DocGen\Model\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Analysis\Config\RepositoryUrl
  */
 #[CoversClass(ComposerManifestReader::class)]
 #[UsesClass(ComposerManifest::class)]

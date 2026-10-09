@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\DocGen\Analysis\Diff;
 
-use Toolkit\DocGen\Model\Symbol\ParameterDoc;
+use Toolkit\DocGen\Analysis\Symbol\ParameterDoc;
 
 /**
  * Merges the parameter lists of two revisions of one declaration.

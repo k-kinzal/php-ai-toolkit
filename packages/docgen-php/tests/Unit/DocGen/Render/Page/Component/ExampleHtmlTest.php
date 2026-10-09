@@ -10,18 +10,17 @@ use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Diff\DiffKey;
 use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 use Toolkit\DocGen\Analysis\Diff\LineDiffer;
-use Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkerCount;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkerPool;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler;
-use Toolkit\DocGen\Model\Package\ComposerManifest;
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
-use Toolkit\DocGen\Model\Package\PackageGraph;
-use Toolkit\DocGen\Model\ProjectModel;
-use Toolkit\DocGen\Model\Reference\HierarchyIndex;
-use Toolkit\DocGen\Model\Reference\SymbolTable;
-use Toolkit\DocGen\Model\Reference\TestCaseIndex;
-use Toolkit\DocGen\Model\Reference\UsageIndex;
+use Toolkit\DocGen\Analysis\Package\ComposerManifest;
+use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
+use Toolkit\DocGen\Analysis\Package\PackageGraph;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Parallel\WorkerCount;
+use Toolkit\DocGen\Parallel\WorkerPool;
+use Toolkit\DocGen\Parallel\WorkScheduler;
 use Toolkit\DocGen\Render\AssetPublisher;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 use Toolkit\DocGen\Render\Diff\MarkdownDiffHtml;
@@ -29,6 +28,7 @@ use Toolkit\DocGen\Render\Diff\SourceDiffHtml;
 use Toolkit\DocGen\Render\Doctest\AssertionLine;
 use Toolkit\DocGen\Render\Doctest\AssertionScanner;
 use Toolkit\DocGen\Render\Doctest\DoctestExtractor;
+use Toolkit\DocGen\Render\Filesystem\SiteFileWriter;
 use Toolkit\DocGen\Render\HtmlText;
 use Toolkit\DocGen\Render\MarkdownInline;
 use Toolkit\DocGen\Render\MarkdownRenderer;
@@ -72,17 +72,17 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\AssetPublisher
  * @uses \Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml
  * @uses \Toolkit\DocGen\Render\Page\ClassLikePage
- * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
- * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Analysis\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Render\Page\Component\DocTextHtml
  * @uses \Toolkit\DocGen\Render\Doctest\DoctestExtractor
  * @uses \Toolkit\DocGen\Render\Page\DocumentPage
  * @uses \Toolkit\DocGen\Render\Page\FunctionPage
  * @uses \Toolkit\DocGen\Render\Page\Component\GraphSvg
- * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
  * @uses \Toolkit\DocGen\Render\HtmlText
  * @uses \Toolkit\DocGen\Render\Page\IndexPage
  * @uses \Toolkit\DocGen\Render\Page\LayerPage
@@ -92,20 +92,20 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\MarkdownRenderer
  * @uses \Toolkit\DocGen\Render\Page\Component\MemberHtml
  * @uses \Toolkit\DocGen\Render\Page\NamespacePage
- * @uses \Toolkit\DocGen\Model\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
  * @uses \Toolkit\DocGen\Render\Page\PackagePage
  * @uses \Toolkit\DocGen\Render\PageChrome
  * @uses \Toolkit\DocGen\Render\Signature\PageSignature
  * @uses \Toolkit\DocGen\Render\PhpHighlighter
  * @uses \Toolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml
- * @uses \Toolkit\DocGen\Model\ProjectModel
+ * @uses \Toolkit\DocGen\Analysis\ProjectModel
  * @uses \Toolkit\DocGen\Render\Page\Component\RelationsHtml
  * @uses \Toolkit\DocGen\Render\RenderKit
  * @uses \Toolkit\DocGen\Render\SearchIndexBuilder
  * @uses \Toolkit\DocGen\Render\Signature\SidebarDigest
  * @uses \Toolkit\DocGen\Render\Page\Component\SidebarHtml
  * @uses \Toolkit\DocGen\Render\Page\Component\SignatureHtml
- * @uses \Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter
+ * @uses \Toolkit\DocGen\Render\Filesystem\SiteFileWriter
  * @uses \Toolkit\DocGen\Render\SiteRenderer
  * @uses \Toolkit\DocGen\Render\SiteUrl
  * @uses \Toolkit\DocGen\Render\Social\SocialCard
@@ -113,14 +113,14 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\Diff\SourceDiffHtml
  * @uses \Toolkit\DocGen\Render\Page\SourcePage
  * @uses \Toolkit\DocGen\Render\Page\Component\SymbolListHtml
- * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
  * @uses \Toolkit\DocGen\Render\TypeHtml
- * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  * @uses \Toolkit\DocGen\Render\Page\Component\UsageListHtml
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerCount
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerPool
+ * @uses \Toolkit\DocGen\Parallel\WorkScheduler
+ * @uses \Toolkit\DocGen\Parallel\WorkerCount
+ * @uses \Toolkit\DocGen\Parallel\WorkerPool
  */
 #[CoversClass(ExampleHtml::class)]
 #[UsesClass(AllItemsPage::class)]

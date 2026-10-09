@@ -14,9 +14,8 @@ use function is_file;
 use function realpath;
 use function rtrim;
 
-use Toolkit\DocGen\Model\Config\DocGenConfig;
-use Toolkit\DocGen\Model\DocGenException;
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
+use Toolkit\DocGen\Analysis\Config\DocGenConfig;
+use Toolkit\DocGen\DocGenException;
 
 use function usort;
 

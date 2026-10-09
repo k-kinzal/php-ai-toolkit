@@ -7,6 +7,11 @@ namespace Tests\Unit\DocGen\Cli;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Cache\ParseCache;
+use Toolkit\DocGen\Analysis\Cache\SourceFileKey;
+use Toolkit\DocGen\Analysis\Config\BaseUrl;
+use Toolkit\DocGen\Analysis\Config\DocGenConfig;
+use Toolkit\DocGen\Analysis\Config\RepositoryUrl;
 use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
 use Toolkit\DocGen\Analysis\Diff\ClassLikeMerger;
 use Toolkit\DocGen\Analysis\Diff\DiffIndex;
@@ -24,12 +29,18 @@ use Toolkit\DocGen\Analysis\Diff\SymbolFingerprint;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use Toolkit\DocGen\Analysis\Document\DocumentCollector;
+use Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Analysis\Filesystem\MarkdownFileFinder;
+use Toolkit\DocGen\Analysis\Filesystem\SourceFileFinder;
 use Toolkit\DocGen\Analysis\Layer\DeptracConfigReader;
 use Toolkit\DocGen\Analysis\Layer\LayerAssigner;
 use Toolkit\DocGen\Analysis\Package\ComposerLockReader;
+use Toolkit\DocGen\Analysis\Package\ComposerManifest;
 use Toolkit\DocGen\Analysis\Package\ComposerManifestReader;
 use Toolkit\DocGen\Analysis\Package\DevPackageResolver;
+use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
 use Toolkit\DocGen\Analysis\Package\PackageDiscovery;
+use Toolkit\DocGen\Analysis\Package\PackageGraph;
 use Toolkit\DocGen\Analysis\Package\PackageGraphBuilder;
 use Toolkit\DocGen\Analysis\Package\VendorPackageLocator;
 use Toolkit\DocGen\Analysis\Parse\AstParser;
@@ -49,56 +60,44 @@ use Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
 use Toolkit\DocGen\Analysis\ProjectAnalyzer;
+use Toolkit\DocGen\Analysis\ProjectModel;
+use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use Toolkit\DocGen\Analysis\Reference\LocalTypeMap;
 use Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner;
+use Toolkit\DocGen\Analysis\Reference\SymbolTable;
+use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use Toolkit\DocGen\Analysis\Reference\UsageCollector;
+use Toolkit\DocGen\Analysis\Reference\UsageIndex;
 use Toolkit\DocGen\Analysis\Revision\DiffSession;
 use Toolkit\DocGen\Analysis\Revision\DiffWorkspace;
+use Toolkit\DocGen\Analysis\Revision\Git\GitCommandRunner;
+use Toolkit\DocGen\Analysis\Revision\Git\GitRepository;
+use Toolkit\DocGen\Analysis\Revision\Git\GitWorktree;
+use Toolkit\DocGen\Analysis\Revision\Git\RevisionRange;
+use Toolkit\DocGen\Analysis\Revision\Git\TempDirectory;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Analysis\Symbol\ClassLikeKind;
+use Toolkit\DocGen\Analysis\Symbol\FileSymbols;
+use Toolkit\DocGen\Analysis\Symbol\MethodDoc;
+use Toolkit\DocGen\Analysis\Symbol\ParameterDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
+use Toolkit\DocGen\Cache\CacheStore;
+use Toolkit\DocGen\Cache\ToolkitFingerprint;
 use Toolkit\DocGen\Cli\DocGenConfigFactory;
 use Toolkit\DocGen\Cli\DocGenGenerationRunner;
 use Toolkit\DocGen\Cli\DocGenMemoryLimit;
 use Toolkit\DocGen\Cli\DocGenOutputWriter;
 use Toolkit\DocGen\Cli\DocGenPreviewServer;
-use Toolkit\DocGen\Infrastructure\Cache\CachedPageWriter;
-use Toolkit\DocGen\Infrastructure\Cache\CacheStore;
-use Toolkit\DocGen\Infrastructure\Cache\GenerationCache;
-use Toolkit\DocGen\Infrastructure\Cache\PageRecord;
-use Toolkit\DocGen\Infrastructure\Cache\ParseCache;
-use Toolkit\DocGen\Infrastructure\Cache\RenderCache;
-use Toolkit\DocGen\Infrastructure\Cache\SourceFileKey;
-use Toolkit\DocGen\Infrastructure\Cache\ToolkitFingerprint;
-use Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Infrastructure\Filesystem\MarkdownFileFinder;
-use Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter;
-use Toolkit\DocGen\Infrastructure\Filesystem\SourceFileFinder;
-use Toolkit\DocGen\Infrastructure\Git\GitCommandRunner;
-use Toolkit\DocGen\Infrastructure\Git\GitRepository;
-use Toolkit\DocGen\Infrastructure\Git\GitWorktree;
-use Toolkit\DocGen\Infrastructure\Git\RevisionRange;
-use Toolkit\DocGen\Infrastructure\Git\TempDirectory;
-use Toolkit\DocGen\Infrastructure\Parallel\CpuCoreCounter;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkerCount;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkerPool;
-use Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler;
-use Toolkit\DocGen\Model\Config\BaseUrl;
-use Toolkit\DocGen\Model\Config\DocGenConfig;
-use Toolkit\DocGen\Model\Config\RepositoryUrl;
-use Toolkit\DocGen\Model\DocGenException;
-use Toolkit\DocGen\Model\Package\ComposerManifest;
-use Toolkit\DocGen\Model\Package\DiscoveredPackage;
-use Toolkit\DocGen\Model\Package\PackageGraph;
-use Toolkit\DocGen\Model\ProjectModel;
-use Toolkit\DocGen\Model\Reference\HierarchyIndex;
-use Toolkit\DocGen\Model\Reference\SymbolTable;
-use Toolkit\DocGen\Model\Reference\TestCaseIndex;
-use Toolkit\DocGen\Model\Reference\UsageIndex;
-use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Model\Symbol\ClassLikeKind;
-use Toolkit\DocGen\Model\Symbol\FileSymbols;
-use Toolkit\DocGen\Model\Symbol\MethodDoc;
-use Toolkit\DocGen\Model\Symbol\ParameterDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Cli\GenerationCache;
+use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Parallel\CpuCoreCounter;
+use Toolkit\DocGen\Parallel\WorkerCount;
+use Toolkit\DocGen\Parallel\WorkerPool;
+use Toolkit\DocGen\Parallel\WorkScheduler;
 use Toolkit\DocGen\Render\AssetPublisher;
+use Toolkit\DocGen\Render\Cache\CachedPageWriter;
+use Toolkit\DocGen\Render\Cache\PageRecord;
+use Toolkit\DocGen\Render\Cache\RenderCache;
 use Toolkit\DocGen\Render\Diff\DiffBanner;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 use Toolkit\DocGen\Render\Diff\DiffModeControl;
@@ -106,6 +105,7 @@ use Toolkit\DocGen\Render\Diff\MarkdownDiffHtml;
 use Toolkit\DocGen\Render\Diff\SourceDiffHtml;
 use Toolkit\DocGen\Render\Doctest\AssertionScanner;
 use Toolkit\DocGen\Render\Doctest\DoctestExtractor;
+use Toolkit\DocGen\Render\Filesystem\SiteFileWriter;
 use Toolkit\DocGen\Render\HtmlText;
 use Toolkit\DocGen\Render\MarkdownInline;
 use Toolkit\DocGen\Render\MarkdownRenderer;
@@ -158,21 +158,21 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Render\Doctest\AssertionScanner
  * @uses \Toolkit\DocGen\Render\AssetPublisher
  * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
- * @uses \Toolkit\DocGen\Model\Config\BaseUrl
+ * @uses \Toolkit\DocGen\Analysis\Config\BaseUrl
  * @uses \Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml
- * @uses \Toolkit\DocGen\Infrastructure\Cache\CacheStore
- * @uses \Toolkit\DocGen\Infrastructure\Cache\CachedPageWriter
+ * @uses \Toolkit\DocGen\Cache\CacheStore
+ * @uses \Toolkit\DocGen\Render\Cache\CachedPageWriter
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
- * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeKind
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeKind
  * @uses \Toolkit\DocGen\Analysis\Diff\ClassLikeMerger
  * @uses \Toolkit\DocGen\Render\Page\ClassLikePage
  * @uses \Toolkit\DocGen\Analysis\Package\ComposerLockReader
- * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifestReader
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
  * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageReader
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\CpuCoreCounter
+ * @uses \Toolkit\DocGen\Parallel\CpuCoreCounter
  * @uses \Toolkit\DocGen\Analysis\Layer\DeptracConfigReader
  * @uses \Toolkit\DocGen\Analysis\Package\DevPackageResolver
  * @uses \Toolkit\DocGen\Render\Diff\DiffBanner
@@ -184,14 +184,14 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Analysis\Revision\DiffSession
  * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
  * @uses \Toolkit\DocGen\Analysis\Revision\DiffWorkspace
- * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Analysis\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \Toolkit\DocGen\Model\Config\DocGenConfig
+ * @uses \Toolkit\DocGen\Analysis\Config\DocGenConfig
  * @uses \Toolkit\DocGen\Cli\DocGenConfigFactory
- * @uses \Toolkit\DocGen\Model\DocGenException
+ * @uses \Toolkit\DocGen\DocGenException
  * @uses \Toolkit\DocGen\Cli\DocGenMemoryLimit
  * @uses \Toolkit\DocGen\Cli\DocGenOutputWriter
- * @uses \Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver
+ * @uses \Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver
  * @uses \Toolkit\DocGen\Cli\DocGenPreviewServer
  * @uses \Toolkit\DocGen\Render\Page\Component\DocTextHtml
  * @uses \Toolkit\DocGen\Render\Doctest\DoctestExtractor
@@ -203,16 +203,16 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Render\Page\Component\ExampleHtml
  * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector
- * @uses \Toolkit\DocGen\Model\Symbol\FileSymbols
+ * @uses \Toolkit\DocGen\Analysis\Symbol\FileSymbols
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
  * @uses \Toolkit\DocGen\Analysis\Diff\FunctionMerger
  * @uses \Toolkit\DocGen\Render\Page\FunctionPage
- * @uses \Toolkit\DocGen\Infrastructure\Cache\GenerationCache
- * @uses \Toolkit\DocGen\Infrastructure\Git\GitCommandRunner
- * @uses \Toolkit\DocGen\Infrastructure\Git\GitRepository
- * @uses \Toolkit\DocGen\Infrastructure\Git\GitWorktree
+ * @uses \Toolkit\DocGen\Cli\GenerationCache
+ * @uses \Toolkit\DocGen\Analysis\Revision\Git\GitCommandRunner
+ * @uses \Toolkit\DocGen\Analysis\Revision\Git\GitRepository
+ * @uses \Toolkit\DocGen\Analysis\Revision\Git\GitWorktree
  * @uses \Toolkit\DocGen\Render\Page\Component\GraphSvg
- * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
  * @uses \Toolkit\DocGen\Render\HtmlText
  * @uses \Toolkit\DocGen\Render\Page\IndexPage
  * @uses \Toolkit\DocGen\Analysis\Layer\LayerAssigner
@@ -221,49 +221,49 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Analysis\Diff\LineDiffer
  * @uses \Toolkit\DocGen\Analysis\Reference\LocalTypeMap
  * @uses \Toolkit\DocGen\Render\Diff\MarkdownDiffHtml
- * @uses \Toolkit\DocGen\Infrastructure\Filesystem\MarkdownFileFinder
+ * @uses \Toolkit\DocGen\Analysis\Filesystem\MarkdownFileFinder
  * @uses \Toolkit\DocGen\Render\MarkdownInline
  * @uses \Toolkit\DocGen\Render\MarkdownRenderer
  * @uses \Toolkit\DocGen\Render\Page\Component\MemberHtml
  * @uses \Toolkit\DocGen\Analysis\Diff\MemberMerger
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\MethodDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\MethodDoc
  * @uses \Toolkit\DocGen\Render\Page\NamespacePage
  * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
  * @uses \Toolkit\DocGen\Analysis\Package\PackageDiscovery
- * @uses \Toolkit\DocGen\Model\Package\PackageGraph
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
  * @uses \Toolkit\DocGen\Analysis\Package\PackageGraphBuilder
  * @uses \Toolkit\DocGen\Render\Page\PackagePage
  * @uses \Toolkit\DocGen\Render\PageChrome
- * @uses \Toolkit\DocGen\Infrastructure\Cache\PageRecord
+ * @uses \Toolkit\DocGen\Render\Cache\PageRecord
  * @uses \Toolkit\DocGen\Render\Signature\PageSignature
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
- * @uses \Toolkit\DocGen\Model\Symbol\ParameterDoc
+ * @uses \Toolkit\DocGen\Analysis\Symbol\ParameterDoc
  * @uses \Toolkit\DocGen\Analysis\Diff\ParameterMerger
  * @uses \Toolkit\DocGen\Analysis\Parse\ParameterModifiers
- * @uses \Toolkit\DocGen\Infrastructure\Cache\ParseCache
+ * @uses \Toolkit\DocGen\Analysis\Cache\ParseCache
  * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Render\PhpHighlighter
  * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  * @uses \Toolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml
  * @uses \Toolkit\DocGen\Analysis\ProjectAnalyzer
  * @uses \Toolkit\DocGen\Analysis\Diff\ProjectDiffer
- * @uses \Toolkit\DocGen\Model\ProjectModel
+ * @uses \Toolkit\DocGen\Analysis\ProjectModel
  * @uses \Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
  * @uses \Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner
  * @uses \Toolkit\DocGen\Render\Page\Component\RelationsHtml
- * @uses \Toolkit\DocGen\Infrastructure\Cache\RenderCache
+ * @uses \Toolkit\DocGen\Render\Cache\RenderCache
  * @uses \Toolkit\DocGen\Render\RenderKit
  * @uses \Toolkit\DocGen\Render\RepositoryLink
- * @uses \Toolkit\DocGen\Model\Config\RepositoryUrl
- * @uses \Toolkit\DocGen\Infrastructure\Git\RevisionRange
+ * @uses \Toolkit\DocGen\Analysis\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Analysis\Revision\Git\RevisionRange
  * @uses \Toolkit\DocGen\Render\SearchIndexBuilder
  * @uses \Toolkit\DocGen\Render\Signature\SidebarDigest
  * @uses \Toolkit\DocGen\Render\Page\Component\SidebarHtml
  * @uses \Toolkit\DocGen\Render\Page\SidebarScope
  * @uses \Toolkit\DocGen\Render\Page\Component\SignatureHtml
- * @uses \Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter
+ * @uses \Toolkit\DocGen\Render\Filesystem\SiteFileWriter
  * @uses \Toolkit\DocGen\Render\SitePages
  * @uses \Toolkit\DocGen\Render\SiteRenderer
  * @uses \Toolkit\DocGen\Render\SiteUrl
@@ -271,8 +271,8 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Render\Social\SocialMeta
  * @uses \Toolkit\DocGen\Render\Diff\SourceDiffHtml
  * @uses \Toolkit\DocGen\Render\Signature\SourceDigestIndex
- * @uses \Toolkit\DocGen\Infrastructure\Filesystem\SourceFileFinder
- * @uses \Toolkit\DocGen\Infrastructure\Cache\SourceFileKey
+ * @uses \Toolkit\DocGen\Analysis\Filesystem\SourceFileFinder
+ * @uses \Toolkit\DocGen\Analysis\Cache\SourceFileKey
  * @uses \Toolkit\DocGen\Render\Page\SourcePage
  * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
  * @uses \Toolkit\DocGen\Render\Page\Component\SymbolDescription
@@ -281,22 +281,22 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Render\Page\Component\SymbolListHtml
  * @uses \Toolkit\DocGen\Render\Signature\SymbolReferenceScanner
  * @uses \Toolkit\DocGen\Render\Page\Component\SymbolRow
- * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Infrastructure\Git\TempDirectory
+ * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
+ * @uses \Toolkit\DocGen\Analysis\Revision\Git\TempDirectory
  * @uses \Toolkit\DocGen\Render\Page\Component\TestCaseHtml
- * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
- * @uses \Toolkit\DocGen\Infrastructure\Cache\ToolkitFingerprint
+ * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
+ * @uses \Toolkit\DocGen\Cache\ToolkitFingerprint
  * @uses \Toolkit\DocGen\Render\TypeHtml
  * @uses \Toolkit\DocGen\Render\TypeRenderContext
- * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
  * @uses \Toolkit\DocGen\Analysis\Reference\UsageCollector
- * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
+ * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  * @uses \Toolkit\DocGen\Render\Page\Component\UsageListHtml
  * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
  * @uses \Toolkit\DocGen\Analysis\Package\VendorPackageLocator
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerCount
- * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerPool
+ * @uses \Toolkit\DocGen\Parallel\WorkScheduler
+ * @uses \Toolkit\DocGen\Parallel\WorkerCount
+ * @uses \Toolkit\DocGen\Parallel\WorkerPool
  */
 #[CoversClass(DocGenGenerationRunner::class)]
 #[UsesClass(AllItemsPage::class)]

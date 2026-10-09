@@ -7,8 +7,8 @@ namespace Toolkit\DocGen\Analysis\Parse\Builder;
 use PhpParser\Node\Stmt\ClassMethod;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
-use Toolkit\DocGen\Model\Symbol\MethodDoc;
-use Toolkit\DocGen\Model\Symbol\TypeSignature;
+use Toolkit\DocGen\Analysis\Symbol\MethodDoc;
+use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 
 /**
  * Builds method models from php-parser class method nodes.

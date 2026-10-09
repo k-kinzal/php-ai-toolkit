@@ -12,7 +12,7 @@ use const JSON_UNESCAPED_UNICODE;
 use function mb_strimwidth;
 
 use Toolkit\DocGen\Analysis\Diff\DiffKey;
-use Toolkit\DocGen\Model\ProjectModel;
+use Toolkit\DocGen\Analysis\ProjectModel;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 
 /**
@@ -111,7 +111,7 @@ final class SearchIndexBuilder
      *
      * @return list<array{n: string, f: string, k: string, u: string, s: string, d?: string}>
      */
-    public function memberItems(\Toolkit\DocGen\Model\Symbol\ClassLikeDoc $classLike, string $page, ?DiffHtml $diff = null, bool $publicApi = false): array
+    public function memberItems(\Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc $classLike, string $page, ?DiffHtml $diff = null, bool $publicApi = false): array
     {
         $diff ??= new DiffHtml();
         $items = [];

@@ -11,7 +11,7 @@ use function implode;
 use function sprintf;
 use function strtolower;
 
-use Toolkit\DocGen\Model\Symbol\DocBlock;
+use Toolkit\DocGen\Analysis\Symbol\DocBlock;
 use Toolkit\DocGen\Render\MarkdownInline;
 use Toolkit\DocGen\Render\RenderKit;
 use Toolkit\DocGen\Render\TypeRenderContext;

@@ -218,8 +218,18 @@ use SplFileInfo;
  * @uses \Guard\Reporting\BaselineMatch
  * @uses \Guard\Reporting\Filtering\FindingFilter
  * @uses \Guard\Reporting\Filtering\ReportScope
+ * @uses \Guard\Collect\Filesystem\ScopedRoots
+ * @uses \Guard\Collect\Matching\ScopeMatcher
+ * @uses \Guard\Config\Reader\ScopeConfigReader
+ * @uses \Guard\Input\Scope
+ * @uses \Guard\Structure\Text
  */
 #[CoversClass(\Guard\Cli\Application::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\ScopedRoots::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\ScopeMatcher::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ScopeConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Scope::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Text::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\ClosureOutput::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\FixCommand::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\CheckCommand::class)]
@@ -489,7 +499,7 @@ final class RegistrationTest extends TestCase
             $app = new \Guard\Cli\Application($project->root, static function (string $text) use (&$output): void {
                 $output .= $text;
             }, $registry);
-            self::assertSame(1, $app->run(['check']));
+            self::assertSame(1, $app->run(['check', '--format=ai']));
             self::assertStringContainsString('[readme.required]', $output);
             $project->write('README.md', '# Project');
             self::assertSame(0, $app->run(['check']));

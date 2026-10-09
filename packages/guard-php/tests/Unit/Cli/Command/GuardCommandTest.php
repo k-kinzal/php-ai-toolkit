@@ -32,8 +32,10 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @uses \Guard\Reporting\BaselineMatch
  * @uses \Guard\Reporting\Filtering\FindingFilter
  * @uses \Guard\Reporting\Filtering\ReportScope
+ * @uses \Guard\Cli\FormatDetector
  */
 #[CoversClass(GuardCommand::class)]
+#[UsesClass(\Guard\Cli\FormatDetector::class)]
 #[UsesClass(\Guard\Cli\PolicyRun::class)]
 #[UsesClass(\Guard\Config\ConfigurationLoader::class)]
 #[UsesClass(\Guard\Config\ImportResolver::class)]

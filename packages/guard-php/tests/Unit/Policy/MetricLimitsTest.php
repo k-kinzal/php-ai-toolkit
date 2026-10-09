@@ -177,8 +177,10 @@ use SplFileInfo;
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
  * @uses \Guard\Policy\Diagnostic\FieldMessage
+ * @uses \Guard\Policy\Diagnostic\RuleMessages
  */
 #[CoversClass(\Guard\Policy\MetricLimits::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\RuleMessages::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Collector::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\DirectoryListing::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]

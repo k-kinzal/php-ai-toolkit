@@ -13,8 +13,10 @@ use PHPUnit\Framework\TestCase;
  * @covers \Guard\Reporting\Reporter
  * @uses \Guard\Policy\FileChange
  * @uses \Guard\Diagnostic\Finding
+ * @uses \Guard\Reporting\ChangeDiff
  */
 #[CoversClass(\Guard\Reporting\Reporter::class)]
+#[UsesClass(\Guard\Reporting\ChangeDiff::class)]
 #[UsesClass(\Guard\Policy\FileChange::class)]
 #[UsesClass(\Guard\Diagnostic\Finding::class)]
 final class ReporterTest extends TestCase

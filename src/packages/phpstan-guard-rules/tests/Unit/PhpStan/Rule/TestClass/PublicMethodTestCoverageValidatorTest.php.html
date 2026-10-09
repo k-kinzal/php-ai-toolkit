@@ -71,7 +71,7 @@
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testErrorsReturnsPublicMethodWithoutTestError</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a>    {</span>
 <span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        <span class="tok-var">$method</span> = <span class="tok-kw">new</span> <span class="tok-id">\PhpParser\Node\Stmt\ClassMethod</span>(<span class="tok-str">&#039;getResult&#039;</span>, [<span class="tok-str">&#039;flags&#039;</span> =&gt; <span class="tok-id">Class_</span>::<span class="tok-id">MODIFIER_PUBLIC</span>]);</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        <span class="tok-var">$sourceFile</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/TestNamingConvention/src/UncoveredService.php&#039;</span>;</span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        <span class="tok-var">$sourceFile</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/TestNamingConvention/src/UncoveredService.php&#039;</span>;</span>
 <span class="src-line" id="L38"><a class="ln" href="#L38">38</a></span>
 <span class="src-line" id="L39"><a class="ln" href="#L39">39</a>        <span class="tok-var">$errors</span> = (<span class="tok-kw">new</span> <span class="tok-id">PublicMethodTestCoverageValidator</span>())-&gt;<span class="tok-id">errors</span>(<span class="tok-var">$method</span>, <span class="tok-var">$sourceFile</span>);</span>
 <span class="src-line" id="L40"><a class="ln" href="#L40">40</a></span>

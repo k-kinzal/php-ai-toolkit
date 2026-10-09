@@ -70,7 +70,7 @@
 <span class="src-line" id="L33"><a class="ln" href="#L33">33</a></span>
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeClassDeclaredPublicWithoutExampleIsReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a>    {</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/RequireExampleOnPublicApi/MissingClassExample.php&#039;</span>], [</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../tests/PhpStan/RequireExampleOnPublicApi/MissingClassExample.php&#039;</span>], [</span>
 <span class="src-line" id="L37"><a class="ln" href="#L37">37</a>            [</span>
 <span class="src-line" id="L38"><a class="ln" href="#L38">38</a>                <span class="tok-str">&#039;Add an @example block to class MissingClassExample: it is declared public API with &quot;@visibility public&quot;, so it must document at least one example doctest can run. Write the example as an &quot;@example&quot; tag followed by indented code lines, or as a fenced php block, and assert on it with &quot;// =&gt; value&quot;, &quot;// Output: text&quot;, or &quot;// throws ExceptionClass&quot;.&#039;</span>,</span>
 <span class="src-line" id="L39"><a class="ln" href="#L39">39</a>                <span class="tok-num">12</span>,</span>
@@ -80,7 +80,7 @@
 <span class="src-line" id="L43"><a class="ln" href="#L43">43</a></span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeMembersDeclaredPublicWithoutExampleAreReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L45"><a class="ln" href="#L45">45</a>    {</span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/RequireExampleOnPublicApi/MissingMemberExample.php&#039;</span>], [</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../tests/PhpStan/RequireExampleOnPublicApi/MissingMemberExample.php&#039;</span>], [</span>
 <span class="src-line" id="L47"><a class="ln" href="#L47">47</a>            [</span>
 <span class="src-line" id="L48"><a class="ln" href="#L48">48</a>                <span class="tok-str">&#039;Add an @example block to constant MissingMemberExample::VERSION: it is declared public API with &quot;@visibility public&quot;, so it must document at least one example doctest can run. Write the example as an &quot;@example&quot; tag followed by indented code lines, or as a fenced php block, and assert on it with &quot;// =&gt; value&quot;, &quot;// Output: text&quot;, or &quot;// throws ExceptionClass&quot;.&#039;</span>,</span>
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a>                <span class="tok-num">17</span>,</span>
@@ -98,7 +98,7 @@
 <span class="src-line" id="L61"><a class="ln" href="#L61">61</a></span>
 <span class="src-line" id="L62"><a class="ln" href="#L62">62</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeEnumCaseDeclaredPublicWithoutExampleIsReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L63"><a class="ln" href="#L63">63</a>    {</span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/RequireExampleOnPublicApi/MissingEnumCaseExample.php&#039;</span>], [</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../tests/PhpStan/RequireExampleOnPublicApi/MissingEnumCaseExample.php&#039;</span>], [</span>
 <span class="src-line" id="L65"><a class="ln" href="#L65">65</a>            [</span>
 <span class="src-line" id="L66"><a class="ln" href="#L66">66</a>                <span class="tok-str">&#039;Add an @example block to enum case MissingEnumCaseExample::Only: it is declared public API with &quot;@visibility public&quot;, so it must document at least one example doctest can run. Write the example as an &quot;@example&quot; tag followed by indented code lines, or as a fenced php block, and assert on it with &quot;// =&gt; value&quot;, &quot;// Output: text&quot;, or &quot;// throws ExceptionClass&quot;.&#039;</span>,</span>
 <span class="src-line" id="L67"><a class="ln" href="#L67">67</a>                <span class="tok-num">17</span>,</span>
@@ -108,12 +108,12 @@
 <span class="src-line" id="L71"><a class="ln" href="#L71">71</a></span>
 <span class="src-line" id="L72"><a class="ln" href="#L72">72</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeDocumentedExamplesAreNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L73"><a class="ln" href="#L73">73</a>    {</span>
-<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/RequireExampleOnPublicApi/DocumentedExamples.php&#039;</span>], []);</span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../tests/PhpStan/RequireExampleOnPublicApi/DocumentedExamples.php&#039;</span>], []);</span>
 <span class="src-line" id="L75"><a class="ln" href="#L75">75</a>    }</span>
 <span class="src-line" id="L76"><a class="ln" href="#L76">76</a></span>
 <span class="src-line" id="L77"><a class="ln" href="#L77">77</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeDisplayOnlyExampleDoesNotSatisfyTheRequirement</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L78"><a class="ln" href="#L78">78</a>    {</span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/RequireExampleOnPublicApi/InlineExampleOnly.php&#039;</span>], [</span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../tests/PhpStan/RequireExampleOnPublicApi/InlineExampleOnly.php&#039;</span>], [</span>
 <span class="src-line" id="L80"><a class="ln" href="#L80">80</a>            [</span>
 <span class="src-line" id="L81"><a class="ln" href="#L81">81</a>                <span class="tok-str">&#039;Add an @example block to class InlineExampleOnly: it is declared public API with &quot;@visibility public&quot;, so it must document at least one example doctest can run. Write the example as an &quot;@example&quot; tag followed by indented code lines, or as a fenced php block, and assert on it with &quot;// =&gt; value&quot;, &quot;// Output: text&quot;, or &quot;// throws ExceptionClass&quot;.&#039;</span>,</span>
 <span class="src-line" id="L82"><a class="ln" href="#L82">82</a>                <span class="tok-num">14</span>,</span>
@@ -123,17 +123,17 @@
 <span class="src-line" id="L86"><a class="ln" href="#L86">86</a></span>
 <span class="src-line" id="L87"><a class="ln" href="#L87">87</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeUntaggedDeclarationIsNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L88"><a class="ln" href="#L88">88</a>    {</span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/RequireExampleOnPublicApi/UntaggedApi.php&#039;</span>], []);</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../tests/PhpStan/RequireExampleOnPublicApi/UntaggedApi.php&#039;</span>], []);</span>
 <span class="src-line" id="L90"><a class="ln" href="#L90">90</a>    }</span>
 <span class="src-line" id="L91"><a class="ln" href="#L91">91</a></span>
 <span class="src-line" id="L92"><a class="ln" href="#L92">92</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeNarrowedVisibilityIsNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L93"><a class="ln" href="#L93">93</a>    {</span>
-<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/RequireExampleOnPublicApi/ScopedApi.php&#039;</span>], []);</span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../tests/PhpStan/RequireExampleOnPublicApi/ScopedApi.php&#039;</span>], []);</span>
 <span class="src-line" id="L95"><a class="ln" href="#L95">95</a>    }</span>
 <span class="src-line" id="L96"><a class="ln" href="#L96">96</a></span>
 <span class="src-line" id="L97"><a class="ln" href="#L97">97</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeClassInRestrictedTestNamespaceIsSkipped</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L98"><a class="ln" href="#L98">98</a>    {</span>
-<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/RequireExampleOnPublicApi/TestClassInRestrictedNamespace.php&#039;</span>], []);</span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../tests/PhpStan/RequireExampleOnPublicApi/TestClassInRestrictedNamespace.php&#039;</span>], []);</span>
 <span class="src-line" id="L100"><a class="ln" href="#L100">100</a>    }</span>
 <span class="src-line" id="L101"><a class="ln" href="#L101">101</a>}</span>
 <span class="src-line" id="L102"><a class="ln" href="#L102">102</a></span>

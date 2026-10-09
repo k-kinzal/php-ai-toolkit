@@ -80,7 +80,7 @@
 <span class="src-line" id="L43"><a class="ln" href="#L43">43</a></span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeUnchainedThrowsAreReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L45"><a class="ln" href="#L45">45</a>    {</span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/RequireExceptionChaining/WithUnchainedThrow.php&#039;</span>], [</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/RequireExceptionChaining/WithUnchainedThrow.php&#039;</span>], [</span>
 <span class="src-line" id="L47"><a class="ln" href="#L47">47</a>            [</span>
 <span class="src-line" id="L48"><a class="ln" href="#L48">48</a>                <span class="tok-str">&#039;Pass the caught $exception to the exception thrown in this catch block, e.g. as the $previous constructor argument. Throwing a new exception without chaining discards the original failure and its stack trace.&#039;</span>,</span>
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a>                <span class="tok-num">17</span>,</span>
@@ -94,7 +94,7 @@
 <span class="src-line" id="L57"><a class="ln" href="#L57">57</a></span>
 <span class="src-line" id="L58"><a class="ln" href="#L58">58</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeChainedThrowsAreNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L59"><a class="ln" href="#L59">59</a>    {</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/RequireExceptionChaining/WithChainedThrow.php&#039;</span>], []);</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/RequireExceptionChaining/WithChainedThrow.php&#039;</span>], []);</span>
 <span class="src-line" id="L61"><a class="ln" href="#L61">61</a>    }</span>
 <span class="src-line" id="L62"><a class="ln" href="#L62">62</a>}</span>
 <span class="src-line" id="L63"><a class="ln" href="#L63">63</a></span>

@@ -87,7 +87,7 @@
 <span class="src-line" id="L50"><a class="ln" href="#L50">50</a></span>
 <span class="src-line" id="L51"><a class="ln" href="#L51">51</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeForbiddenNamespacesAreReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L52"><a class="ln" href="#L52">52</a>    {</span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/ForbiddenNamespace/WithForbiddenNamespaces.php&#039;</span>], [</span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/ForbiddenNamespace/WithForbiddenNamespaces.php&#039;</span>], [</span>
 <span class="src-line" id="L54"><a class="ln" href="#L54">54</a>            [</span>
 <span class="src-line" id="L55"><a class="ln" href="#L55">55</a>                <span class="tok-str">&#039;Move code out of namespace &quot;Tests\Support&quot;. Use a namespace outside forbidden test prefix &quot;Tests\Support&quot;, or inline setup in each test.&#039;</span>,</span>
 <span class="src-line" id="L56"><a class="ln" href="#L56">56</a>                <span class="tok-num">5</span>,</span>
@@ -133,7 +133,7 @@
 <span class="src-line" id="L96"><a class="ln" href="#L96">96</a></span>
 <span class="src-line" id="L97"><a class="ln" href="#L97">97</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeAllowedNamespacesAreNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L98"><a class="ln" href="#L98">98</a>    {</span>
-<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/ForbiddenNamespace/WithoutForbiddenNamespaces.php&#039;</span>], []);</span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/ForbiddenNamespace/WithoutForbiddenNamespaces.php&#039;</span>], []);</span>
 <span class="src-line" id="L100"><a class="ln" href="#L100">100</a>    }</span>
 <span class="src-line" id="L101"><a class="ln" href="#L101">101</a></span>
 <span class="src-line" id="L102"><a class="ln" href="#L102">102</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testNormalizeConvertsSeparatorsAndTrimsNamespaceBoundaries</span>(): <span class="tok-id">void</span></span>
@@ -165,7 +165,7 @@
 <span class="src-line" id="L128"><a class="ln" href="#L128">128</a></span>
 <span class="src-line" id="L129"><a class="ln" href="#L129">129</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeWithoutConfiguredPrefixesDoesNotReport</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L130"><a class="ln" href="#L130">130</a>    {</span>
-<span class="src-line" id="L131"><a class="ln" href="#L131">131</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/ForbiddenNamespace/WithForbiddenNamespaces.php&#039;</span>], []);</span>
+<span class="src-line" id="L131"><a class="ln" href="#L131">131</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/ForbiddenNamespace/WithForbiddenNamespaces.php&#039;</span>], []);</span>
 <span class="src-line" id="L132"><a class="ln" href="#L132">132</a>    }</span>
 <span class="src-line" id="L133"><a class="ln" href="#L133">133</a>}</span>
 <span class="src-line" id="L134"><a class="ln" href="#L134">134</a></span>

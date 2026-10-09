@@ -70,7 +70,7 @@
 <span class="src-line" id="L33"><a class="ln" href="#L33">33</a>    #[<span class="tok-id">Override</span>]</span>
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a>    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">getRule</span>(): <span class="tok-id">Rule</span></span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a>    {</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">ForbidBroadCatchRule</span>([<span class="tok-str">&#039;fixtures/ForbidBroadCatch/WithAllowedBroadCatch.php&#039;</span>]);</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">ForbidBroadCatchRule</span>([<span class="tok-str">&#039;tests/PhpStan/ForbidBroadCatch/WithAllowedBroadCatch.php&#039;</span>]);</span>
 <span class="src-line" id="L37"><a class="ln" href="#L37">37</a>    }</span>
 <span class="src-line" id="L38"><a class="ln" href="#L38">38</a></span>
 <span class="src-line" id="L39"><a class="ln" href="#L39">39</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testGetNodeTypeReturnsExpectedClass</span>(): <span class="tok-id">void</span></span>
@@ -80,7 +80,7 @@
 <span class="src-line" id="L43"><a class="ln" href="#L43">43</a></span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeBroadCatchesAreReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L45"><a class="ln" href="#L45">45</a>    {</span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/ForbidBroadCatch/WithBroadCatch.php&#039;</span>], [</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/ForbidBroadCatch/WithBroadCatch.php&#039;</span>], [</span>
 <span class="src-line" id="L47"><a class="ln" href="#L47">47</a>            [</span>
 <span class="src-line" id="L48"><a class="ln" href="#L48">48</a>                <span class="tok-str">&#039;Catch a specific exception type instead of &quot;Throwable&quot;: catch (Throwable) intercepts every failure, including programmer errors. If this catch is an intentional top-level boundary handler, add its file path to toolkit.broadCatchAllowedPaths.&#039;</span>,</span>
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a>                <span class="tok-num">21</span>,</span>
@@ -110,12 +110,12 @@
 <span class="src-line" id="L73"><a class="ln" href="#L73">73</a></span>
 <span class="src-line" id="L74"><a class="ln" href="#L74">74</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeSpecificCatchesAreNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L75"><a class="ln" href="#L75">75</a>    {</span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/ForbidBroadCatch/WithSpecificCatch.php&#039;</span>], []);</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/ForbidBroadCatch/WithSpecificCatch.php&#039;</span>], []);</span>
 <span class="src-line" id="L77"><a class="ln" href="#L77">77</a>    }</span>
 <span class="src-line" id="L78"><a class="ln" href="#L78">78</a></span>
 <span class="src-line" id="L79"><a class="ln" href="#L79">79</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeAllowedBoundaryPathIsNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L80"><a class="ln" href="#L80">80</a>    {</span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/ForbidBroadCatch/WithAllowedBroadCatch.php&#039;</span>], []);</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/ForbidBroadCatch/WithAllowedBroadCatch.php&#039;</span>], []);</span>
 <span class="src-line" id="L82"><a class="ln" href="#L82">82</a>    }</span>
 <span class="src-line" id="L83"><a class="ln" href="#L83">83</a>}</span>
 <span class="src-line" id="L84"><a class="ln" href="#L84">84</a></span>

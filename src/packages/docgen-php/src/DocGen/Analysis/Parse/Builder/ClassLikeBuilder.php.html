@@ -52,11 +52,11 @@
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">use</span> <span class="tok-id">PhpParser\Node\Stmt\Trait_</span>;</span>
 <span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-kw">use</span> <span class="tok-id">PhpParser\Node\Stmt\TraitUse</span>;</span>
 <span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Doc\DocBlockReader</span>;</span>
-<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\ClassLikeDoc</span>;</span>
-<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\ClassLikeKind</span>;</span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\PropertyDoc</span>;</span>
-<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\NativeTypePrinter</span>;</span>
-<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\SymbolContext</span>;</span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\NativeTypePrinter</span>;</span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\SymbolContext</span>;</span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\Symbol\ClassLikeDoc</span>;</span>
+<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\Symbol\ClassLikeKind</span>;</span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\Symbol\PropertyDoc</span>;</span>
 <span class="src-line" id="L23"><a class="ln" href="#L23">23</a></span>
 <span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-com">/**</span></span>
 <span class="src-line" id="L25"><a class="ln" href="#L25">25</a><span class="tok-com"> * Builds class-like models from php-parser declarations.</span></span>
@@ -224,7 +224,7 @@
 <span class="src-line" id="L187"><a class="ln" href="#L187">187</a><span class="tok-com">     * Constructor-promoted parameters are added to the property list so the</span></span>
 <span class="src-line" id="L188"><a class="ln" href="#L188">188</a><span class="tok-com">     * documented property surface is complete.</span></span>
 <span class="src-line" id="L189"><a class="ln" href="#L189">189</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L190"><a class="ln" href="#L190">190</a><span class="tok-com">     * @return array{constants: list&lt;\Toolkit\DocGen\Analysis\Model\ConstantDoc&gt;, properties: list&lt;PropertyDoc&gt;, methods: list&lt;\Toolkit\DocGen\Analysis\Model\MethodDoc&gt;, cases: list&lt;\Toolkit\DocGen\Analysis\Model\EnumCaseDoc&gt;}</span></span>
+<span class="src-line" id="L190"><a class="ln" href="#L190">190</a><span class="tok-com">     * @return array{constants: list&lt;\Toolkit\DocGen\Model\Symbol\ConstantDoc&gt;, properties: list&lt;PropertyDoc&gt;, methods: list&lt;\Toolkit\DocGen\Model\Symbol\MethodDoc&gt;, cases: list&lt;\Toolkit\DocGen\Model\Symbol\EnumCaseDoc&gt;}</span></span>
 <span class="src-line" id="L191"><a class="ln" href="#L191">191</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L192"><a class="ln" href="#L192">192</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">members</span>(<span class="tok-id">ClassLike</span> <span class="tok-var">$node</span>): <span class="tok-kw">array</span></span>
 <span class="src-line" id="L193"><a class="ln" href="#L193">193</a>    {</span>
@@ -260,7 +260,7 @@
 <span class="src-line" id="L223"><a class="ln" href="#L223">223</a>    <span class="tok-com">/**</span></span>
 <span class="src-line" id="L224"><a class="ln" href="#L224">224</a><span class="tok-com">     * Builds property models for constructor-promoted parameters.</span></span>
 <span class="src-line" id="L225"><a class="ln" href="#L225">225</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L226"><a class="ln" href="#L226">226</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Analysis\Model\ParameterDoc&gt; $parameters</span></span>
+<span class="src-line" id="L226"><a class="ln" href="#L226">226</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Model\Symbol\ParameterDoc&gt; $parameters</span></span>
 <span class="src-line" id="L227"><a class="ln" href="#L227">227</a><span class="tok-com">     *</span></span>
 <span class="src-line" id="L228"><a class="ln" href="#L228">228</a><span class="tok-com">     * @return list&lt;PropertyDoc&gt;</span></span>
 <span class="src-line" id="L229"><a class="ln" href="#L229">229</a><span class="tok-com">     */</span></span>

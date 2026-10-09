@@ -49,7 +49,7 @@
 <span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">mb_strimwidth</span>;</span>
 <span class="src-line" id="L13"><a class="ln" href="#L13">13</a></span>
 <span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Diff\DiffKey</span>;</span>
-<span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\ProjectModel</span>;</span>
+<span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\ProjectModel</span>;</span>
 <span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Diff\DiffHtml</span>;</span>
 <span class="src-line" id="L17"><a class="ln" href="#L17">17</a></span>
 <span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-com">/**</span></span>
@@ -148,7 +148,7 @@
 <span class="src-line" id="L111"><a class="ln" href="#L111">111</a><span class="tok-com">     *</span></span>
 <span class="src-line" id="L112"><a class="ln" href="#L112">112</a><span class="tok-com">     * @return list&lt;array{n: string, f: string, k: string, u: string, s: string, d?: string}&gt;</span></span>
 <span class="src-line" id="L113"><a class="ln" href="#L113">113</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L114"><a class="ln" href="#L114">114</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">memberItems</span>(<span class="tok-id">\Toolkit\DocGen\Analysis\Model\ClassLikeDoc</span> <span class="tok-var">$classLike</span>, <span class="tok-id">string</span> <span class="tok-var">$page</span>, ?<span class="tok-id">DiffHtml</span> <span class="tok-var">$diff</span> = <span class="tok-id">null</span>, <span class="tok-id">bool</span> <span class="tok-var">$publicApi</span> = <span class="tok-id">false</span>): <span class="tok-kw">array</span></span>
+<span class="src-line" id="L114"><a class="ln" href="#L114">114</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">memberItems</span>(<span class="tok-id">\Toolkit\DocGen\Model\Symbol\ClassLikeDoc</span> <span class="tok-var">$classLike</span>, <span class="tok-id">string</span> <span class="tok-var">$page</span>, ?<span class="tok-id">DiffHtml</span> <span class="tok-var">$diff</span> = <span class="tok-id">null</span>, <span class="tok-id">bool</span> <span class="tok-var">$publicApi</span> = <span class="tok-id">false</span>): <span class="tok-kw">array</span></span>
 <span class="src-line" id="L115"><a class="ln" href="#L115">115</a>    {</span>
 <span class="src-line" id="L116"><a class="ln" href="#L116">116</a>        <span class="tok-var">$diff</span> ??= <span class="tok-kw">new</span> <span class="tok-id">DiffHtml</span>();</span>
 <span class="src-line" id="L117"><a class="ln" href="#L117">117</a>        <span class="tok-var">$items</span> = [];</span>

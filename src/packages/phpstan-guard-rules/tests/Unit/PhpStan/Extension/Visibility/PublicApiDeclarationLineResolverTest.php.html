@@ -60,14 +60,14 @@
 <span class="src-line" id="L23"><a class="ln" href="#L23">23</a>{</span>
 <span class="src-line" id="L24"><a class="ln" href="#L24">24</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testLinesContainOnlyExplicitlyPublicDeclarations</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L25"><a class="ln" href="#L25">25</a>    {</span>
-<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>        <span class="tok-var">$file</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/VisibilityPublicUnused/Declarations.php&#039;</span>;</span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>        <span class="tok-var">$file</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/VisibilityPublicUnused/Declarations.php&#039;</span>;</span>
 <span class="src-line" id="L27"><a class="ln" href="#L27">27</a></span>
 <span class="src-line" id="L28"><a class="ln" href="#L28">28</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>([<span class="tok-num">12</span>, <span class="tok-num">19</span>, <span class="tok-num">26</span>, <span class="tok-num">33</span>], (<span class="tok-kw">new</span> <span class="tok-id">PublicApiDeclarationLineResolver</span>())-&gt;<span class="tok-id">lines</span>(<span class="tok-var">$file</span>));</span>
 <span class="src-line" id="L29"><a class="ln" href="#L29">29</a>    }</span>
 <span class="src-line" id="L30"><a class="ln" href="#L30">30</a></span>
 <span class="src-line" id="L31"><a class="ln" href="#L31">31</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testDeclaresPublicAtRejectsAnInternalDeclaration</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    {</span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-var">$file</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/VisibilityPublicUnused/Declarations.php&#039;</span>;</span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-var">$file</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/VisibilityPublicUnused/Declarations.php&#039;</span>;</span>
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a></span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a>        <span class="tok-id">self</span>::<span class="tok-id">assertFalse</span>((<span class="tok-kw">new</span> <span class="tok-id">PublicApiDeclarationLineResolver</span>())-&gt;<span class="tok-id">declaresPublicAt</span>(<span class="tok-var">$file</span>, <span class="tok-num">40</span>));</span>
 <span class="src-line" id="L36"><a class="ln" href="#L36">36</a>    }</span>

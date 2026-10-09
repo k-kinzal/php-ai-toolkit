@@ -79,9 +79,9 @@
 <span class="src-line" id="L42"><a class="ln" href="#L42">42</a></span>
 <span class="src-line" id="L43"><a class="ln" href="#L43">43</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testErrorsReportsTheSameTermOncePerLineAcrossOverlappingPolicies</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a>    {</span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        <span class="tok-var">$fixture</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/ForbidFileTerm/BackendLeak.php&#039;</span>;</span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        <span class="tok-var">$fixture</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/ForbidFileTerm/BackendLeak.php&#039;</span>;</span>
 <span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        <span class="tok-var">$inspector</span> = <span class="tok-kw">new</span> <span class="tok-id">ForbiddenFileTermInspector</span>(<span class="tok-kw">new</span> <span class="tok-id">ForbiddenFileTermRestrictions</span>([</span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>            <span class="tok-str">&#039;fixtures/ForbidFileTerm/*&#039;</span> =&gt; [<span class="tok-str">&#039;mysql&#039;</span>],</span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>            <span class="tok-str">&#039;tests/PhpStan/ForbidFileTerm/*&#039;</span> =&gt; [<span class="tok-str">&#039;mysql&#039;</span>],</span>
 <span class="src-line" id="L48"><a class="ln" href="#L48">48</a>            <span class="tok-str">&#039;Fixture/ForbidFileTerm/*&#039;</span> =&gt; [<span class="tok-str">&#039;MYSQL&#039;</span>],</span>
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a>        ]));</span>
 <span class="src-line" id="L50"><a class="ln" href="#L50">50</a></span>

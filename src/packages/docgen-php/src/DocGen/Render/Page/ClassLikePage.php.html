@@ -48,7 +48,7 @@
 <span class="src-line" id="L11"><a class="ln" href="#L11">11</a></span>
 <span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Diff\DiffKey</span>;</span>
 <span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Diff\DiffStatus</span>;</span>
-<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\ClassLikeDoc</span>;</span>
+<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\Symbol\ClassLikeDoc</span>;</span>
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Diff\DiffBanner</span>;</span>
 <span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml</span>;</span>
 <span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\Page\Component\DocTextHtml</span>;</span>
@@ -198,7 +198,7 @@
 <span class="src-line" id="L161"><a class="ln" href="#L161">161</a>    <span class="tok-com">/**</span></span>
 <span class="src-line" id="L162"><a class="ln" href="#L162">162</a><span class="tok-com">     * Filters the members that are part of the documented public surface.</span></span>
 <span class="src-line" id="L163"><a class="ln" href="#L163">163</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L164"><a class="ln" href="#L164">164</a><span class="tok-com">     * @template T of \Toolkit\DocGen\Analysis\Model\ConstantDoc|\Toolkit\DocGen\Analysis\Model\PropertyDoc|\Toolkit\DocGen\Analysis\Model\MethodDoc</span></span>
+<span class="src-line" id="L164"><a class="ln" href="#L164">164</a><span class="tok-com">     * @template T of \Toolkit\DocGen\Model\Symbol\ConstantDoc|\Toolkit\DocGen\Model\Symbol\PropertyDoc|\Toolkit\DocGen\Model\Symbol\MethodDoc</span></span>
 <span class="src-line" id="L165"><a class="ln" href="#L165">165</a><span class="tok-com">     *</span></span>
 <span class="src-line" id="L166"><a class="ln" href="#L166">166</a><span class="tok-com">     * @param list&lt;T&gt; $members</span></span>
 <span class="src-line" id="L167"><a class="ln" href="#L167">167</a><span class="tok-com">     *</span></span>
@@ -219,9 +219,9 @@
 <span class="src-line" id="L182"><a class="ln" href="#L182">182</a>    <span class="tok-com">/**</span></span>
 <span class="src-line" id="L183"><a class="ln" href="#L183">183</a><span class="tok-com">     * Filters enum cases out of a public API page when their scope is restricted.</span></span>
 <span class="src-line" id="L184"><a class="ln" href="#L184">184</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L185"><a class="ln" href="#L185">185</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Analysis\Model\EnumCaseDoc&gt; $cases</span></span>
+<span class="src-line" id="L185"><a class="ln" href="#L185">185</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Model\Symbol\EnumCaseDoc&gt; $cases</span></span>
 <span class="src-line" id="L186"><a class="ln" href="#L186">186</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L187"><a class="ln" href="#L187">187</a><span class="tok-com">     * @return list&lt;\Toolkit\DocGen\Analysis\Model\EnumCaseDoc&gt;</span></span>
+<span class="src-line" id="L187"><a class="ln" href="#L187">187</a><span class="tok-com">     * @return list&lt;\Toolkit\DocGen\Model\Symbol\EnumCaseDoc&gt;</span></span>
 <span class="src-line" id="L188"><a class="ln" href="#L188">188</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L189"><a class="ln" href="#L189">189</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">visibleCases</span>(<span class="tok-kw">array</span> <span class="tok-var">$cases</span>, <span class="tok-id">bool</span> <span class="tok-var">$publicApi</span> = <span class="tok-id">false</span>): <span class="tok-kw">array</span></span>
 <span class="src-line" id="L190"><a class="ln" href="#L190">190</a>    {</span>
@@ -238,7 +238,7 @@
 <span class="src-line" id="L201"><a class="ln" href="#L201">201</a>    <span class="tok-com">/**</span></span>
 <span class="src-line" id="L202"><a class="ln" href="#L202">202</a><span class="tok-com">     * Builds the type resolution context of this page.</span></span>
 <span class="src-line" id="L203"><a class="ln" href="#L203">203</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L204"><a class="ln" href="#L204">204</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Analysis\Model\TemplateDoc&gt; $extraTemplates</span></span>
+<span class="src-line" id="L204"><a class="ln" href="#L204">204</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Model\Symbol\TemplateDoc&gt; $extraTemplates</span></span>
 <span class="src-line" id="L205"><a class="ln" href="#L205">205</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L206"><a class="ln" href="#L206">206</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">context</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$pagePath</span>, <span class="tok-id">ClassLikeDoc</span> <span class="tok-var">$classLike</span>, <span class="tok-kw">array</span> <span class="tok-var">$extraTemplates</span>): <span class="tok-id">TypeRenderContext</span></span>
 <span class="src-line" id="L207"><a class="ln" href="#L207">207</a>    {</span>
@@ -442,7 +442,7 @@
 <span class="src-line" id="L405"><a class="ln" href="#L405">405</a><span class="tok-com">     * nothing touched steps aside when only changes are asked for, while a</span></span>
 <span class="src-line" id="L406"><a class="ln" href="#L406">406</a><span class="tok-com">     * section holding one new member stays and shows it.</span></span>
 <span class="src-line" id="L407"><a class="ln" href="#L407">407</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L408"><a class="ln" href="#L408">408</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Analysis\Model\ConstantDoc|\Toolkit\DocGen\Analysis\Model\PropertyDoc|\Toolkit\DocGen\Analysis\Model\MethodDoc|\Toolkit\DocGen\Analysis\Model\EnumCaseDoc&gt; $members</span></span>
+<span class="src-line" id="L408"><a class="ln" href="#L408">408</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Model\Symbol\ConstantDoc|\Toolkit\DocGen\Model\Symbol\PropertyDoc|\Toolkit\DocGen\Model\Symbol\MethodDoc|\Toolkit\DocGen\Model\Symbol\EnumCaseDoc&gt; $members</span></span>
 <span class="src-line" id="L409"><a class="ln" href="#L409">409</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L410"><a class="ln" href="#L410">410</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">sectionMark</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">ClassLikeDoc</span> <span class="tok-var">$classLike</span>, <span class="tok-id">string</span> <span class="tok-var">$kind</span>, <span class="tok-kw">array</span> <span class="tok-var">$members</span>): <span class="tok-id">string</span></span>
 <span class="src-line" id="L411"><a class="ln" href="#L411">411</a>    {</span>
@@ -452,7 +452,7 @@
 <span class="src-line" id="L415"><a class="ln" href="#L415">415</a>    <span class="tok-com">/**</span></span>
 <span class="src-line" id="L416"><a class="ln" href="#L416">416</a><span class="tok-com">     * Combines the state of the members of one section.</span></span>
 <span class="src-line" id="L417"><a class="ln" href="#L417">417</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L418"><a class="ln" href="#L418">418</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Analysis\Model\ConstantDoc|\Toolkit\DocGen\Analysis\Model\PropertyDoc|\Toolkit\DocGen\Analysis\Model\MethodDoc|\Toolkit\DocGen\Analysis\Model\EnumCaseDoc&gt; $members</span></span>
+<span class="src-line" id="L418"><a class="ln" href="#L418">418</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Model\Symbol\ConstantDoc|\Toolkit\DocGen\Model\Symbol\PropertyDoc|\Toolkit\DocGen\Model\Symbol\MethodDoc|\Toolkit\DocGen\Model\Symbol\EnumCaseDoc&gt; $members</span></span>
 <span class="src-line" id="L419"><a class="ln" href="#L419">419</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L420"><a class="ln" href="#L420">420</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">sectionStatus</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">ClassLikeDoc</span> <span class="tok-var">$classLike</span>, <span class="tok-id">string</span> <span class="tok-var">$kind</span>, <span class="tok-kw">array</span> <span class="tok-var">$members</span>): <span class="tok-id">string</span></span>
 <span class="src-line" id="L421"><a class="ln" href="#L421">421</a>    {</span>

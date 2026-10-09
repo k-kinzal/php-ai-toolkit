@@ -84,7 +84,7 @@
 <span class="src-line" id="L47"><a class="ln" href="#L47">47</a></span>
 <span class="src-line" id="L48"><a class="ln" href="#L48">48</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeControlFlowInTestMethodIsReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a>    {</span>
-<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/NoControlFlowInTestMethod/WithControlFlow.php&#039;</span>], [</span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../tests/PhpStan/NoControlFlowInTestMethod/WithControlFlow.php&#039;</span>], [</span>
 <span class="src-line" id="L51"><a class="ln" href="#L51">51</a>            [</span>
 <span class="src-line" id="L52"><a class="ln" href="#L52">52</a>                <span class="tok-str">&#039;Split test method testWithIf() so it contains no &quot;if&quot; statement. Use separate tests or a data provider for each case.&#039;</span>,</span>
 <span class="src-line" id="L53"><a class="ln" href="#L53">53</a>                <span class="tok-num">14</span>,</span>
@@ -98,12 +98,12 @@
 <span class="src-line" id="L61"><a class="ln" href="#L61">61</a></span>
 <span class="src-line" id="L62"><a class="ln" href="#L62">62</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeControlFlowInClosureIsNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L63"><a class="ln" href="#L63">63</a>    {</span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/NoControlFlowInTestMethod/WithNestedScope.php&#039;</span>], []);</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../tests/PhpStan/NoControlFlowInTestMethod/WithNestedScope.php&#039;</span>], []);</span>
 <span class="src-line" id="L65"><a class="ln" href="#L65">65</a>    }</span>
 <span class="src-line" id="L66"><a class="ln" href="#L66">66</a></span>
 <span class="src-line" id="L67"><a class="ln" href="#L67">67</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeNonTestClassIsNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L68"><a class="ln" href="#L68">68</a>    {</span>
-<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/NoControlFlowInTestMethod/NonTestClass.php&#039;</span>], []);</span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../tests/PhpStan/NoControlFlowInTestMethod/NonTestClass.php&#039;</span>], []);</span>
 <span class="src-line" id="L70"><a class="ln" href="#L70">70</a>    }</span>
 <span class="src-line" id="L71"><a class="ln" href="#L71">71</a>}</span>
 <span class="src-line" id="L72"><a class="ln" href="#L72">72</a></span>

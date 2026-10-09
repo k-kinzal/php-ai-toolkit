@@ -68,7 +68,7 @@
 <span class="src-line" id="L31"><a class="ln" href="#L31">31</a>{</span>
 <span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testShouldIgnoreSuppressesUnusedPublicDeclaration</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L33"><a class="ln" href="#L33">33</a>    {</span>
-<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-var">$file</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/VisibilityPublicUnused/Declarations.php&#039;</span>;</span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-var">$file</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/VisibilityPublicUnused/Declarations.php&#039;</span>;</span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a>        <span class="tok-var">$error</span> = <span class="tok-id">Error</span>::<span class="tok-id">decode</span>([</span>
 <span class="src-line" id="L36"><a class="ln" href="#L36">36</a>            <span class="tok-str">&#039;message&#039;</span> =&gt; <span class="tok-str">&#039;Method is unused.&#039;</span>,</span>
 <span class="src-line" id="L37"><a class="ln" href="#L37">37</a>            <span class="tok-str">&#039;file&#039;</span> =&gt; <span class="tok-var">$file</span>,</span>
@@ -94,7 +94,7 @@
 <span class="src-line" id="L57"><a class="ln" href="#L57">57</a></span>
 <span class="src-line" id="L58"><a class="ln" href="#L58">58</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testShouldIgnoreKeepsUnusedInternalDeclaration</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L59"><a class="ln" href="#L59">59</a>    {</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-var">$file</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/VisibilityPublicUnused/Declarations.php&#039;</span>;</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-var">$file</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/VisibilityPublicUnused/Declarations.php&#039;</span>;</span>
 <span class="src-line" id="L61"><a class="ln" href="#L61">61</a>        <span class="tok-var">$error</span> = <span class="tok-id">Error</span>::<span class="tok-id">decode</span>([</span>
 <span class="src-line" id="L62"><a class="ln" href="#L62">62</a>            <span class="tok-str">&#039;message&#039;</span> =&gt; <span class="tok-str">&#039;Method is unused.&#039;</span>,</span>
 <span class="src-line" id="L63"><a class="ln" href="#L63">63</a>            <span class="tok-str">&#039;file&#039;</span> =&gt; <span class="tok-var">$file</span>,</span>
@@ -120,7 +120,7 @@
 <span class="src-line" id="L83"><a class="ln" href="#L83">83</a></span>
 <span class="src-line" id="L84"><a class="ln" href="#L84">84</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testShouldIgnoreKeepsUnrelatedPublicDeclarationError</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L85"><a class="ln" href="#L85">85</a>    {</span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        <span class="tok-var">$file</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/VisibilityPublicUnused/Declarations.php&#039;</span>;</span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        <span class="tok-var">$file</span> = __DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/VisibilityPublicUnused/Declarations.php&#039;</span>;</span>
 <span class="src-line" id="L87"><a class="ln" href="#L87">87</a>        <span class="tok-var">$error</span> = <span class="tok-id">Error</span>::<span class="tok-id">decode</span>([</span>
 <span class="src-line" id="L88"><a class="ln" href="#L88">88</a>            <span class="tok-str">&#039;message&#039;</span> =&gt; <span class="tok-str">&#039;Return type is wrong.&#039;</span>,</span>
 <span class="src-line" id="L89"><a class="ln" href="#L89">89</a>            <span class="tok-str">&#039;file&#039;</span> =&gt; <span class="tok-var">$file</span>,</span>

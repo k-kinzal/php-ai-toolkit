@@ -64,17 +64,17 @@
 <span class="src-line" id="L27"><a class="ln" href="#L27">27</a>{</span>
 <span class="src-line" id="L28"><a class="ln" href="#L28">28</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testScanFileFindsTheDocumentedClassAndItsMethods</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L29"><a class="ln" href="#L29">29</a>    {</span>
-<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>        <span class="tok-var">$path</span> = (string) <span class="tok-id">realpath</span>(__DIR__ . <span class="tok-str">&#039;/../../../../fixtures/Doctest/project/src/Calculator.php&#039;</span>);</span>
+<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>        <span class="tok-var">$path</span> = (string) <span class="tok-id">realpath</span>(__DIR__ . <span class="tok-str">&#039;/../../../../tests/Doctest/project/src/Calculator.php&#039;</span>);</span>
 <span class="src-line" id="L31"><a class="ln" href="#L31">31</a></span>
 <span class="src-line" id="L32"><a class="ln" href="#L32">32</a>        <span class="tok-var">$targets</span> = <span class="tok-id">iterator_to_array</span>((<span class="tok-kw">new</span> <span class="tok-id">SourceScanner</span>())-&gt;<span class="tok-id">scanFile</span>(<span class="tok-var">$path</span>), <span class="tok-id">false</span>);</span>
 <span class="src-line" id="L33"><a class="ln" href="#L33">33</a></span>
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(</span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a>            [</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>                <span class="tok-str">&#039;Tests\Fixture\Doctest\Project\Calculator&#039;</span>,</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>                <span class="tok-str">&#039;Tests\Fixture\Doctest\Project\Calculator::add()&#039;</span>,</span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>                <span class="tok-str">&#039;Tests\Fixture\Doctest\Project\Calculator::divide()&#039;</span>,</span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>                <span class="tok-str">&#039;Tests\Fixture\Doctest\Project\Calculator::printSum()&#039;</span>,</span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>                <span class="tok-str">&#039;Tests\Fixture\Doctest\Project\Calculator::shape()&#039;</span>,</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>                <span class="tok-str">&#039;Tests\Doctest\Project\Calculator&#039;</span>,</span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>                <span class="tok-str">&#039;Tests\Doctest\Project\Calculator::add()&#039;</span>,</span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>                <span class="tok-str">&#039;Tests\Doctest\Project\Calculator::divide()&#039;</span>,</span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>                <span class="tok-str">&#039;Tests\Doctest\Project\Calculator::printSum()&#039;</span>,</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>                <span class="tok-str">&#039;Tests\Doctest\Project\Calculator::shape()&#039;</span>,</span>
 <span class="src-line" id="L41"><a class="ln" href="#L41">41</a>            ],</span>
 <span class="src-line" id="L42"><a class="ln" href="#L42">42</a>            <span class="tok-id">array_map</span>(<span class="tok-kw">static</span> <span class="tok-kw">fn</span> (<span class="tok-id">Target</span> <span class="tok-var">$target</span>): <span class="tok-id">string</span> =&gt; <span class="tok-var">$target</span>-&gt;<span class="tok-id">getFullyQualifiedName</span>(), <span class="tok-var">$targets</span>),</span>
 <span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        );</span>

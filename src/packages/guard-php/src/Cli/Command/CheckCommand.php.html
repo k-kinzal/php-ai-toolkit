@@ -41,58 +41,53 @@
 <span class="src-line" id="L4"><a class="ln" href="#L4">4</a></span>
 <span class="src-line" id="L5"><a class="ln" href="#L5">5</a><span class="tok-kw">namespace</span> <span class="tok-id">Guard\Cli\Command</span>;</span>
 <span class="src-line" id="L6"><a class="ln" href="#L6">6</a></span>
-<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Cli\PolicyRun</span>;</span>
-<span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Extension\Registry</span>;</span>
+<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Cli\CheckRun</span>;</span>
+<span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Execution\Registry</span>;</span>
 <span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">Override</span>;</span>
 <span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">Symfony\Component\Console\Input\InputInterface</span>;</span>
-<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">Symfony\Component\Console\Output\OutputInterface</span>;</span>
-<span class="src-line" id="L12"><a class="ln" href="#L12">12</a></span>
-<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-com">/**</span></span>
-<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-com"> * guard check: reports policy violations without changing any file.</span></span>
-<span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-com"> */</span></span>
-<span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">CheckCommand</span> <span class="tok-kw">extends</span> <span class="tok-id">GuardCommand</span></span>
-<span class="src-line" id="L17"><a class="ln" href="#L17">17</a>{</span>
-<span class="src-line" id="L18"><a class="ln" href="#L18">18</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-com">     * Creates the command for a project directory.</span></span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L21"><a class="ln" href="#L21">21</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(<span class="tok-id">string</span> <span class="tok-var">$directory</span>, <span class="tok-kw">private</span> ?<span class="tok-id">Registry</span> <span class="tok-var">$registry</span> = <span class="tok-id">null</span>)</span>
-<span class="src-line" id="L22"><a class="ln" href="#L22">22</a>    {</span>
-<span class="src-line" id="L23"><a class="ln" href="#L23">23</a>        <span class="tok-id">parent</span>::<span class="tok-id">__construct</span>(<span class="tok-var">$directory</span>, <span class="tok-str">&#039;check&#039;</span>);</span>
-<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>    }</span>
-<span class="src-line" id="L25"><a class="ln" href="#L25">25</a></span>
-<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L27"><a class="ln" href="#L27">27</a><span class="tok-com">     * Declares the options and the help of the command.</span></span>
-<span class="src-line" id="L28"><a class="ln" href="#L28">28</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L29"><a class="ln" href="#L29">29</a>    #[<span class="tok-id">Override</span>]</span>
-<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">configure</span>(): <span class="tok-id">void</span></span>
-<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>    {</span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">setDescription</span>(<span class="tok-str">&#039;Check the project against its policy without changing any file&#039;</span>);</span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">addConfigOption</span>();</span>
-<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">addFormatOption</span>();</span>
-<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">setHelp</span>(&lt;&lt;&lt;&#039;TEXT&#039;</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a><span class="tok-str">            Checks every policy in the policy file and reports each violated required</span></span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a><span class="tok-str">            rule as an error and each recommendation as a warning. No file is changed;</span></span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a><span class="tok-str">            run &quot;guard apply&quot; to repair what can be repaired.</span></span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a></span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a><span class="tok-str">            Running guard without a command runs check.</span></span>
+<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">Symfony\Component\Console\Input\InputOption</span>;</span>
+<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">Symfony\Component\Console\Output\OutputInterface</span>;</span>
+<span class="src-line" id="L13"><a class="ln" href="#L13">13</a></span>
+<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-com">/**</span></span>
+<span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-com"> * guard check: reports policy violations without changing any file.</span></span>
+<span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-com"> */</span></span>
+<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">CheckCommand</span> <span class="tok-kw">extends</span> <span class="tok-id">GuardCommand</span></span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a>{</span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-com">     * Creates the command for a project directory.</span></span>
+<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(<span class="tok-id">string</span> <span class="tok-var">$directory</span>, <span class="tok-kw">private</span> ?<span class="tok-id">Registry</span> <span class="tok-var">$registry</span> = <span class="tok-id">null</span>)</span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a>    {</span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>        <span class="tok-id">parent</span>::<span class="tok-id">__construct</span>(<span class="tok-var">$directory</span>, <span class="tok-str">&#039;check&#039;</span>);</span>
+<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>    }</span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a></span>
+<span class="src-line" id="L27"><a class="ln" href="#L27">27</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L28"><a class="ln" href="#L28">28</a><span class="tok-com">     * Declares the options and the help of the command.</span></span>
+<span class="src-line" id="L29"><a class="ln" href="#L29">29</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L30"><a class="ln" href="#L30">30</a>    #[<span class="tok-id">Override</span>]</span>
+<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">configure</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    {</span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">setDescription</span>(<span class="tok-str">&#039;Check the project against its policy without changing any file&#039;</span>);</span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">addConfigOption</span>();</span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">addFormatOption</span>();</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">addOption</span>(<span class="tok-str">&#039;query&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">InputOption</span>::<span class="tok-id">VALUE_REQUIRED</span>, <span class="tok-str">&#039;Search rule IDs, paths and messages; display only&#039;</span>);</span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">addOption</span>(<span class="tok-str">&#039;fixable&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">InputOption</span>::<span class="tok-id">VALUE_NONE</span>, <span class="tok-str">&#039;Show only automatically fixable violations; display only&#039;</span>);</span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">addOption</span>(<span class="tok-str">&#039;level&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">InputOption</span>::<span class="tok-id">VALUE_REQUIRED</span>, <span class="tok-str">&#039;Show only error or warning diagnostics; display only&#039;</span>);</span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">addOption</span>(<span class="tok-str">&#039;baseline&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">InputOption</span>::<span class="tok-id">VALUE_REQUIRED</span>, <span class="tok-str">&#039;Baseline path relative to the policy file; defaults to guard-baseline.json if present&#039;</span>);</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">addOption</span>(<span class="tok-str">&#039;no-baseline&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">InputOption</span>::<span class="tok-id">VALUE_NONE</span>, <span class="tok-str">&#039;Report all violations without applying a baseline&#039;</span>);</span>
 <span class="src-line" id="L41"><a class="ln" href="#L41">41</a></span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a><span class="tok-str">            Exit codes:</span></span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a><span class="tok-str">              0  passed, or only warnings</span></span>
-<span class="src-line" id="L44"><a class="ln" href="#L44">44</a><span class="tok-str">              1  a required rule is violated</span></span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a><span class="tok-str">              2  invalid command line, policy or input document</span></span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>            TEXT);</span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>    }</span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a></span>
-<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L50"><a class="ln" href="#L50">50</a><span class="tok-com">     * Reports the violations of the policy.</span></span>
-<span class="src-line" id="L51"><a class="ln" href="#L51">51</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>    #[<span class="tok-id">Override</span>]</span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">handle</span>(<span class="tok-id">InputInterface</span> <span class="tok-var">$input</span>, <span class="tok-id">OutputInterface</span> <span class="tok-var">$output</span>): <span class="tok-id">int</span></span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>    {</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>        <span class="tok-kw">return</span> (<span class="tok-kw">new</span> <span class="tok-id">PolicyRun</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">registry</span>))-&gt;<span class="tok-id">run</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">configPath</span>(<span class="tok-var">$input</span>), <span class="tok-var">$this</span>-&gt;<span class="tok-id">format</span>(<span class="tok-var">$input</span>), <span class="tok-id">false</span>, <span class="tok-id">false</span>, <span class="tok-var">$output</span>);</span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>    }</span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>}</span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a></span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>    }</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a></span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a><span class="tok-com">     * Reports the violations of the policy.</span></span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>    #[<span class="tok-id">Override</span>]</span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">handle</span>(<span class="tok-id">InputInterface</span> <span class="tok-var">$input</span>, <span class="tok-id">OutputInterface</span> <span class="tok-var">$output</span>): <span class="tok-id">int</span></span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>    {</span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a>        <span class="tok-kw">return</span> (<span class="tok-kw">new</span> <span class="tok-id">CheckRun</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">registry</span>))-&gt;<span class="tok-id">run</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">configPath</span>(<span class="tok-var">$input</span>), <span class="tok-var">$this</span>-&gt;<span class="tok-id">format</span>(<span class="tok-var">$input</span>), <span class="tok-var">$input</span>, <span class="tok-var">$output</span>);</span>
+<span class="src-line" id="L51"><a class="ln" href="#L51">51</a>    }</span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a>}</span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

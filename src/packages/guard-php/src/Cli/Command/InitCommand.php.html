@@ -41,9 +41,9 @@
 <span class="src-line" id="L4"><a class="ln" href="#L4">4</a></span>
 <span class="src-line" id="L5"><a class="ln" href="#L5">5</a><span class="tok-kw">namespace</span> <span class="tok-id">Guard\Cli\Command</span>;</span>
 <span class="src-line" id="L6"><a class="ln" href="#L6">6</a></span>
-<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Init\Initializer</span>;</span>
-<span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Init\PresetCatalog</span>;</span>
-<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Policy\PolicyException</span>;</span>
+<span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Config\Project\Initializer</span>;</span>
+<span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Config\Project\PresetCatalog</span>;</span>
+<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Diagnostic\PolicyException</span>;</span>
 <span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">Override</span>;</span>
 <span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">Symfony\Component\Console\Completion\CompletionInput</span>;</span>
 <span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">Symfony\Component\Console\Completion\CompletionSuggestions</span>;</span>
@@ -109,33 +109,23 @@
 <span class="src-line" id="L72"><a class="ln" href="#L72">72</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">setDescription</span>(<span class="tok-str">&#039;Create a policy file with the presets that fit the project&#039;</span>);</span>
 <span class="src-line" id="L73"><a class="ln" href="#L73">73</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">addConfigOption</span>();</span>
 <span class="src-line" id="L74"><a class="ln" href="#L74">74</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">addOption</span>(<span class="tok-str">&#039;import&#039;</span>, <span class="tok-id">null</span>, <span class="tok-id">InputOption</span>::<span class="tok-id">VALUE_REQUIRED</span> | <span class="tok-id">InputOption</span>::<span class="tok-id">VALUE_IS_ARRAY</span>, <span class="tok-str">&#039;Import only these presets, comma-separated or repeated, instead of detecting them&#039;</span>);</span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">setHelp</span>(<span class="tok-id">sprintf</span>(&lt;&lt;&lt;&#039;TEXT&#039;</span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a><span class="tok-str">            Writes a policy file for the project and refuses to overwrite one that</span></span>
-<span class="src-line" id="L77"><a class="ln" href="#L77">77</a><span class="tok-str">            exists. Without --import, the presets are selected from the tools and</span></span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a><span class="tok-str">            documents the project has; --import names them instead.</span></span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a></span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a><span class="tok-str">            Presets: %s</span></span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a></span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a><span class="tok-str">            Exit codes:</span></span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a><span class="tok-str">              0  policy file created</span></span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a><span class="tok-str">              2  invalid command line, existing policy file or unknown preset</span></span>
-<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>            TEXT, <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, (<span class="tok-kw">new</span> <span class="tok-id">PresetCatalog</span>())-&gt;<span class="tok-id">names</span>())));</span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>    }</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a></span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>    }</span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a></span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a><span class="tok-com">     * Writes the policy file.</span></span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>    #[<span class="tok-id">Override</span>]</span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">handle</span>(<span class="tok-id">InputInterface</span> <span class="tok-var">$input</span>, <span class="tok-id">OutputInterface</span> <span class="tok-var">$output</span>): <span class="tok-id">int</span></span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>    {</span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>        <span class="tok-var">$path</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">configPath</span>(<span class="tok-var">$input</span>);</span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>        (<span class="tok-kw">new</span> <span class="tok-id">Initializer</span>())-&gt;<span class="tok-id">write</span>(<span class="tok-var">$path</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">imports</span>(<span class="tok-var">$input</span>));</span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        <span class="tok-var">$output</span>-&gt;<span class="tok-id">writeln</span>(<span class="tok-str">&#039;Created &#039;</span> . <span class="tok-var">$path</span> . <span class="tok-str">&#039;. Review the detected recommendations, then run guard check.&#039;</span>, <span class="tok-id">OutputInterface</span>::<span class="tok-id">OUTPUT_RAW</span>);</span>
 <span class="src-line" id="L87"><a class="ln" href="#L87">87</a></span>
-<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a><span class="tok-com">     * Writes the policy file.</span></span>
-<span class="src-line" id="L90"><a class="ln" href="#L90">90</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>    #[<span class="tok-id">Override</span>]</span>
-<span class="src-line" id="L92"><a class="ln" href="#L92">92</a>    <span class="tok-kw">protected</span> <span class="tok-kw">function</span> <span class="tok-id">handle</span>(<span class="tok-id">InputInterface</span> <span class="tok-var">$input</span>, <span class="tok-id">OutputInterface</span> <span class="tok-var">$output</span>): <span class="tok-id">int</span></span>
-<span class="src-line" id="L93"><a class="ln" href="#L93">93</a>    {</span>
-<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>        <span class="tok-var">$path</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">configPath</span>(<span class="tok-var">$input</span>);</span>
-<span class="src-line" id="L95"><a class="ln" href="#L95">95</a>        (<span class="tok-kw">new</span> <span class="tok-id">Initializer</span>())-&gt;<span class="tok-id">write</span>(<span class="tok-var">$path</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">imports</span>(<span class="tok-var">$input</span>));</span>
-<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>        <span class="tok-var">$output</span>-&gt;<span class="tok-id">writeln</span>(<span class="tok-str">&#039;Created &#039;</span> . <span class="tok-var">$path</span> . <span class="tok-str">&#039;. Review the detected recommendations, then run guard check.&#039;</span>, <span class="tok-id">OutputInterface</span>::<span class="tok-id">OUTPUT_RAW</span>);</span>
-<span class="src-line" id="L97"><a class="ln" href="#L97">97</a></span>
-<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>        <span class="tok-kw">return</span> <span class="tok-num">0</span>;</span>
-<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>    }</span>
-<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>}</span>
-<span class="src-line" id="L101"><a class="ln" href="#L101">101</a></span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>        <span class="tok-kw">return</span> <span class="tok-num">0</span>;</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>    }</span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>}</span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

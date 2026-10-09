@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForbidDependencyRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/ForbidDependencyRule.md.html">
+<meta name="description" content="ForbidDependencyRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="ForbidDependencyRule — php-ai-toolkit">
+<meta property="og:description" content="ForbidDependencyRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/ForbidDependencyRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/Dependency/index.html" title="Toolkit\PhpStan\Rule\Architecture\Dependency">Toolkit\PhpStan\Rule\Architecture\Dependency</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/ForbidDependencyRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>ForbidDependencyRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/ForbidDependencyRule.md</span></div></div>
+<section class="readme prose"><h2>ForbidDependencyRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifier</td><td><code>customRules.forbiddenDependency</code></td></tr><tr><td>Scope</td><td>Symbol references and file access in analyzed PHP files</td></tr><tr><td>Configurable</td><td>Yes (<code>forbiddenDependencies</code>, <code>dependencyProjectRoot</code>, <code>dependencyFileReaders</code>)</td></tr></tbody></table></div>
+<h3>Default Policy</h3>
+<p>Each project-root directory is a dependency boundary. Code may depend on files inside its own root directory and inside <code>src/</code>, but must not reuse files from other root directories. This applies to both PHP symbols and file-reading APIs. New directories receive the same boundary without enumerating them in config.</p>
+<div class="table-wrap"><table><thead><tr><th>Source</th><th>Allowed project directories</th></tr></thead><tbody><tr><td><code>src/**</code></td><td><code>src/**</code></td></tr><tr><td><code>tests/**</code></td><td><code>tests/**</code>, <code>src/**</code></td></tr><tr><td><code>examples/**</code></td><td><code>examples/**</code>, <code>src/**</code></td></tr><tr><td><code>bench/**</code></td><td><code>bench/**</code>, <code>src/**</code></td></tr><tr><td>Any other root directory</td><td>That directory and <code>src/**</code></td></tr></tbody></table></div>
+<p>The boundary uses the first path segment, so <code>tests/Unit</code> may reference <code>tests/Integration</code>. <code>example/</code> and <code>examples/</code> are separate boundaries and cannot reference each other. <code>fixtures/</code>, <code>config/</code>, and <code>resources/</code> are also separate boundaries. Test inputs belong inside <code>tests/</code>; do not create a separate root directory and exempt it from the boundary to share test-only code or data.</p>
+<p><code>vendor/</code> is exempt as both a source and destination so Composer library use is permitted. Files directly at the project root, such as <code>composer.json</code> and <code>bootstrap.php</code>, are outside this directory boundary in both directions. Paths outside the configured project are also outside the policy&#039;s scope. These are project architecture checks, not a filesystem sandbox.</p>
+<p>The distributed configuration is:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        dependencyProjectRoot: %currentWorkingDirectory%
+        forbiddenDependencies:
+            -
+                from: [&#039;*/**&#039;]
+                excludeFrom: [&#039;vendor/**&#039;]
+                to: [&#039;*/**&#039;]
+                excludeTo: [&#039;src/**&#039;, &#039;vendor/**&#039;]
+                allowSameRootDirectory: true</code></pre>
+<p>Run PHPStan from the project root, or set <code>dependencyProjectRoot</code> to the absolute project directory when invoking PHPStan from another directory. Paths do not infer their root from namespace names, nested Composer files, or arbitrary occurrences of a directory name in a filename.</p>
+<h3>Custom Boundaries</h3>
+<p>Each policy has <code>from</code> and <code>to</code> lists of root-relative glob patterns. Optional <code>excludeFrom</code> and <code>excludeTo</code> lists exempt sources and destinations respectively. <code>allowSameRootDirectory: true</code> also exempts references within the same project-root directory; its default is <code>false</code> for custom policies.</p>
+<p>A dependency is forbidden if its source matches <code>from</code>, its destination matches <code>to</code>, and none of that policy&#039;s exemptions apply. Exemptions affect only their own policy. Overlapping policies produce one finding per destination at a reference node.</p>
+<p>For example, add a narrower restriction within <code>src/</code>:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        forbiddenDependencies:
+            -
+                from: [&#039;src/Public/**&#039;]
+                to: [&#039;src/Internal/**&#039;]</code></pre>
+<p>PHPStan merges list configuration, so this adds to the root-directory boundary. Appending an exemption does not relax another policy. Use <code>forbiddenDependencies!:</code> when deliberately replacing the entire list, or <code>forbiddenDependencies!: []</code> for an empty policy list.</p>
+<p>Matching is case-sensitive and anchored at the project root. <code>*</code> matches within one path segment, <code>**</code> crosses directory boundaries, <code>**/</code> also matches zero directories, and <code>?</code> matches one non-separator character. Separators and <code>.</code>/<code>..</code> segments are normalized; existing symlink destinations are also checked. A symlink crossing root directories does not receive the same-directory exemption.</p>
+<h3>Symbol Dependencies</h3>
+<p>The rule checks the declaration file PHPStan resolves for:</p>
+<ul><li>class instantiation, static calls, class constants, enum cases, and <code>::class</code>;</li><li>inheritance, interfaces, trait use, attributes, and <code>instanceof</code>;</li><li>native parameter, return, property, and catch types;</li><li>function calls and global constants, including imported aliases;</li><li>methods and properties with a statically known receiver; and</li><li>dynamic class references when PHPStan knows one constant class name.</li></ul>
+<p>Method dependencies use the method&#039;s declaring class, including inherited methods. Unused imports, PHPDoc-only type references, and transitive dependencies through an otherwise allowed declaration are not independently traversed.</p>
+<p>PHPStan must be able to discover the referenced declarations. Composer autoload metadata, analyzed paths, and <code>scanDirectories</code>/<code>scanFiles</code> all work. When examples are excluded from analysis and are not autoloaded, add the existing directories to <code>scanDirectories</code>:</p>
+<pre class="code"><code>parameters:
+    scanDirectories:
+        - examples</code></pre>
+<p>This discovers symbols without executing the example or analyzing its body. Include <code>tests/</code> in PHPStan&#039;s analyzed paths to check test dependencies. An unknown symbol remains subject to PHPStan&#039;s own unknown-symbol diagnostics.</p>
+<h3>File Dependencies</h3>
+<p>All four <code>include</code>/<code>require</code> forms are checked. Built-in reader registrations cover <code>file_get_contents</code>, <code>fopen</code>, <code>file</code>, <code>readfile</code>, <code>parse_ini_file</code>, <code>simplexml_load_file</code>, <code>hash_file</code>, <code>md5_file</code>, <code>sha1_file</code>, and <code>SplFileObject::__construct</code>. Opening a file counts as a dependency regardless of the requested mode.</p>
+<p>Only the registered path argument is checked. Imported function aliases and reordered named arguments are resolved. A namespaced function merely named <code>file_get_contents</code> does not inherit the built-in registration.</p>
+<pre class="code"><code><span class="tok-kw">require</span> __DIR__ . <span class="tok-str">&#039;/../examples/bootstrap.php&#039;</span>; <span class="tok-com">// Forbidden from tests/.</span>
+<span class="tok-id">file_get_contents</span>(<span class="tok-id">dirname</span>(__DIR__) . <span class="tok-str">&#039;/examples/input.json&#039;</span>); <span class="tok-com">// Forbidden.</span>
+<span class="tok-id">file_get_contents</span>(<span class="tok-id">filename</span>: __DIR__ . <span class="tok-str">&#039;/../examples/input.json&#039;</span>); <span class="tok-com">// Forbidden.</span>
+
+<span class="tok-kw">echo</span> <span class="tok-str">&#039;See examples/input.json&#039;</span>; <span class="tok-com">// An explanation, not a file dependency.</span>
+<span class="tok-id">file_get_contents</span>(__DIR__ . <span class="tok-str">&#039;/data/input.json&#039;</span>); <span class="tok-com">// Same tests/ directory: allowed.</span>
+<span class="tok-id">file_get_contents</span>(__DIR__ . <span class="tok-str">&#039;/../fixtures/input.json&#039;</span>); <span class="tok-com">// Forbidden: keep test inputs inside tests/.</span></code></pre>
+<p>The path evaluator handles string literals, <code>__DIR__</code>, <code>__FILE__</code>, concatenation, built-in <code>dirname()</code> with constant arguments, and expressions PHPStan resolves to one constant string. Absolute local paths and <code>file:///</code> paths are supported. No project code is executed to resolve a path.</p>
+<p>Bare relative paths such as <code>examples/input.json</code> depend on the runtime working directory and potentially <code>include_path</code>; the rule does not assume that either equals the analysis project root. Remote URLs, other stream wrappers, unpacked path arguments, uncertain unions, and paths or call targets only known at runtime are left unresolved. Variables containing generalized strings, including some paths assigned from <code>__DIR__</code>, may consequently remain unresolved. Use a directly resolvable path expression when this boundary must be checked.</p>
+<h3>Registering File Readers</h3>
+<p>Add fully qualified function or <code>Class::method</code> names, with a zero-based argument <code>position</code> and its named-argument <code>name</code>:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        dependencyFileReaders:
+            &#039;App\Config\Loader::load&#039;:
+                position: 0
+                name: path
+            &#039;App\readConfig&#039;:
+                position: 1
+                name: filename</code></pre>
+<p>Registrations support functions, static and instance methods, and constructors using <code>Class::__construct</code>. Inherited methods use their declaring class name. Names are case-insensitive. These entries extend the built-ins or override the argument definition of an existing reader. Arbitrary string arguments are never interpreted as filesystem paths.</p>
+<h3>Diagnostics and Disabling</h3>
+<p>Each error names the source file, destination file, symbol or reader, and matched target pattern, followed by an instruction to remove the dependency or move the shared responsibility to an allowed location. A file reference includes non-PHP data such as JSON fixtures.</p>
+<p>The rule follows <code>toolkit.allRules</code>, which defaults to <code>true</code>. Guard&#039;s existing <code>phpstan.all-rules</code> policy checks that shared switch. Disable this rule explicitly with:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        forbidDependency:
+            enabled: false</code></pre>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

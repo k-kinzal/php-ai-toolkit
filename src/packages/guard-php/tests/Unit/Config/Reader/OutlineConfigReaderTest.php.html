@@ -44,9 +44,9 @@
 <span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Config\Reader\DeclaredHeadingReader</span>;</span>
 <span class="src-line" id="L8"><a class="ln" href="#L8">8</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Config\Reader\OutlineConfigReader</span>;</span>
 <span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Config\Validation\HeadingConfigKeyValidator</span>;</span>
-<span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Config\Value\DeclaredHeading</span>;</span>
-<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Config\Value\OutlineEntry</span>;</span>
-<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Policy\PolicyException</span>;</span>
+<span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Diagnostic\PolicyException</span>;</span>
+<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Policy\Definition\DeclaredHeading</span>;</span>
+<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Policy\Definition\OutlineEntry</span>;</span>
 <span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Structure\Markdown\AtxHeadingMatcher</span>;</span>
 <span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Structure\Markdown\Heading</span>;</span>
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Structure\Markdown\HeadingTextNormalizer</span>;</span>
@@ -58,9 +58,9 @@
 <span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-com"> * @covers \Guard\Config\Reader\OutlineConfigReader</span></span>
 <span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-com"> * @uses \Guard\Config\Reader\DeclaredHeadingReader</span></span>
 <span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-com"> * @uses \Guard\Config\Validation\HeadingConfigKeyValidator</span></span>
-<span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-com"> * @uses \Guard\Config\Value\DeclaredHeading</span></span>
-<span class="src-line" id="L25"><a class="ln" href="#L25">25</a><span class="tok-com"> * @uses \Guard\Config\Value\OutlineEntry</span></span>
-<span class="src-line" id="L26"><a class="ln" href="#L26">26</a><span class="tok-com"> * @uses \Guard\Policy\PolicyException</span></span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-com"> * @uses \Guard\Policy\Definition\DeclaredHeading</span></span>
+<span class="src-line" id="L25"><a class="ln" href="#L25">25</a><span class="tok-com"> * @uses \Guard\Policy\Definition\OutlineEntry</span></span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a><span class="tok-com"> * @uses \Guard\Diagnostic\PolicyException</span></span>
 <span class="src-line" id="L27"><a class="ln" href="#L27">27</a><span class="tok-com"> * @uses \Guard\Structure\Markdown\AtxHeadingMatcher</span></span>
 <span class="src-line" id="L28"><a class="ln" href="#L28">28</a><span class="tok-com"> * @uses \Guard\Structure\Markdown\Heading</span></span>
 <span class="src-line" id="L29"><a class="ln" href="#L29">29</a><span class="tok-com"> * @uses \Guard\Structure\Markdown\HeadingTextNormalizer</span></span>

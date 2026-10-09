@@ -52,15 +52,15 @@
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">strlen</span>;</span>
 <span class="src-line" id="L16"><a class="ln" href="#L16">16</a></span>
 <span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Diff\DiffStatus</span>;</span>
-<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\ClassLikeDoc</span>;</span>
-<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\ClassLikeKind</span>;</span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\ConstantDoc</span>;</span>
-<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\DocTag</span>;</span>
-<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\EnumCaseDoc</span>;</span>
-<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\FunctionDoc</span>;</span>
-<span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\MethodDoc</span>;</span>
-<span class="src-line" id="L25"><a class="ln" href="#L25">25</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\PropertyDoc</span>;</span>
-<span class="src-line" id="L26"><a class="ln" href="#L26">26</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Model\TemplateDoc</span>;</span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\Symbol\ClassLikeDoc</span>;</span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\Symbol\ClassLikeKind</span>;</span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\Symbol\ConstantDoc</span>;</span>
+<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\Symbol\DocTag</span>;</span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\Symbol\EnumCaseDoc</span>;</span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\Symbol\FunctionDoc</span>;</span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\Symbol\MethodDoc</span>;</span>
+<span class="src-line" id="L25"><a class="ln" href="#L25">25</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\Symbol\PropertyDoc</span>;</span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\Symbol\TemplateDoc</span>;</span>
 <span class="src-line" id="L27"><a class="ln" href="#L27">27</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\RenderKit</span>;</span>
 <span class="src-line" id="L28"><a class="ln" href="#L28">28</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Render\TypeRenderContext</span>;</span>
 <span class="src-line" id="L29"><a class="ln" href="#L29">29</a></span>
@@ -225,7 +225,7 @@
 <span class="src-line" id="L188"><a class="ln" href="#L188">188</a>    <span class="tok-com">/**</span></span>
 <span class="src-line" id="L189"><a class="ln" href="#L189">189</a><span class="tok-com">     * Renders a callable head with its parameter list, wrapping when long.</span></span>
 <span class="src-line" id="L190"><a class="ln" href="#L190">190</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L191"><a class="ln" href="#L191">191</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Analysis\Model\ParameterDoc&gt; $parameters</span></span>
+<span class="src-line" id="L191"><a class="ln" href="#L191">191</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Model\Symbol\ParameterDoc&gt; $parameters</span></span>
 <span class="src-line" id="L192"><a class="ln" href="#L192">192</a><span class="tok-com">     * @param string $ownerKey the diff key the parameter states are under</span></span>
 <span class="src-line" id="L193"><a class="ln" href="#L193">193</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L194"><a class="ln" href="#L194">194</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">callableSignature</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">string</span> <span class="tok-var">$head</span>, <span class="tok-kw">array</span> <span class="tok-var">$parameters</span>, <span class="tok-id">string</span> <span class="tok-var">$returnSuffix</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>, <span class="tok-id">string</span> <span class="tok-var">$ownerKey</span> = <span class="tok-str">&#039;&#039;</span>): <span class="tok-id">string</span></span>
@@ -249,7 +249,7 @@
 <span class="src-line" id="L212"><a class="ln" href="#L212">212</a><span class="tok-com">     * One of the two is displayed, so the plain view of a signature is</span></span>
 <span class="src-line" id="L213"><a class="ln" href="#L213">213</a><span class="tok-com">     * never a merged signature with a gap in it.</span></span>
 <span class="src-line" id="L214"><a class="ln" href="#L214">214</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L215"><a class="ln" href="#L215">215</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Analysis\Model\ParameterDoc&gt; $parameters</span></span>
+<span class="src-line" id="L215"><a class="ln" href="#L215">215</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Model\Symbol\ParameterDoc&gt; $parameters</span></span>
 <span class="src-line" id="L216"><a class="ln" href="#L216">216</a><span class="tok-com">     * @param string $ownerKey the diff key the parameter states are under</span></span>
 <span class="src-line" id="L217"><a class="ln" href="#L217">217</a><span class="tok-com">     * @param bool $headOnly whether the parameters the head dropped are skipped</span></span>
 <span class="src-line" id="L218"><a class="ln" href="#L218">218</a><span class="tok-com">     */</span></span>
@@ -277,7 +277,7 @@
 <span class="src-line" id="L240"><a class="ln" href="#L240">240</a>    <span class="tok-com">/**</span></span>
 <span class="src-line" id="L241"><a class="ln" href="#L241">241</a><span class="tok-com">     * Reports whether the head revision dropped one of the parameters.</span></span>
 <span class="src-line" id="L242"><a class="ln" href="#L242">242</a><span class="tok-com">     *</span></span>
-<span class="src-line" id="L243"><a class="ln" href="#L243">243</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Analysis\Model\ParameterDoc&gt; $parameters</span></span>
+<span class="src-line" id="L243"><a class="ln" href="#L243">243</a><span class="tok-com">     * @param list&lt;\Toolkit\DocGen\Model\Symbol\ParameterDoc&gt; $parameters</span></span>
 <span class="src-line" id="L244"><a class="ln" href="#L244">244</a><span class="tok-com">     * @param string $ownerKey the diff key the parameter states are under</span></span>
 <span class="src-line" id="L245"><a class="ln" href="#L245">245</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L246"><a class="ln" href="#L246">246</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">hasRemovedParameter</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-kw">array</span> <span class="tok-var">$parameters</span>, <span class="tok-id">string</span> <span class="tok-var">$ownerKey</span>): <span class="tok-id">bool</span></span>
@@ -296,7 +296,7 @@
 <span class="src-line" id="L259"><a class="ln" href="#L259">259</a><span class="tok-com">     *</span></span>
 <span class="src-line" id="L260"><a class="ln" href="#L260">260</a><span class="tok-com">     * @param string $ownerKey the diff key the parameter states are under</span></span>
 <span class="src-line" id="L261"><a class="ln" href="#L261">261</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L262"><a class="ln" href="#L262">262</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">isRemovedParameter</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">\Toolkit\DocGen\Analysis\Model\ParameterDoc</span> <span class="tok-var">$parameter</span>, <span class="tok-id">string</span> <span class="tok-var">$ownerKey</span>): <span class="tok-id">bool</span></span>
+<span class="src-line" id="L262"><a class="ln" href="#L262">262</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">isRemovedParameter</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">\Toolkit\DocGen\Model\Symbol\ParameterDoc</span> <span class="tok-var">$parameter</span>, <span class="tok-id">string</span> <span class="tok-var">$ownerKey</span>): <span class="tok-id">bool</span></span>
 <span class="src-line" id="L263"><a class="ln" href="#L263">263</a>    {</span>
 <span class="src-line" id="L264"><a class="ln" href="#L264">264</a>        <span class="tok-kw">return</span> <span class="tok-var">$ownerKey</span> !== <span class="tok-str">&#039;&#039;</span></span>
 <span class="src-line" id="L265"><a class="ln" href="#L265">265</a>            &amp;&amp; <span class="tok-var">$services</span>-&gt;<span class="tok-id">diff</span>-&gt;<span class="tok-id">isActive</span>()</span>
@@ -311,7 +311,7 @@
 <span class="src-line" id="L274"><a class="ln" href="#L274">274</a><span class="tok-com">     *</span></span>
 <span class="src-line" id="L275"><a class="ln" href="#L275">275</a><span class="tok-com">     * @param string $ownerKey the diff key the parameter states are under</span></span>
 <span class="src-line" id="L276"><a class="ln" href="#L276">276</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L277"><a class="ln" href="#L277">277</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">markedParameter</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">\Toolkit\DocGen\Analysis\Model\ParameterDoc</span> <span class="tok-var">$parameter</span>, <span class="tok-id">string</span> <span class="tok-var">$html</span>, <span class="tok-id">string</span> <span class="tok-var">$ownerKey</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L277"><a class="ln" href="#L277">277</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">markedParameter</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">\Toolkit\DocGen\Model\Symbol\ParameterDoc</span> <span class="tok-var">$parameter</span>, <span class="tok-id">string</span> <span class="tok-var">$html</span>, <span class="tok-id">string</span> <span class="tok-var">$ownerKey</span>): <span class="tok-id">string</span></span>
 <span class="src-line" id="L278"><a class="ln" href="#L278">278</a>    {</span>
 <span class="src-line" id="L279"><a class="ln" href="#L279">279</a>        <span class="tok-kw">if</span> (<span class="tok-var">$ownerKey</span> === <span class="tok-str">&#039;&#039;</span> || !<span class="tok-var">$services</span>-&gt;<span class="tok-id">diff</span>-&gt;<span class="tok-id">isActive</span>()) {</span>
 <span class="src-line" id="L280"><a class="ln" href="#L280">280</a>            <span class="tok-kw">return</span> <span class="tok-var">$html</span>;</span>
@@ -323,7 +323,7 @@
 <span class="src-line" id="L286"><a class="ln" href="#L286">286</a>    <span class="tok-com">/**</span></span>
 <span class="src-line" id="L287"><a class="ln" href="#L287">287</a><span class="tok-com">     * Renders one parameter with its most precise type.</span></span>
 <span class="src-line" id="L288"><a class="ln" href="#L288">288</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L289"><a class="ln" href="#L289">289</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">parameter</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">\Toolkit\DocGen\Analysis\Model\ParameterDoc</span> <span class="tok-var">$parameter</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
+<span class="src-line" id="L289"><a class="ln" href="#L289">289</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">parameter</span>(<span class="tok-id">RenderKit</span> <span class="tok-var">$services</span>, <span class="tok-id">\Toolkit\DocGen\Model\Symbol\ParameterDoc</span> <span class="tok-var">$parameter</span>, <span class="tok-id">TypeRenderContext</span> <span class="tok-var">$context</span>): <span class="tok-id">string</span></span>
 <span class="src-line" id="L290"><a class="ln" href="#L290">290</a>    {</span>
 <span class="src-line" id="L291"><a class="ln" href="#L291">291</a>        <span class="tok-var">$html</span> = <span class="tok-str">&#039;&#039;</span>;</span>
 <span class="src-line" id="L292"><a class="ln" href="#L292">292</a>        <span class="tok-kw">if</span> (<span class="tok-var">$parameter</span>-&gt;<span class="tok-id">promotedVisibility</span> !== <span class="tok-id">null</span>) {</span>

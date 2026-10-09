@@ -130,7 +130,7 @@
 <span class="src-line" id="L93"><a class="ln" href="#L93">93</a></span>
 <span class="src-line" id="L94"><a class="ln" href="#L94">94</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testDoctestProviderNamesEveryExampleTheEnvironmentSelects</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L95"><a class="ln" href="#L95">95</a>    {</span>
-<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>        <span class="tok-id">putenv</span>(<span class="tok-str">&#039;DOCTEST_DIRECTORIES=&#039;</span> . <span class="tok-id">dirname</span>(__DIR__, <span class="tok-num">4</span>) . <span class="tok-str">&#039;/fixtures/Doctest/project/src&#039;</span>);</span>
+<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>        <span class="tok-id">putenv</span>(<span class="tok-str">&#039;DOCTEST_DIRECTORIES=&#039;</span> . <span class="tok-id">dirname</span>(__DIR__, <span class="tok-num">4</span>) . <span class="tok-str">&#039;/tests/Doctest/project/src&#039;</span>);</span>
 <span class="src-line" id="L97"><a class="ln" href="#L97">97</a>        <span class="tok-id">putenv</span>(<span class="tok-str">&#039;DOCTEST_EXCLUDE=*/Nested/*&#039;</span>);</span>
 <span class="src-line" id="L98"><a class="ln" href="#L98">98</a></span>
 <span class="src-line" id="L99"><a class="ln" href="#L99">99</a>        <span class="tok-var">$provided</span> = <span class="tok-id">iterator_to_array</span>(<span class="tok-id">LegacyDoctestSuite</span>::<span class="tok-id">doctestProvider</span>());</span>

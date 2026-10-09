@@ -43,10 +43,10 @@
 <span class="src-line" id="L6"><a class="ln" href="#L6">6</a></span>
 <span class="src-line" id="L7"><a class="ln" href="#L7">7</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">count</span>;</span>
 <span class="src-line" id="L8"><a class="ln" href="#L8">8</a></span>
-<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Collect\DirectoryListing</span>;</span>
-<span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Collect\Filesystem\Path</span> <span class="tok-kw">as</span> <span class="tok-id">PathResolver</span>;</span>
-<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Config\Value\DirectoryRuleConfig</span>;</span>
-<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Reporting\DirectoryViolation</span>;</span>
+<span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Input\DirectoryListing</span>;</span>
+<span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Input\Path</span> <span class="tok-kw">as</span> <span class="tok-id">PathResolver</span>;</span>
+<span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Policy\Definition\DirectoryRuleConfig</span>;</span>
+<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Policy\Diagnostic\DirectoryViolation</span>;</span>
 <span class="src-line" id="L13"><a class="ln" href="#L13">13</a></span>
 <span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-kw">function</span> <span class="tok-id">sprintf</span>;</span>
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a></span>
@@ -90,7 +90,7 @@
 <span class="src-line" id="L53"><a class="ln" href="#L53">53</a>            <span class="tok-kw">return</span> [];</span>
 <span class="src-line" id="L54"><a class="ln" href="#L54">54</a>        }</span>
 <span class="src-line" id="L55"><a class="ln" href="#L55">55</a></span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>        <span class="tok-kw">return</span> [<span class="tok-kw">new</span> <span class="tok-id">DirectoryViolation</span>(<span class="tok-var">$listing</span>-&gt;<span class="tok-id">relativePath</span>, <span class="tok-str">&#039;max_total_files&#039;</span>, <span class="tok-var">$rule</span>-&gt;<span class="tok-id">path</span>, <span class="tok-var">$total</span>, <span class="tok-var">$rule</span>-&gt;<span class="tok-id">maxTotalFiles</span>, <span class="tok-id">sprintf</span>(<span class="tok-str">&#039;Directory &quot;%s&quot; contains %d files in total but the limit is %d. Restructure or split the subtree.&#039;</span>, <span class="tok-var">$listing</span>-&gt;<span class="tok-id">relativePath</span>, <span class="tok-var">$total</span>, <span class="tok-var">$rule</span>-&gt;<span class="tok-id">maxTotalFiles</span>))];</span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>        <span class="tok-kw">return</span> [<span class="tok-kw">new</span> <span class="tok-id">DirectoryViolation</span>(<span class="tok-var">$listing</span>-&gt;<span class="tok-id">relativePath</span>, <span class="tok-str">&#039;max_total_files&#039;</span>, <span class="tok-var">$rule</span>-&gt;<span class="tok-id">path</span>, <span class="tok-var">$total</span>, <span class="tok-var">$rule</span>-&gt;<span class="tok-id">maxTotalFiles</span>, <span class="tok-id">sprintf</span>(<span class="tok-str">&#039;Directory &quot;%s&quot; contains %d files in total but the limit is %d. Move independent groups outside this subtree or merge related files until the total meets the limit; adding subdirectories inside it does not reduce the total.&#039;</span>, <span class="tok-var">$listing</span>-&gt;<span class="tok-id">relativePath</span>, <span class="tok-var">$total</span>, <span class="tok-var">$rule</span>-&gt;<span class="tok-id">maxTotalFiles</span>))];</span>
 <span class="src-line" id="L57"><a class="ln" href="#L57">57</a>    }</span>
 <span class="src-line" id="L58"><a class="ln" href="#L58">58</a>}</span>
 <span class="src-line" id="L59"><a class="ln" href="#L59">59</a></span>

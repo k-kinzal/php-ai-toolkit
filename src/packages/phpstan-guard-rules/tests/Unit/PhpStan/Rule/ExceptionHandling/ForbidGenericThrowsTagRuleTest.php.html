@@ -70,7 +70,7 @@
 <span class="src-line" id="L33"><a class="ln" href="#L33">33</a></span>
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeGenericThrowsTagsAreReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a>    {</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/ForbidGenericThrowsTag/WithGenericThrowsTag.php&#039;</span>], [</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/ForbidGenericThrowsTag/WithGenericThrowsTag.php&#039;</span>], [</span>
 <span class="src-line" id="L37"><a class="ln" href="#L37">37</a>            [</span>
 <span class="src-line" id="L38"><a class="ln" href="#L38">38</a>                <span class="tok-str">&#039;Replace &quot;@throws \Exception&quot; on withGenericException() with the concrete exception types the method can raise. A generic @throws tag gives callers nothing to catch selectively and defeats checked-exception analysis.&#039;</span>,</span>
 <span class="src-line" id="L39"><a class="ln" href="#L39">39</a>                <span class="tok-num">16</span>,</span>
@@ -88,7 +88,7 @@
 <span class="src-line" id="L51"><a class="ln" href="#L51">51</a></span>
 <span class="src-line" id="L52"><a class="ln" href="#L52">52</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testProcessNodeConcreteThrowsTagsAreNotReported</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L53"><a class="ln" href="#L53">53</a>    {</span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../fixtures/ForbidGenericThrowsTag/WithConcreteThrowsTag.php&#039;</span>], []);</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">analyse</span>([__DIR__ . <span class="tok-str">&#039;/../../../../../tests/PhpStan/ForbidGenericThrowsTag/WithConcreteThrowsTag.php&#039;</span>], []);</span>
 <span class="src-line" id="L55"><a class="ln" href="#L55">55</a>    }</span>
 <span class="src-line" id="L56"><a class="ln" href="#L56">56</a>}</span>
 <span class="src-line" id="L57"><a class="ln" href="#L57">57</a></span>

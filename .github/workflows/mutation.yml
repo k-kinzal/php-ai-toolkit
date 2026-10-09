@@ -76,7 +76,7 @@ jobs:
                 --with-uncovered \
                 --threads=max \
                 --only-covering-test-cases \
-                --test-framework-extra-args="--no-extensions --enforce-time-limit --default-time-limit=5" \
+                --test-framework-extra-args="--no-extensions --enforce-time-limit --default-time-limit=2" \
                 --min-msi=0 \
                 --min-covered-msi=0 \
                 --no-progress \

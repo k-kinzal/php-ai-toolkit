@@ -11,4 +11,4 @@ parameters:
     toolkit:
         allRules: true
         broadCatchAllowedPaths:
-            - src/DocGen/Parallel/WorkerPool.php
+            - src/DocGen/Infrastructure/Parallel/WorkerPool.php

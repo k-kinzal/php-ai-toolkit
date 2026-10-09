@@ -11,7 +11,7 @@ use const JSON_UNESCAPED_UNICODE;
 
 use function mb_strimwidth;
 
-use Toolkit\DocGen\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
 use Toolkit\DocGen\Model\ProjectModel;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 

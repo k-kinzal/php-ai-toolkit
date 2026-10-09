@@ -8,8 +8,8 @@ use function file_get_contents;
 use function is_file;
 use function sprintf;
 
-use Toolkit\DocGen\Diagnostic\DocGenException;
-use Toolkit\DocGen\Filesystem\SiteFileWriter;
+use Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter;
+use Toolkit\DocGen\Model\DocGenException;
 use Toolkit\DocGen\Render\Social\SocialCard;
 
 /**

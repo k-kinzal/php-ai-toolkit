@@ -7,8 +7,8 @@ namespace Tests\Unit\DocGen\Render;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Diff\DiffKey;
-use Toolkit\DocGen\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 use Toolkit\DocGen\Model\Package\PackageGraph;
 use Toolkit\DocGen\Model\ProjectModel;
 use Toolkit\DocGen\Model\Reference\HierarchyIndex;
@@ -30,8 +30,8 @@ use Toolkit\DocGen\Render\SiteUrl;
  * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Model\Symbol\ConstantDoc
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
- * @uses \Toolkit\DocGen\Diff\DiffKey
- * @uses \Toolkit\DocGen\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
  * @uses \Toolkit\DocGen\Model\Symbol\DocBlock
  * @uses \Toolkit\DocGen\Model\Symbol\FunctionDoc
  * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
@@ -61,7 +61,7 @@ use Toolkit\DocGen\Render\SiteUrl;
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UsageIndex::class)]
-#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\DocGen\Model\Mutation\MutationContract::class)]
 final class SearchIndexBuilderTest extends TestCase
 {
     public function testBuildEmitsEntriesForPublicSymbols(): void

@@ -16,11 +16,11 @@ use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
 use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
 use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use Toolkit\DocGen\Model\Mutation\MutationContract;
 use Toolkit\DocGen\Model\Symbol\DocBlock;
 use Toolkit\DocGen\Model\Symbol\DocTag;
 use Toolkit\DocGen\Model\Symbol\ParameterDoc;
 use Toolkit\DocGen\Model\Symbol\TypeSignature;
-use Toolkit\Mutation\MutationContract;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder

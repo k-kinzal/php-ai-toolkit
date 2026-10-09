@@ -12,18 +12,18 @@ use Toolkit\DocGen\Cli\DocGenCliArgumentParser;
 use Toolkit\DocGen\Cli\DocGenCommand;
 use Toolkit\DocGen\Cli\DocGenHelpText;
 use Toolkit\DocGen\Cli\DocGenOutputWriter;
-use Toolkit\DocGen\Config\BaseUrl;
-use Toolkit\DocGen\Config\RepositoryUrl;
-use Toolkit\DocGen\Diagnostic\DocGenException;
+use Toolkit\DocGen\Model\Config\BaseUrl;
+use Toolkit\DocGen\Model\Config\RepositoryUrl;
+use Toolkit\DocGen\Model\DocGenException;
 
 /**
  * @covers \Toolkit\DocGen\Cli\DocGenCommand
  * @uses \Toolkit\DocGen\Cli\DocGenCliArgumentParser
  * @uses \Toolkit\DocGen\Cli\DocGenHelpText
  * @uses \Toolkit\DocGen\Cli\DocGenOutputWriter
- * @uses \Toolkit\DocGen\Config\BaseUrl
- * @uses \Toolkit\DocGen\Config\RepositoryUrl
- * @uses \Toolkit\DocGen\Diagnostic\DocGenException
+ * @uses \Toolkit\DocGen\Model\Config\BaseUrl
+ * @uses \Toolkit\DocGen\Model\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Model\DocGenException
  */
 #[CoversClass(DocGenCommand::class)]
 #[UsesClass(DocGenCliArgumentParser::class)]

@@ -7,7 +7,7 @@ namespace Toolkit\DocGen\Render\Page\Component;
 use function in_array;
 use function sprintf;
 
-use Toolkit\DocGen\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 use Toolkit\DocGen\Model\Reference\Usage;
 use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Model\Symbol\ConstantDoc;

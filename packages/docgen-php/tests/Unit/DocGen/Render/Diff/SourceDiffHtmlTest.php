@@ -7,12 +7,12 @@ namespace Tests\Unit\DocGen\Render\Diff;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Diff\DiffIndex;
-use Toolkit\DocGen\Diff\DiffKey;
-use Toolkit\DocGen\Diff\DiffLine;
-use Toolkit\DocGen\Diff\DiffStatus;
-use Toolkit\DocGen\Diff\LcsMatcher;
-use Toolkit\DocGen\Diff\LineDiffer;
+use Toolkit\DocGen\Analysis\Diff\DiffIndex;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffLine;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\LcsMatcher;
+use Toolkit\DocGen\Analysis\Diff\LineDiffer;
 use Toolkit\DocGen\Model\Package\PackageGraph;
 use Toolkit\DocGen\Model\ProjectModel;
 use Toolkit\DocGen\Model\Reference\HierarchyIndex;
@@ -35,15 +35,15 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @covers \Toolkit\DocGen\Render\Diff\SourceDiffHtml
  * @uses \Toolkit\DocGen\Render\Doctest\AssertionScanner
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
- * @uses \Toolkit\DocGen\Diff\DiffIndex
- * @uses \Toolkit\DocGen\Diff\DiffKey
- * @uses \Toolkit\DocGen\Diff\DiffLine
- * @uses \Toolkit\DocGen\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffIndex
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffLine
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
  * @uses \Toolkit\DocGen\Render\Doctest\DoctestExtractor
  * @uses \Toolkit\DocGen\Model\Reference\HierarchyIndex
  * @uses \Toolkit\DocGen\Render\HtmlText
- * @uses \Toolkit\DocGen\Diff\LcsMatcher
- * @uses \Toolkit\DocGen\Diff\LineDiffer
+ * @uses \Toolkit\DocGen\Analysis\Diff\LcsMatcher
+ * @uses \Toolkit\DocGen\Analysis\Diff\LineDiffer
  * @uses \Toolkit\DocGen\Render\MarkdownInline
  * @uses \Toolkit\DocGen\Render\MarkdownRenderer
  * @uses \Toolkit\DocGen\Model\Package\PackageGraph

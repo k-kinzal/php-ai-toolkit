@@ -23,7 +23,7 @@ use Toolkit\DocGen\Model\Symbol\TypeAliasDoc;
 #[UsesClass(DocTag::class)]
 #[UsesClass(TemplateDoc::class)]
 #[UsesClass(TypeAliasDoc::class)]
-#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\DocGen\Model\Mutation\MutationContract::class)]
 final class DocBlockTest extends TestCase
 {
     public function testStoresDocumentationData(): void

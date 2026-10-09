@@ -9,16 +9,16 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Cli\DocGenCliArgumentParser;
 use Toolkit\DocGen\Cli\DocGenConfigFactory;
-use Toolkit\DocGen\Config\BaseUrl;
-use Toolkit\DocGen\Config\DocGenConfig;
-use Toolkit\DocGen\Config\RepositoryUrl;
+use Toolkit\DocGen\Model\Config\BaseUrl;
+use Toolkit\DocGen\Model\Config\DocGenConfig;
+use Toolkit\DocGen\Model\Config\RepositoryUrl;
 
 /**
  * @covers \Toolkit\DocGen\Cli\DocGenConfigFactory
- * @uses \Toolkit\DocGen\Config\BaseUrl
+ * @uses \Toolkit\DocGen\Model\Config\BaseUrl
  * @uses \Toolkit\DocGen\Cli\DocGenCliArgumentParser
- * @uses \Toolkit\DocGen\Config\DocGenConfig
- * @uses \Toolkit\DocGen\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Model\Config\DocGenConfig
+ * @uses \Toolkit\DocGen\Model\Config\RepositoryUrl
  */
 #[CoversClass(DocGenConfigFactory::class)]
 #[UsesClass(BaseUrl::class)]

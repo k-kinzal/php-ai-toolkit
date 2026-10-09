@@ -13,7 +13,7 @@ use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Toolkit\DocGen\Diagnostic\DocGenException;
+use Toolkit\DocGen\Model\DocGenException;
 
 /**
  * The docgen console command: reads the options and generates the site.

@@ -6,7 +6,7 @@ namespace Toolkit\DocGen\Model\Symbol;
 
 use function strtolower;
 
-use Toolkit\Mutation\MutationContract;
+use Toolkit\DocGen\Model\Mutation\MutationContract;
 
 /**
  * Structured view of one PHPDoc block.

@@ -9,9 +9,9 @@ use function file_get_contents;
 use function is_file;
 use function preg_match;
 
-use Toolkit\DocGen\Config\DocGenConfig;
-use Toolkit\DocGen\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Filesystem\MarkdownFileFinder;
+use Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Infrastructure\Filesystem\MarkdownFileFinder;
+use Toolkit\DocGen\Model\Config\DocGenConfig;
 use Toolkit\DocGen\Model\Package\DiscoveredPackage;
 use Toolkit\DocGen\Model\Symbol\MarkdownDoc;
 

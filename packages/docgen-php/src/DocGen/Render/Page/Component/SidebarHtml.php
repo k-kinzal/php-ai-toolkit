@@ -9,7 +9,7 @@ use function strrpos;
 use function strtolower;
 use function substr;
 
-use Toolkit\DocGen\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 use Toolkit\DocGen\Render\Page\SidebarScope;
 use Toolkit\DocGen\Render\Page\SymbolIndex;
 use Toolkit\DocGen\Render\RenderKit;

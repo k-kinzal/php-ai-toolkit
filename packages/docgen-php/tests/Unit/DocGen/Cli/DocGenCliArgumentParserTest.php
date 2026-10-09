@@ -11,15 +11,15 @@ use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\ArrayInput;
 use Toolkit\DocGen\Cli\DocGenCliArgumentParser;
-use Toolkit\DocGen\Config\BaseUrl;
-use Toolkit\DocGen\Config\RepositoryUrl;
-use Toolkit\DocGen\Diagnostic\DocGenException;
+use Toolkit\DocGen\Model\Config\BaseUrl;
+use Toolkit\DocGen\Model\Config\RepositoryUrl;
+use Toolkit\DocGen\Model\DocGenException;
 
 /**
  * @covers \Toolkit\DocGen\Cli\DocGenCliArgumentParser
- * @uses \Toolkit\DocGen\Config\BaseUrl
- * @uses \Toolkit\DocGen\Diagnostic\DocGenException
- * @uses \Toolkit\DocGen\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Model\Config\BaseUrl
+ * @uses \Toolkit\DocGen\Model\DocGenException
+ * @uses \Toolkit\DocGen\Model\Config\RepositoryUrl
  */
 #[CoversClass(DocGenCliArgumentParser::class)]
 #[UsesClass(BaseUrl::class)]

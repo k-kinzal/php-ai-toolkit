@@ -7,10 +7,13 @@ namespace Tests\Unit\DocGen\Render\Signature;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Cache\ToolkitFingerprint;
-use Toolkit\DocGen\Diff\DiffKey;
-use Toolkit\DocGen\Diff\DiffStatus;
-use Toolkit\DocGen\Diff\LineDiffer;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\LineDiffer;
+use Toolkit\DocGen\Infrastructure\Cache\ToolkitFingerprint;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkerCount;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkerPool;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler;
 use Toolkit\DocGen\Model\Coverage\CoverageIndex;
 use Toolkit\DocGen\Model\Coverage\MethodCoverage;
 use Toolkit\DocGen\Model\Package\ComposerManifest;
@@ -27,9 +30,6 @@ use Toolkit\DocGen\Model\Symbol\FunctionDoc;
 use Toolkit\DocGen\Model\Symbol\MarkdownDoc;
 use Toolkit\DocGen\Model\Symbol\MethodDoc;
 use Toolkit\DocGen\Model\Symbol\TypeSignature;
-use Toolkit\DocGen\Parallel\WorkerCount;
-use Toolkit\DocGen\Parallel\WorkerPool;
-use Toolkit\DocGen\Parallel\WorkScheduler;
 use Toolkit\DocGen\Render\AssetPublisher;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 use Toolkit\DocGen\Render\Diff\MarkdownDiffHtml;
@@ -83,8 +83,8 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Model\Coverage\CoverageIndex
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
- * @uses \Toolkit\DocGen\Diff\DiffKey
- * @uses \Toolkit\DocGen\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
  * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Render\Page\Component\DocTextHtml
  * @uses \Toolkit\DocGen\Render\Doctest\DoctestExtractor
@@ -97,7 +97,7 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\HtmlText
  * @uses \Toolkit\DocGen\Render\Page\IndexPage
  * @uses \Toolkit\DocGen\Render\Page\LayerPage
- * @uses \Toolkit\DocGen\Diff\LineDiffer
+ * @uses \Toolkit\DocGen\Analysis\Diff\LineDiffer
  * @uses \Toolkit\DocGen\Render\Diff\MarkdownDiffHtml
  * @uses \Toolkit\DocGen\Model\Symbol\MarkdownDoc
  * @uses \Toolkit\DocGen\Render\MarkdownInline
@@ -131,14 +131,14 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\Page\Component\SymbolRow
  * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
  * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
- * @uses \Toolkit\DocGen\Cache\ToolkitFingerprint
+ * @uses \Toolkit\DocGen\Infrastructure\Cache\ToolkitFingerprint
  * @uses \Toolkit\DocGen\Render\TypeHtml
  * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
  * @uses \Toolkit\DocGen\Model\Reference\Usage
  * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
- * @uses \Toolkit\DocGen\Parallel\WorkScheduler
- * @uses \Toolkit\DocGen\Parallel\WorkerCount
- * @uses \Toolkit\DocGen\Parallel\WorkerPool
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerCount
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerPool
  */
 #[CoversClass(PageSignature::class)]
 #[UsesClass(AllItemsPage::class)]

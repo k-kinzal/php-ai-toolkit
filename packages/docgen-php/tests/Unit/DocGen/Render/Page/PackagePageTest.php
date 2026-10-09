@@ -7,6 +7,9 @@ namespace Tests\Unit\DocGen\Render\Page;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\LineDiffer;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use Toolkit\DocGen\Analysis\Parse\AstParser;
@@ -24,10 +27,10 @@ use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
-use Toolkit\DocGen\Diff\DiffKey;
-use Toolkit\DocGen\Diff\DiffStatus;
-use Toolkit\DocGen\Diff\LineDiffer;
-use Toolkit\DocGen\Filesystem\SiteFileWriter;
+use Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkerCount;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkerPool;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler;
 use Toolkit\DocGen\Model\Layer\LayerModel;
 use Toolkit\DocGen\Model\Package\ComposerManifest;
 use Toolkit\DocGen\Model\Package\DiscoveredPackage;
@@ -43,9 +46,6 @@ use Toolkit\DocGen\Model\Symbol\ClassLikeKind;
 use Toolkit\DocGen\Model\Symbol\DocBlock;
 use Toolkit\DocGen\Model\Symbol\FileSymbols;
 use Toolkit\DocGen\Model\Symbol\MarkdownDoc;
-use Toolkit\DocGen\Parallel\WorkerCount;
-use Toolkit\DocGen\Parallel\WorkerPool;
-use Toolkit\DocGen\Parallel\WorkScheduler;
 use Toolkit\DocGen\Render\AssetPublisher;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 use Toolkit\DocGen\Render\Diff\DiffModeControl;
@@ -108,9 +108,9 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
- * @uses \Toolkit\DocGen\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
  * @uses \Toolkit\DocGen\Render\Diff\DiffModeControl
- * @uses \Toolkit\DocGen\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
  * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Model\Symbol\DocBlock
  * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
@@ -131,7 +131,7 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\Page\IndexPage
  * @uses \Toolkit\DocGen\Model\Layer\LayerModel
  * @uses \Toolkit\DocGen\Render\Page\LayerPage
- * @uses \Toolkit\DocGen\Diff\LineDiffer
+ * @uses \Toolkit\DocGen\Analysis\Diff\LineDiffer
  * @uses \Toolkit\DocGen\Render\Diff\MarkdownDiffHtml
  * @uses \Toolkit\DocGen\Model\Symbol\MarkdownDoc
  * @uses \Toolkit\DocGen\Render\MarkdownInline
@@ -161,7 +161,7 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Render\Page\Component\SidebarHtml
  * @uses \Toolkit\DocGen\Render\Page\SidebarScope
  * @uses \Toolkit\DocGen\Render\Page\Component\SignatureHtml
- * @uses \Toolkit\DocGen\Filesystem\SiteFileWriter
+ * @uses \Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter
  * @uses \Toolkit\DocGen\Render\SiteRenderer
  * @uses \Toolkit\DocGen\Render\SiteUrl
  * @uses \Toolkit\DocGen\Render\Social\SocialCard
@@ -178,9 +178,9 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
  * @uses \Toolkit\DocGen\Render\Page\Component\UsageListHtml
  * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
- * @uses \Toolkit\DocGen\Parallel\WorkScheduler
- * @uses \Toolkit\DocGen\Parallel\WorkerCount
- * @uses \Toolkit\DocGen\Parallel\WorkerPool
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerCount
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerPool
  */
 #[CoversClass(PackagePage::class)]
 #[UsesClass(AllItemsPage::class)]

@@ -7,6 +7,10 @@ namespace Tests\Unit\DocGen\Render\Page\Component;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Analysis\Diff\DiffIndex;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\LineDiffer;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
 use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
 use Toolkit\DocGen\Analysis\Parse\AstParser;
@@ -24,11 +28,10 @@ use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
-use Toolkit\DocGen\Diff\DiffIndex;
-use Toolkit\DocGen\Diff\DiffKey;
-use Toolkit\DocGen\Diff\DiffStatus;
-use Toolkit\DocGen\Diff\LineDiffer;
-use Toolkit\DocGen\Filesystem\SiteFileWriter;
+use Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkerCount;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkerPool;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler;
 use Toolkit\DocGen\Model\Package\ComposerManifest;
 use Toolkit\DocGen\Model\Package\DiscoveredPackage;
 use Toolkit\DocGen\Model\Package\PackageGraph;
@@ -50,9 +53,6 @@ use Toolkit\DocGen\Model\Symbol\ParameterDoc;
 use Toolkit\DocGen\Model\Symbol\PropertyDoc;
 use Toolkit\DocGen\Model\Symbol\TemplateDoc;
 use Toolkit\DocGen\Model\Symbol\TypeSignature;
-use Toolkit\DocGen\Parallel\WorkerCount;
-use Toolkit\DocGen\Parallel\WorkerPool;
-use Toolkit\DocGen\Parallel\WorkScheduler;
 use Toolkit\DocGen\Render\AssetPublisher;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
 use Toolkit\DocGen\Render\Diff\MarkdownDiffHtml;
@@ -110,9 +110,9 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
  * @uses \Toolkit\DocGen\Model\Symbol\ConstantDoc
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
- * @uses \Toolkit\DocGen\Diff\DiffIndex
- * @uses \Toolkit\DocGen\Diff\DiffKey
- * @uses \Toolkit\DocGen\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffIndex
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
  * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Model\Symbol\DocBlock
  * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
@@ -134,7 +134,7 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Render\HtmlText
  * @uses \Toolkit\DocGen\Render\Page\IndexPage
  * @uses \Toolkit\DocGen\Render\Page\LayerPage
- * @uses \Toolkit\DocGen\Diff\LineDiffer
+ * @uses \Toolkit\DocGen\Analysis\Diff\LineDiffer
  * @uses \Toolkit\DocGen\Render\Diff\MarkdownDiffHtml
  * @uses \Toolkit\DocGen\Render\MarkdownInline
  * @uses \Toolkit\DocGen\Render\MarkdownRenderer
@@ -162,7 +162,7 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Render\SearchIndexBuilder
  * @uses \Toolkit\DocGen\Render\Signature\SidebarDigest
  * @uses \Toolkit\DocGen\Render\Page\Component\SidebarHtml
- * @uses \Toolkit\DocGen\Filesystem\SiteFileWriter
+ * @uses \Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter
  * @uses \Toolkit\DocGen\Render\SiteRenderer
  * @uses \Toolkit\DocGen\Render\SiteUrl
  * @uses \Toolkit\DocGen\Render\Social\SocialCard
@@ -180,9 +180,9 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
  * @uses \Toolkit\DocGen\Render\Page\Component\UsageListHtml
  * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
- * @uses \Toolkit\DocGen\Parallel\WorkScheduler
- * @uses \Toolkit\DocGen\Parallel\WorkerCount
- * @uses \Toolkit\DocGen\Parallel\WorkerPool
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerCount
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerPool
  */
 #[CoversClass(SignatureHtml::class)]
 #[UsesClass(AllItemsPage::class)]
@@ -271,8 +271,8 @@ use Toolkit\DocGen\Render\TypeRenderContext;
 #[UsesClass(WorkScheduler::class)]
 #[UsesClass(WorkerCount::class)]
 #[UsesClass(WorkerPool::class)]
-#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
-#[UsesClass(\Toolkit\Mutation\MutationContractReader::class)]
+#[UsesClass(\Toolkit\DocGen\Model\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\DocGen\Analysis\Doc\MutationContractReader::class)]
 final class SignatureHtmlTest extends TestCase
 {
     public function testClassSignatureRendersKeywordsAndLinkedInterface(): void

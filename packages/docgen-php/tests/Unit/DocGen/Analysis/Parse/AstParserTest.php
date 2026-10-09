@@ -24,7 +24,7 @@ use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
 use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
 use Toolkit\DocGen\Analysis\Parse\SymbolContext;
 use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
-use Toolkit\DocGen\Diagnostic\DocGenException;
+use Toolkit\DocGen\Model\DocGenException;
 use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Model\Symbol\FileSymbols;
 
@@ -34,7 +34,7 @@ use Toolkit\DocGen\Model\Symbol\FileSymbols;
  * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
  * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \Toolkit\DocGen\Diagnostic\DocGenException
+ * @uses \Toolkit\DocGen\Model\DocGenException
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector

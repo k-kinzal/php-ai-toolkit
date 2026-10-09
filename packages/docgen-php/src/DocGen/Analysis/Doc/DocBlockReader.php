@@ -28,7 +28,6 @@ use Toolkit\DocGen\Model\Symbol\DocBlock;
 use Toolkit\DocGen\Model\Symbol\DocTag;
 use Toolkit\DocGen\Model\Symbol\TemplateDoc;
 use Toolkit\DocGen\Model\Symbol\TypeAliasDoc;
-use Toolkit\Mutation\MutationContractReader;
 
 use function trim;
 

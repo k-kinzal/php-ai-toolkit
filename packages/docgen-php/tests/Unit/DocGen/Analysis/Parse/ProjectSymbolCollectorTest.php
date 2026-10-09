@@ -28,12 +28,17 @@ use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
 use Toolkit\DocGen\Analysis\Reference\LocalTypeMap;
 use Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner;
 use Toolkit\DocGen\Analysis\Reference\UsageCollector;
-use Toolkit\DocGen\Cache\SourceFileKey;
-use Toolkit\DocGen\Cache\ToolkitFingerprint;
-use Toolkit\DocGen\Config\DocGenConfig;
-use Toolkit\DocGen\Diagnostic\DocGenException;
-use Toolkit\DocGen\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Filesystem\SourceFileFinder;
+use Toolkit\DocGen\Infrastructure\Cache\SourceFileKey;
+use Toolkit\DocGen\Infrastructure\Cache\ToolkitFingerprint;
+use Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Infrastructure\Filesystem\SourceFileFinder;
+use Toolkit\DocGen\Infrastructure\Parallel\CpuCoreCounter;
+use Toolkit\DocGen\Infrastructure\Parallel\ForkSupport;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkerCount;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkerPool;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler;
+use Toolkit\DocGen\Model\Config\DocGenConfig;
+use Toolkit\DocGen\Model\DocGenException;
 use Toolkit\DocGen\Model\Package\ComposerManifest;
 use Toolkit\DocGen\Model\Package\DiscoveredPackage;
 use Toolkit\DocGen\Model\Reference\Usage;
@@ -42,11 +47,6 @@ use Toolkit\DocGen\Model\Symbol\FileSymbols;
 use Toolkit\DocGen\Model\Symbol\MethodDoc;
 use Toolkit\DocGen\Model\Symbol\ParameterDoc;
 use Toolkit\DocGen\Model\Symbol\TypeSignature;
-use Toolkit\DocGen\Parallel\CpuCoreCounter;
-use Toolkit\DocGen\Parallel\ForkSupport;
-use Toolkit\DocGen\Parallel\WorkerCount;
-use Toolkit\DocGen\Parallel\WorkerPool;
-use Toolkit\DocGen\Parallel\WorkScheduler;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector
@@ -55,17 +55,17 @@ use Toolkit\DocGen\Parallel\WorkScheduler;
  * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
- * @uses \Toolkit\DocGen\Parallel\CpuCoreCounter
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\CpuCoreCounter
  * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \Toolkit\DocGen\Config\DocGenConfig
- * @uses \Toolkit\DocGen\Diagnostic\DocGenException
- * @uses \Toolkit\DocGen\Filesystem\DocGenPathResolver
+ * @uses \Toolkit\DocGen\Model\Config\DocGenConfig
+ * @uses \Toolkit\DocGen\Model\DocGenException
+ * @uses \Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
  * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
  * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector
  * @uses \Toolkit\DocGen\Model\Symbol\FileSymbols
- * @uses \Toolkit\DocGen\Parallel\ForkSupport
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\ForkSupport
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
  * @uses \Toolkit\DocGen\Analysis\Reference\LocalTypeMap
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
@@ -78,17 +78,17 @@ use Toolkit\DocGen\Parallel\WorkScheduler;
  * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
  * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
  * @uses \Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner
- * @uses \Toolkit\DocGen\Filesystem\SourceFileFinder
- * @uses \Toolkit\DocGen\Cache\SourceFileKey
+ * @uses \Toolkit\DocGen\Infrastructure\Filesystem\SourceFileFinder
+ * @uses \Toolkit\DocGen\Infrastructure\Cache\SourceFileKey
  * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
- * @uses \Toolkit\DocGen\Cache\ToolkitFingerprint
+ * @uses \Toolkit\DocGen\Infrastructure\Cache\ToolkitFingerprint
  * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
  * @uses \Toolkit\DocGen\Model\Reference\Usage
  * @uses \Toolkit\DocGen\Analysis\Reference\UsageCollector
  * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
- * @uses \Toolkit\DocGen\Parallel\WorkScheduler
- * @uses \Toolkit\DocGen\Parallel\WorkerCount
- * @uses \Toolkit\DocGen\Parallel\WorkerPool
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerCount
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerPool
  */
 #[CoversClass(ProjectSymbolCollector::class)]
 #[UsesClass(AstParser::class)]

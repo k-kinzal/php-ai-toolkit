@@ -8,13 +8,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
+use Toolkit\DocGen\Analysis\Doc\MutationContractReader;
 use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Model\Mutation\MutationContract;
 use Toolkit\DocGen\Model\Symbol\DocBlock;
 use Toolkit\DocGen\Model\Symbol\DocTag;
 use Toolkit\DocGen\Model\Symbol\TemplateDoc;
 use Toolkit\DocGen\Model\Symbol\TypeAliasDoc;
-use Toolkit\Mutation\MutationContract;
-use Toolkit\Mutation\MutationContractReader;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Doc\DocBlockReader

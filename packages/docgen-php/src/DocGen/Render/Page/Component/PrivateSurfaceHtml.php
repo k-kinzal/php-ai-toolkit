@@ -7,7 +7,7 @@ namespace Toolkit\DocGen\Render\Page\Component;
 use function count;
 use function sprintf;
 
-use Toolkit\DocGen\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
 use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Render\RenderKit;
 use Toolkit\DocGen\Render\TypeRenderContext;

@@ -15,8 +15,8 @@ use function rtrim;
 use function sprintf;
 use function str_replace;
 
-use Toolkit\DocGen\Diff\DiffStatus;
-use Toolkit\DocGen\Diff\LcsMatcher;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\LcsMatcher;
 use Toolkit\DocGen\Render\MarkdownRenderer;
 use Toolkit\DocGen\Render\RenderKit;
 

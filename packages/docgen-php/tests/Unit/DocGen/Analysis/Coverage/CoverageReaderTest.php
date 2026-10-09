@@ -11,16 +11,16 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
-use Toolkit\DocGen\Diagnostic\DocGenException;
-use Toolkit\DocGen\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver;
 use Toolkit\DocGen\Model\Coverage\CoverageIndex;
 use Toolkit\DocGen\Model\Coverage\MethodCoverage;
+use Toolkit\DocGen\Model\DocGenException;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Coverage\CoverageReader
  * @uses \Toolkit\DocGen\Model\Coverage\CoverageIndex
- * @uses \Toolkit\DocGen\Diagnostic\DocGenException
- * @uses \Toolkit\DocGen\Filesystem\DocGenPathResolver
+ * @uses \Toolkit\DocGen\Model\DocGenException
+ * @uses \Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver
  * @uses \Toolkit\DocGen\Model\Coverage\MethodCoverage
  */
 #[CoversClass(CoverageReader::class)]

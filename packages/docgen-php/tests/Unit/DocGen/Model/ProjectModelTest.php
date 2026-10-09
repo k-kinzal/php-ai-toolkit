@@ -46,7 +46,7 @@ use Toolkit\DocGen\Model\Symbol\DocBlock;
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(UsageIndex::class)]
-#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\DocGen\Model\Mutation\MutationContract::class)]
 final class ProjectModelTest extends TestCase
 {
     public function testStoresAnalyzedProjectData(): void

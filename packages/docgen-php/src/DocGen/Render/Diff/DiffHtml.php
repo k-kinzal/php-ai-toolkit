@@ -6,9 +6,9 @@ namespace Toolkit\DocGen\Render\Diff;
 
 use function sprintf;
 
-use Toolkit\DocGen\Diff\DiffIndex;
-use Toolkit\DocGen\Diff\DiffKey;
-use Toolkit\DocGen\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\DiffIndex;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 
 /**
  * The diff state of the page being rendered, as the renderers ask for it.

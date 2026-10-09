@@ -9,7 +9,7 @@ use function ksort;
 use function sprintf;
 use function strtolower;
 
-use Toolkit\DocGen\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 use Toolkit\DocGen\Render\MarkdownInline;
 use Toolkit\DocGen\Render\Page\SymbolIndex;
 use Toolkit\DocGen\Render\RenderKit;

@@ -50,8 +50,8 @@ use Toolkit\DocGen\Render\TypeRenderContext;
 #[UsesClass(SiteUrl::class)]
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TypeRenderContext::class)]
-#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
-#[UsesClass(\Toolkit\Mutation\MutationContractReader::class)]
+#[UsesClass(\Toolkit\DocGen\Model\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\DocGen\Analysis\Doc\MutationContractReader::class)]
 final class TypeHtmlTest extends TestCase
 {
     public function testRenderPrefersAnnotatedOverNative(): void

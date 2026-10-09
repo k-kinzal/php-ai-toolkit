@@ -7,8 +7,8 @@ namespace Tests\Unit\DocGen\Render\Page;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Diff\DiffKey;
-use Toolkit\DocGen\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 use Toolkit\DocGen\Model\Layer\LayerModel;
 use Toolkit\DocGen\Model\Package\ComposerManifest;
 use Toolkit\DocGen\Model\Package\DiscoveredPackage;
@@ -51,9 +51,9 @@ use Toolkit\DocGen\Render\TypeHtml;
  * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
- * @uses \Toolkit\DocGen\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
  * @uses \Toolkit\DocGen\Render\Diff\DiffModeControl
- * @uses \Toolkit\DocGen\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
  * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Model\Symbol\DocBlock
  * @uses \Toolkit\DocGen\Render\Doctest\DoctestExtractor
@@ -116,7 +116,7 @@ use Toolkit\DocGen\Render\TypeHtml;
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(TypeHtml::class)]
 #[UsesClass(UsageIndex::class)]
-#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\DocGen\Model\Mutation\MutationContract::class)]
 final class LayerPageTest extends TestCase
 {
     public function testRenderProducesCompleteDocumentWithLayerCrumbAndListing(): void

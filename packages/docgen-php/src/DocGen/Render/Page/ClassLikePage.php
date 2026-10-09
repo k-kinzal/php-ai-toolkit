@@ -9,8 +9,8 @@ use function count;
 use function sprintf;
 use function strtolower;
 
-use Toolkit\DocGen\Diff\DiffKey;
-use Toolkit\DocGen\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Render\Diff\DiffBanner;
 use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;

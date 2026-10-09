@@ -8,18 +8,22 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Cache\CachedPageWriter;
-use Toolkit\DocGen\Cache\CacheStore;
-use Toolkit\DocGen\Cache\PageRecord;
-use Toolkit\DocGen\Cache\RenderCache;
-use Toolkit\DocGen\Cache\ToolkitFingerprint;
-use Toolkit\DocGen\Diff\DiffIndex;
-use Toolkit\DocGen\Diff\DiffKey;
-use Toolkit\DocGen\Diff\DiffLine;
-use Toolkit\DocGen\Diff\DiffStatus;
-use Toolkit\DocGen\Diff\LcsMatcher;
-use Toolkit\DocGen\Diff\LineDiffer;
-use Toolkit\DocGen\Filesystem\SiteFileWriter;
+use Toolkit\DocGen\Analysis\Diff\DiffIndex;
+use Toolkit\DocGen\Analysis\Diff\DiffKey;
+use Toolkit\DocGen\Analysis\Diff\DiffLine;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\LcsMatcher;
+use Toolkit\DocGen\Analysis\Diff\LineDiffer;
+use Toolkit\DocGen\Infrastructure\Cache\CachedPageWriter;
+use Toolkit\DocGen\Infrastructure\Cache\CacheStore;
+use Toolkit\DocGen\Infrastructure\Cache\PageRecord;
+use Toolkit\DocGen\Infrastructure\Cache\RenderCache;
+use Toolkit\DocGen\Infrastructure\Cache\ToolkitFingerprint;
+use Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter;
+use Toolkit\DocGen\Infrastructure\Parallel\CpuCoreCounter;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkerCount;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkerPool;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler;
 use Toolkit\DocGen\Model\Package\ComposerManifest;
 use Toolkit\DocGen\Model\Package\DiscoveredPackage;
 use Toolkit\DocGen\Model\Package\PackageGraph;
@@ -36,10 +40,6 @@ use Toolkit\DocGen\Model\Symbol\FunctionDoc;
 use Toolkit\DocGen\Model\Symbol\MarkdownDoc;
 use Toolkit\DocGen\Model\Symbol\MethodDoc;
 use Toolkit\DocGen\Model\Symbol\TypeSignature;
-use Toolkit\DocGen\Parallel\CpuCoreCounter;
-use Toolkit\DocGen\Parallel\WorkerCount;
-use Toolkit\DocGen\Parallel\WorkerPool;
-use Toolkit\DocGen\Parallel\WorkScheduler;
 use Toolkit\DocGen\Render\AssetPublisher;
 use Toolkit\DocGen\Render\Diff\DiffBanner;
 use Toolkit\DocGen\Render\Diff\DiffHtml;
@@ -101,21 +101,21 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Render\Doctest\AssertionScanner
  * @uses \Toolkit\DocGen\Render\AssetPublisher
  * @uses \Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml
- * @uses \Toolkit\DocGen\Cache\CacheStore
- * @uses \Toolkit\DocGen\Cache\CachedPageWriter
+ * @uses \Toolkit\DocGen\Infrastructure\Cache\CacheStore
+ * @uses \Toolkit\DocGen\Infrastructure\Cache\CachedPageWriter
  * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Model\Symbol\ClassLikeKind
  * @uses \Toolkit\DocGen\Render\Page\ClassLikePage
  * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Model\Symbol\ConstantDoc
- * @uses \Toolkit\DocGen\Parallel\CpuCoreCounter
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\CpuCoreCounter
  * @uses \Toolkit\DocGen\Render\Diff\DiffBanner
  * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
- * @uses \Toolkit\DocGen\Diff\DiffIndex
- * @uses \Toolkit\DocGen\Diff\DiffKey
- * @uses \Toolkit\DocGen\Diff\DiffLine
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffIndex
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffLine
  * @uses \Toolkit\DocGen\Render\Diff\DiffModeControl
- * @uses \Toolkit\DocGen\Diff\DiffStatus
+ * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
  * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Model\Symbol\DocBlock
  * @uses \Toolkit\DocGen\Render\Page\Component\DocTextHtml
@@ -130,8 +130,8 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Render\HtmlText
  * @uses \Toolkit\DocGen\Render\Page\IndexPage
  * @uses \Toolkit\DocGen\Render\Page\LayerPage
- * @uses \Toolkit\DocGen\Diff\LcsMatcher
- * @uses \Toolkit\DocGen\Diff\LineDiffer
+ * @uses \Toolkit\DocGen\Analysis\Diff\LcsMatcher
+ * @uses \Toolkit\DocGen\Analysis\Diff\LineDiffer
  * @uses \Toolkit\DocGen\Render\Diff\MarkdownDiffHtml
  * @uses \Toolkit\DocGen\Model\Symbol\MarkdownDoc
  * @uses \Toolkit\DocGen\Render\MarkdownInline
@@ -143,13 +143,13 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Model\Package\PackageGraph
  * @uses \Toolkit\DocGen\Render\Page\PackagePage
  * @uses \Toolkit\DocGen\Render\PageChrome
- * @uses \Toolkit\DocGen\Cache\PageRecord
+ * @uses \Toolkit\DocGen\Infrastructure\Cache\PageRecord
  * @uses \Toolkit\DocGen\Render\Signature\PageSignature
  * @uses \Toolkit\DocGen\Render\PhpHighlighter
  * @uses \Toolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml
  * @uses \Toolkit\DocGen\Model\ProjectModel
  * @uses \Toolkit\DocGen\Render\Page\Component\RelationsHtml
- * @uses \Toolkit\DocGen\Cache\RenderCache
+ * @uses \Toolkit\DocGen\Infrastructure\Cache\RenderCache
  * @uses \Toolkit\DocGen\Render\RenderKit
  * @uses \Toolkit\DocGen\Render\RepositoryLink
  * @uses \Toolkit\DocGen\Render\SearchIndexBuilder
@@ -157,7 +157,7 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Render\Page\Component\SidebarHtml
  * @uses \Toolkit\DocGen\Render\Page\SidebarScope
  * @uses \Toolkit\DocGen\Render\Page\Component\SignatureHtml
- * @uses \Toolkit\DocGen\Filesystem\SiteFileWriter
+ * @uses \Toolkit\DocGen\Infrastructure\Filesystem\SiteFileWriter
  * @uses \Toolkit\DocGen\Render\SitePages
  * @uses \Toolkit\DocGen\Render\SiteUrl
  * @uses \Toolkit\DocGen\Render\Social\SocialCard
@@ -173,15 +173,15 @@ use Toolkit\DocGen\Render\TypeRenderContext;
  * @uses \Toolkit\DocGen\Model\Reference\SymbolTable
  * @uses \Toolkit\DocGen\Render\Page\Component\TestCaseHtml
  * @uses \Toolkit\DocGen\Model\Reference\TestCaseIndex
- * @uses \Toolkit\DocGen\Cache\ToolkitFingerprint
+ * @uses \Toolkit\DocGen\Infrastructure\Cache\ToolkitFingerprint
  * @uses \Toolkit\DocGen\Render\TypeHtml
  * @uses \Toolkit\DocGen\Render\TypeRenderContext
  * @uses \Toolkit\DocGen\Model\Symbol\TypeSignature
  * @uses \Toolkit\DocGen\Model\Reference\UsageIndex
  * @uses \Toolkit\DocGen\Render\Page\Component\UsageListHtml
- * @uses \Toolkit\DocGen\Parallel\WorkScheduler
- * @uses \Toolkit\DocGen\Parallel\WorkerCount
- * @uses \Toolkit\DocGen\Parallel\WorkerPool
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerCount
+ * @uses \Toolkit\DocGen\Infrastructure\Parallel\WorkerPool
  */
 #[CoversClass(SiteRenderer::class)]
 #[UsesClass(AllItemsPage::class)]
@@ -269,7 +269,7 @@ use Toolkit\DocGen\Render\TypeRenderContext;
 #[UsesClass(WorkScheduler::class)]
 #[UsesClass(WorkerCount::class)]
 #[UsesClass(WorkerPool::class)]
-#[UsesClass(\Toolkit\Mutation\MutationContract::class)]
+#[UsesClass(\Toolkit\DocGen\Model\Mutation\MutationContract::class)]
 final class SiteRendererTest extends TestCase
 {
     public function testRenderWritesCompleteSite(): void

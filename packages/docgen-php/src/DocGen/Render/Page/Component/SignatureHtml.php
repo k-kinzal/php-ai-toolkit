@@ -14,7 +14,7 @@ use function strcasecmp;
 use function strip_tags;
 use function strlen;
 
-use Toolkit\DocGen\Diff\DiffStatus;
+use Toolkit\DocGen\Analysis\Diff\DiffStatus;
 use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Model\Symbol\ClassLikeKind;
 use Toolkit\DocGen\Model\Symbol\ConstantDoc;

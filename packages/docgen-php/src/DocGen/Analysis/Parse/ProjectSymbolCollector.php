@@ -16,20 +16,20 @@ use function sprintf;
 use function strtolower;
 
 use Toolkit\DocGen\Analysis\Reference\UsageCollector;
-use Toolkit\DocGen\Cache\ParseCache;
-use Toolkit\DocGen\Cache\SourceFileKey;
-use Toolkit\DocGen\Cache\ToolkitFingerprint;
-use Toolkit\DocGen\Config\DocGenConfig;
-use Toolkit\DocGen\Diagnostic\DocGenException;
-use Toolkit\DocGen\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Filesystem\SourceFileFinder;
+use Toolkit\DocGen\Infrastructure\Cache\ParseCache;
+use Toolkit\DocGen\Infrastructure\Cache\SourceFileKey;
+use Toolkit\DocGen\Infrastructure\Cache\ToolkitFingerprint;
+use Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Infrastructure\Filesystem\SourceFileFinder;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkerPool;
+use Toolkit\DocGen\Infrastructure\Parallel\WorkScheduler;
+use Toolkit\DocGen\Model\Config\DocGenConfig;
+use Toolkit\DocGen\Model\DocGenException;
 use Toolkit\DocGen\Model\Package\DiscoveredPackage;
 use Toolkit\DocGen\Model\Reference\Usage;
 use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Model\Symbol\FileSymbols;
 use Toolkit\DocGen\Model\Symbol\FunctionDoc;
-use Toolkit\DocGen\Parallel\WorkerPool;
-use Toolkit\DocGen\Parallel\WorkScheduler;
 
 /**
  * Parses the sources of every documented package into symbol lists.

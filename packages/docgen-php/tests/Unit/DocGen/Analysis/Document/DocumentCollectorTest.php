@@ -8,10 +8,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Document\DocumentCollector;
-use Toolkit\DocGen\Config\DocGenConfig;
-use Toolkit\DocGen\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Filesystem\MarkdownFileFinder;
-use Toolkit\DocGen\Filesystem\SourceFileFinder;
+use Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Infrastructure\Filesystem\MarkdownFileFinder;
+use Toolkit\DocGen\Infrastructure\Filesystem\SourceFileFinder;
+use Toolkit\DocGen\Model\Config\DocGenConfig;
 use Toolkit\DocGen\Model\Package\ComposerManifest;
 use Toolkit\DocGen\Model\Package\DiscoveredPackage;
 use Toolkit\DocGen\Model\Symbol\MarkdownDoc;
@@ -20,11 +20,11 @@ use Toolkit\DocGen\Model\Symbol\MarkdownDoc;
  * @covers \Toolkit\DocGen\Analysis\Document\DocumentCollector
  * @uses \Toolkit\DocGen\Model\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Model\Package\DiscoveredPackage
- * @uses \Toolkit\DocGen\Config\DocGenConfig
- * @uses \Toolkit\DocGen\Filesystem\DocGenPathResolver
+ * @uses \Toolkit\DocGen\Model\Config\DocGenConfig
+ * @uses \Toolkit\DocGen\Infrastructure\Filesystem\DocGenPathResolver
  * @uses \Toolkit\DocGen\Model\Symbol\MarkdownDoc
- * @uses \Toolkit\DocGen\Filesystem\MarkdownFileFinder
- * @uses \Toolkit\DocGen\Filesystem\SourceFileFinder
+ * @uses \Toolkit\DocGen\Infrastructure\Filesystem\MarkdownFileFinder
+ * @uses \Toolkit\DocGen\Infrastructure\Filesystem\SourceFileFinder
  */
 #[CoversClass(DocumentCollector::class)]
 #[UsesClass(ComposerManifest::class)]

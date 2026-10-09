@@ -9,7 +9,7 @@ use function implode;
 use function serialize;
 use function strtolower;
 
-use Toolkit\DocGen\Cache\ToolkitFingerprint;
+use Toolkit\DocGen\Infrastructure\Cache\ToolkitFingerprint;
 use Toolkit\DocGen\Model\Package\DiscoveredPackage;
 use Toolkit\DocGen\Model\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Model\Symbol\FunctionDoc;

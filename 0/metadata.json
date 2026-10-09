@@ -1,0 +1,45 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4FHMAG298DXE2V33JD47SP8",
+  "session_id": "01a11f15-f48b-7d51-850a-5f6a09274469",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-09T05:19:40.876097Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".github/workflows/mutation.yml",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Mutation/MutationDeclarationCollector.php"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "314f45f71f1d",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 76624,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1254016,
+    "output_tokens": 6875,
+    "api_call_count": 22
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-09T05:19:40.517741Z",
+    "agent_lines": 2,
+    "agent_removed": 2,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 2,
+    "total_lines_changed": 4,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

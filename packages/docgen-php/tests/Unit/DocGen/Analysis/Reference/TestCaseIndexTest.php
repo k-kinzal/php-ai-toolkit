@@ -10,19 +10,19 @@ use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
 use Toolkit\DocGen\Analysis\Reference\TestCase as ReferenceTestCase;
 use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use Toolkit\DocGen\Analysis\Reference\Usage;
-use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Symbol\MethodDoc;
-use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
+use Toolkit\DocGen\Parse\Reference\Usage;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Parse\Symbol\MethodDoc;
+use Toolkit\DocGen\Parse\Symbol\TypeSignature;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
- * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageIndex
- * @uses \Toolkit\DocGen\Analysis\Symbol\MethodDoc
+ * @uses \Toolkit\DocGen\Parse\Symbol\MethodDoc
  * @uses \Toolkit\DocGen\Analysis\Reference\TestCase
- * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
- * @uses \Toolkit\DocGen\Analysis\Reference\Usage
+ * @uses \Toolkit\DocGen\Parse\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Parse\Reference\Usage
  */
 #[CoversClass(TestCaseIndex::class)]
 #[UsesClass(ClassLikeDoc::class)]

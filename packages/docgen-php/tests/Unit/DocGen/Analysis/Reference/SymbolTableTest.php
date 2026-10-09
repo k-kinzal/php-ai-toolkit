@@ -8,15 +8,15 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Reference\SymbolTable;
-use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
-use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Parse\Symbol\FunctionDoc;
+use Toolkit\DocGen\Parse\Symbol\TypeSignature;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
- * @uses \Toolkit\DocGen\Analysis\Symbol\FunctionDoc
- * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Parse\Symbol\FunctionDoc
+ * @uses \Toolkit\DocGen\Parse\Symbol\TypeSignature
  */
 #[CoversClass(SymbolTable::class)]
 #[UsesClass(ClassLikeDoc::class)]

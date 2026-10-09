@@ -7,8 +7,8 @@ namespace Toolkit\DocGen\Analysis\Reference;
 use function ltrim;
 use function strtolower;
 
-use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Parse\Symbol\FunctionDoc;
 
 /**
  * Case-insensitive lookup table of all documented symbols.

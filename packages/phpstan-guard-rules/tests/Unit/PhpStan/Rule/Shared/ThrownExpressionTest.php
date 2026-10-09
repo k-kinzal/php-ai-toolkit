@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use Toolkit\PhpStan\Extension\Visibility\ParserFactoryBridge;
 use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
 
 /**
@@ -65,7 +65,9 @@ final class ThrownExpressionTest extends TestCase
      */
     public static function providerParsedThrow(): array
     {
-        $statements = (new PhpParserBridge())->parser()->parse('<?php throw new RuntimeException("boom");');
+        $parser = (new ParserFactoryBridge())->parser();
+        self::assertNotNull($parser);
+        $statements = $parser->parse('<?php throw new RuntimeException("boom");');
         $statement = $statements[0] ?? null;
         if ($statement === null) {
             throw new RuntimeException('The installed parser produced no statement from the snippet.');

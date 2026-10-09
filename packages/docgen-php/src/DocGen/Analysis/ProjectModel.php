@@ -9,15 +9,15 @@ use function strtolower;
 
 use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
 use Toolkit\DocGen\Analysis\Layer\LayerModel;
-use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
 use Toolkit\DocGen\Analysis\Package\PackageGraph;
 use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use Toolkit\DocGen\Analysis\Reference\SymbolTable;
 use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use Toolkit\DocGen\Analysis\Reference\UsageIndex;
-use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Symbol\FunctionDoc;
-use Toolkit\DocGen\Analysis\Symbol\MarkdownDoc;
+use Toolkit\DocGen\Discovery\MarkdownDoc;
+use Toolkit\DocGen\Discovery\Package\DiscoveredPackage;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Parse\Symbol\FunctionDoc;
 
 /**
  * The complete analyzed model of one documented project.

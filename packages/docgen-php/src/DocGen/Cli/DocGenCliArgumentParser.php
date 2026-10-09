@@ -16,9 +16,9 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Toolkit\DocGen\Analysis\Config\BaseUrl;
-use Toolkit\DocGen\Analysis\Config\DocGenConfig;
-use Toolkit\DocGen\Analysis\Config\RepositoryUrl;
+use Toolkit\DocGen\Action\Config\BaseUrl;
+use Toolkit\DocGen\Action\Config\DocGenConfig;
+use Toolkit\DocGen\Action\Config\RepositoryUrl;
 use Toolkit\DocGen\DocGenException;
 
 use function trim;

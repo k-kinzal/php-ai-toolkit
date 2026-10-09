@@ -5,245 +5,97 @@ declare(strict_types=1);
 namespace Toolkit\DocGen\Analysis;
 
 use function array_merge;
-use function basename;
-use function fnmatch;
-use function is_file;
-use function sprintf;
 
-use Toolkit\DocGen\Analysis\Cache\ParseCache;
-use Toolkit\DocGen\Analysis\Config\DocGenConfig;
 use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
-use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
-use Toolkit\DocGen\Analysis\Document\DocumentCollector;
-use Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Analysis\Layer\DeptracConfigReader;
-use Toolkit\DocGen\Analysis\Layer\LayerAssigner;
+use Toolkit\DocGen\Analysis\Internal\Coverage\CoverageReader;
+use Toolkit\DocGen\Analysis\Internal\Layer\DeptracConfigReader;
+use Toolkit\DocGen\Analysis\Internal\Layer\LayerAssigner;
+use Toolkit\DocGen\Analysis\Internal\Package\PackageGraphBuilder;
 use Toolkit\DocGen\Analysis\Layer\LayerModel;
-use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
-use Toolkit\DocGen\Analysis\Package\PackageDiscovery;
-use Toolkit\DocGen\Analysis\Package\PackageGraphBuilder;
-use Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
 use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use Toolkit\DocGen\Analysis\Reference\SymbolTable;
 use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use Toolkit\DocGen\Analysis\Reference\UsageIndex;
-use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Discovery\SourceSet;
 use Toolkit\DocGen\DocGenException;
+use Toolkit\DocGen\Parse\ParsedProject;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 
 /**
- * Runs the full analysis pipeline from configuration to project model.
+ * Resolves project-wide relations from already extracted declarations and references.
  */
 final class ProjectAnalyzer
 {
     /** @readonly */
-    private PackageDiscovery $discovery;
-
-    /** @readonly */
     private PackageGraphBuilder $graphBuilder;
-
-    /** @readonly */
-    private DocGenPathResolver $pathResolver;
-
-    /** @readonly */
-    private ProjectSymbolCollector $symbolCollector;
-
     /** @readonly */
     private DeptracConfigReader $deptracReader;
-
     /** @readonly */
     private LayerAssigner $layerAssigner;
-
     /** @readonly */
     private CoverageReader $coverageReader;
 
-    /** @readonly */
-    private DocumentCollector $documentCollector;
-
     /**
-     * Creates a project analyzer from pipeline collaborators.
+     * Creates the readers and relation builders used by project analysis.
      */
     public function __construct(
-        ?PackageDiscovery $discovery = null,
         ?PackageGraphBuilder $graphBuilder = null,
-        ?DocGenPathResolver $pathResolver = null,
-        ?ProjectSymbolCollector $symbolCollector = null,
         ?DeptracConfigReader $deptracReader = null,
         ?LayerAssigner $layerAssigner = null,
         ?CoverageReader $coverageReader = null,
-        ?DocumentCollector $documentCollector = null,
     ) {
-        $this->discovery = $discovery ?? new PackageDiscovery();
         $this->graphBuilder = $graphBuilder ?? new PackageGraphBuilder();
-        $this->pathResolver = $pathResolver ?? new DocGenPathResolver();
-        $this->symbolCollector = $symbolCollector ?? new ProjectSymbolCollector();
         $this->deptracReader = $deptracReader ?? new DeptracConfigReader();
         $this->layerAssigner = $layerAssigner ?? new LayerAssigner();
         $this->coverageReader = $coverageReader ?? new CoverageReader();
-        $this->documentCollector = $documentCollector ?? new DocumentCollector();
     }
 
     /**
-     * Analyzes one configured project into its documentation model.
+     * Builds project relations from completed discovery and extraction.
      *
-     * @param ?int $workers how many workers to analyze with, or null for the default
-     * @param ?ParseCache $cache what earlier runs already parsed, if it is kept
-     *
-     * @throws DocGenException when no package or source can be analyzed
+     * @throws DocGenException when an auxiliary report cannot be read
      */
-    public function analyze(DocGenConfig $config, ?int $workers = null, ?ParseCache $cache = null): ProjectModel
+    public function analyze(SourceSet $sources, ParsedProject $collected, AnalysisOptions $options): ProjectModel
     {
-        $packages = $this->discovery->discover($config);
-        $collected = $this->symbolCollector->collect($config, $packages, $workers, $cache);
 
         $symbolTable = new SymbolTable();
-        foreach ($collected['classLikes'] as $classLike) {
+        foreach ($collected->classLikes as $classLike) {
             $symbolTable->registerClassLike($classLike);
         }
 
-        foreach ($collected['functions'] as $function) {
+        foreach ($collected->functions as $function) {
             $symbolTable->registerFunction($function);
         }
 
         $hierarchy = new HierarchyIndex();
-        $hierarchy->build($collected['classLikes']);
+        $hierarchy->build($collected->classLikes);
         $usages = new UsageIndex();
-        $usages->build($collected['usages']);
-        $coverage = $this->coverageIndex($config);
+        $usages->build($collected->usages);
+        $coverage = $this->coverageIndex($options->coverage, $sources->root);
         $testCases = new TestCaseIndex();
-        $testCases->build($collected['usages'], $collected['classLikes'], $coverage);
-        $layers = $this->layerModel($config);
+        $testCases->build($collected->usages, $collected->classLikes, $coverage);
+        $layers = $this->layerModel($options->deptrac);
 
         return new ProjectModel(
-            $this->titleFor($config, $packages),
-            $config->root,
-            $packages,
-            $this->graphBuilder->build($packages),
-            $collected['classLikes'],
-            $collected['functions'],
+            $options->title,
+            $sources->root,
+            $sources->packages,
+            $this->graphBuilder->build($sources->packages),
+            $collected->classLikes,
+            $collected->functions,
             $symbolTable,
             $hierarchy,
             $usages,
             $testCases,
             $layers,
-            $this->layerAssignments($layers, $collected['classLikes']),
+            $this->layerAssignments($layers, $collected->classLikes),
             $coverage,
-            array_merge($this->vendorWarnings($config, $packages), $collected['warnings']),
-            $this->documentCollector->collect($config, $packages),
-            $config->baseUrl,
-            $this->repositoryFor($config, $packages),
-            $config->publicApi,
+            array_merge($sources->warnings, $collected->warnings),
+            $sources->documents,
+            $options->baseUrl,
+            $options->repository,
+            $options->publicApi,
         );
-    }
-
-    /**
-     * Determines the repository the documented project lives in.
-     *
-     * A project that configures an address means that one: it is the answer
-     * where a repository has moved, where the manifest of the project says
-     * nothing, and where the site is generated from a checkout that is not
-     * the published one. Otherwise the root package answers for the project,
-     * because a package already declares where its sources are browsable.
-     *
-     * @param list<DiscoveredPackage> $packages
-     */
-    public function repositoryFor(DocGenConfig $config, array $packages): ?string
-    {
-        if ($config->repository !== null) {
-            return $config->repository;
-        }
-
-        foreach ($packages as $package) {
-            if (!$package->isVendor && realpath($package->manifest->directory) === realpath($config->root)) {
-                return $package->manifest->repository === '' ? null : $package->manifest->repository;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Warns about unusable vendor selections.
-     *
-     * Both the runtime globs of "vendor" and the dev globs of "vendor_dev" are
-     * checked, and every selected package that ships no documentable source is
-     * reported as well.
-     *
-     * @param list<DiscoveredPackage> $packages
-     *
-     * @return list<string>
-     */
-    public function vendorWarnings(DocGenConfig $config, array $packages): array
-    {
-        return array_merge(
-            $this->vendorGlobWarnings($config->vendor, $packages, false),
-            $this->vendorGlobWarnings($config->vendorDev, $packages, true),
-            $this->vendorSourceWarnings($packages),
-        );
-    }
-
-    /**
-     * Warns about vendor globs that selected no package of one kind.
-     *
-     * Vendor globs match composer package names, so a directory name such
-     * as "vendor" silently selects nothing without this warning. A glob also
-     * selects nothing when it names a dev dependency while the runtime globs
-     * are checked, or the other way round.
-     *
-     * @param list<string> $globs
-     * @param list<DiscoveredPackage> $packages
-     * @param bool $dev true when the dev globs are checked, false for runtime globs
-     *
-     * @return list<string>
-     */
-    public function vendorGlobWarnings(array $globs, array $packages, bool $dev): array
-    {
-        $warnings = [];
-        foreach ($globs as $glob) {
-            $matched = false;
-            foreach ($packages as $package) {
-                if ($package->isVendor && $package->isDevDependency === $dev && fnmatch($glob, $package->manifest->name)) {
-                    $matched = true;
-                    break;
-                }
-            }
-
-            if (!$matched) {
-                $warnings[] = sprintf(
-                    'Vendor glob "%s" documented no installed %s vendor package. Vendor globs match composer package names such as "acme/lib" or "acme/*", not directory names.',
-                    $glob,
-                    $dev ? 'dev' : 'runtime',
-                );
-            }
-        }
-
-        return $warnings;
-    }
-
-    /**
-     * Warns about selected vendor packages without documentable sources.
-     *
-     * A package that autoloads only "files" entries, such as a phar bootstrap,
-     * exposes no source directory to parse, so none of its classes can appear
-     * in the site or be used as a link target.
-     *
-     * @param list<DiscoveredPackage> $packages
-     *
-     * @return list<string>
-     */
-    public function vendorSourceWarnings(array $packages): array
-    {
-        $warnings = [];
-        foreach ($packages as $package) {
-            if ($package->isVendor && $this->symbolCollector->sourceDirectories($package) === []) {
-                $warnings[] = sprintf(
-                    'Vendor package "%s" declares no PSR-4 or classmap autoload source, so its classes cannot be documented or linked. Packages that autoload only "files" entries, such as a phar bootstrap, cannot be documented: drop "%s" from the vendor globs.',
-                    $package->manifest->name,
-                    $package->manifest->name,
-                );
-            }
-        }
-
-        return $warnings;
     }
 
     /**
@@ -271,55 +123,23 @@ final class ProjectAnalyzer
     }
 
     /**
-     * Loads the deptrac layer model when a configuration is available.
+     * Reads the selected dependency rules after source extraction.
      *
-     * @throws DocGenException when a configured deptrac file is missing
+     * @throws DocGenException when the selected configuration is unreadable
      */
-    public function layerModel(DocGenConfig $config): ?LayerModel
+    public function layerModel(?string $path): ?LayerModel
     {
-        if ($config->deptrac !== null) {
-            return $this->deptracReader->read($this->pathResolver->resolve($config->root, $config->deptrac));
-        }
-
-        $default = $config->root . '/deptrac.yaml';
-        if (is_file($default)) {
-            return $this->deptracReader->read($default);
-        }
-
-        return null;
+        return $path === null ? null : $this->deptracReader->read($path);
     }
 
     /**
-     * Loads the coverage index when a report directory is configured.
+     * Reads coverage information for the analyzed source root.
      *
-     * @throws DocGenException when the configured report directory is missing
+     * @throws DocGenException when the selected report is unreadable
      */
-    public function coverageIndex(DocGenConfig $config): ?CoverageIndex
+    public function coverageIndex(?string $path, string $root): ?CoverageIndex
     {
-        if ($config->coverage === null) {
-            return null;
-        }
-
-        return $this->coverageReader->read($this->pathResolver->resolve($config->root, $config->coverage), $config->root);
+        return $path === null ? null : $this->coverageReader->read($path, $root);
     }
 
-    /**
-     * Determines the site title from the configuration and packages.
-     *
-     * @param list<DiscoveredPackage> $packages
-     */
-    public function titleFor(DocGenConfig $config, array $packages): string
-    {
-        if ($config->title !== null) {
-            return $config->title;
-        }
-
-        foreach ($packages as $package) {
-            if (!$package->isVendor && realpath($package->manifest->directory) === realpath($config->root)) {
-                return $package->manifest->name;
-            }
-        }
-
-        return basename($config->root);
-    }
 }

@@ -10,7 +10,8 @@ use function strtolower;
 use function substr;
 
 use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
-use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Parse\Reference\Usage;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 
 use function usort;
 

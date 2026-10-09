@@ -8,12 +8,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
-use Toolkit\DocGen\Analysis\Config\BaseUrl;
-use Toolkit\DocGen\Analysis\Config\RepositoryUrl;
+use Toolkit\DocGen\Action\Config\BaseUrl;
+use Toolkit\DocGen\Action\Config\RepositoryUrl;
 use Toolkit\DocGen\Cli\DocGenCliArgumentParser;
 use Toolkit\DocGen\Cli\DocGenCommand;
 use Toolkit\DocGen\Cli\DocGenHelpText;
 use Toolkit\DocGen\Cli\DocGenOutputWriter;
+use Toolkit\DocGen\Discovery\Package\RepositoryAddress;
 use Toolkit\DocGen\DocGenException;
 
 /**
@@ -21,9 +22,10 @@ use Toolkit\DocGen\DocGenException;
  * @uses \Toolkit\DocGen\Cli\DocGenCliArgumentParser
  * @uses \Toolkit\DocGen\Cli\DocGenHelpText
  * @uses \Toolkit\DocGen\Cli\DocGenOutputWriter
- * @uses \Toolkit\DocGen\Analysis\Config\BaseUrl
- * @uses \Toolkit\DocGen\Analysis\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Action\Config\BaseUrl
+ * @uses \Toolkit\DocGen\Action\Config\RepositoryUrl
  * @uses \Toolkit\DocGen\DocGenException
+ * @uses \Toolkit\DocGen\Discovery\Package\RepositoryAddress
  */
 #[CoversClass(DocGenCommand::class)]
 #[UsesClass(DocGenCliArgumentParser::class)]
@@ -32,6 +34,7 @@ use Toolkit\DocGen\DocGenException;
 #[UsesClass(BaseUrl::class)]
 #[UsesClass(RepositoryUrl::class)]
 #[UsesClass(DocGenException::class)]
+#[UsesClass(RepositoryAddress::class)]
 final class DocGenCommandTest extends TestCase
 {
     public function testConfigureDeclaresTheNameTheOptionsAndTheHelp(): void

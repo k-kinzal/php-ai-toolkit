@@ -12,7 +12,7 @@ use PHPStan\Collectors\Collector;
 use function sprintf;
 use function strtolower;
 
-use Toolkit\DocGen\Analysis\Doc\MutationContractReader;
+use Toolkit\DocGen\Parse\Doc\MutationContractReader;
 use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 
 /**

@@ -7,136 +7,158 @@ namespace Tests\Unit\DocGen\Analysis;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Analysis\Cache\SourceFileKey;
-use Toolkit\DocGen\Analysis\Config\DocGenConfig;
-use Toolkit\DocGen\Analysis\Config\RepositoryUrl;
+use Toolkit\DocGen\Action\Config\DocGenConfig;
+use Toolkit\DocGen\Action\Config\RepositoryUrl;
+use Toolkit\DocGen\Action\GenerateDocumentation;
+use Toolkit\DocGen\Action\GenerationRequest;
+use Toolkit\DocGen\Action\GenerationResult;
+use Toolkit\DocGen\Analysis\AnalysisOptions;
 use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
-use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
 use Toolkit\DocGen\Analysis\Coverage\MethodCoverage;
-use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
-use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
-use Toolkit\DocGen\Analysis\Document\DocumentCollector;
-use Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Analysis\Filesystem\MarkdownFileFinder;
-use Toolkit\DocGen\Analysis\Filesystem\SourceFileFinder;
-use Toolkit\DocGen\Analysis\Layer\DeptracConfigReader;
-use Toolkit\DocGen\Analysis\Layer\LayerAssigner;
+use Toolkit\DocGen\Analysis\Internal\Coverage\CoverageReader;
+use Toolkit\DocGen\Analysis\Internal\Layer\DeptracConfigReader;
+use Toolkit\DocGen\Analysis\Internal\Layer\LayerAssigner;
+use Toolkit\DocGen\Analysis\Internal\Package\PackageGraphBuilder;
 use Toolkit\DocGen\Analysis\Layer\LayerCollector;
 use Toolkit\DocGen\Analysis\Layer\LayerDefinition;
 use Toolkit\DocGen\Analysis\Layer\LayerModel;
-use Toolkit\DocGen\Analysis\Package\ComposerLockReader;
-use Toolkit\DocGen\Analysis\Package\ComposerManifest;
-use Toolkit\DocGen\Analysis\Package\ComposerManifestReader;
-use Toolkit\DocGen\Analysis\Package\DevPackageResolver;
-use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
-use Toolkit\DocGen\Analysis\Package\PackageDiscovery;
 use Toolkit\DocGen\Analysis\Package\PackageGraph;
-use Toolkit\DocGen\Analysis\Package\PackageGraphBuilder;
-use Toolkit\DocGen\Analysis\Package\VendorPackageLocator;
-use Toolkit\DocGen\Analysis\Parse\AstParser;
-use Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
-use Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder;
-use Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder;
-use Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder;
-use Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder;
-use Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder;
-use Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder;
-use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
-use Toolkit\DocGen\Analysis\Parse\FileSymbolCollector;
-use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
-use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
-use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
-use Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
-use Toolkit\DocGen\Analysis\Parse\SymbolContext;
-use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
 use Toolkit\DocGen\Analysis\ProjectAnalyzer;
 use Toolkit\DocGen\Analysis\ProjectModel;
 use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
-use Toolkit\DocGen\Analysis\Reference\LocalTypeMap;
-use Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner;
 use Toolkit\DocGen\Analysis\Reference\SymbolTable;
 use Toolkit\DocGen\Analysis\Reference\TestCase as ReferenceTestCase;
 use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use Toolkit\DocGen\Analysis\Reference\Usage;
-use Toolkit\DocGen\Analysis\Reference\UsageCollector;
 use Toolkit\DocGen\Analysis\Reference\UsageIndex;
-use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Symbol\FileSymbols;
-use Toolkit\DocGen\Analysis\Symbol\MethodDoc;
-use Toolkit\DocGen\Analysis\Symbol\ParameterDoc;
-use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 use Toolkit\DocGen\Cache\ToolkitFingerprint;
+use Toolkit\DocGen\Discovery\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Discovery\Internal\DocumentCollector;
+use Toolkit\DocGen\Discovery\Internal\Filesystem\MarkdownFileFinder;
+use Toolkit\DocGen\Discovery\Internal\Filesystem\SourceFileFinder;
+use Toolkit\DocGen\Discovery\Internal\Package\ComposerLockReader;
+use Toolkit\DocGen\Discovery\Internal\Package\ComposerManifestReader;
+use Toolkit\DocGen\Discovery\Internal\Package\DevPackageResolver;
+use Toolkit\DocGen\Discovery\Internal\Package\PackageDiscovery;
+use Toolkit\DocGen\Discovery\Internal\Package\VendorPackageLocator;
+use Toolkit\DocGen\Discovery\Package\ComposerManifest;
+use Toolkit\DocGen\Discovery\Package\DiscoveredPackage;
+use Toolkit\DocGen\Discovery\Package\RepositoryAddress;
+use Toolkit\DocGen\Discovery\SourceDiscovery;
+use Toolkit\DocGen\Discovery\SourceFile;
+use Toolkit\DocGen\Discovery\SourceSelection;
+use Toolkit\DocGen\Discovery\SourceSet;
 use Toolkit\DocGen\DocGenException;
 use Toolkit\DocGen\Parallel\CpuCoreCounter;
 use Toolkit\DocGen\Parallel\WorkerCount;
 use Toolkit\DocGen\Parallel\WorkerPool;
 use Toolkit\DocGen\Parallel\WorkScheduler;
+use Toolkit\DocGen\Parse\Internal\AstParser;
+use Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder;
+use Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder;
+use Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder;
+use Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder;
+use Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder;
+use Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder;
+use Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder;
+use Toolkit\DocGen\Parse\Internal\Cache\SourceFileKey;
+use Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader;
+use Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Parse\Internal\ExprTextPrinter;
+use Toolkit\DocGen\Parse\Internal\FileSymbolCollector;
+use Toolkit\DocGen\Parse\Internal\NativeTypePrinter;
+use Toolkit\DocGen\Parse\Internal\ParameterModifiers;
+use Toolkit\DocGen\Parse\Internal\PhpParserBridge;
+use Toolkit\DocGen\Parse\Internal\Reference\LocalTypeMap;
+use Toolkit\DocGen\Parse\Internal\Reference\PropertyTypeScanner;
+use Toolkit\DocGen\Parse\Internal\Reference\UsageCollector;
+use Toolkit\DocGen\Parse\Internal\SymbolContext;
+use Toolkit\DocGen\Parse\Internal\UseMapCollector;
+use Toolkit\DocGen\Parse\ParsedProject;
+use Toolkit\DocGen\Parse\ProjectSymbolCollector;
+use Toolkit\DocGen\Parse\Reference\Usage;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Parse\Symbol\FileSymbols;
+use Toolkit\DocGen\Parse\Symbol\MethodDoc;
+use Toolkit\DocGen\Parse\Symbol\ParameterDoc;
+use Toolkit\DocGen\Parse\Symbol\TypeSignature;
+use Toolkit\DocGen\Report\RenderedSite;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\ProjectAnalyzer
- * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
- * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
- * @uses \Toolkit\DocGen\Analysis\Package\ComposerLockReader
- * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifest
- * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifestReader
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
+ * @uses \Toolkit\DocGen\Parse\Internal\AstParser
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder
+ * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Discovery\Internal\Package\ComposerLockReader
+ * @uses \Toolkit\DocGen\Discovery\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Discovery\Internal\Package\ComposerManifestReader
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder
  * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageIndex
- * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageReader
+ * @uses \Toolkit\DocGen\Analysis\Internal\Coverage\CoverageReader
  * @uses \Toolkit\DocGen\Parallel\CpuCoreCounter
- * @uses \Toolkit\DocGen\Analysis\Layer\DeptracConfigReader
- * @uses \Toolkit\DocGen\Analysis\Package\DevPackageResolver
- * @uses \Toolkit\DocGen\Analysis\Package\DiscoveredPackage
- * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \Toolkit\DocGen\Analysis\Config\DocGenConfig
+ * @uses \Toolkit\DocGen\Analysis\Internal\Layer\DeptracConfigReader
+ * @uses \Toolkit\DocGen\Discovery\Internal\Package\DevPackageResolver
+ * @uses \Toolkit\DocGen\Discovery\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Action\Config\DocGenConfig
  * @uses \Toolkit\DocGen\DocGenException
- * @uses \Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver
- * @uses \Toolkit\DocGen\Analysis\Document\DocumentCollector
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
- * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
- * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector
- * @uses \Toolkit\DocGen\Analysis\Symbol\FileSymbols
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
+ * @uses \Toolkit\DocGen\Discovery\Filesystem\DocGenPathResolver
+ * @uses \Toolkit\DocGen\Discovery\Internal\DocumentCollector
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder
+ * @uses \Toolkit\DocGen\Parse\Internal\ExprTextPrinter
+ * @uses \Toolkit\DocGen\Parse\Internal\FileSymbolCollector
+ * @uses \Toolkit\DocGen\Parse\Symbol\FileSymbols
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder
  * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
- * @uses \Toolkit\DocGen\Analysis\Layer\LayerAssigner
+ * @uses \Toolkit\DocGen\Analysis\Internal\Layer\LayerAssigner
  * @uses \Toolkit\DocGen\Analysis\Layer\LayerCollector
  * @uses \Toolkit\DocGen\Analysis\Layer\LayerDefinition
  * @uses \Toolkit\DocGen\Analysis\Layer\LayerModel
- * @uses \Toolkit\DocGen\Analysis\Reference\LocalTypeMap
- * @uses \Toolkit\DocGen\Analysis\Filesystem\MarkdownFileFinder
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
+ * @uses \Toolkit\DocGen\Parse\Internal\Reference\LocalTypeMap
+ * @uses \Toolkit\DocGen\Discovery\Internal\Filesystem\MarkdownFileFinder
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder
  * @uses \Toolkit\DocGen\Analysis\Coverage\MethodCoverage
- * @uses \Toolkit\DocGen\Analysis\Symbol\MethodDoc
- * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
- * @uses \Toolkit\DocGen\Analysis\Package\PackageDiscovery
+ * @uses \Toolkit\DocGen\Parse\Symbol\MethodDoc
+ * @uses \Toolkit\DocGen\Parse\Internal\NativeTypePrinter
+ * @uses \Toolkit\DocGen\Discovery\Internal\Package\PackageDiscovery
  * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
- * @uses \Toolkit\DocGen\Analysis\Package\PackageGraphBuilder
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
- * @uses \Toolkit\DocGen\Analysis\Symbol\ParameterDoc
- * @uses \Toolkit\DocGen\Analysis\Parse\ParameterModifiers
- * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
- * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
+ * @uses \Toolkit\DocGen\Analysis\Internal\Package\PackageGraphBuilder
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder
+ * @uses \Toolkit\DocGen\Parse\Symbol\ParameterDoc
+ * @uses \Toolkit\DocGen\Parse\Internal\ParameterModifiers
+ * @uses \Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Parse\Internal\PhpParserBridge
  * @uses \Toolkit\DocGen\Analysis\ProjectModel
- * @uses \Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
- * @uses \Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner
+ * @uses \Toolkit\DocGen\Parse\ProjectSymbolCollector
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder
+ * @uses \Toolkit\DocGen\Parse\Internal\Reference\PropertyTypeScanner
  * @uses \Toolkit\DocGen\Analysis\Reference\TestCase
- * @uses \Toolkit\DocGen\Analysis\Config\RepositoryUrl
- * @uses \Toolkit\DocGen\Analysis\Filesystem\SourceFileFinder
- * @uses \Toolkit\DocGen\Analysis\Cache\SourceFileKey
- * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
+ * @uses \Toolkit\DocGen\Action\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Discovery\Internal\Filesystem\SourceFileFinder
+ * @uses \Toolkit\DocGen\Parse\Internal\Cache\SourceFileKey
+ * @uses \Toolkit\DocGen\Parse\Internal\SymbolContext
  * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
  * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
  * @uses \Toolkit\DocGen\Cache\ToolkitFingerprint
- * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
- * @uses \Toolkit\DocGen\Analysis\Reference\Usage
- * @uses \Toolkit\DocGen\Analysis\Reference\UsageCollector
+ * @uses \Toolkit\DocGen\Parse\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Parse\Reference\Usage
+ * @uses \Toolkit\DocGen\Parse\Internal\Reference\UsageCollector
  * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
- * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
- * @uses \Toolkit\DocGen\Analysis\Package\VendorPackageLocator
+ * @uses \Toolkit\DocGen\Parse\Internal\UseMapCollector
+ * @uses \Toolkit\DocGen\Discovery\Internal\Package\VendorPackageLocator
  * @uses \Toolkit\DocGen\Parallel\WorkScheduler
  * @uses \Toolkit\DocGen\Parallel\WorkerCount
  * @uses \Toolkit\DocGen\Parallel\WorkerPool
+ * @uses \Toolkit\DocGen\Discovery\SourceSelection
+ * @uses \Toolkit\DocGen\Discovery\SourceFile
+ * @uses \Toolkit\DocGen\Discovery\SourceSet
+ * @uses \Toolkit\DocGen\Discovery\SourceDiscovery
+ * @uses \Toolkit\DocGen\Parse\ParsedProject
+ * @uses \Toolkit\DocGen\Analysis\AnalysisOptions
+ * @uses \Toolkit\DocGen\Action\GenerateDocumentation
+ * @uses \Toolkit\DocGen\Action\GenerationRequest
+ * @uses \Toolkit\DocGen\Action\GenerationResult
+ * @uses \Toolkit\DocGen\Report\RenderedSite
+ * @uses \Toolkit\DocGen\Discovery\Package\RepositoryAddress
  */
 #[CoversClass(ProjectAnalyzer::class)]
 #[UsesClass(AstParser::class)]
@@ -202,208 +224,36 @@ use Toolkit\DocGen\Parallel\WorkScheduler;
 #[UsesClass(WorkScheduler::class)]
 #[UsesClass(WorkerCount::class)]
 #[UsesClass(WorkerPool::class)]
+#[UsesClass(SourceSelection::class)]
+#[UsesClass(SourceFile::class)]
+#[UsesClass(SourceSet::class)]
+#[UsesClass(SourceDiscovery::class)]
+#[UsesClass(ParsedProject::class)]
+#[UsesClass(AnalysisOptions::class)]
+#[UsesClass(GenerateDocumentation::class)]
+#[UsesClass(GenerationRequest::class)]
+#[UsesClass(GenerationResult::class)]
+#[UsesClass(RenderedSite::class)]
+#[UsesClass(RepositoryAddress::class)]
 final class ProjectAnalyzerTest extends TestCase
 {
-    public function testAnalyzeBuildsModelFromTinyComposerProject(): void
+    public function testAnalyzeUsesCompletedExtractionWithoutRediscoveringTheFilesystem(): void
     {
-        $dir = sys_get_temp_dir() . '/docgen-analyzer-' . bin2hex(random_bytes(4));
-        mkdir($dir . '/src', 0777, true);
-        mkdir($dir . '/tests', 0777, true);
-        file_put_contents($dir . '/composer.json', <<<'JSON'
-{
-    "name": "demo/app",
-    "autoload": {"psr-4": {"Demo\\": "src/"}},
-    "autoload-dev": {"psr-4": {"DemoTests\\": "tests/"}}
-}
-JSON);
-        file_put_contents($dir . '/src/GreeterContract.php', <<<'PHP'
-<?php
+        $type = new ClassLikeDoc('Demo\Example', 'Example', 'Demo', 'class', 'demo/app', 'src/Example.php', 1, 4, false, false, [], [], [], [], [], [], [], null, null, [], false);
+        $sources = new SourceSet('/no-filesystem-needed', [], [], [], ['selection warning']);
+        $parsed = new ParsedProject([$type], [], [], ['parse warning']);
 
-namespace Demo;
+        $model = (new ProjectAnalyzer())->analyze($sources, $parsed, new AnalysisOptions('Example', null, null));
 
-interface GreeterContract
-{
-    public function greet(string $name): string;
-}
-PHP);
-        file_put_contents($dir . '/src/Greeter.php', <<<'PHP'
-<?php
-
-namespace Demo;
-
-class Greeter implements GreeterContract
-{
-    public function greet(string $name): string
-    {
-        return 'Hello ' . $name;
-    }
-}
-PHP);
-        file_put_contents($dir . '/tests/GreeterTest.php', <<<'PHP'
-<?php
-
-namespace DemoTests;
-
-use Demo\Greeter;
-
-class GreeterTest
-{
-    public function check(): string
-    {
-        $greeter = new Greeter();
-
-        return $greeter->greet('AI');
-    }
-}
-PHP);
-        $root = (string) realpath($dir);
-
-        $model = (new ProjectAnalyzer())->analyze(new DocGenConfig($root, ['.'], [], [], 'build/docs', null, null, null));
-
-        self::assertSame('demo/app', $model->title);
-        self::assertCount(1, $model->packages);
-        self::assertCount(3, $model->classLikes);
-        self::assertSame('Demo\Greeter', $model->classLikes[0]->fqcn);
-        self::assertFalse($model->classLikes[0]->isDev);
-        self::assertSame('Demo\GreeterContract', $model->classLikes[1]->fqcn);
-        self::assertFalse($model->classLikes[1]->isDev);
-        self::assertSame('DemoTests\GreeterTest', $model->classLikes[2]->fqcn);
-        self::assertTrue($model->classLikes[2]->isDev);
-        self::assertNotNull($model->symbolTable->classLike('\DEMO\GreeterContract'));
-        self::assertSame(['Demo\Greeter'], $model->hierarchy->implementorsOf('Demo\GreeterContract'));
-        self::assertCount(2, $model->usages->forType('Demo\Greeter'));
-        self::assertNull($model->layers);
-        self::assertSame([], $model->layerAssignments);
-        self::assertNull($model->coverage);
-        self::assertSame([], $model->warnings);
-    }
-
-    public function testAnalyzeCollectsWarningForUnparsableSource(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-analyzer-' . bin2hex(random_bytes(4));
-        mkdir($dir . '/src', 0777, true);
-        file_put_contents($dir . '/composer.json', <<<'JSON'
-{
-    "name": "demo/app",
-    "autoload": {"psr-4": {"Demo\\": "src/"}}
-}
-JSON);
-        file_put_contents($dir . '/src/Valid.php', <<<'PHP'
-<?php
-
-namespace Demo;
-
-class Valid
-{
-}
-PHP);
-        file_put_contents($dir . '/src/Broken.php', '<?php class {');
-        $root = (string) realpath($dir);
-
-        $model = (new ProjectAnalyzer())->analyze(new DocGenConfig($root, ['.'], [], [], 'build/docs', null, null, null));
-
-        self::assertCount(1, $model->warnings);
-        self::assertStringContainsString('Failed to parse src/Broken.php', $model->warnings[0]);
-        self::assertCount(1, $model->classLikes);
-        self::assertSame('Demo\Valid', $model->classLikes[0]->fqcn);
-    }
-
-    public function testAnalyzeLoadsLayersFromRootDeptracConfig(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-analyzer-' . bin2hex(random_bytes(4));
-        mkdir($dir . '/src', 0777, true);
-        file_put_contents($dir . '/composer.json', <<<'JSON'
-{
-    "name": "demo/app",
-    "autoload": {"psr-4": {"Demo\\": "src/"}}
-}
-JSON);
-        file_put_contents($dir . '/src/Greeter.php', <<<'PHP'
-<?php
-
-namespace Demo;
-
-class Greeter
-{
-}
-PHP);
-        file_put_contents($dir . '/deptrac.yaml', <<<'YAML'
-deptrac:
-  layers:
-    - name: Domain
-      collectors:
-        - type: className
-          value: Greeter
-  ruleset:
-    Domain: []
-YAML);
-        $root = (string) realpath($dir);
-
-        $model = (new ProjectAnalyzer())->analyze(new DocGenConfig($root, ['.'], [], [], 'build/docs', null, null, null));
-
-        $layers = $model->layers;
-
-        self::assertNotNull($layers);
-        self::assertCount(1, $layers->layers);
-        self::assertSame('Domain', $layers->layers[0]->name);
-        self::assertSame(['demo\greeter' => ['Domain']], $model->layerAssignments);
-    }
-
-    public function testAnalyzeReadsCoverageReportWhenConfigured(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-analyzer-' . bin2hex(random_bytes(4));
-        mkdir($dir . '/src', 0777, true);
-        mkdir($dir . '/coverage-xml', 0777, true);
-        file_put_contents($dir . '/composer.json', <<<'JSON'
-{
-    "name": "demo/app",
-    "autoload": {"psr-4": {"Demo\\": "src/"}}
-}
-JSON);
-        file_put_contents($dir . '/src/Greeter.php', <<<'PHP'
-<?php
-
-namespace Demo;
-
-class Greeter
-{
-    public function greet(): string
-    {
-        return 'Hello';
-    }
-}
-PHP);
-        file_put_contents($dir . '/coverage-xml/Greeter.php.xml', <<<'XML'
-<?xml version="1.0"?>
-<phpunit>
-  <file name="Greeter.php" path="src">
-    <method name="greet" start="7" executable="1" executed="1" coverage="100"/>
-    <coverage>
-      <line nr="9">
-        <covered by="DemoTests\GreeterTest::testGreet"/>
-      </line>
-    </coverage>
-  </file>
-</phpunit>
-XML);
-        $root = (string) realpath($dir);
-
-        $model = (new ProjectAnalyzer())->analyze(new DocGenConfig($root, ['.'], [], [], 'build/docs', null, null, 'coverage-xml'));
-
-        $coverage = $model->coverage;
-
-        self::assertNotNull($coverage);
-        self::assertSame(['DemoTests\GreeterTest::testGreet'], $coverage->testsForRange('src/Greeter.php', 1, 100));
-        $method = $coverage->methodAt('src/Greeter.php', 1, 100);
-        self::assertNotNull($method);
-        self::assertSame(1, $method->executable);
+        self::assertSame($type, $model->symbolTable->classLike('demo\example'));
+        self::assertSame(['selection warning', 'parse warning'], $model->warnings);
+        self::assertSame('/no-filesystem-needed', $model->root);
     }
 
     public function testLayerAssignmentsReturnsEmptyMapWithoutLayers(): void
     {
         self::assertSame([], (new ProjectAnalyzer())->layerAssignments(null, []));
     }
-
     public function testLayerAssignmentsMapsMatchingClassesToLayerNames(): void
     {
         $layers = new LayerModel([new LayerDefinition('Domain', [new LayerCollector('className', 'Greeter')])], []);
@@ -412,7 +262,6 @@ XML);
 
         self::assertSame(['demo\greeter' => ['Domain']], (new ProjectAnalyzer())->layerAssignments($layers, [$greeter, $mailer]));
     }
-
     public function testLayerModelThrowsWhenConfiguredDeptracFileIsMissing(): void
     {
         $dir = sys_get_temp_dir() . '/docgen-analyzer-' . bin2hex(random_bytes(4));
@@ -421,24 +270,21 @@ XML);
         $this->expectException(DocGenException::class);
         $this->expectExceptionMessage('Deptrac config not found: ' . $dir . '/missing/deptrac.yaml');
 
-        (new ProjectAnalyzer())->layerModel($config);
+        (new ProjectAnalyzer())->layerModel($config->deptrac === null ? null : $config->root . '/' . $config->deptrac);
     }
-
     public function testLayerModelReturnsNullWithoutDeptracConfiguration(): void
     {
         $dir = sys_get_temp_dir() . '/docgen-analyzer-' . bin2hex(random_bytes(4));
         $config = new DocGenConfig($dir, ['.'], [], [], 'build/docs', null, null, null);
 
-        self::assertNull((new ProjectAnalyzer())->layerModel($config));
+        self::assertNull((new ProjectAnalyzer())->layerModel($config->deptrac === null ? null : $config->root . '/' . $config->deptrac));
     }
-
     public function testCoverageIndexReturnsNullWithoutConfiguredReport(): void
     {
         $config = new DocGenConfig('/tmp/demo', ['.'], [], [], 'build/docs', null, null, null);
 
-        self::assertNull((new ProjectAnalyzer())->coverageIndex($config));
+        self::assertNull((new ProjectAnalyzer())->coverageIndex($config->coverage === null ? null : $config->root . '/' . $config->coverage, $config->root));
     }
-
     public function testCoverageIndexThrowsWhenReportDirectoryIsMissing(): void
     {
         $dir = sys_get_temp_dir() . '/docgen-analyzer-' . bin2hex(random_bytes(4));
@@ -447,112 +293,6 @@ XML);
         $this->expectException(DocGenException::class);
         $this->expectExceptionMessage('Coverage report directory not found: ' . $dir . '/coverage-xml');
 
-        (new ProjectAnalyzer())->coverageIndex($config);
-    }
-
-    public function testVendorWarningsReportsGlobThatMatchedNoPackage(): void
-    {
-        $config = new DocGenConfig('/tmp/demo', ['.'], ['vendor'], [], 'build/docs', null, null, null, ['dev-vendor']);
-        $package = new DiscoveredPackage(new ComposerManifest('/tmp/demo', 'demo/app', '', [], [], [], [], []), false);
-
-        $warnings = (new ProjectAnalyzer())->vendorWarnings($config, [$package]);
-
-        self::assertCount(2, $warnings);
-        self::assertSame(
-            'Vendor glob "vendor" documented no installed runtime vendor package. Vendor globs match composer package names such as "acme/lib" or "acme/*", not directory names.',
-            $warnings[0],
-        );
-        self::assertSame(
-            'Vendor glob "dev-vendor" documented no installed dev vendor package. Vendor globs match composer package names such as "acme/lib" or "acme/*", not directory names.',
-            $warnings[1],
-        );
-    }
-
-    public function testVendorWarningsStaysSilentForMatchingGlob(): void
-    {
-        $config = new DocGenConfig('/tmp/demo', ['.'], ['acme/*'], [], 'build/docs', null, null, null, ['phpunit/*']);
-        $runtime = new DiscoveredPackage(new ComposerManifest('/tmp/demo/vendor/acme/lib', 'acme/lib', '', ['Acme\\' => ['src']], [], [], [], []), true);
-        $dev = new DiscoveredPackage(new ComposerManifest('/tmp/demo/vendor/phpunit/phpunit', 'phpunit/phpunit', '', ['PHPUnit\\' => ['src']], [], [], [], []), true, true);
-
-        self::assertSame([], (new ProjectAnalyzer())->vendorWarnings($config, [$runtime, $dev]));
-    }
-
-    public function testVendorWarningsReportsVendorPackageWithoutSources(): void
-    {
-        $config = new DocGenConfig('/tmp/demo', ['.'], ['phpstan/*'], [], 'build/docs', null, null, null);
-        $package = new DiscoveredPackage(new ComposerManifest('/tmp/demo/vendor/phpstan/phpstan', 'phpstan/phpstan', '', [], [], [], [], []), true);
-
-        $warnings = (new ProjectAnalyzer())->vendorWarnings($config, [$package]);
-
-        self::assertCount(1, $warnings);
-        self::assertSame(
-            'Vendor package "phpstan/phpstan" declares no PSR-4 or classmap autoload source, so its classes cannot be documented or linked. Packages that autoload only "files" entries, such as a phar bootstrap, cannot be documented: drop "phpstan/phpstan" from the vendor globs.',
-            $warnings[0],
-        );
-    }
-
-    public function testVendorGlobWarningsIgnoresPackagesOfTheOtherDependencyKind(): void
-    {
-        $devPackage = new DiscoveredPackage(new ComposerManifest('/tmp/demo/vendor/phpunit/phpunit', 'phpunit/phpunit', '', ['PHPUnit\\' => ['src']], [], [], [], []), true, true);
-
-        $warnings = (new ProjectAnalyzer())->vendorGlobWarnings(['phpunit/*'], [$devPackage], false);
-
-        self::assertCount(1, $warnings);
-        self::assertStringContainsString('documented no installed runtime vendor package', $warnings[0]);
-        self::assertSame([], (new ProjectAnalyzer())->vendorGlobWarnings(['phpunit/*'], [$devPackage], true));
-    }
-
-    public function testVendorSourceWarningsIgnoresProjectPackagesAndDocumentedVendors(): void
-    {
-        $project = new DiscoveredPackage(new ComposerManifest('/tmp/demo', 'demo/app', '', [], [], [], [], []), false);
-        $vendor = new DiscoveredPackage(new ComposerManifest('/tmp/demo/vendor/acme/lib', 'acme/lib', '', ['Acme\\' => ['src']], [], [], [], []), true);
-
-        self::assertSame([], (new ProjectAnalyzer())->vendorSourceWarnings([$project, $vendor]));
-    }
-
-    public function testTitleForPrefersConfiguredTitle(): void
-    {
-        $config = new DocGenConfig('/tmp/demo', ['.'], [], [], 'build/docs', 'Custom Title', null, null);
-
-        self::assertSame('Custom Title', (new ProjectAnalyzer())->titleFor($config, []));
-    }
-
-    public function testTitleForFallsBackToRootBasenameWithoutRootPackage(): void
-    {
-        $config = new DocGenConfig('/tmp/demo-docs', ['.'], [], [], 'build/docs', null, null, null);
-        $vendorPackage = new DiscoveredPackage(new ComposerManifest('/tmp/other', 'vendor/lib', '', [], [], [], [], []), true);
-
-        self::assertSame('demo-docs', (new ProjectAnalyzer())->titleFor($config, [$vendorPackage]));
-    }
-
-    public function testRepositoryForPrefersTheConfiguredAddress(): void
-    {
-        $config = new DocGenConfig('/tmp/demo', ['.'], [], [], 'build/docs', null, null, null, [], null, null, 'https://github.com/example/configured');
-        $root = new DiscoveredPackage(new ComposerManifest('/tmp/demo', 'demo/app', '', [], [], [], [], [], [], [], 'https://github.com/example/declared'), false);
-
-        self::assertSame('https://github.com/example/configured', (new ProjectAnalyzer())->repositoryFor($config, [$root]));
-    }
-
-    public function testRepositoryForReadsTheRootPackageWhenNothingIsConfigured(): void
-    {
-        $directory = sys_get_temp_dir() . '/docgen-repository-' . uniqid('', true);
-        mkdir($directory, 0777, true);
-        $config = new DocGenConfig($directory, ['.'], [], [], 'build/docs', null, null, null);
-        $vendor = new DiscoveredPackage(new ComposerManifest($directory, 'acme/lib', '', [], [], [], [], [], [], [], 'https://github.com/acme/lib'), true);
-        $root = new DiscoveredPackage(new ComposerManifest($directory, 'demo/app', '', [], [], [], [], [], [], [], 'https://github.com/example/declared'), false);
-
-        self::assertSame('https://github.com/example/declared', (new ProjectAnalyzer())->repositoryFor($config, [$vendor, $root]));
-    }
-
-    public function testRepositoryForNamesNothingWhereNeitherSaysWhereTheCodeLives(): void
-    {
-        $directory = sys_get_temp_dir() . '/docgen-repository-' . uniqid('', true);
-        mkdir($directory, 0777, true);
-        $config = new DocGenConfig($directory, ['.'], [], [], 'build/docs', null, null, null);
-        $root = new DiscoveredPackage(new ComposerManifest($directory, 'demo/app', '', [], [], [], [], []), false);
-        $elsewhere = new DiscoveredPackage(new ComposerManifest('/tmp/other', 'demo/other', '', [], [], [], [], [], [], [], 'https://github.com/example/other'), false);
-
-        self::assertNull((new ProjectAnalyzer())->repositoryFor($config, [$root]));
-        self::assertNull((new ProjectAnalyzer())->repositoryFor($config, [$elsewhere]));
+        (new ProjectAnalyzer())->coverageIndex($config->coverage === null ? null : $config->root . '/' . $config->coverage, $config->root);
     }
 }

@@ -7,24 +7,27 @@ namespace Tests\Unit\DocGen\Cli;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Analysis\Config\BaseUrl;
-use Toolkit\DocGen\Analysis\Config\DocGenConfig;
-use Toolkit\DocGen\Analysis\Config\RepositoryUrl;
+use Toolkit\DocGen\Action\Config\BaseUrl;
+use Toolkit\DocGen\Action\Config\DocGenConfig;
+use Toolkit\DocGen\Action\Config\RepositoryUrl;
 use Toolkit\DocGen\Cli\DocGenCliArgumentParser;
 use Toolkit\DocGen\Cli\DocGenConfigFactory;
+use Toolkit\DocGen\Discovery\Package\RepositoryAddress;
 
 /**
  * @covers \Toolkit\DocGen\Cli\DocGenConfigFactory
- * @uses \Toolkit\DocGen\Analysis\Config\BaseUrl
+ * @uses \Toolkit\DocGen\Action\Config\BaseUrl
  * @uses \Toolkit\DocGen\Cli\DocGenCliArgumentParser
- * @uses \Toolkit\DocGen\Analysis\Config\DocGenConfig
- * @uses \Toolkit\DocGen\Analysis\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Action\Config\DocGenConfig
+ * @uses \Toolkit\DocGen\Action\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Discovery\Package\RepositoryAddress
  */
 #[CoversClass(DocGenConfigFactory::class)]
 #[UsesClass(BaseUrl::class)]
 #[UsesClass(DocGenCliArgumentParser::class)]
 #[UsesClass(DocGenConfig::class)]
 #[UsesClass(RepositoryUrl::class)]
+#[UsesClass(RepositoryAddress::class)]
 final class DocGenConfigFactoryTest extends TestCase
 {
     public function testCreateReadsEveryOptionOfTheRun(): void

@@ -10,7 +10,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use Toolkit\PhpStan\Extension\Visibility\ParserFactoryBridge;
 use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiClassPhpDocErrorCollector;
 use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiConstantPhpDocErrorCollector;
 use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiMethodPhpDocErrorCollector;
@@ -53,7 +53,9 @@ final class PublicApiPhpDocErrorCollectorTest extends TestCase
     public static function providerUndocumentedClass(): array
     {
         $code = '<?php class Example { public const STATUS = 1; public $name; public function run() {} }';
-        $statements = (new PhpParserBridge())->parser()->parse($code);
+        $parser = (new ParserFactoryBridge())->parser();
+        self::assertNotNull($parser);
+        $statements = $parser->parse($code);
         $class = $statements[0] ?? null;
         if (!$class instanceof Class_) {
             throw new RuntimeException('The installed parser produced no class from the snippet.');

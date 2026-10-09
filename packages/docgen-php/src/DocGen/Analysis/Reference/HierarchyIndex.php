@@ -7,8 +7,8 @@ namespace Toolkit\DocGen\Analysis\Reference;
 use function sort;
 use function strtolower;
 
-use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Symbol\ClassLikeKind;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeKind;
 
 /**
  * Answers inheritance questions across all documented class-like symbols.

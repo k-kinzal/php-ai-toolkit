@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use Toolkit\PhpStan\Extension\Visibility\ParserFactoryBridge;
 use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiPropertyPhpDocErrorCollector;
 
 /**
@@ -36,7 +36,9 @@ final class PublicApiPropertyPhpDocErrorCollectorTest extends TestCase
      */
     public static function providerClassWithPublicProperty(): array
     {
-        $statements = (new PhpParserBridge())->parser()->parse('<?php class Example { public $name; }');
+        $parser = (new ParserFactoryBridge())->parser();
+        self::assertNotNull($parser);
+        $statements = $parser->parse('<?php class Example { public $name; }');
         $class = $statements[0] ?? null;
         if (!$class instanceof Class_) {
             throw new RuntimeException('The installed parser produced no class from the snippet.');

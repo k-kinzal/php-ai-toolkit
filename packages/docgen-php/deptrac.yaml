@@ -1,7 +1,10 @@
+# Runtime sequence: Cli -> Action -> Discovery -> Parse -> Analysis -> Compare? -> Report.
+# Action calls each stage; later stages consume earlier results, never run the action.
+# Cache and Parallel support parsing/reporting and know none of the pipeline.
 deptrac:
   paths:
     - ./src
-  # DocGenException is shared at the package root and has no component boundary.
+  # The shared exception at the package root is the only unlayered project class.
   layers:
     - name: Cache
       collectors:
@@ -11,14 +14,42 @@ deptrac:
       collectors:
         - type: directory
           value: 'src/DocGen/Parallel/.*'
+    - name: Discovery
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Discovery/(?!Internal/).*'
+        - type: directory
+          value: 'src/DocGen/Discovery/Internal/.*'
+          private: true
+    - name: Parse
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Parse/(?!Internal/).*'
+        - type: directory
+          value: 'src/DocGen/Parse/Internal/.*'
+          private: true
     - name: Analysis
       collectors:
         - type: directory
-          value: 'src/DocGen/Analysis/.*'
-    - name: Render
+          value: 'src/DocGen/Analysis/(?!Internal/).*'
+        - type: directory
+          value: 'src/DocGen/Analysis/Internal/.*'
+          private: true
+    - name: Compare
       collectors:
         - type: directory
-          value: 'src/DocGen/Render/.*'
+          value: 'src/DocGen/Compare/(?!Internal/).*'
+        - type: directory
+          value: 'src/DocGen/Compare/Internal/.*'
+          private: true
+    - name: Report
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Report/.*'
+    - name: Action
+      collectors:
+        - type: directory
+          value: 'src/DocGen/Action/.*'
     - name: Cli
       collectors:
         - type: directory
@@ -26,6 +57,10 @@ deptrac:
   ruleset:
     Cache: []
     Parallel: []
-    Analysis: [Cache, Parallel]
-    Render: [Analysis, Cache, Parallel]
-    Cli: [Analysis, Render, Cache]
+    Discovery: []
+    Parse: [Discovery, Cache, Parallel]
+    Analysis: [Discovery, Parse]
+    Compare: [Discovery, Parse, Analysis]
+    Report: [Discovery, Parse, Analysis, Compare, Cache, Parallel]
+    Action: [Discovery, Parse, Analysis, Compare, Report, Cache]
+    Cli: [Action]

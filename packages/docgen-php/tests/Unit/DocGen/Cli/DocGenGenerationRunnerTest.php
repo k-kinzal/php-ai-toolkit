@@ -7,80 +7,33 @@ namespace Tests\Unit\DocGen\Cli;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Analysis\Cache\ParseCache;
-use Toolkit\DocGen\Analysis\Cache\SourceFileKey;
-use Toolkit\DocGen\Analysis\Config\BaseUrl;
-use Toolkit\DocGen\Analysis\Config\DocGenConfig;
-use Toolkit\DocGen\Analysis\Config\RepositoryUrl;
-use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
-use Toolkit\DocGen\Analysis\Diff\ClassLikeMerger;
-use Toolkit\DocGen\Analysis\Diff\DiffIndex;
-use Toolkit\DocGen\Analysis\Diff\DiffKey;
-use Toolkit\DocGen\Analysis\Diff\DiffLine;
-use Toolkit\DocGen\Analysis\Diff\DiffStatus;
-use Toolkit\DocGen\Analysis\Diff\DocumentDiffer;
-use Toolkit\DocGen\Analysis\Diff\FunctionMerger;
-use Toolkit\DocGen\Analysis\Diff\LcsMatcher;
-use Toolkit\DocGen\Analysis\Diff\LineDiffer;
-use Toolkit\DocGen\Analysis\Diff\MemberMerger;
-use Toolkit\DocGen\Analysis\Diff\ParameterMerger;
-use Toolkit\DocGen\Analysis\Diff\ProjectDiffer;
-use Toolkit\DocGen\Analysis\Diff\SymbolFingerprint;
-use Toolkit\DocGen\Analysis\Doc\DocBlockReader;
-use Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge;
-use Toolkit\DocGen\Analysis\Document\DocumentCollector;
-use Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Analysis\Filesystem\MarkdownFileFinder;
-use Toolkit\DocGen\Analysis\Filesystem\SourceFileFinder;
-use Toolkit\DocGen\Analysis\Layer\DeptracConfigReader;
-use Toolkit\DocGen\Analysis\Layer\LayerAssigner;
-use Toolkit\DocGen\Analysis\Package\ComposerLockReader;
-use Toolkit\DocGen\Analysis\Package\ComposerManifest;
-use Toolkit\DocGen\Analysis\Package\ComposerManifestReader;
-use Toolkit\DocGen\Analysis\Package\DevPackageResolver;
-use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
-use Toolkit\DocGen\Analysis\Package\PackageDiscovery;
+use Toolkit\DocGen\Action\Config\BaseUrl;
+use Toolkit\DocGen\Action\Config\DocGenConfig;
+use Toolkit\DocGen\Action\Config\RepositoryUrl;
+use Toolkit\DocGen\Action\GenerateDocumentation;
+use Toolkit\DocGen\Action\GenerationCache;
+use Toolkit\DocGen\Action\GenerationRequest;
+use Toolkit\DocGen\Action\GenerationResult;
+use Toolkit\DocGen\Action\ProjectAnalysis;
+use Toolkit\DocGen\Action\Revision\DiffSession;
+use Toolkit\DocGen\Action\Revision\DiffWorkspace;
+use Toolkit\DocGen\Action\Revision\Git\GitCommandRunner;
+use Toolkit\DocGen\Action\Revision\Git\GitRepository;
+use Toolkit\DocGen\Action\Revision\Git\GitWorktree;
+use Toolkit\DocGen\Action\Revision\Git\RevisionRange;
+use Toolkit\DocGen\Action\Revision\Git\TempDirectory;
+use Toolkit\DocGen\Analysis\AnalysisOptions;
+use Toolkit\DocGen\Analysis\Internal\Coverage\CoverageReader;
+use Toolkit\DocGen\Analysis\Internal\Layer\DeptracConfigReader;
+use Toolkit\DocGen\Analysis\Internal\Layer\LayerAssigner;
+use Toolkit\DocGen\Analysis\Internal\Package\PackageGraphBuilder;
 use Toolkit\DocGen\Analysis\Package\PackageGraph;
-use Toolkit\DocGen\Analysis\Package\PackageGraphBuilder;
-use Toolkit\DocGen\Analysis\Package\VendorPackageLocator;
-use Toolkit\DocGen\Analysis\Parse\AstParser;
-use Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder;
-use Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder;
-use Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder;
-use Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder;
-use Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder;
-use Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder;
-use Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder;
-use Toolkit\DocGen\Analysis\Parse\ExprTextPrinter;
-use Toolkit\DocGen\Analysis\Parse\FileSymbolCollector;
-use Toolkit\DocGen\Analysis\Parse\NativeTypePrinter;
-use Toolkit\DocGen\Analysis\Parse\ParameterModifiers;
-use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
-use Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector;
-use Toolkit\DocGen\Analysis\Parse\SymbolContext;
-use Toolkit\DocGen\Analysis\Parse\UseMapCollector;
 use Toolkit\DocGen\Analysis\ProjectAnalyzer;
 use Toolkit\DocGen\Analysis\ProjectModel;
 use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
-use Toolkit\DocGen\Analysis\Reference\LocalTypeMap;
-use Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner;
 use Toolkit\DocGen\Analysis\Reference\SymbolTable;
 use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
-use Toolkit\DocGen\Analysis\Reference\UsageCollector;
 use Toolkit\DocGen\Analysis\Reference\UsageIndex;
-use Toolkit\DocGen\Analysis\Revision\DiffSession;
-use Toolkit\DocGen\Analysis\Revision\DiffWorkspace;
-use Toolkit\DocGen\Analysis\Revision\Git\GitCommandRunner;
-use Toolkit\DocGen\Analysis\Revision\Git\GitRepository;
-use Toolkit\DocGen\Analysis\Revision\Git\GitWorktree;
-use Toolkit\DocGen\Analysis\Revision\Git\RevisionRange;
-use Toolkit\DocGen\Analysis\Revision\Git\TempDirectory;
-use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Symbol\ClassLikeKind;
-use Toolkit\DocGen\Analysis\Symbol\FileSymbols;
-use Toolkit\DocGen\Analysis\Symbol\MethodDoc;
-use Toolkit\DocGen\Analysis\Symbol\ParameterDoc;
-use Toolkit\DocGen\Analysis\Symbol\TypeSignature;
 use Toolkit\DocGen\Cache\CacheStore;
 use Toolkit\DocGen\Cache\ToolkitFingerprint;
 use Toolkit\DocGen\Cli\DocGenConfigFactory;
@@ -88,215 +41,286 @@ use Toolkit\DocGen\Cli\DocGenGenerationRunner;
 use Toolkit\DocGen\Cli\DocGenMemoryLimit;
 use Toolkit\DocGen\Cli\DocGenOutputWriter;
 use Toolkit\DocGen\Cli\DocGenPreviewServer;
-use Toolkit\DocGen\Cli\GenerationCache;
+use Toolkit\DocGen\Compare\DiffIndex;
+use Toolkit\DocGen\Compare\DiffKey;
+use Toolkit\DocGen\Compare\DiffLine;
+use Toolkit\DocGen\Compare\DiffStatus;
+use Toolkit\DocGen\Compare\Internal\ClassLikeMerger;
+use Toolkit\DocGen\Compare\Internal\DocumentDiffer;
+use Toolkit\DocGen\Compare\Internal\FunctionMerger;
+use Toolkit\DocGen\Compare\Internal\MemberMerger;
+use Toolkit\DocGen\Compare\Internal\ParameterMerger;
+use Toolkit\DocGen\Compare\Internal\SymbolFingerprint;
+use Toolkit\DocGen\Compare\LcsMatcher;
+use Toolkit\DocGen\Compare\LineDiffer;
+use Toolkit\DocGen\Compare\ProjectDiffer;
+use Toolkit\DocGen\Discovery\Filesystem\DocGenPathResolver;
+use Toolkit\DocGen\Discovery\Internal\DocumentCollector;
+use Toolkit\DocGen\Discovery\Internal\Filesystem\MarkdownFileFinder;
+use Toolkit\DocGen\Discovery\Internal\Filesystem\SourceFileFinder;
+use Toolkit\DocGen\Discovery\Internal\Package\ComposerLockReader;
+use Toolkit\DocGen\Discovery\Internal\Package\ComposerManifestReader;
+use Toolkit\DocGen\Discovery\Internal\Package\DevPackageResolver;
+use Toolkit\DocGen\Discovery\Internal\Package\PackageDiscovery;
+use Toolkit\DocGen\Discovery\Internal\Package\VendorPackageLocator;
+use Toolkit\DocGen\Discovery\Package\ComposerManifest;
+use Toolkit\DocGen\Discovery\Package\DiscoveredPackage;
+use Toolkit\DocGen\Discovery\Package\RepositoryAddress;
+use Toolkit\DocGen\Discovery\SourceDiscovery;
+use Toolkit\DocGen\Discovery\SourceFile;
+use Toolkit\DocGen\Discovery\SourceSelection;
+use Toolkit\DocGen\Discovery\SourceSet;
 use Toolkit\DocGen\DocGenException;
 use Toolkit\DocGen\Parallel\CpuCoreCounter;
 use Toolkit\DocGen\Parallel\WorkerCount;
 use Toolkit\DocGen\Parallel\WorkerPool;
 use Toolkit\DocGen\Parallel\WorkScheduler;
-use Toolkit\DocGen\Render\AssetPublisher;
-use Toolkit\DocGen\Render\Cache\CachedPageWriter;
-use Toolkit\DocGen\Render\Cache\PageRecord;
-use Toolkit\DocGen\Render\Cache\RenderCache;
-use Toolkit\DocGen\Render\Diff\DiffBanner;
-use Toolkit\DocGen\Render\Diff\DiffHtml;
-use Toolkit\DocGen\Render\Diff\DiffModeControl;
-use Toolkit\DocGen\Render\Diff\MarkdownDiffHtml;
-use Toolkit\DocGen\Render\Diff\SourceDiffHtml;
-use Toolkit\DocGen\Render\Doctest\AssertionScanner;
-use Toolkit\DocGen\Render\Doctest\DoctestExtractor;
-use Toolkit\DocGen\Render\Filesystem\SiteFileWriter;
-use Toolkit\DocGen\Render\HtmlText;
-use Toolkit\DocGen\Render\MarkdownInline;
-use Toolkit\DocGen\Render\MarkdownRenderer;
-use Toolkit\DocGen\Render\Page\AllItemsPage;
-use Toolkit\DocGen\Render\Page\ClassLikePage;
-use Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml;
-use Toolkit\DocGen\Render\Page\Component\DocTextHtml;
-use Toolkit\DocGen\Render\Page\Component\DocumentListHtml;
-use Toolkit\DocGen\Render\Page\Component\ExampleHtml;
-use Toolkit\DocGen\Render\Page\Component\GraphSvg;
-use Toolkit\DocGen\Render\Page\Component\MemberHtml;
-use Toolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml;
-use Toolkit\DocGen\Render\Page\Component\RelationsHtml;
-use Toolkit\DocGen\Render\Page\Component\SidebarHtml;
-use Toolkit\DocGen\Render\Page\Component\SignatureHtml;
-use Toolkit\DocGen\Render\Page\Component\SymbolDescription;
-use Toolkit\DocGen\Render\Page\Component\SymbolListHtml;
-use Toolkit\DocGen\Render\Page\Component\SymbolRow;
-use Toolkit\DocGen\Render\Page\Component\TestCaseHtml;
-use Toolkit\DocGen\Render\Page\Component\UsageListHtml;
-use Toolkit\DocGen\Render\Page\DocumentPage;
-use Toolkit\DocGen\Render\Page\FunctionPage;
-use Toolkit\DocGen\Render\Page\IndexPage;
-use Toolkit\DocGen\Render\Page\LayerPage;
-use Toolkit\DocGen\Render\Page\NamespacePage;
-use Toolkit\DocGen\Render\Page\PackagePage;
-use Toolkit\DocGen\Render\Page\SidebarScope;
-use Toolkit\DocGen\Render\Page\SourcePage;
-use Toolkit\DocGen\Render\Page\SymbolIndex;
-use Toolkit\DocGen\Render\PageChrome;
-use Toolkit\DocGen\Render\PhpHighlighter;
-use Toolkit\DocGen\Render\RenderKit;
-use Toolkit\DocGen\Render\RepositoryLink;
-use Toolkit\DocGen\Render\SearchIndexBuilder;
-use Toolkit\DocGen\Render\Signature\PageSignature;
-use Toolkit\DocGen\Render\Signature\SidebarDigest;
-use Toolkit\DocGen\Render\Signature\SourceDigestIndex;
-use Toolkit\DocGen\Render\Signature\SymbolReferenceScanner;
-use Toolkit\DocGen\Render\SitePages;
-use Toolkit\DocGen\Render\SiteRenderer;
-use Toolkit\DocGen\Render\SiteUrl;
-use Toolkit\DocGen\Render\Social\SocialCard;
-use Toolkit\DocGen\Render\Social\SocialMeta;
-use Toolkit\DocGen\Render\TypeHtml;
-use Toolkit\DocGen\Render\TypeRenderContext;
+use Toolkit\DocGen\Parse\Cache\ParseCache;
+use Toolkit\DocGen\Parse\Internal\AstParser;
+use Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder;
+use Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder;
+use Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder;
+use Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder;
+use Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder;
+use Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder;
+use Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder;
+use Toolkit\DocGen\Parse\Internal\Cache\SourceFileKey;
+use Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader;
+use Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Parse\Internal\ExprTextPrinter;
+use Toolkit\DocGen\Parse\Internal\FileSymbolCollector;
+use Toolkit\DocGen\Parse\Internal\NativeTypePrinter;
+use Toolkit\DocGen\Parse\Internal\ParameterModifiers;
+use Toolkit\DocGen\Parse\Internal\PhpParserBridge;
+use Toolkit\DocGen\Parse\Internal\Reference\LocalTypeMap;
+use Toolkit\DocGen\Parse\Internal\Reference\PropertyTypeScanner;
+use Toolkit\DocGen\Parse\Internal\Reference\UsageCollector;
+use Toolkit\DocGen\Parse\Internal\SymbolContext;
+use Toolkit\DocGen\Parse\Internal\UseMapCollector;
+use Toolkit\DocGen\Parse\ParsedProject;
+use Toolkit\DocGen\Parse\ProjectSymbolCollector;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeKind;
+use Toolkit\DocGen\Parse\Symbol\FileSymbols;
+use Toolkit\DocGen\Parse\Symbol\MethodDoc;
+use Toolkit\DocGen\Parse\Symbol\ParameterDoc;
+use Toolkit\DocGen\Parse\Symbol\TypeSignature;
+use Toolkit\DocGen\Report\AssetPublisher;
+use Toolkit\DocGen\Report\Cache\CachedPageWriter;
+use Toolkit\DocGen\Report\Cache\PageRecord;
+use Toolkit\DocGen\Report\Cache\RenderCache;
+use Toolkit\DocGen\Report\Diff\DiffBanner;
+use Toolkit\DocGen\Report\Diff\DiffHtml;
+use Toolkit\DocGen\Report\Diff\DiffModeControl;
+use Toolkit\DocGen\Report\Diff\MarkdownDiffHtml;
+use Toolkit\DocGen\Report\Diff\SourceDiffHtml;
+use Toolkit\DocGen\Report\Doctest\AssertionScanner;
+use Toolkit\DocGen\Report\Doctest\DoctestExtractor;
+use Toolkit\DocGen\Report\Filesystem\SiteFileWriter;
+use Toolkit\DocGen\Report\HtmlText;
+use Toolkit\DocGen\Report\MarkdownInline;
+use Toolkit\DocGen\Report\MarkdownRenderer;
+use Toolkit\DocGen\Report\Page\AllItemsPage;
+use Toolkit\DocGen\Report\Page\ClassLikePage;
+use Toolkit\DocGen\Report\Page\Component\BreadcrumbHtml;
+use Toolkit\DocGen\Report\Page\Component\DocTextHtml;
+use Toolkit\DocGen\Report\Page\Component\DocumentListHtml;
+use Toolkit\DocGen\Report\Page\Component\ExampleHtml;
+use Toolkit\DocGen\Report\Page\Component\GraphSvg;
+use Toolkit\DocGen\Report\Page\Component\MemberHtml;
+use Toolkit\DocGen\Report\Page\Component\PrivateSurfaceHtml;
+use Toolkit\DocGen\Report\Page\Component\RelationsHtml;
+use Toolkit\DocGen\Report\Page\Component\SidebarHtml;
+use Toolkit\DocGen\Report\Page\Component\SignatureHtml;
+use Toolkit\DocGen\Report\Page\Component\SymbolDescription;
+use Toolkit\DocGen\Report\Page\Component\SymbolListHtml;
+use Toolkit\DocGen\Report\Page\Component\SymbolRow;
+use Toolkit\DocGen\Report\Page\Component\TestCaseHtml;
+use Toolkit\DocGen\Report\Page\Component\UsageListHtml;
+use Toolkit\DocGen\Report\Page\DocumentPage;
+use Toolkit\DocGen\Report\Page\FunctionPage;
+use Toolkit\DocGen\Report\Page\IndexPage;
+use Toolkit\DocGen\Report\Page\LayerPage;
+use Toolkit\DocGen\Report\Page\NamespacePage;
+use Toolkit\DocGen\Report\Page\PackagePage;
+use Toolkit\DocGen\Report\Page\SidebarScope;
+use Toolkit\DocGen\Report\Page\SitePages;
+use Toolkit\DocGen\Report\Page\SourcePage;
+use Toolkit\DocGen\Report\Page\SymbolIndex;
+use Toolkit\DocGen\Report\PageChrome;
+use Toolkit\DocGen\Report\PhpHighlighter;
+use Toolkit\DocGen\Report\RenderedSite;
+use Toolkit\DocGen\Report\RenderKit;
+use Toolkit\DocGen\Report\RepositoryLink;
+use Toolkit\DocGen\Report\SearchIndexBuilder;
+use Toolkit\DocGen\Report\Signature\PageSignature;
+use Toolkit\DocGen\Report\Signature\SidebarDigest;
+use Toolkit\DocGen\Report\Signature\SourceDigestIndex;
+use Toolkit\DocGen\Report\Signature\SymbolReferenceScanner;
+use Toolkit\DocGen\Report\SiteRenderer;
+use Toolkit\DocGen\Report\SiteUrl;
+use Toolkit\DocGen\Report\Social\SocialCard;
+use Toolkit\DocGen\Report\Social\SocialMeta;
+use Toolkit\DocGen\Report\TypeHtml;
+use Toolkit\DocGen\Report\TypeRenderContext;
 
 /**
  * @covers \Toolkit\DocGen\Cli\DocGenGenerationRunner
- * @uses \Toolkit\DocGen\Render\Page\AllItemsPage
- * @uses \Toolkit\DocGen\Render\Doctest\AssertionScanner
- * @uses \Toolkit\DocGen\Render\AssetPublisher
- * @uses \Toolkit\DocGen\Analysis\Parse\AstParser
- * @uses \Toolkit\DocGen\Analysis\Config\BaseUrl
- * @uses \Toolkit\DocGen\Render\Page\Component\BreadcrumbHtml
+ * @uses \Toolkit\DocGen\Report\Page\AllItemsPage
+ * @uses \Toolkit\DocGen\Report\Doctest\AssertionScanner
+ * @uses \Toolkit\DocGen\Report\AssetPublisher
+ * @uses \Toolkit\DocGen\Parse\Internal\AstParser
+ * @uses \Toolkit\DocGen\Action\Config\BaseUrl
+ * @uses \Toolkit\DocGen\Report\Page\Component\BreadcrumbHtml
  * @uses \Toolkit\DocGen\Cache\CacheStore
- * @uses \Toolkit\DocGen\Render\Cache\CachedPageWriter
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ClassLikeBuilder
- * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
- * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeKind
- * @uses \Toolkit\DocGen\Analysis\Diff\ClassLikeMerger
- * @uses \Toolkit\DocGen\Render\Page\ClassLikePage
- * @uses \Toolkit\DocGen\Analysis\Package\ComposerLockReader
- * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifest
- * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifestReader
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ConstantBuilder
- * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageReader
+ * @uses \Toolkit\DocGen\Report\Cache\CachedPageWriter
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder
+ * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeKind
+ * @uses \Toolkit\DocGen\Compare\Internal\ClassLikeMerger
+ * @uses \Toolkit\DocGen\Report\Page\ClassLikePage
+ * @uses \Toolkit\DocGen\Discovery\Internal\Package\ComposerLockReader
+ * @uses \Toolkit\DocGen\Discovery\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Discovery\Internal\Package\ComposerManifestReader
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder
+ * @uses \Toolkit\DocGen\Analysis\Internal\Coverage\CoverageReader
  * @uses \Toolkit\DocGen\Parallel\CpuCoreCounter
- * @uses \Toolkit\DocGen\Analysis\Layer\DeptracConfigReader
- * @uses \Toolkit\DocGen\Analysis\Package\DevPackageResolver
- * @uses \Toolkit\DocGen\Render\Diff\DiffBanner
- * @uses \Toolkit\DocGen\Render\Diff\DiffHtml
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffIndex
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffKey
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffLine
- * @uses \Toolkit\DocGen\Render\Diff\DiffModeControl
- * @uses \Toolkit\DocGen\Analysis\Revision\DiffSession
- * @uses \Toolkit\DocGen\Analysis\Diff\DiffStatus
- * @uses \Toolkit\DocGen\Analysis\Revision\DiffWorkspace
- * @uses \Toolkit\DocGen\Analysis\Package\DiscoveredPackage
- * @uses \Toolkit\DocGen\Analysis\Doc\DocBlockReader
- * @uses \Toolkit\DocGen\Analysis\Config\DocGenConfig
+ * @uses \Toolkit\DocGen\Analysis\Internal\Layer\DeptracConfigReader
+ * @uses \Toolkit\DocGen\Discovery\Internal\Package\DevPackageResolver
+ * @uses \Toolkit\DocGen\Report\Diff\DiffBanner
+ * @uses \Toolkit\DocGen\Report\Diff\DiffHtml
+ * @uses \Toolkit\DocGen\Compare\DiffIndex
+ * @uses \Toolkit\DocGen\Compare\DiffKey
+ * @uses \Toolkit\DocGen\Compare\DiffLine
+ * @uses \Toolkit\DocGen\Report\Diff\DiffModeControl
+ * @uses \Toolkit\DocGen\Action\Revision\DiffSession
+ * @uses \Toolkit\DocGen\Compare\DiffStatus
+ * @uses \Toolkit\DocGen\Action\Revision\DiffWorkspace
+ * @uses \Toolkit\DocGen\Discovery\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Action\Config\DocGenConfig
  * @uses \Toolkit\DocGen\Cli\DocGenConfigFactory
  * @uses \Toolkit\DocGen\DocGenException
  * @uses \Toolkit\DocGen\Cli\DocGenMemoryLimit
  * @uses \Toolkit\DocGen\Cli\DocGenOutputWriter
- * @uses \Toolkit\DocGen\Analysis\Filesystem\DocGenPathResolver
+ * @uses \Toolkit\DocGen\Discovery\Filesystem\DocGenPathResolver
  * @uses \Toolkit\DocGen\Cli\DocGenPreviewServer
- * @uses \Toolkit\DocGen\Render\Page\Component\DocTextHtml
- * @uses \Toolkit\DocGen\Render\Doctest\DoctestExtractor
- * @uses \Toolkit\DocGen\Analysis\Document\DocumentCollector
- * @uses \Toolkit\DocGen\Analysis\Diff\DocumentDiffer
- * @uses \Toolkit\DocGen\Render\Page\Component\DocumentListHtml
- * @uses \Toolkit\DocGen\Render\Page\DocumentPage
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\EnumCaseBuilder
- * @uses \Toolkit\DocGen\Render\Page\Component\ExampleHtml
- * @uses \Toolkit\DocGen\Analysis\Parse\ExprTextPrinter
- * @uses \Toolkit\DocGen\Analysis\Parse\FileSymbolCollector
- * @uses \Toolkit\DocGen\Analysis\Symbol\FileSymbols
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\FunctionBuilder
- * @uses \Toolkit\DocGen\Analysis\Diff\FunctionMerger
- * @uses \Toolkit\DocGen\Render\Page\FunctionPage
- * @uses \Toolkit\DocGen\Cli\GenerationCache
- * @uses \Toolkit\DocGen\Analysis\Revision\Git\GitCommandRunner
- * @uses \Toolkit\DocGen\Analysis\Revision\Git\GitRepository
- * @uses \Toolkit\DocGen\Analysis\Revision\Git\GitWorktree
- * @uses \Toolkit\DocGen\Render\Page\Component\GraphSvg
+ * @uses \Toolkit\DocGen\Report\Page\Component\DocTextHtml
+ * @uses \Toolkit\DocGen\Report\Doctest\DoctestExtractor
+ * @uses \Toolkit\DocGen\Discovery\Internal\DocumentCollector
+ * @uses \Toolkit\DocGen\Compare\Internal\DocumentDiffer
+ * @uses \Toolkit\DocGen\Report\Page\Component\DocumentListHtml
+ * @uses \Toolkit\DocGen\Report\Page\DocumentPage
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder
+ * @uses \Toolkit\DocGen\Report\Page\Component\ExampleHtml
+ * @uses \Toolkit\DocGen\Parse\Internal\ExprTextPrinter
+ * @uses \Toolkit\DocGen\Parse\Internal\FileSymbolCollector
+ * @uses \Toolkit\DocGen\Parse\Symbol\FileSymbols
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder
+ * @uses \Toolkit\DocGen\Compare\Internal\FunctionMerger
+ * @uses \Toolkit\DocGen\Report\Page\FunctionPage
+ * @uses \Toolkit\DocGen\Action\GenerationCache
+ * @uses \Toolkit\DocGen\Action\Revision\Git\GitCommandRunner
+ * @uses \Toolkit\DocGen\Action\Revision\Git\GitRepository
+ * @uses \Toolkit\DocGen\Action\Revision\Git\GitWorktree
+ * @uses \Toolkit\DocGen\Report\Page\Component\GraphSvg
  * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
- * @uses \Toolkit\DocGen\Render\HtmlText
- * @uses \Toolkit\DocGen\Render\Page\IndexPage
- * @uses \Toolkit\DocGen\Analysis\Layer\LayerAssigner
- * @uses \Toolkit\DocGen\Render\Page\LayerPage
- * @uses \Toolkit\DocGen\Analysis\Diff\LcsMatcher
- * @uses \Toolkit\DocGen\Analysis\Diff\LineDiffer
- * @uses \Toolkit\DocGen\Analysis\Reference\LocalTypeMap
- * @uses \Toolkit\DocGen\Render\Diff\MarkdownDiffHtml
- * @uses \Toolkit\DocGen\Analysis\Filesystem\MarkdownFileFinder
- * @uses \Toolkit\DocGen\Render\MarkdownInline
- * @uses \Toolkit\DocGen\Render\MarkdownRenderer
- * @uses \Toolkit\DocGen\Render\Page\Component\MemberHtml
- * @uses \Toolkit\DocGen\Analysis\Diff\MemberMerger
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\MethodBuilder
- * @uses \Toolkit\DocGen\Analysis\Symbol\MethodDoc
- * @uses \Toolkit\DocGen\Render\Page\NamespacePage
- * @uses \Toolkit\DocGen\Analysis\Parse\NativeTypePrinter
- * @uses \Toolkit\DocGen\Analysis\Package\PackageDiscovery
+ * @uses \Toolkit\DocGen\Report\HtmlText
+ * @uses \Toolkit\DocGen\Report\Page\IndexPage
+ * @uses \Toolkit\DocGen\Analysis\Internal\Layer\LayerAssigner
+ * @uses \Toolkit\DocGen\Report\Page\LayerPage
+ * @uses \Toolkit\DocGen\Compare\LcsMatcher
+ * @uses \Toolkit\DocGen\Compare\LineDiffer
+ * @uses \Toolkit\DocGen\Parse\Internal\Reference\LocalTypeMap
+ * @uses \Toolkit\DocGen\Report\Diff\MarkdownDiffHtml
+ * @uses \Toolkit\DocGen\Discovery\Internal\Filesystem\MarkdownFileFinder
+ * @uses \Toolkit\DocGen\Report\MarkdownInline
+ * @uses \Toolkit\DocGen\Report\MarkdownRenderer
+ * @uses \Toolkit\DocGen\Report\Page\Component\MemberHtml
+ * @uses \Toolkit\DocGen\Compare\Internal\MemberMerger
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder
+ * @uses \Toolkit\DocGen\Parse\Symbol\MethodDoc
+ * @uses \Toolkit\DocGen\Report\Page\NamespacePage
+ * @uses \Toolkit\DocGen\Parse\Internal\NativeTypePrinter
+ * @uses \Toolkit\DocGen\Discovery\Internal\Package\PackageDiscovery
  * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
- * @uses \Toolkit\DocGen\Analysis\Package\PackageGraphBuilder
- * @uses \Toolkit\DocGen\Render\Page\PackagePage
- * @uses \Toolkit\DocGen\Render\PageChrome
- * @uses \Toolkit\DocGen\Render\Cache\PageRecord
- * @uses \Toolkit\DocGen\Render\Signature\PageSignature
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\ParameterBuilder
- * @uses \Toolkit\DocGen\Analysis\Symbol\ParameterDoc
- * @uses \Toolkit\DocGen\Analysis\Diff\ParameterMerger
- * @uses \Toolkit\DocGen\Analysis\Parse\ParameterModifiers
- * @uses \Toolkit\DocGen\Analysis\Cache\ParseCache
- * @uses \Toolkit\DocGen\Analysis\Doc\PhpDocParserBridge
- * @uses \Toolkit\DocGen\Render\PhpHighlighter
- * @uses \Toolkit\DocGen\Analysis\Parse\PhpParserBridge
- * @uses \Toolkit\DocGen\Render\Page\Component\PrivateSurfaceHtml
- * @uses \Toolkit\DocGen\Analysis\ProjectAnalyzer
- * @uses \Toolkit\DocGen\Analysis\Diff\ProjectDiffer
+ * @uses \Toolkit\DocGen\Analysis\Internal\Package\PackageGraphBuilder
+ * @uses \Toolkit\DocGen\Report\Page\PackagePage
+ * @uses \Toolkit\DocGen\Report\PageChrome
+ * @uses \Toolkit\DocGen\Report\Cache\PageRecord
+ * @uses \Toolkit\DocGen\Report\Signature\PageSignature
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder
+ * @uses \Toolkit\DocGen\Parse\Symbol\ParameterDoc
+ * @uses \Toolkit\DocGen\Compare\Internal\ParameterMerger
+ * @uses \Toolkit\DocGen\Parse\Internal\ParameterModifiers
+ * @uses \Toolkit\DocGen\Parse\Cache\ParseCache
+ * @uses \Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Report\PhpHighlighter
+ * @uses \Toolkit\DocGen\Parse\Internal\PhpParserBridge
+ * @uses \Toolkit\DocGen\Report\Page\Component\PrivateSurfaceHtml
+ * @uses \Toolkit\DocGen\Action\ProjectAnalysis
+ * @uses \Toolkit\DocGen\Compare\ProjectDiffer
  * @uses \Toolkit\DocGen\Analysis\ProjectModel
- * @uses \Toolkit\DocGen\Analysis\Parse\ProjectSymbolCollector
- * @uses \Toolkit\DocGen\Analysis\Parse\Builder\PropertyBuilder
- * @uses \Toolkit\DocGen\Analysis\Reference\PropertyTypeScanner
- * @uses \Toolkit\DocGen\Render\Page\Component\RelationsHtml
- * @uses \Toolkit\DocGen\Render\Cache\RenderCache
- * @uses \Toolkit\DocGen\Render\RenderKit
- * @uses \Toolkit\DocGen\Render\RepositoryLink
- * @uses \Toolkit\DocGen\Analysis\Config\RepositoryUrl
- * @uses \Toolkit\DocGen\Analysis\Revision\Git\RevisionRange
- * @uses \Toolkit\DocGen\Render\SearchIndexBuilder
- * @uses \Toolkit\DocGen\Render\Signature\SidebarDigest
- * @uses \Toolkit\DocGen\Render\Page\Component\SidebarHtml
- * @uses \Toolkit\DocGen\Render\Page\SidebarScope
- * @uses \Toolkit\DocGen\Render\Page\Component\SignatureHtml
- * @uses \Toolkit\DocGen\Render\Filesystem\SiteFileWriter
- * @uses \Toolkit\DocGen\Render\SitePages
- * @uses \Toolkit\DocGen\Render\SiteRenderer
- * @uses \Toolkit\DocGen\Render\SiteUrl
- * @uses \Toolkit\DocGen\Render\Social\SocialCard
- * @uses \Toolkit\DocGen\Render\Social\SocialMeta
- * @uses \Toolkit\DocGen\Render\Diff\SourceDiffHtml
- * @uses \Toolkit\DocGen\Render\Signature\SourceDigestIndex
- * @uses \Toolkit\DocGen\Analysis\Filesystem\SourceFileFinder
- * @uses \Toolkit\DocGen\Analysis\Cache\SourceFileKey
- * @uses \Toolkit\DocGen\Render\Page\SourcePage
- * @uses \Toolkit\DocGen\Analysis\Parse\SymbolContext
- * @uses \Toolkit\DocGen\Render\Page\Component\SymbolDescription
- * @uses \Toolkit\DocGen\Analysis\Diff\SymbolFingerprint
- * @uses \Toolkit\DocGen\Render\Page\SymbolIndex
- * @uses \Toolkit\DocGen\Render\Page\Component\SymbolListHtml
- * @uses \Toolkit\DocGen\Render\Signature\SymbolReferenceScanner
- * @uses \Toolkit\DocGen\Render\Page\Component\SymbolRow
+ * @uses \Toolkit\DocGen\Parse\ProjectSymbolCollector
+ * @uses \Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder
+ * @uses \Toolkit\DocGen\Parse\Internal\Reference\PropertyTypeScanner
+ * @uses \Toolkit\DocGen\Report\Page\Component\RelationsHtml
+ * @uses \Toolkit\DocGen\Report\Cache\RenderCache
+ * @uses \Toolkit\DocGen\Report\RenderKit
+ * @uses \Toolkit\DocGen\Report\RepositoryLink
+ * @uses \Toolkit\DocGen\Action\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Action\Revision\Git\RevisionRange
+ * @uses \Toolkit\DocGen\Report\SearchIndexBuilder
+ * @uses \Toolkit\DocGen\Report\Signature\SidebarDigest
+ * @uses \Toolkit\DocGen\Report\Page\Component\SidebarHtml
+ * @uses \Toolkit\DocGen\Report\Page\SidebarScope
+ * @uses \Toolkit\DocGen\Report\Page\Component\SignatureHtml
+ * @uses \Toolkit\DocGen\Report\Filesystem\SiteFileWriter
+ * @uses \Toolkit\DocGen\Report\Page\SitePages
+ * @uses \Toolkit\DocGen\Report\SiteRenderer
+ * @uses \Toolkit\DocGen\Report\SiteUrl
+ * @uses \Toolkit\DocGen\Report\Social\SocialCard
+ * @uses \Toolkit\DocGen\Report\Social\SocialMeta
+ * @uses \Toolkit\DocGen\Report\Diff\SourceDiffHtml
+ * @uses \Toolkit\DocGen\Report\Signature\SourceDigestIndex
+ * @uses \Toolkit\DocGen\Discovery\Internal\Filesystem\SourceFileFinder
+ * @uses \Toolkit\DocGen\Parse\Internal\Cache\SourceFileKey
+ * @uses \Toolkit\DocGen\Report\Page\SourcePage
+ * @uses \Toolkit\DocGen\Parse\Internal\SymbolContext
+ * @uses \Toolkit\DocGen\Report\Page\Component\SymbolDescription
+ * @uses \Toolkit\DocGen\Compare\Internal\SymbolFingerprint
+ * @uses \Toolkit\DocGen\Report\Page\SymbolIndex
+ * @uses \Toolkit\DocGen\Report\Page\Component\SymbolListHtml
+ * @uses \Toolkit\DocGen\Report\Signature\SymbolReferenceScanner
+ * @uses \Toolkit\DocGen\Report\Page\Component\SymbolRow
  * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
- * @uses \Toolkit\DocGen\Analysis\Revision\Git\TempDirectory
- * @uses \Toolkit\DocGen\Render\Page\Component\TestCaseHtml
+ * @uses \Toolkit\DocGen\Action\Revision\Git\TempDirectory
+ * @uses \Toolkit\DocGen\Report\Page\Component\TestCaseHtml
  * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
  * @uses \Toolkit\DocGen\Cache\ToolkitFingerprint
- * @uses \Toolkit\DocGen\Render\TypeHtml
- * @uses \Toolkit\DocGen\Render\TypeRenderContext
- * @uses \Toolkit\DocGen\Analysis\Symbol\TypeSignature
- * @uses \Toolkit\DocGen\Analysis\Reference\UsageCollector
+ * @uses \Toolkit\DocGen\Report\TypeHtml
+ * @uses \Toolkit\DocGen\Report\TypeRenderContext
+ * @uses \Toolkit\DocGen\Parse\Symbol\TypeSignature
+ * @uses \Toolkit\DocGen\Parse\Internal\Reference\UsageCollector
  * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
- * @uses \Toolkit\DocGen\Render\Page\Component\UsageListHtml
- * @uses \Toolkit\DocGen\Analysis\Parse\UseMapCollector
- * @uses \Toolkit\DocGen\Analysis\Package\VendorPackageLocator
+ * @uses \Toolkit\DocGen\Report\Page\Component\UsageListHtml
+ * @uses \Toolkit\DocGen\Parse\Internal\UseMapCollector
+ * @uses \Toolkit\DocGen\Discovery\Internal\Package\VendorPackageLocator
  * @uses \Toolkit\DocGen\Parallel\WorkScheduler
  * @uses \Toolkit\DocGen\Parallel\WorkerCount
  * @uses \Toolkit\DocGen\Parallel\WorkerPool
+ * @uses \Toolkit\DocGen\Discovery\SourceSelection
+ * @uses \Toolkit\DocGen\Discovery\SourceFile
+ * @uses \Toolkit\DocGen\Discovery\SourceSet
+ * @uses \Toolkit\DocGen\Discovery\SourceDiscovery
+ * @uses \Toolkit\DocGen\Parse\ParsedProject
+ * @uses \Toolkit\DocGen\Analysis\AnalysisOptions
+ * @uses \Toolkit\DocGen\Analysis\ProjectAnalyzer
+ * @uses \Toolkit\DocGen\Action\GenerateDocumentation
+ * @uses \Toolkit\DocGen\Action\GenerationRequest
+ * @uses \Toolkit\DocGen\Action\GenerationResult
+ * @uses \Toolkit\DocGen\Report\RenderedSite
+ * @uses \Toolkit\DocGen\Discovery\Package\RepositoryAddress
  */
 #[CoversClass(DocGenGenerationRunner::class)]
 #[UsesClass(AllItemsPage::class)]
@@ -391,7 +415,7 @@ use Toolkit\DocGen\Render\TypeRenderContext;
 #[UsesClass(PhpHighlighter::class)]
 #[UsesClass(PhpParserBridge::class)]
 #[UsesClass(PrivateSurfaceHtml::class)]
-#[UsesClass(ProjectAnalyzer::class)]
+#[UsesClass(ProjectAnalysis::class)]
 #[UsesClass(ProjectDiffer::class)]
 #[UsesClass(ProjectModel::class)]
 #[UsesClass(ProjectSymbolCollector::class)]
@@ -442,6 +466,18 @@ use Toolkit\DocGen\Render\TypeRenderContext;
 #[UsesClass(WorkScheduler::class)]
 #[UsesClass(WorkerCount::class)]
 #[UsesClass(WorkerPool::class)]
+#[UsesClass(SourceSelection::class)]
+#[UsesClass(SourceFile::class)]
+#[UsesClass(SourceSet::class)]
+#[UsesClass(SourceDiscovery::class)]
+#[UsesClass(ParsedProject::class)]
+#[UsesClass(AnalysisOptions::class)]
+#[UsesClass(ProjectAnalyzer::class)]
+#[UsesClass(GenerateDocumentation::class)]
+#[UsesClass(GenerationRequest::class)]
+#[UsesClass(GenerationResult::class)]
+#[UsesClass(RenderedSite::class)]
+#[UsesClass(RepositoryAddress::class)]
 final class DocGenGenerationRunnerTest extends TestCase
 {
     public function testRunGeneratesSiteWithZeroConfigDefaults(): void
@@ -470,7 +506,7 @@ PHP);
 
         $output = '';
         $errors = '';
-        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
+        $runner = new DocGenGenerationRunner($dir, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;
             },
@@ -512,7 +548,7 @@ PHP);
 
         $output = '';
         $errors = '';
-        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
+        $runner = new DocGenGenerationRunner($dir, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;
             },
@@ -557,7 +593,7 @@ final class Greeter
 PHP);
 
         $output = '';
-        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
+        $runner = new DocGenGenerationRunner($dir, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;
             },
@@ -566,22 +602,6 @@ PHP);
         self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => 'public/site', 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => null, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false]));
         self::assertStringContainsString('public/site', $output);
         self::assertFileExists($dir . '/public/site/index.html');
-    }
-
-    public function testRunClearsTheCacheDirectoryBeforeGeneratingWhenAsked(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
-        mkdir($dir . '/src', 0777, true);
-        mkdir($dir . '/build/docgen-cache', 0777, true);
-        file_put_contents($dir . '/build/docgen-cache/stale.cache', 'stale');
-        file_put_contents($dir . '/composer.json', '{"name": "acme/demo", "autoload": {"psr-4": {"Acme\\\\Demo\\\\": "src/"}}}');
-        file_put_contents($dir . '/src/Greeter.php', '<?php namespace Acme\Demo; final class Greeter { public function greet(): string { return "hi"; } }');
-
-        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(static function (): void {
-        }));
-
-        self::assertSame(0, $runner->run(['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => 1, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => true]));
-        self::assertFileDoesNotExist($dir . '/build/docgen-cache/stale.cache');
     }
 
     public function testRunLaunchesPreviewServerForServeOption(): void
@@ -618,7 +638,6 @@ PHP);
         $runner = new DocGenGenerationRunner(
             $dir,
             null,
-            null,
             new DocGenOutputWriter(static function (string $message) use (&$output): void {
                 $output .= $message;
             }),
@@ -646,7 +665,7 @@ PHP);
         mkdir($dir, 0777, true);
 
         $errors = '';
-        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
+        $runner = new DocGenGenerationRunner($dir, null, new DocGenOutputWriter(
             null,
             static function (string $message) use (&$errors): void {
                 $errors .= $message;
@@ -657,131 +676,12 @@ PHP);
         self::assertStringContainsString('DocGen error: No composer packages found.', $errors);
     }
 
-    public function testGenerateAnalyzesAndRendersTheProjectAsItIs(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
-        mkdir($dir . '/src', 0777, true);
-        file_put_contents($dir . '/composer.json', '{"name": "acme/demo", "autoload": {"psr-4": {"Acme\\\\Demo\\\\": "src/"}}}');
-        file_put_contents($dir . '/src/Greeter.php', '<?php namespace Acme\Demo; final class Greeter { public function greet(): string { return "hi"; } }');
-        $root = (string) realpath($dir);
-
-        $result = (new DocGenGenerationRunner($dir))->generate(
-            new DocGenConfig($root, ['.'], [], [], 'build/docs', null, null, null),
-            $root . '/build/docs',
-        );
-
-        self::assertGreaterThan(0, $result['pages']);
-        self::assertSame($root, $result['model']->root);
-        self::assertFileExists($root . '/build/docs/index.html');
-    }
-
-    public function testGenerateDiffRendersTheComparisonAndRemovesTheCheckouts(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
-        mkdir($dir . '/src', 0777, true);
-        file_put_contents($dir . '/composer.json', '{"name": "acme/demo", "autoload": {"psr-4": {"Acme\\\\Demo\\\\": "src/"}}}');
-        file_put_contents($dir . '/src/Greeter.php', '<?php namespace Acme\Demo; final class Greeter { public function greet(string $name): string { return $name; } }');
-        $root = (string) realpath($dir);
-        $checkouts = [];
-        $temp = new TempDirectory();
-        $scratch = $temp->create('docgen-scratch-');
-        $workspace = new DiffWorkspace(
-            new GitRepository(new GitCommandRunner(static fn (string $command): array => ['status' => 0, 'output' => 'abc1234'])),
-            new GitWorktree(new GitCommandRunner(static function (string $command) use (&$checkouts, $scratch): array {
-                preg_match('#\'add\'.*\'([^\']*docgen-diff-[^\']*)\'#', $command, $match);
-                $checkout = $match[1] ?? $scratch;
-                $checkouts[] = $checkout;
-                @mkdir($checkout . '/src', 0777, true);
-                file_put_contents($checkout . '/composer.json', '{"name": "acme/demo", "autoload": {"psr-4": {"Acme\\\\Demo\\\\": "src/"}}}');
-                file_put_contents($checkout . '/src/Greeter.php', '<?php namespace Acme\Demo; final class Greeter { public function greet(): string { return "hi"; } }');
-
-                return ['status' => 0, 'output' => ''];
-            }), $temp),
-        );
-        $output = '';
-        $writer = new DocGenOutputWriter(static function (string $message) use (&$output): void {
-            $output .= $message;
-        });
-
-        $result = (new DocGenGenerationRunner($dir, null, null, $writer, null, null, null, null, $workspace))->generateDiff(
-            new DocGenConfig($root, ['.'], [], [], 'build/docs', null, null, null),
-            $root . '/build/docs',
-            new RevisionRange('main'),
-        );
-
-        self::assertGreaterThan(0, $result['pages']);
-        self::assertStringContainsString('Compared abc1234 to working tree', $output);
-        self::assertStringContainsString('data-diff="added"', (string) file_get_contents($root . '/build/docs/acme/demo/Acme/Demo/class.Greeter.html'));
-        self::assertNotSame($scratch, $checkouts[0]);
-        self::assertDirectoryDoesNotExist($checkouts[0]);
-
-        $temp->remove($scratch);
-    }
-
-    public function testReportNamesTheWrittenSiteAndRepeatsEveryWarning(): void
-    {
-        $output = '';
-        $errors = '';
-        $writer = new DocGenOutputWriter(
-            static function (string $message) use (&$output): void {
-                $output .= $message;
-            },
-            static function (string $message) use (&$errors): void {
-                $errors .= $message;
-            },
-        );
-        $model = new ProjectModel('Demo Docs', '/tmp/project', [], new PackageGraph([]), [], [], new SymbolTable(), new HierarchyIndex(), new UsageIndex(), new TestCaseIndex(), null, [], null, ['first warning', 'second warning']);
-
-        (new DocGenGenerationRunner('/tmp/project', null, null, $writer))->report($model, 7, '/tmp/project/build/docs');
-
-        self::assertSame("Generated 7 pages for 0 packages into /tmp/project/build/docs\n", $output);
-        self::assertSame("Warning: first warning\nWarning: second warning\n", $errors);
-    }
-
-    public function testCachesReadsBackTheCacheOfTheOutputDirectoryItIsGiven(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
-        mkdir($dir, 0777, true);
-        $config = new DocGenConfig($dir, ['.'], [], [], 'build/docs', null, null, null, [], 'build/docgen-cache');
-        $runner = new DocGenGenerationRunner($dir);
-
-        $cache = $runner->caches($config, $dir . '/build/docs');
-
-        self::assertInstanceOf(ParseCache::class, $cache->sources);
-        self::assertInstanceOf(RenderCache::class, $cache->pages);
-        self::assertDirectoryExists($dir . '/build/docgen-cache');
-    }
-
-    public function testCachesHoldsNothingForARunThatCachesNothing(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
-        mkdir($dir, 0777, true);
-        $config = new DocGenConfig($dir, ['.'], [], [], 'build/docs', null, null, null, [], null);
-
-        $cache = (new DocGenGenerationRunner($dir))->caches($config, $dir . '/build/docs');
-
-        self::assertNull($cache->sources);
-        self::assertNull($cache->pages);
-    }
-
-    public function testClearRemovesTheCacheDirectoryOfTheProject(): void
-    {
-        $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
-        mkdir($dir . '/build/docgen-cache', 0777, true);
-        file_put_contents($dir . '/build/docgen-cache/entry.cache', '');
-        $runner = new DocGenGenerationRunner($dir);
-
-        $runner->clear($dir, 'build/docgen-cache');
-
-        self::assertDirectoryDoesNotExist($dir . '/build/docgen-cache');
-    }
-
     public function testReportCacheStatesWhatWasReusedAndKeepsWhatWasLearned(): void
     {
         $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
         mkdir($dir, 0777, true);
         $output = '';
-        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
+        $runner = new DocGenGenerationRunner($dir, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;
             },
@@ -789,9 +689,9 @@ PHP);
         $sources = new ParseCache($dir . '/cache');
         $sources->counted(true);
 
-        $runner->reportCache(new GenerationCache($sources, new RenderCache($dir . '/cache', $dir . '/site')));
+        $runner->report(new GenerationResult($dir . '/site', 0, 0, [], 'Cache: 1 of 1 sources and 0 of 0 pages reused'));
 
-        self::assertSame("Cache: 1 of 1 sources and 0 of 0 pages reused\n", $output);
+        self::assertStringContainsString("Cache: 1 of 1 sources and 0 of 0 pages reused\n", $output);
     }
 
     public function testReportCacheSaysNothingWhenNothingIsCached(): void
@@ -799,15 +699,15 @@ PHP);
         $dir = sys_get_temp_dir() . '/docgen-runner-' . uniqid('', true);
         mkdir($dir, 0777, true);
         $output = '';
-        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
+        $runner = new DocGenGenerationRunner($dir, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;
             },
         ));
 
-        $runner->reportCache(new GenerationCache());
+        $runner->report(new GenerationResult($dir . '/site', 0, 0, []));
 
-        self::assertSame('', $output);
+        self::assertStringNotContainsString('Cache:', $output);
     }
 
     public function testRunLeavesTheSiteAloneWhenNothingChanged(): void
@@ -818,7 +718,7 @@ PHP);
         file_put_contents($dir . '/src/Greeter.php', "<?php\n\nnamespace Acme\\Demo;\n\nfinal class Greeter\n{\n}\n");
         $output = '';
         $arguments = ['packages' => null, 'vendor' => null, 'vendorDev' => null, 'exclude' => null, 'output' => null, 'title' => null, 'deptrac' => null, 'coverage' => null, 'cacheDir' => null, 'baseUrl' => null, 'repository' => null, 'serve' => null, 'memoryLimit' => null, 'jobs' => 1, 'base' => null, 'head' => null, 'noCache' => false, 'clearCache' => false];
-        $runner = new DocGenGenerationRunner($dir, null, null, new DocGenOutputWriter(
+        $runner = new DocGenGenerationRunner($dir, null, new DocGenOutputWriter(
             static function (string $message) use (&$output): void {
                 $output .= $message;
             },

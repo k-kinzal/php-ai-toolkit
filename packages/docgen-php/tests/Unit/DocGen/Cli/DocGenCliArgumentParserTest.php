@@ -10,21 +10,24 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\ArrayInput;
-use Toolkit\DocGen\Analysis\Config\BaseUrl;
-use Toolkit\DocGen\Analysis\Config\RepositoryUrl;
+use Toolkit\DocGen\Action\Config\BaseUrl;
+use Toolkit\DocGen\Action\Config\RepositoryUrl;
 use Toolkit\DocGen\Cli\DocGenCliArgumentParser;
+use Toolkit\DocGen\Discovery\Package\RepositoryAddress;
 use Toolkit\DocGen\DocGenException;
 
 /**
  * @covers \Toolkit\DocGen\Cli\DocGenCliArgumentParser
- * @uses \Toolkit\DocGen\Analysis\Config\BaseUrl
+ * @uses \Toolkit\DocGen\Action\Config\BaseUrl
  * @uses \Toolkit\DocGen\DocGenException
- * @uses \Toolkit\DocGen\Analysis\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Action\Config\RepositoryUrl
+ * @uses \Toolkit\DocGen\Discovery\Package\RepositoryAddress
  */
 #[CoversClass(DocGenCliArgumentParser::class)]
 #[UsesClass(BaseUrl::class)]
 #[UsesClass(DocGenException::class)]
 #[UsesClass(RepositoryUrl::class)]
+#[UsesClass(RepositoryAddress::class)]
 final class DocGenCliArgumentParserTest extends TestCase
 {
     public function testParseReturnsInactiveDefaults(): void

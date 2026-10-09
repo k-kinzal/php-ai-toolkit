@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Toolkit\DocGen\Analysis\Parse\PhpParserBridge;
+use Toolkit\PhpStan\Extension\Visibility\ParserFactoryBridge;
 use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiConstantPhpDocErrorCollector;
 
 /**
@@ -36,7 +36,9 @@ final class PublicApiConstantPhpDocErrorCollectorTest extends TestCase
      */
     public static function providerClassWithPublicConstant(): array
     {
-        $statements = (new PhpParserBridge())->parser()->parse('<?php class Example { public const STATUS = 1; }');
+        $parser = (new ParserFactoryBridge())->parser();
+        self::assertNotNull($parser);
+        $statements = $parser->parse('<?php class Example { public const STATUS = 1; }');
         $class = $statements[0] ?? null;
         if (!$class instanceof Class_) {
             throw new RuntimeException('The installed parser produced no class from the snippet.');

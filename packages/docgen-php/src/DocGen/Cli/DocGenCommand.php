@@ -105,6 +105,6 @@ final class DocGenCommand extends Command
             return 2;
         }
 
-        return (new DocGenGenerationRunner($this->workingDirectory, null, null, $writer))->run($arguments);
+        return (new DocGenGenerationRunner($this->workingDirectory, null, $writer))->run($arguments);
     }
 }

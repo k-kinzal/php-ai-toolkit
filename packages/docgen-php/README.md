@@ -9,3 +9,5 @@ composer require --dev k-kinzal/docgen-php:dev-main
 ```
 
 See the [guide](docs/docgen.md).
+
+For development, see the [generation pipeline and layer boundaries](docs/architecture.md).

@@ -8,11 +8,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
-use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
- * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeDoc
  */
 #[CoversClass(HierarchyIndex::class)]
 #[UsesClass(ClassLikeDoc::class)]

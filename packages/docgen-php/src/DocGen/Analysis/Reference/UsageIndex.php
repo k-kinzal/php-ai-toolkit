@@ -10,6 +10,9 @@ use const PHP_INT_MAX;
 
 use function sprintf;
 use function strtolower;
+
+use Toolkit\DocGen\Parse\Reference\Usage;
+
 use function uksort;
 use function usort;
 

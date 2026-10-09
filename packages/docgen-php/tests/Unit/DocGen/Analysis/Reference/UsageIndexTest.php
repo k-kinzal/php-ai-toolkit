@@ -9,12 +9,12 @@ use function array_keys;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Analysis\Reference\Usage;
 use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Parse\Reference\Usage;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\Reference\UsageIndex
- * @uses \Toolkit\DocGen\Analysis\Reference\Usage
+ * @uses \Toolkit\DocGen\Parse\Reference\Usage
  */
 #[CoversClass(UsageIndex::class)]
 #[UsesClass(Usage::class)]

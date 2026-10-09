@@ -9,24 +9,24 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
 use Toolkit\DocGen\Analysis\Layer\LayerModel;
-use Toolkit\DocGen\Analysis\Package\ComposerManifest;
-use Toolkit\DocGen\Analysis\Package\DiscoveredPackage;
 use Toolkit\DocGen\Analysis\Package\PackageGraph;
 use Toolkit\DocGen\Analysis\ProjectModel;
 use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use Toolkit\DocGen\Analysis\Reference\SymbolTable;
 use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use Toolkit\DocGen\Analysis\Reference\UsageIndex;
-use Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc;
-use Toolkit\DocGen\Analysis\Symbol\DocBlock;
+use Toolkit\DocGen\Discovery\Package\ComposerManifest;
+use Toolkit\DocGen\Discovery\Package\DiscoveredPackage;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
+use Toolkit\DocGen\Parse\Symbol\DocBlock;
 
 /**
  * @covers \Toolkit\DocGen\Analysis\ProjectModel
- * @uses \Toolkit\DocGen\Analysis\Symbol\ClassLikeDoc
- * @uses \Toolkit\DocGen\Analysis\Symbol\DocBlock
- * @uses \Toolkit\DocGen\Analysis\Package\ComposerManifest
+ * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeDoc
+ * @uses \Toolkit\DocGen\Parse\Symbol\DocBlock
+ * @uses \Toolkit\DocGen\Discovery\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageIndex
- * @uses \Toolkit\DocGen\Analysis\Package\DiscoveredPackage
+ * @uses \Toolkit\DocGen\Discovery\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
  * @uses \Toolkit\DocGen\Analysis\Layer\LayerModel
  * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
@@ -46,7 +46,7 @@ use Toolkit\DocGen\Analysis\Symbol\DocBlock;
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(UsageIndex::class)]
-#[UsesClass(\Toolkit\DocGen\Analysis\Doc\MutationContract::class)]
+#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContract::class)]
 final class ProjectModelTest extends TestCase
 {
     public function testStoresAnalyzedProjectData(): void

@@ -7,56 +7,56 @@ namespace Tests\Unit\DocGen\Report\Page\Component;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Toolkit\DocGen\Parse\Internal\AstParser;
-use Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder;
-use Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader;
-use Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge;
-use Toolkit\DocGen\Parse\Internal\ExprTextPrinter;
-use Toolkit\DocGen\Parse\Internal\FileSymbolCollector;
-use Toolkit\DocGen\Parse\Internal\NativeTypePrinter;
-use Toolkit\DocGen\Parse\Internal\ParameterModifiers;
-use Toolkit\DocGen\Parse\Internal\PhpParserBridge;
-use Toolkit\DocGen\Parse\Internal\SymbolContext;
-use Toolkit\DocGen\Parse\Internal\UseMapCollector;
+use Toolkit\DocGen\Parse\AstParser;
+use Toolkit\DocGen\Parse\Builder\ClassLikeBuilder;
+use Toolkit\DocGen\Parse\Builder\ConstantBuilder;
+use Toolkit\DocGen\Parse\Builder\EnumCaseBuilder;
+use Toolkit\DocGen\Parse\Builder\FunctionBuilder;
+use Toolkit\DocGen\Parse\Builder\MethodBuilder;
+use Toolkit\DocGen\Parse\Builder\ParameterBuilder;
+use Toolkit\DocGen\Parse\Builder\PropertyBuilder;
+use Toolkit\DocGen\Parse\Doc\DocBlockReader;
+use Toolkit\DocGen\Parse\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Parse\ExprTextPrinter;
+use Toolkit\DocGen\Parse\FileSymbolCollector;
+use Toolkit\DocGen\Parse\NativeTypePrinter;
+use Toolkit\DocGen\Parse\ParameterModifiers;
+use Toolkit\DocGen\Parse\PhpParserBridge;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\DocBlock;
 use Toolkit\DocGen\Parse\Symbol\FileSymbols;
 use Toolkit\DocGen\Parse\Symbol\FunctionDoc;
 use Toolkit\DocGen\Parse\Symbol\ParameterDoc;
 use Toolkit\DocGen\Parse\Symbol\TypeSignature;
+use Toolkit\DocGen\Parse\SymbolContext;
+use Toolkit\DocGen\Parse\UseMapCollector;
 use Toolkit\DocGen\Report\Page\Component\SymbolDescription;
 
 /**
  * @covers \Toolkit\DocGen\Report\Page\Component\SymbolDescription
- * @uses \Toolkit\DocGen\Parse\Internal\AstParser
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder
+ * @uses \Toolkit\DocGen\Parse\AstParser
+ * @uses \Toolkit\DocGen\Parse\Builder\ClassLikeBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeDoc
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\ConstantBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\DocBlock
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder
- * @uses \Toolkit\DocGen\Parse\Internal\ExprTextPrinter
- * @uses \Toolkit\DocGen\Parse\Internal\FileSymbolCollector
+ * @uses \Toolkit\DocGen\Parse\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Parse\Builder\EnumCaseBuilder
+ * @uses \Toolkit\DocGen\Parse\ExprTextPrinter
+ * @uses \Toolkit\DocGen\Parse\FileSymbolCollector
  * @uses \Toolkit\DocGen\Parse\Symbol\FileSymbols
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\FunctionBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\FunctionDoc
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder
- * @uses \Toolkit\DocGen\Parse\Internal\NativeTypePrinter
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\MethodBuilder
+ * @uses \Toolkit\DocGen\Parse\NativeTypePrinter
+ * @uses \Toolkit\DocGen\Parse\Builder\ParameterBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\ParameterDoc
- * @uses \Toolkit\DocGen\Parse\Internal\ParameterModifiers
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge
- * @uses \Toolkit\DocGen\Parse\Internal\PhpParserBridge
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder
- * @uses \Toolkit\DocGen\Parse\Internal\SymbolContext
+ * @uses \Toolkit\DocGen\Parse\ParameterModifiers
+ * @uses \Toolkit\DocGen\Parse\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Parse\PhpParserBridge
+ * @uses \Toolkit\DocGen\Parse\Builder\PropertyBuilder
+ * @uses \Toolkit\DocGen\Parse\SymbolContext
  * @uses \Toolkit\DocGen\Parse\Symbol\TypeSignature
- * @uses \Toolkit\DocGen\Parse\Internal\UseMapCollector
+ * @uses \Toolkit\DocGen\Parse\UseMapCollector
  */
 #[CoversClass(SymbolDescription::class)]
 #[UsesClass(AstParser::class)]

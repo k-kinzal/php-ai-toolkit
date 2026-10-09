@@ -23,11 +23,11 @@ use Toolkit\DocGen\Action\Revision\Git\GitWorktree;
 use Toolkit\DocGen\Action\Revision\Git\RevisionRange;
 use Toolkit\DocGen\Action\Revision\Git\TempDirectory;
 use Toolkit\DocGen\Analysis\AnalysisOptions;
-use Toolkit\DocGen\Analysis\Internal\Coverage\CoverageReader;
-use Toolkit\DocGen\Analysis\Internal\Layer\DeptracConfigReader;
-use Toolkit\DocGen\Analysis\Internal\Layer\LayerAssigner;
-use Toolkit\DocGen\Analysis\Internal\Package\PackageGraphBuilder;
+use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
+use Toolkit\DocGen\Analysis\Layer\DeptracConfigReader;
+use Toolkit\DocGen\Analysis\Layer\LayerAssigner;
 use Toolkit\DocGen\Analysis\Package\PackageGraph;
+use Toolkit\DocGen\Analysis\Package\PackageGraphBuilder;
 use Toolkit\DocGen\Analysis\ProjectAnalyzer;
 use Toolkit\DocGen\Analysis\ProjectModel;
 use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
@@ -41,31 +41,31 @@ use Toolkit\DocGen\Cli\DocGenGenerationRunner;
 use Toolkit\DocGen\Cli\DocGenMemoryLimit;
 use Toolkit\DocGen\Cli\DocGenOutputWriter;
 use Toolkit\DocGen\Cli\DocGenPreviewServer;
+use Toolkit\DocGen\Compare\ClassLikeMerger;
 use Toolkit\DocGen\Compare\DiffIndex;
 use Toolkit\DocGen\Compare\DiffKey;
 use Toolkit\DocGen\Compare\DiffLine;
 use Toolkit\DocGen\Compare\DiffStatus;
-use Toolkit\DocGen\Compare\Internal\ClassLikeMerger;
-use Toolkit\DocGen\Compare\Internal\DocumentDiffer;
-use Toolkit\DocGen\Compare\Internal\FunctionMerger;
-use Toolkit\DocGen\Compare\Internal\MemberMerger;
-use Toolkit\DocGen\Compare\Internal\ParameterMerger;
-use Toolkit\DocGen\Compare\Internal\SymbolFingerprint;
+use Toolkit\DocGen\Compare\DocumentDiffer;
+use Toolkit\DocGen\Compare\FunctionMerger;
 use Toolkit\DocGen\Compare\LcsMatcher;
 use Toolkit\DocGen\Compare\LineDiffer;
+use Toolkit\DocGen\Compare\MemberMerger;
+use Toolkit\DocGen\Compare\ParameterMerger;
 use Toolkit\DocGen\Compare\ProjectDiffer;
+use Toolkit\DocGen\Compare\SymbolFingerprint;
+use Toolkit\DocGen\Discovery\DocumentCollector;
 use Toolkit\DocGen\Discovery\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Discovery\Internal\DocumentCollector;
-use Toolkit\DocGen\Discovery\Internal\Filesystem\MarkdownFileFinder;
-use Toolkit\DocGen\Discovery\Internal\Filesystem\SourceFileFinder;
-use Toolkit\DocGen\Discovery\Internal\Package\ComposerLockReader;
-use Toolkit\DocGen\Discovery\Internal\Package\ComposerManifestReader;
-use Toolkit\DocGen\Discovery\Internal\Package\DevPackageResolver;
-use Toolkit\DocGen\Discovery\Internal\Package\PackageDiscovery;
-use Toolkit\DocGen\Discovery\Internal\Package\VendorPackageLocator;
+use Toolkit\DocGen\Discovery\Filesystem\MarkdownFileFinder;
+use Toolkit\DocGen\Discovery\Filesystem\SourceFileFinder;
+use Toolkit\DocGen\Discovery\Package\ComposerLockReader;
 use Toolkit\DocGen\Discovery\Package\ComposerManifest;
+use Toolkit\DocGen\Discovery\Package\ComposerManifestReader;
+use Toolkit\DocGen\Discovery\Package\DevPackageResolver;
 use Toolkit\DocGen\Discovery\Package\DiscoveredPackage;
+use Toolkit\DocGen\Discovery\Package\PackageDiscovery;
 use Toolkit\DocGen\Discovery\Package\RepositoryAddress;
+use Toolkit\DocGen\Discovery\Package\VendorPackageLocator;
 use Toolkit\DocGen\Discovery\SourceDiscovery;
 use Toolkit\DocGen\Discovery\SourceFile;
 use Toolkit\DocGen\Discovery\SourceSelection;
@@ -75,36 +75,36 @@ use Toolkit\DocGen\Parallel\CpuCoreCounter;
 use Toolkit\DocGen\Parallel\WorkerCount;
 use Toolkit\DocGen\Parallel\WorkerPool;
 use Toolkit\DocGen\Parallel\WorkScheduler;
+use Toolkit\DocGen\Parse\AstParser;
+use Toolkit\DocGen\Parse\Builder\ClassLikeBuilder;
+use Toolkit\DocGen\Parse\Builder\ConstantBuilder;
+use Toolkit\DocGen\Parse\Builder\EnumCaseBuilder;
+use Toolkit\DocGen\Parse\Builder\FunctionBuilder;
+use Toolkit\DocGen\Parse\Builder\MethodBuilder;
+use Toolkit\DocGen\Parse\Builder\ParameterBuilder;
+use Toolkit\DocGen\Parse\Builder\PropertyBuilder;
 use Toolkit\DocGen\Parse\Cache\ParseCache;
-use Toolkit\DocGen\Parse\Internal\AstParser;
-use Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder;
-use Toolkit\DocGen\Parse\Internal\Cache\SourceFileKey;
-use Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader;
-use Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge;
-use Toolkit\DocGen\Parse\Internal\ExprTextPrinter;
-use Toolkit\DocGen\Parse\Internal\FileSymbolCollector;
-use Toolkit\DocGen\Parse\Internal\NativeTypePrinter;
-use Toolkit\DocGen\Parse\Internal\ParameterModifiers;
-use Toolkit\DocGen\Parse\Internal\PhpParserBridge;
-use Toolkit\DocGen\Parse\Internal\Reference\LocalTypeMap;
-use Toolkit\DocGen\Parse\Internal\Reference\PropertyTypeScanner;
-use Toolkit\DocGen\Parse\Internal\Reference\UsageCollector;
-use Toolkit\DocGen\Parse\Internal\SymbolContext;
-use Toolkit\DocGen\Parse\Internal\UseMapCollector;
+use Toolkit\DocGen\Parse\Cache\SourceFileKey;
+use Toolkit\DocGen\Parse\Doc\DocBlockReader;
+use Toolkit\DocGen\Parse\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Parse\ExprTextPrinter;
+use Toolkit\DocGen\Parse\FileSymbolCollector;
+use Toolkit\DocGen\Parse\NativeTypePrinter;
+use Toolkit\DocGen\Parse\ParameterModifiers;
 use Toolkit\DocGen\Parse\ParsedProject;
+use Toolkit\DocGen\Parse\PhpParserBridge;
 use Toolkit\DocGen\Parse\ProjectSymbolCollector;
+use Toolkit\DocGen\Parse\Reference\LocalTypeMap;
+use Toolkit\DocGen\Parse\Reference\PropertyTypeScanner;
+use Toolkit\DocGen\Parse\Reference\UsageCollector;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeKind;
 use Toolkit\DocGen\Parse\Symbol\FileSymbols;
 use Toolkit\DocGen\Parse\Symbol\MethodDoc;
 use Toolkit\DocGen\Parse\Symbol\ParameterDoc;
 use Toolkit\DocGen\Parse\Symbol\TypeSignature;
+use Toolkit\DocGen\Parse\SymbolContext;
+use Toolkit\DocGen\Parse\UseMapCollector;
 use Toolkit\DocGen\Report\AssetPublisher;
 use Toolkit\DocGen\Report\Cache\CachedPageWriter;
 use Toolkit\DocGen\Report\Cache\PageRecord;
@@ -169,24 +169,24 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @uses \Toolkit\DocGen\Report\Page\AllItemsPage
  * @uses \Toolkit\DocGen\Report\Doctest\AssertionScanner
  * @uses \Toolkit\DocGen\Report\AssetPublisher
- * @uses \Toolkit\DocGen\Parse\Internal\AstParser
+ * @uses \Toolkit\DocGen\Parse\AstParser
  * @uses \Toolkit\DocGen\Action\Config\BaseUrl
  * @uses \Toolkit\DocGen\Report\Page\Component\BreadcrumbHtml
  * @uses \Toolkit\DocGen\Cache\CacheStore
  * @uses \Toolkit\DocGen\Report\Cache\CachedPageWriter
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\ClassLikeBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeKind
- * @uses \Toolkit\DocGen\Compare\Internal\ClassLikeMerger
+ * @uses \Toolkit\DocGen\Compare\ClassLikeMerger
  * @uses \Toolkit\DocGen\Report\Page\ClassLikePage
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\ComposerLockReader
+ * @uses \Toolkit\DocGen\Discovery\Package\ComposerLockReader
  * @uses \Toolkit\DocGen\Discovery\Package\ComposerManifest
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\ComposerManifestReader
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder
- * @uses \Toolkit\DocGen\Analysis\Internal\Coverage\CoverageReader
+ * @uses \Toolkit\DocGen\Discovery\Package\ComposerManifestReader
+ * @uses \Toolkit\DocGen\Parse\Builder\ConstantBuilder
+ * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageReader
  * @uses \Toolkit\DocGen\Parallel\CpuCoreCounter
- * @uses \Toolkit\DocGen\Analysis\Internal\Layer\DeptracConfigReader
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\DevPackageResolver
+ * @uses \Toolkit\DocGen\Analysis\Layer\DeptracConfigReader
+ * @uses \Toolkit\DocGen\Discovery\Package\DevPackageResolver
  * @uses \Toolkit\DocGen\Report\Diff\DiffBanner
  * @uses \Toolkit\DocGen\Report\Diff\DiffHtml
  * @uses \Toolkit\DocGen\Compare\DiffIndex
@@ -197,7 +197,7 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @uses \Toolkit\DocGen\Compare\DiffStatus
  * @uses \Toolkit\DocGen\Action\Revision\DiffWorkspace
  * @uses \Toolkit\DocGen\Discovery\Package\DiscoveredPackage
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Parse\Doc\DocBlockReader
  * @uses \Toolkit\DocGen\Action\Config\DocGenConfig
  * @uses \Toolkit\DocGen\Cli\DocGenConfigFactory
  * @uses \Toolkit\DocGen\DocGenException
@@ -207,17 +207,17 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @uses \Toolkit\DocGen\Cli\DocGenPreviewServer
  * @uses \Toolkit\DocGen\Report\Page\Component\DocTextHtml
  * @uses \Toolkit\DocGen\Report\Doctest\DoctestExtractor
- * @uses \Toolkit\DocGen\Discovery\Internal\DocumentCollector
- * @uses \Toolkit\DocGen\Compare\Internal\DocumentDiffer
+ * @uses \Toolkit\DocGen\Discovery\DocumentCollector
+ * @uses \Toolkit\DocGen\Compare\DocumentDiffer
  * @uses \Toolkit\DocGen\Report\Page\Component\DocumentListHtml
  * @uses \Toolkit\DocGen\Report\Page\DocumentPage
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\EnumCaseBuilder
  * @uses \Toolkit\DocGen\Report\Page\Component\ExampleHtml
- * @uses \Toolkit\DocGen\Parse\Internal\ExprTextPrinter
- * @uses \Toolkit\DocGen\Parse\Internal\FileSymbolCollector
+ * @uses \Toolkit\DocGen\Parse\ExprTextPrinter
+ * @uses \Toolkit\DocGen\Parse\FileSymbolCollector
  * @uses \Toolkit\DocGen\Parse\Symbol\FileSymbols
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder
- * @uses \Toolkit\DocGen\Compare\Internal\FunctionMerger
+ * @uses \Toolkit\DocGen\Parse\Builder\FunctionBuilder
+ * @uses \Toolkit\DocGen\Compare\FunctionMerger
  * @uses \Toolkit\DocGen\Report\Page\FunctionPage
  * @uses \Toolkit\DocGen\Action\GenerationCache
  * @uses \Toolkit\DocGen\Action\Revision\Git\GitCommandRunner
@@ -227,43 +227,43 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
  * @uses \Toolkit\DocGen\Report\HtmlText
  * @uses \Toolkit\DocGen\Report\Page\IndexPage
- * @uses \Toolkit\DocGen\Analysis\Internal\Layer\LayerAssigner
+ * @uses \Toolkit\DocGen\Analysis\Layer\LayerAssigner
  * @uses \Toolkit\DocGen\Report\Page\LayerPage
  * @uses \Toolkit\DocGen\Compare\LcsMatcher
  * @uses \Toolkit\DocGen\Compare\LineDiffer
- * @uses \Toolkit\DocGen\Parse\Internal\Reference\LocalTypeMap
+ * @uses \Toolkit\DocGen\Parse\Reference\LocalTypeMap
  * @uses \Toolkit\DocGen\Report\Diff\MarkdownDiffHtml
- * @uses \Toolkit\DocGen\Discovery\Internal\Filesystem\MarkdownFileFinder
+ * @uses \Toolkit\DocGen\Discovery\Filesystem\MarkdownFileFinder
  * @uses \Toolkit\DocGen\Report\MarkdownInline
  * @uses \Toolkit\DocGen\Report\MarkdownRenderer
  * @uses \Toolkit\DocGen\Report\Page\Component\MemberHtml
- * @uses \Toolkit\DocGen\Compare\Internal\MemberMerger
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder
+ * @uses \Toolkit\DocGen\Compare\MemberMerger
+ * @uses \Toolkit\DocGen\Parse\Builder\MethodBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\MethodDoc
  * @uses \Toolkit\DocGen\Report\Page\NamespacePage
- * @uses \Toolkit\DocGen\Parse\Internal\NativeTypePrinter
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\PackageDiscovery
+ * @uses \Toolkit\DocGen\Parse\NativeTypePrinter
+ * @uses \Toolkit\DocGen\Discovery\Package\PackageDiscovery
  * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
- * @uses \Toolkit\DocGen\Analysis\Internal\Package\PackageGraphBuilder
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageGraphBuilder
  * @uses \Toolkit\DocGen\Report\Page\PackagePage
  * @uses \Toolkit\DocGen\Report\PageChrome
  * @uses \Toolkit\DocGen\Report\Cache\PageRecord
  * @uses \Toolkit\DocGen\Report\Signature\PageSignature
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\ParameterBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\ParameterDoc
- * @uses \Toolkit\DocGen\Compare\Internal\ParameterMerger
- * @uses \Toolkit\DocGen\Parse\Internal\ParameterModifiers
+ * @uses \Toolkit\DocGen\Compare\ParameterMerger
+ * @uses \Toolkit\DocGen\Parse\ParameterModifiers
  * @uses \Toolkit\DocGen\Parse\Cache\ParseCache
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Parse\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Report\PhpHighlighter
- * @uses \Toolkit\DocGen\Parse\Internal\PhpParserBridge
+ * @uses \Toolkit\DocGen\Parse\PhpParserBridge
  * @uses \Toolkit\DocGen\Report\Page\Component\PrivateSurfaceHtml
  * @uses \Toolkit\DocGen\Action\ProjectAnalysis
  * @uses \Toolkit\DocGen\Compare\ProjectDiffer
  * @uses \Toolkit\DocGen\Analysis\ProjectModel
  * @uses \Toolkit\DocGen\Parse\ProjectSymbolCollector
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder
- * @uses \Toolkit\DocGen\Parse\Internal\Reference\PropertyTypeScanner
+ * @uses \Toolkit\DocGen\Parse\Builder\PropertyBuilder
+ * @uses \Toolkit\DocGen\Parse\Reference\PropertyTypeScanner
  * @uses \Toolkit\DocGen\Report\Page\Component\RelationsHtml
  * @uses \Toolkit\DocGen\Report\Cache\RenderCache
  * @uses \Toolkit\DocGen\Report\RenderKit
@@ -283,12 +283,12 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @uses \Toolkit\DocGen\Report\Social\SocialMeta
  * @uses \Toolkit\DocGen\Report\Diff\SourceDiffHtml
  * @uses \Toolkit\DocGen\Report\Signature\SourceDigestIndex
- * @uses \Toolkit\DocGen\Discovery\Internal\Filesystem\SourceFileFinder
- * @uses \Toolkit\DocGen\Parse\Internal\Cache\SourceFileKey
+ * @uses \Toolkit\DocGen\Discovery\Filesystem\SourceFileFinder
+ * @uses \Toolkit\DocGen\Parse\Cache\SourceFileKey
  * @uses \Toolkit\DocGen\Report\Page\SourcePage
- * @uses \Toolkit\DocGen\Parse\Internal\SymbolContext
+ * @uses \Toolkit\DocGen\Parse\SymbolContext
  * @uses \Toolkit\DocGen\Report\Page\Component\SymbolDescription
- * @uses \Toolkit\DocGen\Compare\Internal\SymbolFingerprint
+ * @uses \Toolkit\DocGen\Compare\SymbolFingerprint
  * @uses \Toolkit\DocGen\Report\Page\SymbolIndex
  * @uses \Toolkit\DocGen\Report\Page\Component\SymbolListHtml
  * @uses \Toolkit\DocGen\Report\Signature\SymbolReferenceScanner
@@ -301,11 +301,11 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @uses \Toolkit\DocGen\Report\TypeHtml
  * @uses \Toolkit\DocGen\Report\TypeRenderContext
  * @uses \Toolkit\DocGen\Parse\Symbol\TypeSignature
- * @uses \Toolkit\DocGen\Parse\Internal\Reference\UsageCollector
+ * @uses \Toolkit\DocGen\Parse\Reference\UsageCollector
  * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  * @uses \Toolkit\DocGen\Report\Page\Component\UsageListHtml
- * @uses \Toolkit\DocGen\Parse\Internal\UseMapCollector
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\VendorPackageLocator
+ * @uses \Toolkit\DocGen\Parse\UseMapCollector
+ * @uses \Toolkit\DocGen\Discovery\Package\VendorPackageLocator
  * @uses \Toolkit\DocGen\Parallel\WorkScheduler
  * @uses \Toolkit\DocGen\Parallel\WorkerCount
  * @uses \Toolkit\DocGen\Parallel\WorkerPool

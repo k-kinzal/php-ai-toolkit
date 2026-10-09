@@ -30,8 +30,8 @@ use Toolkit\DocGen\Discovery\SourceSet;
 use Toolkit\DocGen\Parallel\WorkerCount;
 use Toolkit\DocGen\Parallel\WorkerPool;
 use Toolkit\DocGen\Parallel\WorkScheduler;
-use Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader;
-use Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Parse\Doc\DocBlockReader;
+use Toolkit\DocGen\Parse\Doc\PhpDocParserBridge;
 use Toolkit\DocGen\Parse\ParsedProject;
 use Toolkit\DocGen\Parse\Symbol\DocBlock;
 use Toolkit\DocGen\Report\AssetPublisher;
@@ -93,7 +93,7 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @uses \Toolkit\DocGen\Compare\DiffStatus
  * @uses \Toolkit\DocGen\Discovery\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Parse\Symbol\DocBlock
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Parse\Doc\DocBlockReader
  * @uses \Toolkit\DocGen\Report\Doctest\DoctestExtractor
  * @uses \Toolkit\DocGen\Report\Page\DocumentPage
  * @uses \Toolkit\DocGen\Report\Page\Component\ExampleHtml
@@ -113,7 +113,7 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @uses \Toolkit\DocGen\Report\Page\PackagePage
  * @uses \Toolkit\DocGen\Report\PageChrome
  * @uses \Toolkit\DocGen\Report\Signature\PageSignature
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Parse\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Report\PhpHighlighter
  * @uses \Toolkit\DocGen\Report\Page\Component\PrivateSurfaceHtml
  * @uses \Toolkit\DocGen\Analysis\ProjectModel

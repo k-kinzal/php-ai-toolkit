@@ -32,24 +32,22 @@ use Toolkit\DocGen\Discovery\SourceSet;
 use Toolkit\DocGen\Parallel\WorkerCount;
 use Toolkit\DocGen\Parallel\WorkerPool;
 use Toolkit\DocGen\Parallel\WorkScheduler;
-use Toolkit\DocGen\Parse\Internal\AstParser;
-use Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder;
-use Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader;
-use Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge;
-use Toolkit\DocGen\Parse\Internal\ExprTextPrinter;
-use Toolkit\DocGen\Parse\Internal\FileSymbolCollector;
-use Toolkit\DocGen\Parse\Internal\NativeTypePrinter;
-use Toolkit\DocGen\Parse\Internal\ParameterModifiers;
-use Toolkit\DocGen\Parse\Internal\PhpParserBridge;
-use Toolkit\DocGen\Parse\Internal\SymbolContext;
-use Toolkit\DocGen\Parse\Internal\UseMapCollector;
+use Toolkit\DocGen\Parse\AstParser;
+use Toolkit\DocGen\Parse\Builder\ClassLikeBuilder;
+use Toolkit\DocGen\Parse\Builder\ConstantBuilder;
+use Toolkit\DocGen\Parse\Builder\EnumCaseBuilder;
+use Toolkit\DocGen\Parse\Builder\FunctionBuilder;
+use Toolkit\DocGen\Parse\Builder\MethodBuilder;
+use Toolkit\DocGen\Parse\Builder\ParameterBuilder;
+use Toolkit\DocGen\Parse\Builder\PropertyBuilder;
+use Toolkit\DocGen\Parse\Doc\DocBlockReader;
+use Toolkit\DocGen\Parse\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Parse\ExprTextPrinter;
+use Toolkit\DocGen\Parse\FileSymbolCollector;
+use Toolkit\DocGen\Parse\NativeTypePrinter;
+use Toolkit\DocGen\Parse\ParameterModifiers;
 use Toolkit\DocGen\Parse\ParsedProject;
+use Toolkit\DocGen\Parse\PhpParserBridge;
 use Toolkit\DocGen\Parse\Reference\Usage;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeKind;
@@ -63,6 +61,8 @@ use Toolkit\DocGen\Parse\Symbol\PropertyDoc;
 use Toolkit\DocGen\Parse\Symbol\TemplateDoc;
 use Toolkit\DocGen\Parse\Symbol\TypeAliasDoc;
 use Toolkit\DocGen\Parse\Symbol\TypeSignature;
+use Toolkit\DocGen\Parse\SymbolContext;
+use Toolkit\DocGen\Parse\UseMapCollector;
 use Toolkit\DocGen\Report\AssetPublisher;
 use Toolkit\DocGen\Report\Diff\DiffBanner;
 use Toolkit\DocGen\Report\Diff\DiffHtml;
@@ -121,13 +121,13 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @uses \Toolkit\DocGen\Report\Page\AllItemsPage
  * @uses \Toolkit\DocGen\Report\Doctest\AssertionScanner
  * @uses \Toolkit\DocGen\Report\AssetPublisher
- * @uses \Toolkit\DocGen\Parse\Internal\AstParser
+ * @uses \Toolkit\DocGen\Parse\AstParser
  * @uses \Toolkit\DocGen\Report\Page\Component\BreadcrumbHtml
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\ClassLikeBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeKind
  * @uses \Toolkit\DocGen\Discovery\Package\ComposerManifest
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\ConstantBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\ConstantDoc
  * @uses \Toolkit\DocGen\Report\Diff\DiffBanner
  * @uses \Toolkit\DocGen\Report\Diff\DiffHtml
@@ -137,19 +137,19 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @uses \Toolkit\DocGen\Compare\DiffStatus
  * @uses \Toolkit\DocGen\Discovery\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Parse\Symbol\DocBlock
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Parse\Doc\DocBlockReader
  * @uses \Toolkit\DocGen\Parse\Symbol\DocTag
  * @uses \Toolkit\DocGen\Report\Page\Component\DocTextHtml
  * @uses \Toolkit\DocGen\Report\Doctest\DoctestExtractor
  * @uses \Toolkit\DocGen\Report\Page\Component\DocumentListHtml
  * @uses \Toolkit\DocGen\Report\Page\DocumentPage
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\EnumCaseBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\EnumCaseDoc
  * @uses \Toolkit\DocGen\Report\Page\Component\ExampleHtml
- * @uses \Toolkit\DocGen\Parse\Internal\ExprTextPrinter
- * @uses \Toolkit\DocGen\Parse\Internal\FileSymbolCollector
+ * @uses \Toolkit\DocGen\Parse\ExprTextPrinter
+ * @uses \Toolkit\DocGen\Parse\FileSymbolCollector
  * @uses \Toolkit\DocGen\Parse\Symbol\FileSymbols
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\FunctionBuilder
  * @uses \Toolkit\DocGen\Report\Page\FunctionPage
  * @uses \Toolkit\DocGen\Report\Page\Component\GraphSvg
  * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
@@ -161,22 +161,22 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @uses \Toolkit\DocGen\Report\MarkdownInline
  * @uses \Toolkit\DocGen\Report\MarkdownRenderer
  * @uses \Toolkit\DocGen\Report\Page\Component\MemberHtml
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\MethodBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\MethodDoc
  * @uses \Toolkit\DocGen\Report\Page\NamespacePage
- * @uses \Toolkit\DocGen\Parse\Internal\NativeTypePrinter
+ * @uses \Toolkit\DocGen\Parse\NativeTypePrinter
  * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
  * @uses \Toolkit\DocGen\Report\Page\PackagePage
  * @uses \Toolkit\DocGen\Report\PageChrome
  * @uses \Toolkit\DocGen\Report\Signature\PageSignature
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder
- * @uses \Toolkit\DocGen\Parse\Internal\ParameterModifiers
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Parse\Builder\ParameterBuilder
+ * @uses \Toolkit\DocGen\Parse\ParameterModifiers
+ * @uses \Toolkit\DocGen\Parse\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Report\PhpHighlighter
- * @uses \Toolkit\DocGen\Parse\Internal\PhpParserBridge
+ * @uses \Toolkit\DocGen\Parse\PhpParserBridge
  * @uses \Toolkit\DocGen\Report\Page\Component\PrivateSurfaceHtml
  * @uses \Toolkit\DocGen\Analysis\ProjectModel
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\PropertyBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\PropertyDoc
  * @uses \Toolkit\DocGen\Analysis\Reference\TestCase
  * @uses \Toolkit\DocGen\Report\Page\Component\RelationsHtml
@@ -194,7 +194,7 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @uses \Toolkit\DocGen\Report\Social\SocialMeta
  * @uses \Toolkit\DocGen\Report\Diff\SourceDiffHtml
  * @uses \Toolkit\DocGen\Report\Page\SourcePage
- * @uses \Toolkit\DocGen\Parse\Internal\SymbolContext
+ * @uses \Toolkit\DocGen\Parse\SymbolContext
  * @uses \Toolkit\DocGen\Report\Page\Component\SymbolDescription
  * @uses \Toolkit\DocGen\Report\Page\SymbolIndex
  * @uses \Toolkit\DocGen\Report\Page\Component\SymbolListHtml
@@ -210,7 +210,7 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @uses \Toolkit\DocGen\Parse\Reference\Usage
  * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
  * @uses \Toolkit\DocGen\Report\Page\Component\UsageListHtml
- * @uses \Toolkit\DocGen\Parse\Internal\UseMapCollector
+ * @uses \Toolkit\DocGen\Parse\UseMapCollector
  * @uses \Toolkit\DocGen\Parallel\WorkScheduler
  * @uses \Toolkit\DocGen\Parallel\WorkerCount
  * @uses \Toolkit\DocGen\Parallel\WorkerPool

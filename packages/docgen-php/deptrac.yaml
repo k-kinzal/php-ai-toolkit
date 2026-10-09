@@ -1,6 +1,7 @@
 # Runtime sequence: Cli -> Action -> Discovery -> Parse -> Analysis -> Compare? -> Report.
 # Action calls each stage; later stages consume earlier results, never run the action.
 # Cache and Parallel support parsing/reporting and know none of the pipeline.
+# PHPStan's @visibility scopes restrict implementations to their owning stage.
 deptrac:
   paths:
     - ./src
@@ -17,31 +18,19 @@ deptrac:
     - name: Discovery
       collectors:
         - type: directory
-          value: 'src/DocGen/Discovery/(?!Internal/).*'
-        - type: directory
-          value: 'src/DocGen/Discovery/Internal/.*'
-          private: true
+          value: 'src/DocGen/Discovery/.*'
     - name: Parse
       collectors:
         - type: directory
-          value: 'src/DocGen/Parse/(?!Internal/).*'
-        - type: directory
-          value: 'src/DocGen/Parse/Internal/.*'
-          private: true
+          value: 'src/DocGen/Parse/.*'
     - name: Analysis
       collectors:
         - type: directory
-          value: 'src/DocGen/Analysis/(?!Internal/).*'
-        - type: directory
-          value: 'src/DocGen/Analysis/Internal/.*'
-          private: true
+          value: 'src/DocGen/Analysis/.*'
     - name: Compare
       collectors:
         - type: directory
-          value: 'src/DocGen/Compare/(?!Internal/).*'
-        - type: directory
-          value: 'src/DocGen/Compare/Internal/.*'
-          private: true
+          value: 'src/DocGen/Compare/.*'
     - name: Report
       collectors:
         - type: directory

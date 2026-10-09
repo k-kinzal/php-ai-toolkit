@@ -7,16 +7,16 @@ namespace Tests\Unit\DocGen\Discovery;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Discovery\DocumentCollector;
 use Toolkit\DocGen\Discovery\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Discovery\Internal\DocumentCollector;
-use Toolkit\DocGen\Discovery\Internal\Filesystem\MarkdownFileFinder;
-use Toolkit\DocGen\Discovery\Internal\Filesystem\SourceFileFinder;
-use Toolkit\DocGen\Discovery\Internal\Package\ComposerManifestReader;
-use Toolkit\DocGen\Discovery\Internal\Package\DevPackageResolver;
-use Toolkit\DocGen\Discovery\Internal\Package\PackageDiscovery;
+use Toolkit\DocGen\Discovery\Filesystem\MarkdownFileFinder;
+use Toolkit\DocGen\Discovery\Filesystem\SourceFileFinder;
 use Toolkit\DocGen\Discovery\MarkdownDoc;
 use Toolkit\DocGen\Discovery\Package\ComposerManifest;
+use Toolkit\DocGen\Discovery\Package\ComposerManifestReader;
+use Toolkit\DocGen\Discovery\Package\DevPackageResolver;
 use Toolkit\DocGen\Discovery\Package\DiscoveredPackage;
+use Toolkit\DocGen\Discovery\Package\PackageDiscovery;
 use Toolkit\DocGen\Discovery\Package\RepositoryAddress;
 use Toolkit\DocGen\Discovery\SourceDiscovery;
 use Toolkit\DocGen\Discovery\SourceFile;
@@ -31,12 +31,12 @@ use Toolkit\DocGen\DocGenException;
  * @uses \Toolkit\DocGen\Discovery\SourceSet
  * @uses \Toolkit\DocGen\Discovery\MarkdownDoc
  * @uses \Toolkit\DocGen\Discovery\Filesystem\DocGenPathResolver
- * @uses \Toolkit\DocGen\Discovery\Internal\DocumentCollector
- * @uses \Toolkit\DocGen\Discovery\Internal\Filesystem\SourceFileFinder
- * @uses \Toolkit\DocGen\Discovery\Internal\Filesystem\MarkdownFileFinder
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\PackageDiscovery
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\ComposerManifestReader
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\DevPackageResolver
+ * @uses \Toolkit\DocGen\Discovery\DocumentCollector
+ * @uses \Toolkit\DocGen\Discovery\Filesystem\SourceFileFinder
+ * @uses \Toolkit\DocGen\Discovery\Filesystem\MarkdownFileFinder
+ * @uses \Toolkit\DocGen\Discovery\Package\PackageDiscovery
+ * @uses \Toolkit\DocGen\Discovery\Package\ComposerManifestReader
+ * @uses \Toolkit\DocGen\Discovery\Package\DevPackageResolver
  * @uses \Toolkit\DocGen\Discovery\Package\ComposerManifest
  * @uses \Toolkit\DocGen\Discovery\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Discovery\Package\RepositoryAddress

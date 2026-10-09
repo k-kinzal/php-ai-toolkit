@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Toolkit\DocGen\Discovery;
 
 use Toolkit\DocGen\Discovery\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Discovery\Internal\DocumentCollector;
-use Toolkit\DocGen\Discovery\Internal\Filesystem\SourceFileFinder;
-use Toolkit\DocGen\Discovery\Internal\Package\PackageDiscovery;
+use Toolkit\DocGen\Discovery\Filesystem\SourceFileFinder;
 use Toolkit\DocGen\Discovery\Package\DiscoveredPackage;
+use Toolkit\DocGen\Discovery\Package\PackageDiscovery;
 use Toolkit\DocGen\DocGenException;
 
 /**

@@ -15,15 +15,15 @@ use Toolkit\DocGen\Action\GenerationResult;
 use Toolkit\DocGen\Action\ProjectAnalysis;
 use Toolkit\DocGen\Analysis\AnalysisOptions;
 use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
+use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
 use Toolkit\DocGen\Analysis\Coverage\MethodCoverage;
-use Toolkit\DocGen\Analysis\Internal\Coverage\CoverageReader;
-use Toolkit\DocGen\Analysis\Internal\Layer\DeptracConfigReader;
-use Toolkit\DocGen\Analysis\Internal\Layer\LayerAssigner;
-use Toolkit\DocGen\Analysis\Internal\Package\PackageGraphBuilder;
+use Toolkit\DocGen\Analysis\Layer\DeptracConfigReader;
+use Toolkit\DocGen\Analysis\Layer\LayerAssigner;
 use Toolkit\DocGen\Analysis\Layer\LayerCollector;
 use Toolkit\DocGen\Analysis\Layer\LayerDefinition;
 use Toolkit\DocGen\Analysis\Layer\LayerModel;
 use Toolkit\DocGen\Analysis\Package\PackageGraph;
+use Toolkit\DocGen\Analysis\Package\PackageGraphBuilder;
 use Toolkit\DocGen\Analysis\ProjectAnalyzer;
 use Toolkit\DocGen\Analysis\ProjectModel;
 use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
@@ -32,18 +32,18 @@ use Toolkit\DocGen\Analysis\Reference\TestCase as ReferenceTestCase;
 use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use Toolkit\DocGen\Analysis\Reference\UsageIndex;
 use Toolkit\DocGen\Cache\ToolkitFingerprint;
+use Toolkit\DocGen\Discovery\DocumentCollector;
 use Toolkit\DocGen\Discovery\Filesystem\DocGenPathResolver;
-use Toolkit\DocGen\Discovery\Internal\DocumentCollector;
-use Toolkit\DocGen\Discovery\Internal\Filesystem\MarkdownFileFinder;
-use Toolkit\DocGen\Discovery\Internal\Filesystem\SourceFileFinder;
-use Toolkit\DocGen\Discovery\Internal\Package\ComposerLockReader;
-use Toolkit\DocGen\Discovery\Internal\Package\ComposerManifestReader;
-use Toolkit\DocGen\Discovery\Internal\Package\DevPackageResolver;
-use Toolkit\DocGen\Discovery\Internal\Package\PackageDiscovery;
-use Toolkit\DocGen\Discovery\Internal\Package\VendorPackageLocator;
+use Toolkit\DocGen\Discovery\Filesystem\MarkdownFileFinder;
+use Toolkit\DocGen\Discovery\Filesystem\SourceFileFinder;
+use Toolkit\DocGen\Discovery\Package\ComposerLockReader;
 use Toolkit\DocGen\Discovery\Package\ComposerManifest;
+use Toolkit\DocGen\Discovery\Package\ComposerManifestReader;
+use Toolkit\DocGen\Discovery\Package\DevPackageResolver;
 use Toolkit\DocGen\Discovery\Package\DiscoveredPackage;
+use Toolkit\DocGen\Discovery\Package\PackageDiscovery;
 use Toolkit\DocGen\Discovery\Package\RepositoryAddress;
+use Toolkit\DocGen\Discovery\Package\VendorPackageLocator;
 use Toolkit\DocGen\Discovery\SourceDiscovery;
 use Toolkit\DocGen\Discovery\SourceFile;
 use Toolkit\DocGen\Discovery\SourceSelection;
@@ -53,99 +53,99 @@ use Toolkit\DocGen\Parallel\CpuCoreCounter;
 use Toolkit\DocGen\Parallel\WorkerCount;
 use Toolkit\DocGen\Parallel\WorkerPool;
 use Toolkit\DocGen\Parallel\WorkScheduler;
-use Toolkit\DocGen\Parse\Internal\AstParser;
-use Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder;
-use Toolkit\DocGen\Parse\Internal\Cache\SourceFileKey;
-use Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader;
-use Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge;
-use Toolkit\DocGen\Parse\Internal\ExprTextPrinter;
-use Toolkit\DocGen\Parse\Internal\FileSymbolCollector;
-use Toolkit\DocGen\Parse\Internal\NativeTypePrinter;
-use Toolkit\DocGen\Parse\Internal\ParameterModifiers;
-use Toolkit\DocGen\Parse\Internal\PhpParserBridge;
-use Toolkit\DocGen\Parse\Internal\Reference\LocalTypeMap;
-use Toolkit\DocGen\Parse\Internal\Reference\PropertyTypeScanner;
-use Toolkit\DocGen\Parse\Internal\Reference\UsageCollector;
-use Toolkit\DocGen\Parse\Internal\SymbolContext;
-use Toolkit\DocGen\Parse\Internal\UseMapCollector;
+use Toolkit\DocGen\Parse\AstParser;
+use Toolkit\DocGen\Parse\Builder\ClassLikeBuilder;
+use Toolkit\DocGen\Parse\Builder\ConstantBuilder;
+use Toolkit\DocGen\Parse\Builder\EnumCaseBuilder;
+use Toolkit\DocGen\Parse\Builder\FunctionBuilder;
+use Toolkit\DocGen\Parse\Builder\MethodBuilder;
+use Toolkit\DocGen\Parse\Builder\ParameterBuilder;
+use Toolkit\DocGen\Parse\Builder\PropertyBuilder;
+use Toolkit\DocGen\Parse\Cache\SourceFileKey;
+use Toolkit\DocGen\Parse\Doc\DocBlockReader;
+use Toolkit\DocGen\Parse\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Parse\ExprTextPrinter;
+use Toolkit\DocGen\Parse\FileSymbolCollector;
+use Toolkit\DocGen\Parse\NativeTypePrinter;
+use Toolkit\DocGen\Parse\ParameterModifiers;
 use Toolkit\DocGen\Parse\ParsedProject;
+use Toolkit\DocGen\Parse\PhpParserBridge;
 use Toolkit\DocGen\Parse\ProjectSymbolCollector;
+use Toolkit\DocGen\Parse\Reference\LocalTypeMap;
+use Toolkit\DocGen\Parse\Reference\PropertyTypeScanner;
 use Toolkit\DocGen\Parse\Reference\Usage;
+use Toolkit\DocGen\Parse\Reference\UsageCollector;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\FileSymbols;
 use Toolkit\DocGen\Parse\Symbol\MethodDoc;
 use Toolkit\DocGen\Parse\Symbol\ParameterDoc;
 use Toolkit\DocGen\Parse\Symbol\TypeSignature;
+use Toolkit\DocGen\Parse\SymbolContext;
+use Toolkit\DocGen\Parse\UseMapCollector;
 use Toolkit\DocGen\Report\RenderedSite;
 
 /**
  * @uses \Toolkit\DocGen\Action\ProjectAnalysis
- * @uses \Toolkit\DocGen\Parse\Internal\AstParser
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder
+ * @uses \Toolkit\DocGen\Parse\AstParser
+ * @uses \Toolkit\DocGen\Parse\Builder\ClassLikeBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeDoc
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\ComposerLockReader
+ * @uses \Toolkit\DocGen\Discovery\Package\ComposerLockReader
  * @uses \Toolkit\DocGen\Discovery\Package\ComposerManifest
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\ComposerManifestReader
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder
+ * @uses \Toolkit\DocGen\Discovery\Package\ComposerManifestReader
+ * @uses \Toolkit\DocGen\Parse\Builder\ConstantBuilder
  * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageIndex
- * @uses \Toolkit\DocGen\Analysis\Internal\Coverage\CoverageReader
+ * @uses \Toolkit\DocGen\Analysis\Coverage\CoverageReader
  * @uses \Toolkit\DocGen\Parallel\CpuCoreCounter
- * @uses \Toolkit\DocGen\Analysis\Internal\Layer\DeptracConfigReader
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\DevPackageResolver
+ * @uses \Toolkit\DocGen\Analysis\Layer\DeptracConfigReader
+ * @uses \Toolkit\DocGen\Discovery\Package\DevPackageResolver
  * @uses \Toolkit\DocGen\Discovery\Package\DiscoveredPackage
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Parse\Doc\DocBlockReader
  * @uses \Toolkit\DocGen\Action\Config\DocGenConfig
  * @uses \Toolkit\DocGen\DocGenException
  * @uses \Toolkit\DocGen\Discovery\Filesystem\DocGenPathResolver
- * @uses \Toolkit\DocGen\Discovery\Internal\DocumentCollector
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder
- * @uses \Toolkit\DocGen\Parse\Internal\ExprTextPrinter
- * @uses \Toolkit\DocGen\Parse\Internal\FileSymbolCollector
+ * @uses \Toolkit\DocGen\Discovery\DocumentCollector
+ * @uses \Toolkit\DocGen\Parse\Builder\EnumCaseBuilder
+ * @uses \Toolkit\DocGen\Parse\ExprTextPrinter
+ * @uses \Toolkit\DocGen\Parse\FileSymbolCollector
  * @uses \Toolkit\DocGen\Parse\Symbol\FileSymbols
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\FunctionBuilder
  * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
- * @uses \Toolkit\DocGen\Analysis\Internal\Layer\LayerAssigner
+ * @uses \Toolkit\DocGen\Analysis\Layer\LayerAssigner
  * @uses \Toolkit\DocGen\Analysis\Layer\LayerCollector
  * @uses \Toolkit\DocGen\Analysis\Layer\LayerDefinition
  * @uses \Toolkit\DocGen\Analysis\Layer\LayerModel
- * @uses \Toolkit\DocGen\Parse\Internal\Reference\LocalTypeMap
- * @uses \Toolkit\DocGen\Discovery\Internal\Filesystem\MarkdownFileFinder
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder
+ * @uses \Toolkit\DocGen\Parse\Reference\LocalTypeMap
+ * @uses \Toolkit\DocGen\Discovery\Filesystem\MarkdownFileFinder
+ * @uses \Toolkit\DocGen\Parse\Builder\MethodBuilder
  * @uses \Toolkit\DocGen\Analysis\Coverage\MethodCoverage
  * @uses \Toolkit\DocGen\Parse\Symbol\MethodDoc
- * @uses \Toolkit\DocGen\Parse\Internal\NativeTypePrinter
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\PackageDiscovery
+ * @uses \Toolkit\DocGen\Parse\NativeTypePrinter
+ * @uses \Toolkit\DocGen\Discovery\Package\PackageDiscovery
  * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
- * @uses \Toolkit\DocGen\Analysis\Internal\Package\PackageGraphBuilder
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder
+ * @uses \Toolkit\DocGen\Analysis\Package\PackageGraphBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\ParameterBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\ParameterDoc
- * @uses \Toolkit\DocGen\Parse\Internal\ParameterModifiers
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge
- * @uses \Toolkit\DocGen\Parse\Internal\PhpParserBridge
+ * @uses \Toolkit\DocGen\Parse\ParameterModifiers
+ * @uses \Toolkit\DocGen\Parse\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Parse\PhpParserBridge
  * @uses \Toolkit\DocGen\Analysis\ProjectModel
  * @uses \Toolkit\DocGen\Parse\ProjectSymbolCollector
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder
- * @uses \Toolkit\DocGen\Parse\Internal\Reference\PropertyTypeScanner
+ * @uses \Toolkit\DocGen\Parse\Builder\PropertyBuilder
+ * @uses \Toolkit\DocGen\Parse\Reference\PropertyTypeScanner
  * @uses \Toolkit\DocGen\Analysis\Reference\TestCase
  * @uses \Toolkit\DocGen\Action\Config\RepositoryUrl
- * @uses \Toolkit\DocGen\Discovery\Internal\Filesystem\SourceFileFinder
- * @uses \Toolkit\DocGen\Parse\Internal\Cache\SourceFileKey
- * @uses \Toolkit\DocGen\Parse\Internal\SymbolContext
+ * @uses \Toolkit\DocGen\Discovery\Filesystem\SourceFileFinder
+ * @uses \Toolkit\DocGen\Parse\Cache\SourceFileKey
+ * @uses \Toolkit\DocGen\Parse\SymbolContext
  * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
  * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
  * @uses \Toolkit\DocGen\Cache\ToolkitFingerprint
  * @uses \Toolkit\DocGen\Parse\Symbol\TypeSignature
  * @uses \Toolkit\DocGen\Parse\Reference\Usage
- * @uses \Toolkit\DocGen\Parse\Internal\Reference\UsageCollector
+ * @uses \Toolkit\DocGen\Parse\Reference\UsageCollector
  * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
- * @uses \Toolkit\DocGen\Parse\Internal\UseMapCollector
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\VendorPackageLocator
+ * @uses \Toolkit\DocGen\Parse\UseMapCollector
+ * @uses \Toolkit\DocGen\Discovery\Package\VendorPackageLocator
  * @uses \Toolkit\DocGen\Parallel\WorkScheduler
  * @uses \Toolkit\DocGen\Parallel\WorkerCount
  * @uses \Toolkit\DocGen\Parallel\WorkerPool

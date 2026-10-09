@@ -7,11 +7,11 @@ namespace Toolkit\DocGen\Analysis;
 use function array_merge;
 
 use Toolkit\DocGen\Analysis\Coverage\CoverageIndex;
-use Toolkit\DocGen\Analysis\Internal\Coverage\CoverageReader;
-use Toolkit\DocGen\Analysis\Internal\Layer\DeptracConfigReader;
-use Toolkit\DocGen\Analysis\Internal\Layer\LayerAssigner;
-use Toolkit\DocGen\Analysis\Internal\Package\PackageGraphBuilder;
+use Toolkit\DocGen\Analysis\Coverage\CoverageReader;
+use Toolkit\DocGen\Analysis\Layer\DeptracConfigReader;
+use Toolkit\DocGen\Analysis\Layer\LayerAssigner;
 use Toolkit\DocGen\Analysis\Layer\LayerModel;
+use Toolkit\DocGen\Analysis\Package\PackageGraphBuilder;
 use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use Toolkit\DocGen\Analysis\Reference\SymbolTable;
 use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;

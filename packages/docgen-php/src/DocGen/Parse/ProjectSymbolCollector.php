@@ -21,11 +21,9 @@ use Toolkit\DocGen\DocGenException;
 use Toolkit\DocGen\Parallel\WorkerPool;
 use Toolkit\DocGen\Parallel\WorkScheduler;
 use Toolkit\DocGen\Parse\Cache\ParseCache;
-use Toolkit\DocGen\Parse\Internal\AstParser;
-use Toolkit\DocGen\Parse\Internal\Cache\SourceFileKey;
-use Toolkit\DocGen\Parse\Internal\FileSymbolCollector;
-use Toolkit\DocGen\Parse\Internal\Reference\UsageCollector;
+use Toolkit\DocGen\Parse\Cache\SourceFileKey;
 use Toolkit\DocGen\Parse\Reference\Usage;
+use Toolkit\DocGen\Parse\Reference\UsageCollector;
 use Toolkit\DocGen\Parse\Symbol\FileSymbols;
 
 /**

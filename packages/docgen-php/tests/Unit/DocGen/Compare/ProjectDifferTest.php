@@ -13,36 +13,34 @@ use Toolkit\DocGen\Analysis\Reference\HierarchyIndex;
 use Toolkit\DocGen\Analysis\Reference\SymbolTable;
 use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use Toolkit\DocGen\Analysis\Reference\UsageIndex;
+use Toolkit\DocGen\Compare\ClassLikeMerger;
 use Toolkit\DocGen\Compare\DiffIndex;
 use Toolkit\DocGen\Compare\DiffKey;
 use Toolkit\DocGen\Compare\DiffStatus;
-use Toolkit\DocGen\Compare\Internal\ClassLikeMerger;
-use Toolkit\DocGen\Compare\Internal\DocumentDiffer;
-use Toolkit\DocGen\Compare\Internal\FunctionMerger;
-use Toolkit\DocGen\Compare\Internal\MemberMerger;
-use Toolkit\DocGen\Compare\Internal\ParameterMerger;
-use Toolkit\DocGen\Compare\Internal\SymbolFingerprint;
+use Toolkit\DocGen\Compare\DocumentDiffer;
+use Toolkit\DocGen\Compare\FunctionMerger;
 use Toolkit\DocGen\Compare\LcsMatcher;
+use Toolkit\DocGen\Compare\MemberMerger;
+use Toolkit\DocGen\Compare\ParameterMerger;
 use Toolkit\DocGen\Compare\ProjectDiffer;
+use Toolkit\DocGen\Compare\SymbolFingerprint;
 use Toolkit\DocGen\Discovery\Package\ComposerManifest;
 use Toolkit\DocGen\Discovery\Package\DiscoveredPackage;
-use Toolkit\DocGen\Parse\Internal\AstParser;
-use Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder;
-use Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder;
-use Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader;
-use Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge;
-use Toolkit\DocGen\Parse\Internal\ExprTextPrinter;
-use Toolkit\DocGen\Parse\Internal\FileSymbolCollector;
-use Toolkit\DocGen\Parse\Internal\NativeTypePrinter;
-use Toolkit\DocGen\Parse\Internal\ParameterModifiers;
-use Toolkit\DocGen\Parse\Internal\PhpParserBridge;
-use Toolkit\DocGen\Parse\Internal\SymbolContext;
-use Toolkit\DocGen\Parse\Internal\UseMapCollector;
+use Toolkit\DocGen\Parse\AstParser;
+use Toolkit\DocGen\Parse\Builder\ClassLikeBuilder;
+use Toolkit\DocGen\Parse\Builder\ConstantBuilder;
+use Toolkit\DocGen\Parse\Builder\EnumCaseBuilder;
+use Toolkit\DocGen\Parse\Builder\FunctionBuilder;
+use Toolkit\DocGen\Parse\Builder\MethodBuilder;
+use Toolkit\DocGen\Parse\Builder\ParameterBuilder;
+use Toolkit\DocGen\Parse\Builder\PropertyBuilder;
+use Toolkit\DocGen\Parse\Doc\DocBlockReader;
+use Toolkit\DocGen\Parse\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Parse\ExprTextPrinter;
+use Toolkit\DocGen\Parse\FileSymbolCollector;
+use Toolkit\DocGen\Parse\NativeTypePrinter;
+use Toolkit\DocGen\Parse\ParameterModifiers;
+use Toolkit\DocGen\Parse\PhpParserBridge;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\DocBlock;
 use Toolkit\DocGen\Parse\Symbol\FileSymbols;
@@ -50,51 +48,53 @@ use Toolkit\DocGen\Parse\Symbol\FunctionDoc;
 use Toolkit\DocGen\Parse\Symbol\MethodDoc;
 use Toolkit\DocGen\Parse\Symbol\ParameterDoc;
 use Toolkit\DocGen\Parse\Symbol\TypeSignature;
+use Toolkit\DocGen\Parse\SymbolContext;
+use Toolkit\DocGen\Parse\UseMapCollector;
 
 /**
  * @covers \Toolkit\DocGen\Compare\ProjectDiffer
- * @uses \Toolkit\DocGen\Parse\Internal\AstParser
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ClassLikeBuilder
+ * @uses \Toolkit\DocGen\Parse\AstParser
+ * @uses \Toolkit\DocGen\Parse\Builder\ClassLikeBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeDoc
- * @uses \Toolkit\DocGen\Compare\Internal\ClassLikeMerger
+ * @uses \Toolkit\DocGen\Compare\ClassLikeMerger
  * @uses \Toolkit\DocGen\Discovery\Package\ComposerManifest
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ConstantBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\ConstantBuilder
  * @uses \Toolkit\DocGen\Compare\DiffIndex
  * @uses \Toolkit\DocGen\Compare\DiffKey
  * @uses \Toolkit\DocGen\Compare\DiffStatus
  * @uses \Toolkit\DocGen\Discovery\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Parse\Symbol\DocBlock
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader
- * @uses \Toolkit\DocGen\Compare\Internal\DocumentDiffer
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\EnumCaseBuilder
- * @uses \Toolkit\DocGen\Parse\Internal\ExprTextPrinter
- * @uses \Toolkit\DocGen\Parse\Internal\FileSymbolCollector
+ * @uses \Toolkit\DocGen\Parse\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Compare\DocumentDiffer
+ * @uses \Toolkit\DocGen\Parse\Builder\EnumCaseBuilder
+ * @uses \Toolkit\DocGen\Parse\ExprTextPrinter
+ * @uses \Toolkit\DocGen\Parse\FileSymbolCollector
  * @uses \Toolkit\DocGen\Parse\Symbol\FileSymbols
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\FunctionBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\FunctionBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\FunctionDoc
- * @uses \Toolkit\DocGen\Compare\Internal\FunctionMerger
+ * @uses \Toolkit\DocGen\Compare\FunctionMerger
  * @uses \Toolkit\DocGen\Analysis\Reference\HierarchyIndex
  * @uses \Toolkit\DocGen\Compare\LcsMatcher
- * @uses \Toolkit\DocGen\Compare\Internal\MemberMerger
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\MethodBuilder
+ * @uses \Toolkit\DocGen\Compare\MemberMerger
+ * @uses \Toolkit\DocGen\Parse\Builder\MethodBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\MethodDoc
- * @uses \Toolkit\DocGen\Parse\Internal\NativeTypePrinter
+ * @uses \Toolkit\DocGen\Parse\NativeTypePrinter
  * @uses \Toolkit\DocGen\Analysis\Package\PackageGraph
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\ParameterBuilder
+ * @uses \Toolkit\DocGen\Parse\Builder\ParameterBuilder
  * @uses \Toolkit\DocGen\Parse\Symbol\ParameterDoc
- * @uses \Toolkit\DocGen\Compare\Internal\ParameterMerger
- * @uses \Toolkit\DocGen\Parse\Internal\ParameterModifiers
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge
- * @uses \Toolkit\DocGen\Parse\Internal\PhpParserBridge
+ * @uses \Toolkit\DocGen\Compare\ParameterMerger
+ * @uses \Toolkit\DocGen\Parse\ParameterModifiers
+ * @uses \Toolkit\DocGen\Parse\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Parse\PhpParserBridge
  * @uses \Toolkit\DocGen\Analysis\ProjectModel
- * @uses \Toolkit\DocGen\Parse\Internal\Builder\PropertyBuilder
- * @uses \Toolkit\DocGen\Parse\Internal\SymbolContext
- * @uses \Toolkit\DocGen\Compare\Internal\SymbolFingerprint
+ * @uses \Toolkit\DocGen\Parse\Builder\PropertyBuilder
+ * @uses \Toolkit\DocGen\Parse\SymbolContext
+ * @uses \Toolkit\DocGen\Compare\SymbolFingerprint
  * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
  * @uses \Toolkit\DocGen\Analysis\Reference\TestCaseIndex
  * @uses \Toolkit\DocGen\Parse\Symbol\TypeSignature
  * @uses \Toolkit\DocGen\Analysis\Reference\UsageIndex
- * @uses \Toolkit\DocGen\Parse\Internal\UseMapCollector
+ * @uses \Toolkit\DocGen\Parse\UseMapCollector
  */
 #[CoversClass(ProjectDiffer::class)]
 #[UsesClass(AstParser::class)]

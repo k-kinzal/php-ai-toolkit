@@ -18,8 +18,8 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Toolkit\DocGen\Analysis\Reference\SymbolTable;
-use Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader;
-use Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge;
+use Toolkit\DocGen\Parse\Doc\DocBlockReader;
+use Toolkit\DocGen\Parse\Doc\PhpDocParserBridge;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\DocBlock;
 use Toolkit\DocGen\Parse\Symbol\DocTag;
@@ -32,10 +32,10 @@ use Toolkit\DocGen\Report\TypeRenderContext;
  * @covers \Toolkit\DocGen\Report\TypeHtml
  * @uses \Toolkit\DocGen\Parse\Symbol\ClassLikeDoc
  * @uses \Toolkit\DocGen\Parse\Symbol\DocBlock
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\DocBlockReader
+ * @uses \Toolkit\DocGen\Parse\Doc\DocBlockReader
  * @uses \Toolkit\DocGen\Parse\Symbol\DocTag
  * @uses \Toolkit\DocGen\Report\HtmlText
- * @uses \Toolkit\DocGen\Parse\Internal\Doc\PhpDocParserBridge
+ * @uses \Toolkit\DocGen\Parse\Doc\PhpDocParserBridge
  * @uses \Toolkit\DocGen\Report\SiteUrl
  * @uses \Toolkit\DocGen\Analysis\Reference\SymbolTable
  * @uses \Toolkit\DocGen\Report\TypeRenderContext

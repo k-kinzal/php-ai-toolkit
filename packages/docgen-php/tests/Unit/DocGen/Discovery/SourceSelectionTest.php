@@ -14,14 +14,14 @@ use Toolkit\DocGen\Action\GenerationRequest;
 use Toolkit\DocGen\Action\GenerationResult;
 use Toolkit\DocGen\Analysis\AnalysisOptions;
 use Toolkit\DocGen\Analysis\ProjectAnalyzer;
-use Toolkit\DocGen\Discovery\Internal\Package\ComposerLockReader;
-use Toolkit\DocGen\Discovery\Internal\Package\ComposerManifestReader;
-use Toolkit\DocGen\Discovery\Internal\Package\DevPackageResolver;
-use Toolkit\DocGen\Discovery\Internal\Package\PackageDiscovery;
-use Toolkit\DocGen\Discovery\Internal\Package\VendorPackageLocator;
+use Toolkit\DocGen\Discovery\Package\ComposerLockReader;
 use Toolkit\DocGen\Discovery\Package\ComposerManifest;
+use Toolkit\DocGen\Discovery\Package\ComposerManifestReader;
+use Toolkit\DocGen\Discovery\Package\DevPackageResolver;
 use Toolkit\DocGen\Discovery\Package\DiscoveredPackage;
+use Toolkit\DocGen\Discovery\Package\PackageDiscovery;
 use Toolkit\DocGen\Discovery\Package\RepositoryAddress;
+use Toolkit\DocGen\Discovery\Package\VendorPackageLocator;
 use Toolkit\DocGen\Discovery\SourceDiscovery;
 use Toolkit\DocGen\Discovery\SourceFile;
 use Toolkit\DocGen\Discovery\SourceSelection;
@@ -31,16 +31,16 @@ use Toolkit\DocGen\Parse\ParsedProject;
 use Toolkit\DocGen\Report\RenderedSite;
 
 /**
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\PackageDiscovery
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\ComposerLockReader
+ * @uses \Toolkit\DocGen\Discovery\Package\PackageDiscovery
+ * @uses \Toolkit\DocGen\Discovery\Package\ComposerLockReader
  * @uses \Toolkit\DocGen\Discovery\Package\ComposerManifest
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\ComposerManifestReader
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\DevPackageResolver
+ * @uses \Toolkit\DocGen\Discovery\Package\ComposerManifestReader
+ * @uses \Toolkit\DocGen\Discovery\Package\DevPackageResolver
  * @uses \Toolkit\DocGen\Discovery\Package\DiscoveredPackage
  * @uses \Toolkit\DocGen\Action\Config\DocGenConfig
  * @uses \Toolkit\DocGen\DocGenException
  * @uses \Toolkit\DocGen\Action\Config\RepositoryUrl
- * @uses \Toolkit\DocGen\Discovery\Internal\Package\VendorPackageLocator
+ * @uses \Toolkit\DocGen\Discovery\Package\VendorPackageLocator
  * @uses \Toolkit\DocGen\Discovery\SourceFile
  * @uses \Toolkit\DocGen\Discovery\SourceSet
  * @uses \Toolkit\DocGen\Discovery\SourceDiscovery

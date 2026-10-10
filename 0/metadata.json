@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4JAS3CW30TE9E7MBP2T1SKG",
+  "session_id": "01a124a7-a288-7a92-bd83-7c3386f0bd37",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-10T07:17:33.528903Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/guard-php/tests/Unit/Reporting/ChangeDiffTest.php"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "b0fdee7599a4",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 68658,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1278976,
+    "output_tokens": 6282,
+    "api_call_count": 23
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-10T07:17:33.388001Z",
+    "agent_lines": 13,
+    "agent_removed": 3,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 13,
+    "total_lines_changed": 16,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

@@ -46,7 +46,7 @@
 <span class="src-line" id="L9"><a class="ln" href="#L9">9</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\DataProvider</span>;</span>
 <span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;</span>
 <span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">RuntimeException</span>;</span>
-<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Analysis\Parse\PhpParserBridge</span>;</span>
+<span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\PhpStan\Extension\Visibility\ParserFactoryBridge</span>;</span>
 <span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiConstantPhpDocErrorCollector</span>;</span>
 <span class="src-line" id="L14"><a class="ln" href="#L14">14</a></span>
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-com">/**</span></span>
@@ -73,16 +73,18 @@
 <span class="src-line" id="L36"><a class="ln" href="#L36">36</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L37"><a class="ln" href="#L37">37</a>    <span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">function</span> <span class="tok-id">providerClassWithPublicConstant</span>(): <span class="tok-kw">array</span></span>
 <span class="src-line" id="L38"><a class="ln" href="#L38">38</a>    {</span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>        <span class="tok-var">$statements</span> = (<span class="tok-kw">new</span> <span class="tok-id">PhpParserBridge</span>())-&gt;<span class="tok-id">parser</span>()-&gt;<span class="tok-id">parse</span>(<span class="tok-str">&#039;&lt;?php class Example { public const STATUS = 1; }&#039;</span>);</span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        <span class="tok-var">$class</span> = <span class="tok-var">$statements</span>[<span class="tok-num">0</span>] ?? <span class="tok-id">null</span>;</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$class</span> <span class="tok-kw">instanceof</span> <span class="tok-id">Class_</span>) {</span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>            <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">RuntimeException</span>(<span class="tok-str">&#039;The installed parser produced no class from the snippet.&#039;</span>);</span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        }</span>
-<span class="src-line" id="L44"><a class="ln" href="#L44">44</a></span>
-<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        <span class="tok-kw">return</span> [<span class="tok-str">&#039;public constant without PHPDoc&#039;</span> =&gt; [<span class="tok-var">$class</span>]];</span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>    }</span>
-<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>}</span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a></span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>        <span class="tok-var">$parser</span> = (<span class="tok-kw">new</span> <span class="tok-id">ParserFactoryBridge</span>())-&gt;<span class="tok-id">parser</span>();</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        <span class="tok-id">self</span>::<span class="tok-id">assertNotNull</span>(<span class="tok-var">$parser</span>);</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>        <span class="tok-var">$statements</span> = <span class="tok-var">$parser</span>-&gt;<span class="tok-id">parse</span>(<span class="tok-str">&#039;&lt;?php class Example { public const STATUS = 1; }&#039;</span>);</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>        <span class="tok-var">$class</span> = <span class="tok-var">$statements</span>[<span class="tok-num">0</span>] ?? <span class="tok-id">null</span>;</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$class</span> <span class="tok-kw">instanceof</span> <span class="tok-id">Class_</span>) {</span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a>            <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">RuntimeException</span>(<span class="tok-str">&#039;The installed parser produced no class from the snippet.&#039;</span>);</span>
+<span class="src-line" id="L45"><a class="ln" href="#L45">45</a>        }</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a></span>
+<span class="src-line" id="L47"><a class="ln" href="#L47">47</a>        <span class="tok-kw">return</span> [<span class="tok-str">&#039;public constant without PHPDoc&#039;</span> =&gt; [<span class="tok-var">$class</span>]];</span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>    }</span>
+<span class="src-line" id="L49"><a class="ln" href="#L49">49</a>}</span>
+<span class="src-line" id="L50"><a class="ln" href="#L50">50</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

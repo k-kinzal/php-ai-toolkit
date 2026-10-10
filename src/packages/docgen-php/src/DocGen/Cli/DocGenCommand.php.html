@@ -50,7 +50,7 @@
 <span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-kw">use</span> <span class="tok-id">Symfony\Component\Console\Input\InputInterface</span>;</span>
 <span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-id">Symfony\Component\Console\Output\ConsoleOutputInterface</span>;</span>
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-kw">use</span> <span class="tok-id">Symfony\Component\Console\Output\OutputInterface</span>;</span>
-<span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\Model\DocGenException</span>;</span>
+<span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-kw">use</span> <span class="tok-id">Toolkit\DocGen\DocGenException</span>;</span>
 <span class="src-line" id="L17"><a class="ln" href="#L17">17</a></span>
 <span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-com">/**</span></span>
 <span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-com"> * The docgen console command: reads the options and generates the site.</span></span>
@@ -142,7 +142,7 @@
 <span class="src-line" id="L105"><a class="ln" href="#L105">105</a>            <span class="tok-kw">return</span> <span class="tok-num">2</span>;</span>
 <span class="src-line" id="L106"><a class="ln" href="#L106">106</a>        }</span>
 <span class="src-line" id="L107"><a class="ln" href="#L107">107</a></span>
-<span class="src-line" id="L108"><a class="ln" href="#L108">108</a>        <span class="tok-kw">return</span> (<span class="tok-kw">new</span> <span class="tok-id">DocGenGenerationRunner</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">workingDirectory</span>, <span class="tok-id">null</span>, <span class="tok-id">null</span>, <span class="tok-var">$writer</span>))-&gt;<span class="tok-id">run</span>(<span class="tok-var">$arguments</span>);</span>
+<span class="src-line" id="L108"><a class="ln" href="#L108">108</a>        <span class="tok-kw">return</span> (<span class="tok-kw">new</span> <span class="tok-id">DocGenGenerationRunner</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">workingDirectory</span>, <span class="tok-id">null</span>, <span class="tok-var">$writer</span>))-&gt;<span class="tok-id">run</span>(<span class="tok-var">$arguments</span>);</span>
 <span class="src-line" id="L109"><a class="ln" href="#L109">109</a>    }</span>
 <span class="src-line" id="L110"><a class="ln" href="#L110">110</a>}</span>
 <span class="src-line" id="L111"><a class="ln" href="#L111">111</a></span>

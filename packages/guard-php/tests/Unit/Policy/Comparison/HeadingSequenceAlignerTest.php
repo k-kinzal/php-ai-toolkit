@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy\Comparison;
 
+use ErrorException;
 use Guard\Policy\Comparison\HeadingSequenceAligner;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -29,9 +30,17 @@ final class HeadingSequenceAlignerTest extends TestCase
 
     public function testAlignHandlesEmptySequences(): void
     {
-        self::assertSame([], (new HeadingSequenceAligner())->align([], []));
-        self::assertSame([[null, 0]], (new HeadingSequenceAligner())->align([], ['# A']));
-        self::assertSame([[0, null]], (new HeadingSequenceAligner())->align(['# A'], []));
+        set_error_handler(static function (int $severity, string $message, string $file, int $line): bool {
+            throw new ErrorException($message, 0, $severity, $file, $line);
+        }, E_WARNING);
+
+        try {
+            self::assertSame([], (new HeadingSequenceAligner())->align([], []));
+            self::assertSame([[null, 0]], (new HeadingSequenceAligner())->align([], ['# A']));
+            self::assertSame([[0, null]], (new HeadingSequenceAligner())->align(['# A'], []));
+        } finally {
+            restore_error_handler();
+        }
     }
 
     public function testAlignKeepsTheLongestCommonSubsequence(): void

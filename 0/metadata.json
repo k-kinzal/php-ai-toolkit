@@ -1,0 +1,89 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4NQTWB7P9SS0E7DMJ7CRM0J",
+  "session_id": "01a1263b-125e-7543-9bc1-f04347170288",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T15:03:28.954597Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "README.md",
+    "packages/docgen-php/README.md",
+    "packages/docgen-php/skills/setup-toolkit-docgen/SKILL.md",
+    "packages/docgen-php/skills/setup-toolkit-docgen/docs-preview.yml",
+    "packages/docgen-php/skills/setup-toolkit-docgen/docs.yml",
+    "packages/guard-php/README.md",
+    "packages/guard-php/skills/guard/SKILL.md",
+    "packages/guard-php/skills/guard/references/cli.md",
+    "packages/guard-php/skills/guard/references/configuration.md",
+    "packages/guard-php/skills/guard/references/documentation.md",
+    "packages/guard-php/skills/guard/references/extensions.md",
+    "packages/guard-php/skills/guard/references/github-actions.md",
+    "packages/guard-php/skills/guard/references/metrics.md",
+    "packages/guard-php/skills/guard/references/structure.md",
+    "packages/guard-php/skills/guard/references/use-cases.md",
+    "packages/guard-php/skills/setup-toolkit-doc-guard/SKILL.md",
+    "packages/guard-php/skills/setup-toolkit-loc-guard/SKILL.md",
+    "packages/guard-php/skills/setup-toolkit-loc-guard/loc.yaml",
+    "packages/guard-php/skills/setup-toolkit-tree-guard/SKILL.md",
+    "packages/guard-php/skills/setup-toolkit-tree-guard/tree.yaml",
+    "skills/setup-php-ai-toolkit/SKILL.md",
+    "skills/setup-toolkit-github-actions/SKILL.md"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "1386ab49b124",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 96296,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1124864,
+    "output_tokens": 18883,
+    "api_call_count": 16
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-11T15:03:28.635635Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 572,
+    "human_modified": 1081,
+    "human_removed": 0,
+    "total_committed": 1082,
+    "total_lines_changed": 1653,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 619,
+      "user_lines_removed": 562,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "README.md": 3,
+        "packages/docgen-php/README.md": 2,
+        "packages/docgen-php/skills/docgen/SKILL.md": 49,
+        "packages/docgen-php/skills/docgen/assets/docs-preview.yml": 168,
+        "packages/docgen-php/skills/docgen/assets/docs.yml": 136,
+        "packages/docgen-php/skills/docgen/references/cli.md": 62,
+        "packages/docgen-php/skills/docgen/references/github-actions.md": 88,
+        "packages/docgen-php/skills/docgen/references/use-cases.md": 107,
+        "skills/setup-php-ai-toolkit/SKILL.md": 1,
+        "skills/setup-toolkit-github-actions/SKILL.md": 3
+      },
+      "user_removed_per_file": {
+        "README.md": 3,
+        "packages/docgen-php/skills/setup-toolkit-docgen/SKILL.md": 251,
+        "packages/docgen-php/skills/setup-toolkit-docgen/docs-preview.yml": 168,
+        "packages/docgen-php/skills/setup-toolkit-docgen/docs.yml": 136,
+        "skills/setup-php-ai-toolkit/SKILL.md": 1,
+        "skills/setup-toolkit-github-actions/SKILL.md": 3
+      }
+    }
+  ]
+}

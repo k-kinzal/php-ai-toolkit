@@ -1,0 +1,2 @@
+guard-phpのスキルからsetupを削除し、guardスキルにしてください。これはCLIの使い方を説明するスキルでありAgents Skillsのプラクティスを調査、それに則り簡潔に記載が必要です。
+skillsにreferencesを持たせユースケースやGitHub Actionsでの使い方などはそちらで記載しSKILL.mdから参照を入れてください。

@@ -1,0 +1,5 @@
+まずプロジェクトルートのskillsを削除ください。これは各種パッケージに追加され不要になりました。
+phpstan-ai-formatterのdocsを削除しguardのno-docsnのルールを適用ください。README.mdなども規約に沿ってなくguard利用がまともにできていなさそうに見えます。phpunit-ai-reporterも同様です。
+README.mdに関しては各パッケージちょっとおかしいです。guard-phpのデフォルトルールの適用系にして確認いただけますか？また逆にPJルートのREADMEはこう書かないルールの認識です。
+
+docsとしてはdocgen/guard/phpstan-guard-rulesだけが持ちます。それ以外は持ちません。AGENTS.mdなども壊れているので修正ください。

@@ -1,0 +1,6 @@
+version: 1
+imports:
+  - packages/guard-php/rules/readme-md.yaml
+documentation:
+  scan:
+    - README.md

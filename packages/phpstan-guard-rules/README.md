@@ -1,16 +1,46 @@
 # phpstan-guard-rules
 
-Strict PHPStan rules for AI-assisted PHP development.
+[![PHP](https://img.shields.io/badge/php-8.0%2B-777bb4?logo=php&logoColor=white)](https://www.php.net/)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-Part of [php-ai-toolkit](https://github.com/k-kinzal/php-ai-toolkit).
+Strict PHPStan rules for AI-assisted PHP development, covering production code,
+public API contracts, and test design.
 
-```sh
-composer require --dev k-kinzal/phpstan-guard-rules:dev-main
+## Requirements
+
+- PHP 8.0 or later
+- PHPStan 1.12 or later on 1.x, and 2.x
+
+## Getting Started
+
+```console
+$ composer require --dev k-kinzal/phpstan-guard-rules
 ```
 
-See the [guide](docs/phpstan.md).
+Include the shipped rules and PHPStan's strict rules in `phpstan.neon`:
 
-## Rector
+```neon
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/k-kinzal/phpstan-guard-rules/rules.neon
+
+parameters:
+    level: max
+    paths:
+        - src
+        - tests
+```
+
+If `phpstan/extension-installer` already loads these files, omit the explicit
+includes. Adjust the analysis paths to your project, then run the analysis:
+
+```console
+$ vendor/bin/phpstan analyse
+```
+
+See the [rule reference](docs/phpstan.md) for individual rules and configuration.
+
+### Rector
 
 Optional Rector rules can fix some of the findings. They require Rector 2.6.7 or
 later on 2.x and PHPStan 2. Install Rector, then enable the safe group in `rector.php`:
@@ -41,3 +71,7 @@ the eight risky rules.
 Review their behavioral or contract changes before adding the risky group.
 The [rule reference](docs/phpstan.md#rector-support) records automatic-fix
 availability and review requirements for every rule.
+
+## License
+
+[MIT](LICENSE)

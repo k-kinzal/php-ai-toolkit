@@ -21,14 +21,11 @@ imports:
   - rules/infection.yaml
   - rules/composer.yaml
   - rules/docgen.yaml
+  - rules/readme-md.yaml
 metrics:
   source:
     - src
   exclude: []
 documentation:
-  files:
-    README.md:
-      headings:
-        - '# guard-php'
   scan:
-    - README.md
+    - '*.md'

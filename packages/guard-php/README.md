@@ -1,39 +1,47 @@
 # guard-php
 
-Source, structure, documentation and configuration policy checks and repairs.
+[![PHP](https://img.shields.io/badge/php-8.0%2B-777bb4?logo=php&logoColor=white)](https://www.php.net/)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-Part of [php-ai-toolkit](https://github.com/k-kinzal/php-ai-toolkit).
+Check and repair PHP project policies for source metrics, directory structure,
+Markdown documents, and tool configuration.
 
-```sh
-composer require --dev k-kinzal/guard-php:dev-main
+## Requirements
+
+- PHP 8.0 or later
+
+## Getting Started
+
+```console
+$ composer require --dev k-kinzal/guard-php
+$ vendor/bin/guard --help
+guard 1.0.0
+
+Checks and repairs a project against the policies in its guard.yaml. Running guard without a command runs check.
+
+Usage:
+  command [options] [arguments]
+
+Options:
+  -h, --help            Display help for the given command, or list the commands when none is given
+      --silent          Do not output any message
+  -q, --quiet           Only errors are displayed. All other output is suppressed
+  -V, --version         Display this application version
+      --ansi|--no-ansi  Force (or disable --no-ansi) ANSI output
+  -n, --no-interaction  Do not ask any interactive question
+  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Available commands:
+  baseline    Record current violations in a baseline for subsequent checks
+  check       Check the project against its policy without changing any file
+  completion  Dump the shell completion script
+  fix         Repair the violations guard can fix, then report what remains
+  help        Display help for a command
+  init        Create a policy file with the presets that fit the project
+  list        List commands
+  rules       List active rules, their messages and automatic fix support
 ```
 
-See the documentation:
+## License
 
-- [Policies](docs/policies.md): What Guard checks, what it repairs, and the adoption workflow
-- [Command Line](docs/cli.md): Commands, options, exit codes, reports and `guard init` preset detection
-- [Configuration](docs/configuration.md): `guard.yaml`, imports and overrides, shipped presets and the collection scope
-- [Metrics](docs/metrics.md): PHP line and complexity limits, profiles and assignments
-- [Structure](docs/structure.md): Directory contents, naming and count constraints
-- [Documents](docs/documents.md): Markdown headings, outlines, badges, exact content and undeclared documents
-- [Configuration Fields](docs/fields.md): Assertions and repairs for values in tool configuration files
-- [Extensions](docs/extensions.md): Custom policies and structures
-
-```sh
-vendor/bin/guard init
-vendor/bin/guard rules
-vendor/bin/guard check
-vendor/bin/guard check --fixable
-vendor/bin/guard fix --dry-run
-vendor/bin/guard fix
-```
-
-When the project has no `docs/` directory, `guard init` automatically imports
-`disable-doc`. This structure preset reports a required `structure.denied_dir`
-violation if a project-root `docs/` directory is created, even when it is empty.
-Existing `docs/` directories prevent automatic selection; `README.md` and nested
-documentation directories are unaffected.
-
-To select the preset explicitly, run `vendor/bin/guard init --import=disable-doc`.
-An explicit `--import` list selects only the named presets. To enable it in an
-existing policy, add `vendor/k-kinzal/guard-php/rules/disable-doc.yaml` to `imports`.
+[MIT](LICENSE)

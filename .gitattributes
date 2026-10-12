@@ -24,7 +24,6 @@
 /tests/run.php   export-ignore
 AGENTS.md         export-ignore
 
-# docs/ ships with the package on purpose. Every setup skill closes with a
-# reference into vendor/k-kinzal/php-ai-toolkit/docs/, so export-ignoring it
-# would leave those links dangling on a --prefer-dist install, where the
-# archive honours these rules.
+# Package READMEs and skills ship in archives. The docgen-php, guard-php, and
+# phpstan-guard-rules packages also ship docs/ referenced by their skills.
+# Keep those documents available when installing with --prefer-dist.

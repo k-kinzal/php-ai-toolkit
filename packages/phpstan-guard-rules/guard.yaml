@@ -21,14 +21,11 @@ imports:
   - vendor/k-kinzal/guard-php/rules/infection.yaml
   - vendor/k-kinzal/guard-php/rules/composer.yaml
   - vendor/k-kinzal/guard-php/rules/docgen.yaml
+  - vendor/k-kinzal/guard-php/rules/readme-md.yaml
 metrics:
   source:
     - src
   exclude: []
 documentation:
-  files:
-    README.md:
-      headings:
-        - '# phpstan-guard-rules'
   scan:
-    - README.md
+    - '*.md'

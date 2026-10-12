@@ -232,8 +232,8 @@ parameter prose, mutable parameters receive a **mut** chip, and functions and me
 **Mutates** block naming every declared target. Mutation permissions participate in symbol and parameter
 fingerprints, so changing one is visible in revision diffs and invalidates the affected cached pages.
 
-DocGen renders declarations; PHPStan's
-[EnforceMutationContractRule](https://github.com/k-kinzal/php-ai-toolkit/blob/main/packages/phpstan-guard-rules/docs/rules/EnforceMutationContractRule.md) resolves inherited effects, checks bodies, and
+DocGen renders declarations; `EnforceMutationContractRule` from `k-kinzal/phpstan-guard-rules`
+resolves inherited effects, checks bodies, and
 propagates effects through calls. An inherited contract remains visible on the parent or interface declaration rather
 than being copied into an implementation's source documentation.
 
@@ -273,7 +273,7 @@ declarations, and so on — with every group rendered the same way.
 
 A declaration that carries a `@visibility` tag opens its page with a **Restricted visibility** notice naming the scopes
 exactly as written, so a reader sees what is public API and what is an implementation detail before reaching for it.
-The notice only reports the declaration; [EnforceVisibilityScopeRule](https://github.com/k-kinzal/php-ai-toolkit/blob/main/packages/phpstan-guard-rules/docs/rules/EnforceVisibilityScopeRule.md) is what
+The notice only reports the declaration; `EnforceVisibilityScopeRule` from `k-kinzal/phpstan-guard-rules`
 enforces the scope, and documentation that resolved scopes itself would be a second implementation of the same rules.
 
 ## Output

@@ -1,46 +1,49 @@
 # Configuration fields
 
-The `configuration` section checks single values in the configuration files of other tools, such as the PHPStan level, a PHPUnit attribute or a Composer setting. An agent that cannot make a check pass can lower the check instead; a field rule turns that edit into a finding. Rules that know the correct value are repaired by `guard fix`. The semantics are in [the configuration fields reference](../../../docs/fields.md).
+Configuration findings use the rule's own `id`, such as `phpstan.level`, rather
+than a `configuration.*` prefix. Inspect the target field and expected value with:
 
-## Resolving findings
+```bash
+vendor/bin/guard rules --query=phpstan.level
+vendor/bin/guard check --fixable
+vendor/bin/guard fix --dry-run
+```
 
-The finding's rule ID is the rule's `id`, such as `phpstan.level` or `phpunit13.executionOrder`. Its message names the file, the selected field and the assertion.
+## Repairs
 
-1. Run `vendor/bin/guard fix --dry-run` to see which files `fix` would change.
-2. When files are reported as `blocked`, a required rule has no repair or targets a check-only format (`json5`, `php`). Edit that field by hand to a value that satisfies the assertion, then run the dry run again. While one required rule stays unsatisfied, `fix` writes no file at all.
-3. Run `vendor/bin/guard fix`, and review the diff. A rewritten JSON, YAML, NEON or TOML file loses its comments and may change its indentation; restore a comment that documents a decision.
-4. Run the tool whose configuration changed. A raised PHPStan level or a stricter PHPUnit attribute usually reports new problems; fix them in code and tests.
+`equals` supplies its own repair value. Other assertions need an explicit
+`repair`; a compliant field is left unchanged. Every supported format can be
+checked and repaired using the same selector. Missing fields and their parents
+can be created; list indexes may append the next entry. Missing files, ambiguous
+selectors, or conflicting rules need manual changes.
 
-| Finding | Practice |
-|---------|----------|
-| The tool fails after the repaired value | Fix the code or the tests the tool now reports. Do not lower the value again. |
-| A `min` or `max` bound fails, such as `infection.min-msi` | Improve what the number measures, such as the tests that leave mutants alive, until the bound holds. |
-| A `not_contains` or `absent` rule fails, such as a PHPStan baseline in `includes` | Remove the entry and fix the errors it suppressed. |
-| The target file does not exist | Create it with a compliant value. Removing the rule is a policy change. |
-| The file uses another name, such as `phpstan.neon.dist` | That is a policy override: a human sets `file` (and `format` if needed) for the rule's `id` in `guard.yaml`. |
+While a required configuration rule remains unsatisfied in the planned result,
+no repairs are written and the action is `blocked`. Resolve that rule and preview
+again. Metric, structure, and document findings do not block these writes.
 
-### Changes that hide a finding instead of fixing it
+A changed JSON, JSON5, YAML, NEON, or TOML file is serialized again and may lose comments
+or change indentation. XML preserves unrelated nodes and comments; PHP preserves
+code outside the replaced literal. A rule for one attribute or field leaves
+custom sibling settings intact. Severity and matching conditions remain separate:
+`required` fails the run and `recommended` warns; neither implies whole-element
+equality. Review the diff
+and run the affected tool after `guard fix`.
 
-- Setting `level: recommended`, or overriding `assert` or `repair` for the rule's `id` in `guard.yaml`.
-- Moving the setting to a place the rule does not read, such as a second configuration file, an environment variable, a command-line flag in a Composer script or CI step, or an inline suppression in the code.
-- Adding the file to `collect.exclude`, which makes the rule skip it silently.
+## Rule fields
 
-## Writing rules
-
-- Name the `id` after the tool and the field, such as `composer.sort-packages`. Projects override an imported rule by `id`, setting only the keys that differ.
-- Prefer `equals`; it is its own repair. Give `one_of`, `min`, `max` and `contains` rules an explicit `repair` when one value is the right default; a field that already satisfies the rule is kept.
-- Set `format` when the extension does not say it, such as `format: xml` for `phpunit.xml.dist`. XML values are strings, so quote booleans and numbers.
-- Use `not_contains` or `absent` for the settings that switch a check off, such as a baseline include or an ignore list.
-- Use `level: required` for decisions that hold the quality bar, and `recommended` only for preferences whose violation does not weaken a check.
-- Select exactly one node. A JSON Pointer writes `/` inside a key as `~1`; an XPath that matches several nodes is an error.
-- Keep one rule per field. Two rules with the same `id` in one file are an error, and two rules on the same field with different `equals` values can never both pass.
+- Define `id`, `file`, `select`, and `assert`. Imports merge rules by `id`, so an
+  override need only specify the fields being changed.
+- Use JSON Pointer for JSON, YAML, NEON, and TOML, and a single-node XPath for XML.
+  A slash inside a pointer key is escaped as `~1`.
+- Set `format: xml` for filenames such as `phpunit.xml.dist`. XML values are
+  strings; quote booleans and numbers in assertions.
+- `required` is the default level; `recommended` produces warnings.
+- Messages should name the file and field, the expected value, and the edit.
+  Templates accept `{file}`, `{select}`, `{expectation}`, and `{fix}`.
 
 ```yaml
+version: 1
 configuration:
-  - id: phpstan.no-baseline
-    file: phpstan.neon
-    select: /includes
-    assert: {not_contains: phpstan-baseline.neon}
   - id: application.driver
     file: settings.yaml
     select: /driver
@@ -48,8 +51,5 @@ configuration:
     repair: mysql
 ```
 
-## Display filters and baselines
-
-`guard check --fixable`, `--level=error|warning`, and `--query=TEXT` combine as display filters. They never change the exit status: hidden required violations still fail.
-
-`guard baseline` records all current diagnostics into `guard-baseline.json` beside the policy. `check` automatically uses it; `--no-baseline` audits all violations, and `--baseline=FILE` selects a custom file relative to the policy directory. `baseline --output=FILE` regenerates a custom baseline. Entries match exact paths, rule IDs, severity and messages with occurrence counts, so new occurrences and changed metric values remain visible. Review baseline diffs before committing; regeneration also records new violations. `fix` still repairs baselined violations and does not bypass repair conflicts.
+See the [field schema](../../../docs/fields.md)
+for assertions, formats, and write behavior.

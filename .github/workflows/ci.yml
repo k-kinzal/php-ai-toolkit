@@ -139,6 +139,7 @@ jobs:
       - name: Check all guard policies
         run: |
           set -euo pipefail
+          php packages/guard-php/bin/guard check --config=guard.yaml
           for dir in packages/*; do
             composer --working-dir="$dir" guard
           done

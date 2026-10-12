@@ -1,0 +1,51 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4Q1ZZBPV8PXGEQ7AHM41QXD",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 10,
+  "files_touched": [
+    "packages/guard-php/docs/cli.md",
+    "packages/guard-php/docs/fields.md",
+    "packages/guard-php/rules/doctest10.yaml",
+    "packages/guard-php/rules/doctest11.yaml",
+    "packages/guard-php/rules/doctest12.yaml",
+    "packages/guard-php/rules/doctest13.yaml",
+    "packages/guard-php/rules/doctest9.yaml",
+    "packages/guard-php/rules/phpunit9.yaml",
+    "packages/guard-php/src/Config/RuleReader.php",
+    "packages/guard-php/src/Policy/Diagnostic/FieldMessage.php",
+    "packages/guard-php/src/Structure/Document/DataDocument.php",
+    "packages/guard-php/src/Structure/Document/PhpConfigReader.php",
+    "packages/guard-php/src/Structure/Document/PhpDocument.php",
+    "packages/guard-php/src/Structure/Document/Pointer.php",
+    "packages/guard-php/src/Structure/Document/XmlDocument.php",
+    "packages/guard-php/tests/Integration/Behavior/README.md",
+    "packages/guard-php/tests/Integration/Behavior/expected.json",
+    "packages/guard-php/tests/Integration/Behavior/scenarios.json",
+    "packages/guard-php/tests/Integration/ConfigurationRepairTest.php",
+    "packages/guard-php/tests/Unit/Config/RuleCatalogTest.php",
+    "packages/guard-php/tests/Unit/Config/RuleReaderTest.php",
+    "packages/guard-php/tests/Unit/Structure/Document/PhpConfigEditorTest.php",
+    "packages/guard-php/tests/Unit/Structure/Document/PhpConfigReaderTest.php",
+    "packages/guard-php/tests/Unit/Structure/Document/PhpDocumentTest.php",
+    "packages/guard-php/tests/Unit/Structure/Document/PointerTest.php",
+    "packages/guard-php/tests/Unit/Structure/Document/XmlDocumentTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 595661,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 14442368,
+    "output_tokens": 99433,
+    "api_call_count": 49
+  }
+}

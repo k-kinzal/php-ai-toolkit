@@ -23,6 +23,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Document\DataDocument
  * @uses \Guard\Structure\Document\DocumentNode
  * @uses \Guard\Structure\Document\Json5Reader
+ * @uses \Guard\Structure\Document\PhpConfigEditor
  * @uses \Guard\Structure\Document\PhpConfigReader
  * @uses \Guard\Structure\Document\PhpDocument
  * @uses \Guard\Structure\Document\Pointer
@@ -78,6 +79,7 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DataDocument::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DocumentNode::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Json5Reader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpConfigEditor::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpConfigReader::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpDocument::class)]
 #[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Pointer::class)]

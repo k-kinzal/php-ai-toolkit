@@ -140,10 +140,10 @@ final class RuleCatalogTest extends \PHPUnit\Framework\TestCase
     /**
      * @throws JsonException
      */
-    public function testFieldsMarksReadOnlyFormatsAsManual(): void
+    public function testFieldsMarksEveryFormatWithARepairAsFixable(): void
     {
         $rules = (new \Guard\Config\RuleCatalog())->fields([['id' => 'x', 'file' => 'a.json5', 'select' => '/x', 'assert' => ['equals' => true]]]);
-        self::assertFalse($rules[0]->fixable);
+        self::assertTrue($rules[0]->fixable);
     }
 
     public function testMetricsShowsInheritedLimitsOnlyForUsedProfiles(): void

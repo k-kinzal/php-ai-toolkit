@@ -105,10 +105,10 @@ final class RuleReaderTest extends TestCase
         (new \Guard\Config\RuleReader())->level('strict', 'mode');
     }
 
-    public function testRepairableLeavesPhpCheckOnly(): void
+    public function testRepairableAllowsPhpWithAConfiguredValue(): void
     {
         $reader = new \Guard\Config\RuleReader();
-        self::assertFalse($reader->repairable('php', ['assert' => ['equals' => true]], ['equals' => true]));
+        self::assertTrue($reader->repairable('php', ['assert' => ['equals' => true]], ['equals' => true]));
         self::assertTrue($reader->repairable('json', [], ['equals' => true]));
     }
 
@@ -149,13 +149,13 @@ final class RuleReaderTest extends TestCase
     /**
      * @throws JsonException
      */
-    public function testRuleLeavesPhpAndJson5CheckOnly(): void
+    public function testRuleMakesPhpAndJson5RepairsAvailable(): void
     {
         $reader = new \Guard\Config\RuleReader();
         $php = $reader->rule(['id' => 'risky', 'file' => '.php-cs-fixer.dist.php', 'format' => 'php', 'select' => '/riskyAllowed', 'assert' => ['equals' => true]]);
         $json5 = $reader->rule(['id' => 'msi', 'file' => 'infection.json5', 'format' => 'json5', 'select' => '/minMsi', 'assert' => ['equals' => 80]]);
-        self::assertFalse($php->repairable);
-        self::assertFalse($json5->repairable);
+        self::assertTrue($php->repairable);
+        self::assertTrue($json5->repairable);
     }
     /**
      * @throws JsonException

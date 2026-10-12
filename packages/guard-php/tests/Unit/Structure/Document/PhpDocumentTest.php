@@ -22,6 +22,8 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Config\Configuration
  * @uses \Guard\Structure\Document\DocumentNode
  * @uses \Guard\Structure\Document\PhpConfigReader
+ * @uses \Guard\Structure\Document\PhpConfigEditor
+ * @uses \Guard\Structure\Document\Constraint
  * @uses \Guard\Structure\Document\Pointer
  * @uses \Guard\Structure\Document\Selection
  * @uses \Guard\Policy\Context
@@ -43,6 +45,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(\Guard\Config\Configuration::class)]
 #[UsesClass(\Guard\Structure\Document\DocumentNode::class)]
 #[UsesClass(\Guard\Structure\Document\PhpConfigReader::class)]
+#[UsesClass(\Guard\Structure\Document\PhpConfigEditor::class)]
+#[UsesClass(\Guard\Structure\Document\Constraint::class)]
 #[UsesClass(\Guard\Structure\Document\Pointer::class)]
 #[UsesClass(\Guard\Structure\Document\Selection::class)]
 #[UsesClass(\Guard\Policy\Context::class)]
@@ -64,12 +68,15 @@ final class PhpDocumentTest extends TestCase
         self::assertTrue($selected->value);
     }
 
-    public function testWriteRejectsRepair(): void
+    /**
+     * @throws JsonException
+     */
+    public function testWriteRepairsTheSelectedLiteral(): void
     {
         $document = new \Guard\Structure\Document\PhpDocument('<?php (new PhpCsFixer\Config())->setRiskyAllowed(false);');
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
-        $this->expectExceptionMessage('cannot be repaired');
         $document->write('/riskyAllowed', true);
+        self::assertTrue($document->read('/riskyAllowed')->value);
+        self::assertStringContainsString('setRiskyAllowed(true)', $document->encode());
     }
 
     public function testEncodeReturnsTheOriginalSource(): void
@@ -77,4 +84,72 @@ final class PhpDocumentTest extends TestCase
         $source = '<?php (new PhpCsFixer\Config())->setRiskyAllowed(true);';
         self::assertSame($source, (new \Guard\Structure\Document\PhpDocument($source))->encode());
     }
+
+    /**
+     * @throws JsonException
+     */
+    public function testWriteAddsNestedRulesWithoutExecutingOrReplacingOtherSettings(): void
+    {
+        $document = new \Guard\Structure\Document\PhpDocument('<?php /* keep */ return (new PhpCsFixer\Config())->setRules(["custom" => true]);');
+        $document->write('/rules/array_syntax/syntax', 'short');
+        self::assertSame('short', $document->read('/rules/array_syntax/syntax')->value);
+        self::assertTrue($document->read('/rules/custom')->value);
+        self::assertStringContainsString('/* keep */', $document->encode());
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testWriteCreatesMissingConfigurationCalls(): void
+    {
+        $document = new \Guard\Structure\Document\PhpDocument('<?php return new PhpCsFixer\Config();');
+        $document->write('/rules/@PSR12', true);
+        $document->write('/riskyAllowed', true);
+        self::assertTrue($document->read('/rules/@PSR12')->value);
+        self::assertTrue($document->read('/riskyAllowed')->value);
+    }
+
+    public function testLiteralPreservesScalarTypesAndConvertsMaps(): void
+    {
+        $document = new \Guard\Structure\Document\PhpDocument('<?php return new PhpCsFixer\Config();');
+        self::assertSame(['list' => [false, -1, 2.5, null]], $document->literal((object) ['list' => [false, -1, 2.5, null]]));
+    }
+
+
+    /**
+     * @throws JsonException
+     */
+    public function testWriteArrayPreservesUnselectedKeysAndNegativeNumbers(): void
+    {
+        $document = new \Guard\Structure\Document\PhpDocument('<?php /* keep */ return ["custom" => true, "number" => -2];');
+        $document->writeArray('/feature/enabled', true);
+        self::assertTrue($document->read('/feature/enabled')->value);
+        self::assertTrue($document->read('/custom')->value);
+        self::assertSame(-2, $document->read('/number')->value);
+        self::assertStringContainsString('/* keep */', $document->encode());
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testReadDistinguishesAMissingSetterFromAnExplicitNull(): void
+    {
+        $document = new \Guard\Structure\Document\PhpDocument('<?php return (new Config())->setRules(null);');
+        self::assertFalse($document->read('/riskyAllowed')->exists);
+        self::assertTrue($document->read('/rules')->exists);
+        self::assertNull($document->read('/rules')->value);
+    }
+
+
+    /**
+     * @throws JsonException
+     */
+    public function testContainersAllowSettingsInsideAnEmptyPhpArrayWithoutChangingOtherLists(): void
+    {
+        $document = new \Guard\Structure\Document\PhpDocument('<?php return ["feature" => [], "untouched" => []];');
+        $document->write('/feature/enabled', true);
+        self::assertTrue($document->read('/feature/enabled')->value);
+        self::assertSame([], $document->read('/untouched')->value);
+    }
+
 }

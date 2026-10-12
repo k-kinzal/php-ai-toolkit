@@ -245,7 +245,7 @@
     "name": "php",
     "files": {
       "settings.php": "<?php\nreturn ['value' => 0, 'keep' => true];\n",
-      "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: settings.php, format: php, select: /return/value, assert: {equals: 1}}\n"
+      "guard.yaml": "version: 1\nconfiguration:\n  - {id: value, file: settings.php, format: php, select: /value, assert: {equals: 1}}\n"
     },
     "commands": [
       [

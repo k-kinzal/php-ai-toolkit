@@ -98,15 +98,14 @@ final class RuleReader
     }
 
     /**
-     * Reports whether Guard may write the repair. PHP and JSON5 stay check-only.
+     * Reports whether the rule supplies a repair value, independently of its format.
      *
      * @param array<string, mixed> $data
      * @param array<string, mixed> $assertions
      */
     public function repairable(string $format, array $data, array $assertions): bool
     {
-        return !in_array($format, ['php', 'json5'], true)
-            && (array_key_exists('repair', $data) || array_key_exists('equals', $assertions));
+        return array_key_exists('repair', $data) || array_key_exists('equals', $assertions);
     }
 
     /**

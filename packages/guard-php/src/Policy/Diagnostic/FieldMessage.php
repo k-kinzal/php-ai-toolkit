@@ -52,7 +52,7 @@ final class FieldMessage
     }
 
     /**
-     * Names the actual edit, including manual edits for PHP and JSON5 documents.
+     * Names the configured repair or the manual edit when no repair value was supplied.
      * @throws JsonException
      */
     public function fix(Rule $rule): string

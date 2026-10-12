@@ -77,7 +77,7 @@ final class DataDocument
     public function encodeData($data): string
     {
         $encoded = match ($this->format) {
-            'json' => json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION) . "\n",
+            'json', 'json5' => json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION) . "\n",
             'yaml', 'yml' => Yaml::dump($data, 20, 2, Yaml::DUMP_OBJECT_AS_MAP | Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE),
             'neon' => Neon::encode($data, true),
             'toml' => (new TomlEncoder())->encode($data),

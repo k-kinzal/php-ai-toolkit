@@ -160,7 +160,7 @@ Resolved or changed entries are counted as `unmatched` and reported without fail
 
 `fix` plans every configuration repair before writing. While a required configuration rule cannot be satisfied, nothing is written and the report says `blocked`. Its diffs describe proposals, not completed changes. Metric, structure and document findings do not block configuration repairs; they remain required failures after `fix`.
 
-`check` never writes. A required configuration violation that `fix` can repair still fails `check`. Missing target files, check-only formats, rules without repair values and conflicting repairs require manual changes. `fixable` indicates automatic repair support, not permission to ignore a blocking violation elsewhere.
+`check` never writes. A required configuration violation that `fix` can repair still fails `check`. Missing target files, rules without repair values and conflicting repairs require manual changes. All supported configuration formats can be repaired. `fixable` indicates automatic repair support, not permission to ignore a blocking violation elsewhere.
 
 ## Init
 

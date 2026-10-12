@@ -9,9 +9,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * @uses \Guard\Structure\Document\PhpConfigEditor
  * @covers \Guard\Structure\Document\PhpConfigReader
  */
 #[CoversClass(\Guard\Structure\Document\PhpConfigReader::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpConfigEditor::class)]
 final class PhpConfigReaderTest extends TestCase
 {
     public function testReadExtractsLiteralFixerRules(): void
@@ -104,4 +106,32 @@ PHP;
         $tokens = array_values(PhpToken::tokenize('<?php $config->setRiskyAllowed(true)->setRules(["x" => false]);'));
         self::assertSame(['riskyAllowed' => true, 'rules' => ['x' => false]], (new \Guard\Structure\Document\PhpConfigReader())->fromTokens($tokens));
     }
+
+    public function testConfigurationReadsAReturnedArrayWithItsNativeKeys(): void
+    {
+        self::assertSame(['array' => true, 'data' => ['feature' => true]], (new \Guard\Structure\Document\PhpConfigReader())->configuration(array_values(PhpToken::tokenize('<?php return ["feature" => true];'))));
+    }
+
+
+    public function testSignedNumberPreservesNegativeLiteralValues(): void
+    {
+        $tokens = token_get_all('<?php -2.5;');
+        self::assertSame(['value' => -2.5, 'index' => 3], (new \Guard\Structure\Document\PhpConfigReader())->signedNumber($tokens, 2, '-'));
+    }
+
+
+    public function testReadRejectsDynamicExpressionsInsteadOfReportingALiteralPrefix(): void
+    {
+        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectExceptionMessage('one literal argument');
+        (new \Guard\Structure\Document\PhpConfigReader())->read('<?php return $config->setRiskyAllowed(false || true);');
+    }
+
+    public function testReadRejectsMultipleSettersInsteadOfReadingAStaleValue(): void
+    {
+        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectExceptionMessage('multiple setRules() calls');
+        (new \Guard\Structure\Document\PhpConfigReader())->read('<?php return $config->setRules([])->setRules(["custom" => true]);');
+    }
+
 }

@@ -9,3 +9,5 @@ The scenarios cover all policies together, configuration formats, required and r
 The `init-readme` and `migrate` scenarios include `docs/.gitkeep` to preserve their original generated policies after automatic `disable-doc` selection was added. That fixture file is also included in their expected file inventories. Projects without `docs/` and the resulting directory violations are covered by `PresetSelectorTest` and `ApplicationTest`.
 
 The `args` scenario changed on purpose when the guard CLI moved to Symfony Console. Its `--help` case was removed because the help text depends on the installed Symfony Console version; `ApplicationTest` covers it instead. Its command-line errors now carry the Symfony Console message for an unknown command and a format error that names the rejected value.
+
+The `php` and `php-literal` expectations were updated when configuration repairs became available for every supported format. They now exercise literal returned arrays and PHP-CS-Fixer setters through check, dry run, and applied repairs. The returned-array case selects `/value` directly. All other original behavior expectations remain unchanged.

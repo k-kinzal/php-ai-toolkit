@@ -51,7 +51,7 @@ final class Pointer
         return $this->replace($data, $this->tokens($pointer), $value);
     }
     /**
-     * Creates missing object fields while refusing to replace scalar parents or extend arrays.
+     * Creates missing fields and the next list entry without replacing scalar parents or creating gaps.
      * @param mixed $data
      * @param list<string> $tokens
      * @param mixed $value
@@ -65,17 +65,27 @@ final class Pointer
         }
         $key = array_shift($tokens);
         if ($data instanceof stdClass) {
-            $data->{$key} = $this->replace(property_exists($data, $key) ? $data->{$key} : new stdClass(), $tokens, $value);
+            $data->{$key} = $this->replace(property_exists($data, $key) ? $data->{$key} : $this->container($tokens), $tokens, $value);
             return $data;
         }
         if (is_array($data)) {
             $list = $data === [] || array_keys($data) === range(0, count($data) - 1);
-            if ($list && !array_key_exists($key, $data)) {
-                throw new PolicyException('Array index "' . $key . '" does not exist. Select an existing index.');
+            if ($list && !array_key_exists($key, $data) && $key !== (string) count($data)) {
+                throw new PolicyException('Array index "' . $key . '" would create a gap or change a list into a map. Select an existing index or the next index ' . count($data) . '.');
             }
-            $data[$key] = $this->replace(array_key_exists($key, $data) ? $data[$key] : new stdClass(), $tokens, $value);
+            $data[$key] = $this->replace(array_key_exists($key, $data) ? $data[$key] : $this->container($tokens), $tokens, $value);
             return $data;
         }
         throw new PolicyException('Cannot descend through a scalar at "' . $key . '". Correct the selector or document structure.');
+    }
+
+    /**
+     * Chooses a missing container from the next path segment: an index starts a list.
+     * @param list<string> $tokens
+     * @return array{}|stdClass
+     */
+    public function container(array $tokens): array|stdClass
+    {
+        return isset($tokens[0]) && preg_match('/^(0|[1-9][0-9]*)$/D', $tokens[0]) === 1 ? [] : new stdClass();
     }
 }

@@ -27,7 +27,7 @@ configuration:
     assert: {min: 80}
 ```
 
-`guard fix` sets the PHPStan level to `max`, `sort-packages` to `true` and `failOnWarning` to `"true"`. Nothing can repair a `minMsi` below 80, because `infection.json5` is check-only and `min` names no single value. Until someone raises it, `fix` writes none of the other repairs either. See [Repairs](#repairs).
+`guard fix` sets the PHPStan level to `max`, `sort-packages` to `true` and `failOnWarning` to `"true"`. The `minMsi` rule needs an explicit `repair: 80`, because `min` permits many values and does not choose one. Until that required rule is satisfied, `fix` writes none of the other repairs either. See [Repairs](#repairs).
 
 ## Fields
 
@@ -68,10 +68,10 @@ A missing field fails every assertion except `absent`, even `equals: null`: an e
 | `neon` | JSON Pointer | Parsed with Nette NEON. |
 | `toml` | JSON Pointer | TOML 0.4 syntax. Newer syntax fails without writing. TOML has no `null`. |
 | `xml` | XPath that selects one element or attribute | Values are strings, so quote booleans and numbers in YAML; `min` and `max` still read numeric text. Use `local-name()` and `namespace-uri()` for namespaced documents. DTDs and entity declarations are rejected. |
-| `json5` | JSON Pointer | Comments and trailing commas are accepted. Check-only. |
-| `php` | `/riskyAllowed`, or `/rules/<rule>` | For PHP-CS-Fixer configurations: the literal arguments of `setRiskyAllowed()` and `setRules()`. The file is read, never executed, and a non-literal argument reads as `null`. Check-only. |
+| `json5` | JSON Pointer | Quoted keys, comments and trailing commas are accepted. Repairs serialize valid JSON, which is also valid JSON5. |
+| `php` | JSON Pointer | A returned literal array, or `/riskyAllowed` and `/rules/<rule>` for PHP-CS-Fixer fluent configuration. Repairs replace the selected literal argument or returned array and can add missing setter calls. The file is never executed; ambiguous calls and dynamic values are errors when their value cannot be determined. |
 
-In a JSON Pointer, `/` inside a key is written `~1` and `~` is written `~0`. A pointer into a list addresses an existing index; Guard does not extend lists or replace a scalar parent with a mapping. An XPath that matches several nodes is an error.
+In a JSON Pointer, `/` inside a key is written `~1` and `~` is written `~0`. A pointer into a list addresses an existing index or its next index, so `/includes/0` can create the first entry. Missing parents are created as maps, or lists when the next segment is a numeric index. Guard does not create gaps in lists or replace scalar parents with containers. An XPath that matches several nodes is an error.
 
 A rule may include a non-empty `message` describing the problem and the required edit. Guard displays the same diagnostic in `rules`, `check` and remaining `fix` findings, with placeholders resolved after imports and overrides. If omitted, Guard generates a concrete diagnostic from the assertions. See [Rule messages](cli.md#rule-messages).
 
@@ -87,13 +87,30 @@ A rule may include a non-empty `message` describing the problem and the required
   repair: mysql
 ```
 
-A field that already satisfies the rule is kept, so `pgsql` is not replaced by `mysql`. Without a repair, or in a `json5` or `php` file, the finding stays and names the required change. Both levels are repaired.
+A field that already satisfies the rule is kept, so `pgsql` is not replaced by `mysql`. Without a repair, the finding stays and names the required change. Every supported format uses the same check-and-repair contract: select a field, write its repair value only when the assertion fails, then recheck the same assertions. Both levels are repaired.
 
-Guard plans the changes to every file, then checks rules that touch the same file against the planned result. While a required rule stays unsatisfied, `fix` writes no file at all and reports the planned files as `blocked`. A missing mapping key is created along its pointer, and a missing XML attribute on its existing element.
+Guard plans the changes to every file, then checks rules that touch the same file against the planned result. While a required rule stays unsatisfied, `fix` writes no file at all and reports the planned files as `blocked`. Missing fields and their parent containers are created along the selector. XML creation starts at the existing root and supports named elements, attribute-equality predicates such as `testsuite[@name="doctest"]`, and a final attribute such as `/@value`. XPath can still select existing values using more complex expressions; an ambiguous or indeterminate creation path is an error.
+
+### Partial requirements and severity
+
+`required` and `recommended` control whether a remaining violation fails the command; they do not change the matching condition. `equals` requires equality of the selected value. `one_of`, `contains`, presence checks, and separate rules for individual fields keep their existing meanings. A rule selecting one XML attribute does not require the whole element to match, and adding that attribute preserves custom attributes, sibling elements, and their values. A compliant value is never replaced by the repair's default.
+
+### Enabling PHPUnit features
+
+Import the presets for the PHPUnit major the project uses, then run `guard fix --dry-run` and `guard fix`:
+
+```yaml
+version: 1
+imports:
+  - vendor/k-kinzal/guard-php/rules/phpunit13.yaml
+  - vendor/k-kinzal/guard-php/rules/doctest13.yaml
+```
+
+Starting with an existing `phpunit.xml.dist`, these rules can add the reporter extension, Doctest suite and extension, source-directory parameter, and PHPUnit settings. Existing suites and extension parameters are retained. The Doctest suite repair points at `vendor/k-kinzal/doctest-php/`; the source-directory repair defaults to `src`. Override the corresponding rule's `repair` to choose another default; a directory value already present remains unchanged. Install the corresponding Composer packages before running PHPUnit. Guard configures their activation; it does not install dependencies.
 
 ### Writing
 
-A file that does not change keeps every byte. A changed JSON, YAML, NEON or TOML file is serialized again, so its indentation may change and its comments are lost; the result is parsed again and must hold the same data apart from the repaired fields. A changed XML file keeps its comments and every other node.
+A file that does not change keeps every byte. A changed JSON, JSON5, YAML, NEON or TOML file is serialized again, so its indentation may change and its comments are lost; the result is parsed again and must hold the same data apart from the repaired fields. A changed XML file keeps unrelated nodes and comments. PHP repairs preserve statements outside the replaced literal; comments within that literal may be lost.
 
 Guard writes each file to a temporary file in the same directory and replaces the original atomically, keeping its permissions, and refuses to write when the file changed since it was read. Each replacement is atomic, but a failure in the middle of several files can leave the earlier ones written; fix the cause and run `guard check` again.
 

@@ -202,7 +202,7 @@ configuration:
     message: 'PHPUnit configuration field {select} in {file} must {expectation}. {fix}'
     file: phpunit9.xml.dist
     format: xml
-    select: /phpunit/listeners/listener/@class
+    select: '/phpunit/listeners/listener[@class="Toolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener"]/@class'
     level: required
     assert:
       equals: 'Toolkit\PhpUnit\TestReporter\Legacy\LegacyAiTestReporterListener'

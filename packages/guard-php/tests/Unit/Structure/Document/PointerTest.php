@@ -8,6 +8,7 @@ use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * @covers \Guard\Structure\Document\Pointer
@@ -86,4 +87,25 @@ final class PointerTest extends TestCase
         $this->expectException(\Guard\Diagnostic\PolicyException::class);
         (new \Guard\Structure\Document\Pointer())->write([], '/mode', 'A');
     }
+
+    /**
+     * @throws JsonException
+     */
+    public function testWriteAppendsTheNextIndexAndCreatesMissingLists(): void
+    {
+        $pointer = new \Guard\Structure\Document\Pointer();
+        $first = $pointer->write((object) [], '/items/0/name', 'first');
+        $second = $pointer->write($first, '/items/1/name', 'second');
+        self::assertSame('second', $pointer->read($second, '/items/1/name')->value);
+        self::assertSame('{"items":[{"name":"first"},{"name":"second"}]}', json_encode($second));
+    }
+
+    public function testContainerChoosesListsOnlyForCanonicalIndexes(): void
+    {
+        $pointer = new \Guard\Structure\Document\Pointer();
+        self::assertSame([], $pointer->container(['0']));
+        self::assertInstanceOf(stdClass::class, $pointer->container(['name']));
+        self::assertInstanceOf(stdClass::class, $pointer->container(['01']));
+    }
+
 }

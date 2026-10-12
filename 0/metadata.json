@@ -1,0 +1,75 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4QBBZ8PS6WAQQQ9FAX1NSE2",
+  "session_id": "01a12e9a-bb0b-7573-b212-77f5cc674eb3",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T06:04:09.531931Z",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "save_step_count": 3,
+  "files_touched": [
+    "packages/phpstan-guard-rules/docs/phpstan.md",
+    "packages/phpstan-guard-rules/docs/rules/ForbiddenNamespaceRule.md",
+    "packages/phpstan-guard-rules/rules.neon",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/Naming/ForbiddenNamespaceRule.php",
+    "packages/phpstan-guard-rules/tests/PhpStan/ForbiddenNamespace/WithForbiddenSegments.php",
+    "packages/phpstan-guard-rules/tests/PhpStan/ForbiddenNamespace/WithoutForbiddenNamespaces.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/Naming/ForbiddenNamespaceRuleTest.php"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "b2ee82da01f0",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 109223,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 4224256,
+    "output_tokens": 21373,
+    "api_call_count": 54
+  },
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T06:04:09.333977Z",
+    "agent_lines": 217,
+    "agent_removed": 28,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 217,
+    "total_lines_changed": 245,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 217,
+      "agent_lines_removed": 28
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 217,
+      "agent_lines_removed": 28
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 217,
+      "agent_lines_removed": 28
+    }
+  ]
+}

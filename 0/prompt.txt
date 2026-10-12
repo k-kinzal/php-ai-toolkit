@@ -1,0 +1,19 @@
+特定のNamespaceを禁止したいのですがそれに合うルールって今あります？
+
+---
+
+いいですね。デフォルトルールで追加したいのですがModel、Infrastructureを禁止したいです複数形も同様ですね。これ追加してもらえますか？
+
+---
+
+<send_user_message_question_reply>
+[{"answer":"どの階層でも禁止する（App\\Modelなども含む）","question":"禁止する範囲は、App\\ModelやApp\\Infrastructureも含め、namespaceの途中にある名前も対象にしますか？ 現在のルールは先頭からの前方一致です。","questionItemId":"[\"request_user_input_async\",\"call_46cd2afaeb8048c6a6503564384a012d\",0]"}]
+</send_user_message_question_reply>
+
+---
+
+各パッケージで動作しているでしょうか。エラーにならないことの確認をお願いします。
+
+---
+
+念の為の確認ですが新ルールは読み込まれてますよね？

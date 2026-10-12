@@ -37,16 +37,30 @@
 <div class="symbol-head"><h1><span class="chip chip-kind k-package">package</span>k-kinzal/phpstan-ai-formatter</h1></div>
 <p class="lede">AI-readable PHPStan error formatting</p>
 <section class="items" id="public-api"><h2>Public API <span class="count">0</span><a class="anchor" href="#public-api">§</a></h2><p class="section-note">Declarations explicitly marked <code>@visibility public</code> in this scope.</p><p class="section-note">No declarations in this scope are marked as public API.</p></section>
-<div class="relation-row"><span class="relation-label">Depends on</span> <a href="../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a>, <a href="../../k-kinzal/docgen-php/index.html">k-kinzal/docgen-php</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a> <span class="chip chip-sm chip-ghost">require-dev</span></div>
-<div class="relation-row"><span class="relation-label">Required by</span> <a href="../../k-kinzal/docgen-php/index.html">k-kinzal/docgen-php</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a> <span class="chip chip-sm chip-ghost">require-dev</span></div>
+<div class="relation-row"><span class="relation-label">Depends on</span> <a href="../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a>, <a href="../../k-kinzal/docgen-php/index.html">k-kinzal/docgen-php</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/doctest-php/index.html">k-kinzal/doctest-php</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a> <span class="chip chip-sm chip-ghost">require-dev</span></div>
+<div class="relation-row"><span class="relation-label">Required by</span> <a href="../../k-kinzal/docgen-php/index.html">k-kinzal/docgen-php</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/doctest-php/index.html">k-kinzal/doctest-php</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a> <span class="chip chip-sm chip-ghost">require-dev</span></div>
 <div class="relation-row"><span class="relation-label">External dependencies</span> <code>phpstan/phpstan</code> <span class="dep-constraint">^1.12 || ^2.0</span></div>
 <section><h2 id="namespaces">Namespaces<a class="anchor" href="#namespaces">§</a></h2><div class="table-wrap"><table class="symbol-table"><tr><td><a href="../../k-kinzal/phpstan-ai-formatter/Toolkit/PhpStan/ErrorFormatter/index.html">Toolkit\PhpStan\ErrorFormatter</a></td><td class="ns-counts"> <span class="ns-count k-class">9 classes</span></td></tr></table></div></section>
-<section><h2 id="documents">Documents <span class="count">2</span><a class="anchor" href="#documents">§</a></h2><div class="table-wrap"><table class="symbol-table"><tr><td><a href="../../k-kinzal/phpstan-ai-formatter/doc/README.md.html">phpstan-ai-formatter</a></td><td class="item-ns">README.md</td></tr><tr><td><a href="../../k-kinzal/phpstan-ai-formatter/doc/docs/phpstan-ai-formatter.md.html">PHPStan AI Formatter</a></td><td class="item-ns">docs/phpstan-ai-formatter.md</td></tr></table></div></section>
+<section><h2 id="documents">Documents <span class="count">1</span><a class="anchor" href="#documents">§</a></h2><div class="table-wrap"><table class="symbol-table"><tr><td><a href="../../k-kinzal/phpstan-ai-formatter/doc/README.md.html">phpstan-ai-formatter</a></td><td class="item-ns">README.md</td></tr></table></div></section>
 <section class="readme prose"><h2 id="readme">README<a class="anchor" href="#readme">§</a></h2><h2>phpstan-ai-formatter</h2>
-<p>AI-readable PHPStan error formatting.</p>
-<p>Part of <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a>.</p>
-<pre class="code"><code>composer require --dev k-kinzal/phpstan-ai-formatter:dev-main</code></pre>
-<p>See the <a href="../../k-kinzal/phpstan-ai-formatter/doc/docs/phpstan-ai-formatter.md.html">guide</a>.</p>
+<p><a href="https://www.php.net/"><span class="md-target" title="https://img.shields.io/badge/php-8.0%2B-777bb4?logo=php&amp;logoColor=white">PHP</span></a> <span class="md-target" title="LICENSE"><span class="md-target" title="https://img.shields.io/badge/license-MIT-blue">License</span></span></p>
+<p>Format PHPStan diagnostics for coding agents and humans through the <code>ai</code> error formatter.</p>
+<h3>Requirements</h3>
+<ul><li>PHP 8.0 or later</li><li>PHPStan 1.12 or later on 1.x, and 2.x</li></ul>
+<h3>Getting Started</h3>
+<pre class="code"><code>$ composer require --dev k-kinzal/phpstan-ai-formatter</code></pre>
+<p>Include the extension in <code>phpstan.neon</code>:</p>
+<pre class="code"><code>includes:
+    - vendor/k-kinzal/phpstan-ai-formatter/extension.neon</code></pre>
+<p>The extension selects <code>errorFormat: ai</code>. If <code>phpstan/extension-installer</code> already loads it, omit the explicit include. Run your usual analysis:</p>
+<pre class="code"><code>$ vendor/bin/phpstan analyse</code></pre>
+<h4>Output</h4>
+<p>Recognized coding-agent environments select compact AI output automatically. Set a non-empty <code>AI_AGENT</code> value to select it explicitly:</p>
+<pre class="code"><code>$ AI_AGENT=1 vendor/bin/phpstan analyse</code></pre>
+<p>AI output includes project-relative locations, rule identifiers, messages, source lines, and available tips. When an identifier occurs at least three times, file-specific findings are grouped by identifier. Human output groups findings by file and adds terminal source context and colors.</p>
+<p>Both modes report the same findings and preserve PHPStan&#039;s exit status: <code>0</code> for no errors, including warning-only results, and <code>1</code> when errors exist.</p>
+<h3>License</h3>
+<p><span class="md-target" title="LICENSE">MIT</span></p>
 </section>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

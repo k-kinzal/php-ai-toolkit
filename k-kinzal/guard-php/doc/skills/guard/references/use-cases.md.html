@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guard use cases — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/skills/guard/references/use-cases.md.html">
+<meta name="description" content="Guard use cases, a document of the k-kinzal/guard-php package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Guard use cases — php-ai-toolkit">
+<meta property="og:description" content="Guard use cases, a document of the k-kinzal/guard-php package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/skills/guard/references/use-cases.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../../k-kinzal/guard-php/all-items.html">All items</a></li><li><a href="../../../../../../k-kinzal/guard-php/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../../k-kinzal/guard-php/Guard/Cli/index.html" title="Guard\Cli">Guard\Cli</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Cli/Command/index.html" title="Guard\Cli\Command">Guard\Cli\Command</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Collect/index.html" title="Guard\Collect">Guard\Collect</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Collect/Filesystem/index.html" title="Guard\Collect\Filesystem">Guard\Collect\Filesystem</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Collect/Matching/index.html" title="Guard\Collect\Matching">Guard\Collect\Matching</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Config/index.html" title="Guard\Config">Guard\Config</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Config/Profile/index.html" title="Guard\Config\Profile">Guard\Config\Profile</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Config/Project/index.html" title="Guard\Config\Project">Guard\Config\Project</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Config/Project/Legacy/index.html" title="Guard\Config\Project\Legacy">Guard\Config\Project\Legacy</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Config/Reader/index.html" title="Guard\Config\Reader">Guard\Config\Reader</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Config/Validation/index.html" title="Guard\Config\Validation">Guard\Config\Validation</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Diagnostic/index.html" title="Guard\Diagnostic">Guard\Diagnostic</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Execution/index.html" title="Guard\Execution">Guard\Execution</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Input/index.html" title="Guard\Input">Guard\Input</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Policy/index.html" title="Guard\Policy">Guard\Policy</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Policy/Assignment/index.html" title="Guard\Policy\Assignment">Guard\Policy\Assignment</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Policy/Comparison/index.html" title="Guard\Policy\Comparison">Guard\Policy\Comparison</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Policy/Definition/index.html" title="Guard\Policy\Definition">Guard\Policy\Definition</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Policy/Diagnostic/index.html" title="Guard\Policy\Diagnostic">Guard\Policy\Diagnostic</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Policy/Inspection/index.html" title="Guard\Policy\Inspection">Guard\Policy\Inspection</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Policy/Limit/index.html" title="Guard\Policy\Limit">Guard\Policy\Limit</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Repair/index.html" title="Guard\Repair">Guard\Repair</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Reporting/index.html" title="Guard\Reporting">Guard\Reporting</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Reporting/Filtering/index.html" title="Guard\Reporting\Filtering">Guard\Reporting\Filtering</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Structure/index.html" title="Guard\Structure">Guard\Structure</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Structure/Document/index.html" title="Guard\Structure\Document">Guard\Structure\Document</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Structure/Markdown/index.html" title="Guard\Structure\Markdown">Guard\Structure\Markdown</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Badge/index.html" title="Guard\Structure\Markdown\Badge">Guard\Structure\Markdown\Badge</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Block/index.html" title="Guard\Structure\Markdown\Block">Guard\Structure\Markdown\Block</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Structure/Php/index.html" title="Guard\Structure\Php">Guard\Structure\Php</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Structure/Php/ClassLikeMetric/index.html" title="Guard\Structure\Php\ClassLikeMetric">Guard\Structure\Php\ClassLikeMetric</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Structure/Php/Complexity/index.html" title="Guard\Structure\Php\Complexity">Guard\Structure\Php\Complexity</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Structure/Php/FileMetric/index.html" title="Guard\Structure\Php\FileMetric">Guard\Structure\Php\FileMetric</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Structure/Php/FunctionMetric/index.html" title="Guard\Structure\Php\FunctionMetric">Guard\Structure\Php\FunctionMetric</a></li><li><a href="../../../../../../k-kinzal/guard-php/Guard/Structure/Php/Token/index.html" title="Guard\Structure\Php\Token">Guard\Structure\Php\Token</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">skills/guard/references/use-cases.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Guard use cases</h1><div class="symbol-meta"><span class="source-link">skills/guard/references/use-cases.md</span></div></div>
+<section class="readme prose"><h2>Guard use cases</h2>
+<h3>Inspect and resolve findings</h3>
+<pre class="code"><code>vendor/bin/guard rules --query=phpstan --format=ai
+vendor/bin/guard check --query=phpstan --format=json
+vendor/bin/guard check --fixable
+vendor/bin/guard check --level=warning</code></pre>
+<p><code>rules</code> explains configured expectations even for compliant or missing files. Use <code>check</code> to inspect actual findings. An empty filtered report can still exit <code>1</code>; finish with an unfiltered check.</p>
+<p>For configuration repairs:</p>
+<pre class="code"><code>vendor/bin/guard fix --dry-run
+vendor/bin/guard fix
+vendor/bin/guard check</code></pre>
+<p>Review all proposed files: <code>fix</code> has no query filter and includes baselined violations. An unsatisfied required configuration rule blocks the planned writes. Resolve missing files, conflicting assertions, and manual fields before retrying. Source, structure, and Markdown findings require manual changes and do not block configuration repairs.</p>
+<h3>Record existing violations</h3>
+<p>Use a baseline when the task calls for accepting existing findings while detecting new ones:</p>
+<pre class="code"><code>vendor/bin/guard baseline
+vendor/bin/guard check
+vendor/bin/guard check --no-baseline</code></pre>
+<p>Review and commit <code>guard-baseline.json</code> with the policy. Entries match exact paths, rule IDs, severity, messages, and occurrence counts. Changed metric values, including improvements still above a limit, produce new findings.</p>
+<p>To refresh after fixing findings, inspect <code>check --no-baseline</code> first, then regenerate and review the diff. Regeneration records all current violations, including new ones. Stale entries are reported as <code>unmatched</code> without failing. Choose a location allowed by the project&#039;s structure policy. For an existing <code>baselines/</code> directory:</p>
+<pre class="code"><code>vendor/bin/guard baseline --output=baselines/guard.json
+vendor/bin/guard check --baseline=baselines/guard.json</code></pre>
+<h3>Create or inspect a policy</h3>
+<p>When a new policy is requested and none exists:</p>
+<pre class="code"><code>vendor/bin/guard init</code></pre>
+<p><code>init</code> detects tool presets, production roots, and README headings, and migrates <code>loc.yaml</code>, <code>tree.yaml</code>, and <code>doc-guard.yaml</code> settings when present. If no root <code>docs/</code> directory exists, detection includes <code>disable-doc</code>, which forbids creating that directory. Review the generated imports and declarations before using them.</p>
+<p>To select only named presets instead of detection:</p>
+<pre class="code"><code>vendor/bin/guard init --import=metrics,structure</code></pre>
+<p>For an existing policy, edit within the requested scope and use <code>guard rules</code> and <code>guard check</code> to verify it. Imports are relative to the file declaring them; target paths are relative to the main policy. Later imports and project values override earlier values while retaining unspecified fields.</p>
+<p><code>collect</code> applies to every policy. When present, it replaces section reading scopes such as <code>metrics.source</code> and <code>structure.paths</code>; metrics then read every PHP file in that collection. Declared documents and configuration files outside it are silently skipped, including missing ones. Inspect it when expected findings disappear. See the <a href="../../../../../../k-kinzal/guard-php/doc/docs/configuration.md.html">policy schema</a> for merge rules and scope syntax.</p>
+<h3>Composer and monorepos</h3>
+<p>When adding a reusable command is requested, merge this into existing Composer scripts and retain other gates:</p>
+<pre class="code"><code>{
+  &quot;scripts&quot;: {&quot;guard&quot;: &quot;guard check&quot;},
+  &quot;scripts-descriptions&quot;: {&quot;guard&quot;: &quot;Check project policies with Guard.&quot;}
+}</code></pre>
+<p>Include <code>@guard</code> in <code>lint</code> when it is a project gate. In a monorepo, use the owning package&#039;s command, or select its policy explicitly from the repository root:</p>
+<pre class="code"><code>composer --working-dir=packages/example guard
+vendor/bin/guard check --config=packages/example/guard.yaml</code></pre>
+<p>The second form assumes Guard is installed at the repository root. <code>--config</code> selects the policy and base for target paths; it does not change the executable.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../../assets/app.js" defer></script>
+</body>
+</html>

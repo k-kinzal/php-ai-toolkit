@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a50dab89245a3845c58d078eeb9103af",
+    "content-hash": "2515f3cf641d10dcf5effb8f45f2b040",
     "packages": [
         {
             "name": "k-kinzal/docgen-php",
@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "../docgen-php",
-                "reference": "38fd840e6419fc61ca1f6f2d816c24c0347e28d0"
+                "reference": "d187c70817dee248d8875ce2bafb01b2a0122734"
             },
             "require": {
                 "nikic/php-parser": "^4.19 || ^5.0",
@@ -26,6 +26,7 @@
                 "deptrac/deptrac": "^0.24 || ^1.0 || ^2.0 || ^3.0 || ^4.6",
                 "friendsofphp/php-cs-fixer": "^3.4",
                 "infection/infection": "^0.26.19 || ^0.27 || ^0.28 || ^0.29 || ^0.30 || ^0.31 || ^0.32 || ^0.33 || ^0.34 || ^0.35",
+                "k-kinzal/doctest-php": "^1.0 || dev-main",
                 "k-kinzal/guard-php": "^1.0 || dev-main",
                 "k-kinzal/phpstan-ai-formatter": "^1.0 || dev-main",
                 "k-kinzal/phpstan-guard-rules": "^1.0 || dev-main",
@@ -50,8 +51,8 @@
                 "psr-4": {
                     "Tests\\": "tests/"
                 },
-                "classmap": [
-                    "tests/Fixture/"
+                "exclude-from-classmap": [
+                    "vendor/marc-mabe/php-enum/stubs/Stringable.php"
                 ]
             },
             "scripts": {
@@ -117,11 +118,11 @@
                 "guard": [
                     "guard check"
                 ],
-                "guard:apply": [
-                    "guard apply"
+                "guard:fix": [
+                    "guard fix"
                 ],
                 "docgen": [
-                    "@php bin/docgen --exclude=tests/Fixture/*"
+                    "@php bin/docgen"
                 ]
             },
             "license": [
@@ -134,12 +135,12 @@
             }
         },
         {
-            "name": "k-kinzal/phpunit-ai-reporter",
+            "name": "k-kinzal/doctest-php",
             "version": "dev-main",
             "dist": {
                 "type": "path",
-                "url": "../phpunit-ai-reporter",
-                "reference": "23ef8d16de9fe24e44029820c62ca07cfabfd0ec"
+                "url": "../doctest-php",
+                "reference": "2d599dc661e0afcbd978672b485fadb499e4a38a"
             },
             "require": {
                 "nikic/php-parser": "^4.19 || ^5.0",
@@ -154,17 +155,18 @@
                 "k-kinzal/guard-php": "^1.0 || dev-main",
                 "k-kinzal/phpstan-ai-formatter": "^1.0 || dev-main",
                 "k-kinzal/phpstan-guard-rules": "^1.0 || dev-main",
+                "k-kinzal/phpunit-ai-reporter": "^1.0 || dev-main",
                 "phpcompatibility/php-compatibility": "^10.0@alpha",
                 "phpunit/phpunit": "^9.6 || ^10.5 || ^11 || ^12 || ^13",
                 "squizlabs/php_codesniffer": "^4.0"
             },
             "suggest": {
-                "phpunit/phpunit": "^9.6 || ^10.5 || ^11 || ^12 || ^13 to run tests and report failures"
+                "phpunit/phpunit": "^9.6 || ^10.5 || ^11 || ^12 || ^13 to run PHPDoc examples as tests"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Toolkit\\": "src/"
+                    "Toolkit\\Doctest\\": "src/Doctest/"
                 }
             },
             "autoload-dev": {
@@ -172,7 +174,10 @@
                     "Tests\\": "tests/"
                 },
                 "classmap": [
-                    "tests/Fixture/"
+                    "tests/Doctest/"
+                ],
+                "exclude-from-classmap": [
+                    "vendor/marc-mabe/php-enum/stubs/Stringable.php"
                 ]
             },
             "scripts": {
@@ -238,8 +243,8 @@
                 "guard": [
                     "guard check"
                 ],
-                "guard:apply": [
-                    "guard apply"
+                "guard:fix": [
+                    "guard fix"
                 ],
                 "docgen": [
                     "docgen"
@@ -248,7 +253,7 @@
             "license": [
                 "MIT"
             ],
-            "description": "AI-readable PHPUnit reporting and PHPDoc example tests",
+            "description": "Run PHPDoc examples as PHPUnit tests",
             "transport-options": {
                 "symlink": true,
                 "relative": true
@@ -2803,7 +2808,7 @@
             "dist": {
                 "type": "path",
                 "url": "../guard-php",
-                "reference": "02028d14e842c7c349f6f9fc28a2bd351ccc544e"
+                "reference": "62042c1e196eff375b27f77f4da9af9a32356bbf"
             },
             "require": {
                 "ext-dom": "*",
@@ -2819,6 +2824,7 @@
                 "friendsofphp/php-cs-fixer": "^3.4",
                 "infection/infection": "^0.26.19 || ^0.27 || ^0.28 || ^0.29 || ^0.30 || ^0.31 || ^0.32 || ^0.33 || ^0.34 || ^0.35",
                 "k-kinzal/docgen-php": "^1.0 || dev-main",
+                "k-kinzal/doctest-php": "^1.0 || dev-main",
                 "k-kinzal/phpstan-ai-formatter": "^1.0 || dev-main",
                 "k-kinzal/phpstan-guard-rules": "^1.0 || dev-main",
                 "k-kinzal/phpunit-ai-reporter": "^1.0 || dev-main",
@@ -2906,8 +2912,8 @@
                 "guard": [
                     "@php bin/guard check"
                 ],
-                "guard:apply": [
-                    "@php bin/guard apply"
+                "guard:fix": [
+                    "@php bin/guard fix"
                 ],
                 "docgen": [
                     "docgen"
@@ -2928,7 +2934,7 @@
             "dist": {
                 "type": "path",
                 "url": "../phpstan-ai-formatter",
-                "reference": "6a2a05b7b544e3b2ebe7f88d2547ed29f5e5775b"
+                "reference": "0906cb35ede6ea191e073a3f5e0b887c7f4a7792"
             },
             "require": {
                 "k-kinzal/phpunit-ai-reporter": "^1.0 || dev-main",
@@ -2941,6 +2947,7 @@
                 "friendsofphp/php-cs-fixer": "^3.4",
                 "infection/infection": "^0.26.19 || ^0.27 || ^0.28 || ^0.29 || ^0.30 || ^0.31 || ^0.32 || ^0.33 || ^0.34 || ^0.35",
                 "k-kinzal/docgen-php": "^1.0 || dev-main",
+                "k-kinzal/doctest-php": "^1.0 || dev-main",
                 "k-kinzal/guard-php": "^1.0 || dev-main",
                 "k-kinzal/phpstan-guard-rules": "^1.0 || dev-main",
                 "phpcompatibility/php-compatibility": "^10.0@alpha",
@@ -2964,8 +2971,8 @@
                 "psr-4": {
                     "Tests\\": "tests/"
                 },
-                "classmap": [
-                    "tests/Fixture/"
+                "exclude-from-classmap": [
+                    "vendor/marc-mabe/php-enum/stubs/Stringable.php"
                 ]
             },
             "scripts": {
@@ -3031,8 +3038,8 @@
                 "guard": [
                     "guard check"
                 ],
-                "guard:apply": [
-                    "guard apply"
+                "guard:fix": [
+                    "guard fix"
                 ],
                 "docgen": [
                     "docgen"
@@ -3042,6 +3049,130 @@
                 "MIT"
             ],
             "description": "AI-readable PHPStan error formatting",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "k-kinzal/phpunit-ai-reporter",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../phpunit-ai-reporter",
+                "reference": "2b5b29c2673f8de071f85e74c1af85c725c0091e"
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "brianium/paratest": "^6.11 || ^7",
+                "deptrac/deptrac": "^0.24 || ^1.0 || ^2.0 || ^3.0 || ^4.6",
+                "friendsofphp/php-cs-fixer": "^3.4",
+                "infection/infection": "^0.26.19 || ^0.27 || ^0.28 || ^0.29 || ^0.30 || ^0.31 || ^0.32 || ^0.33 || ^0.34 || ^0.35",
+                "k-kinzal/docgen-php": "^1.0 || dev-main",
+                "k-kinzal/doctest-php": "^1.0 || dev-main",
+                "k-kinzal/guard-php": "^1.0 || dev-main",
+                "k-kinzal/phpstan-ai-formatter": "^1.0 || dev-main",
+                "k-kinzal/phpstan-guard-rules": "^1.0 || dev-main",
+                "phpcompatibility/php-compatibility": "^10.0@alpha",
+                "phpunit/phpunit": "^9.6 || ^10.5 || ^11 || ^12 || ^13",
+                "squizlabs/php_codesniffer": "^4.0"
+            },
+            "suggest": {
+                "phpunit/phpunit": "^9.6 || ^10.5 || ^11 || ^12 || ^13 to run tests and report failures"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Toolkit\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Tests\\": "tests/"
+                },
+                "classmap": [
+                    "tests/TestReporter/"
+                ],
+                "exclude-from-classmap": [
+                    "vendor/marc-mabe/php-enum/stubs/Stringable.php"
+                ]
+            },
+            "scripts": {
+                "autoload:check": [
+                    "composer dump-autoload --optimize --strict-psr --strict-ambiguous"
+                ],
+                "test": [
+                    "@php -d memory_limit=512M tests/run.php --parallel --processes=auto"
+                ],
+                "test:unit": [
+                    "@php -d memory_limit=512M tests/run.php"
+                ],
+                "test:unit:9": [
+                    "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit9.xml.dist"
+                ],
+                "test:unit:10": [
+                    "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit10.xml.dist"
+                ],
+                "test:unit:11": [
+                    "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit11.xml.dist"
+                ],
+                "test:unit:12": [
+                    "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit12.xml.dist"
+                ],
+                "test:unit:13": [
+                    "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist"
+                ],
+                "test:unit:legacy": [
+                    "@test:unit:9"
+                ],
+                "test:coverage": [
+                    "@php -d memory_limit=1G -d xdebug.mode=coverage tests/run.php --coverage-xml build/coverage-xml"
+                ],
+                "doctest": [
+                    "@php -d memory_limit=512M vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite doctest"
+                ],
+                "lint": [
+                    "@autoload:check",
+                    "@format:check",
+                    "@phpstan",
+                    "@compat",
+                    "@guard",
+                    "@deptrac"
+                ],
+                "phpstan": [
+                    "phpstan analyse --memory-limit=512M"
+                ],
+                "compat": [
+                    "phpcs"
+                ],
+                "format": [
+                    "php-cs-fixer fix --allow-risky=yes"
+                ],
+                "format:check": [
+                    "php-cs-fixer fix --dry-run --diff --allow-risky=yes"
+                ],
+                "deptrac": [
+                    "deptrac analyse --config-file=deptrac.yaml"
+                ],
+                "infection": [
+                    "infection --threads=max"
+                ],
+                "guard": [
+                    "guard check"
+                ],
+                "guard:fix": [
+                    "guard fix"
+                ],
+                "docgen": [
+                    "docgen"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "AI-readable PHPUnit reporting",
             "transport-options": {
                 "symlink": true,
                 "relative": true
@@ -4915,6 +5046,63 @@
             "time": "2024-06-11T12:45:25+00:00"
         },
         {
+            "name": "rector/rector",
+            "version": "2.6.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rectorphp/rector.git",
+                "reference": "f4aa224edb9b0630fb43826d4cb6a49b62e48d4c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/f4aa224edb9b0630fb43826d4cb6a49b62e48d4c",
+                "reference": "f4aa224edb9b0630fb43826d4cb6a49b62e48d4c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "phpstan/phpstan": "^2.2.14"
+            },
+            "conflict": {
+                "rector/rector-doctrine": "*",
+                "rector/rector-downgrade-php": "*",
+                "rector/rector-phpunit": "*",
+                "rector/rector-symfony": "*"
+            },
+            "bin": [
+                "bin/rector"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Instant Upgrade and Automated Refactoring of any PHP code",
+            "homepage": "https://getrector.com/",
+            "keywords": [
+                "automation",
+                "dev",
+                "migration",
+                "refactoring"
+            ],
+            "support": {
+                "issues": "https://github.com/rectorphp/rector/issues",
+                "source": "https://github.com/rectorphp/rector/tree/2.6.7"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/tomasvotruba",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-09-13T20:17:44+00:00"
+        },
+        {
             "name": "sanmai/di-container",
             "version": "0.1.23",
             "source": {
@@ -5186,63 +5374,6 @@
                 }
             ],
             "time": "2026-09-30T13:46:33+00:00"
-        },
-        {
-            "name": "rector/rector",
-            "version": "2.6.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rectorphp/rector.git",
-                "reference": "f4aa224edb9b0630fb43826d4cb6a49b62e48d4c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/f4aa224edb9b0630fb43826d4cb6a49b62e48d4c",
-                "reference": "f4aa224edb9b0630fb43826d4cb6a49b62e48d4c",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4|^8.0",
-                "phpstan/phpstan": "^2.2.14"
-            },
-            "conflict": {
-                "rector/rector-doctrine": "*",
-                "rector/rector-downgrade-php": "*",
-                "rector/rector-phpunit": "*",
-                "rector/rector-symfony": "*"
-            },
-            "bin": [
-                "bin/rector"
-            ],
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Instant Upgrade and Automated Refactoring of any PHP code",
-            "homepage": "https://getrector.com/",
-            "keywords": [
-                "automation",
-                "dev",
-                "migration",
-                "refactoring"
-            ],
-            "support": {
-                "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.6.7"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/tomasvotruba",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-09-13T20:17:44+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -7813,6 +7944,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "k-kinzal/docgen-php": 20,
+        "k-kinzal/doctest-php": 20,
         "k-kinzal/guard-php": 20,
         "k-kinzal/phpstan-ai-formatter": 20,
         "k-kinzal/phpunit-ai-reporter": 20,
@@ -7824,8 +7956,5 @@
         "php": "^8.0"
     },
     "platform-dev": {},
-    "platform-overrides": {
-        "php": "8.2.0"
-    },
     "plugin-api-version": "2.9.0"
 }

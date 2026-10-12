@@ -34,6 +34,7 @@
         "friendsofphp/php-cs-fixer": "^3.4",
         "infection/infection": "^0.26.19 || ^0.27 || ^0.28 || ^0.29 || ^0.30 || ^0.31 || ^0.32 || ^0.33 || ^0.34 || ^0.35",
         "k-kinzal/docgen-php": "^1.0 || dev-main",
+        "k-kinzal/doctest-php": "^1.0 || dev-main",
         "k-kinzal/guard-php": "^1.0 || dev-main",
         "k-kinzal/phpstan-guard-rules": "^1.0 || dev-main",
         "phpcompatibility/php-compatibility": "^10.0@alpha",
@@ -129,6 +130,17 @@
                 "symlink": true,
                 "versions": {
                     "k-kinzal/phpunit-ai-reporter": "dev-main"
+                },
+                "reference": "config"
+            }
+        },
+        {
+            "type": "path",
+            "url": "../doctest-php",
+            "options": {
+                "symlink": true,
+                "versions": {
+                    "k-kinzal/doctest-php": "dev-main"
                 },
                 "reference": "config"
             }

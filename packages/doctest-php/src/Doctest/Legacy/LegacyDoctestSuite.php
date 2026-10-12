@@ -26,7 +26,7 @@ use Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner;
  * exports its scan roots:
  *
  *     <testsuite name="doctest">
- *         <file>vendor/k-kinzal/phpunit-ai-reporter/src/Doctest/Legacy/LegacyDoctestSuite.php</file>
+ *         <file>vendor/k-kinzal/doctest-php/src/Doctest/Legacy/LegacyDoctestSuite.php</file>
  *     </testsuite>
  *
  *     <php>

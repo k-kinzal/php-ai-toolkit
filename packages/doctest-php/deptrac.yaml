@@ -1,0 +1,49 @@
+# Scanner finds documented targets; Parser extracts their examples; Assertion
+# parses expectations; Executor runs them. Each stage depends on earlier stages.
+# TestCase coordinates discovery and execution. Integration wires the concrete
+# suites and extension to PHPUnit, including the PHPUnit 9 legacy suite.
+deptrac:
+  paths:
+    - ./src
+  exclude_files:
+    - '#.*/tests?/.*#'
+    - '#.*/vendor/.*#'
+  layers:
+    - name: Configuration
+      collectors:
+        - type: directory
+          value: 'src/Doctest/Configuration/.*'
+    - name: Scanner
+      collectors:
+        - type: directory
+          value: 'src/Doctest/Scanner/.*'
+    - name: Parser
+      collectors:
+        - type: directory
+          value: 'src/Doctest/Parser/.*'
+    - name: Assertion
+      collectors:
+        - type: directory
+          value: 'src/Doctest/Assertion/.*'
+    - name: Executor
+      collectors:
+        - type: directory
+          value: 'src/Doctest/Executor/.*'
+    - name: TestCase
+      collectors:
+        - type: directory
+          value: 'src/Doctest/TestCase/.*'
+    - name: Integration
+      collectors:
+        - type: directory
+          value: 'src/Doctest/[^/]+\.php$'
+        - type: directory
+          value: 'src/Doctest/Legacy/.*'
+  ruleset:
+    Configuration: []
+    Scanner: [Configuration]
+    Parser: [Scanner]
+    Assertion: [Parser]
+    Executor: [Parser, Assertion]
+    TestCase: [Configuration, Scanner, Parser, Executor]
+    Integration: [Configuration, Scanner, Parser, Executor, TestCase]

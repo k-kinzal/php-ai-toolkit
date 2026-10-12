@@ -21,7 +21,7 @@
             <directory>tests/Unit</directory>
         </testsuite>
         <testsuite name="doctest">
-            <file>vendor/k-kinzal/phpunit-ai-reporter/src/Doctest/DoctestSuite.php</file>
+            <file>vendor/k-kinzal/doctest-php/src/Doctest/DoctestSuite.php</file>
         </testsuite>
     </testsuites>
     <extensions>

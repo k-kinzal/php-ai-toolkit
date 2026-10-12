@@ -1,6 +1,6 @@
 # phpunit-ai-reporter
 
-AI-readable PHPUnit reporting and PHPDoc example tests.
+AI-readable PHPUnit reporting.
 
 Part of [php-ai-toolkit](https://github.com/k-kinzal/php-ai-toolkit).
 

@@ -1,0 +1,32 @@
+# Project policy. Required rules fail; recommendations warn.
+version: 1
+imports:
+  - vendor/k-kinzal/guard-php/rules/metrics.yaml
+  - vendor/k-kinzal/guard-php/rules/structure.yaml
+  - vendor/k-kinzal/guard-php/rules/phpstan.yaml
+  - vendor/k-kinzal/guard-php/rules/phpstan-guard-rules.yaml
+  - vendor/k-kinzal/guard-php/rules/phpunit9.yaml
+  - vendor/k-kinzal/guard-php/rules/phpunit10.yaml
+  - vendor/k-kinzal/guard-php/rules/phpunit11.yaml
+  - vendor/k-kinzal/guard-php/rules/phpunit12.yaml
+  - vendor/k-kinzal/guard-php/rules/phpunit13.yaml
+  - vendor/k-kinzal/guard-php/rules/doctest9.yaml
+  - vendor/k-kinzal/guard-php/rules/doctest10.yaml
+  - vendor/k-kinzal/guard-php/rules/doctest11.yaml
+  - vendor/k-kinzal/guard-php/rules/doctest12.yaml
+  - vendor/k-kinzal/guard-php/rules/doctest13.yaml
+  - vendor/k-kinzal/guard-php/rules/php-cs-fixer.yaml
+  - vendor/k-kinzal/guard-php/rules/phpcs.yaml
+  - vendor/k-kinzal/guard-php/rules/deptrac.yaml
+  - vendor/k-kinzal/guard-php/rules/infection.yaml
+  - vendor/k-kinzal/guard-php/rules/composer.yaml
+  - vendor/k-kinzal/guard-php/rules/docgen.yaml
+  - vendor/k-kinzal/guard-php/rules/readme-md.yaml
+  - vendor/k-kinzal/guard-php/rules/disable-doc.yaml
+metrics:
+  source:
+    - src
+  exclude: []
+documentation:
+  scan:
+    - '*.md'

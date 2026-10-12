@@ -20,7 +20,7 @@ use Toolkit\Doctest\TestCase\DoctestRunner;
  * by path even though it is autoloadable like the rest of the source:
  *
  *     <testsuite name="doctest">
- *         <file>vendor/k-kinzal/phpunit-ai-reporter/src/Doctest/DoctestSuite.php</file>
+ *         <file>vendor/k-kinzal/doctest-php/src/Doctest/DoctestSuite.php</file>
  *     </testsuite>
  *
  *     <extensions>

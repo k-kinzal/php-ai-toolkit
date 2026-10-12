@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PHPUnit\TextUI\Configuration;
+
+final class Configuration
+{
+    public function configurationFile(): string
+    {
+    }
+
+    public function hasConfigurationFile(): bool
+    {
+    }
+
+    /**
+     * @return list<array{className: string, parameters: array<string, string>}>
+     */
+    public function extensionBootstrappers(): array
+    {
+    }
+}
+
+final class Registry
+{
+    public static function get(): Configuration
+    {
+    }
+}

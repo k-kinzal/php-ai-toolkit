@@ -139,8 +139,8 @@ public const VERSION = '1.0';
 
 Assert on the example with `// => value`, `// Output: text`, or `// throws ExceptionClass`. A line
 without a marker still runs, and still fails the example if it raises — which is a real check, just a
-weaker one. Write class names fully qualified: evaluated example code inherits no import table. See
-[Doctest Configuration](https://github.com/k-kinzal/php-ai-toolkit/blob/main/packages/phpunit-ai-reporter/docs/doctest.md) for the full notation.
+weaker one. Write class names fully qualified: evaluated example code inherits no import table.
+The Doctest runner is provided by `k-kinzal/doctest-php`.
 
 ### Not fixes
 

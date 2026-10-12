@@ -26,7 +26,7 @@ Rules applied to all code.
 | [ForbidFileTermRule](rules/ForbidFileTermRule.md) | Forbids configured literal terms in files matching restricted path patterns | `customRules.forbiddenFileTerm` | [Unavailable](rules/ForbidFileTermRule.md#rector) |
 | [ForbidDependencyRule](rules/ForbidDependencyRule.md) | Forbids symbol and file-reading dependencies between configured paths; allows each root directory to depend only on itself and src by default | `customRules.forbiddenDependency` | [Unavailable](rules/ForbidDependencyRule.md#rector) |
 | [ForbiddenMagicMethodCallRule](rules/ForbiddenMagicMethodCallRule.md) | Forbids direct calls to magic methods | `customRules.forbiddenMagicMethodCall` | [Risky](rules/ForbiddenMagicMethodCallRule.md#rector) |
-| [ForbiddenNamespaceRule](rules/ForbiddenNamespaceRule.md) | Forbids configured namespace prefixes such as `Tests\Support`, `Tests\Helper`, `Tests\Util`, and `Tests\Fixture` | `customRules.forbiddenNamespace` | [Unavailable](rules/ForbiddenNamespaceRule.md#rector) |
+| [ForbiddenNamespaceRule](rules/ForbiddenNamespaceRule.md) | Forbids configured namespace prefixes and whole segments at any depth, including `Model`, `Models`, `Infrastructure`, and `Infrastructures` by default | `customRules.forbiddenNamespace` | [Unavailable](rules/ForbiddenNamespaceRule.md#rector) |
 | [OverrideMustHaveAttributeRule](rules/OverrideMustHaveAttributeRule.md) | Requires `#[Override]` attribute on overridden methods | `customRules.overrideMustHaveAttribute` | [Safe](rules/OverrideMustHaveAttributeRule.md#rector) |
 | [SrcUnitTestPairRule](rules/SrcUnitTestPairRule.md) | Enforces 1:1 pairing between `src/` classes and `tests/Unit/` test classes | `customRules.srcUnitTestPair` | [Unavailable](rules/SrcUnitTestPairRule.md#rector) |
 | [RequirePhpDocOnPublicApiRule](rules/RequirePhpDocOnPublicApiRule.md) | Requires PHPDoc on all public API elements | `customRules.requirePhpDocOnPublicApi` | [Unavailable](rules/RequirePhpDocOnPublicApiRule.md#rector) |
@@ -122,5 +122,6 @@ The following values can be customized under `parameters.toolkit` in a project's
 | `forbiddenDependencies` | Root directories may depend on themselves and `src/**`; `vendor/**` and root files are exempt | Directed `from`/`to` path policies with optional `excludeFrom`, `excludeTo`, and `allowSameRootDirectory` |
 | `dependencyFileReaders` | `[]` | Additional function or `Class::method` file readers with argument `position` and `name`; built-ins remain active |
 | `forbiddenNamespacePrefixes` | `['Tests\Support', 'Tests\Supports', 'Tests\Helper', 'Tests\Helpers', 'Tests\Util', 'Tests\Utils', 'Tests\Utility', 'Tests\Utilities', 'Tests\Fixture', 'Tests\Fixtures']` | Namespace prefixes to forbid |
+| `forbiddenNamespaceSegments` | `['Model', 'Models', 'Infrastructure', 'Infrastructures']` | Whole namespace segments to forbid at any depth; matching is case-sensitive |
 | `forbiddenClassLikeNameSuffixes` | See [`rules.neon`](../rules.neon) | Class-like declaration name suffixes to forbid |
 | `broadCatchAllowedPaths` | `[]` | fnmatch patterns of boundary files allowed to catch `Throwable`, `Exception`, and the `LogicException`/`Error` families |

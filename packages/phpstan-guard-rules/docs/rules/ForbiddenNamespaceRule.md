@@ -9,7 +9,7 @@
 
 ## Configuration
 
-The default forbidden namespace prefixes are defined in [`rules.neon`](../../rules.neon). You can override the list under `toolkit.forbiddenNamespacePrefixes`:
+The defaults are defined in [`rules.neon`](../../rules.neon). `toolkit.forbiddenNamespacePrefixes` matches from the start of a namespace. `toolkit.forbiddenNamespaceSegments` matches a complete name between backslashes at any depth. The default configuration is:
 
 ```neon
 parameters:
@@ -25,11 +25,16 @@ parameters:
             - 'Tests\Utilities'
             - 'Tests\Fixture'
             - 'Tests\Fixtures'
+        forbiddenNamespaceSegments:
+            - Model
+            - Models
+            - Infrastructure
+            - Infrastructures
 ```
 
 ## What It Detects
 
-Reports namespace declarations that exactly match a configured prefix or live under it:
+Reports namespace declarations that exactly match a configured prefix, live under it, or contain a forbidden segment:
 
 ```php
 namespace Tests\Support;
@@ -47,15 +52,29 @@ final class DatabaseFixture
 }
 ```
 
+The default forbidden segments apply at every depth, including the root namespace:
+
+```php
+namespace Model;
+namespace App\Models;
+namespace App\Infrastructure;
+namespace Acme\Billing\Infrastructures\Database;
+```
+
+Only namespace declarations are checked. Imports and references to classes in these namespaces are not reported by this rule.
+
 ### Not Reported
 
 - Namespaces that only share a partial prefix, such as `Tests\Supporting`
-- Namespaces outside the configured prefixes
+- Partial segment matches, such as `App\ViewModel`, `App\Modeling`, or `App\InfrastructureFactory`
+- Namespaces outside the configured prefixes and segments
 - The global namespace
 
 ## Matching Rules
 
-Matching is case-sensitive. A namespace is reported only when it is an exact match or a child namespace.
+Both matching modes are case-sensitive. Prefix matching reports an exact match or a child namespace. Segment matching splits the namespace at each backslash and compares whole segments; `App\Model\User` matches `Model`, while `App\ViewModel` and `App\model` do not.
+
+When several restrictions match one declaration, the rule reports one error. A matching prefix takes precedence; otherwise, the first forbidden segment in the namespace is reported. The identifier remains `customRules.forbiddenNamespace`.
 
 For example, with `Tests\Support` configured:
 
@@ -77,11 +96,17 @@ namespace Tests\Supporting;
 
 ## Why This Is an Error
 
+`Model`, `Models`, `Infrastructure`, and `Infrastructures` describe broad technical categories without naming the responsibility of the code they contain. The default policy requires names that identify that responsibility, such as `Billing`, `Catalog`, or `Persistence`.
+
 Generic test support, helper, utility, and fixture namespaces become dumping grounds for reusable setup code. They hide what each test actually needs, encourage cross-test coupling, and create a second test framework that AI agents tend to expand instead of simplifying.
 
 Tests should prefer explicit setup in the test method. When reuse is genuinely valuable, it should be provided by a real dependency with a clear API boundary, not by a generic `Tests\Support`, `Tests\Helper`, `Tests\Util`, or `Tests\Fixture` bucket.
 
 ## How to Fix
+
+For a forbidden segment, choose a name that describes the code's responsibility. For example, move `App\Models\Invoice` to `App\Billing\Invoice`. Update namespace declarations, references, and the corresponding file paths or autoload mappings.
+
+For forbidden test support prefixes:
 
 Use an existing library when the behavior is already solved by a maintained dependency.
 

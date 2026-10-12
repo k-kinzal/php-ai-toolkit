@@ -10,7 +10,7 @@ use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
 /**
- * Forbids configured namespace prefixes.
+ * Forbids configured namespace prefixes and segments.
  *
  * @implements Rule<\PhpParser\Node\Stmt\Namespace_>
  */
@@ -19,12 +19,19 @@ final class ForbiddenNamespaceRule implements Rule
     /** @readonly */
     private ForbiddenNamespacePrefixes $forbiddenNamespacePrefixes;
 
+    /** @var list<string> */
+    private array $forbiddenNamespaceSegments;
+
     /**
      * @param list<string> $forbiddenNamespacePrefixes namespace prefixes to forbid
+     * @param list<string> $forbiddenNamespaceSegments complete namespace segments to forbid at any depth
      */
-    public function __construct(array $forbiddenNamespacePrefixes = [])
-    {
+    public function __construct(
+        array $forbiddenNamespacePrefixes = [],
+        array $forbiddenNamespaceSegments = [],
+    ) {
         $this->forbiddenNamespacePrefixes = new ForbiddenNamespacePrefixes($forbiddenNamespacePrefixes);
+        $this->forbiddenNamespaceSegments = $forbiddenNamespaceSegments;
     }
 
     /**
@@ -47,19 +54,27 @@ final class ForbiddenNamespaceRule implements Rule
 
         $namespace = $node->name->toString();
         $prefix = $this->forbiddenNamespacePrefixes->matchingPrefix($namespace);
+        $segments = array_values(array_intersect(explode('\\', $namespace), $this->forbiddenNamespaceSegments));
+        $segment = $segments[0] ?? null;
 
-        if ($prefix === null) {
+        if ($prefix === null && $segment === null) {
             return [];
         }
 
-        return [
-            RuleErrorBuilder::message(
-                sprintf(
-                    'Move code out of namespace "%s". Use a namespace outside forbidden test prefix "%s", or inline setup in each test.',
-                    $namespace,
-                    $prefix
-                )
+        $message = $prefix !== null
+            ? sprintf(
+                'Move code out of namespace "%s". Use a namespace outside forbidden test prefix "%s", or inline setup in each test.',
+                $namespace,
+                $prefix,
             )
+            : sprintf(
+                'Namespace "%s" contains forbidden segment "%s". Replace this segment with a domain-specific name and update namespace declarations and references.',
+                $namespace,
+                $segment,
+            );
+
+        return [
+            RuleErrorBuilder::message($message)
                 ->identifier('customRules.forbiddenNamespace')
                 ->line($node->getStartLine())
                 ->build(),

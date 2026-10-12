@@ -54,6 +54,7 @@ parametersSchema:
         ]))
         dependencyFileReaders: arrayOf(structure([position: schema(int(), min(0)), name: schema(string(), min(1))]))
         forbiddenNamespacePrefixes: listOf(string())
+        forbiddenNamespaceSegments: listOf(string())
         forbiddenClassLikeNameSuffixes: listOf(string())
         broadCatchAllowedPaths: listOf(string())
     ])
@@ -173,6 +174,11 @@ parameters:
             - 'Tests\Utils'
             - 'Tests\Utility'
             - 'Tests\Utilities'
+        forbiddenNamespaceSegments:
+            - Model
+            - Models
+            - Infrastructure
+            - Infrastructures
         forbiddenClassLikeNameSuffixes:
             - Helper
             - Helpers
@@ -285,6 +291,7 @@ services:
         class: Toolkit\PhpStan\Rule\Naming\ForbiddenNamespaceRule
         arguments:
             forbiddenNamespacePrefixes: %toolkit.forbiddenNamespacePrefixes%
+            forbiddenNamespaceSegments: %toolkit.forbiddenNamespaceSegments%
 
     toolkit.rule.forbidClassLikeNameSuffix:
         class: Toolkit\PhpStan\Rule\Naming\ForbidClassLikeNameSuffixRule

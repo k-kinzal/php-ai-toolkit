@@ -31,3 +31,21 @@ namespace App\Tests\Support;
 final class AppTestSupportFixture
 {
 }
+
+namespace App\ViewModel;
+
+namespace App\ViewModels;
+
+namespace App\Modeling;
+
+namespace App\InfrastructureFactory;
+
+namespace App\InfrastructuresFactory;
+
+namespace App\model;
+
+namespace App\models;
+
+namespace App\infrastructure;
+
+namespace App\infrastructures;

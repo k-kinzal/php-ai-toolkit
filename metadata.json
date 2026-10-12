@@ -1,0 +1,46 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4Q210SDH3H75CH39H8QNJZ3",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".gitattributes",
+    ".github/workflows/ci.yml",
+    ".gitignore",
+    "README.md",
+    "packages/docgen-php/README.md",
+    "packages/docgen-php/docs/docgen.md",
+    "packages/docgen-php/guard.yaml",
+    "packages/guard-php/README.md",
+    "packages/guard-php/guard.yaml",
+    "packages/guard-php/skills/guard/SKILL.md",
+    "packages/guard-php/skills/guard/references/configuration.md",
+    "packages/guard-php/skills/guard/references/documentation.md",
+    "packages/guard-php/skills/guard/references/extensions.md",
+    "packages/guard-php/skills/guard/references/metrics.md",
+    "packages/guard-php/skills/guard/references/structure.md",
+    "packages/phpstan-ai-formatter/README.md",
+    "packages/phpstan-ai-formatter/guard.yaml",
+    "packages/phpstan-guard-rules/README.md",
+    "packages/phpstan-guard-rules/guard.yaml",
+    "packages/phpunit-ai-reporter/README.md",
+    "packages/phpunit-ai-reporter/guard.yaml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 568578,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 7953920,
+    "output_tokens": 53015,
+    "api_call_count": 78
+  }
+}

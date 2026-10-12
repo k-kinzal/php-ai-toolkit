@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.forbiddenDependency` |
 | Scope | Symbol references and file access in analyzed PHP files |
+| Rector | Unavailable |
 | Configurable | Yes (`forbiddenDependencies`, `dependencyProjectRoot`, `dependencyFileReaders`) |
 
 ## Default Policy
@@ -192,3 +193,9 @@ parameters:
         forbidDependency:
             enabled: false
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Repair requires choosing an allowed dependency direction, moving responsibilities, or introducing a boundary. Removing a reference would discard behavior.

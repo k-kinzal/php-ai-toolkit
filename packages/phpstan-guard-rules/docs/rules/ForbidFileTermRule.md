@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.forbiddenFileTerm` |
 | Scope | All analyzed PHP files matching a configured path |
+| Rector | Unavailable |
 | Configurable | Yes (`forbiddenTermsByPath`) |
 
 ## Configuration
@@ -112,3 +113,9 @@ only the term is not a fix.
 Only PHP files included in PHPStan's analyzed paths are checked. Use a separate
 text-oriented check when the same policy must cover Markdown, YAML, JSON, or
 other non-PHP files.
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+The replacement for a forbidden term depends on its meaning and location; deleting text can alter code, strings, or contracts.

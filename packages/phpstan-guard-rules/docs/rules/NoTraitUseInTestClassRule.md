@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.testClassTraitUse` |
 | Scope | Test classes in restricted namespaces |
+| Rector | Unavailable |
 | Configurable | Yes (namespace prefixes) |
 
 ## What It Detects
@@ -121,3 +122,9 @@ parameters:
             - 'Tests\Unit'
             - 'Tests\Integration'
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Trait state, hooks, aliases, and precedence must be resolved when inlining or extracting behavior.

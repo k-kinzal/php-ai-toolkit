@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.testClassProperty` |
 | Scope | Test classes in restricted namespaces |
+| Rector | Unavailable |
 | Configurable | Yes (namespace prefixes) |
 
 ## What It Detects
@@ -96,3 +97,9 @@ parameters:
             - 'Tests\Unit'
             - 'Tests\Integration'
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Moving shared state into test-local setup requires preserving fixtures, lifecycle hooks, and test isolation.

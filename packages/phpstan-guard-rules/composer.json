@@ -28,6 +28,7 @@
             "tests/PhpStan/"
         ],
         "exclude-from-classmap": [
+            "tests/Rector/fixtures/",
             "vendor/marc-mabe/php-enum/stubs/Stringable.php"
         ]
     },
@@ -47,6 +48,7 @@
         "k-kinzal/phpstan-ai-formatter": "^1.0 || dev-main",
         "phpcompatibility/php-compatibility": "^10.0@alpha",
         "phpunit/phpunit": "^9.6 || ^10.5 || ^11 || ^12 || ^13",
+        "rector/rector": "^2.6.7",
         "squizlabs/php_codesniffer": "^4.0"
     },
     "scripts": {
@@ -142,5 +144,8 @@
                 "reference": "config"
             }
         }
-    ]
+    ],
+    "suggest": {
+        "rector/rector": "^2.6.7 enables the optional safe and risky Rector rule sets (requires PHPStan 2)."
+    }
 }

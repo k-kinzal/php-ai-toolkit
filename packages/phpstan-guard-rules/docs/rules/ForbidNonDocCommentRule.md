@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.nonDocComment` |
 | Scope | All files |
+| Rector | Risky |
 | Configurable | No |
 
 ## What It Detects
@@ -75,3 +76,9 @@ $name = $user->getName();
 // Good: proper PHPDoc block
 /** @var string $name */
 ```
+
+## Rector
+
+**Risky** — [`Toolkit\Rector\ForbidNonDocCommentRector`](../../src/Rector/ForbidNonDocCommentRector.php). Register `ForbidNonDocCommentRector::class` with `withRules()` in `rector.php`. Included in [`RiskyRules::rules()`](../../src/Rector/RiskyRules.php).
+
+Removes prohibited ordinary comments attached to parser nodes. It uses the PHPStan token-context policy to retain `//` comments in catches and array literals, all PHPDoc, and suppression comments handled by `ForbiddenCommentRector`. Comments may contain licensing information, tool instructions, or useful explanations: review every deletion. Comments not attached to a parser node need manual editing.

@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.forbiddenClassLikeNameSuffix` |
 | Scope | Class, interface, trait, and enum declaration names |
+| Rector | Unavailable |
 | Configurable | Yes |
 
 ## Configuration
@@ -92,3 +93,9 @@ final class UserNameNormalizer
 {
 }
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+A domain-specific replacement name and updates to dynamic references and configuration require project knowledge.

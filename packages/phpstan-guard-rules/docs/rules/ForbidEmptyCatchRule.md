@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.emptyCatch` |
 | Scope | All code |
+| Rector | Risky |
 | Configurable | No |
 
 ## What It Detects
@@ -69,3 +70,9 @@ try {
 ```
 
 If the exception genuinely cannot occur, remove the `try`/`catch` entirely instead of keeping a dead handler.
+
+## Rector
+
+**Risky** — [`Toolkit\Rector\ForbidEmptyCatchRector`](../../src/Rector/ForbidEmptyCatchRector.php). Register `ForbidEmptyCatchRector::class` with `withRules()` in `rector.php`. Included in [`RiskyRules::rules()`](../../src/Rector/RiskyRules.php).
+
+Adds `throw $caught;` to an empty catch with an existing variable. This makes a previously swallowed failure propagate and may stop the application. Choose logging or recovery manually when rethrowing is inappropriate. Non-empty catches and catches without a variable are unchanged.

@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifiers | `customRules.visibilityInvalidScope`, `customRules.visibilityOutOfScope` |
 | Scope | Class-like declarations, members, and written class-like references in PHPStan's analysed files |
+| Rector | Unavailable |
 | Configurable | Yes |
 
 ## Purpose
@@ -117,3 +118,9 @@ entries are neither required nor generated. Unrelated errors inside the declarat
 
 Prefer moving the reference into the owning namespace or adding a public front door. Widen the tag only when the
 ownership boundary is genuinely broader. Removing the tag removes the declared boundary and is not a fix.
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Changing visibility annotations or moving consumers requires an API ownership decision; automatically widening visibility would conceal the boundary violation.

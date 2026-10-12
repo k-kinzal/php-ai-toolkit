@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifiers | `customRules.requirePhpDocOnClass`, `customRules.requirePhpDocOnMethod`, `customRules.requirePhpDocOnProperty`, `customRules.requirePhpDocOnConstant` |
 | Scope | All classes, interfaces, traits, enums (excluding restricted test namespaces) |
+| Rector | Unavailable |
 | Configurable | Via `restrictedTestNamespacePrefixes` |
 
 ## What It Detects
@@ -105,3 +106,9 @@ interface UserRepositoryInterface
     public function find(int $id): ?User;
 }
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+The API description and contract require knowledge of intended behavior. Placeholder documentation does not satisfy the policy’s purpose.

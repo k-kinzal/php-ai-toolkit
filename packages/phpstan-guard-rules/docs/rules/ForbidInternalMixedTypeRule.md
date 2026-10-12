@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.internalMixedType` |
 | Scope | Resolved PHPStan declarations outside unrestricted public or inherited contracts |
+| Rector | Unavailable |
 | Configurable | No |
 
 ## What It Detects
@@ -145,3 +146,9 @@ Choose the fix that describes the real boundary:
 4. If the value set is closed, replace `mixed` with the complete union or array shape.
 
 There is no path allowlist. Whether `mixed` is valid is a property of the type contract, not the file containing it.
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Determine and validate the actual type or deliberately expose a public boundary. Deleting `mixed` or guessing a narrower type is not a repair.

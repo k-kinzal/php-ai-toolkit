@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.genericThrowsTag` |
 | Scope | All class methods |
+| Rector | Unavailable |
 | Configurable | No |
 
 ## What It Detects
@@ -68,3 +69,9 @@ try {
 ```
 
 The adapter file can be listed in `broadCatchAllowedPaths` if needed, keeping the generic type contained at one declared boundary.
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Choose the actual specific exception contract. Removing a generic tag or guessing a type can make exception analysis unsound.

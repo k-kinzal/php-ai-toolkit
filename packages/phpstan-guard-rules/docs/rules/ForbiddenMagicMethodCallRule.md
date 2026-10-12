@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.forbiddenMagicMethodCall` |
 | Scope | All classes |
+| Rector | Risky |
 | Configurable | No |
 
 ## What It Detects
@@ -84,3 +85,9 @@ $text = (string) $obj;
 $copy = clone $obj;
 $result = $handler($request);
 ```
+
+## Rector
+
+**Risky** — [`Toolkit\Rector\ForbiddenMagicMethodCallRector`](../../src/Rector/ForbiddenMagicMethodCallRector.php). Register `ForbiddenMagicMethodCallRector::class` with `withRules()` in `rector.php`. Included in [`RiskyRules::rules()`](../../src/Rector/RiskyRules.php).
+
+Replaces `$object->__toString()` with `(string) $object` and `$object->__invoke(...)` with `$object(...)`. Cast and invocation protocols can have different runtime behavior for unusual receivers. Other magic methods, static or nullsafe calls, first-class callables, and `__toString` calls with arguments are skipped.

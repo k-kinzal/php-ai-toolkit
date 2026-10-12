@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifiers | `customRules.requireExampleOnClass`, `customRules.requireExampleOnMethod`, `customRules.requireExampleOnProperty`, `customRules.requireExampleOnConstant`, `customRules.requireExampleOnEnumCase` |
 | Scope | Declarations carrying `@visibility public` (excluding restricted test namespaces) |
+| Rector | Unavailable |
 | Configurable | Via `restrictedTestNamespacePrefixes` |
 
 ## What It Detects
@@ -157,3 +158,9 @@ The rule requires exactly what the doctest suite executes: extraction is delegat
 ExampleExtractor, so a block this rule accepts is a block that becomes a PHPUnit test case, and a tag
 the extractor skips does not satisfy the rule. Once the rule is green, running the suite keeps it
 honest.
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+An executable example needs meaningful input, output, and side-effect expectations that cannot be inferred reliably.

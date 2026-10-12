@@ -5,6 +5,10 @@ deptrac:
     - '#.*/tests?/.*#'
     - '#.*/vendor/.*#'
   layers:
+    - name: Rector
+      collectors:
+        - type: directory
+          value: src/Rector/.*
     - name: PhpStanRule
       collectors:
         - type: directory
@@ -22,6 +26,9 @@ deptrac:
         - type: directory
           value: src/PhpStan/ThrowType/.*
   ruleset:
+    Rector:
+      - PhpStanRule
+      - PhpStanSupport
     PhpStanRule:
       - PhpStanSupport
     PhpStanExtension:

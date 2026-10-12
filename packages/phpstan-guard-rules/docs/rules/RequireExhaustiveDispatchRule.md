@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.exhaustiveDispatch`, `customRules.exhaustiveDispatchDefault` |
 | Scope | Every `switch` statement and every `match` expression |
+| Rector | Unavailable |
 | Rule classes | `RequireExhaustiveDispatchRule`, `RequireExhaustiveClassDispatchRule` |
 | Configurable | No |
 
@@ -236,3 +237,9 @@ parameters:
     ignoreErrors:
         - identifier: customRules.exhaustiveDispatchDefault
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Each missing enum, literal, or sealed-class branch needs a meaningful result. Inventing a throw/default branch can discard business behavior; removing a default may change future or out-of-contract behavior. This also covers the internal `RequireExhaustiveClassDispatchRule` implementation.

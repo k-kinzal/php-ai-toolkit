@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.noBrokenCodeExpectation` |
 | Scope | All test classes (`Tests\` namespace) |
+| Rector | Unavailable |
 | Configurable | Yes (namespace prefixes) |
 
 ## What It Detects
@@ -95,3 +96,9 @@ parameters:
         testNamespacePrefixes:
             - 'Tests'
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Fix the production defect and assert intended behavior instead of substituting an arbitrary exception class.

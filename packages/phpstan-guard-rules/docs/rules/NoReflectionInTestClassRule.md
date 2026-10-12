@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.noReflectionInTestClass` |
 | Scope | All test classes |
+| Rector | Unavailable |
 | Configurable | Yes (namespace prefixes) |
 
 ## What It Detects
@@ -101,3 +102,9 @@ parameters:
         testNamespacePrefixes:
             - 'Tests'
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Replace reflection with observable public behavior or a deliberate integration boundary. That requires redesigning the test.

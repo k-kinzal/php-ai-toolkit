@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.unchainedRethrow` |
 | Scope | All code |
+| Rector | Risky |
 | Configurable | No |
 
 ## What It Detects
@@ -69,3 +70,9 @@ try {
 ```
 
 Note: the rule checks that the caught variable is referenced, not that it lands in the `$previous` slot specifically. `throw new DomainException($exception->getMessage())` passes the check but still loses the chain — code review should keep preferring the `$previous` argument.
+
+## Rector
+
+**Risky** — [`Toolkit\Rector\RequireExceptionChainingRector`](../../src/Rector/RequireExceptionChainingRector.php). Register `RequireExceptionChainingRector::class` with `withRules()` in `rector.php`. Included in [`RiskyRules::rules()`](../../src/Rector/RiskyRules.php).
+
+Adds the named `previous: $caught` argument to unchained throws of standard built-in exceptions, including SPL exceptions, with a known `message, code, previous` constructor. This changes the exception chain seen by handlers. Custom constructors, `ErrorException`, factory calls, unpacked arguments, existing previous arguments (even explicit `null`), unbound catches, and nested callables are skipped. Review the caught variable if the catch body reassigns it.

@@ -6,6 +6,7 @@
 |----------|-------|
 | Identifier | `customRules.mixedArrayReturnType` |
 | Scope | `@return`, `@phpstan-return`, and `@psalm-return` on named functions and methods |
+| Rector | Unavailable |
 | Configurable | Yes (`mixedArrayReturnAllowedPaths`) |
 
 ## What It Detects
@@ -85,3 +86,9 @@ parameters:
 ```
 
 The default is `[]`; ordinary application and domain files remain strict.
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+This legacy opt-in rule requires choosing a concrete value union, shape, or domain type. Guessing the return contract would be unsafe.

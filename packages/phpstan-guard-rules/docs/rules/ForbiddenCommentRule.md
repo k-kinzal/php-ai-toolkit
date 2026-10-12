@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifiers | `customRules.phpstanIgnoreComment`, `customRules.infectionIgnoreAllComment` |
 | Scope | All files |
+| Rector | Risky |
 | Configurable | No |
 
 ## What It Detects
@@ -118,3 +119,9 @@ function clamp(int $value, int $min, int $max): int
 ```
 
 If an exception is genuinely justified, ask a human operator to decide it.
+
+## Rector
+
+**Risky** — [`Toolkit\Rector\ForbiddenCommentRector`](../../src/Rector/ForbiddenCommentRector.php). Register `ForbiddenCommentRector::class` with `withRules()` in `rector.php`. Included in [`RiskyRules::rules()`](../../src/Rector/RiskyRules.php).
+
+Removes ordinary comments containing forbidden suppression directives and standalone suppression lines in PHPDoc. Other PHPDoc tags are preserved. Removing a suppression can expose PHPStan or Infection failures; review those failures instead of hiding them again. Ambiguous inline PHPDoc mentions remain for manual editing.

@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifiers | `customRules.testClassPhpUnitMockProhibitedApi`, `customRules.testClassPhpUnitMockRequiresInterface`, `customRules.testClassPhpUnitMockRequiresLiteralInterface`, `customRules.testClassPhpUnitMockProhibitedInstantiation` |
 | Scope | All test classes (`Tests\` namespace) |
+| Rector | Unavailable |
 | Configurable | Yes (namespace prefixes) |
 
 ## What It Detects
@@ -179,3 +180,9 @@ parameters:
         testNamespacePrefixes:
             - 'Tests'
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Selecting an interface, real collaborator, mock, or stub depends on the test contract and expected interactions.

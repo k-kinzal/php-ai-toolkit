@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.testClassDescriptivePhpDoc` |
 | Scope | Classes and methods in `Tests\Unit` / `Tests\Integration` |
+| Rector | Risky |
 | Configurable | Via `restrictedTestNamespacePrefixes` |
 
 ## What It Detects
@@ -89,3 +90,9 @@ public function testUserScenarios(string $input, string $expected): void {}
  */
 public function testUserScenarios(string $input, string $expected): void {}
 ```
+
+## Rector
+
+**Risky** — [`Toolkit\Rector\ForbidDescriptivePhpDocInTestClassRector`](../../src/Rector/ForbidDescriptivePhpDocInTestClassRector.php). Register `ForbidDescriptivePhpDocInTestClassRector::class` with `withRules()` in `rector.php`. Included in [`RiskyRules::rules()`](../../src/Rector/RiskyRules.php).
+
+Removes prose before the first annotation on restricted test classes and methods. Complete tags and continuation lines are retained; prose-only PHPDoc is removed. Descriptions may explain intent, so review their removal. Defaults to `Tests\Unit` and `Tests\Integration`; configure the same namespace prefixes as PHPStan when your project differs.

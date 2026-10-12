@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.testMethodControlFlow` |
 | Scope | Test methods in restricted test classes |
+| Rector | Unavailable |
 | Configurable | Yes (namespace prefixes) |
 
 ## What It Detects
@@ -176,3 +177,9 @@ parameters:
             - 'Tests\Unit'
             - 'Tests\Integration'
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Split scenarios into independent tests or providers with meaningful expected values; mechanical branch removal loses coverage.

@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.noRedundantAssertInstanceOf` |
 | Scope | All test classes (`Tests\` namespace) |
+| Rector | Unavailable |
 | Configurable | Yes (namespace prefixes) |
 
 ## What It Detects
@@ -72,3 +73,9 @@ parameters:
         testNamespacePrefixes:
             - 'Tests'
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Replace the redundant assertion with a meaningful behavioral assertion. Deleting it can remove argument side effects or leave a test with no assertions.

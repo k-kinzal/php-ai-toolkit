@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifiers | `customRules.testMethodNamingConvention`, `customRules.providerNamingConvention`, `customRules.testMethodProhibitedConstructorDestructor`, `customRules.publicMethodWithoutTest` |
 | Scope | Test classes in restricted namespaces; source classes in `src/` |
+| Rector | Unavailable |
 | Configurable | Yes (namespace prefixes, path markers) |
 
 ## What It Detects
@@ -197,3 +198,9 @@ parameters:
         srcMarker: '/src/'
         unitTestMarker: '/tests/Unit/'
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Method and provider names must describe the scenario, and references in annotations, attributes, configuration, and filters must remain consistent.

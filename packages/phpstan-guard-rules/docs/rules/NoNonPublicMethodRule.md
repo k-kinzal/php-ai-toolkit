@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.nonPublicMethod` |
 | Scope | All class-like methods except constructors |
+| Rector | Unavailable |
 | Configurable | No |
 
 ## What It Detects
@@ -103,3 +104,9 @@ final class InvoiceValidator
 ## Configuration
 
 This rule is registered by `extension.neon`.
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Choose whether to extract a collaborator, inline behavior, or make it a deliberate public API. Merely widening method visibility does not implement this design policy.

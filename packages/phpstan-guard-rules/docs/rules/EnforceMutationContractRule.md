@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifiers | `customRules.mutationInvalidContract`, `customRules.mutationUndeclared`, `customRules.mutationOverrideWidened` |
 | Scope | Named functions and methods in PHPStan's analysed files |
+| Rector | Unavailable |
 | Configurable | Yes; opt-in |
 
 ## Purpose
@@ -100,3 +101,9 @@ Prefer keeping the callable read-only when the write is incidental: copy the val
 state change behind an already mutable boundary. When mutation is part of the callable's contract, add `+mut` to the
 matching `@param` line or add the smallest required `@mutation` target. Do not add `global` merely because a callee
 happens to use it; first decide whether that dependency belongs in the caller's public effect contract.
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+The author must decide whether to remove a side effect or declare it, including effects allowed by inherited contracts. Automatically declaring every mutation would legitimize unintended behavior.

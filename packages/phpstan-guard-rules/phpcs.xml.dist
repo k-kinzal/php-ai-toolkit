@@ -4,6 +4,7 @@
     <file>src</file>
     <file>tests</file>
     <exclude-pattern>*/tests/PhpStan/*</exclude-pattern>
+    <exclude-pattern>*/tests/Rector/fixtures/*</exclude-pattern>
     <config name="testVersion" value="8.0-"/>
     <rule ref="PHPCompatibility"/>
 </ruleset>

@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.testClassPrivateMethod` |
 | Scope | Test classes in restricted namespaces |
+| Rector | Unavailable |
 | Configurable | Yes (namespace prefixes) |
 
 ## What It Detects
@@ -111,3 +112,9 @@ parameters:
             - 'Tests\Unit'
             - 'Tests\Integration'
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Inline the behavior or extract a tested collaborator. Changing visibility alone would leave a prohibited helper.

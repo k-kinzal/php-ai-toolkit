@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.missingThrowsTag` |
 | Scope | All class methods |
+| Rector | Risky |
 | Configurable | No |
 
 ## What It Detects
@@ -93,3 +94,9 @@ throw new ConfigException('Config not found: ' . $path);
 ```
 
 An exception raised by a *called* method and typed `\Exception` by that method's own `@throws` is a different case: this rule does not see it, and PHPStan reports it as `missingType.checkedException`. Narrowing it means wrapping the call in a `catch` at a boundary and rethrowing a concrete type.
+
+## Rector
+
+**Risky** — [`Toolkit\Rector\RequireThrowsTagOnDirectThrowRector`](../../src/Rector/RequireThrowsTagOnDirectThrowRector.php). Register `RequireThrowsTagOnDirectThrowRector::class` with `withRules()` in `rector.php`. Included in [`RiskyRules::rules()`](../../src/Rector/RiskyRules.php).
+
+Adds fully qualified `@throws` tags for specific escaping direct throws in methods, using the PHPStan rule’s catch and inheritance analysis. Existing tags are retained and duplicate missing types are added once. This changes the declared API and checked-exception analysis, so review callers. Generic `Exception`/`Throwable` throws are left for manual replacement with meaningful exception types.

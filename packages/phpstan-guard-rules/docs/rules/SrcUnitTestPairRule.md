@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifiers | `customRules.srcWithoutUnitTest`, `customRules.unitTestWithoutSource` |
 | Scope | All PHP files in `src/` and `tests/Unit/` |
+| Rector | Unavailable |
 | Configurable | Yes |
 
 ## What It Detects
@@ -125,3 +126,9 @@ The rule maps files by mirroring the directory structure and appending/removing 
 |--------|------|
 | `src/Foo/Bar.php` | `tests/Unit/Foo/BarTest.php` |
 | `src/Service/UserService.php` | `tests/Unit/Service/UserServiceTest.php` |
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+A meaningful test must assert intended behavior. Generating an empty matching file would only hide the violation.

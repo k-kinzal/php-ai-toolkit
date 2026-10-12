@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.broadCatch` |
 | Scope | All code outside configured boundary paths |
+| Rector | Unavailable |
 | Configurable | Yes (`broadCatchAllowedPaths`) |
 
 ## What It Detects
@@ -92,3 +93,9 @@ Patterns are `fnmatch` globs matched against the analyzed file path (also with a
 | Parameter | Default | Description |
 |-----------|---------|-------------|
 | `broadCatchAllowedPaths` | `[]` | fnmatch patterns of files allowed to catch broad types |
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+The appropriate exception types and recovery policy depend on what the boundary is intended to handle. Narrowing or deleting the catch can change failure handling.

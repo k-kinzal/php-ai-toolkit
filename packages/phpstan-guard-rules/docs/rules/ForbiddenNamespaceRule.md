@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.forbiddenNamespace` |
 | Scope | Namespace declarations |
+| Rector | Unavailable |
 | Configurable | Yes |
 
 ## Configuration
@@ -102,3 +103,9 @@ final class UserServiceTest extends TestCase
     }
 }
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+A replacement namespace and all external references, autoload mappings, and configuration must be chosen together.

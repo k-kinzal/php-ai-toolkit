@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.arrayLiteralListType` |
 | Scope | Property `@var` declarations and function or method return declarations backed by non-empty list literals |
+| Rector | Risky |
 | Configurable | No |
 
 ## What It Detects
@@ -80,3 +81,9 @@ final class Labels
 ```
 
 If integer keys are intentionally sparse or externally assigned, keep `array<int, V>` and make that intent visible in the implementation rather than representing the value as an implicit-key list literal.
+
+## Rector
+
+**Risky** — [`Toolkit\Rector\RequireListForArrayLiteralRector`](../../src/Rector/RequireListForArrayLiteralRector.php). Register `RequireListForArrayLiteralRector::class` with `withRules()` in `rector.php`. Included in [`RiskyRules::rules()`](../../src/Rector/RiskyRules.php).
+
+Changes direct `array<int, V>` branches in `@var` or return tags to `list<V>` when the existing literal analysis proves a list initializer or list returns. PHPStan/Psalm variants, nullable types, and union/intersection branches are supported; nested value types and input parameters are preserved. This narrows a contract, so check later property writes and overriding implementations. Multi-property declarations and uncertain array expressions are skipped. PHPDoc formatting may be normalized.

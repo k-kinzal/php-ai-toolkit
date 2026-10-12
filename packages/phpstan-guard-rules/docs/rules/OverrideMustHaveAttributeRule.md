@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.overrideMustHaveAttribute` |
 | Scope | All classes |
+| Rector | Safe |
 | Configurable | No |
 
 ## What It Detects
@@ -105,3 +106,9 @@ class UserRepository extends BaseRepository
     }
 }
 ```
+
+## Rector
+
+**Safe** — [`Toolkit\Rector\OverrideMustHaveAttributeRector`](../../src/Rector/OverrideMustHaveAttributeRector.php). Register `OverrideMustHaveAttributeRector::class` with `withRules()` in `rector.php`. Included in [`SafeRules::rules()`](../../src/Rector/SafeRules.php).
+
+Adds `#[\Override]` using the same parent-method checks as the PHPStan rule. Constructors, private or abstract parent methods, interface-only implementations, and existing attributes are skipped. The attribute syntax works on PHP 8.0+; PHP validates the built-in attribute from 8.3.

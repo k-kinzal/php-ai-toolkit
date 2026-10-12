@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.testClassNonOverrideMethod` |
 | Scope | Test classes in restricted namespaces |
+| Rector | Unavailable |
 | Configurable | Yes (namespace prefixes) |
 
 ## What It Detects
@@ -132,3 +133,9 @@ parameters:
             - 'Tests\Unit'
             - 'Tests\Integration'
 ```
+
+## Rector
+
+**Unavailable** — no automatic transformation is provided.
+
+Helper extraction or inlining requires deciding what the test should exercise and keeping the assertions intact.

@@ -4,6 +4,7 @@
 |----------|-------|
 | Identifier | `customRules.singleLinePhpDoc` |
 | Scope | Public elements of classes, interfaces, traits, enums |
+| Rector | Safe |
 | Configurable | No |
 
 ## What It Detects
@@ -71,3 +72,9 @@ public function findUser(int $id): ?User;
  */
 public function findUser(int $id): ?User;
 ```
+
+## Rector
+
+**Safe** — [`Toolkit\Rector\ForbidSingleLinePhpDocRector`](../../src/Rector/ForbidSingleLinePhpDocRector.php). Register `ForbidSingleLinePhpDocRector::class` with `withRules()` in `rector.php`. Included in [`SafeRules::rules()`](../../src/Rector/SafeRules.php).
+
+Expands single-line PHPDoc on named class-like declarations and public methods, properties, and constants. Annotation contents are retained. Anonymous classes and non-public members are unchanged.

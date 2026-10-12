@@ -1,0 +1,60 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4Q210SDH3H75CH39H8QNJZ3",
+  "session_id": "01a12dc3-175f-7f10-917e-921c25a0f1d4",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T03:20:50.578698Z",
+  "branch": "main",
+  "checkpoints_count": 10,
+  "save_step_count": 1,
+  "files_touched": [
+    ".gitattributes",
+    ".github/workflows/ci.yml",
+    ".gitignore",
+    "README.md",
+    "guard.yaml",
+    "packages/docgen-php/README.md",
+    "packages/docgen-php/docs/docgen.md",
+    "packages/docgen-php/guard.yaml",
+    "packages/guard-php/README.md",
+    "packages/guard-php/guard.yaml",
+    "packages/guard-php/skills/guard/SKILL.md",
+    "packages/guard-php/skills/guard/references/configuration.md",
+    "packages/guard-php/skills/guard/references/documentation.md",
+    "packages/guard-php/skills/guard/references/extensions.md",
+    "packages/guard-php/skills/guard/references/metrics.md",
+    "packages/guard-php/skills/guard/references/structure.md",
+    "packages/phpstan-ai-formatter/README.md",
+    "packages/phpstan-ai-formatter/guard.yaml",
+    "packages/phpstan-guard-rules/README.md",
+    "packages/phpstan-guard-rules/guard.yaml",
+    "packages/phpunit-ai-reporter/README.md",
+    "packages/phpunit-ai-reporter/guard.yaml"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "0b20c7d916ba",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 595661,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 14442368,
+    "output_tokens": 99433,
+    "api_call_count": 49
+  },
+  "session_metrics": {
+    "turn_count": 10
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T03:20:50.405273Z",
+    "agent_lines": 452,
+    "agent_removed": 439,
+    "human_added": 918,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1370,
+    "total_lines_changed": 7939,
+    "agent_percentage": 11.223075954150396,
+    "metric_version": 2
+  }
+}

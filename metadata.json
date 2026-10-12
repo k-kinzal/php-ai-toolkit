@@ -3,12 +3,13 @@
   "checkpoint_id": "01M4Q210SDH3H75CH39H8QNJZ3",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 2,
+  "checkpoints_count": 12,
   "files_touched": [
     ".gitattributes",
     ".github/workflows/ci.yml",
     ".gitignore",
     "README.md",
+    "guard.yaml",
     "packages/docgen-php/README.md",
     "packages/docgen-php/docs/docgen.md",
     "packages/docgen-php/guard.yaml",
@@ -41,13 +42,20 @@
       "compact_transcript": "/1/transcript.jsonl",
       "content_hash": "/1/content_hash.txt",
       "prompt": "/1/prompt.txt"
+    },
+    {
+      "metadata": "/2/metadata.json",
+      "transcript": "/2/full.jsonl",
+      "compact_transcript": "/2/transcript.jsonl",
+      "content_hash": "/2/content_hash.txt",
+      "prompt": "/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 568578,
+    "input_tokens": 1164239,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 7953920,
-    "output_tokens": 53015,
-    "api_call_count": 78
+    "cache_read_tokens": 22396288,
+    "output_tokens": 152448,
+    "api_call_count": 127
   }
 }

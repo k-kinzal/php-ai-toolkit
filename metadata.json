@@ -3,7 +3,7 @@
   "checkpoint_id": "01M4Q1YHPN0TE2SEVN3G91TKKR",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 14,
+  "checkpoints_count": 15,
   "files_touched": [
     "packages/phpstan-guard-rules/README.md",
     "packages/phpstan-guard-rules/composer.json",
@@ -90,13 +90,20 @@
       "compact_transcript": "/3/transcript.jsonl",
       "content_hash": "/3/content_hash.txt",
       "prompt": "/3/prompt.txt"
+    },
+    {
+      "metadata": "/4/metadata.json",
+      "transcript": "/4/full.jsonl",
+      "compact_transcript": "/4/transcript.jsonl",
+      "content_hash": "/4/content_hash.txt",
+      "prompt": "/4/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 1395120,
+    "input_tokens": 1476867,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 23542272,
-    "output_tokens": 167272,
-    "api_call_count": 137
+    "cache_read_tokens": 23689344,
+    "output_tokens": 179039,
+    "api_call_count": 138
   }
 }

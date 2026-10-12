@@ -19,12 +19,22 @@ env:
 
 jobs:
   tests:
-    name: Tests on PHP ${{ matrix.php }}
+    name: Tests (${{ matrix.package }}, PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: packages/${{ matrix.package }}
     strategy:
       fail-fast: false
       matrix:
+        package:
+          - docgen-php
+          - doctest-php
+          - guard-php
+          - phpstan-ai-formatter
+          - phpstan-guard-rules
+          - phpunit-ai-reporter
         php:
           - '8.0'
           - '8.1'
@@ -45,44 +55,37 @@ jobs:
 
       - name: Select the matching lock file
         if: matrix.php != '8.5'
-        run: |
-          set -euo pipefail
-          for dir in packages/*; do
-            cp "$dir/composer.lock.php-${{ matrix.php }}" "$dir/composer.lock"
-          done
+        run: cp "composer.lock.php-${{ matrix.php }}" composer.lock
 
-      - name: Validate the Composer manifests against their lock files
-        run: |
-          set -euo pipefail
-          for dir in packages/*; do
-            composer validate --working-dir="$dir" --strict --no-check-publish
-          done
+      - name: Validate the Composer manifest against its lock file
+        run: composer validate --strict --no-check-publish
 
       - name: Install dependencies
-        run: |
-          set -euo pipefail
-          for dir in packages/*; do
-            composer install --working-dir="$dir" --no-interaction --prefer-dist
-          done
+        run: composer install --no-interaction --prefer-dist
 
       - name: Check installed platform requirements
-        run: |
-          set -euo pipefail
-          for dir in packages/*; do
-            composer check-platform-reqs --working-dir="$dir"
-          done
+        run: composer check-platform-reqs
 
       - name: Run the tests
-        run: |
-          set -euo pipefail
-          for dir in packages/*; do
-            composer --working-dir="$dir" test
-          done
+        run: composer test
 
   lint:
-    name: Lint
+    name: Lint (${{ matrix.package }})
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: packages/${{ matrix.package }}
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - docgen-php
+          - doctest-php
+          - guard-php
+          - phpstan-ai-formatter
+          - phpstan-guard-rules
+          - phpunit-ai-reporter
     steps:
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -94,59 +97,31 @@ jobs:
           extensions: mbstring, gd, dom
           coverage: none
 
-      - name: Validate the Composer manifests against their lock files
-        run: |
-          set -euo pipefail
-          for dir in packages/*; do
-            composer validate --working-dir="$dir" --strict --no-check-publish
-          done
+      - name: Validate the Composer manifest against its lock file
+        run: composer validate --strict --no-check-publish
 
       - name: Install dependencies
-        run: |
-          set -euo pipefail
-          for dir in packages/*; do
-            composer install --working-dir="$dir" --no-interaction --prefer-dist
-          done
+        run: composer install --no-interaction --prefer-dist
 
       - name: Check installed platform requirements
-        run: |
-          set -euo pipefail
-          for dir in packages/*; do
-            composer check-platform-reqs --working-dir="$dir"
-          done
+        run: composer check-platform-reqs
 
       - name: Check the formatting
-        run: |
-          set -euo pipefail
-          for dir in packages/*; do
-            composer --working-dir="$dir" format:check
-          done
+        run: composer format:check
 
       - name: Analyse with PHPStan
-        run: |
-          set -euo pipefail
-          for dir in packages/*; do
-            composer --working-dir="$dir" phpstan
-          done
+        run: composer phpstan
 
       - name: Check PHP compatibility
-        run: |
-          set -euo pipefail
-          for dir in packages/*; do
-            composer --working-dir="$dir" compat
-          done
+        run: composer compat
 
-      - name: Check all guard policies
-        run: |
-          set -euo pipefail
-          php packages/guard-php/bin/guard check --config=guard.yaml
-          for dir in packages/*; do
-            composer --working-dir="$dir" guard
-          done
+      - name: Check package guard policies
+        run: composer guard
+
+      - name: Check repository guard policies
+        if: matrix.package == 'guard-php'
+        working-directory: .
+        run: php packages/guard-php/bin/guard check --config=guard.yaml
 
       - name: Check the architecture layers
-        run: |
-          set -euo pipefail
-          for dir in packages/*; do
-            composer --working-dir="$dir" deptrac
-          done
+        run: composer deptrac

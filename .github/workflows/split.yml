@@ -1,0 +1,122 @@
+name: Split Monorepo
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    paths:
+      - '.github/scripts/*-package.sh'
+      - '.github/scripts/test-split.sh'
+      - '.github/workflows/split.yml'
+      - 'packages/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Main and tag runs share a queue. A release never changes a mirror's main.
+concurrency:
+  group: split-${{ github.event.pull_request.number || 'publish' }}
+  cancel-in-progress: false
+
+env:
+  COMPOSER_NO_INTERACTION: '1'
+
+jobs:
+  validate:
+    name: Check distribution on PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.0', '8.5']
+    steps:
+      - name: Check out the source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, dom
+          coverage: none
+
+      - name: Validate and install the distributions; test synchronization
+        run: bash .github/scripts/test-split.sh
+
+  split:
+    name: Publish ${{ matrix.package }}
+    needs: validate
+    if: >-
+      github.repository == 'k-kinzal/php-ai-toolkit' &&
+      github.event_name != 'pull_request' &&
+      (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - docgen-php
+          - doctest-php
+          - guard-php
+          - phpstan-ai-formatter
+          - phpstan-guard-rules
+          - phpunit-ai-reporter
+    steps:
+      - name: Check out the source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: '8.5'
+          coverage: none
+
+      - name: Prepare the package
+        id: package
+        env:
+          PACKAGE: ${{ matrix.package }}
+        run: |
+          set -euo pipefail
+          # Validate and publish the same revision. Skip stale main runs, including
+          # manual reruns, instead of overwriting a newer mirror snapshot.
+          if [ "$GITHUB_REF_TYPE" != tag ]; then
+            latest="$(git ls-remote origin refs/heads/main | cut -f1)"
+            if [ "$latest" != "$(git rev-parse HEAD)" ]; then
+              echo 'A newer main commit exists; its workflow will publish it.'
+              exit 0
+            fi
+          fi
+          tag=''
+          if [ "$GITHUB_REF_TYPE" = tag ]; then
+            tag="$GITHUB_REF_NAME"
+          fi
+          bash .github/scripts/prepare-package.sh "$PACKAGE" "$RUNNER_TEMP/package" "$tag"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "secret=SPLIT_$(printf '%s' "$PACKAGE" | tr '[:lower:]-' '[:upper:]_')_SSH_KEY" >> "$GITHUB_OUTPUT"
+          echo 'publish=true' >> "$GITHUB_OUTPUT"
+
+      - name: Check out the mirror with its deploy key
+        if: steps.package.outputs.publish == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: k-kinzal/${{ matrix.package }}
+          ref: main
+          fetch-depth: 0
+          path: .split-repository
+          ssh-key: ${{ secrets[steps.package.outputs.secret] }}
+
+      - name: Push the package snapshot
+        if: steps.package.outputs.publish == 'true'
+        env:
+          SOURCE_SHA: ${{ steps.package.outputs.sha }}
+          RELEASE_TAG: ${{ steps.package.outputs.tag }}
+        run: bash .github/scripts/push-package.sh "$RUNNER_TEMP/package" .split-repository "$SOURCE_SHA" "$RELEASE_TAG"

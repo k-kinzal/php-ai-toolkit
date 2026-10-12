@@ -16,6 +16,10 @@ readable analysis and test reports, executable PHPDoc examples, and API document
 Each package has its own Composer manifest, configuration, and tests. Follow its
 README for requirements, installation, usage, and available agent skills.
 
+CI publishes each package to `https://github.com/k-kinzal/<package>` for
+Packagist. See [publishing and release instructions](docs/publishing.md) for
+the synchronization workflow, repository credentials, and submission steps.
+
 | Package | Purpose |
 | --- | --- |
 | [guard-php](packages/guard-php/README.md) | Check and repair source, structure, documentation, and configuration policies. |

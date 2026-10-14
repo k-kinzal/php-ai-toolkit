@@ -108,11 +108,11 @@ final class DoctestExtensionTest extends TestCase
         self::assertStringStartsWith(DoctestExtension::basePath($configuration) . '/', $config->getDirectories()[0]);
     }
 
-    public function testBasePathIsTheDirectoryHoldingThePhpUnitConfiguration(): void
+    public function testBasePathIsThePackageRootHoldingThePhpUnitConfigurationEvenUnderInfection(): void
     {
         $configuration = Registry::get();
 
         self::assertTrue($configuration->hasConfigurationFile());
-        self::assertSame(dirname($configuration->configurationFile()), DoctestExtension::basePath($configuration));
+        self::assertSame(realpath(dirname(__DIR__, 3)), realpath(DoctestExtension::basePath($configuration)));
     }
 }

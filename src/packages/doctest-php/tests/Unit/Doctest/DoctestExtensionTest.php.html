@@ -145,12 +145,12 @@
 <span class="src-line" id="L108"><a class="ln" href="#L108">108</a>        <span class="tok-id">self</span>::<span class="tok-id">assertStringStartsWith</span>(<span class="tok-id">DoctestExtension</span>::<span class="tok-id">basePath</span>(<span class="tok-var">$configuration</span>) . <span class="tok-str">&#039;/&#039;</span>, <span class="tok-var">$config</span>-&gt;<span class="tok-id">getDirectories</span>()[<span class="tok-num">0</span>]);</span>
 <span class="src-line" id="L109"><a class="ln" href="#L109">109</a>    }</span>
 <span class="src-line" id="L110"><a class="ln" href="#L110">110</a></span>
-<span class="src-line" id="L111"><a class="ln" href="#L111">111</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testBasePathIsTheDirectoryHoldingThePhpUnitConfiguration</span>(): <span class="tok-id">void</span></span>
+<span class="src-line" id="L111"><a class="ln" href="#L111">111</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testBasePathIsThePackageRootHoldingThePhpUnitConfigurationEvenUnderInfection</span>(): <span class="tok-id">void</span></span>
 <span class="src-line" id="L112"><a class="ln" href="#L112">112</a>    {</span>
 <span class="src-line" id="L113"><a class="ln" href="#L113">113</a>        <span class="tok-var">$configuration</span> = <span class="tok-id">Registry</span>::<span class="tok-id">get</span>();</span>
 <span class="src-line" id="L114"><a class="ln" href="#L114">114</a></span>
 <span class="src-line" id="L115"><a class="ln" href="#L115">115</a>        <span class="tok-id">self</span>::<span class="tok-id">assertTrue</span>(<span class="tok-var">$configuration</span>-&gt;<span class="tok-id">hasConfigurationFile</span>());</span>
-<span class="src-line" id="L116"><a class="ln" href="#L116">116</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-id">dirname</span>(<span class="tok-var">$configuration</span>-&gt;<span class="tok-id">configurationFile</span>()), <span class="tok-id">DoctestExtension</span>::<span class="tok-id">basePath</span>(<span class="tok-var">$configuration</span>));</span>
+<span class="src-line" id="L116"><a class="ln" href="#L116">116</a>        <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-id">realpath</span>(<span class="tok-id">dirname</span>(__DIR__, <span class="tok-num">3</span>)), <span class="tok-id">realpath</span>(<span class="tok-id">DoctestExtension</span>::<span class="tok-id">basePath</span>(<span class="tok-var">$configuration</span>)));</span>
 <span class="src-line" id="L117"><a class="ln" href="#L117">117</a>    }</span>
 <span class="src-line" id="L118"><a class="ln" href="#L118">118</a>}</span>
 <span class="src-line" id="L119"><a class="ln" href="#L119">119</a></span>

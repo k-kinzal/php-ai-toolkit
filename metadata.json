@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M4W6ZFZ4H2SKGCTNNVXNJP6Z",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/doctest-php/infection.json5",
+    "packages/doctest-php/tests/Unit/Doctest/DoctestExtensionTest.php",
+    "packages/guard-php/tests/Unit/Policy/Comparison/HeadingSequenceAlignerTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 1474,
+    "cache_creation_tokens": 137557,
+    "cache_read_tokens": 4297289,
+    "output_tokens": 55491,
+    "api_call_count": 47
+  }
+}

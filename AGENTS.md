@@ -12,7 +12,7 @@ Provide tools for AI-assisted PHP development that detect code, test, and config
 - **PHPUnit**: 9.6, 10.5 or later on 10.x, and 11, 12, and 13
 - **Rector**: 2.6.7 or later on 2.x, which requires PHPStan 2
 
-### Branching Strategy
+## Branching Strategy
 
 This project is developed on `main` only. Commit directly to `main`, whatever the size of the change.
 
@@ -20,7 +20,7 @@ This project is developed on `main` only. Commit directly to `main`, whatever th
 - Do not open pull requests. They are not part of this project's workflow.
 - The common agent habit of branching before committing on a default branch does not apply here: `main` is the working branch.
 
-### Rule Design Principles
+## Rule Design Principles
 
 - AI-friendly error messages: Every error message must clearly state *what is wrong* and *how to fix it*. An AI agent reading the message should be able to resolve the violation without additional context.
 - Specific and identifiable: Messages must include enough detail (e.g., the offending symbol name, the expected pattern) so that each violation can be individually targeted in `ignoreErrors` configurations. Vague messages like "invalid code" are not acceptable.

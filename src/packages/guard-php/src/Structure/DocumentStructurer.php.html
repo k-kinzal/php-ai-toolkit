@@ -47,37 +47,38 @@
 <span class="src-line" id="L10"><a class="ln" href="#L10">10</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Structure\Document\XmlDocument</span>;</span>
 <span class="src-line" id="L11"><a class="ln" href="#L11">11</a><span class="tok-kw">use</span> <span class="tok-id">Guard\Structure\Php\Tokens</span>;</span>
 <span class="src-line" id="L12"><a class="ln" href="#L12">12</a><span class="tok-kw">use</span> <span class="tok-id">JsonException</span>;</span>
-<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-kw">use</span> <span class="tok-id">RuntimeException</span>;</span>
-<span class="src-line" id="L14"><a class="ln" href="#L14">14</a></span>
-<span class="src-line" id="L15"><a class="ln" href="#L15">15</a><span class="tok-com">/**</span></span>
-<span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-com"> * Structures registered data formats using only already-read bytes.</span></span>
-<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-com"> */</span></span>
-<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">DocumentStructurer</span> <span class="tok-kw">implements</span> <span class="tok-id">Structurer</span></span>
-<span class="src-line" id="L19"><a class="ln" href="#L19">19</a>{</span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L21"><a class="ln" href="#L21">21</a><span class="tok-com">     * Creates the DocumentStructurer with its declared dependencies.</span></span>
-<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L23"><a class="ln" href="#L23">23</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(<span class="tok-kw">private</span> <span class="tok-id">string</span> <span class="tok-var">$format</span>)</span>
-<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>    {</span>
-<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>    }</span>
-<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>    <span class="tok-com">/** Parses a document without evaluating its field constraints.</span></span>
-<span class="src-line" id="L27"><a class="ln" href="#L27">27</a><span class="tok-com">     * @throws RuntimeException</span></span>
-<span class="src-line" id="L28"><a class="ln" href="#L28">28</a><span class="tok-com">     * @throws JsonException</span></span>
-<span class="src-line" id="L29"><a class="ln" href="#L29">29</a><span class="tok-com">     * @throws \Nette\Neon\Exception</span></span>
-<span class="src-line" id="L30"><a class="ln" href="#L30">30</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L31"><a class="ln" href="#L31">31</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">structure</span>(<span class="tok-id">Source</span> <span class="tok-var">$source</span>): <span class="tok-id">ParsedDocument</span></span>
-<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    {</span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">format</span> === <span class="tok-str">&#039;php&#039;</span>) {</span>
-<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>            <span class="tok-var">$tokens</span> = <span class="tok-var">$source</span>-&gt;<span class="tok-id">structure</span>(<span class="tok-str">&#039;php.tokens&#039;</span>);</span>
-<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>            <span class="tok-kw">if</span> (!<span class="tok-var">$tokens</span> <span class="tok-kw">instanceof</span> <span class="tok-id">Tokens</span>) {</span>
-<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>                <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">PolicyException</span>(<span class="tok-str">&#039;Structure php.tokens must return Tokens. Register TokenParser for that id.&#039;</span>);</span>
-<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>            }</span>
-<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>            <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">ParsedDocument</span>(<span class="tok-kw">new</span> <span class="tok-id">PhpDocument</span>(<span class="tok-var">$source</span>-&gt;<span class="tok-id">text</span>(), <span class="tok-var">$tokens</span>-&gt;<span class="tok-id">all</span>()), <span class="tok-var">$source</span>-&gt;<span class="tok-id">text</span>());</span>
-<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>        }</span>
-<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">ParsedDocument</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">format</span> === <span class="tok-str">&#039;xml&#039;</span> ? <span class="tok-kw">new</span> <span class="tok-id">XmlDocument</span>(<span class="tok-var">$source</span>-&gt;<span class="tok-id">text</span>()) : <span class="tok-kw">new</span> <span class="tok-id">DataDocument</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">format</span>, <span class="tok-var">$source</span>-&gt;<span class="tok-id">text</span>()), <span class="tok-var">$source</span>-&gt;<span class="tok-id">text</span>());</span>
-<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>    }</span>
-<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>}</span>
-<span class="src-line" id="L43"><a class="ln" href="#L43">43</a></span>
+<span class="src-line" id="L13"><a class="ln" href="#L13">13</a><span class="tok-kw">use</span> <span class="tok-id">Nette\Neon\Exception</span>;</span>
+<span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-kw">use</span> <span class="tok-id">RuntimeException</span>;</span>
+<span class="src-line" id="L15"><a class="ln" href="#L15">15</a></span>
+<span class="src-line" id="L16"><a class="ln" href="#L16">16</a><span class="tok-com">/**</span></span>
+<span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-com"> * Structures registered data formats using only already-read bytes.</span></span>
+<span class="src-line" id="L18"><a class="ln" href="#L18">18</a><span class="tok-com"> */</span></span>
+<span class="src-line" id="L19"><a class="ln" href="#L19">19</a><span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">DocumentStructurer</span> <span class="tok-kw">implements</span> <span class="tok-id">Structurer</span></span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a>{</span>
+<span class="src-line" id="L21"><a class="ln" href="#L21">21</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L22"><a class="ln" href="#L22">22</a><span class="tok-com">     * Creates the DocumentStructurer with its declared dependencies.</span></span>
+<span class="src-line" id="L23"><a class="ln" href="#L23">23</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L24"><a class="ln" href="#L24">24</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(<span class="tok-kw">private</span> <span class="tok-id">string</span> <span class="tok-var">$format</span>)</span>
+<span class="src-line" id="L25"><a class="ln" href="#L25">25</a>    {</span>
+<span class="src-line" id="L26"><a class="ln" href="#L26">26</a>    }</span>
+<span class="src-line" id="L27"><a class="ln" href="#L27">27</a>    <span class="tok-com">/** Parses a document without evaluating its field constraints.</span></span>
+<span class="src-line" id="L28"><a class="ln" href="#L28">28</a><span class="tok-com">     * @throws RuntimeException</span></span>
+<span class="src-line" id="L29"><a class="ln" href="#L29">29</a><span class="tok-com">     * @throws JsonException</span></span>
+<span class="src-line" id="L30"><a class="ln" href="#L30">30</a><span class="tok-com">     * @throws Exception</span></span>
+<span class="src-line" id="L31"><a class="ln" href="#L31">31</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">structure</span>(<span class="tok-id">Source</span> <span class="tok-var">$source</span>): <span class="tok-id">ParsedDocument</span></span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>    {</span>
+<span class="src-line" id="L34"><a class="ln" href="#L34">34</a>        <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">format</span> === <span class="tok-str">&#039;php&#039;</span>) {</span>
+<span class="src-line" id="L35"><a class="ln" href="#L35">35</a>            <span class="tok-var">$tokens</span> = <span class="tok-var">$source</span>-&gt;<span class="tok-id">structure</span>(<span class="tok-str">&#039;php.tokens&#039;</span>);</span>
+<span class="src-line" id="L36"><a class="ln" href="#L36">36</a>            <span class="tok-kw">if</span> (!<span class="tok-var">$tokens</span> <span class="tok-kw">instanceof</span> <span class="tok-id">Tokens</span>) {</span>
+<span class="src-line" id="L37"><a class="ln" href="#L37">37</a>                <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">PolicyException</span>(<span class="tok-str">&#039;Structure php.tokens must return Tokens. Register TokenParser for that id.&#039;</span>);</span>
+<span class="src-line" id="L38"><a class="ln" href="#L38">38</a>            }</span>
+<span class="src-line" id="L39"><a class="ln" href="#L39">39</a>            <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">ParsedDocument</span>(<span class="tok-kw">new</span> <span class="tok-id">PhpDocument</span>(<span class="tok-var">$source</span>-&gt;<span class="tok-id">text</span>(), <span class="tok-var">$tokens</span>-&gt;<span class="tok-id">all</span>()), <span class="tok-var">$source</span>-&gt;<span class="tok-id">text</span>());</span>
+<span class="src-line" id="L40"><a class="ln" href="#L40">40</a>        }</span>
+<span class="src-line" id="L41"><a class="ln" href="#L41">41</a>        <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">ParsedDocument</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">format</span> === <span class="tok-str">&#039;xml&#039;</span> ? <span class="tok-kw">new</span> <span class="tok-id">XmlDocument</span>(<span class="tok-var">$source</span>-&gt;<span class="tok-id">text</span>()) : <span class="tok-kw">new</span> <span class="tok-id">DataDocument</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">format</span>, <span class="tok-var">$source</span>-&gt;<span class="tok-id">text</span>()), <span class="tok-var">$source</span>-&gt;<span class="tok-id">text</span>());</span>
+<span class="src-line" id="L42"><a class="ln" href="#L42">42</a>    }</span>
+<span class="src-line" id="L43"><a class="ln" href="#L43">43</a>}</span>
+<span class="src-line" id="L44"><a class="ln" href="#L44">44</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

@@ -5,7 +5,45 @@ declare(strict_types=1);
 namespace Tests\Unit\Config;
 
 use FilesystemIterator;
+use Guard\Config\Configuration;
+use Guard\Config\ConfigurationLoader;
+use Guard\Config\DocumentMerger;
+use Guard\Config\ImportResolver;
+use Guard\Config\Profile\ApplyConfigReader;
+use Guard\Config\Profile\ApplyPolicyUsageValidator;
+use Guard\Config\Profile\ApplyRuleConfigReader;
+use Guard\Config\Profile\ApplyRuleListConfigReader;
+use Guard\Config\Profile\PolicyConfigReader;
+use Guard\Config\Profile\PolicyDefinition;
+use Guard\Config\Profile\PolicyListConfigReader;
+use Guard\Config\Profile\PolicyResolver;
+use Guard\Config\Reader\ExtensionConfigReader;
+use Guard\Config\Reader\LimitConfigReader;
+use Guard\Config\Reader\MetricPolicyReader;
+use Guard\Config\RuleCatalog;
+use Guard\Config\RuleReader;
+use Guard\Config\Schema;
+use Guard\Config\Validation\MetricConfigKeyValidator;
+use Guard\Config\Validation\MetricConfigScalarReader;
+use Guard\Config\Validation\MetricConfigStringListReader;
+use Guard\Policy\Definition\ApplyConfig;
+use Guard\Policy\Definition\ApplyRuleConfig;
+use Guard\Policy\Definition\LimitConfig;
+use Guard\Policy\Definition\MetricsConfig;
+use Guard\Policy\Definition\PolicyConfig;
+use Guard\Policy\Definition\ScanConfig;
+use Guard\Policy\Diagnostic\FieldMessage;
+use Guard\Policy\Diagnostic\RuleDescription;
+use Guard\Policy\Diagnostic\RuleMessages;
+use Guard\Policy\FieldConstraints;
+use Guard\Policy\PolicyBinding;
+use Guard\Policy\Rule;
+use Guard\Structure\Document\Constraint;
+use Guard\Structure\Document\Selection;
 use JsonException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
@@ -47,42 +85,42 @@ use SplFileInfo;
  * @uses \Guard\Config\Validation\MetricConfigStringListReader
  * @uses \Guard\Policy\Diagnostic\FieldMessage
  */
-#[\PHPUnit\Framework\Attributes\CoversClass(\Guard\Config\RuleCatalog::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ConfigurationLoader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ImportResolver::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\DocumentMerger::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Schema::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\RuleReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Rule::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Constraint::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FieldConstraints::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\RuleDescription::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\RuleMessages::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\MetricPolicyReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\ApplyConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyPolicyUsageValidator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\ApplyRuleConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyRuleConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyRuleListConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyListConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyDefinition::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyResolver::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\PolicyConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\LimitConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\MetricsConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\ScanConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigKeyValidator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigScalarReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigStringListReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\FieldMessage::class)]
-final class RuleCatalogTest extends \PHPUnit\Framework\TestCase
+#[CoversClass(RuleCatalog::class)]
+#[UsesClass(ConfigurationLoader::class)]
+#[UsesClass(ImportResolver::class)]
+#[UsesClass(DocumentMerger::class)]
+#[UsesClass(Schema::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(RuleReader::class)]
+#[UsesClass(ExtensionConfigReader::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(Rule::class)]
+#[UsesClass(Constraint::class)]
+#[UsesClass(FieldConstraints::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(RuleDescription::class)]
+#[UsesClass(RuleMessages::class)]
+#[UsesClass(MetricPolicyReader::class)]
+#[UsesClass(ApplyConfig::class)]
+#[UsesClass(ApplyConfigReader::class)]
+#[UsesClass(ApplyPolicyUsageValidator::class)]
+#[UsesClass(ApplyRuleConfig::class)]
+#[UsesClass(ApplyRuleConfigReader::class)]
+#[UsesClass(ApplyRuleListConfigReader::class)]
+#[UsesClass(PolicyListConfigReader::class)]
+#[UsesClass(PolicyConfigReader::class)]
+#[UsesClass(PolicyDefinition::class)]
+#[UsesClass(PolicyResolver::class)]
+#[UsesClass(PolicyConfig::class)]
+#[UsesClass(LimitConfigReader::class)]
+#[UsesClass(LimitConfig::class)]
+#[UsesClass(MetricsConfig::class)]
+#[UsesClass(ScanConfig::class)]
+#[UsesClass(MetricConfigKeyValidator::class)]
+#[UsesClass(MetricConfigScalarReader::class)]
+#[UsesClass(MetricConfigStringListReader::class)]
+#[UsesClass(FieldMessage::class)]
+final class RuleCatalogTest extends TestCase
 {
     /**
      * @throws JsonException
@@ -127,7 +165,7 @@ final class RuleCatalogTest extends \PHPUnit\Framework\TestCase
             }
         };
         try {
-            $rules = (new \Guard\Config\RuleCatalog())->load($project->root . '/guard.yaml');
+            $rules = (new RuleCatalog())->load($project->root . '/guard.yaml');
             self::assertCount(1, $rules);
             self::assertSame('Override /value in renamed.json must equal 2. Set /value in renamed.json to 2. Run guard fix to apply the configured repair.', $rules[0]->message);
             self::assertSame('recommended', $rules[0]->level);
@@ -142,13 +180,13 @@ final class RuleCatalogTest extends \PHPUnit\Framework\TestCase
      */
     public function testFieldsMarksEveryFormatWithARepairAsFixable(): void
     {
-        $rules = (new \Guard\Config\RuleCatalog())->fields([['id' => 'x', 'file' => 'a.json5', 'select' => '/x', 'assert' => ['equals' => true]]]);
+        $rules = (new RuleCatalog())->fields([['id' => 'x', 'file' => 'a.json5', 'select' => '/x', 'assert' => ['equals' => true]]]);
         self::assertTrue($rules[0]->fixable);
     }
 
     public function testMetricsShowsInheritedLimitsOnlyForUsedProfiles(): void
     {
-        $rules = (new \Guard\Config\RuleCatalog())->metrics(['profiles' => [
+        $rules = (new RuleCatalog())->metrics(['profiles' => [
             'base' => ['limits' => ['file' => ['lines' => 100, 'ncloc' => 80]]],
             'standard' => ['extends' => 'base', 'limits' => ['file' => ['lines' => null]]],
         ]], '/project');
@@ -159,7 +197,7 @@ final class RuleCatalogTest extends \PHPUnit\Framework\TestCase
 
     public function testStructurePreservesAnEmptyAllowConstraint(): void
     {
-        $rules = (new \Guard\Config\RuleCatalog())->structure(['directories' => [['path' => 'src', 'allow' => [], 'forbid_empty' => false]]]);
+        $rules = (new RuleCatalog())->structure(['directories' => [['path' => 'src', 'allow' => [], 'forbid_empty' => false]]]);
         self::assertCount(1, $rules);
         self::assertSame('structure.disallowed_file', $rules[0]->id);
         self::assertSame([], $rules[0]->details['allow']);
@@ -167,7 +205,7 @@ final class RuleCatalogTest extends \PHPUnit\Framework\TestCase
 
     public function testDocumentationIncludesDeclaredFilesAndScanRules(): void
     {
-        $rules = (new \Guard\Config\RuleCatalog())->documentation(['files' => ['README.md' => ['headings' => []]], 'scan' => ['*.md']]);
+        $rules = (new RuleCatalog())->documentation(['files' => ['README.md' => ['headings' => []]], 'scan' => ['*.md']]);
         self::assertSame('documentation.missing_document', $rules[0]->id);
         self::assertSame('documentation.undeclared_document', $rules[count($rules) - 1]->id);
     }

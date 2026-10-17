@@ -6,6 +6,7 @@ namespace Guard\Input;
 
 use Guard\Diagnostic\PolicyException;
 use JsonException;
+use Nette\Neon\Exception;
 use RuntimeException;
 
 /**
@@ -22,7 +23,7 @@ final class InputSet
     /** Raises a selection error before evaluating any file in this policy.
      * @throws RuntimeException
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function validate(): void
     {

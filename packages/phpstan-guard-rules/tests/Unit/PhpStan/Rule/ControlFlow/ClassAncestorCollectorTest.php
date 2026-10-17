@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
+use PhpParser\Node\Name\FullyQualified;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassLike;
+use PhpParser\Node\Stmt\Interface_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Testing\PHPStanTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -23,15 +27,15 @@ final class ClassAncestorCollectorTest extends PHPStanTestCase
     public function testGetNodeTypeReturnsExpectedClass(): void
     {
         self::assertSame(
-            \PhpParser\Node\Stmt\ClassLike::class,
+            ClassLike::class,
             (new ClassAncestorCollector(self::createReflectionProvider()))->getNodeType(),
         );
     }
 
     public function testProcessNodeNamesAnInstantiableClass(): void
     {
-        $node = new \PhpParser\Node\Stmt\Class_('MasterCard');
-        $node->namespacedName = new \PhpParser\Node\Name\FullyQualified(MasterCard::class);
+        $node = new Class_('MasterCard');
+        $node->namespacedName = new FullyQualified(MasterCard::class);
         $collected = (new ClassAncestorCollector(self::createReflectionProvider()))->processNode($node, self::createStub(Scope::class));
 
         self::assertSame(
@@ -42,8 +46,8 @@ final class ClassAncestorCollectorTest extends PHPStanTestCase
 
     public function testProcessNodeRecordsEveryAncestorOfAClass(): void
     {
-        $node = new \PhpParser\Node\Stmt\Class_('MasterCard');
-        $node->namespacedName = new \PhpParser\Node\Name\FullyQualified(MasterCard::class);
+        $node = new Class_('MasterCard');
+        $node->namespacedName = new FullyQualified(MasterCard::class);
         $collected = (new ClassAncestorCollector(self::createReflectionProvider()))->processNode($node, self::createStub(Scope::class));
 
         self::assertContains(Payment::class, $collected === null ? [] : $collected['ancestors']);
@@ -51,8 +55,8 @@ final class ClassAncestorCollectorTest extends PHPStanTestCase
 
     public function testProcessNodeMarksAnInterfaceAsNotInstantiable(): void
     {
-        $node = new \PhpParser\Node\Stmt\Interface_('Payment');
-        $node->namespacedName = new \PhpParser\Node\Name\FullyQualified(Payment::class);
+        $node = new Interface_('Payment');
+        $node->namespacedName = new FullyQualified(Payment::class);
         $collected = (new ClassAncestorCollector(self::createReflectionProvider()))->processNode($node, self::createStub(Scope::class));
 
         self::assertSame(
@@ -64,15 +68,15 @@ final class ClassAncestorCollectorTest extends PHPStanTestCase
     public function testProcessNodeSkipsAnAnonymousClass(): void
     {
         self::assertNull((new ClassAncestorCollector(self::createReflectionProvider()))->processNode(
-            new \PhpParser\Node\Stmt\Class_(null),
+            new Class_(null),
             self::createStub(Scope::class),
         ));
     }
 
     public function testProcessNodeSkipsADeclarationReflectionDoesNotKnow(): void
     {
-        $node = new \PhpParser\Node\Stmt\Class_('Absent');
-        $node->namespacedName = new \PhpParser\Node\Name\FullyQualified('Tests\\PhpStan\\RequireExhaustiveDispatch\\Absent');
+        $node = new Class_('Absent');
+        $node->namespacedName = new FullyQualified('Tests\\PhpStan\\RequireExhaustiveDispatch\\Absent');
 
         self::assertNull((new ClassAncestorCollector(self::createReflectionProvider()))->processNode($node, self::createStub(Scope::class)));
     }

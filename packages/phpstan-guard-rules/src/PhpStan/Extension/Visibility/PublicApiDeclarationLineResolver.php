@@ -11,6 +11,12 @@ use function is_array;
 use function is_file;
 
 use PhpParser\ErrorHandler\Collecting;
+use PhpParser\Node;
+use PhpParser\Node\Stmt\ClassConst;
+use PhpParser\Node\Stmt\ClassLike;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\EnumCase;
+use PhpParser\Node\Stmt\Property;
 use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiVisibilityDetector;
 
 /**
@@ -89,8 +95,8 @@ final class PublicApiDeclarationLineResolver
     /**
      * Returns a node tree in source order.
      *
-     * @param array<array-key, \PhpParser\Node|array<array-key, \PhpParser\Node>> $nodes
-     * @return list<\PhpParser\Node>
+     * @param array<array-key, Node|array<array-key, Node>> $nodes
+     * @return list<Node>
      */
     public function walk(array $nodes): array
     {
@@ -105,7 +111,7 @@ final class PublicApiDeclarationLineResolver
             $values = get_object_vars($node);
             foreach ($node->getSubNodeNames() as $name) {
                 $value = $values[$name] ?? null;
-                if ($value instanceof \PhpParser\Node) {
+                if ($value instanceof Node) {
                     $collected = array_merge($collected, $this->walk([$value]));
                     continue;
                 }
@@ -116,7 +122,7 @@ final class PublicApiDeclarationLineResolver
 
                 $nestedNodes = [];
                 foreach ($value as $nested) {
-                    if ($nested instanceof \PhpParser\Node) {
+                    if ($nested instanceof Node) {
                         $nestedNodes[] = $nested;
                     }
                 }
@@ -131,13 +137,13 @@ final class PublicApiDeclarationLineResolver
     /**
      * Reports whether a node can carry the @visibility tag.
      */
-    public function isDeclaration(\PhpParser\Node $node): bool
+    public function isDeclaration(Node $node): bool
     {
-        return $node instanceof \PhpParser\Node\Stmt\ClassLike
-            || $node instanceof \PhpParser\Node\Stmt\ClassMethod
-            || $node instanceof \PhpParser\Node\Stmt\Property
-            || $node instanceof \PhpParser\Node\Stmt\ClassConst
-            || $node instanceof \PhpParser\Node\Stmt\EnumCase;
+        return $node instanceof ClassLike
+            || $node instanceof ClassMethod
+            || $node instanceof Property
+            || $node instanceof ClassConst
+            || $node instanceof EnumCase;
     }
 
     /**
@@ -145,16 +151,16 @@ final class PublicApiDeclarationLineResolver
      *
      * @return list<int>
      */
-    public function declarationLines(\PhpParser\Node $node): array
+    public function declarationLines(Node $node): array
     {
         $lines = [$node->getStartLine()];
-        if ($node instanceof \PhpParser\Node\Stmt\Property) {
+        if ($node instanceof Property) {
             foreach ($node->props as $property) {
                 $lines[] = $property->getStartLine();
             }
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\ClassConst) {
+        if ($node instanceof ClassConst) {
             foreach ($node->consts as $constant) {
                 $lines[] = $constant->getStartLine();
             }

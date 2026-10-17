@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Structure\Document;
 
+use Guard\Structure\Document\Constraint;
+use Guard\Structure\Document\Selection;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -13,8 +15,8 @@ use PHPUnit\Framework\TestCase;
  * @covers \Guard\Structure\Document\Constraint
  * @uses \Guard\Structure\Document\Selection
  */
-#[CoversClass(\Guard\Structure\Document\Constraint::class)]
-#[UsesClass(\Guard\Structure\Document\Selection::class)]
+#[CoversClass(Constraint::class)]
+#[UsesClass(Selection::class)]
 final class ConstraintTest extends TestCase
 {
     /**
@@ -22,10 +24,10 @@ final class ConstraintTest extends TestCase
      */
     public function testAcceptsOnlyTypedAllowedChoices(): void
     {
-        $constraint = new \Guard\Structure\Document\Constraint();
-        self::assertTrue($constraint->accepts(new \Guard\Structure\Document\Selection(true, 'A'), ['one_of' => ['A', 'B']]));
-        self::assertFalse($constraint->accepts(new \Guard\Structure\Document\Selection(true, 1), ['equals' => '1']));
-        self::assertFalse($constraint->accepts(new \Guard\Structure\Document\Selection(false, null), ['equals' => null]));
+        $constraint = new Constraint();
+        self::assertTrue($constraint->accepts(new Selection(true, 'A'), ['one_of' => ['A', 'B']]));
+        self::assertFalse($constraint->accepts(new Selection(true, 1), ['equals' => '1']));
+        self::assertFalse($constraint->accepts(new Selection(false, null), ['equals' => null]));
     }
 
     /**
@@ -33,10 +35,10 @@ final class ConstraintTest extends TestCase
      */
     public function testCombinesNumericBounds(): void
     {
-        $constraint = new \Guard\Structure\Document\Constraint();
-        self::assertTrue($constraint->accepts(new \Guard\Structure\Document\Selection(true, 1), ['min' => 1, 'max' => 2]));
-        self::assertFalse($constraint->accepts(new \Guard\Structure\Document\Selection(true, 0), ['min' => 1]));
-        self::assertFalse($constraint->accepts(new \Guard\Structure\Document\Selection(true, '1'), ['min' => 1]));
+        $constraint = new Constraint();
+        self::assertTrue($constraint->accepts(new Selection(true, 1), ['min' => 1, 'max' => 2]));
+        self::assertFalse($constraint->accepts(new Selection(true, 0), ['min' => 1]));
+        self::assertFalse($constraint->accepts(new Selection(true, '1'), ['min' => 1]));
     }
 
     /**
@@ -44,25 +46,25 @@ final class ConstraintTest extends TestCase
      */
     public function testAcceptsOneRejectsUnknownOperators(): void
     {
-        self::assertFalse((new \Guard\Structure\Document\Constraint())->acceptsOne('equalz', 'A', 'A'));
+        self::assertFalse((new Constraint())->acceptsOne('equalz', 'A', 'A'));
     }
     /**
      * @throws JsonException
      */
     public function testOneOfUsesStrictTypes(): void
     {
-        self::assertFalse((new \Guard\Structure\Document\Constraint())->oneOf(1, ['1', true]));
+        self::assertFalse((new Constraint())->oneOf(1, ['1', true]));
     }
     /**
      * @throws JsonException
      */
     public function testEqualDistinguishesEmptyObjectsFromArrays(): void
     {
-        self::assertFalse((new \Guard\Structure\Document\Constraint())->equal((object) [], []));
+        self::assertFalse((new Constraint())->equal((object) [], []));
     }
     public function testContainsMatchesNestedTextAndKeyPairs(): void
     {
-        $constraint = new \Guard\Structure\Document\Constraint();
+        $constraint = new Constraint();
         self::assertTrue($constraint->contains(['vendor/phpstan/phpstan-strict-rules/rules.neon'], 'phpstan/phpstan-strict-rules/rules.neon'));
         self::assertTrue($constraint->contains(['run' => "infection --min-msi=0\n"], '--min-msi=0'));
         self::assertTrue($constraint->contains(['MIN_MSI' => '80'], 'MIN_MSI=80'));
@@ -71,7 +73,7 @@ final class ConstraintTest extends TestCase
 
     public function testContainsAnyMatchesAnExactNameOrAPathFragment(): void
     {
-        $constraint = new \Guard\Structure\Document\Constraint();
+        $constraint = new Constraint();
         $includes = ['vendor/phpstan/phpstan-strict-rules/rules.neon', 'rules.neon'];
         self::assertTrue($constraint->containsAny($includes, ['k-kinzal/phpstan-guard-rules/rules.neon', 'rules.neon']));
         self::assertFalse($constraint->containsAny($includes, ['k-kinzal/phpstan-guard-rules/rules.neon']));
@@ -80,14 +82,14 @@ final class ConstraintTest extends TestCase
 
     public function testNotContainsRejectsAPresentNeedle(): void
     {
-        $constraint = new \Guard\Structure\Document\Constraint();
+        $constraint = new Constraint();
         self::assertTrue($constraint->notContains(['@phpstan', '@compat'], 'php-fuzzer'));
         self::assertFalse($constraint->notContains('php-fuzzer fuzz', 'php-fuzzer'));
     }
 
     public function testMatchesTreatsABareNameAsExact(): void
     {
-        $constraint = new \Guard\Structure\Document\Constraint();
+        $constraint = new Constraint();
         self::assertTrue($constraint->matches(['rules.neon'], 'rules.neon'));
         self::assertFalse($constraint->matches(['vendor/phpstan/phpstan-strict-rules/rules.neon'], 'rules.neon'));
         self::assertTrue($constraint->matches(['vendor/k-kinzal/phpstan-guard-rules/rules.neon'], 'k-kinzal/phpstan-guard-rules/rules.neon'));
@@ -95,7 +97,7 @@ final class ConstraintTest extends TestCase
 
     public function testPairReadsAStringMapEntry(): void
     {
-        $constraint = new \Guard\Structure\Document\Constraint();
+        $constraint = new Constraint();
         self::assertTrue($constraint->pair(['MIN_MSI' => '80'], 'MIN_MSI=80'));
         self::assertFalse($constraint->pair(['80'], 'MIN_MSI=80'));
         self::assertFalse($constraint->pair(['MIN_MSI' => 80], 'MIN_MSI=80'));
@@ -106,15 +108,15 @@ final class ConstraintTest extends TestCase
      */
     public function testAcceptsAnAbsentFieldAndAPresentOne(): void
     {
-        $constraint = new \Guard\Structure\Document\Constraint();
-        self::assertTrue($constraint->accepts(new \Guard\Structure\Document\Selection(false, null), ['absent' => true]));
-        self::assertFalse($constraint->accepts(new \Guard\Structure\Document\Selection(true, 'pbt'), ['absent' => true]));
-        self::assertTrue($constraint->accepts(new \Guard\Structure\Document\Selection(true, 'phpstan'), ['present' => true]));
+        $constraint = new Constraint();
+        self::assertTrue($constraint->accepts(new Selection(false, null), ['absent' => true]));
+        self::assertFalse($constraint->accepts(new Selection(true, 'pbt'), ['absent' => true]));
+        self::assertTrue($constraint->accepts(new Selection(true, 'phpstan'), ['present' => true]));
     }
 
     public function testCanonicalIgnoresMapOrderAndRetainsListOrder(): void
     {
-        $constraint = new \Guard\Structure\Document\Constraint();
+        $constraint = new Constraint();
         self::assertSame('{"a":1,"b":2}', json_encode($constraint->canonical((object) ['b' => 2, 'a' => 1])));
         self::assertSame('[2,1]', json_encode($constraint->canonical([2, 1])));
     }

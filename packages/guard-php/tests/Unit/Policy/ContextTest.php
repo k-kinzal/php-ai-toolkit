@@ -4,8 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy;
 
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Scope;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
 use Guard\Policy\Context;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -26,25 +41,25 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Diagnostic\Finding
  */
 #[CoversClass(Context::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\DirectoryListing::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Entry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Input::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\InputSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\StructuredFile::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Scope::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Plan::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\Finding::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Scope::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Finding::class)]
 final class ContextTest extends TestCase
 {
     public function testKeepsProjectAndCommandInputsSeparate(): void
     {
-        $scope = new \Guard\Input\Scope(['src'], []);
+        $scope = new Scope(['src'], []);
         $context = new Context('/project', '/project/custom.yaml', true, $scope);
         self::assertSame('/project', $context->root);
         self::assertSame($scope, $context->scope);

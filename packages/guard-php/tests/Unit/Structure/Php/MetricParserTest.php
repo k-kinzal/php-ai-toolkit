@@ -4,10 +4,62 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Structure\Php;
 
+use Guard\Config\Configuration;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
 use Guard\Policy\Definition\LimitConfig;
+use Guard\Policy\Diagnostic\MetricViolation;
+use Guard\Policy\FileChange;
+use Guard\Policy\Limit\ClassLikeMetricLimit;
+use Guard\Policy\Limit\ClassLikeMetricViolationBuilder;
+use Guard\Policy\Limit\FileMetricViolationBuilder;
+use Guard\Policy\Limit\FunctionComplexityViolationBuilder;
+use Guard\Policy\Limit\FunctionLineViolationBuilder;
+use Guard\Policy\Limit\FunctionMetricViolationBuilder;
+use Guard\Policy\Limit\MetricLimitInspector;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
+use Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader;
+use Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric;
+use Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser;
+use Guard\Structure\Php\Complexity\CyclomaticComplexityCalculator;
+use Guard\Structure\Php\Complexity\CyclomaticComplexityState;
+use Guard\Structure\Php\Complexity\CyclomaticDecisionWeight;
+use Guard\Structure\Php\FileMetric\FileMetric;
+use Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary;
+use Guard\Structure\Php\FunctionMetric\ArrowFunctionMetricReader;
+use Guard\Structure\Php\FunctionMetric\BlockFunctionMetricReader;
+use Guard\Structure\Php\FunctionMetric\FunctionBodyLocator;
+use Guard\Structure\Php\FunctionMetric\FunctionLineParser;
+use Guard\Structure\Php\FunctionMetric\FunctionMetric;
+use Guard\Structure\Php\FunctionMetric\FunctionMetricComplexityAssigner;
+use Guard\Structure\Php\FunctionMetric\FunctionMetricParser;
+use Guard\Structure\Php\FunctionMetric\FunctionNameReader;
+use Guard\Structure\Php\FunctionMetric\FunctionScanState;
+use Guard\Structure\Php\FunctionMetric\NestedFunctionMetricRange;
+use Guard\Structure\Php\MetricParser;
+use Guard\Structure\Php\SourceMetrics;
+use Guard\Structure\Php\Token\ClassLikeTokenMatcher;
+use Guard\Structure\Php\Token\CodeTokenLineResolver;
+use Guard\Structure\Php\Token\PhpTokenNavigator;
+use Guard\Structure\Php\Token\TokenLineCounter;
+use Guard\Structure\Php\TokenParser;
+use Guard\Structure\Php\Tokens;
+use Guard\Structure\Source;
 use JsonException;
+use Nette\Neon\Exception;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -63,57 +115,57 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
  */
-#[CoversClass(\Guard\Structure\Php\MetricParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\DirectoryListing::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Entry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Input::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\InputSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\StructuredFile::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(LimitConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Context::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Plan::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\ClassLikeMetricLimit::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\ClassLikeMetricViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FileMetricViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FunctionComplexityViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FunctionLineViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FunctionMetricViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\MetricLimitInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\Finding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\MetricViolation::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticComplexityCalculator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticComplexityState::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticDecisionWeight::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FileMetric\FileMetric::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\ArrowFunctionMetricReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\BlockFunctionMetricReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionBodyLocator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionLineParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetric::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetricComplexityAssigner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetricParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionNameReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionScanState::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\NestedFunctionMetricRange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\SourceMetrics::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\TokenParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\ClassLikeTokenMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\CodeTokenLineResolver::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\PhpTokenNavigator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
+#[CoversClass(MetricParser::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(LimitConfig::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(ClassLikeMetricLimit::class)]
+#[UsesClass(ClassLikeMetricViolationBuilder::class)]
+#[UsesClass(FileMetricViolationBuilder::class)]
+#[UsesClass(FunctionComplexityViolationBuilder::class)]
+#[UsesClass(FunctionLineViolationBuilder::class)]
+#[UsesClass(FunctionMetricViolationBuilder::class)]
+#[UsesClass(MetricLimitInspector::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Finding::class)]
+#[UsesClass(MetricViolation::class)]
+#[UsesClass(ClassLikeDeclarationReader::class)]
+#[UsesClass(ClassLikeMetric::class)]
+#[UsesClass(ClassLikeMetricParser::class)]
+#[UsesClass(CyclomaticComplexityCalculator::class)]
+#[UsesClass(CyclomaticComplexityState::class)]
+#[UsesClass(CyclomaticDecisionWeight::class)]
+#[UsesClass(FileMetric::class)]
+#[UsesClass(ArrowExpressionBoundary::class)]
+#[UsesClass(ArrowFunctionMetricReader::class)]
+#[UsesClass(BlockFunctionMetricReader::class)]
+#[UsesClass(FunctionBodyLocator::class)]
+#[UsesClass(FunctionLineParser::class)]
+#[UsesClass(FunctionMetric::class)]
+#[UsesClass(FunctionMetricComplexityAssigner::class)]
+#[UsesClass(FunctionMetricParser::class)]
+#[UsesClass(FunctionNameReader::class)]
+#[UsesClass(FunctionScanState::class)]
+#[UsesClass(NestedFunctionMetricRange::class)]
+#[UsesClass(SourceMetrics::class)]
+#[UsesClass(TokenParser::class)]
+#[UsesClass(ClassLikeTokenMatcher::class)]
+#[UsesClass(CodeTokenLineResolver::class)]
+#[UsesClass(PhpTokenNavigator::class)]
+#[UsesClass(TokenLineCounter::class)]
+#[UsesClass(Tokens::class)]
+#[UsesClass(Source::class)]
 final class MetricParserTest extends TestCase
 {
     /**
@@ -146,8 +198,8 @@ final class Example
 }
 PHP);
 
-        $metrics = (new \Guard\Structure\Php\MetricParser())->parse((string) file_get_contents($file), 'src/Example.php');
-        $violations = (new \Guard\Policy\Limit\MetricLimitInspector())->violations($metrics, new LimitConfig(10, 8, 5, 50, 50, 50, 3, 4, 2, 2));
+        $metrics = (new MetricParser())->parse((string) file_get_contents($file), 'src/Example.php');
+        $violations = (new MetricLimitInspector())->violations($metrics, new LimitConfig(10, 8, 5, 50, 50, 50, 3, 4, 2, 2));
 
         self::assertSame('src/Example.php', $metrics->file->path);
         self::assertSame(21, $metrics->file->physicalLines);
@@ -172,8 +224,8 @@ function exactly_three_lines(): void
 }
 PHP);
 
-        $metrics = (new \Guard\Structure\Php\MetricParser())->parse((string) file_get_contents($file), 'src/Example.php');
-        $violations = (new \Guard\Policy\Limit\MetricLimitInspector())->violations($metrics, new LimitConfig(5, 3, 50, 50, 50, 50, 3, 50, 1, 1));
+        $metrics = (new MetricParser())->parse((string) file_get_contents($file), 'src/Example.php');
+        $violations = (new MetricLimitInspector())->violations($metrics, new LimitConfig(5, 3, 50, 50, 50, 50, 3, 50, 1, 1));
 
         self::assertSame([], $violations);
     }
@@ -205,8 +257,8 @@ enum Status
 }
 PHP);
 
-        $metrics = (new \Guard\Structure\Php\MetricParser())->parse((string) file_get_contents($file), 'src/Types.php');
-        $violations = (new \Guard\Policy\Limit\MetricLimitInspector())->violations($metrics, new LimitConfig(100, 100, 2, 2, 2, 2, 50, 50, 20, 20));
+        $metrics = (new MetricParser())->parse((string) file_get_contents($file), 'src/Types.php');
+        $violations = (new MetricLimitInspector())->violations($metrics, new LimitConfig(100, 100, 2, 2, 2, 2, 50, 50, 20, 20));
 
         self::assertSame(
             ['class_lines', 'trait_lines', 'interface_lines', 'enum_lines'],
@@ -230,8 +282,8 @@ PHP);
 echo 'x';
 PHP);
 
-        $metrics = (new \Guard\Structure\Php\MetricParser())->parse((string) file_get_contents($file), 'src/Comments.php');
-        $violations = (new \Guard\Policy\Limit\MetricLimitInspector())->violations($metrics, new LimitConfig(4, 1, 50, 50, 50, 50, 50, 50, 20, 20));
+        $metrics = (new MetricParser())->parse((string) file_get_contents($file), 'src/Comments.php');
+        $violations = (new MetricLimitInspector())->violations($metrics, new LimitConfig(4, 1, 50, 50, 50, 50, 50, 50, 20, 20));
 
         self::assertSame(7, $metrics->file->physicalLines);
         self::assertSame(1, $metrics->file->nonCommentLines);
@@ -245,7 +297,7 @@ PHP);
      */
     public function testParseMeasuresAlreadyReadSourceWithoutFilesystemAccess(): void
     {
-        $metrics = (new \Guard\Structure\Php\MetricParser())->parse("<?php\n// comment\necho 1;\n", 'memory.php');
+        $metrics = (new MetricParser())->parse("<?php\n// comment\necho 1;\n", 'memory.php');
         self::assertSame('memory.php', $metrics->file->path);
         self::assertSame(3, $metrics->file->physicalLines);
         self::assertSame(1, $metrics->file->nonCommentLines);
@@ -253,12 +305,12 @@ PHP);
 
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testStructureDerivesMetricsFromRegisteredTokens(): void
     {
-        $source = new \Guard\Structure\Source('<?php function f() { return 1; }', ['php.tokens' => new \Guard\Structure\Php\TokenParser()]);
-        $metrics = (new \Guard\Structure\Php\MetricParser())->structure($source);
+        $source = new Source('<?php function f() { return 1; }', ['php.tokens' => new TokenParser()]);
+        $metrics = (new MetricParser())->structure($source);
         self::assertCount(1, $metrics->functions);
         self::assertSame('f', $metrics->functions[0]->name);
     }
@@ -268,7 +320,7 @@ PHP);
     public function testMeasureAcceptsAlreadyTokenizedSourceWithoutReadingFiles(): void
     {
         $source = "<?php\n// comment\necho 1;";
-        $metrics = (new \Guard\Structure\Php\MetricParser())->measure($source, array_values(PhpToken::tokenize($source)), 'inline.php');
+        $metrics = (new MetricParser())->measure($source, array_values(PhpToken::tokenize($source)), 'inline.php');
         self::assertSame(1, $metrics->file->nonCommentLines);
         self::assertSame(3, $metrics->file->physicalLines);
     }

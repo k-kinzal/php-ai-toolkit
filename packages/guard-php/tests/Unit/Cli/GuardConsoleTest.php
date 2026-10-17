@@ -4,13 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cli;
 
+use Guard\Cli\BaselineFile;
+use Guard\Cli\CheckRun;
 use Guard\Cli\ClosureOutput;
+use Guard\Cli\Command\BaselineCommand;
 use Guard\Cli\Command\CheckCommand;
 use Guard\Cli\Command\FixCommand;
 use Guard\Cli\Command\GuardCommand;
 use Guard\Cli\Command\InitCommand;
+use Guard\Cli\Command\RulesCommand;
+use Guard\Cli\FormatDetector;
 use Guard\Cli\GuardConsole;
 use Guard\Config\Project\PresetCatalog;
+use Guard\Reporting\Baseline;
+use Guard\Reporting\BaselineMatch;
+use Guard\Reporting\Filtering\FindingFilter;
+use Guard\Reporting\Filtering\ReportScope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -43,15 +52,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[UsesClass(GuardCommand::class)]
 #[UsesClass(InitCommand::class)]
 #[UsesClass(PresetCatalog::class)]
-#[UsesClass(\Guard\Cli\FormatDetector::class)]
-#[UsesClass(\Guard\Cli\Command\RulesCommand::class)]
-#[UsesClass(\Guard\Cli\CheckRun::class)]
-#[UsesClass(\Guard\Cli\BaselineFile::class)]
-#[UsesClass(\Guard\Cli\Command\BaselineCommand::class)]
-#[UsesClass(\Guard\Reporting\Baseline::class)]
-#[UsesClass(\Guard\Reporting\BaselineMatch::class)]
-#[UsesClass(\Guard\Reporting\Filtering\FindingFilter::class)]
-#[UsesClass(\Guard\Reporting\Filtering\ReportScope::class)]
+#[UsesClass(FormatDetector::class)]
+#[UsesClass(RulesCommand::class)]
+#[UsesClass(CheckRun::class)]
+#[UsesClass(BaselineFile::class)]
+#[UsesClass(BaselineCommand::class)]
+#[UsesClass(Baseline::class)]
+#[UsesClass(BaselineMatch::class)]
+#[UsesClass(FindingFilter::class)]
+#[UsesClass(ReportScope::class)]
 final class GuardConsoleTest extends TestCase
 {
     public function testGetHelpSaysWhatGuardDoes(): void

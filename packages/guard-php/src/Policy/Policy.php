@@ -7,6 +7,7 @@ namespace Guard\Policy;
 use Guard\Input\Input;
 use Guard\Input\InputSet;
 use JsonException;
+use Nette\Neon\Exception;
 use RuntimeException;
 
 /**
@@ -21,7 +22,7 @@ interface Policy
     /** Evaluates prepared inputs and proposes changes without writing files.
      * @throws RuntimeException
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function evaluate(InputSet $inputs, Context $context): Plan;
 }

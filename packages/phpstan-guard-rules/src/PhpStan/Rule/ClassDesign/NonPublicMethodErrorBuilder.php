@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\ClassDesign;
 
+use PhpParser\Node\Stmt\ClassLike;
+use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\RuleErrorBuilder;
@@ -28,8 +30,8 @@ final class NonPublicMethodErrorBuilder
      * Builds an error for a private method.
      */
     public function privateMethod(
-        \PhpParser\Node\Stmt\ClassMethod $method,
-        \PhpParser\Node\Stmt\ClassLike $classLike,
+        ClassMethod $method,
+        ClassLike $classLike,
         Scope $scope,
     ): IdentifierRuleError {
         return RuleErrorBuilder::message(
@@ -48,8 +50,8 @@ final class NonPublicMethodErrorBuilder
      * Builds an error for a protected method in a concrete non-override class.
      */
     public function protectedMethod(
-        \PhpParser\Node\Stmt\ClassMethod $method,
-        \PhpParser\Node\Stmt\ClassLike $classLike,
+        ClassMethod $method,
+        ClassLike $classLike,
         Scope $scope,
     ): IdentifierRuleError {
         return RuleErrorBuilder::message(

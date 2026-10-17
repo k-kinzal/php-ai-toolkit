@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
 use Override;
+use PHPStan\Node\CollectedDataNode;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -50,7 +51,7 @@ final class RequireExhaustiveClassDispatchRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsExpectedClass(): void
     {
-        self::assertSame(\PHPStan\Node\CollectedDataNode::class, $this->getRule()->getNodeType());
+        self::assertSame(CollectedDataNode::class, $this->getRule()->getNodeType());
     }
 
     public function testErrorNamesTheClassesADispatchLeftOut(): void

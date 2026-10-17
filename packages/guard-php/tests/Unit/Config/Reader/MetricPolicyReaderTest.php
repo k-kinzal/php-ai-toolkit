@@ -4,6 +4,41 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Config\Reader;
 
+use Guard\Config\Configuration;
+use Guard\Config\Profile\ApplyConfigReader;
+use Guard\Config\Profile\ApplyPolicyUsageValidator;
+use Guard\Config\Profile\ApplyRuleConfigReader;
+use Guard\Config\Profile\ApplyRuleListConfigReader;
+use Guard\Config\Profile\PolicyConfigReader;
+use Guard\Config\Profile\PolicyDefinition;
+use Guard\Config\Profile\PolicyListConfigReader;
+use Guard\Config\Profile\PolicyResolver;
+use Guard\Config\Reader\LimitConfigReader;
+use Guard\Config\Reader\MetricPolicyReader;
+use Guard\Config\Schema;
+use Guard\Config\Validation\MetricConfigKeyValidator;
+use Guard\Config\Validation\MetricConfigScalarReader;
+use Guard\Config\Validation\MetricConfigStringListReader;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
+use Guard\Policy\Definition\ApplyConfig;
+use Guard\Policy\Definition\ApplyRuleConfig;
+use Guard\Policy\Definition\LimitConfig;
+use Guard\Policy\Definition\MetricsConfig;
+use Guard\Policy\Definition\PolicyConfig;
+use Guard\Policy\Definition\ScanConfig;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -45,46 +80,46 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Diagnostic\Finding
  */
-#[CoversClass(\Guard\Config\Reader\MetricPolicyReader::class)]
-#[UsesClass(\Guard\Input\DirectoryListing::class)]
-#[UsesClass(\Guard\Input\FileRecord::class)]
-#[UsesClass(\Guard\Input\FileSet::class)]
-#[UsesClass(\Guard\Input\Entry::class)]
-#[UsesClass(\Guard\Input\Input::class)]
-#[UsesClass(\Guard\Input\InputSet::class)]
-#[UsesClass(\Guard\Input\Selection::class)]
-#[UsesClass(\Guard\Input\StructuredFile::class)]
-#[UsesClass(\Guard\Config\Configuration::class)]
-#[UsesClass(\Guard\Policy\Definition\ApplyConfig::class)]
-#[UsesClass(\Guard\Config\Profile\ApplyConfigReader::class)]
-#[UsesClass(\Guard\Config\Profile\ApplyPolicyUsageValidator::class)]
-#[UsesClass(\Guard\Policy\Definition\ApplyRuleConfig::class)]
-#[UsesClass(\Guard\Config\Profile\ApplyRuleConfigReader::class)]
-#[UsesClass(\Guard\Config\Profile\ApplyRuleListConfigReader::class)]
-#[UsesClass(\Guard\Policy\Definition\PolicyConfig::class)]
-#[UsesClass(\Guard\Config\Profile\PolicyConfigReader::class)]
-#[UsesClass(\Guard\Config\Profile\PolicyDefinition::class)]
-#[UsesClass(\Guard\Config\Profile\PolicyListConfigReader::class)]
-#[UsesClass(\Guard\Config\Profile\PolicyResolver::class)]
-#[UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
-#[UsesClass(\Guard\Config\Schema::class)]
-#[UsesClass(\Guard\Config\Validation\MetricConfigKeyValidator::class)]
-#[UsesClass(\Guard\Config\Validation\MetricConfigScalarReader::class)]
-#[UsesClass(\Guard\Config\Validation\MetricConfigStringListReader::class)]
-#[UsesClass(\Guard\Policy\Definition\LimitConfig::class)]
-#[UsesClass(\Guard\Policy\Definition\MetricsConfig::class)]
-#[UsesClass(\Guard\Policy\Definition\ScanConfig::class)]
-#[UsesClass(\Guard\Policy\Context::class)]
-#[UsesClass(\Guard\Policy\FileChange::class)]
-#[UsesClass(\Guard\Policy\Plan::class)]
-#[UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[UsesClass(\Guard\Diagnostic\Finding::class)]
+#[CoversClass(MetricPolicyReader::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(ApplyConfig::class)]
+#[UsesClass(ApplyConfigReader::class)]
+#[UsesClass(ApplyPolicyUsageValidator::class)]
+#[UsesClass(ApplyRuleConfig::class)]
+#[UsesClass(ApplyRuleConfigReader::class)]
+#[UsesClass(ApplyRuleListConfigReader::class)]
+#[UsesClass(PolicyConfig::class)]
+#[UsesClass(PolicyConfigReader::class)]
+#[UsesClass(PolicyDefinition::class)]
+#[UsesClass(PolicyListConfigReader::class)]
+#[UsesClass(PolicyResolver::class)]
+#[UsesClass(LimitConfigReader::class)]
+#[UsesClass(Schema::class)]
+#[UsesClass(MetricConfigKeyValidator::class)]
+#[UsesClass(MetricConfigScalarReader::class)]
+#[UsesClass(MetricConfigStringListReader::class)]
+#[UsesClass(LimitConfig::class)]
+#[UsesClass(MetricsConfig::class)]
+#[UsesClass(ScanConfig::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Finding::class)]
 final class MetricPolicyReaderTest extends TestCase
 {
     public function testReadPreservesConfiguredMetricThresholds(): void
     {
-        $config = (new \Guard\Config\Reader\MetricPolicyReader())->read(['source' => ['lib'], 'profiles' => ['standard' => ['limits' => ['file' => ['lines' => 500]]]], 'default' => 'standard'], '/project');
+        $config = (new MetricPolicyReader())->read(['source' => ['lib'], 'profiles' => ['standard' => ['limits' => ['file' => ['lines' => 500]]]], 'default' => 'standard'], '/project');
         self::assertSame(500, $config->policies['standard']->limits->maxFileLines);
         self::assertSame(['lib'], $config->scan->roots);
     }

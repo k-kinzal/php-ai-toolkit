@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\TestClass;
 
+use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 use Toolkit\PhpStan\Rule\Shared\Path\RestrictedTestNamespaceMatcher;
@@ -32,7 +33,7 @@ final class DescriptivePhpDocErrorCollector
      *
      * @return list<IdentifierRuleError>
      */
-    public function errors(\PhpParser\Node\Stmt\ClassLike $node): array
+    public function errors(ClassLike $node): array
     {
         if (!$this->namespaceMatcher->matches($node)) {
             return [];

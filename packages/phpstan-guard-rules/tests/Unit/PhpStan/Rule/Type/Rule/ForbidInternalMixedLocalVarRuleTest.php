@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Type\Rule;
 
 use Override;
+use PhpParser\Node\Stmt;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -35,7 +36,7 @@ final class ForbidInternalMixedLocalVarRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsStatementNode(): void
     {
-        self::assertSame(\PhpParser\Node\Stmt::class, $this->getRule()->getNodeType());
+        self::assertSame(Stmt::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodeReportsLocalVarMixed(): void

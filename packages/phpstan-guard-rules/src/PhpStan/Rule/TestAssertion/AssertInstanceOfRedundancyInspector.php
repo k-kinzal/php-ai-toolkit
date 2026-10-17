@@ -6,6 +6,12 @@ namespace Toolkit\PhpStan\Rule\TestAssertion;
 
 use function count;
 
+use PhpParser\Node\Arg;
+use PhpParser\Node\ArgPlaceholder;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\VariadicPlaceholder;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use Toolkit\PhpStan\Rule\Shared\CallArgumentResolver;
@@ -58,9 +64,9 @@ final class AssertInstanceOfRedundancyInspector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function errors(\PhpParser\Node\Expr $node, Scope $scope): array
+    public function errors(Expr $node, Scope $scope): array
     {
-        if ($node instanceof \PhpParser\Node\Expr\MethodCall) {
+        if ($node instanceof MethodCall) {
             if (!$this->targetMatcher->isThisMethodCall($node)) {
                 return [];
             }
@@ -73,7 +79,7 @@ final class AssertInstanceOfRedundancyInspector
             );
         }
 
-        if ($node instanceof \PhpParser\Node\Expr\StaticCall) {
+        if ($node instanceof StaticCall) {
             if (!$this->targetMatcher->isStaticCallOnPhpUnitAssert($node, $scope)) {
                 return [];
             }
@@ -90,7 +96,7 @@ final class AssertInstanceOfRedundancyInspector
     }
 
     /**
-     * @param array<array-key, \PhpParser\Node\Arg|\PhpParser\Node\ArgPlaceholder|\PhpParser\Node\VariadicPlaceholder> $args
+     * @param array<array-key, Arg|ArgPlaceholder|VariadicPlaceholder> $args
      * @return list<IdentifierRuleError>
      */
     public function errorsForCall(?string $methodName, array $args, int $line, Scope $scope): array

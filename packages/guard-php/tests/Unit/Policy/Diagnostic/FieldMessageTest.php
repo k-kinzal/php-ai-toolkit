@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy\Diagnostic;
 
+use Guard\Diagnostic\PolicyException;
 use Guard\Policy\Diagnostic\FieldMessage;
 use Guard\Policy\Rule;
 use JsonException;
@@ -19,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  */
 #[CoversClass(FieldMessage::class)]
 #[UsesClass(Rule::class)]
-#[UsesClass(\Guard\Diagnostic\PolicyException::class)]
+#[UsesClass(PolicyException::class)]
 final class FieldMessageTest extends TestCase
 {
     /**
@@ -92,7 +93,7 @@ final class FieldMessageTest extends TestCase
      */
     public function testStepRejectsUnsupportedAssertionsInsteadOfInventingARepair(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         (new FieldMessage())->step('unknown', null, 'app.json');
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Toolkit\DocGen\Compare;
 
 use Toolkit\DocGen\Parse\Symbol\FunctionDoc;
+use Toolkit\DocGen\Parse\Symbol\ParameterDoc;
 
 /**
  * Merges the two revisions of one top-level function.
@@ -92,7 +93,7 @@ final class FunctionMerger
     /**
      * Rebuilds one function around its merged parameter list.
      *
-     * @param list<\Toolkit\DocGen\Parse\Symbol\ParameterDoc> $parameters
+     * @param list<ParameterDoc> $parameters
      */
     public function rebuild(FunctionDoc $function, array $parameters): FunctionDoc
     {

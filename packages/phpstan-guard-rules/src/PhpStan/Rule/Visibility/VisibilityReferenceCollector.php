@@ -6,6 +6,25 @@ namespace Toolkit\PhpStan\Rule\Visibility;
 
 use function array_merge;
 
+use PhpParser\Node;
+use PhpParser\Node\Attribute;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\Instanceof_;
+use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Expr\StaticPropertyFetch;
+use PhpParser\Node\FunctionLike;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
+use PhpParser\Node\Param;
+use PhpParser\Node\Stmt\Catch_;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassLike;
+use PhpParser\Node\Stmt\Enum_;
+use PhpParser\Node\Stmt\Interface_;
+use PhpParser\Node\Stmt\Property;
+use PhpParser\Node\Stmt\TraitUse;
 use PHPStan\Analyser\Scope;
 use PHPStan\Collectors\Collector;
 
@@ -30,20 +49,20 @@ final class VisibilityReferenceCollector implements Collector
     }
 
     /**
-     * @return class-string<\PhpParser\Node>
+     * @return class-string<Node>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node::class;
+        return Node::class;
     }
 
     /**
      * Returns every declaration reference written by one node.
      *
-     * @param \PhpParser\Node $node
+     * @param Node $node
      * @return list<array{className: string, memberName: ?string, kind: string, namespace: string, line: int}>|null
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): ?array
+    public function processNode(Node $node, Scope $scope): ?array
     {
         $references = $this->fromNode($node, $scope);
 
@@ -55,37 +74,37 @@ final class VisibilityReferenceCollector implements Collector
      *
      * @return list<array{className: string, memberName: ?string, kind: string, namespace: string, line: int}>
      */
-    public function fromNode(\PhpParser\Node $node, Scope $scope): array
+    public function fromNode(Node $node, Scope $scope): array
     {
-        if ($node instanceof \PhpParser\Node\FunctionLike) {
+        if ($node instanceof FunctionLike) {
             return $this->fromType($node->getReturnType(), 'return type', $scope);
         }
 
-        if ($node instanceof \PhpParser\Node\Expr) {
+        if ($node instanceof Expr) {
             return $this->fromExpression($node, $scope);
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\ClassLike) {
+        if ($node instanceof ClassLike) {
             return $this->fromSupertypes($node, $scope);
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\TraitUse) {
+        if ($node instanceof TraitUse) {
             return $this->fromNames($node->traits, 'trait use', $scope);
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\Catch_) {
+        if ($node instanceof Catch_) {
             return $this->fromNames($node->types, 'catch type', $scope);
         }
 
-        if ($node instanceof \PhpParser\Node\Attribute) {
+        if ($node instanceof Attribute) {
             return $this->fromNames([$node->name], 'attribute', $scope);
         }
 
-        if ($node instanceof \PhpParser\Node\Param) {
+        if ($node instanceof Param) {
             return $this->fromType($node->type, 'parameter type', $scope);
         }
 
-        return $node instanceof \PhpParser\Node\Stmt\Property
+        return $node instanceof Property
             ? $this->fromType($node->type, 'property type', $scope)
             : [];
     }
@@ -95,21 +114,21 @@ final class VisibilityReferenceCollector implements Collector
      *
      * @return list<array{className: string, memberName: ?string, kind: string, namespace: string, line: int}>
      */
-    public function fromExpression(\PhpParser\Node\Expr $node, Scope $scope): array
+    public function fromExpression(Expr $node, Scope $scope): array
     {
-        if ($node instanceof \PhpParser\Node\Expr\New_) {
+        if ($node instanceof New_) {
             return $this->reference($node->class, '__construct', 'instantiation', $scope);
         }
 
-        if ($node instanceof \PhpParser\Node\Expr\StaticCall) {
+        if ($node instanceof StaticCall) {
             return $this->reference($node->class, $this->memberName($node->name), 'static call', $scope);
         }
 
-        if ($node instanceof \PhpParser\Node\Expr\StaticPropertyFetch) {
+        if ($node instanceof StaticPropertyFetch) {
             return $this->reference($node->class, $this->memberName($node->name), 'static property access', $scope);
         }
 
-        if ($node instanceof \PhpParser\Node\Expr\ClassConstFetch) {
+        if ($node instanceof ClassConstFetch) {
             $member = $this->memberName($node->name);
 
             return $member !== null && strtolower($member) === 'class'
@@ -117,7 +136,7 @@ final class VisibilityReferenceCollector implements Collector
                 : $this->reference($node->class, $member, 'constant access', $scope);
         }
 
-        return $node instanceof \PhpParser\Node\Expr\Instanceof_
+        return $node instanceof Instanceof_
             ? $this->reference($node->class, null, 'instanceof check', $scope)
             : [];
     }
@@ -127,10 +146,10 @@ final class VisibilityReferenceCollector implements Collector
      *
      * @return list<array{className: string, memberName: ?string, kind: string, namespace: string, line: int}>
      */
-    public function fromSupertypes(\PhpParser\Node\Stmt\ClassLike $node, Scope $scope): array
+    public function fromSupertypes(ClassLike $node, Scope $scope): array
     {
         $names = [];
-        if ($node instanceof \PhpParser\Node\Stmt\Class_) {
+        if ($node instanceof Class_) {
             if ($node->extends !== null) {
                 $names[] = $node->extends;
             }
@@ -138,11 +157,11 @@ final class VisibilityReferenceCollector implements Collector
             $names = array_merge($names, $node->implements);
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\Interface_) {
+        if ($node instanceof Interface_) {
             $names = array_merge($names, $node->extends);
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\Enum_) {
+        if ($node instanceof Enum_) {
             $names = array_merge($names, $node->implements);
         }
 
@@ -152,7 +171,7 @@ final class VisibilityReferenceCollector implements Collector
     /**
      * Returns one reference per written class name.
      *
-     * @param array<\PhpParser\Node\Name> $names
+     * @param array<Name> $names
      * @return list<array{className: string, memberName: ?string, kind: string, namespace: string, line: int}>
      */
     public function fromNames(array $names, string $kind, Scope $scope): array
@@ -170,7 +189,7 @@ final class VisibilityReferenceCollector implements Collector
      *
      * @return list<array{className: string, memberName: ?string, kind: string, namespace: string, line: int}>
      */
-    public function fromType(?\PhpParser\Node $typeNode, string $kind, Scope $scope): array
+    public function fromType(?Node $typeNode, string $kind, Scope $scope): array
     {
         $references = [];
         foreach ($this->typeNameReader->namesIn($typeNode) as $name) {
@@ -185,9 +204,9 @@ final class VisibilityReferenceCollector implements Collector
      *
      * @return list<array{className: string, memberName: ?string, kind: string, namespace: string, line: int}>
      */
-    public function reference(\PhpParser\Node $classNode, ?string $memberName, string $kind, Scope $scope): array
+    public function reference(Node $classNode, ?string $memberName, string $kind, Scope $scope): array
     {
-        if (!$classNode instanceof \PhpParser\Node\Name || $this->typeNameReader->isRelative($classNode)) {
+        if (!$classNode instanceof Name || $this->typeNameReader->isRelative($classNode)) {
             return [];
         }
 
@@ -203,8 +222,8 @@ final class VisibilityReferenceCollector implements Collector
     /**
      * Returns a literal member name, or null for a computed name.
      */
-    public function memberName(\PhpParser\Node $nameNode): ?string
+    public function memberName(Node $nameNode): ?string
     {
-        return $nameNode instanceof \PhpParser\Node\Identifier ? $nameNode->toString() : null;
+        return $nameNode instanceof Identifier ? $nameNode->toString() : null;
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Type\Rule;
 
 use Override;
+use PHPStan\Node\InClosureNode;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -32,7 +33,7 @@ final class ForbidInternalMixedClosureRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsClosureNode(): void
     {
-        self::assertSame(\PHPStan\Node\InClosureNode::class, $this->getRule()->getNodeType());
+        self::assertSame(InClosureNode::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodeReportsClosureSignature(): void

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\ClassDesign;
 
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassLike;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Trait_;
 use Toolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
 
 /**
@@ -26,14 +30,14 @@ final class ProtectedMethodPolicy
      * Checks whether a protected method is allowed by the design rule.
      */
     public function allows(
-        \PhpParser\Node\Stmt\ClassLike $classLike,
-        \PhpParser\Node\Stmt\ClassMethod $method,
+        ClassLike $classLike,
+        ClassMethod $method,
     ): bool {
-        if ($classLike instanceof \PhpParser\Node\Stmt\Trait_) {
+        if ($classLike instanceof Trait_) {
             return true;
         }
 
-        if ($classLike instanceof \PhpParser\Node\Stmt\Class_ && $classLike->isAbstract()) {
+        if ($classLike instanceof Class_ && $classLike->isAbstract()) {
             return true;
         }
 

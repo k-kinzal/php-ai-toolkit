@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\TestClass;
 
+use PhpParser\Node;
+use PhpParser\Node\Stmt;
 use PhpParser\NodeFinder;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\RuleErrorBuilder;
@@ -31,13 +33,13 @@ final class TestMethodControlFlowErrorCollector
     }
 
     /**
-     * @param array<\PhpParser\Node\Stmt> $stmts
+     * @param array<Stmt> $stmts
      * @return list<IdentifierRuleError>
      */
     public function errors(array $stmts, string $methodName): array
     {
         $nodeFinder = new NodeFinder();
-        $violations = $nodeFinder->find($stmts, function (\PhpParser\Node $node): bool {
+        $violations = $nodeFinder->find($stmts, function (Node $node): bool {
             return $this->typeResolver->type($node) !== null;
         });
 

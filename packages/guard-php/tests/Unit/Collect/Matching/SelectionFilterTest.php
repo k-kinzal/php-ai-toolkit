@@ -4,7 +4,25 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Collect\Matching;
 
+use Guard\Collect\Matching\SelectionFilter;
+use Guard\Config\Configuration;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\PathPatternMatcher;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -26,32 +44,32 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Diagnostic\Finding
  */
-#[CoversClass(\Guard\Collect\Matching\SelectionFilter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\DirectoryListing::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Entry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Input::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\InputSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\PathPatternMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\StructuredFile::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Context::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Plan::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\Finding::class)]
+#[CoversClass(SelectionFilter::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(PathPatternMatcher::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Finding::class)]
 final class SelectionFilterTest extends TestCase
 {
     public function testIncludesPrunesAncestorsUsingTheSelectionsMatchingConvention(): void
     {
-        $filter = new \Guard\Collect\Matching\SelectionFilter();
-        $source = new \Guard\Input\Selection('descendants', ['src'], ['src/Skip'], '.php', false, '');
+        $filter = new SelectionFilter();
+        $source = new Selection('descendants', ['src'], ['src/Skip'], '.php', false, '');
         self::assertFalse($filter->includes($source, 'src/Skip/A.php'));
         self::assertTrue($filter->includes($source, 'src/Keep/A.php'));
-        $directory = new \Guard\Input\Selection('directories', ['src'], ['src/*/generated'], '', false, '');
+        $directory = new Selection('directories', ['src'], ['src/*/generated'], '', false, '');
         self::assertFalse($filter->includes($directory, 'src/Deep/More/generated'));
     }
 }

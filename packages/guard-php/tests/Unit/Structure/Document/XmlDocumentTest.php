@@ -6,6 +6,22 @@ namespace Tests\Unit\Structure\Document;
 
 use DOMElement;
 use DOMException;
+use Guard\Config\Configuration;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
+use Guard\Structure\Document\XmlDocument;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -30,28 +46,28 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Diagnostic\Finding
  */
-#[CoversClass(\Guard\Structure\Document\XmlDocument::class)]
-#[UsesClass(\Guard\Input\DirectoryListing::class)]
-#[UsesClass(\Guard\Input\FileRecord::class)]
-#[UsesClass(\Guard\Input\FileSet::class)]
-#[UsesClass(\Guard\Input\Entry::class)]
-#[UsesClass(\Guard\Input\Input::class)]
-#[UsesClass(\Guard\Input\InputSet::class)]
-#[UsesClass(\Guard\Input\Selection::class)]
-#[UsesClass(\Guard\Input\StructuredFile::class)]
-#[UsesClass(\Guard\Config\Configuration::class)]
+#[CoversClass(XmlDocument::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
 #[UsesClass(\Guard\Structure\Document\Selection::class)]
-#[UsesClass(\Guard\Policy\Context::class)]
-#[UsesClass(\Guard\Policy\FileChange::class)]
-#[UsesClass(\Guard\Policy\Plan::class)]
-#[UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[UsesClass(\Guard\Diagnostic\Finding::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Finding::class)]
 final class XmlDocumentTest extends TestCase
 {
     public function testDomExposesTheAlreadyParsedTreeAndIsolatesClones(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<count>1</count>');
+        $document = new XmlDocument('<count>1</count>');
         $copy = clone $document;
         self::assertSame($copy->node('/'), $copy->dom());
         $element = $copy->dom()->documentElement;
@@ -65,7 +81,7 @@ final class XmlDocumentTest extends TestCase
      */
     public function testWriteCreatesAttributesAndEscapesText(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<settings><name>before</name></settings>');
+        $document = new XmlDocument('<settings><name>before</name></settings>');
         $document->write('/settings/@strict', 'true');
         $document->write('/settings/name', 'A & B');
         self::assertSame('true', $document->read('/settings/@strict')->value);
@@ -74,8 +90,8 @@ final class XmlDocumentTest extends TestCase
 
     public function testRejectsExternalEntities(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
-        new \Guard\Structure\Document\XmlDocument('<!DOCTYPE x [<!ENTITY a SYSTEM "file:///etc/passwd">]><x>&a;</x>');
+        $this->expectException(PolicyException::class);
+        new XmlDocument('<!DOCTYPE x [<!ENTITY a SYSTEM "file:///etc/passwd">]><x>&a;</x>');
     }
 
     /**
@@ -83,8 +99,8 @@ final class XmlDocumentTest extends TestCase
      */
     public function testReadRejectsAmbiguousSelectors(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<x><v>A</v><v>B</v></x>');
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $document = new XmlDocument('<x><v>A</v><v>B</v></x>');
+        $this->expectException(PolicyException::class);
         $document->read('/x/v');
     }
 
@@ -92,35 +108,35 @@ final class XmlDocumentTest extends TestCase
      */
     public function testRefusesToDestroyChildren(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<x><v>A</v></x>');
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $document = new XmlDocument('<x><v>A</v></x>');
+        $this->expectException(PolicyException::class);
         $document->write('/x', 'B');
     }
 
     public function testNodeReportsMissingValues(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<x/>');
+        $document = new XmlDocument('<x/>');
         self::assertNull($document->node('/x/@missing'));
     }
     /**
      */
     public function testEncodePreservesComments(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<x><!--keep--><v>A</v></x>');
+        $document = new XmlDocument('<x><!--keep--><v>A</v></x>');
         $document->write('/x/v', 'B');
         self::assertStringContainsString('<!--keep-->', $document->encode());
     }
     public function testNodeRejectsInvalidXPathWithoutEmittingWarnings(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<x/>');
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $document = new XmlDocument('<x/>');
+        $this->expectException(PolicyException::class);
         $document->node('/x[');
     }
 
     public function testEmptyInputIsRejectedBeforeParsing(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
-        new \Guard\Structure\Document\XmlDocument('');
+        $this->expectException(PolicyException::class);
+        new XmlDocument('');
     }
 
     /**
@@ -128,7 +144,7 @@ final class XmlDocumentTest extends TestCase
      */
     public function testWriteCreatesASuiteWithoutChangingExistingSuitesOrComments(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<phpunit><!--keep--><testsuites><testsuite name="unit"><directory>tests</directory></testsuite></testsuites></phpunit>');
+        $document = new XmlDocument('<phpunit><!--keep--><testsuites><testsuite name="unit"><directory>tests</directory></testsuite></testsuites></phpunit>');
         $selector = '/phpunit/testsuites/testsuite[@name="doctest"]/file';
         $document->write($selector, 'vendor/example/suite.php');
         $document->write($selector, 'vendor/example/suite.php');
@@ -144,7 +160,7 @@ final class XmlDocumentTest extends TestCase
      */
     public function testWriteCreatesExtensionParentsAndParameters(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<phpunit/>');
+        $document = new XmlDocument('<phpunit/>');
         $selector = '/phpunit/extensions/bootstrap[@class="Example\\Extension"]/parameter[@name="directories"]/@value';
         $document->write($selector, 'src');
 
@@ -157,7 +173,7 @@ final class XmlDocumentTest extends TestCase
      */
     public function testWritePreservesQuotedPredicateValuesContainingSlashesAndXmlCharacters(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<settings/>');
+        $document = new XmlDocument('<settings/>');
         $selector = "/settings/path[@name='a/b & c']/@value";
         $document->write($selector, '<value>');
 
@@ -171,7 +187,7 @@ final class XmlDocumentTest extends TestCase
      */
     public function testWriteReusesParentsAndAcceptsAnEmptyPredicateValue(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<settings><path name="other" value="keep"/></settings>');
+        $document = new XmlDocument('<settings><path name="other" value="keep"/></settings>');
         $document->write('/settings/path[@name=""]/@value', 'new');
 
         self::assertSame('new', $document->read('/settings/path[@name=""]/@value')->value);
@@ -181,24 +197,24 @@ final class XmlDocumentTest extends TestCase
 
     public function testWriteRejectsAnAmbiguousParent(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<phpunit><extensions/><extensions/></phpunit>');
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $document = new XmlDocument('<phpunit><extensions/><extensions/></phpunit>');
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('/phpunit/extensions');
         $document->write('/phpunit/extensions/bootstrap[@class="Example"]/@class', 'Example');
     }
 
     public function testCreateRejectsCreatingASecondRoot(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<settings/>');
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $document = new XmlDocument('<settings/>');
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('Use the existing root');
         $document->create('/phpunit/extensions/bootstrap/@class');
     }
 
     public function testCreationStepsRejectsAPositionalSelector(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<settings/>');
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $document = new XmlDocument('<settings/>');
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('Use an absolute path of named elements');
         $document->creationSteps('/settings/path[2]/@value');
     }
@@ -208,7 +224,7 @@ final class XmlDocumentTest extends TestCase
      */
     public function testWriteStillRepairsExistingNodesSelectedByComplexXPath(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<settings><path>A</path><path>B</path></settings>');
+        $document = new XmlDocument('<settings><path>A</path><path>B</path></settings>');
         $document->write('/settings/path[2]', 'changed');
         $document->write('/settings/path[2]/@enabled', 'true');
 
@@ -222,10 +238,10 @@ final class XmlDocumentTest extends TestCase
      */
     public function testAppendStepRejectsAnInvalidName(): void
     {
-        $document = new \Guard\Structure\Document\XmlDocument('<settings/>');
+        $document = new XmlDocument('<settings/>');
         $parent = $document->dom()->documentElement;
         self::assertInstanceOf(DOMElement::class, $parent);
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $document->appendStep($parent, '/bad:name');
     }
 

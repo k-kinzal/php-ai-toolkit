@@ -6,6 +6,12 @@ namespace Toolkit\PhpStan\Rule\ControlFlow;
 
 use function count;
 
+use PhpParser\Node\Arg;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 
 /**
@@ -22,7 +28,7 @@ final class DispatchSubjectResolver
     /**
      * Returns the expression the construct branches on, or null when it names none.
      */
-    public function resolve(\PhpParser\Node\Expr $condition, Scope $scope): ?\PhpParser\Node\Expr
+    public function resolve(Expr $condition, Scope $scope): ?Expr
     {
         $conditionType = $scope->getType($condition);
         if ($conditionType->isTrue()->yes() || $conditionType->isFalse()->yes()) {
@@ -40,23 +46,23 @@ final class DispatchSubjectResolver
      * branch of such a table can hold nothing but a class name, which is what makes the set
      * of classes it is answering for unambiguous.
      */
-    public function namedObject(\PhpParser\Node\Expr $condition): ?\PhpParser\Node\Expr
+    public function namedObject(Expr $condition): ?Expr
     {
         if (
-            $condition instanceof \PhpParser\Node\Expr\ClassConstFetch
-            && $condition->class instanceof \PhpParser\Node\Expr
-            && $condition->name instanceof \PhpParser\Node\Identifier
+            $condition instanceof ClassConstFetch
+            && $condition->class instanceof Expr
+            && $condition->name instanceof Identifier
             && $condition->name->toLowerString() === 'class'
         ) {
             return $condition->class;
         }
 
         if (
-            $condition instanceof \PhpParser\Node\Expr\FuncCall
-            && $condition->name instanceof \PhpParser\Node\Name
+            $condition instanceof FuncCall
+            && $condition->name instanceof Name
             && $condition->name->toLowerString() === 'get_class'
             && count($condition->args) === 1
-            && $condition->args[0] instanceof \PhpParser\Node\Arg
+            && $condition->args[0] instanceof Arg
         ) {
             return $condition->args[0]->value;
         }

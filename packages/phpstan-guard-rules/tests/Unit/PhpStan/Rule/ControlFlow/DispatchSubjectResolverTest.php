@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
+use PhpParser\Node\Arg;
+use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\ConstFetch;
+use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
+use PhpParser\Node\Name\FullyQualified;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\StringType;
@@ -21,7 +29,7 @@ final class DispatchSubjectResolverTest extends TestCase
     {
         $scope = self::createStub(Scope::class);
         $scope->method('getType')->willReturn(new StringType());
-        $condition = new \PhpParser\Node\Expr\Variable('mode');
+        $condition = new Variable('mode');
 
         self::assertSame($condition, (new DispatchSubjectResolver())->resolve($condition, $scope));
     }
@@ -32,7 +40,7 @@ final class DispatchSubjectResolverTest extends TestCase
         $scope->method('getType')->willReturn(new ConstantBooleanType(true));
 
         self::assertNull((new DispatchSubjectResolver())->resolve(
-            new \PhpParser\Node\Expr\ConstFetch(new \PhpParser\Node\Name('true')),
+            new ConstFetch(new Name('true')),
             $scope,
         ));
     }
@@ -43,35 +51,35 @@ final class DispatchSubjectResolverTest extends TestCase
         $scope->method('getType')->willReturn(new ConstantBooleanType(false));
 
         self::assertNull((new DispatchSubjectResolver())->resolve(
-            new \PhpParser\Node\Expr\ConstFetch(new \PhpParser\Node\Name('false')),
+            new ConstFetch(new Name('false')),
             $scope,
         ));
     }
 
     public function testNamedObjectReadsTheObjectOfAClassConstantSubject(): void
     {
-        $object = new \PhpParser\Node\Expr\Variable('shape');
+        $object = new Variable('shape');
 
         self::assertSame($object, (new DispatchSubjectResolver())->namedObject(
-            new \PhpParser\Node\Expr\ClassConstFetch($object, new \PhpParser\Node\Identifier('class')),
+            new ClassConstFetch($object, new Identifier('class')),
         ));
     }
 
     public function testNamedObjectReadsTheArgumentOfGetClass(): void
     {
-        $object = new \PhpParser\Node\Expr\Variable('shape');
+        $object = new Variable('shape');
 
         self::assertSame($object, (new DispatchSubjectResolver())->namedObject(
-            new \PhpParser\Node\Expr\FuncCall(new \PhpParser\Node\Name('get_class'), [new \PhpParser\Node\Arg($object)]),
+            new FuncCall(new Name('get_class'), [new Arg($object)]),
         ));
     }
 
     public function testNamedObjectReturnsNullForAWrittenClassName(): void
     {
         self::assertNull((new DispatchSubjectResolver())->namedObject(
-            new \PhpParser\Node\Expr\ClassConstFetch(
-                new \PhpParser\Node\Name\FullyQualified('App\\Circle'),
-                new \PhpParser\Node\Identifier('class'),
+            new ClassConstFetch(
+                new FullyQualified('App\\Circle'),
+                new Identifier('class'),
             ),
         ));
     }
@@ -79,9 +87,9 @@ final class DispatchSubjectResolverTest extends TestCase
     public function testNamedObjectReturnsNullForAnotherClassConstant(): void
     {
         self::assertNull((new DispatchSubjectResolver())->namedObject(
-            new \PhpParser\Node\Expr\ClassConstFetch(
-                new \PhpParser\Node\Expr\Variable('shape'),
-                new \PhpParser\Node\Identifier('MODE'),
+            new ClassConstFetch(
+                new Variable('shape'),
+                new Identifier('MODE'),
             ),
         ));
     }
@@ -89,9 +97,9 @@ final class DispatchSubjectResolverTest extends TestCase
     public function testNamedObjectReturnsNullForAnotherFunction(): void
     {
         self::assertNull((new DispatchSubjectResolver())->namedObject(
-            new \PhpParser\Node\Expr\FuncCall(
-                new \PhpParser\Node\Name('strtolower'),
-                [new \PhpParser\Node\Arg(new \PhpParser\Node\Expr\Variable('shape'))],
+            new FuncCall(
+                new Name('strtolower'),
+                [new Arg(new Variable('shape'))],
             ),
         ));
     }
@@ -99,12 +107,12 @@ final class DispatchSubjectResolverTest extends TestCase
     public function testNamedObjectReturnsNullForGetClassWithoutOneArgument(): void
     {
         self::assertNull((new DispatchSubjectResolver())->namedObject(
-            new \PhpParser\Node\Expr\FuncCall(new \PhpParser\Node\Name('get_class'), []),
+            new FuncCall(new Name('get_class'), []),
         ));
     }
 
     public function testNamedObjectReturnsNullForAnExpressionThatNamesNoClass(): void
     {
-        self::assertNull((new DispatchSubjectResolver())->namedObject(new \PhpParser\Node\Expr\Variable('shape')));
+        self::assertNull((new DispatchSubjectResolver())->namedObject(new Variable('shape')));
     }
 }

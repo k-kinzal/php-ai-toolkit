@@ -4,7 +4,24 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Config\Project;
 
+use Guard\Config\Configuration;
+use Guard\Config\Project\PresetCatalog;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
@@ -26,27 +43,27 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Diagnostic\Finding
  */
-#[CoversClass(\Guard\Config\Project\PresetCatalog::class)]
-#[UsesClass(\Guard\Input\DirectoryListing::class)]
-#[UsesClass(\Guard\Input\FileRecord::class)]
-#[UsesClass(\Guard\Input\FileSet::class)]
-#[UsesClass(\Guard\Input\Entry::class)]
-#[UsesClass(\Guard\Input\Input::class)]
-#[UsesClass(\Guard\Input\InputSet::class)]
-#[UsesClass(\Guard\Input\Selection::class)]
-#[UsesClass(\Guard\Input\StructuredFile::class)]
-#[UsesClass(\Guard\Config\Configuration::class)]
-#[UsesClass(\Guard\Policy\Context::class)]
-#[UsesClass(\Guard\Policy\FileChange::class)]
-#[UsesClass(\Guard\Policy\Plan::class)]
-#[UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[UsesClass(\Guard\Diagnostic\Finding::class)]
+#[CoversClass(PresetCatalog::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Finding::class)]
 final class PresetCatalogTest extends TestCase
 {
     public function testNamesIncludeGenericAndToolPresets(): void
     {
-        $names = (new \Guard\Config\Project\PresetCatalog())->names();
+        $names = (new PresetCatalog())->names();
         self::assertContains('metrics', $names);
         self::assertContains('disable-doc', $names);
         self::assertContains('phpstan-guard-rules', $names);
@@ -58,16 +75,16 @@ final class PresetCatalogTest extends TestCase
 
     public function testDocumentsMapsMarkdownPresetsToTheirFiles(): void
     {
-        self::assertSame(['agents-md' => 'AGENTS.md', 'claude-md' => 'CLAUDE.md', 'readme-md' => 'README.md'], (new \Guard\Config\Project\PresetCatalog())->documents());
+        self::assertSame(['agents-md' => 'AGENTS.md', 'claude-md' => 'CLAUDE.md', 'readme-md' => 'README.md'], (new PresetCatalog())->documents());
     }
 
     /**
      * @dataProvider providerMarkdownPresets
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('providerMarkdownPresets')]
+    #[DataProvider('providerMarkdownPresets')]
     public function testMarkdownPresetDeclaresOnlyItsDocument(string $name, string $document): void
     {
-        $documentation = (new \Guard\Config\Project\PresetCatalog())->read($name)['documentation'] ?? null;
+        $documentation = (new PresetCatalog())->read($name)['documentation'] ?? null;
 
         self::assertIsArray($documentation);
         self::assertIsArray($documentation['files'] ?? null);
@@ -86,24 +103,24 @@ final class PresetCatalogTest extends TestCase
 
     public function testDefaultsNamesThePhpUnitThirteenFile(): void
     {
-        self::assertSame('phpunit.xml.dist', (new \Guard\Config\Project\PresetCatalog())->defaults()['phpunit13']);
+        self::assertSame('phpunit.xml.dist', (new PresetCatalog())->defaults()['phpunit13']);
     }
 
     public function testCandidatesPrefersTheVersionedPhpUnitFile(): void
     {
-        $candidates = (new \Guard\Config\Project\PresetCatalog())->candidates('phpunit10');
+        $candidates = (new PresetCatalog())->candidates('phpunit10');
         self::assertSame('phpunit10.xml.dist', $candidates[0]);
     }
 
     public function testPhpunitCandidatesLeavesUnrelatedPresetsEmpty(): void
     {
-        self::assertSame([], (new \Guard\Config\Project\PresetCatalog())->phpunitCandidates('composer'));
+        self::assertSame([], (new PresetCatalog())->phpunitCandidates('composer'));
     }
 
     public function testImportPathUsesRulesInsideThePackage(): void
     {
         $root = dirname(__DIR__, 4);
-        self::assertSame('rules/metrics.yaml', (new \Guard\Config\Project\PresetCatalog())->importPath($root, 'metrics'));
+        self::assertSame('rules/metrics.yaml', (new PresetCatalog())->importPath($root, 'metrics'));
     }
 
     public function testImportPathUsesTheInstalledVendorCopy(): void
@@ -111,77 +128,77 @@ final class PresetCatalogTest extends TestCase
         $root = sys_get_temp_dir() . '/guard-vendor-preset-' . uniqid();
         mkdir($root . '/vendor/k-kinzal/guard-php/rules', 0777, true);
         file_put_contents($root . '/vendor/k-kinzal/guard-php/rules/composer.yaml', "configuration: []\n");
-        self::assertSame('vendor/k-kinzal/guard-php/rules/composer.yaml', (new \Guard\Config\Project\PresetCatalog())->importPath($root, 'composer'));
+        self::assertSame('vendor/k-kinzal/guard-php/rules/composer.yaml', (new PresetCatalog())->importPath($root, 'composer'));
     }
 
     public function testLimitsReadTheShippedStandardProfile(): void
     {
-        $limits = (new \Guard\Config\Project\PresetCatalog())->limits();
+        $limits = (new PresetCatalog())->limits();
         self::assertSame(['lines' => 500, 'ncloc' => 350], $limits['file']);
         self::assertSame(['lines' => 50, 'cyclomatic_complexity' => 20], $limits['method']);
     }
 
     public function testAssertKnownRejectsAnUnknownPreset(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('Unknown guard import "nope"');
-        (new \Guard\Config\Project\PresetCatalog())->assertKnown('nope');
+        (new PresetCatalog())->assertKnown('nope');
     }
 
     public function testDirectoryPointsAtTheShippedRules(): void
     {
-        self::assertStringEndsWith('/rules', (new \Guard\Config\Project\PresetCatalog())->directory());
+        self::assertStringEndsWith('/rules', (new PresetCatalog())->directory());
     }
 
     public function testFilePointsAtOnePreset(): void
     {
-        self::assertStringEndsWith('/rules/metrics.yaml', (new \Guard\Config\Project\PresetCatalog())->file('metrics'));
+        self::assertStringEndsWith('/rules/metrics.yaml', (new PresetCatalog())->file('metrics'));
     }
 
     public function testImportsReturnsOneRelativePathPerName(): void
     {
-        $paths = (new \Guard\Config\Project\PresetCatalog())->imports(dirname(__DIR__, 4), ['metrics', 'composer']);
+        $paths = (new PresetCatalog())->imports(dirname(__DIR__, 4), ['metrics', 'composer']);
         self::assertSame(['rules/metrics.yaml', 'rules/composer.yaml'], $paths);
     }
 
     public function testRelativePathStaysInsideThePackage(): void
     {
-        $catalog = new \Guard\Config\Project\PresetCatalog();
+        $catalog = new PresetCatalog();
         self::assertSame('rules/metrics.yaml', $catalog->relative(dirname($catalog->directory()), $catalog->file('metrics')));
     }
 
     public function testAbsoluteReturnsTheGivenPathWhenItDoesNotExist(): void
     {
         $missing = sys_get_temp_dir() . '/guard-missing-' . uniqid();
-        self::assertSame($missing, (new \Guard\Config\Project\PresetCatalog())->absolute($missing));
+        self::assertSame($missing, (new PresetCatalog())->absolute($missing));
     }
 
     public function testPartsSplitsDirectories(): void
     {
-        self::assertSame(['rules', 'metrics.yaml'], (new \Guard\Config\Project\PresetCatalog())->parts('rules/metrics.yaml'));
+        self::assertSame(['rules', 'metrics.yaml'], (new PresetCatalog())->parts('rules/metrics.yaml'));
     }
 
     public function testReadLoadsTheComposerPreset(): void
     {
-        $document = (new \Guard\Config\Project\PresetCatalog())->read('composer');
+        $document = (new PresetCatalog())->read('composer');
         self::assertArrayHasKey('configuration', $document);
     }
 
     public function testRuleIdsListsPhpStanLevel(): void
     {
-        self::assertSame(['phpstan.level', 'phpstan.strict-rules', 'phpstan.rules', 'phpstan.extension'], (new \Guard\Config\Project\PresetCatalog())->ruleIds('phpstan'));
+        self::assertSame(['phpstan.level', 'phpstan.strict-rules', 'phpstan.rules', 'phpstan.extension'], (new PresetCatalog())->ruleIds('phpstan'));
     }
 
     public function testMetricsRejectsANonIntegerLimit(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('must be an integer');
-        (new \Guard\Config\Project\PresetCatalog())->metrics(['file' => ['lines' => '500']]);
+        (new PresetCatalog())->metrics(['file' => ['lines' => '500']]);
     }
 
     public function testIsMappingAcceptsADocument(): void
     {
-        self::assertTrue((new \Guard\Config\Project\PresetCatalog())->isMapping(['metrics' => []]));
-        self::assertFalse((new \Guard\Config\Project\PresetCatalog())->isMapping(['metrics']));
+        self::assertTrue((new PresetCatalog())->isMapping(['metrics' => []]));
+        self::assertFalse((new PresetCatalog())->isMapping(['metrics']));
     }
 }

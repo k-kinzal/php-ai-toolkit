@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Reporting;
 
+use Guard\Config\Schema;
 use Guard\Diagnostic\Finding;
 use Guard\Diagnostic\PolicyException;
 use Guard\Reporting\Baseline;
+use Guard\Reporting\BaselineMatch;
 use JsonException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
@@ -18,11 +23,11 @@ use RuntimeException;
  * @uses \Guard\Config\Schema
  * @uses \Guard\Diagnostic\PolicyException
  */
-#[\PHPUnit\Framework\Attributes\CoversClass(Baseline::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Finding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\BaselineMatch::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Schema::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(PolicyException::class)]
+#[CoversClass(Baseline::class)]
+#[UsesClass(Finding::class)]
+#[UsesClass(BaselineMatch::class)]
+#[UsesClass(Schema::class)]
+#[UsesClass(PolicyException::class)]
 final class BaselineTest extends TestCase
 {
     /**
@@ -88,7 +93,7 @@ final class BaselineTest extends TestCase
      * @dataProvider providerInvalidBaselines
      * @throws JsonException
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('providerInvalidBaselines')]
+    #[DataProvider('providerInvalidBaselines')]
     public function testEntriesRejectMalformedOrUnsupportedBaselines(string $json): void
     {
         $this->expectException(RuntimeException::class);

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Visibility;
 
+use PhpParser\Node\IntersectionType;
+use PhpParser\Node\Name;
+use PhpParser\Node\UnionType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\PhpStan\Rule\Visibility\TypeNameReader;
@@ -16,23 +19,23 @@ final class TypeNameReaderTest extends TestCase
 {
     public function testNamesInUnwrapsCompositeTypesAndSkipsRelativeNames(): void
     {
-        $type = new \PhpParser\Node\UnionType([
-            new \PhpParser\Node\Name('App\Order'),
-            new \PhpParser\Node\IntersectionType([
-                new \PhpParser\Node\Name('App\Readable'),
-                new \PhpParser\Node\Name('App\Writable'),
+        $type = new UnionType([
+            new Name('App\Order'),
+            new IntersectionType([
+                new Name('App\Readable'),
+                new Name('App\Writable'),
             ]),
         ]);
 
         self::assertSame(
             ['App\Order', 'App\Readable', 'App\Writable'],
-            array_map(static fn (\PhpParser\Node\Name $name): string => $name->toString(), (new TypeNameReader())->namesIn($type)),
+            array_map(static fn (Name $name): string => $name->toString(), (new TypeNameReader())->namesIn($type)),
         );
-        self::assertSame([], (new TypeNameReader())->namesIn(new \PhpParser\Node\Name('self')));
+        self::assertSame([], (new TypeNameReader())->namesIn(new Name('self')));
     }
 
     public function testIsRelativeRecognizesParentKeyword(): void
     {
-        self::assertTrue((new TypeNameReader())->isRelative(new \PhpParser\Node\Name('parent')));
+        self::assertTrue((new TypeNameReader())->isRelative(new Name('parent')));
     }
 }

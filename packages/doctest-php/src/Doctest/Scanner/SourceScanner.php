@@ -14,6 +14,11 @@ use function is_array;
 use function is_file;
 
 use PhpParser\ErrorHandler\Collecting;
+use PhpParser\Node;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Function_;
+use PhpParser\Node\Stmt\Namespace_;
 use PhpParser\Parser;
 
 use function preg_match;
@@ -105,7 +110,7 @@ final class SourceScanner
     public function traverseAst(array $nodes, string $filePath, ?string $namespace, ?string $className): Generator
     {
         foreach ($nodes as $node) {
-            if (!$node instanceof \PhpParser\Node) {
+            if (!$node instanceof Node) {
                 continue;
             }
 
@@ -118,27 +123,27 @@ final class SourceScanner
      *
      * @return Generator<int, Target>
      */
-    public function targetsOf(\PhpParser\Node $node, string $filePath, ?string $namespace, ?string $className): Generator
+    public function targetsOf(Node $node, string $filePath, ?string $namespace, ?string $className): Generator
     {
-        if ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
+        if ($node instanceof Namespace_) {
             yield from $this->traverseAst($node->stmts, $filePath, $node->name === null ? null : $node->name->toString(), null);
 
             return;
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\Class_) {
+        if ($node instanceof Class_) {
             yield from $this->classTargets($node, $filePath, $namespace);
 
             return;
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\ClassMethod) {
+        if ($node instanceof ClassMethod) {
             yield from $this->methodTarget($node, $filePath, $namespace, $className);
 
             return;
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\Function_) {
+        if ($node instanceof Function_) {
             yield from $this->functionTarget($node, $filePath, $namespace);
 
             return;
@@ -152,7 +157,7 @@ final class SourceScanner
      *
      * @return Generator<int, Target>
      */
-    public function classTargets(\PhpParser\Node\Stmt\Class_ $node, string $filePath, ?string $namespace): Generator
+    public function classTargets(Class_ $node, string $filePath, ?string $namespace): Generator
     {
         $className = $node->name === null ? null : $node->name->toString();
         $docComment = $node->getDocComment();
@@ -168,7 +173,7 @@ final class SourceScanner
      *
      * @return Generator<int, Target>
      */
-    public function methodTarget(\PhpParser\Node\Stmt\ClassMethod $node, string $filePath, ?string $namespace, ?string $className): Generator
+    public function methodTarget(ClassMethod $node, string $filePath, ?string $namespace, ?string $className): Generator
     {
         $docComment = $node->getDocComment();
         if ($docComment === null || $className === null) {
@@ -192,7 +197,7 @@ final class SourceScanner
      *
      * @return Generator<int, Target>
      */
-    public function functionTarget(\PhpParser\Node\Stmt\Function_ $node, string $filePath, ?string $namespace): Generator
+    public function functionTarget(Function_ $node, string $filePath, ?string $namespace): Generator
     {
         $docComment = $node->getDocComment();
         if ($docComment === null) {
@@ -205,15 +210,15 @@ final class SourceScanner
     /**
      * Returns the direct sub-node values of one node.
      *
-     * @return list<\PhpParser\Node>
+     * @return list<Node>
      */
-    public function children(\PhpParser\Node $node): array
+    public function children(Node $node): array
     {
         $values = get_object_vars($node);
         $children = [];
         foreach ($node->getSubNodeNames() as $name) {
             $value = $values[$name] ?? null;
-            if (is_array($value) || $value instanceof \PhpParser\Node) {
+            if (is_array($value) || $value instanceof Node) {
                 $children[] = $value;
             }
         }
@@ -222,7 +227,7 @@ final class SourceScanner
         foreach ($children as $child) {
             if (is_array($child)) {
                 foreach ($child as $item) {
-                    if ($item instanceof \PhpParser\Node) {
+                    if ($item instanceof Node) {
                         $flattened[] = $item;
                     }
                 }

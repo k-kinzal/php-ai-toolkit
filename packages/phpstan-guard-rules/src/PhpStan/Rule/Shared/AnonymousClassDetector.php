@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\Shared;
 
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Analyser\Scope;
 
 /**
@@ -14,9 +16,9 @@ final class AnonymousClassDetector
     /**
      * Reports whether the class-like node represents an anonymous class.
      */
-    public function isAnonymous(\PhpParser\Node\Stmt\ClassLike $node, Scope $scope): bool
+    public function isAnonymous(ClassLike $node, Scope $scope): bool
     {
-        if (!$node instanceof \PhpParser\Node\Stmt\Class_) {
+        if (!$node instanceof Class_) {
             return false;
         }
 

@@ -15,6 +15,7 @@ use Guard\Policy\Policy;
 use Guard\Policy\PolicyBinding;
 use Guard\Repair\ChangeSet;
 use JsonException;
+use Nette\Neon\Exception;
 use RuntimeException;
 
 /**
@@ -31,7 +32,7 @@ final class Pipeline
     /** Runs policies only after their requested file structures have been collected.
      * @throws RuntimeException
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function run(Configuration $configuration, string $configPath, bool $repair = false): Plan
     {

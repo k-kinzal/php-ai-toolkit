@@ -4,6 +4,25 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Config;
 
+use Guard\Config\Configuration;
+use Guard\Config\RuleReader;
+use Guard\Config\Schema;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
+use Guard\Policy\Rule;
+use Guard\Structure\Document\Constraint;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -31,26 +50,26 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Policy\Rule
  * @uses \Guard\Diagnostic\Finding
  */
-#[CoversClass(\Guard\Config\RuleReader::class)]
-#[UsesClass(\Guard\Input\DirectoryListing::class)]
-#[UsesClass(\Guard\Input\FileRecord::class)]
-#[UsesClass(\Guard\Input\FileSet::class)]
-#[UsesClass(\Guard\Input\Entry::class)]
-#[UsesClass(\Guard\Input\Input::class)]
-#[UsesClass(\Guard\Input\InputSet::class)]
-#[UsesClass(\Guard\Input\Selection::class)]
-#[UsesClass(\Guard\Input\StructuredFile::class)]
-#[UsesClass(\Guard\Config\Configuration::class)]
-#[UsesClass(\Guard\Config\Schema::class)]
+#[CoversClass(RuleReader::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(Schema::class)]
 #[UsesClass(\Guard\Structure\Document\Selection::class)]
-#[UsesClass(\Guard\Policy\Context::class)]
-#[UsesClass(\Guard\Policy\FileChange::class)]
-#[UsesClass(\Guard\Policy\Plan::class)]
-#[UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[UsesClass(\Guard\Structure\Document\Constraint::class)]
-#[UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[UsesClass(\Guard\Policy\Rule::class)]
-#[UsesClass(\Guard\Diagnostic\Finding::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(Constraint::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Rule::class)]
+#[UsesClass(Finding::class)]
 final class RuleReaderTest extends TestCase
 {
     /**
@@ -58,9 +77,9 @@ final class RuleReaderTest extends TestCase
      */
     public function testRuleRejectsRepairOutsideAllowedValues(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('repair must satisfy');
-        (new \Guard\Config\RuleReader())->rule(['id' => 'mode', 'file' => 'x.json', 'select' => '/mode', 'assert' => ['one_of' => ['A', 'B']], 'repair' => 'C']);
+        (new RuleReader())->rule(['id' => 'mode', 'file' => 'x.json', 'select' => '/mode', 'assert' => ['one_of' => ['A', 'B']], 'repair' => 'C']);
     }
 
     /**
@@ -69,9 +88,9 @@ final class RuleReaderTest extends TestCase
     public function testReadRejectsDuplicateIds(): void
     {
         $entry = ['id' => 'mode', 'file' => 'x.json', 'select' => '/mode', 'assert' => ['equals' => 'A']];
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('Duplicate');
-        (new \Guard\Config\RuleReader())->read([$entry, $entry]);
+        (new RuleReader())->read([$entry, $entry]);
     }
 
     /**
@@ -79,7 +98,7 @@ final class RuleReaderTest extends TestCase
      */
     public function testMakesExactRulesRepairable(): void
     {
-        $rule = (new \Guard\Config\RuleReader())->rule(['id' => 'mode', 'file' => 'x.json', 'select' => '/mode', 'level' => 'recommended', 'assert' => ['equals' => 'A']]);
+        $rule = (new RuleReader())->rule(['id' => 'mode', 'file' => 'x.json', 'select' => '/mode', 'level' => 'recommended', 'assert' => ['equals' => 'A']]);
         self::assertSame('recommended', $rule->level);
         self::assertSame('A', $rule->repair);
         self::assertTrue($rule->repairable);
@@ -87,63 +106,63 @@ final class RuleReaderTest extends TestCase
 
     public function testAssertionsRejectsContradictoryBounds(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
-        (new \Guard\Config\RuleReader())->assertions(['min' => 3, 'max' => 1], 'workers');
+        $this->expectException(PolicyException::class);
+        (new RuleReader())->assertions(['min' => 3, 'max' => 1], 'workers');
     }
 
     public function testFormatRejectsAnUnknownDocument(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('unsupported format');
-        (new \Guard\Config\RuleReader())->format('csv', 'mode');
+        (new RuleReader())->format('csv', 'mode');
     }
 
     public function testLevelRejectsACustomSeverity(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('level');
-        (new \Guard\Config\RuleReader())->level('strict', 'mode');
+        (new RuleReader())->level('strict', 'mode');
     }
 
     public function testRepairableAllowsPhpWithAConfiguredValue(): void
     {
-        $reader = new \Guard\Config\RuleReader();
+        $reader = new RuleReader();
         self::assertTrue($reader->repairable('php', ['assert' => ['equals' => true]], ['equals' => true]));
         self::assertTrue($reader->repairable('json', [], ['equals' => true]));
     }
 
     public function testRepairValueCoercesNumericXmlBounds(): void
     {
-        self::assertSame(1.0, (new \Guard\Config\RuleReader())->repairValue('xml', ['min' => 1], '1'));
-        self::assertSame('1', (new \Guard\Config\RuleReader())->repairValue('xml', ['equals' => '1'], '1'));
+        self::assertSame(1.0, (new RuleReader())->repairValue('xml', ['min' => 1], '1'));
+        self::assertSame('1', (new RuleReader())->repairValue('xml', ['equals' => '1'], '1'));
     }
 
     public function testBoundsRejectsANonNumericLimit(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('must be a number');
-        (new \Guard\Config\RuleReader())->bounds(['min' => '1'], 'workers');
+        (new RuleReader())->bounds(['min' => '1'], 'workers');
     }
 
     public function testChoicesRejectsAnEmptyList(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('one_of');
-        (new \Guard\Config\RuleReader())->choices(['one_of' => []], 'mode');
+        (new RuleReader())->choices(['one_of' => []], 'mode');
     }
 
     public function testTextsRejectsAnEmptyNeedle(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('contains_any');
-        (new \Guard\Config\RuleReader())->texts(['contains_any' => ['']], 'includes');
+        (new RuleReader())->texts(['contains_any' => ['']], 'includes');
     }
 
     public function testFlagsRejectsAbsentCombinedWithAnotherAssertion(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('absent');
-        (new \Guard\Config\RuleReader())->flags(['absent' => true, 'present' => true], 'group');
+        (new RuleReader())->flags(['absent' => true, 'present' => true], 'group');
     }
 
     /**
@@ -151,7 +170,7 @@ final class RuleReaderTest extends TestCase
      */
     public function testRuleMakesPhpAndJson5RepairsAvailable(): void
     {
-        $reader = new \Guard\Config\RuleReader();
+        $reader = new RuleReader();
         $php = $reader->rule(['id' => 'risky', 'file' => '.php-cs-fixer.dist.php', 'format' => 'php', 'select' => '/riskyAllowed', 'assert' => ['equals' => true]]);
         $json5 = $reader->rule(['id' => 'msi', 'file' => 'infection.json5', 'format' => 'json5', 'select' => '/minMsi', 'assert' => ['equals' => 80]]);
         self::assertTrue($php->repairable);
@@ -162,8 +181,8 @@ final class RuleReaderTest extends TestCase
      */
     public function testRuleRejectsAWhitespaceOnlyMessage(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('workers.message must describe the problem and how to fix it.');
-        (new \Guard\Config\RuleReader())->rule(['id' => 'workers', 'file' => 'app.json', 'select' => '/workers', 'assert' => ['equals' => 2], 'message' => '  ']);
+        (new RuleReader())->rule(['id' => 'workers', 'file' => 'app.json', 'select' => '/workers', 'assert' => ['equals' => 2], 'message' => '  ']);
     }
 }

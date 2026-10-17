@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\Mutation;
 
+use PhpParser\Node;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\CollectedDataNode;
 use PHPStan\Rules\IdentifierRuleError;
@@ -42,7 +43,7 @@ final class EnforceMutationContractRule implements Rule
      * @param CollectedDataNode $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         unset($scope);
         $declarations = [];

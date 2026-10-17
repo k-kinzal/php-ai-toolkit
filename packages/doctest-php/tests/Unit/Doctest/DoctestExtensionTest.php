@@ -7,6 +7,7 @@ namespace Tests\Unit\Doctest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Registry;
 use Toolkit\Doctest\Configuration\Configuration;
@@ -29,9 +30,9 @@ final class DoctestExtensionTest extends TestCase
         $facadeClass = 'PHPUnit\\Runner\\Extension\\ExtensionFacade';
         $facadeClass = class_exists($facadeClass) ? $facadeClass : 'PHPUnit\\Runner\\Extension\\Facade';
         self::assertTrue(class_exists($facadeClass));
-        $createFacade = static function (string $implementation): \PHPUnit\Runner\Extension\Facade {
+        $createFacade = static function (string $implementation): Facade {
             $facade = new $implementation();
-            self::assertInstanceOf(\PHPUnit\Runner\Extension\Facade::class, $facade);
+            self::assertInstanceOf(Facade::class, $facade);
             return $facade;
         };
         $facade = $createFacade($facadeClass);
@@ -51,9 +52,9 @@ final class DoctestExtensionTest extends TestCase
         $facadeClass = 'PHPUnit\\Runner\\Extension\\ExtensionFacade';
         $facadeClass = class_exists($facadeClass) ? $facadeClass : 'PHPUnit\\Runner\\Extension\\Facade';
         self::assertTrue(class_exists($facadeClass));
-        $createFacade = static function (string $implementation): \PHPUnit\Runner\Extension\Facade {
+        $createFacade = static function (string $implementation): Facade {
             $facade = new $implementation();
-            self::assertInstanceOf(\PHPUnit\Runner\Extension\Facade::class, $facade);
+            self::assertInstanceOf(Facade::class, $facade);
             return $facade;
         };
         $facade = $createFacade($facadeClass);
@@ -80,9 +81,9 @@ final class DoctestExtensionTest extends TestCase
         $facadeClass = 'PHPUnit\\Runner\\Extension\\ExtensionFacade';
         $facadeClass = class_exists($facadeClass) ? $facadeClass : 'PHPUnit\\Runner\\Extension\\Facade';
         self::assertTrue(class_exists($facadeClass));
-        $createFacade = static function (string $implementation): \PHPUnit\Runner\Extension\Facade {
+        $createFacade = static function (string $implementation): Facade {
             $facade = new $implementation();
-            self::assertInstanceOf(\PHPUnit\Runner\Extension\Facade::class, $facade);
+            self::assertInstanceOf(Facade::class, $facade);
             return $facade;
         };
         $facade = $createFacade($facadeClass);

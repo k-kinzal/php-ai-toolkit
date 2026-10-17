@@ -6,6 +6,9 @@ namespace Toolkit\PhpStan\Rule\PhpDoc\PublicApi;
 
 use function array_merge;
 
+use PhpParser\Node;
+use PhpParser\Node\Stmt\ClassLike;
+use PhpParser\Node\Stmt\EnumCase;
 use PHPStan\Rules\IdentifierRuleError;
 
 use function sprintf;
@@ -48,7 +51,7 @@ final class PublicApiExampleErrorCollector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function errors(\PhpParser\Node\Stmt\ClassLike $node, string $kindLabel, string $className): array
+    public function errors(ClassLike $node, string $kindLabel, string $className): array
     {
         return $this->order->sorted(array_merge(
             $this->classErrors($node, $kindLabel, $className),
@@ -62,7 +65,7 @@ final class PublicApiExampleErrorCollector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function classErrors(\PhpParser\Node\Stmt\ClassLike $node, string $kindLabel, string $className): array
+    public function classErrors(ClassLike $node, string $kindLabel, string $className): array
     {
         return $this->errorsFor($node, 'customRules.requireExampleOnClass', sprintf('%s %s', $kindLabel, $className));
     }
@@ -70,7 +73,7 @@ final class PublicApiExampleErrorCollector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function methodErrors(\PhpParser\Node\Stmt\ClassLike $node, string $className): array
+    public function methodErrors(ClassLike $node, string $className): array
     {
         $errors = [];
         foreach ($node->getMethods() as $method) {
@@ -84,7 +87,7 @@ final class PublicApiExampleErrorCollector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function propertyErrors(\PhpParser\Node\Stmt\ClassLike $node, string $className): array
+    public function propertyErrors(ClassLike $node, string $className): array
     {
         $errors = [];
         foreach ($node->getProperties() as $property) {
@@ -100,7 +103,7 @@ final class PublicApiExampleErrorCollector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function constantErrors(\PhpParser\Node\Stmt\ClassLike $node, string $className): array
+    public function constantErrors(ClassLike $node, string $className): array
     {
         $errors = [];
         foreach ($node->getConstants() as $constant) {
@@ -116,11 +119,11 @@ final class PublicApiExampleErrorCollector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function enumCaseErrors(\PhpParser\Node\Stmt\ClassLike $node, string $className): array
+    public function enumCaseErrors(ClassLike $node, string $className): array
     {
         $errors = [];
         foreach ($node->stmts as $statement) {
-            if (!$statement instanceof \PhpParser\Node\Stmt\EnumCase) {
+            if (!$statement instanceof EnumCase) {
                 continue;
             }
 
@@ -136,7 +139,7 @@ final class PublicApiExampleErrorCollector
      *
      * @return list<IdentifierRuleError>
      */
-    public function errorsFor(\PhpParser\Node $node, string $identifier, string $subject): array
+    public function errorsFor(Node $node, string $identifier, string $subject): array
     {
         $docComment = $node->getDocComment();
         $text = $docComment === null ? null : $docComment->getText();

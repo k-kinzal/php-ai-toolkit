@@ -4,17 +4,31 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy\Assignment;
 
+use Guard\Config\Configuration;
+use Guard\Diagnostic\Finding;
 use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
 use Guard\Input\PathPatternMatcher;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
 use Guard\Policy\Assignment\ApplyRuleMatcher;
 use Guard\Policy\Assignment\FilePolicyAssigner;
 use Guard\Policy\Assignment\FilePolicyAssignment;
+use Guard\Policy\Context;
 use Guard\Policy\Definition\ApplyConfig;
 use Guard\Policy\Definition\ApplyRuleConfig;
 use Guard\Policy\Definition\LimitConfig;
 use Guard\Policy\Definition\MetricsConfig;
 use Guard\Policy\Definition\PolicyConfig;
 use Guard\Policy\Definition\ScanConfig;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -47,30 +61,30 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Diagnostic\Finding
  */
 #[CoversClass(FilePolicyAssigner::class)]
-#[UsesClass(\Guard\Input\DirectoryListing::class)]
-#[UsesClass(\Guard\Input\FileRecord::class)]
-#[UsesClass(\Guard\Input\FileSet::class)]
-#[UsesClass(\Guard\Input\Entry::class)]
-#[UsesClass(\Guard\Input\Input::class)]
-#[UsesClass(\Guard\Input\InputSet::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
 #[UsesClass(PathPatternMatcher::class)]
-#[UsesClass(\Guard\Input\Selection::class)]
-#[UsesClass(\Guard\Input\StructuredFile::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
 #[UsesClass(ApplyRuleMatcher::class)]
 #[UsesClass(FilePolicyAssignment::class)]
-#[UsesClass(\Guard\Config\Configuration::class)]
+#[UsesClass(Configuration::class)]
 #[UsesClass(ApplyConfig::class)]
 #[UsesClass(ApplyRuleConfig::class)]
 #[UsesClass(PolicyConfig::class)]
 #[UsesClass(LimitConfig::class)]
 #[UsesClass(MetricsConfig::class)]
 #[UsesClass(ScanConfig::class)]
-#[UsesClass(\Guard\Policy\Context::class)]
-#[UsesClass(\Guard\Policy\FileChange::class)]
-#[UsesClass(\Guard\Policy\Plan::class)]
-#[UsesClass(\Guard\Policy\PolicyBinding::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
 #[UsesClass(PolicyException::class)]
-#[UsesClass(\Guard\Diagnostic\Finding::class)]
+#[UsesClass(Finding::class)]
 final class FilePolicyAssignerTest extends TestCase
 {
     public function testAssignSelectsDefaultAndPathSpecificPolicies(): void

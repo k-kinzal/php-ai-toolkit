@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\Type\Rule;
 
+use PhpParser\Node;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\ClassPropertyNode;
 use PHPStan\Rules\IdentifierRuleError;
@@ -40,7 +41,7 @@ final class ForbidInternalMixedPropertyRule implements Rule
      * @param ClassPropertyNode $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         unset($scope);
 

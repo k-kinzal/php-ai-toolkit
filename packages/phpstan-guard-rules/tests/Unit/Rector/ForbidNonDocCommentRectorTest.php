@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Rector;
 
+use PhpParser\Node\Expr\Variable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +31,7 @@ final class ForbidNonDocCommentRectorTest extends TestCase
     {
         $rule = new ForbidNonDocCommentRector();
         self::assertNotEmpty($rule->getNodeTypes());
-        self::assertNull($rule->refactor(new \PhpParser\Node\Expr\Variable('unrelated')));
+        self::assertNull($rule->refactor(new Variable('unrelated')));
     }
 
     public function testForbiddenOffsetsDistinguishesCommentsOnTheSameLine(): void

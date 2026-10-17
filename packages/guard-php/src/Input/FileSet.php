@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Guard\Input;
 
 use JsonException;
+use Nette\Neon\Exception;
 use RuntimeException;
 
 /**
@@ -12,7 +13,7 @@ use RuntimeException;
  *
  * @property-read array<array-key, StructuredFile> $files
  * @property-read array<string, DirectoryListing> $directories
- * @property-read RuntimeException|JsonException|\Nette\Neon\Exception|null $failure
+ * @property-read RuntimeException|JsonException|Exception|null $failure
  */
 final class FileSet
 {
@@ -20,7 +21,7 @@ final class FileSet
      * Creates the immutable value.
      * @param array<array-key, StructuredFile> $files
      * @param array<string, DirectoryListing> $directories
-     * @param RuntimeException|JsonException|\Nette\Neon\Exception|null $failure
+     * @param RuntimeException|JsonException|Exception|null $failure
      */
     public function __construct(
         /** @readonly */
@@ -28,7 +29,7 @@ final class FileSet
         /** @readonly */
         private array $directories,
         /** @readonly */
-        private RuntimeException|JsonException|\Nette\Neon\Exception|null $failure,
+        private RuntimeException|JsonException|Exception|null $failure,
     ) {
     }
 
@@ -48,7 +49,7 @@ final class FileSet
     /** Raises selection errors before policies inspect individual files.
      * @throws RuntimeException
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function validate(): void
     {

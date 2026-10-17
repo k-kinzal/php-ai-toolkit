@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowCollector;
+use Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor;
 use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
 
 /**
@@ -17,7 +18,7 @@ use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
  * @uses \Toolkit\PhpStan\Rule\Shared\ThrownExpression
  */
 #[CoversClass(CatchThrowCollector::class)]
-#[UsesClass(\Toolkit\PhpStan\Rule\ExceptionHandling\CatchThrowVisitor::class)]
+#[UsesClass(CatchThrowVisitor::class)]
 #[UsesClass(ThrownExpression::class)]
 final class CatchThrowCollectorTest extends TestCase
 {

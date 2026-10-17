@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\ExceptionHandling;
 
 use Override;
+use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -44,7 +45,7 @@ final class RequireThrowsTagOnDirectThrowRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsExpectedClass(): void
     {
-        self::assertSame(\PhpParser\Node\Stmt\ClassMethod::class, $this->getRule()->getNodeType());
+        self::assertSame(ClassMethod::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodeUndeclaredThrowsAreReported(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\PhpDoc\PublicApi;
 
+use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Rules\IdentifierRuleError;
 use Toolkit\PhpStan\Rule\Shared\LineOrderedErrors;
 
@@ -48,7 +49,7 @@ final class PublicApiPhpDocErrorCollector
      * @return list<IdentifierRuleError>
      */
     public function errors(
-        \PhpParser\Node\Stmt\ClassLike $node,
+        ClassLike $node,
         string $kindLabel,
         string $className,
     ): array {

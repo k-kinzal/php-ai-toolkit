@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\Type;
 
+use PhpParser\Node\Stmt;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\Rules\IdentifierRuleError;
 use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
@@ -42,7 +44,7 @@ final class MixedLocalPhpDocErrorCollector
      *
      * @return list<IdentifierRuleError>
      */
-    public function errors(\PhpParser\Node\Stmt $node, string $scopeSymbol): array
+    public function errors(Stmt $node, string $scopeSymbol): array
     {
         $docComment = $node->getDocComment();
         if ($docComment === null) {
@@ -65,10 +67,10 @@ final class MixedLocalPhpDocErrorCollector
     /**
      * Collects errors from the highest-precedence tag family present.
      *
-     * @param array<int|string, \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode> $tags
+     * @param array<int|string, PhpDocTagNode> $tags
      * @return list<IdentifierRuleError>
      */
-    public function tagErrors(array $tags, \PhpParser\Node\Stmt $node, string $scopeSymbol): array
+    public function tagErrors(array $tags, Stmt $node, string $scopeSymbol): array
     {
         $errors = [];
         foreach ($tags as $tag) {

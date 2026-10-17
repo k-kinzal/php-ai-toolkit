@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\ControlFlow;
 
+use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\Equal;
 use PhpParser\Node\Expr\BinaryOp\Identical;
+use PhpParser\Node\Expr\Match_;
+use PhpParser\Node\Stmt\Switch_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Type\Type;
@@ -52,7 +55,7 @@ final class DispatchInspector
      *
      * @return list<IdentifierRuleError>
      */
-    public function matchErrors(\PhpParser\Node\Expr\Match_ $node, Scope $scope): array
+    public function matchErrors(Match_ $node, Scope $scope): array
     {
         $narrowings = [];
         $hasDefaultArm = false;
@@ -85,7 +88,7 @@ final class DispatchInspector
      *
      * @return list<IdentifierRuleError>
      */
-    public function switchErrors(\PhpParser\Node\Stmt\Switch_ $node, Scope $scope): array
+    public function switchErrors(Switch_ $node, Scope $scope): array
     {
         $narrowings = [];
         $hasDefaultCase = false;
@@ -114,10 +117,10 @@ final class DispatchInspector
     /**
      * Returns the values of the closed subject that no branch of the dispatch claims.
      *
-     * @param list<\PhpParser\Node\Expr> $narrowings
+     * @param list<Expr> $narrowings
      * @return list<Type>
      */
-    public function unhandled(\PhpParser\Node\Expr $condition, array $narrowings, Scope $scope): array
+    public function unhandled(Expr $condition, array $narrowings, Scope $scope): array
     {
         $subject = $this->subjectResolver->resolve($condition, $scope);
         if ($subject === null) {

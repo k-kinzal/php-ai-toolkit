@@ -5,8 +5,161 @@ declare(strict_types=1);
 namespace Tests\Unit\Collect;
 
 use FilesystemIterator;
+use Guard\Collect\Collector;
+use Guard\Collect\Filesystem\DirectoryTraversal;
+use Guard\Collect\Filesystem\Discovery;
+use Guard\Collect\Filesystem\Filesystem;
+use Guard\Collect\Filesystem\NativeFilesystem;
+use Guard\Collect\Filesystem\PatternRoots;
+use Guard\Collect\Filesystem\QueryResult;
+use Guard\Collect\Filesystem\Route;
+use Guard\Collect\Filesystem\SelectionRoots;
+use Guard\Collect\Filesystem\Snapshot;
+use Guard\Collect\Filesystem\TargetPath;
+use Guard\Collect\Filesystem\WalkQueue;
+use Guard\Collect\Matching\GlobMatcher;
+use Guard\Collect\Matching\SelectionFilter;
+use Guard\Config\Configuration;
+use Guard\Config\ConfigurationLoader;
+use Guard\Config\DocumentMerger;
+use Guard\Config\ImportResolver;
+use Guard\Config\Profile\ApplyConfigReader;
+use Guard\Config\Profile\ApplyPolicyUsageValidator;
+use Guard\Config\Profile\ApplyRuleConfigReader;
+use Guard\Config\Profile\ApplyRuleListConfigReader;
+use Guard\Config\Profile\PolicyConfigReader;
+use Guard\Config\Profile\PolicyDefinition;
+use Guard\Config\Profile\PolicyListConfigReader;
+use Guard\Config\Profile\PolicyResolver;
+use Guard\Config\Reader\DeclaredHeadingReader;
+use Guard\Config\Reader\DirectoryPolicyReader;
+use Guard\Config\Reader\DirectoryRuleConfigReader;
+use Guard\Config\Reader\DirectoryRuleListConfigReader;
+use Guard\Config\Reader\DocumentConfigReader;
+use Guard\Config\Reader\DocumentListConfigReader;
+use Guard\Config\Reader\ExtensionConfigReader;
+use Guard\Config\Reader\HeadingPolicyReader;
+use Guard\Config\Reader\LimitConfigReader;
+use Guard\Config\Reader\MetricPolicyReader;
+use Guard\Config\RuleReader;
+use Guard\Config\Schema;
+use Guard\Config\Validation\DirectoryConfigScalarReader;
+use Guard\Config\Validation\DirectoryConfigStringListReader;
+use Guard\Config\Validation\HeadingConfigKeyValidator;
+use Guard\Config\Validation\MetricConfigKeyValidator;
+use Guard\Config\Validation\MetricConfigScalarReader;
+use Guard\Config\Validation\MetricConfigStringListReader;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Path;
+use Guard\Input\PathPatternMatcher;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Assignment\ApplyRuleMatcher;
+use Guard\Policy\Assignment\FilePolicyAssigner;
+use Guard\Policy\Assignment\FilePolicyAssignment;
+use Guard\Policy\Comparison\HeadingHunkClassifier;
+use Guard\Policy\Comparison\HeadingSequenceAligner;
+use Guard\Policy\Comparison\HeadingStructureComparator;
+use Guard\Policy\Context;
+use Guard\Policy\Definition\ApplyConfig;
+use Guard\Policy\Definition\ApplyRuleConfig;
+use Guard\Policy\Definition\DeclaredHeading;
+use Guard\Policy\Definition\DirectoryRuleConfig;
+use Guard\Policy\Definition\DocumentationConfig;
+use Guard\Policy\Definition\DocumentConfig;
+use Guard\Policy\Definition\LimitConfig;
+use Guard\Policy\Definition\MetricsConfig;
+use Guard\Policy\Definition\PolicyConfig;
+use Guard\Policy\Definition\ScanConfig;
+use Guard\Policy\Definition\StructureConfig;
+use Guard\Policy\Diagnostic\DirectoryViolation;
+use Guard\Policy\Diagnostic\FieldMessage;
+use Guard\Policy\Diagnostic\HeadingViolation;
+use Guard\Policy\Diagnostic\HeadingViolationFactory;
+use Guard\Policy\Diagnostic\MetricViolation;
+use Guard\Policy\DirectoryEntries;
+use Guard\Policy\FieldConstraints;
+use Guard\Policy\FileChange;
+use Guard\Policy\HeadingStructure;
+use Guard\Policy\Inspection\CaseConventionMatcher;
+use Guard\Policy\Inspection\ChildCountInspector;
+use Guard\Policy\Inspection\DepthInspector;
+use Guard\Policy\Inspection\DirectoryPatternMatcher;
+use Guard\Policy\Inspection\DirectoryRuleInspector;
+use Guard\Policy\Inspection\DirNameInspector;
+use Guard\Policy\Inspection\EmptyDirectoryInspector;
+use Guard\Policy\Inspection\FileNameInspector;
+use Guard\Policy\Inspection\RequiredFileInspector;
+use Guard\Policy\Inspection\TotalFileCountInspector;
+use Guard\Policy\Limit\ClassLikeMetricLimit;
+use Guard\Policy\Limit\ClassLikeMetricViolationBuilder;
+use Guard\Policy\Limit\FileMetricViolationBuilder;
+use Guard\Policy\Limit\FunctionComplexityViolationBuilder;
+use Guard\Policy\Limit\FunctionLineViolationBuilder;
+use Guard\Policy\Limit\FunctionMetricViolationBuilder;
+use Guard\Policy\Limit\MetricLimitInspector;
+use Guard\Policy\MetricLimits;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
+use Guard\Policy\Rule;
+use Guard\Policy\RuleEvaluator;
+use Guard\Structure\Document\Constraint;
+use Guard\Structure\Document\DataDocument;
+use Guard\Structure\Document\DocumentFailure;
+use Guard\Structure\Document\DocumentNode;
+use Guard\Structure\Document\Json5Reader;
+use Guard\Structure\Document\PhpConfigEditor;
+use Guard\Structure\Document\PhpConfigReader;
+use Guard\Structure\Document\PhpDocument;
+use Guard\Structure\Document\Pointer;
+use Guard\Structure\Document\TomlEncoder;
+use Guard\Structure\Document\XmlDocument;
+use Guard\Structure\DocumentStructurer;
+use Guard\Structure\Markdown\AtxHeadingMatcher;
+use Guard\Structure\Markdown\Heading;
+use Guard\Structure\Markdown\HeadingList;
+use Guard\Structure\Markdown\HeadingTextNormalizer;
+use Guard\Structure\ParsedDocument;
+use Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader;
+use Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric;
+use Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser;
+use Guard\Structure\Php\Complexity\CyclomaticComplexityCalculator;
+use Guard\Structure\Php\Complexity\CyclomaticComplexityState;
+use Guard\Structure\Php\Complexity\CyclomaticDecisionWeight;
+use Guard\Structure\Php\FileMetric\FileMetric;
+use Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary;
+use Guard\Structure\Php\FunctionMetric\ArrowFunctionMetricReader;
+use Guard\Structure\Php\FunctionMetric\BlockFunctionMetricReader;
+use Guard\Structure\Php\FunctionMetric\FunctionBodyLocator;
+use Guard\Structure\Php\FunctionMetric\FunctionLineParser;
+use Guard\Structure\Php\FunctionMetric\FunctionMetric;
+use Guard\Structure\Php\FunctionMetric\FunctionMetricComplexityAssigner;
+use Guard\Structure\Php\FunctionMetric\FunctionMetricParser;
+use Guard\Structure\Php\FunctionMetric\FunctionNameReader;
+use Guard\Structure\Php\FunctionMetric\FunctionScanState;
+use Guard\Structure\Php\FunctionMetric\NestedFunctionMetricRange;
+use Guard\Structure\Php\MetricParser;
+use Guard\Structure\Php\SourceMetrics;
+use Guard\Structure\Php\Token\ClassLikeTokenMatcher;
+use Guard\Structure\Php\Token\CodeTokenLineResolver;
+use Guard\Structure\Php\Token\PhpTokenNavigator;
+use Guard\Structure\Php\Token\TokenLineCounter;
+use Guard\Structure\Php\TokenParser;
+use Guard\Structure\Php\Tokens;
+use Guard\Structure\Source;
+use Guard\Structure\Structurer;
+use Guard\Structure\Subject;
 use JsonException;
+use Nette\Neon\Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -163,155 +316,155 @@ use SplFileInfo;
  * @uses \Guard\Structure\Source
  * @uses \Guard\Policy\Diagnostic\FieldMessage
  */
-#[CoversClass(\Guard\Collect\Collector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\DirectoryListing::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\DirectoryTraversal::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Discovery::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Entry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\NativeFilesystem::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Path::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\PatternRoots::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\QueryResult::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Route::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\SelectionRoots::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Snapshot::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\WalkQueue::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Input::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\InputSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\GlobMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\PathPatternMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Matching\SelectionFilter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\StructuredFile::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Assignment\ApplyRuleMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Assignment\FilePolicyAssigner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Assignment\FilePolicyAssignment::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ConfigurationLoader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\DocumentMerger::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ImportResolver::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\ApplyConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyPolicyUsageValidator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\ApplyRuleConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyRuleConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\ApplyRuleListConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\PolicyConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyDefinition::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyListConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Profile\PolicyResolver::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DeclaredHeadingReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DirectoryPolicyReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DirectoryRuleConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DirectoryRuleListConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\DocumentListConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\HeadingPolicyReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\MetricPolicyReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\RuleReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Schema::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\DirectoryConfigScalarReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\DirectoryConfigStringListReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\HeadingConfigKeyValidator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigKeyValidator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigScalarReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Validation\MetricConfigStringListReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\DeclaredHeading::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\DirectoryRuleConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\DocumentConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\DocumentationConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\LimitConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\MetricsConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\ScanConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Definition\StructureConfig::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DataDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DocumentFailure::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DocumentNode::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Json5Reader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpConfigEditor::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Pointer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\TomlEncoder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\XmlDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Context::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Plan::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\TargetPath::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\HeadingHunkClassifier::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\HeadingSequenceAligner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Comparison\HeadingStructureComparator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Constraint::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\DirectoryEntries::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FieldConstraints::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\HeadingStructure::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\CaseConventionMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\ChildCountInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\DepthInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\DirNameInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\DirectoryPatternMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\DirectoryRuleInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\EmptyDirectoryInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\FileNameInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\RequiredFileInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Inspection\TotalFileCountInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\ClassLikeMetricLimit::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\ClassLikeMetricViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FileMetricViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FunctionComplexityViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FunctionLineViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\FunctionMetricViolationBuilder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Limit\MetricLimitInspector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\MetricLimits::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Rule::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\RuleEvaluator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\DirectoryViolation::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\Finding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\HeadingViolation::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\HeadingViolationFactory::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\MetricViolation::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\DocumentStructurer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\AtxHeadingMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Heading::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingList::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingTextNormalizer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\ParsedDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticComplexityCalculator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticComplexityState::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticDecisionWeight::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FileMetric\FileMetric::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\ArrowFunctionMetricReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\BlockFunctionMetricReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionBodyLocator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionLineParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetric::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetricComplexityAssigner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetricParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionNameReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionScanState::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\NestedFunctionMetricRange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\MetricParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\SourceMetrics::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\TokenParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\ClassLikeTokenMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\CodeTokenLineResolver::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\PhpTokenNavigator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\FieldMessage::class)]
+#[CoversClass(Collector::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(DirectoryTraversal::class)]
+#[UsesClass(Discovery::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(NativeFilesystem::class)]
+#[UsesClass(Path::class)]
+#[UsesClass(PatternRoots::class)]
+#[UsesClass(QueryResult::class)]
+#[UsesClass(Route::class)]
+#[UsesClass(SelectionRoots::class)]
+#[UsesClass(Snapshot::class)]
+#[UsesClass(WalkQueue::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(GlobMatcher::class)]
+#[UsesClass(PathPatternMatcher::class)]
+#[UsesClass(SelectionFilter::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(ApplyRuleMatcher::class)]
+#[UsesClass(FilePolicyAssigner::class)]
+#[UsesClass(FilePolicyAssignment::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(ConfigurationLoader::class)]
+#[UsesClass(DocumentMerger::class)]
+#[UsesClass(ImportResolver::class)]
+#[UsesClass(ApplyConfig::class)]
+#[UsesClass(ApplyConfigReader::class)]
+#[UsesClass(ApplyPolicyUsageValidator::class)]
+#[UsesClass(ApplyRuleConfig::class)]
+#[UsesClass(ApplyRuleConfigReader::class)]
+#[UsesClass(ApplyRuleListConfigReader::class)]
+#[UsesClass(PolicyConfig::class)]
+#[UsesClass(PolicyConfigReader::class)]
+#[UsesClass(PolicyDefinition::class)]
+#[UsesClass(PolicyListConfigReader::class)]
+#[UsesClass(PolicyResolver::class)]
+#[UsesClass(DeclaredHeadingReader::class)]
+#[UsesClass(DirectoryPolicyReader::class)]
+#[UsesClass(DirectoryRuleConfigReader::class)]
+#[UsesClass(DirectoryRuleListConfigReader::class)]
+#[UsesClass(DocumentConfigReader::class)]
+#[UsesClass(DocumentListConfigReader::class)]
+#[UsesClass(ExtensionConfigReader::class)]
+#[UsesClass(HeadingPolicyReader::class)]
+#[UsesClass(LimitConfigReader::class)]
+#[UsesClass(MetricPolicyReader::class)]
+#[UsesClass(RuleReader::class)]
+#[UsesClass(Schema::class)]
+#[UsesClass(DirectoryConfigScalarReader::class)]
+#[UsesClass(DirectoryConfigStringListReader::class)]
+#[UsesClass(HeadingConfigKeyValidator::class)]
+#[UsesClass(MetricConfigKeyValidator::class)]
+#[UsesClass(MetricConfigScalarReader::class)]
+#[UsesClass(MetricConfigStringListReader::class)]
+#[UsesClass(DeclaredHeading::class)]
+#[UsesClass(DirectoryRuleConfig::class)]
+#[UsesClass(DocumentConfig::class)]
+#[UsesClass(DocumentationConfig::class)]
+#[UsesClass(LimitConfig::class)]
+#[UsesClass(MetricsConfig::class)]
+#[UsesClass(ScanConfig::class)]
+#[UsesClass(StructureConfig::class)]
+#[UsesClass(DataDocument::class)]
+#[UsesClass(DocumentFailure::class)]
+#[UsesClass(DocumentNode::class)]
+#[UsesClass(Json5Reader::class)]
+#[UsesClass(PhpConfigEditor::class)]
+#[UsesClass(PhpConfigReader::class)]
+#[UsesClass(PhpDocument::class)]
+#[UsesClass(Pointer::class)]
+#[UsesClass(\Guard\Structure\Document\Selection::class)]
+#[UsesClass(TomlEncoder::class)]
+#[UsesClass(XmlDocument::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(TargetPath::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(HeadingHunkClassifier::class)]
+#[UsesClass(HeadingSequenceAligner::class)]
+#[UsesClass(HeadingStructureComparator::class)]
+#[UsesClass(Constraint::class)]
+#[UsesClass(DirectoryEntries::class)]
+#[UsesClass(FieldConstraints::class)]
+#[UsesClass(HeadingStructure::class)]
+#[UsesClass(CaseConventionMatcher::class)]
+#[UsesClass(ChildCountInspector::class)]
+#[UsesClass(DepthInspector::class)]
+#[UsesClass(DirNameInspector::class)]
+#[UsesClass(DirectoryPatternMatcher::class)]
+#[UsesClass(DirectoryRuleInspector::class)]
+#[UsesClass(EmptyDirectoryInspector::class)]
+#[UsesClass(FileNameInspector::class)]
+#[UsesClass(RequiredFileInspector::class)]
+#[UsesClass(TotalFileCountInspector::class)]
+#[UsesClass(ClassLikeMetricLimit::class)]
+#[UsesClass(ClassLikeMetricViolationBuilder::class)]
+#[UsesClass(FileMetricViolationBuilder::class)]
+#[UsesClass(FunctionComplexityViolationBuilder::class)]
+#[UsesClass(FunctionLineViolationBuilder::class)]
+#[UsesClass(FunctionMetricViolationBuilder::class)]
+#[UsesClass(MetricLimitInspector::class)]
+#[UsesClass(MetricLimits::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Rule::class)]
+#[UsesClass(RuleEvaluator::class)]
+#[UsesClass(DirectoryViolation::class)]
+#[UsesClass(Finding::class)]
+#[UsesClass(HeadingViolation::class)]
+#[UsesClass(HeadingViolationFactory::class)]
+#[UsesClass(MetricViolation::class)]
+#[UsesClass(DocumentStructurer::class)]
+#[UsesClass(AtxHeadingMatcher::class)]
+#[UsesClass(Heading::class)]
+#[UsesClass(HeadingList::class)]
+#[UsesClass(HeadingTextNormalizer::class)]
+#[UsesClass(ParsedDocument::class)]
+#[UsesClass(ClassLikeDeclarationReader::class)]
+#[UsesClass(ClassLikeMetric::class)]
+#[UsesClass(ClassLikeMetricParser::class)]
+#[UsesClass(CyclomaticComplexityCalculator::class)]
+#[UsesClass(CyclomaticComplexityState::class)]
+#[UsesClass(CyclomaticDecisionWeight::class)]
+#[UsesClass(FileMetric::class)]
+#[UsesClass(ArrowExpressionBoundary::class)]
+#[UsesClass(ArrowFunctionMetricReader::class)]
+#[UsesClass(BlockFunctionMetricReader::class)]
+#[UsesClass(FunctionBodyLocator::class)]
+#[UsesClass(FunctionLineParser::class)]
+#[UsesClass(FunctionMetric::class)]
+#[UsesClass(FunctionMetricComplexityAssigner::class)]
+#[UsesClass(FunctionMetricParser::class)]
+#[UsesClass(FunctionNameReader::class)]
+#[UsesClass(FunctionScanState::class)]
+#[UsesClass(NestedFunctionMetricRange::class)]
+#[UsesClass(MetricParser::class)]
+#[UsesClass(SourceMetrics::class)]
+#[UsesClass(TokenParser::class)]
+#[UsesClass(ClassLikeTokenMatcher::class)]
+#[UsesClass(CodeTokenLineResolver::class)]
+#[UsesClass(PhpTokenNavigator::class)]
+#[UsesClass(TokenLineCounter::class)]
+#[UsesClass(Tokens::class)]
+#[UsesClass(Source::class)]
+#[UsesClass(FieldMessage::class)]
 final class CollectorTest extends TestCase
 {
     public function testCollectAppliesGlobExclusionsToTraversalLiteralRootsAndExactPatterns(): void
@@ -354,38 +507,38 @@ final class CollectorTest extends TestCase
             }
         };
         try {
-            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+            $filesystem = new class () implements Filesystem {
                 /** @var array<string, int> */
                 public array $listings = [];
                 /** @var array<string, int> */
                 public array $reads = [];
                 /** @var array<string, int> */
                 public array $inspections = [];
-                public function inspect(string $path): \Guard\Input\Entry
+                public function inspect(string $path): Entry
                 {
                     $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
-                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                    return (new NativeFilesystem())->inspect($path);
                 }
                 public function entries(string $path): array|false
                 {
                     $key = realpath($path);
                     $key = $key === false ? $path : $key;
                     $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
-                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                    return (new NativeFilesystem())->entries($path);
                 }
                 public function read(string $path): string|false
                 {
                     $key = realpath($path);
                     $key = $key === false ? $path : $key;
                     $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
-                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                    return (new NativeFilesystem())->read($path);
                 }
             };
             $inputs = [
-                'xml' => new \Guard\Input\Input(new \Guard\Input\Selection('patterns', ['src/**/*', 'src/skip/*.xml', 'src/skip/c.xml', 'src/c.json'], ['src/skip'], '.xml'), 'xml'),
-                'metadata' => new \Guard\Input\Input(new \Guard\Input\Selection('files', ['src/skip/c.xml'])),
+                'xml' => new Input(new Selection('patterns', ['src/**/*', 'src/skip/*.xml', 'src/skip/c.xml', 'src/c.json'], ['src/skip'], '.xml'), 'xml'),
+                'metadata' => new Input(new Selection('files', ['src/skip/c.xml'])),
             ];
-            $sets = (new \Guard\Collect\Collector($filesystem))->collect($project->root, $inputs, ['xml' => new \Guard\Structure\DocumentStructurer('xml')]);
+            $sets = (new Collector($filesystem))->collect($project->root, $inputs, ['xml' => new DocumentStructurer('xml')]);
             self::assertSame(['src/a.xml', 'src/nested/b.xml'], array_keys($sets['xml']->files));
             self::assertSame(['src/skip/c.xml'], array_keys($sets['metadata']->files));
             self::assertArrayNotHasKey(realpath($project->root) . '/src/skip', $filesystem->listings);
@@ -397,7 +550,7 @@ final class CollectorTest extends TestCase
     }
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testCollectCombinesOverlappingRootsPatternsAliasesAndFormatsWithoutRepeatedIo(): void
     {
@@ -440,73 +593,73 @@ final class CollectorTest extends TestCase
         };
         try {
             symlink($project->root . '/src/A.php', $project->root . '/alias.php');
-            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+            $filesystem = new class () implements Filesystem {
                 /** @var array<string, int> */
                 public array $listings = [];
                 /** @var array<string, int> */
                 public array $reads = [];
                 /** @var array<string, int> */
                 public array $inspections = [];
-                public function inspect(string $path): \Guard\Input\Entry
+                public function inspect(string $path): Entry
                 {
                     $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
-                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                    return (new NativeFilesystem())->inspect($path);
                 }
                 public function entries(string $path): array|false
                 {
                     $key = realpath($path);
                     $key = $key === false ? $path : $key;
                     $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
-                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                    return (new NativeFilesystem())->entries($path);
                 }
                 public function read(string $path): string|false
                 {
                     $key = realpath($path);
                     $key = $key === false ? $path : $key;
                     $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
-                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                    return (new NativeFilesystem())->read($path);
                 }
             };
-            $tokens = new class (new \Guard\Structure\Php\TokenParser()) implements \Guard\Structure\Structurer {
+            $tokens = new class (new TokenParser()) implements Structurer {
                 public int $calls = 0;
-                public function __construct(private \Guard\Structure\Structurer $inner)
+                public function __construct(private Structurer $inner)
                 {
                 }
-                public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+                public function structure(Source $source): Subject
                 {
                     $this->calls++;
                     return $this->inner->structure($source);
                 }
             };
-            $metrics = new class (new \Guard\Structure\Php\MetricParser()) implements \Guard\Structure\Structurer {
+            $metrics = new class (new MetricParser()) implements Structurer {
                 public int $calls = 0;
-                public function __construct(private \Guard\Structure\Structurer $inner)
+                public function __construct(private Structurer $inner)
                 {
                 }
-                public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+                public function structure(Source $source): Subject
                 {
                     $this->calls++;
                     return $this->inner->structure($source);
                 }
             };
-            $literal = new class (new \Guard\Structure\DocumentStructurer('php')) implements \Guard\Structure\Structurer {
+            $literal = new class (new DocumentStructurer('php')) implements Structurer {
                 public int $calls = 0;
-                public function __construct(private \Guard\Structure\Structurer $inner)
+                public function __construct(private Structurer $inner)
                 {
                 }
-                public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+                public function structure(Source $source): Subject
                 {
                     $this->calls++;
                     return $this->inner->structure($source);
                 }
             };
             $inputs = [
-                'metrics' => new \Guard\Input\Input(new \Guard\Input\Selection('descendants', ['src', 'src/Sub', 'src'], [], '.php', false, 'missing'), 'php.metrics'),
-                'pattern' => new \Guard\Input\Input(new \Guard\Input\Selection('patterns', ['src/**/*.php', 'src/*/*.php', 'src/*.php'], [], '', false, ''), 'php.metrics'),
-                'entries' => new \Guard\Input\Input(new \Guard\Input\Selection('directories', ['src'], [], '', false, 'missing'), null),
-                'literal' => new \Guard\Input\Input(new \Guard\Input\Selection('files', ['src/A.php', 'alias.php'], [], '', false, ''), 'php'),
+                'metrics' => new Input(new Selection('descendants', ['src', 'src/Sub', 'src'], [], '.php', false, 'missing'), 'php.metrics'),
+                'pattern' => new Input(new Selection('patterns', ['src/**/*.php', 'src/*/*.php', 'src/*.php'], [], '', false, ''), 'php.metrics'),
+                'entries' => new Input(new Selection('directories', ['src'], [], '', false, 'missing'), null),
+                'literal' => new Input(new Selection('files', ['src/A.php', 'alias.php'], [], '', false, ''), 'php'),
             ];
-            $sets = (new \Guard\Collect\Collector($filesystem))->collect($project->root, $inputs, ['php.tokens' => $tokens, 'php.metrics' => $metrics, 'php' => $literal]);
+            $sets = (new Collector($filesystem))->collect($project->root, $inputs, ['php.tokens' => $tokens, 'php.metrics' => $metrics, 'php' => $literal]);
             self::assertSame(['src/A.php', 'src/Sub/B.php'], array_keys($sets['metrics']->files));
             self::assertSame($sets['metrics']->files['src/A.php']->value(), $sets['pattern']->files['src/A.php']->value());
             self::assertSame($sets['literal']->files['src/A.php']->value(), $sets['literal']->files['alias.php']->value());
@@ -527,7 +680,7 @@ final class CollectorTest extends TestCase
     }
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testCollectReadsExactFilesWithoutScanningDirectoriesAndDoesNotCacheAcrossRuns(): void
     {
@@ -569,36 +722,36 @@ final class CollectorTest extends TestCase
             }
         };
         try {
-            $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+            $filesystem = new class () implements Filesystem {
                 /** @var array<string, int> */
                 public array $listings = [];
                 /** @var array<string, int> */
                 public array $reads = [];
                 /** @var array<string, int> */
                 public array $inspections = [];
-                public function inspect(string $path): \Guard\Input\Entry
+                public function inspect(string $path): Entry
                 {
                     $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
-                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                    return (new NativeFilesystem())->inspect($path);
                 }
                 public function entries(string $path): array|false
                 {
                     $key = realpath($path);
                     $key = $key === false ? $path : $key;
                     $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
-                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                    return (new NativeFilesystem())->entries($path);
                 }
                 public function read(string $path): string|false
                 {
                     $key = realpath($path);
                     $key = $key === false ? $path : $key;
                     $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
-                    return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                    return (new NativeFilesystem())->read($path);
                 }
             };
-            $collector = new \Guard\Collect\Collector($filesystem);
-            $input = ['a' => new \Guard\Input\Input(new \Guard\Input\Selection('files', ['a.json'], [], '', false, ''), 'json')];
-            $structures = ['json' => new \Guard\Structure\DocumentStructurer('json')];
+            $collector = new Collector($filesystem);
+            $input = ['a' => new Input(new Selection('files', ['a.json'], [], '', false, ''), 'json')];
+            $structures = ['json' => new DocumentStructurer('json')];
             $first = $collector->collect($project->root, $input, $structures);
             $project->write('a.json', '{"x":2}');
             $second = $collector->collect($project->root, $input, $structures);
@@ -606,8 +759,8 @@ final class CollectorTest extends TestCase
             self::assertSame(2, $filesystem->reads[realpath($project->root) . '/a.json']);
             $a = $first['a']->files['a.json']->value();
             $b = $second['a']->files['a.json']->value();
-            self::assertInstanceOf(\Guard\Structure\ParsedDocument::class, $a);
-            self::assertInstanceOf(\Guard\Structure\ParsedDocument::class, $b);
+            self::assertInstanceOf(ParsedDocument::class, $a);
+            self::assertInstanceOf(ParsedDocument::class, $b);
             self::assertSame(1, $a->copy()->read('/x')->value);
             self::assertSame(2, $b->copy()->read('/x')->value);
         } finally {
@@ -619,45 +772,45 @@ final class CollectorTest extends TestCase
      */
     public function testCollectDoesNoWorkForUnusedFormatsOrNoInputs(): void
     {
-        $filesystem = new class () implements \Guard\Collect\Filesystem\Filesystem {
+        $filesystem = new class () implements Filesystem {
             /** @var array<string, int> */
             public array $listings = [];
             /** @var array<string, int> */
             public array $reads = [];
             /** @var array<string, int> */
             public array $inspections = [];
-            public function inspect(string $path): \Guard\Input\Entry
+            public function inspect(string $path): Entry
             {
                 $this->inspections[$path] = ($this->inspections[$path] ?? 0) + 1;
-                return (new \Guard\Collect\Filesystem\NativeFilesystem())->inspect($path);
+                return (new NativeFilesystem())->inspect($path);
             }
             public function entries(string $path): array|false
             {
                 $key = realpath($path);
                 $key = $key === false ? $path : $key;
                 $this->listings[$key] = ($this->listings[$key] ?? 0) + 1;
-                return (new \Guard\Collect\Filesystem\NativeFilesystem())->entries($path);
+                return (new NativeFilesystem())->entries($path);
             }
             public function read(string $path): string|false
             {
                 $key = realpath($path);
                 $key = $key === false ? $path : $key;
                 $this->reads[$key] = ($this->reads[$key] ?? 0) + 1;
-                return (new \Guard\Collect\Filesystem\NativeFilesystem())->read($path);
+                return (new NativeFilesystem())->read($path);
             }
         };
-        $parser = new class (new \Guard\Structure\Php\TokenParser()) implements \Guard\Structure\Structurer {
+        $parser = new class (new TokenParser()) implements Structurer {
             public int $calls = 0;
-            public function __construct(private \Guard\Structure\Structurer $inner)
+            public function __construct(private Structurer $inner)
             {
             }
-            public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+            public function structure(Source $source): Subject
             {
                 $this->calls++;
                 return $this->inner->structure($source);
             }
         };
-        self::assertSame([], (new \Guard\Collect\Collector($filesystem))->collect('/not-used', [], ['php.tokens' => $parser]));
+        self::assertSame([], (new Collector($filesystem))->collect('/not-used', [], ['php.tokens' => $parser]));
         self::assertSame([], $filesystem->inspections);
         self::assertSame([], $filesystem->reads);
         self::assertSame(0, $parser->calls);

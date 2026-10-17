@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\Shared;
 
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 
 /**
@@ -14,13 +18,13 @@ final class ClassStringExpressionResolver
     /**
      * Returns the fully qualified name represented by a direct class-string expression.
      */
-    public function resolve(\PhpParser\Node\Expr $expression, Scope $scope): ?string
+    public function resolve(Expr $expression, Scope $scope): ?string
     {
-        if (!$expression instanceof \PhpParser\Node\Expr\ClassConstFetch) {
+        if (!$expression instanceof ClassConstFetch) {
             return null;
         }
 
-        if (!$expression->name instanceof \PhpParser\Node\Identifier) {
+        if (!$expression->name instanceof Identifier) {
             return null;
         }
 
@@ -28,7 +32,7 @@ final class ClassStringExpressionResolver
             return null;
         }
 
-        if (!$expression->class instanceof \PhpParser\Node\Name) {
+        if (!$expression->class instanceof Name) {
             return null;
         }
 

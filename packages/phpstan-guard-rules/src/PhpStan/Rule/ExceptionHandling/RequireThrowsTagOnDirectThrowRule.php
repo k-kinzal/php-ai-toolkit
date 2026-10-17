@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\ExceptionHandling;
 
+use PhpParser\Node;
+use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
@@ -46,18 +48,18 @@ final class RequireThrowsTagOnDirectThrowRule implements Rule
     }
 
     /**
-     * @return class-string<\PhpParser\Node\Stmt\ClassMethod>
+     * @return class-string<ClassMethod>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Stmt\ClassMethod::class;
+        return ClassMethod::class;
     }
 
     /**
-     * @param \PhpParser\Node\Stmt\ClassMethod $node
+     * @param ClassMethod $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         if ($node->stmts === null || $node->stmts === []) {
             return [];

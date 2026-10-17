@@ -18,6 +18,10 @@ use Toolkit\DocGen\Parse\Doc\DocBlockReader;
 use Toolkit\DocGen\Parse\NativeTypePrinter;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeKind;
+use Toolkit\DocGen\Parse\Symbol\ConstantDoc;
+use Toolkit\DocGen\Parse\Symbol\EnumCaseDoc;
+use Toolkit\DocGen\Parse\Symbol\MethodDoc;
+use Toolkit\DocGen\Parse\Symbol\ParameterDoc;
 use Toolkit\DocGen\Parse\Symbol\PropertyDoc;
 use Toolkit\DocGen\Parse\SymbolContext;
 
@@ -189,7 +193,7 @@ final class ClassLikeBuilder
      * Constructor-promoted parameters are added to the property list so the
      * documented property surface is complete.
      *
-     * @return array{constants: list<\Toolkit\DocGen\Parse\Symbol\ConstantDoc>, properties: list<PropertyDoc>, methods: list<\Toolkit\DocGen\Parse\Symbol\MethodDoc>, cases: list<\Toolkit\DocGen\Parse\Symbol\EnumCaseDoc>}
+     * @return array{constants: list<ConstantDoc>, properties: list<PropertyDoc>, methods: list<MethodDoc>, cases: list<EnumCaseDoc>}
      */
     public function members(ClassLike $node): array
     {
@@ -225,7 +229,7 @@ final class ClassLikeBuilder
     /**
      * Builds property models for constructor-promoted parameters.
      *
-     * @param list<\Toolkit\DocGen\Parse\Symbol\ParameterDoc> $parameters
+     * @param list<ParameterDoc> $parameters
      *
      * @return list<PropertyDoc>
      */

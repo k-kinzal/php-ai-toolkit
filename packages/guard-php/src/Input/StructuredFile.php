@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Guard\Input;
 
+use Guard\Structure\Subject;
 use JsonException;
+use Nette\Neon\Exception;
 use RuntimeException;
 
 /**
@@ -12,8 +14,8 @@ use RuntimeException;
  *
  * @property-read FileRecord $file
  * @property-read bool $readable
- * @property-read ?\Guard\Structure\Subject $data
- * @property-read RuntimeException|JsonException|\Nette\Neon\Exception|null $failure
+ * @property-read ?Subject $data
+ * @property-read RuntimeException|JsonException|Exception|null $failure
  */
 final class StructuredFile
 {
@@ -21,8 +23,8 @@ final class StructuredFile
      * Creates the immutable value.
      * @param FileRecord $file
      * @param bool $readable
-     * @param ?\Guard\Structure\Subject $data
-     * @param RuntimeException|JsonException|\Nette\Neon\Exception|null $failure
+     * @param ?Subject $data
+     * @param RuntimeException|JsonException|Exception|null $failure
      */
     public function __construct(
         /** @readonly */
@@ -30,9 +32,9 @@ final class StructuredFile
         /** @readonly */
         private bool $readable,
         /** @readonly */
-        private ?\Guard\Structure\Subject $data,
+        private ?Subject $data,
         /** @readonly */
-        private RuntimeException|JsonException|\Nette\Neon\Exception|null $failure,
+        private RuntimeException|JsonException|Exception|null $failure,
     ) {
     }
 
@@ -53,9 +55,9 @@ final class StructuredFile
     /** Returns the requested structure or its deferred parsing failure.
      * @throws RuntimeException
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
-    public function value(): ?\Guard\Structure\Subject
+    public function value(): ?Subject
     {
         if ($this->failure !== null) {
             throw $this->failure;

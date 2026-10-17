@@ -17,6 +17,7 @@ use Toolkit\DocGen\Compare\DiffKey;
 use Toolkit\DocGen\Compare\DiffStatus;
 use Toolkit\DocGen\Discovery\Package\ComposerManifest;
 use Toolkit\DocGen\Discovery\Package\DiscoveredPackage;
+use Toolkit\DocGen\Parse\Doc\MutationContract;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\DocBlock;
 use Toolkit\DocGen\Parse\Symbol\FunctionDoc;
@@ -119,7 +120,7 @@ use Toolkit\DocGen\Report\TypeHtml;
 #[UsesClass(TypeHtml::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UsageIndex::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContract::class)]
+#[UsesClass(MutationContract::class)]
 final class NamespacePageTest extends TestCase
 {
     public function testRenderProducesCompleteDocumentWithSidebarAndCrumbs(): void

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Input;
 
+use Guard\Diagnostic\PolicyException;
+
 /**
  * Declares filesystem inputs independently of formats and policies.
  *
@@ -28,7 +30,7 @@ final class Selection
      * @param ?string $forbiddenPath
      * @param string $forbiddenMessage
      * @param string $rootError
-     * @throws \Guard\Diagnostic\PolicyException when the selection mode is unsupported
+     * @throws PolicyException when the selection mode is unsupported
      */
     public function __construct(
         /** @readonly */
@@ -49,7 +51,7 @@ final class Selection
         private string $forbiddenMessage = '',
     ) {
         if (!in_array($mode, ['files', 'patterns', 'descendants', 'directories'], true)) {
-            throw new \Guard\Diagnostic\PolicyException('Selection mode "' . $mode . '" is unsupported. Use files, patterns, descendants or directories.');
+            throw new PolicyException('Selection mode "' . $mode . '" is unsupported. Use files, patterns, descendants or directories.');
         }
     }
 

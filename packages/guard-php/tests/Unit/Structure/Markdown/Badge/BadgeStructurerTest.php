@@ -26,8 +26,10 @@ use Guard\Structure\Markdown\MarkdownLineSplitter;
 use Guard\Structure\Markdown\ParserState;
 use Guard\Structure\Markdown\SetextUnderlineMatcher;
 use Guard\Structure\Source;
+use Guard\Structure\Text;
 use Guard\Structure\TextStructurer;
 use JsonException;
+use Nette\Neon\Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -80,13 +82,13 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ParserState::class)]
 #[UsesClass(SetextUnderlineMatcher::class)]
 #[UsesClass(Source::class)]
-#[UsesClass(\Guard\Structure\Text::class)]
+#[UsesClass(Text::class)]
 #[UsesClass(TextStructurer::class)]
 final class BadgeStructurerTest extends TestCase
 {
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testStructureReadsTheFirstBadgeRunBelowTheTitle(): void
     {
@@ -101,7 +103,7 @@ final class BadgeStructurerTest extends TestCase
 
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testStructureSkipsASetextUnderline(): void
     {
@@ -113,7 +115,7 @@ final class BadgeStructurerTest extends TestCase
 
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testStructureRecordsBadgesAboveTheTitle(): void
     {
@@ -125,7 +127,7 @@ final class BadgeStructurerTest extends TestCase
 
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testStructureWithoutTitleKeepsOnlyTheEarlyLine(): void
     {
@@ -155,7 +157,7 @@ final class BadgeStructurerTest extends TestCase
 
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testStructureRequiresAHeadingList(): void
     {

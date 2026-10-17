@@ -4,7 +4,38 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy;
 
+use Guard\Config\Configuration;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
+use Guard\Policy\Diagnostic\FieldMessage;
+use Guard\Policy\FieldConstraints;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
+use Guard\Policy\Rule;
+use Guard\Policy\RuleEvaluator;
+use Guard\Structure\Document\Constraint;
+use Guard\Structure\Document\DataDocument;
+use Guard\Structure\Document\DocumentFailure;
+use Guard\Structure\Document\DocumentNode;
+use Guard\Structure\Document\Json5Reader;
+use Guard\Structure\Document\PhpConfigReader;
+use Guard\Structure\Document\PhpDocument;
+use Guard\Structure\Document\Pointer;
+use Guard\Structure\Document\TomlEncoder;
+use Guard\Structure\Document\XmlDocument;
+use Guard\Structure\ParsedDocument;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -40,37 +71,37 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\ParsedDocument
  * @uses \Guard\Policy\Diagnostic\FieldMessage
  */
-#[CoversClass(\Guard\Policy\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\DirectoryListing::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Entry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Input::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\InputSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\StructuredFile::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DataDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DocumentFailure::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DocumentNode::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Json5Reader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Pointer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\TomlEncoder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\XmlDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Context::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Plan::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Constraint::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FieldConstraints::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Rule::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\RuleEvaluator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\Finding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\ParsedDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\FieldMessage::class)]
+#[CoversClass(PolicyBinding::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(DataDocument::class)]
+#[UsesClass(DocumentFailure::class)]
+#[UsesClass(DocumentNode::class)]
+#[UsesClass(Json5Reader::class)]
+#[UsesClass(PhpConfigReader::class)]
+#[UsesClass(PhpDocument::class)]
+#[UsesClass(Pointer::class)]
+#[UsesClass(\Guard\Structure\Document\Selection::class)]
+#[UsesClass(TomlEncoder::class)]
+#[UsesClass(XmlDocument::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(Constraint::class)]
+#[UsesClass(FieldConstraints::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Rule::class)]
+#[UsesClass(RuleEvaluator::class)]
+#[UsesClass(Finding::class)]
+#[UsesClass(ParsedDocument::class)]
+#[UsesClass(FieldMessage::class)]
 final class PolicyBindingTest extends TestCase
 {
     /**
@@ -78,7 +109,7 @@ final class PolicyBindingTest extends TestCase
      */
     public function testDoesNotImposeAFileCategoryOnRegisteredPolicies(): void
     {
-        $binding = new \Guard\Policy\PolicyBinding('custom', new \Guard\Policy\FieldConstraints([]), 42);
+        $binding = new PolicyBinding('custom', new FieldConstraints([]), 42);
         self::assertSame('custom', $binding->id);
         self::assertSame(42, $binding->reportOrder);
     }

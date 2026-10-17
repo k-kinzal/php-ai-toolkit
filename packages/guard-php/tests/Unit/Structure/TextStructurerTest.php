@@ -8,6 +8,7 @@ use Guard\Structure\Source;
 use Guard\Structure\Text;
 use Guard\Structure\TextStructurer;
 use JsonException;
+use Nette\Neon\Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +25,7 @@ final class TextStructurerTest extends TestCase
 {
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testStructureWrapsTheSourceText(): void
     {

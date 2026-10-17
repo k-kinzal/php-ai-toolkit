@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule;
 
+use PhpParser\Node;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\FileNode;
 use PHPStan\Rules\IdentifierRuleError;
@@ -43,7 +44,7 @@ final class ForbidNonDocCommentRule implements Rule
      * @param FileNode $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         unset($node);
 

@@ -5,6 +5,16 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\PhpDoc\PublicApi;
 
 use PhpParser\Comment\Doc;
+use PhpParser\Node\Const_;
+use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassConst;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Enum_;
+use PhpParser\Node\Stmt\EnumCase;
+use PhpParser\Node\Stmt\Interface_;
+use PhpParser\Node\Stmt\Property;
+use PhpParser\Node\Stmt\PropertyProperty;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -30,9 +40,9 @@ final class PublicApiExampleErrorCollectorTest extends TestCase
 {
     public function testErrorsCollectsClassAndMemberErrorsInLineOrder(): void
     {
-        $class = new \PhpParser\Node\Stmt\Class_('Ledger', [
+        $class = new Class_('Ledger', [
             'stmts' => [
-                new \PhpParser\Node\Stmt\ClassMethod('append', [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n */")], 'startLine' => 30]),
+                new ClassMethod('append', [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n */")], 'startLine' => 30]),
             ],
         ], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n */")], 'startLine' => 10]);
 
@@ -45,7 +55,7 @@ final class PublicApiExampleErrorCollectorTest extends TestCase
 
     public function testClassErrorsNamesTheDeclarationKind(): void
     {
-        $interface = new \PhpParser\Node\Stmt\Interface_('Writer', [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n */")], 'startLine' => 8]);
+        $interface = new Interface_('Writer', [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n */")], 'startLine' => 8]);
 
         $errors = (new PublicApiExampleErrorCollector())->classErrors($interface, 'interface', 'Writer');
 
@@ -54,10 +64,10 @@ final class PublicApiExampleErrorCollectorTest extends TestCase
 
     public function testMethodErrorsReportsEveryUndocumentedPublicApiMethod(): void
     {
-        $class = new \PhpParser\Node\Stmt\Class_('Ledger', [
+        $class = new Class_('Ledger', [
             'stmts' => [
-                new \PhpParser\Node\Stmt\ClassMethod('append', [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n */")]]),
-                new \PhpParser\Node\Stmt\ClassMethod('close', [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n *\n * @example Using it\n * run() // => 1\n */")]]),
+                new ClassMethod('append', [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n */")]]),
+                new ClassMethod('close', [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n *\n * @example Using it\n * run() // => 1\n */")]]),
             ],
         ]);
 
@@ -69,12 +79,12 @@ final class PublicApiExampleErrorCollectorTest extends TestCase
 
     public function testPropertyErrorsNamesTheDeclaredProperty(): void
     {
-        $property = new \PhpParser\Node\Stmt\Property(
+        $property = new Property(
             0,
-            [new \PhpParser\Node\Stmt\PropertyProperty('name')],
+            [new PropertyProperty('name')],
             ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n */")]],
         );
-        $class = new \PhpParser\Node\Stmt\Class_('Ledger', ['stmts' => [$property]]);
+        $class = new Class_('Ledger', ['stmts' => [$property]]);
 
         $errors = (new PublicApiExampleErrorCollector())->propertyErrors($class, 'Ledger');
 
@@ -83,12 +93,12 @@ final class PublicApiExampleErrorCollectorTest extends TestCase
 
     public function testConstantErrorsNamesTheDeclaredConstant(): void
     {
-        $constant = new \PhpParser\Node\Stmt\ClassConst(
-            [new \PhpParser\Node\Const_('VERSION', new \PhpParser\Node\Scalar\String_('1.0'))],
+        $constant = new ClassConst(
+            [new Const_('VERSION', new String_('1.0'))],
             0,
             ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n */")]],
         );
-        $class = new \PhpParser\Node\Stmt\Class_('Ledger', ['stmts' => [$constant]]);
+        $class = new Class_('Ledger', ['stmts' => [$constant]]);
 
         $errors = (new PublicApiExampleErrorCollector())->constantErrors($class, 'Ledger');
 
@@ -97,8 +107,8 @@ final class PublicApiExampleErrorCollectorTest extends TestCase
 
     public function testEnumCaseErrorsNamesTheDeclaredCase(): void
     {
-        $case = new \PhpParser\Node\Stmt\EnumCase('Hearts', null, [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n */")]]);
-        $enum = new \PhpParser\Node\Stmt\Enum_('Suit', ['stmts' => [$case]]);
+        $case = new EnumCase('Hearts', null, [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n */")]]);
+        $enum = new Enum_('Suit', ['stmts' => [$case]]);
 
         $errors = (new PublicApiExampleErrorCollector())->enumCaseErrors($enum, 'Suit');
 
@@ -108,13 +118,13 @@ final class PublicApiExampleErrorCollectorTest extends TestCase
     public function testErrorsForSkipsDocumentedAndUntaggedDeclarations(): void
     {
         $collector = new PublicApiExampleErrorCollector();
-        $documented = new \PhpParser\Node\Stmt\Class_('Ledger', [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n *\n * @example Using it\n * run() // => 1\n */")]]);
-        $untagged = new \PhpParser\Node\Stmt\Class_('Ledger', [], ['comments' => [new Doc('/** Summary. */')]]);
-        $undocumented = new \PhpParser\Node\Stmt\Class_('Ledger', [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n */")]]);
+        $documented = new Class_('Ledger', [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n *\n * @example Using it\n * run() // => 1\n */")]]);
+        $untagged = new Class_('Ledger', [], ['comments' => [new Doc('/** Summary. */')]]);
+        $undocumented = new Class_('Ledger', [], ['comments' => [new Doc("/**\n * Summary.\n *\n * @visibility public\n */")]]);
 
         self::assertSame([], $collector->errorsFor($documented, 'customRules.requireExampleOnClass', 'class Ledger'));
         self::assertSame([], $collector->errorsFor($untagged, 'customRules.requireExampleOnClass', 'class Ledger'));
-        self::assertSame([], $collector->errorsFor(new \PhpParser\Node\Stmt\Class_('Ledger'), 'customRules.requireExampleOnClass', 'class Ledger'));
+        self::assertSame([], $collector->errorsFor(new Class_('Ledger'), 'customRules.requireExampleOnClass', 'class Ledger'));
         self::assertCount(1, $collector->errorsFor($undocumented, 'customRules.requireExampleOnClass', 'class Ledger'));
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\ExceptionHandling;
 
+use PhpParser\Node;
+use PhpParser\Node\Stmt;
 use PhpParser\NodeTraverser;
 
 /**
@@ -14,8 +16,8 @@ final class CatchThrowCollector
     /**
      * Returns the throw statements that belong to the given catch body.
      *
-     * @param array<\PhpParser\Node\Stmt> $stmts
-     * @return list<\PhpParser\Node>
+     * @param array<Stmt> $stmts
+     * @return list<Node>
      */
     public function collect(array $stmts): array
     {

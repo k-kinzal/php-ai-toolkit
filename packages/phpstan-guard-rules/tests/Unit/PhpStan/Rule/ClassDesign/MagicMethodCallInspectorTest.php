@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ClassDesign;
 
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\Variable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +25,7 @@ final class MagicMethodCallInspectorTest extends TestCase
 {
     public function testErrorsReturnsMagicMethodCallError(): void
     {
-        $call = new \PhpParser\Node\Expr\MethodCall(new \PhpParser\Node\Expr\Variable('object'), '__toString');
+        $call = new MethodCall(new Variable('object'), '__toString');
 
         self::assertCount(1, (new MagicMethodCallInspector())->errors($call));
     }

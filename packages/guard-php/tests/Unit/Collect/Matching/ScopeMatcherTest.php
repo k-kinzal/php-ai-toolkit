@@ -6,8 +6,11 @@ namespace Tests\Unit\Collect\Matching;
 
 use Guard\Collect\Matching\ScopeMatcher;
 use Guard\Input\Entry;
+use Guard\Input\Path;
+use Guard\Input\PathPatternMatcher;
 use Guard\Input\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,10 +21,10 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Input\Scope
  */
 #[CoversClass(ScopeMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Entry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Path::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\PathPatternMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Scope::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Path::class)]
+#[UsesClass(PathPatternMatcher::class)]
+#[UsesClass(Scope::class)]
 final class ScopeMatcherTest extends TestCase
 {
     public function testContainsIntersectsIncludesAndExclusionsWithNormalizedPaths(): void

@@ -8,6 +8,7 @@ use function count;
 use function html_entity_decode;
 use function implode;
 
+use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 
 use function strcasecmp;
@@ -22,6 +23,7 @@ use Toolkit\DocGen\Parse\Symbol\DocTag;
 use Toolkit\DocGen\Parse\Symbol\EnumCaseDoc;
 use Toolkit\DocGen\Parse\Symbol\FunctionDoc;
 use Toolkit\DocGen\Parse\Symbol\MethodDoc;
+use Toolkit\DocGen\Parse\Symbol\ParameterDoc;
 use Toolkit\DocGen\Parse\Symbol\PropertyDoc;
 use Toolkit\DocGen\Parse\Symbol\TemplateDoc;
 use Toolkit\DocGen\Report\RenderKit;
@@ -90,7 +92,7 @@ final class SignatureHtml
         foreach ($names as $name) {
             $shown = false;
             foreach ($covered as $type) {
-                $base = $type instanceof \PHPStan\PhpDocParser\Ast\Type\GenericTypeNode ? $type->type->name : ($type instanceof IdentifierTypeNode ? $type->name : null);
+                $base = $type instanceof GenericTypeNode ? $type->type->name : ($type instanceof IdentifierTypeNode ? $type->name : null);
                 if ($base !== null && strcasecmp($services->typeHtml->resolve($base, $context), $name) === 0) {
                     $shown = true;
                     break;
@@ -188,7 +190,7 @@ final class SignatureHtml
     /**
      * Renders a callable head with its parameter list, wrapping when long.
      *
-     * @param list<\Toolkit\DocGen\Parse\Symbol\ParameterDoc> $parameters
+     * @param list<ParameterDoc> $parameters
      * @param string $ownerKey the diff key the parameter states are under
      */
     public function callableSignature(RenderKit $services, string $head, array $parameters, string $returnSuffix, TypeRenderContext $context, string $ownerKey = ''): string
@@ -212,7 +214,7 @@ final class SignatureHtml
      * One of the two is displayed, so the plain view of a signature is
      * never a merged signature with a gap in it.
      *
-     * @param list<\Toolkit\DocGen\Parse\Symbol\ParameterDoc> $parameters
+     * @param list<ParameterDoc> $parameters
      * @param string $ownerKey the diff key the parameter states are under
      * @param bool $headOnly whether the parameters the head dropped are skipped
      */
@@ -240,7 +242,7 @@ final class SignatureHtml
     /**
      * Reports whether the head revision dropped one of the parameters.
      *
-     * @param list<\Toolkit\DocGen\Parse\Symbol\ParameterDoc> $parameters
+     * @param list<ParameterDoc> $parameters
      * @param string $ownerKey the diff key the parameter states are under
      */
     public function hasRemovedParameter(RenderKit $services, array $parameters, string $ownerKey): bool
@@ -259,7 +261,7 @@ final class SignatureHtml
      *
      * @param string $ownerKey the diff key the parameter states are under
      */
-    public function isRemovedParameter(RenderKit $services, \Toolkit\DocGen\Parse\Symbol\ParameterDoc $parameter, string $ownerKey): bool
+    public function isRemovedParameter(RenderKit $services, ParameterDoc $parameter, string $ownerKey): bool
     {
         return $ownerKey !== ''
             && $services->diff->isActive()
@@ -274,7 +276,7 @@ final class SignatureHtml
      *
      * @param string $ownerKey the diff key the parameter states are under
      */
-    public function markedParameter(RenderKit $services, \Toolkit\DocGen\Parse\Symbol\ParameterDoc $parameter, string $html, string $ownerKey): string
+    public function markedParameter(RenderKit $services, ParameterDoc $parameter, string $html, string $ownerKey): string
     {
         if ($ownerKey === '' || !$services->diff->isActive()) {
             return $html;
@@ -286,7 +288,7 @@ final class SignatureHtml
     /**
      * Renders one parameter with its most precise type.
      */
-    public function parameter(RenderKit $services, \Toolkit\DocGen\Parse\Symbol\ParameterDoc $parameter, TypeRenderContext $context): string
+    public function parameter(RenderKit $services, ParameterDoc $parameter, TypeRenderContext $context): string
     {
         $html = '';
         if ($parameter->promotedVisibility !== null) {

@@ -6,6 +6,8 @@ namespace Toolkit\PhpStan\ErrorFormatter;
 
 use function array_key_exists;
 
+use PHPStan\Analyser\Error;
+
 /**
  * Groups PHPStan errors for renderer-specific layouts.
  */
@@ -14,8 +16,8 @@ final class ErrorGrouping
     /**
      * Groups file-specific errors by file path.
      *
-     * @param list<\PHPStan\Analyser\Error> $errors file-specific errors
-     * @return array<string, list<\PHPStan\Analyser\Error>>
+     * @param list<Error> $errors file-specific errors
+     * @return array<string, list<Error>>
      */
     public function byFile(array $errors): array
     {
@@ -33,8 +35,8 @@ final class ErrorGrouping
     /**
      * Groups file-specific errors by identifier.
      *
-     * @param list<\PHPStan\Analyser\Error> $errors file-specific errors
-     * @return array<string, list<\PHPStan\Analyser\Error>>
+     * @param list<Error> $errors file-specific errors
+     * @return array<string, list<Error>>
      */
     public function byIdentifier(array $errors): array
     {
@@ -53,7 +55,7 @@ final class ErrorGrouping
     /**
      * Checks whether any identifier count reaches the deduplication threshold.
      *
-     * @param list<\PHPStan\Analyser\Error> $errors file-specific errors
+     * @param list<Error> $errors file-specific errors
      */
     public function shouldDeduplicate(array $errors, int $threshold): bool
     {

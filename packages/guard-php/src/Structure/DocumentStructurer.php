@@ -10,6 +10,7 @@ use Guard\Structure\Document\PhpDocument;
 use Guard\Structure\Document\XmlDocument;
 use Guard\Structure\Php\Tokens;
 use JsonException;
+use Nette\Neon\Exception;
 use RuntimeException;
 
 /**
@@ -26,7 +27,7 @@ final class DocumentStructurer implements Structurer
     /** Parses a document without evaluating its field constraints.
      * @throws RuntimeException
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function structure(Source $source): ParsedDocument
     {

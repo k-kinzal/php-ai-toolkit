@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
 use Override;
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Property;
@@ -42,7 +43,7 @@ final class RequireListForArrayLiteralRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsStatementClass(): void
     {
-        self::assertSame(\PhpParser\Node\Stmt::class, $this->getRule()->getNodeType());
+        self::assertSame(Stmt::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodeReportsPropertyAndReturnListDeclarations(): void

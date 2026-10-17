@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
+use PhpParser\Node\Stmt\TraitUse;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -29,7 +30,7 @@ final class NoTraitUseInTestClassRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsExpectedClass(): void
     {
-        self::assertSame(\PhpParser\Node\Stmt\TraitUse::class, $this->getRule()->getNodeType());
+        self::assertSame(TraitUse::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodeTraitUseInRestrictedTestClassIsReported(): void

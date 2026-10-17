@@ -6,6 +6,7 @@ namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
 use PHPStan\Analyser\Error;
+use PHPStan\Node\FileNode;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -45,7 +46,7 @@ final class ForbiddenCommentRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsExpectedClass(): void
     {
-        self::assertSame(\PHPStan\Node\FileNode::class, $this->getRule()->getNodeType());
+        self::assertSame(FileNode::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodePhpstanIgnoreNextLineIsReported(): void

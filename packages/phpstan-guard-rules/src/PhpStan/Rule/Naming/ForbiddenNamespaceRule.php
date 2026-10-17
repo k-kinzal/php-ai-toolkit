@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\Naming;
 
+use PhpParser\Node;
+use PhpParser\Node\Stmt\Namespace_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
@@ -35,18 +37,18 @@ final class ForbiddenNamespaceRule implements Rule
     }
 
     /**
-     * @return class-string<\PhpParser\Node\Stmt\Namespace_>
+     * @return class-string<Namespace_>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Stmt\Namespace_::class;
+        return Namespace_::class;
     }
 
     /**
-     * @param \PhpParser\Node\Stmt\Namespace_ $node
+     * @param Namespace_ $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         if ($node->name === null) {
             return [];

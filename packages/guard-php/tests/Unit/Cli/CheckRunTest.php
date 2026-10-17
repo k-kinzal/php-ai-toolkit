@@ -6,19 +6,55 @@ namespace Tests\Unit\Cli;
 
 use Closure;
 use FilesystemIterator;
+use Guard\Cli\BaselineFile;
+use Guard\Cli\CheckRun;
+use Guard\Cli\Command\BaselineCommand;
 use Guard\Cli\Command\CheckCommand;
+use Guard\Cli\Command\GuardCommand;
+use Guard\Cli\FormatDetector;
 use Guard\Cli\PolicyRun;
+use Guard\Collect\Collector;
+use Guard\Collect\Filesystem\Discovery;
+use Guard\Collect\Filesystem\Snapshot;
+use Guard\Collect\Filesystem\WalkQueue;
+use Guard\Config\ComponentLoader;
+use Guard\Config\Configuration;
+use Guard\Config\ConfigurationLoader;
+use Guard\Config\DocumentMerger;
+use Guard\Config\ImportResolver;
+use Guard\Config\Reader\ExtensionConfigReader;
+use Guard\Config\RuleReader;
+use Guard\Config\Schema;
 use Guard\Diagnostic\Finding;
 use Guard\Diagnostic\PolicyException;
+use Guard\Execution\Pipeline;
 use Guard\Execution\Registry;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Policy\Context;
+use Guard\Policy\Diagnostic\RuleMessages;
+use Guard\Policy\FieldConstraints;
 use Guard\Policy\FileChange;
 use Guard\Policy\Plan;
+use Guard\Policy\Policy;
+use Guard\Policy\PolicyBinding;
+use Guard\Repair\AtomicWriter;
+use Guard\Repair\ChangeSet;
+use Guard\Reporting\Baseline;
+use Guard\Reporting\BaselineMatch;
+use Guard\Reporting\ChangeDiff;
+use Guard\Reporting\Filtering\FindingFilter;
+use Guard\Reporting\Filtering\ReportScope;
+use Guard\Reporting\Reporter;
+use Guard\Structure\Document\DataDocument;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -62,51 +98,51 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @uses \Guard\Reporting\Filtering\FindingFilter
  * @uses \Guard\Reporting\Filtering\ReportScope
  */
-#[CoversClass(\Guard\Cli\CheckRun::class)]
+#[CoversClass(CheckRun::class)]
 #[UsesClass(CheckCommand::class)]
-#[UsesClass(\Guard\Collect\Filesystem\Discovery::class)]
-#[UsesClass(\Guard\Collect\Filesystem\Snapshot::class)]
-#[UsesClass(\Guard\Collect\Filesystem\WalkQueue::class)]
-#[UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
-#[UsesClass(\Guard\Config\RuleReader::class)]
-#[UsesClass(\Guard\Config\ComponentLoader::class)]
-#[UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[UsesClass(\Guard\Policy\FieldConstraints::class)]
-#[UsesClass(\Guard\Cli\Command\GuardCommand::class)]
+#[UsesClass(Discovery::class)]
+#[UsesClass(Snapshot::class)]
+#[UsesClass(WalkQueue::class)]
+#[UsesClass(ExtensionConfigReader::class)]
+#[UsesClass(RuleReader::class)]
+#[UsesClass(ComponentLoader::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(FieldConstraints::class)]
+#[UsesClass(GuardCommand::class)]
 #[UsesClass(PolicyRun::class)]
-#[UsesClass(\Guard\Collect\Collector::class)]
-#[UsesClass(\Guard\Input\InputSet::class)]
-#[UsesClass(\Guard\Config\Configuration::class)]
-#[UsesClass(\Guard\Config\ConfigurationLoader::class)]
-#[UsesClass(\Guard\Config\DocumentMerger::class)]
-#[UsesClass(\Guard\Config\ImportResolver::class)]
-#[UsesClass(\Guard\Config\Schema::class)]
-#[UsesClass(\Guard\Structure\Document\DataDocument::class)]
-#[UsesClass(\Guard\Repair\AtomicWriter::class)]
-#[UsesClass(\Guard\Repair\ChangeSet::class)]
-#[UsesClass(\Guard\Policy\Context::class)]
+#[UsesClass(Collector::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(ConfigurationLoader::class)]
+#[UsesClass(DocumentMerger::class)]
+#[UsesClass(ImportResolver::class)]
+#[UsesClass(Schema::class)]
+#[UsesClass(DataDocument::class)]
+#[UsesClass(AtomicWriter::class)]
+#[UsesClass(ChangeSet::class)]
+#[UsesClass(Context::class)]
 #[UsesClass(FileChange::class)]
-#[UsesClass(\Guard\Execution\Pipeline::class)]
+#[UsesClass(Pipeline::class)]
 #[UsesClass(Plan::class)]
 #[UsesClass(Registry::class)]
 #[UsesClass(PolicyException::class)]
 #[UsesClass(Finding::class)]
-#[UsesClass(\Guard\Reporting\Reporter::class)]
-#[UsesClass(\Guard\Reporting\ChangeDiff::class)]
-#[UsesClass(\Guard\Policy\Diagnostic\RuleMessages::class)]
-#[UsesClass(\Guard\Cli\FormatDetector::class)]
-#[UsesClass(\Guard\Cli\BaselineFile::class)]
-#[UsesClass(\Guard\Cli\Command\BaselineCommand::class)]
-#[UsesClass(\Guard\Reporting\Baseline::class)]
-#[UsesClass(\Guard\Reporting\BaselineMatch::class)]
-#[UsesClass(\Guard\Reporting\Filtering\FindingFilter::class)]
-#[UsesClass(\Guard\Reporting\Filtering\ReportScope::class)]
+#[UsesClass(Reporter::class)]
+#[UsesClass(ChangeDiff::class)]
+#[UsesClass(RuleMessages::class)]
+#[UsesClass(FormatDetector::class)]
+#[UsesClass(BaselineFile::class)]
+#[UsesClass(BaselineCommand::class)]
+#[UsesClass(Baseline::class)]
+#[UsesClass(BaselineMatch::class)]
+#[UsesClass(FindingFilter::class)]
+#[UsesClass(ReportScope::class)]
 final class CheckRunTest extends TestCase
 {
     /**
      * @dataProvider providerFormats
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('providerFormats')]
+    #[DataProvider('providerFormats')]
     public function testRunFiltersOnlyTheDisplayAndKeepsHiddenErrorsInTheExitStatus(string $format, string $status): void
     {
         $project = new class (['guard.yaml' => "version: 1\n"]) {
@@ -149,18 +185,18 @@ final class CheckRunTest extends TestCase
         $error = new Finding('a', 'problem', 'required', 'Wrong value. Set it to 1.');
         $warning = new Finding('b', 'suggestion', 'recommended', 'Wrong value. Set it to 2.', true);
         $registry = new Registry();
-        $registry->addPolicy('test', new class ([], static fn (): Plan => new Plan([$error, $warning], [])) implements \Guard\Policy\Policy {
-            /** @param array<string, \Guard\Input\Input> $inputs
-             * @param Closure(\Guard\Input\InputSet, \Guard\Policy\Context): Plan $callback
+        $registry->addPolicy('test', new class ([], static fn (): Plan => new Plan([$error, $warning], [])) implements Policy {
+            /** @param array<string, Input> $inputs
+             * @param Closure(InputSet, Context): Plan $callback
              */
             public function __construct(private array $inputs, private Closure $callback)
             {
             }
-            public function inputs(\Guard\Policy\Context $context): array
+            public function inputs(Context $context): array
             {
                 return $this->inputs;
             }
-            public function evaluate(\Guard\Input\InputSet $inputs, \Guard\Policy\Context $context): Plan
+            public function evaluate(InputSet $inputs, Context $context): Plan
             {
                 return ($this->callback)($inputs, $context);
             }
@@ -231,8 +267,8 @@ final class CheckRunTest extends TestCase
         };
         try {
             $command = new CheckCommand($project->root);
-            $input = new \Symfony\Component\Console\Input\ArrayInput([], $command->getDefinition());
-            $run = new \Guard\Cli\CheckRun();
+            $input = new ArrayInput([], $command->getDefinition());
+            $run = new CheckRun();
             self::assertNull($run->baselinePath($project->root . '/guard.yaml', $input));
             $project->write('guard-baseline.json', '{"version":1,"entries":[]}');
             self::assertSame($project->root . '/guard-baseline.json', $run->baselinePath($project->root . '/guard.yaml', $input));

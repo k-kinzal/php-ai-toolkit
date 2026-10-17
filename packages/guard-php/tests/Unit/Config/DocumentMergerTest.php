@@ -4,7 +4,25 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Config;
 
+use Guard\Config\Configuration;
+use Guard\Config\DocumentMerger;
+use Guard\Config\Reader\ExtensionConfigReader;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -26,28 +44,28 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Diagnostic\Finding
  */
-#[CoversClass(\Guard\Config\DocumentMerger::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\DirectoryListing::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Entry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Input::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\InputSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\StructuredFile::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Context::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Plan::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\Finding::class)]
+#[CoversClass(DocumentMerger::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(ExtensionConfigReader::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Finding::class)]
 final class DocumentMergerTest extends TestCase
 {
     public function testMergeReplacesMetricSourceAndPatchesConfiguration(): void
     {
-        $merged = (new \Guard\Config\DocumentMerger())->merge(
+        $merged = (new DocumentMerger())->merge(
             [
                 'metrics' => ['source' => ['lib'], 'exclude' => ['vendor']],
                 'configuration' => [['id' => 'mode', 'file' => 'app.json', 'assert' => ['equals' => 'A']]],
@@ -66,12 +84,12 @@ final class DocumentMergerTest extends TestCase
 
     public function testMergeSectionReplacesANonMapping(): void
     {
-        self::assertSame(['metrics' => 'bad'], (new \Guard\Config\DocumentMerger())->mergeSection([], ['metrics' => 'bad'], 'metrics'));
+        self::assertSame(['metrics' => 'bad'], (new DocumentMerger())->mergeSection([], ['metrics' => 'bad'], 'metrics'));
     }
 
     public function testMetricsOverrideReplacesOneMetric(): void
     {
-        $metrics = (new \Guard\Config\DocumentMerger())->metrics(
+        $metrics = (new DocumentMerger())->metrics(
             ['source' => ['lib'], 'profiles' => ['standard' => ['limits' => ['file' => ['lines' => 500, 'ncloc' => 350]]]], 'default' => 'standard'],
             ['source' => ['src'], 'profiles' => ['standard' => ['limits' => ['file' => ['lines' => 800]]]]],
         );
@@ -84,7 +102,7 @@ final class DocumentMergerTest extends TestCase
 
     public function testProfilesAddsANamedProfile(): void
     {
-        $profiles = (new \Guard\Config\DocumentMerger())->profiles(
+        $profiles = (new DocumentMerger())->profiles(
             ['standard' => ['limits' => ['file' => ['lines' => 500]]]],
             ['native' => ['extends' => 'standard']],
         );
@@ -96,7 +114,7 @@ final class DocumentMergerTest extends TestCase
 
     public function testProfileMergesLimitMetrics(): void
     {
-        $profile = (new \Guard\Config\DocumentMerger())->profile(
+        $profile = (new DocumentMerger())->profile(
             ['limits' => ['file' => ['lines' => 500, 'ncloc' => 350]], 'extends' => 'base'],
             ['limits' => ['file' => ['lines' => 800]]],
         );
@@ -110,13 +128,13 @@ final class DocumentMergerTest extends TestCase
     {
         self::assertSame(
             ['file' => ['lines' => 800, 'ncloc' => 350]],
-            (new \Guard\Config\DocumentMerger())->limits(['file' => ['lines' => 500, 'ncloc' => 350]], ['file' => ['lines' => 800]]),
+            (new DocumentMerger())->limits(['file' => ['lines' => 500, 'ncloc' => 350]], ['file' => ['lines' => 800]]),
         );
     }
 
     public function testStructureOverrideReplacesOneDirectoryKey(): void
     {
-        $structure = (new \Guard\Config\DocumentMerger())->structure(
+        $structure = (new DocumentMerger())->structure(
             ['paths' => ['.'], 'directories' => [['path' => 'src/**', 'max_files' => 15, 'deny' => ['*Helper.php']]]],
             ['directories' => [['path' => 'src/**', 'max_files' => 20], ['path' => 'lib/**', 'max_files' => 10]]],
         );
@@ -131,7 +149,7 @@ final class DocumentMergerTest extends TestCase
 
     public function testDocumentationReplacesOneDocument(): void
     {
-        $documentation = (new \Guard\Config\DocumentMerger())->documentation(
+        $documentation = (new DocumentMerger())->documentation(
             ['files' => ['README.md' => ['headings' => ['# Old']], 'guide.md' => ['headings' => ['# Guide']]], 'scan' => ['README.md']],
             ['files' => ['README.md' => ['headings' => ['# New']]], 'scan' => ['README.md', 'guide.md']],
         );
@@ -145,7 +163,7 @@ final class DocumentMergerTest extends TestCase
     {
         self::assertSame(
             ['README.md' => ['headings' => ['# New']], 'guide.md' => ['headings' => ['# Guide']]],
-            (new \Guard\Config\DocumentMerger())->files(
+            (new DocumentMerger())->files(
                 ['README.md' => ['headings' => ['# Old']], 'guide.md' => ['headings' => ['# Guide']]],
                 ['README.md' => ['headings' => ['# New']]],
             ),
@@ -156,50 +174,50 @@ final class DocumentMergerTest extends TestCase
     {
         self::assertSame(
             ['README.md' => ['outlines' => ['package' => ['# *']], 'badges' => [['name' => 'PHP', 'image' => 'p']], 'headings' => ['# Tool']]],
-            (new \Guard\Config\DocumentMerger())->files(
+            (new DocumentMerger())->files(
                 ['README.md' => ['outlines' => ['package' => ['# *']], 'badges' => [['name' => 'PHP', 'image' => 'p']]]],
                 ['README.md' => ['headings' => ['# Tool']]],
             ),
         );
-        self::assertSame(['CLAUDE.md' => 'invalid'], (new \Guard\Config\DocumentMerger())->files(['CLAUDE.md' => ['content' => '@AGENTS.md']], ['CLAUDE.md' => 'invalid']));
+        self::assertSame(['CLAUDE.md' => 'invalid'], (new DocumentMerger())->files(['CLAUDE.md' => ['content' => '@AGENTS.md']], ['CLAUDE.md' => 'invalid']));
     }
 
     public function testEntriesPatchesByIdentity(): void
     {
         self::assertSame(
             [['id' => 'mode', 'file' => 'settings.json']],
-            (new \Guard\Config\DocumentMerger())->entries([['id' => 'mode', 'file' => 'app.json']], [['id' => 'mode', 'file' => 'settings.json']], 'id'),
+            (new DocumentMerger())->entries([['id' => 'mode', 'file' => 'app.json']], [['id' => 'mode', 'file' => 'settings.json']], 'id'),
         );
     }
 
     public function testIndexKeepsTheFirstPosition(): void
     {
-        self::assertSame([[['id' => 'mode']], ['mode' => 0]], (new \Guard\Config\DocumentMerger())->index([['id' => 'mode']], 'id'));
+        self::assertSame([[['id' => 'mode']], ['mode' => 0]], (new DocumentMerger())->index([['id' => 'mode']], 'id'));
     }
 
     public function testEntryNameReturnsNullWithoutAnIdentity(): void
     {
-        self::assertNull((new \Guard\Config\DocumentMerger())->entryName(['file' => 'a.json'], 'id'));
-        self::assertSame('mode', (new \Guard\Config\DocumentMerger())->entryName(['id' => 'mode'], 'id'));
+        self::assertNull((new DocumentMerger())->entryName(['file' => 'a.json'], 'id'));
+        self::assertSame('mode', (new DocumentMerger())->entryName(['id' => 'mode'], 'id'));
     }
 
     public function testPatchReplacesListedKeys(): void
     {
         self::assertSame(
             ['file' => 'b.json', 'level' => 'required'],
-            (new \Guard\Config\DocumentMerger())->patch(['file' => 'a.json', 'level' => 'required'], ['file' => 'b.json']),
+            (new DocumentMerger())->patch(['file' => 'a.json', 'level' => 'required'], ['file' => 'b.json']),
         );
     }
 
     public function testIsMappingAcceptsMapsAndRejectsLists(): void
     {
-        self::assertTrue((new \Guard\Config\DocumentMerger())->isMapping(['file' => 'a.json']));
-        self::assertFalse((new \Guard\Config\DocumentMerger())->isMapping(['a.json']));
+        self::assertTrue((new DocumentMerger())->isMapping(['file' => 'a.json']));
+        self::assertFalse((new DocumentMerger())->isMapping(['a.json']));
     }
 
     public function testIsListAcceptsSequences(): void
     {
-        self::assertTrue((new \Guard\Config\DocumentMerger())->isList(['a.json']));
-        self::assertFalse((new \Guard\Config\DocumentMerger())->isList(['file' => 'a.json']));
+        self::assertTrue((new DocumentMerger())->isList(['a.json']));
+        self::assertFalse((new DocumentMerger())->isList(['file' => 'a.json']));
     }
 }

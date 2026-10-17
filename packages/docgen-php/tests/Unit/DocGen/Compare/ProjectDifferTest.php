@@ -35,6 +35,8 @@ use Toolkit\DocGen\Parse\Builder\MethodBuilder;
 use Toolkit\DocGen\Parse\Builder\ParameterBuilder;
 use Toolkit\DocGen\Parse\Builder\PropertyBuilder;
 use Toolkit\DocGen\Parse\Doc\DocBlockReader;
+use Toolkit\DocGen\Parse\Doc\MutationContract;
+use Toolkit\DocGen\Parse\Doc\MutationContractReader;
 use Toolkit\DocGen\Parse\Doc\PhpDocParserBridge;
 use Toolkit\DocGen\Parse\ExprTextPrinter;
 use Toolkit\DocGen\Parse\FileSymbolCollector;
@@ -139,8 +141,8 @@ use Toolkit\DocGen\Parse\UseMapCollector;
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UsageIndex::class)]
 #[UsesClass(UseMapCollector::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContract::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContractReader::class)]
+#[UsesClass(MutationContract::class)]
+#[UsesClass(MutationContractReader::class)]
 final class ProjectDifferTest extends TestCase
 {
     public function testDiffMergesBothRevisionsIntoOneModelOfTheWholeComparison(): void

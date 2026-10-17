@@ -8,6 +8,7 @@ use Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader;
 use Guard\Structure\Php\Complexity\CyclomaticComplexityCalculator;
 use Guard\Structure\Php\Complexity\CyclomaticComplexityState;
 use Guard\Structure\Php\Complexity\CyclomaticDecisionWeight;
+use Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary;
 use Guard\Structure\Php\FunctionMetric\ArrowFunctionMetricReader;
 use Guard\Structure\Php\FunctionMetric\BlockFunctionMetricReader;
 use Guard\Structure\Php\FunctionMetric\FunctionBodyLocator;
@@ -47,7 +48,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(CyclomaticComplexityCalculator::class)]
 #[UsesClass(CyclomaticComplexityState::class)]
 #[UsesClass(CyclomaticDecisionWeight::class)]
-#[UsesClass(\Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary::class)]
+#[UsesClass(ArrowExpressionBoundary::class)]
 #[UsesClass(ArrowFunctionMetricReader::class)]
 #[UsesClass(BlockFunctionMetricReader::class)]
 #[UsesClass(FunctionBodyLocator::class)]

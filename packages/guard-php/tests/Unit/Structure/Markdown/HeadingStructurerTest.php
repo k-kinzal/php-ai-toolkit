@@ -4,8 +4,42 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Structure\Markdown;
 
+use Guard\Config\Configuration;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
+use Guard\Structure\Markdown\AtxHeadingMatcher;
+use Guard\Structure\Markdown\Block\BlockLineScanner;
+use Guard\Structure\Markdown\BlockMarkerMatcher;
+use Guard\Structure\Markdown\Fence;
+use Guard\Structure\Markdown\FenceMatcher;
+use Guard\Structure\Markdown\Heading;
+use Guard\Structure\Markdown\HeadingList;
+use Guard\Structure\Markdown\HeadingParser;
+use Guard\Structure\Markdown\HeadingStructurer;
+use Guard\Structure\Markdown\HeadingTextNormalizer;
+use Guard\Structure\Markdown\HtmlBlockMatcher;
+use Guard\Structure\Markdown\LineIndentation;
+use Guard\Structure\Markdown\LineScanner;
+use Guard\Structure\Markdown\MarkdownLineSplitter;
+use Guard\Structure\Markdown\ParserState;
+use Guard\Structure\Markdown\SetextUnderlineMatcher;
+use Guard\Structure\Source;
 use JsonException;
+use Nette\Neon\Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,47 +76,47 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Markdown\SetextUnderlineMatcher
  * @uses \Guard\Structure\Source
  */
-#[CoversClass(\Guard\Structure\Markdown\HeadingStructurer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\DirectoryListing::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Entry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Input::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\InputSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\StructuredFile::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Context::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Plan::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\Finding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\AtxHeadingMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\BlockMarkerMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Block\BlockLineScanner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Fence::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\FenceMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Heading::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingList::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingTextNormalizer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HtmlBlockMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\LineIndentation::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\LineScanner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\MarkdownLineSplitter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\ParserState::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\SetextUnderlineMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Source::class)]
+#[CoversClass(HeadingStructurer::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Finding::class)]
+#[UsesClass(AtxHeadingMatcher::class)]
+#[UsesClass(BlockMarkerMatcher::class)]
+#[UsesClass(BlockLineScanner::class)]
+#[UsesClass(Fence::class)]
+#[UsesClass(FenceMatcher::class)]
+#[UsesClass(Heading::class)]
+#[UsesClass(HeadingList::class)]
+#[UsesClass(HeadingParser::class)]
+#[UsesClass(HeadingTextNormalizer::class)]
+#[UsesClass(HtmlBlockMatcher::class)]
+#[UsesClass(LineIndentation::class)]
+#[UsesClass(LineScanner::class)]
+#[UsesClass(MarkdownLineSplitter::class)]
+#[UsesClass(ParserState::class)]
+#[UsesClass(SetextUnderlineMatcher::class)]
+#[UsesClass(Source::class)]
 final class HeadingStructurerTest extends TestCase
 {
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testStructurePreservesEveryHeadingLevelForIndependentPolicies(): void
     {
-        $value = (new \Guard\Structure\Markdown\HeadingStructurer())->structure(new \Guard\Structure\Source("# Top\n\n### Detail\n", []));
-        self::assertSame([1, 3], array_map(static fn (\Guard\Structure\Markdown\Heading $heading): int => $heading->level, $value->all()));
+        $value = (new HeadingStructurer())->structure(new Source("# Top\n\n### Detail\n", []));
+        self::assertSame([1, 3], array_map(static fn (Heading $heading): int => $heading->level, $value->all()));
     }
 }

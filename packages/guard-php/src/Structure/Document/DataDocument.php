@@ -6,6 +6,7 @@ namespace Guard\Structure\Document;
 
 use Guard\Diagnostic\PolicyException;
 use JsonException;
+use Nette\Neon\Exception;
 use Nette\Neon\Neon;
 use Symfony\Component\Yaml\Yaml;
 use Yosymfony\Toml\Toml;
@@ -19,7 +20,7 @@ final class DataDocument
     /**
      * Creates a parsed document for a supported data format.
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function __construct(private string $format, private string $source)
     {
@@ -29,7 +30,7 @@ final class DataDocument
      * @return mixed
      * @throws PolicyException when the requested format is unsupported
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function decode(string $source): mixed
     {
@@ -53,7 +54,7 @@ final class DataDocument
     /**
      * @param mixed $value
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function write(string $selector, $value): void
     {
@@ -72,7 +73,7 @@ final class DataDocument
      * @param mixed $data
      * @throws PolicyException when serialization cannot preserve the data
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function encodeData($data): string
     {

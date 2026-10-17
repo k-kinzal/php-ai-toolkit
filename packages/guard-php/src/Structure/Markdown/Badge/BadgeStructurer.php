@@ -14,6 +14,7 @@ use Guard\Structure\Markdown\MarkdownLineSplitter;
 use Guard\Structure\Source;
 use Guard\Structure\Structurer;
 use JsonException;
+use Nette\Neon\Exception;
 
 use function preg_match;
 
@@ -34,7 +35,7 @@ final class BadgeStructurer implements Structurer
      *
      * @throws RuntimeException
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function structure(Source $source): BadgeBlock
     {

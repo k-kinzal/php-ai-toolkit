@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Mutation;
 
+use PhpParser\Comment\Doc;
+use PhpParser\Node;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Name;
+use PhpParser\Node\Param;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Function_;
 use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -22,16 +29,16 @@ final class MutationDeclarationCollectorTest extends TestCase
 {
     public function testGetNodeTypeReturnsAnyParserNode(): void
     {
-        self::assertSame(\PhpParser\Node::class, (new MutationDeclarationCollector())->getNodeType());
+        self::assertSame(Node::class, (new MutationDeclarationCollector())->getNodeType());
     }
 
     public function testProcessNodeCollectsCompactContract(): void
     {
-        $parameter = new \PhpParser\Node\Param(new \PhpParser\Node\Expr\Variable('value'));
-        $function = new \PhpParser\Node\Stmt\Function_('change', ['params' => [$parameter]], [
-            'comments' => [new \PhpParser\Comment\Doc('/** @param object $value +mut changed */')],
+        $parameter = new Param(new Variable('value'));
+        $function = new Function_('change', ['params' => [$parameter]], [
+            'comments' => [new Doc('/** @param object $value +mut changed */')],
         ]);
-        $function->namespacedName = new \PhpParser\Node\Name('App\change');
+        $function->namespacedName = new Name('App\change');
         $result = (new MutationDeclarationCollector())->processNode($function, self::createStub(Scope::class));
 
         self::assertSame(['value'], $result['mutable'] ?? null);
@@ -40,8 +47,8 @@ final class MutationDeclarationCollectorTest extends TestCase
 
     public function testIdentityNamesAFunction(): void
     {
-        $function = new \PhpParser\Node\Stmt\Function_('run');
-        $function->namespacedName = new \PhpParser\Node\Name('App\run');
+        $function = new Function_('run');
+        $function->namespacedName = new Name('App\run');
 
         self::assertSame('function:app\run', (new MutationDeclarationCollector())->identity($function, self::createStub(Scope::class))['key'] ?? null);
     }
@@ -49,7 +56,7 @@ final class MutationDeclarationCollectorTest extends TestCase
     public function testPrototypesReturnsNoneWithoutAClassScope(): void
     {
         self::assertSame([], (new MutationDeclarationCollector())->prototypes(
-            new \PhpParser\Node\Stmt\ClassMethod('run'),
+            new ClassMethod('run'),
             self::createStub(Scope::class),
         ));
     }

@@ -5,9 +5,34 @@ declare(strict_types=1);
 namespace Tests\Unit\Cli\Command;
 
 use FilesystemIterator;
+use Guard\Cli\Command\GuardCommand;
+use Guard\Cli\Command\RulesCommand;
+use Guard\Cli\FormatDetector;
+use Guard\Config\Configuration;
+use Guard\Config\ConfigurationLoader;
+use Guard\Config\DocumentMerger;
+use Guard\Config\ImportResolver;
+use Guard\Config\Reader\ExtensionConfigReader;
+use Guard\Config\RuleCatalog;
+use Guard\Config\RuleReader;
+use Guard\Config\Schema;
+use Guard\Diagnostic\PolicyException;
+use Guard\Policy\Diagnostic\FieldMessage;
+use Guard\Policy\Diagnostic\RuleDescription;
+use Guard\Policy\Diagnostic\RuleMessages;
+use Guard\Policy\FieldConstraints;
+use Guard\Policy\PolicyBinding;
+use Guard\Policy\Rule;
+use Guard\Reporting\RuleReporter;
+use Guard\Structure\Document\Constraint;
+use Guard\Structure\Document\Selection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @covers \Guard\Cli\Command\RulesCommand
@@ -32,28 +57,28 @@ use SplFileInfo;
  * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Policy\Diagnostic\FieldMessage
  */
-#[\PHPUnit\Framework\Attributes\CoversClass(\Guard\Cli\Command\RulesCommand::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ConfigurationLoader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\ImportResolver::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\DocumentMerger::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Schema::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\RuleReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Rule::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Constraint::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FieldConstraints::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\RuleDescription::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\RuleMessages::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\Command\GuardCommand::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Cli\FormatDetector::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\RuleCatalog::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Reporting\RuleReporter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Diagnostic\FieldMessage::class)]
-final class RulesCommandTest extends \PHPUnit\Framework\TestCase
+#[CoversClass(RulesCommand::class)]
+#[UsesClass(ConfigurationLoader::class)]
+#[UsesClass(ImportResolver::class)]
+#[UsesClass(DocumentMerger::class)]
+#[UsesClass(Schema::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(RuleReader::class)]
+#[UsesClass(ExtensionConfigReader::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(Rule::class)]
+#[UsesClass(Constraint::class)]
+#[UsesClass(FieldConstraints::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(RuleDescription::class)]
+#[UsesClass(RuleMessages::class)]
+#[UsesClass(GuardCommand::class)]
+#[UsesClass(FormatDetector::class)]
+#[UsesClass(RuleCatalog::class)]
+#[UsesClass(RuleReporter::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(FieldMessage::class)]
+final class RulesCommandTest extends TestCase
 {
     public function testRunFiltersTheResolvedRulesAndRejectsEmptyQueries(): void
     {
@@ -95,7 +120,7 @@ final class RulesCommandTest extends \PHPUnit\Framework\TestCase
             }
         };
         try {
-            $tester = new \Symfony\Component\Console\Tester\CommandTester(new \Guard\Cli\Command\RulesCommand($project->root));
+            $tester = new CommandTester(new RulesCommand($project->root));
             self::assertSame(0, $tester->execute(['--query' => 'CONCURRENCY', '--format' => 'text']));
             self::assertStringContainsString('workers', $tester->getDisplay());
             self::assertStringContainsString('Bound concurrency', $tester->getDisplay());

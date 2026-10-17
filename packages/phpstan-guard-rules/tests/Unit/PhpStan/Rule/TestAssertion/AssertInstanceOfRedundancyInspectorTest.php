@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
+use PhpParser\Node\Arg;
+use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\ObjectType;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -40,15 +46,15 @@ final class AssertInstanceOfRedundancyInspectorTest extends TestCase
         $scope = self::createStub(Scope::class);
         $scope->method('resolveName')->willReturn('App\\Service');
         $scope->method('getType')->willReturn(new ObjectType('App\\Service'));
-        $expected = new \PhpParser\Node\Expr\ClassConstFetch(
-            new \PhpParser\Node\Name('Service'),
-            new \PhpParser\Node\Identifier('class'),
+        $expected = new ClassConstFetch(
+            new Name('Service'),
+            new Identifier('class'),
         );
-        $actual = new \PhpParser\Node\Expr\Variable('actual');
-        $call = new \PhpParser\Node\Expr\MethodCall(
-            new \PhpParser\Node\Expr\Variable('this'),
+        $actual = new Variable('actual');
+        $call = new MethodCall(
+            new Variable('this'),
             'assertInstanceOf',
-            [new \PhpParser\Node\Arg($expected), new \PhpParser\Node\Arg($actual)],
+            [new Arg($expected), new Arg($actual)],
         );
 
         self::assertCount(1, (new AssertInstanceOfRedundancyInspector())->errors($call, $scope));

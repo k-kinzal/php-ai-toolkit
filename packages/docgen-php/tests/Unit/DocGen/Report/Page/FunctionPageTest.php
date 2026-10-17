@@ -39,6 +39,8 @@ use Toolkit\DocGen\Parse\Builder\MethodBuilder;
 use Toolkit\DocGen\Parse\Builder\ParameterBuilder;
 use Toolkit\DocGen\Parse\Builder\PropertyBuilder;
 use Toolkit\DocGen\Parse\Doc\DocBlockReader;
+use Toolkit\DocGen\Parse\Doc\MutationContract;
+use Toolkit\DocGen\Parse\Doc\MutationContractReader;
 use Toolkit\DocGen\Parse\Doc\PhpDocParserBridge;
 use Toolkit\DocGen\Parse\ExprTextPrinter;
 use Toolkit\DocGen\Parse\FileSymbolCollector;
@@ -299,8 +301,8 @@ use Toolkit\DocGen\Report\TypeRenderContext;
 #[UsesClass(WorkScheduler::class)]
 #[UsesClass(WorkerCount::class)]
 #[UsesClass(WorkerPool::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContract::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContractReader::class)]
+#[UsesClass(MutationContract::class)]
+#[UsesClass(MutationContractReader::class)]
 #[UsesClass(SourceSelection::class)]
 #[UsesClass(SourceFile::class)]
 #[UsesClass(SourceSet::class)]

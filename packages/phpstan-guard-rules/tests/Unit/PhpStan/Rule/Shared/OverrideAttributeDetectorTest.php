@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Shared;
 
+use PhpParser\Node\Attribute;
+use PhpParser\Node\AttributeGroup;
+use PhpParser\Node\Name;
+use PhpParser\Node\Stmt\ClassMethod;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -18,10 +22,10 @@ final class OverrideAttributeDetectorTest extends TestCase
 {
     public function testHasReturnsTrueForOverrideAttribute(): void
     {
-        $method = new \PhpParser\Node\Stmt\ClassMethod('run', [
+        $method = new ClassMethod('run', [
             'attrGroups' => [
-                new \PhpParser\Node\AttributeGroup([
-                    new \PhpParser\Node\Attribute(new \PhpParser\Node\Name('Override')),
+                new AttributeGroup([
+                    new Attribute(new Name('Override')),
                 ]),
             ],
         ]);
@@ -31,6 +35,6 @@ final class OverrideAttributeDetectorTest extends TestCase
 
     public function testHasReturnsFalseWithoutOverrideAttribute(): void
     {
-        self::assertFalse((new OverrideAttributeDetector())->has(new \PhpParser\Node\Stmt\ClassMethod('run')));
+        self::assertFalse((new OverrideAttributeDetector())->has(new ClassMethod('run')));
     }
 }

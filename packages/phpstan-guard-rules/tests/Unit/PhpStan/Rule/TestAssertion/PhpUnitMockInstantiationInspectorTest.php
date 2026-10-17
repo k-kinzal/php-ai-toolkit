@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
+use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -23,7 +25,7 @@ final class PhpUnitMockInstantiationInspectorTest extends TestCase
     {
         $scope = self::createStub(Scope::class);
         $scope->method('resolveName')->willReturn('PHPUnit\\Framework\\MockObject\\MockBuilder');
-        $newExpression = new \PhpParser\Node\Expr\New_(new \PhpParser\Node\Name('MockBuilder'));
+        $newExpression = new New_(new Name('MockBuilder'));
 
         self::assertCount(1, (new PhpUnitMockInstantiationInspector())->errors($newExpression, $scope));
     }

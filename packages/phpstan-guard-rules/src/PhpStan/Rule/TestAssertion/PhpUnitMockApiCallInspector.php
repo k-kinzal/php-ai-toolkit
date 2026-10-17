@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\TestAssertion;
 
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\IdentifierRuleError;
@@ -59,9 +62,9 @@ final class PhpUnitMockApiCallInspector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function errors(\PhpParser\Node\Expr $node, Scope $scope): array
+    public function errors(Expr $node, Scope $scope): array
     {
-        if ($node instanceof \PhpParser\Node\Expr\MethodCall) {
+        if ($node instanceof MethodCall) {
             if (!$this->targetMatcher->isThisMethodCall($node)) {
                 return [];
             }
@@ -74,7 +77,7 @@ final class PhpUnitMockApiCallInspector
             );
         }
 
-        if ($node instanceof \PhpParser\Node\Expr\StaticCall) {
+        if ($node instanceof StaticCall) {
             if (!$this->targetMatcher->isStaticCallOnCurrentTestClass($node, $scope)) {
                 return [];
             }
@@ -93,7 +96,7 @@ final class PhpUnitMockApiCallInspector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function errorsForCall(?string $methodName, ?\PhpParser\Node\Expr $firstArg, int $line, Scope $scope): array
+    public function errorsForCall(?string $methodName, ?Expr $firstArg, int $line, Scope $scope): array
     {
         if ($methodName === null) {
             return [];

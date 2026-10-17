@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule;
 
+use PhpParser\Node;
+use PhpParser\Node\Stmt\Property;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
@@ -25,18 +27,18 @@ final class NoPropertyInTestClassRule implements Rule
     }
 
     /**
-     * @return class-string<\PhpParser\Node\Stmt\Property>
+     * @return class-string<Property>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Stmt\Property::class;
+        return Property::class;
     }
 
     /**
-     * @param \PhpParser\Node\Stmt\Property $node
+     * @param Property $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         if (!$this->testClassScope->isRestrictedTestClass($scope)) {
             return [];

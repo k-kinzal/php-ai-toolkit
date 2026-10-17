@@ -4,29 +4,33 @@ declare(strict_types=1);
 
 namespace Guard\Structure\Php;
 
+use Guard\Diagnostic\PolicyException;
 use Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser;
 use Guard\Structure\Php\FileMetric\FileMetric;
 use Guard\Structure\Php\FunctionMetric\FunctionMetricParser;
 use Guard\Structure\Php\Token\TokenLineCounter;
+use Guard\Structure\Source;
+use Guard\Structure\Structurer;
 use JsonException;
+use Nette\Neon\Exception;
 use PhpToken;
 use RuntimeException;
 
 /**
  * Reads PHP source and measures it without selecting or applying any policy.
  */
-final class MetricParser implements \Guard\Structure\Structurer
+final class MetricParser implements Structurer
 {
     /** Derives metrics from the shared token structure.
      * @throws RuntimeException
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
-    public function structure(\Guard\Structure\Source $source): SourceMetrics
+    public function structure(Source $source): SourceMetrics
     {
         $tokens = $source->structure('php.tokens');
         if (!$tokens instanceof Tokens) {
-            throw new \Guard\Diagnostic\PolicyException('Structure php.tokens must return Tokens. Register TokenParser for that id.');
+            throw new PolicyException('Structure php.tokens must return Tokens. Register TokenParser for that id.');
         }
         return $this->measure($source->text(), $tokens->all(), '');
     }

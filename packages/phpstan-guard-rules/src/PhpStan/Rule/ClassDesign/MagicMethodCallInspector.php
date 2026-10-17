@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\ClassDesign;
 
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
 use PHPStan\Rules\IdentifierRuleError;
 
 /**
@@ -33,10 +38,10 @@ final class MagicMethodCallInspector
      *
      * @return list<IdentifierRuleError>
      */
-    public function errors(\PhpParser\Node\Expr $node): array
+    public function errors(Expr $node): array
     {
-        if ($node instanceof \PhpParser\Node\Expr\MethodCall) {
-            if (!$node->name instanceof \PhpParser\Node\Identifier) {
+        if ($node instanceof MethodCall) {
+            if (!$node->name instanceof Identifier) {
                 return [];
             }
 
@@ -44,11 +49,11 @@ final class MagicMethodCallInspector
             return $this->magicMethodRegistry->isMagic($methodName) ? [$this->errorBuilder->error($methodName, $node->getStartLine())] : [];
         }
 
-        if (!$node instanceof \PhpParser\Node\Expr\StaticCall) {
+        if (!$node instanceof StaticCall) {
             return [];
         }
 
-        if (!$node->name instanceof \PhpParser\Node\Identifier) {
+        if (!$node->name instanceof Identifier) {
             return [];
         }
 
@@ -57,7 +62,7 @@ final class MagicMethodCallInspector
             return [];
         }
 
-        if ($node->class instanceof \PhpParser\Node\Name && strtolower($node->class->toString()) === 'parent') {
+        if ($node->class instanceof Name && strtolower($node->class->toString()) === 'parent') {
             return [];
         }
 

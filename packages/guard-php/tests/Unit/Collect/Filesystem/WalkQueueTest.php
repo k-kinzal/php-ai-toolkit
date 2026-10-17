@@ -4,22 +4,25 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Collect\Filesystem;
 
+use Guard\Collect\Filesystem\Route;
+use Guard\Collect\Filesystem\WalkQueue;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Collect\Filesystem\WalkQueue
  * @uses \Guard\Collect\Filesystem\Route
  */
-#[CoversClass(\Guard\Collect\Filesystem\WalkQueue::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Collect\Filesystem\Route::class)]
+#[CoversClass(WalkQueue::class)]
+#[UsesClass(Route::class)]
 final class WalkQueueTest extends TestCase
 {
     public function testAddMergesOverlappingRequestsBeforeTheChildDirectoryRuns(): void
     {
-        $queue = new \Guard\Collect\Filesystem\WalkQueue();
-        $first = new \Guard\Collect\Filesystem\Route('one', [], [], []);
-        $second = new \Guard\Collect\Filesystem\Route('two', [], [], []);
+        $queue = new WalkQueue();
+        $first = new Route('one', [], [], []);
+        $second = new Route('two', [], [], []);
         $queue->add('/root/deep/child', $first);
         $queue->add('/root', $second);
         self::assertSame(['/root', [$second]], $queue->next());
@@ -28,9 +31,9 @@ final class WalkQueueTest extends TestCase
     }
     public function testNextTerminatesAfterEveryPendingDirectory(): void
     {
-        $queue = new \Guard\Collect\Filesystem\WalkQueue();
+        $queue = new WalkQueue();
         self::assertNull($queue->next());
-        $queue->add('/root', new \Guard\Collect\Filesystem\Route('one', [], [], []));
+        $queue->add('/root', new Route('one', [], [], []));
         self::assertNotNull($queue->next());
         self::assertNull($queue->next());
     }

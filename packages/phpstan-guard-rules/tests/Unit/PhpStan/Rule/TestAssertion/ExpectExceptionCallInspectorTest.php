@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
+use PhpParser\Node\Arg;
+use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
+use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Testing\PHPStanTestCase;
 use PHPStan\Type\ObjectType;
@@ -44,12 +52,12 @@ final class ExpectExceptionCallInspectorTest extends PHPStanTestCase
         self::createReflectionProvider();
         $scope = self::createStub(Scope::class);
         $scope->method('resolveName')->willReturn('LogicException');
-        $call = new \PhpParser\Node\Expr\MethodCall(
-            new \PhpParser\Node\Expr\Variable('this'),
+        $call = new MethodCall(
+            new Variable('this'),
             'expectException',
-            [new \PhpParser\Node\Arg(new \PhpParser\Node\Expr\ClassConstFetch(
-                new \PhpParser\Node\Name('LogicException'),
-                new \PhpParser\Node\Identifier('class'),
+            [new Arg(new ClassConstFetch(
+                new Name('LogicException'),
+                new Identifier('class'),
             ))],
         );
 
@@ -61,12 +69,12 @@ final class ExpectExceptionCallInspectorTest extends PHPStanTestCase
         self::createReflectionProvider();
         $scope = self::createStub(Scope::class);
         $scope->method('resolveName')->willReturn('InvalidArgumentException');
-        $call = new \PhpParser\Node\Expr\StaticCall(
-            new \PhpParser\Node\Name('self'),
+        $call = new StaticCall(
+            new Name('self'),
             'expectException',
-            [new \PhpParser\Node\Arg(new \PhpParser\Node\Expr\ClassConstFetch(
-                new \PhpParser\Node\Name('InvalidArgumentException'),
-                new \PhpParser\Node\Identifier('class'),
+            [new Arg(new ClassConstFetch(
+                new Name('InvalidArgumentException'),
+                new Identifier('class'),
             ))],
         );
 
@@ -78,10 +86,10 @@ final class ExpectExceptionCallInspectorTest extends PHPStanTestCase
         self::createReflectionProvider();
         $scope = self::createStub(Scope::class);
         $scope->method('getType')->willReturn(new ObjectType('TypeError'));
-        $call = new \PhpParser\Node\Expr\MethodCall(
-            new \PhpParser\Node\Expr\Variable('this'),
+        $call = new MethodCall(
+            new Variable('this'),
             'expectExceptionObject',
-            [new \PhpParser\Node\Arg(new \PhpParser\Node\Expr\Variable('error'))],
+            [new Arg(new Variable('error'))],
         );
 
         self::assertCount(1, (new ExpectExceptionCallInspector())->errors($call, $scope));
@@ -89,12 +97,12 @@ final class ExpectExceptionCallInspectorTest extends PHPStanTestCase
 
     public function testErrorsIgnoresCallOnAnotherObject(): void
     {
-        $call = new \PhpParser\Node\Expr\MethodCall(
-            new \PhpParser\Node\Expr\Variable('runner'),
+        $call = new MethodCall(
+            new Variable('runner'),
             'expectException',
-            [new \PhpParser\Node\Arg(new \PhpParser\Node\Expr\ClassConstFetch(
-                new \PhpParser\Node\Name('LogicException'),
-                new \PhpParser\Node\Identifier('class'),
+            [new Arg(new ClassConstFetch(
+                new Name('LogicException'),
+                new Identifier('class'),
             ))],
         );
 
@@ -105,12 +113,12 @@ final class ExpectExceptionCallInspectorTest extends PHPStanTestCase
     {
         $scope = self::createStub(Scope::class);
         $scope->method('resolveName')->willReturn('App\\ReportRunner');
-        $call = new \PhpParser\Node\Expr\StaticCall(
-            new \PhpParser\Node\Name('ReportRunner'),
+        $call = new StaticCall(
+            new Name('ReportRunner'),
             'expectException',
-            [new \PhpParser\Node\Arg(new \PhpParser\Node\Expr\ClassConstFetch(
-                new \PhpParser\Node\Name('LogicException'),
-                new \PhpParser\Node\Identifier('class'),
+            [new Arg(new ClassConstFetch(
+                new Name('LogicException'),
+                new Identifier('class'),
             ))],
         );
 
@@ -120,7 +128,7 @@ final class ExpectExceptionCallInspectorTest extends PHPStanTestCase
     public function testErrorsIgnoresOtherExpressions(): void
     {
         self::assertSame([], (new ExpectExceptionCallInspector())->errors(
-            new \PhpParser\Node\Expr\Variable('report'),
+            new Variable('report'),
             self::createStub(Scope::class),
         ));
     }
@@ -129,7 +137,7 @@ final class ExpectExceptionCallInspectorTest extends PHPStanTestCase
     {
         self::assertSame([], (new ExpectExceptionCallInspector())->errorsForCall(
             'expectExceptionMessage',
-            new \PhpParser\Node\Scalar\String_('Report source is unreadable.'),
+            new String_('Report source is unreadable.'),
             1,
             self::createStub(Scope::class),
         ));
@@ -153,9 +161,9 @@ final class ExpectExceptionCallInspectorTest extends PHPStanTestCase
 
         self::assertSame([], (new ExpectExceptionCallInspector())->errorsForCall(
             'expectException',
-            new \PhpParser\Node\Expr\ClassConstFetch(
-                new \PhpParser\Node\Name('RuntimeException'),
-                new \PhpParser\Node\Identifier('class'),
+            new ClassConstFetch(
+                new Name('RuntimeException'),
+                new Identifier('class'),
             ),
             1,
             $scope,
@@ -168,7 +176,7 @@ final class ExpectExceptionCallInspectorTest extends PHPStanTestCase
         $scope->method('getType')->willReturn(new StringType());
 
         self::assertNull((new ExpectExceptionCallInspector())->expectedObjectClassName(
-            new \PhpParser\Node\Expr\Variable('error'),
+            new Variable('error'),
             $scope,
         ));
     }

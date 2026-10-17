@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\Variable;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -37,7 +39,7 @@ final class PhpUnitMockApiCallInspectorTest extends TestCase
 {
     public function testErrorsReturnsMockApiError(): void
     {
-        $call = new \PhpParser\Node\Expr\MethodCall(new \PhpParser\Node\Expr\Variable('this'), 'getMockBuilder');
+        $call = new MethodCall(new Variable('this'), 'getMockBuilder');
 
         self::assertCount(1, (new PhpUnitMockApiCallInspector(self::createStub(ReflectionProvider::class)))->errors($call, self::createStub(Scope::class)));
     }

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Guard\Policy;
 
+use Guard\Input\Scope;
+
 /**
  * Inputs shared throughout one guard invocation.
  *
  * @property-read string $root
- * @property-read ?\Guard\Input\Scope $scope
+ * @property-read ?Scope $scope
  * @property-read string $configPath
  * @property-read bool $repair
  */
@@ -27,7 +29,7 @@ final class Context
         /** @readonly */
         private bool $repair,
         /** @readonly */
-        private ?\Guard\Input\Scope $scope = null,
+        private ?Scope $scope = null,
     ) {
     }
 

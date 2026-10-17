@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\Visibility;
 
+use PHPStan\Rules\FileRuleError;
 use PHPStan\Rules\IdentifierRuleError;
+use PHPStan\Rules\LineRuleError;
+use PHPStan\Rules\MetadataRuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 
 /**
@@ -16,7 +19,7 @@ final class VisibilityRuleErrorBuilder
      * Builds a file-specific PHPStan error from one visibility violation.
      *
      * @param array{file: string, line: int, identifier: string, symbol: string, message: string} $violation
-     * @return IdentifierRuleError&\PHPStan\Rules\FileRuleError&\PHPStan\Rules\LineRuleError&\PHPStan\Rules\MetadataRuleError
+     * @return IdentifierRuleError&FileRuleError&LineRuleError&MetadataRuleError
      */
     public function build(array $violation): IdentifierRuleError
     {

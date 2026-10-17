@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Structure\Document;
 
+use Guard\Diagnostic\PolicyException;
+use Guard\Structure\Document\PhpConfigEditor;
+use Guard\Structure\Document\PhpConfigReader;
 use PhpToken;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @uses \Guard\Structure\Document\PhpConfigEditor
  * @covers \Guard\Structure\Document\PhpConfigReader
  */
-#[CoversClass(\Guard\Structure\Document\PhpConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpConfigEditor::class)]
+#[CoversClass(PhpConfigReader::class)]
+#[UsesClass(PhpConfigEditor::class)]
 final class PhpConfigReaderTest extends TestCase
 {
     public function testReadExtractsLiteralFixerRules(): void
@@ -35,32 +39,32 @@ PHP;
                 'array_syntax' => ['syntax' => 'short'],
                 'ordered_imports' => ['sort_algorithm' => 'alpha'],
             ],
-        ], (new \Guard\Structure\Document\PhpConfigReader())->read($source));
+        ], (new PhpConfigReader())->read($source));
     }
 
     public function testArgumentReturnsNullWhenTheCallIsMissing(): void
     {
-        self::assertNull((new \Guard\Structure\Document\PhpConfigReader())->argument(token_get_all('<?php $x = 1;'), 'setRules'));
+        self::assertNull((new PhpConfigReader())->argument(token_get_all('<?php $x = 1;'), 'setRules'));
     }
 
     public function testValueReadsAQuotedString(): void
     {
         $tokens = token_get_all('<?php \'alpha\';');
-        $parsed = (new \Guard\Structure\Document\PhpConfigReader())->value($tokens, 1);
+        $parsed = (new PhpConfigReader())->value($tokens, 1);
         self::assertSame('alpha', $parsed['value']);
     }
 
     public function testItemsReadsAList(): void
     {
         $tokens = token_get_all('<?php [1, 2];');
-        $parsed = (new \Guard\Structure\Document\PhpConfigReader())->items($tokens, 2, ']');
+        $parsed = (new PhpConfigReader())->items($tokens, 2, ']');
         self::assertSame([1, 2], $parsed['value']);
     }
 
     public function testEntryReadsAKeyedPair(): void
     {
         $tokens = token_get_all('<?php [\'syntax\' => \'short\'];');
-        $parsed = (new \Guard\Structure\Document\PhpConfigReader())->entry($tokens, 2);
+        $parsed = (new PhpConfigReader())->entry($tokens, 2);
         self::assertTrue($parsed['keyed']);
         self::assertSame('syntax', $parsed['key']);
         self::assertSame('short', $parsed['value']);
@@ -69,26 +73,26 @@ PHP;
     public function testSkipPassesWhitespace(): void
     {
         $tokens = token_get_all("<?php\n    true;");
-        $index = (new \Guard\Structure\Document\PhpConfigReader())->skip($tokens, 1);
+        $index = (new PhpConfigReader())->skip($tokens, 1);
         self::assertIsArray($tokens[$index]);
         self::assertSame('true', $tokens[$index][1]);
     }
 
     public function testTokenTextReturnsTheTokenString(): void
     {
-        $reader = new \Guard\Structure\Document\PhpConfigReader();
+        $reader = new PhpConfigReader();
         self::assertSame('true', $reader->tokenText([T_STRING, 'true', 1]));
         self::assertSame('', $reader->tokenText('['));
     }
 
     public function testTextUnquotesSingleQuotes(): void
     {
-        self::assertSame("a'b", (new \Guard\Structure\Document\PhpConfigReader())->text("'a\\'b'"));
+        self::assertSame("a'b", (new PhpConfigReader())->text("'a\\'b'"));
     }
 
     public function testConstantMapsBooleanLiterals(): void
     {
-        $reader = new \Guard\Structure\Document\PhpConfigReader();
+        $reader = new PhpConfigReader();
         self::assertTrue($reader->constant('true'));
         self::assertFalse($reader->constant('FALSE'));
         self::assertNull($reader->constant('SOMETHING'));
@@ -96,7 +100,7 @@ PHP;
 
     public function testKeyCastsIntegers(): void
     {
-        $reader = new \Guard\Structure\Document\PhpConfigReader();
+        $reader = new PhpConfigReader();
         self::assertSame('1', $reader->key(1));
         self::assertSame('', $reader->key(null));
     }
@@ -104,34 +108,34 @@ PHP;
     public function testFromTokensReusesTokensAndPreservesLiteralCallValues(): void
     {
         $tokens = array_values(PhpToken::tokenize('<?php $config->setRiskyAllowed(true)->setRules(["x" => false]);'));
-        self::assertSame(['riskyAllowed' => true, 'rules' => ['x' => false]], (new \Guard\Structure\Document\PhpConfigReader())->fromTokens($tokens));
+        self::assertSame(['riskyAllowed' => true, 'rules' => ['x' => false]], (new PhpConfigReader())->fromTokens($tokens));
     }
 
     public function testConfigurationReadsAReturnedArrayWithItsNativeKeys(): void
     {
-        self::assertSame(['array' => true, 'data' => ['feature' => true]], (new \Guard\Structure\Document\PhpConfigReader())->configuration(array_values(PhpToken::tokenize('<?php return ["feature" => true];'))));
+        self::assertSame(['array' => true, 'data' => ['feature' => true]], (new PhpConfigReader())->configuration(array_values(PhpToken::tokenize('<?php return ["feature" => true];'))));
     }
 
 
     public function testSignedNumberPreservesNegativeLiteralValues(): void
     {
         $tokens = token_get_all('<?php -2.5;');
-        self::assertSame(['value' => -2.5, 'index' => 3], (new \Guard\Structure\Document\PhpConfigReader())->signedNumber($tokens, 2, '-'));
+        self::assertSame(['value' => -2.5, 'index' => 3], (new PhpConfigReader())->signedNumber($tokens, 2, '-'));
     }
 
 
     public function testReadRejectsDynamicExpressionsInsteadOfReportingALiteralPrefix(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('one literal argument');
-        (new \Guard\Structure\Document\PhpConfigReader())->read('<?php return $config->setRiskyAllowed(false || true);');
+        (new PhpConfigReader())->read('<?php return $config->setRiskyAllowed(false || true);');
     }
 
     public function testReadRejectsMultipleSettersInsteadOfReadingAStaleValue(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('multiple setRules() calls');
-        (new \Guard\Structure\Document\PhpConfigReader())->read('<?php return $config->setRules([])->setRules(["custom" => true]);');
+        (new PhpConfigReader())->read('<?php return $config->setRules([])->setRules(["custom" => true]);');
     }
 
 }

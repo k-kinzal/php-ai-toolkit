@@ -6,6 +6,13 @@ namespace Toolkit\PhpStan\Rule\Visibility;
 
 use function array_merge;
 use function in_array;
+
+use PhpParser\Node;
+use PhpParser\Node\IntersectionType;
+use PhpParser\Node\Name;
+use PhpParser\Node\NullableType;
+use PhpParser\Node\UnionType;
+
 use function strtolower;
 
 /**
@@ -19,19 +26,19 @@ final class TypeNameReader
     /**
      * Returns every class name in a nullable, union, or intersection type.
      *
-     * @return list<\PhpParser\Node\Name>
+     * @return list<Name>
      */
-    public function namesIn(?\PhpParser\Node $typeNode): array
+    public function namesIn(?Node $typeNode): array
     {
-        if ($typeNode instanceof \PhpParser\Node\Name) {
+        if ($typeNode instanceof Name) {
             return $this->isRelative($typeNode) ? [] : [$typeNode];
         }
 
-        if ($typeNode instanceof \PhpParser\Node\NullableType) {
+        if ($typeNode instanceof NullableType) {
             return $this->namesIn($typeNode->type);
         }
 
-        if (!$typeNode instanceof \PhpParser\Node\UnionType && !$typeNode instanceof \PhpParser\Node\IntersectionType) {
+        if (!$typeNode instanceof UnionType && !$typeNode instanceof IntersectionType) {
             return [];
         }
 
@@ -46,7 +53,7 @@ final class TypeNameReader
     /**
      * Reports whether the name is self, static, or parent.
      */
-    public function isRelative(\PhpParser\Node\Name $name): bool
+    public function isRelative(Name $name): bool
     {
         return in_array(strtolower($name->toString()), self::RELATIVE_KEYWORDS, true);
     }

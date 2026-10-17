@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\ControlFlow;
 
+use PhpParser\Node;
+use PhpParser\Node\Expr\Match_;
+use PhpParser\Node\Stmt\Switch_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
@@ -37,24 +40,24 @@ final class RequireExhaustiveDispatchRule implements Rule
     }
 
     /**
-     * @return class-string<\PhpParser\Node>
+     * @return class-string<Node>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node::class;
+        return Node::class;
     }
 
     /**
-     * @param \PhpParser\Node $node
+     * @param Node $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
-        if ($node instanceof \PhpParser\Node\Expr\Match_) {
+        if ($node instanceof Match_) {
             return $this->inspector->matchErrors($node, $scope);
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\Switch_) {
+        if ($node instanceof Switch_) {
             return $this->inspector->switchErrors($node, $scope);
         }
 

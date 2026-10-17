@@ -5,8 +5,66 @@ declare(strict_types=1);
 namespace Tests\Unit\Structure;
 
 use Closure;
+use Guard\Config\Configuration;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
+use Guard\Structure\Document\Constraint;
+use Guard\Structure\Document\DataDocument;
+use Guard\Structure\Document\DocumentNode;
+use Guard\Structure\Document\Json5Reader;
+use Guard\Structure\Document\PhpConfigEditor;
+use Guard\Structure\Document\PhpConfigReader;
+use Guard\Structure\Document\PhpDocument;
+use Guard\Structure\Document\Pointer;
+use Guard\Structure\Document\TomlEncoder;
+use Guard\Structure\Document\XmlDocument;
+use Guard\Structure\DocumentStructurer;
+use Guard\Structure\ParsedDocument;
+use Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader;
+use Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric;
+use Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser;
+use Guard\Structure\Php\Complexity\CyclomaticComplexityCalculator;
+use Guard\Structure\Php\Complexity\CyclomaticComplexityState;
+use Guard\Structure\Php\Complexity\CyclomaticDecisionWeight;
+use Guard\Structure\Php\FileMetric\FileMetric;
+use Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary;
+use Guard\Structure\Php\FunctionMetric\ArrowFunctionMetricReader;
+use Guard\Structure\Php\FunctionMetric\BlockFunctionMetricReader;
+use Guard\Structure\Php\FunctionMetric\FunctionBodyLocator;
+use Guard\Structure\Php\FunctionMetric\FunctionLineParser;
+use Guard\Structure\Php\FunctionMetric\FunctionMetric;
+use Guard\Structure\Php\FunctionMetric\FunctionMetricComplexityAssigner;
+use Guard\Structure\Php\FunctionMetric\FunctionMetricParser;
+use Guard\Structure\Php\FunctionMetric\FunctionNameReader;
+use Guard\Structure\Php\FunctionMetric\FunctionScanState;
+use Guard\Structure\Php\FunctionMetric\NestedFunctionMetricRange;
+use Guard\Structure\Php\MetricParser;
+use Guard\Structure\Php\SourceMetrics;
+use Guard\Structure\Php\Token\ClassLikeTokenMatcher;
+use Guard\Structure\Php\Token\CodeTokenLineResolver;
+use Guard\Structure\Php\Token\PhpTokenNavigator;
+use Guard\Structure\Php\Token\TokenLineCounter;
+use Guard\Structure\Php\TokenParser;
+use Guard\Structure\Php\Tokens;
+use Guard\Structure\Source;
+use Guard\Structure\Structurer;
+use Guard\Structure\Subject;
 use JsonException;
+use Nette\Neon\Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -66,98 +124,98 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Php\Token\TokenLineCounter
  * @uses \Guard\Structure\Php\Tokens
  */
-#[CoversClass(\Guard\Structure\Source::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\DirectoryListing::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Entry::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Input::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\InputSet::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\StructuredFile::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Configuration::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DataDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\DocumentNode::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Json5Reader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpConfigEditor::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpConfigReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\PhpDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Pointer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Selection::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\TomlEncoder::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\XmlDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Context::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\FileChange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\Plan::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Document\Constraint::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\Finding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\DocumentStructurer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\ParsedDocument::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticComplexityCalculator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticComplexityState::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Complexity\CyclomaticDecisionWeight::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FileMetric\FileMetric::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\ArrowFunctionMetricReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\BlockFunctionMetricReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionBodyLocator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionLineParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetric::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetricComplexityAssigner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetricParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionNameReader::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionScanState::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\FunctionMetric\NestedFunctionMetricRange::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\MetricParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\SourceMetrics::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\TokenParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\ClassLikeTokenMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\CodeTokenLineResolver::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\PhpTokenNavigator::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Php\Tokens::class)]
+#[CoversClass(Source::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(DataDocument::class)]
+#[UsesClass(DocumentNode::class)]
+#[UsesClass(Json5Reader::class)]
+#[UsesClass(PhpConfigEditor::class)]
+#[UsesClass(PhpConfigReader::class)]
+#[UsesClass(PhpDocument::class)]
+#[UsesClass(Pointer::class)]
+#[UsesClass(\Guard\Structure\Document\Selection::class)]
+#[UsesClass(TomlEncoder::class)]
+#[UsesClass(XmlDocument::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(Constraint::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Finding::class)]
+#[UsesClass(DocumentStructurer::class)]
+#[UsesClass(ParsedDocument::class)]
+#[UsesClass(ClassLikeDeclarationReader::class)]
+#[UsesClass(ClassLikeMetric::class)]
+#[UsesClass(ClassLikeMetricParser::class)]
+#[UsesClass(CyclomaticComplexityCalculator::class)]
+#[UsesClass(CyclomaticComplexityState::class)]
+#[UsesClass(CyclomaticDecisionWeight::class)]
+#[UsesClass(FileMetric::class)]
+#[UsesClass(ArrowExpressionBoundary::class)]
+#[UsesClass(ArrowFunctionMetricReader::class)]
+#[UsesClass(BlockFunctionMetricReader::class)]
+#[UsesClass(FunctionBodyLocator::class)]
+#[UsesClass(FunctionLineParser::class)]
+#[UsesClass(FunctionMetric::class)]
+#[UsesClass(FunctionMetricComplexityAssigner::class)]
+#[UsesClass(FunctionMetricParser::class)]
+#[UsesClass(FunctionNameReader::class)]
+#[UsesClass(FunctionScanState::class)]
+#[UsesClass(NestedFunctionMetricRange::class)]
+#[UsesClass(MetricParser::class)]
+#[UsesClass(SourceMetrics::class)]
+#[UsesClass(TokenParser::class)]
+#[UsesClass(ClassLikeTokenMatcher::class)]
+#[UsesClass(CodeTokenLineResolver::class)]
+#[UsesClass(PhpTokenNavigator::class)]
+#[UsesClass(TokenLineCounter::class)]
+#[UsesClass(Tokens::class)]
 final class SourceTest extends TestCase
 {
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testStructureSharesDependenciesAndCachesFailures(): void
     {
-        $tokens = new class (new \Guard\Structure\Php\TokenParser()) implements \Guard\Structure\Structurer {
+        $tokens = new class (new TokenParser()) implements Structurer {
             public int $calls = 0;
-            public function __construct(private \Guard\Structure\Structurer $inner)
+            public function __construct(private Structurer $inner)
             {
             }
-            public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+            public function structure(Source $source): Subject
             {
                 $this->calls++;
                 return $this->inner->structure($source);
             }
         };
-        $source = new \Guard\Structure\Source('<?php $x->setRiskyAllowed(true);', ['php.tokens' => $tokens, 'metrics' => new \Guard\Structure\Php\MetricParser(), 'php' => new \Guard\Structure\DocumentStructurer('php')]);
+        $source = new Source('<?php $x->setRiskyAllowed(true);', ['php.tokens' => $tokens, 'metrics' => new MetricParser(), 'php' => new DocumentStructurer('php')]);
         self::assertSame($source->structure('metrics'), $source->structure('metrics'));
         $document = $source->structure('php');
-        self::assertInstanceOf(\Guard\Structure\ParsedDocument::class, $document);
+        self::assertInstanceOf(ParsedDocument::class, $document);
         self::assertTrue($document->copy()->read('/riskyAllowed')->value);
         self::assertSame(1, $tokens->calls);
-        $broken = new class (new \Guard\Structure\DocumentStructurer('json')) implements \Guard\Structure\Structurer {
+        $broken = new class (new DocumentStructurer('json')) implements Structurer {
             public int $calls = 0;
-            public function __construct(private \Guard\Structure\Structurer $inner)
+            public function __construct(private Structurer $inner)
             {
             }
-            public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+            public function structure(Source $source): Subject
             {
                 $this->calls++;
                 return $this->inner->structure($source);
             }
         };
-        $invalid = new \Guard\Structure\Source('{', ['json' => $broken]);
+        $invalid = new Source('{', ['json' => $broken]);
         try {
             $invalid->structure('json');
             self::fail('Malformed JSON must fail.');
@@ -174,29 +232,29 @@ final class SourceTest extends TestCase
     }
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testStructureRejectsCircularDependenciesWithAnActionableError(): void
     {
-        $parser = new class (static fn (\Guard\Structure\Source $source): \Guard\Structure\Subject => $source->structure('cycle')) implements \Guard\Structure\Structurer {
-            /** @param Closure(\Guard\Structure\Source): \Guard\Structure\Subject $callback */
+        $parser = new class (static fn (Source $source): Subject => $source->structure('cycle')) implements Structurer {
+            /** @param Closure(Source): Subject $callback */
             public function __construct(private Closure $callback)
             {
             }
-            public function structure(\Guard\Structure\Source $source): \Guard\Structure\Subject
+            public function structure(Source $source): Subject
             {
                 return ($this->callback)($source);
             }
         };
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         $this->expectExceptionMessage('circular dependency');
-        (new \Guard\Structure\Source('', ['cycle' => $parser]))->structure('cycle');
+        (new Source('', ['cycle' => $parser]))->structure('cycle');
     }
     /**
 
      */
     public function testTextRetainsTheOriginalBytes(): void
     {
-        self::assertSame("\xEF\xBB\xBF# Keep\r\n", (new \Guard\Structure\Source("\xEF\xBB\xBF# Keep\r\n", []))->text());
+        self::assertSame("\xEF\xBB\xBF# Keep\r\n", (new Source("\xEF\xBB\xBF# Keep\r\n", []))->text());
     }
 }

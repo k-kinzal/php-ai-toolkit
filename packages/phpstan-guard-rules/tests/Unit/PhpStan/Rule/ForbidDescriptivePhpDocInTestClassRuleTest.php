@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
+use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -38,7 +39,7 @@ final class ForbidDescriptivePhpDocInTestClassRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsExpectedClass(): void
     {
-        self::assertSame(\PhpParser\Node\Stmt\ClassLike::class, $this->getRule()->getNodeType());
+        self::assertSame(ClassLike::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodeDescriptivePhpDocOnTestMethodIsReported(): void

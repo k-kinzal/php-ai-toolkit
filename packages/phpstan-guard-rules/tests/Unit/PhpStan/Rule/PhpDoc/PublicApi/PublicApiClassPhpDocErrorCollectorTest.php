@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc\PublicApi;
 
+use PhpParser\Node\Stmt\Class_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiClassPhpDocErrorCollector;
@@ -17,7 +18,7 @@ final class PublicApiClassPhpDocErrorCollectorTest extends TestCase
     public function testErrorsReturnsClassPhpDocError(): void
     {
         $errors = (new PublicApiClassPhpDocErrorCollector())->errors(
-            new \PhpParser\Node\Stmt\Class_('Example'),
+            new Class_('Example'),
             'Class',
             'Example',
         );

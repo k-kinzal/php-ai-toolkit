@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Type;
 
 use PhpParser\Comment\Doc;
+use PhpParser\Node\Expr\Closure;
+use PhpParser\Node\Identifier;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -25,12 +27,12 @@ final class MixedCallableErrorCollectorTest extends TestCase
     public function testHasReturnDeclarationReadsNativeAndPhpDocTypes(): void
     {
         $collector = new MixedCallableErrorCollector();
-        $native = new \PhpParser\Node\Expr\Closure(['returnType' => new \PhpParser\Node\Identifier('mixed')]);
-        $documented = new \PhpParser\Node\Expr\Closure([], ['comments' => [new Doc('/** @return mixed */')]]);
+        $native = new Closure(['returnType' => new Identifier('mixed')]);
+        $documented = new Closure([], ['comments' => [new Doc('/** @return mixed */')]]);
 
         self::assertTrue($collector->hasReturnDeclaration($native));
         self::assertTrue($collector->hasReturnDeclaration($documented));
-        self::assertFalse($collector->hasReturnDeclaration(new \PhpParser\Node\Expr\Closure()));
+        self::assertFalse($collector->hasReturnDeclaration(new Closure()));
     }
 
     public function testIsMagicProtocolExcludesLifecycleMethods(): void

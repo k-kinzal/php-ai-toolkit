@@ -6,6 +6,7 @@ namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
 use function array_map;
 
+use PhpParser\Node\Expr\Variable;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\NeverType;
@@ -39,8 +40,8 @@ final class UnhandledVariantFinderTest extends TestCase
 
         $unhandled = (new UnhandledVariantFinder())->find(
             $scope,
-            new \PhpParser\Node\Expr\Variable('mode'),
-            [new \PhpParser\Node\Expr\Variable('claimed')],
+            new Variable('mode'),
+            [new Variable('claimed')],
             [new ConstantStringType('fast'), new ConstantStringType('safe'), new ConstantStringType('dry')],
         );
 
@@ -58,8 +59,8 @@ final class UnhandledVariantFinderTest extends TestCase
 
         self::assertSame([], (new UnhandledVariantFinder())->find(
             $scope,
-            new \PhpParser\Node\Expr\Variable('mode'),
-            [new \PhpParser\Node\Expr\Variable('claimed')],
+            new Variable('mode'),
+            [new Variable('claimed')],
             [new ConstantStringType('fast'), new ConstantStringType('safe')],
         ));
     }
@@ -74,7 +75,7 @@ final class UnhandledVariantFinderTest extends TestCase
 
         self::assertSame([], (new UnhandledVariantFinder())->find(
             $scope,
-            new \PhpParser\Node\Expr\Variable('mode'),
+            new Variable('mode'),
             [],
             [new ConstantStringType('fast'), new ConstantStringType('safe')],
         ));

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Rector;
 
+use PhpParser\Node\Expr\Variable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
 use Tests\Rector\RectorFixtureRunner;
+use Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser;
 use Toolkit\Rector\RequireListForArrayLiteralRector;
 
 /**
@@ -30,12 +32,12 @@ final class RequireListForArrayLiteralRectorTest extends TestCase
     {
         $rule = new RequireListForArrayLiteralRector();
         self::assertNotEmpty($rule->getNodeTypes());
-        self::assertNull($rule->refactor(new \PhpParser\Node\Expr\Variable('unrelated')));
+        self::assertNull($rule->refactor(new Variable('unrelated')));
     }
 
     public function testNarrowChangesOuterBranchesButPreservesNestedArrays(): void
     {
-        $parsed = (new \Toolkit\PhpStan\Rule\PhpDoc\RulePhpDocParser())->parse('/** @return array<int, array<int, string>>|null */');
+        $parsed = (new RulePhpDocParser())->parse('/** @return array<int, array<int, string>>|null */');
         $value = $parsed->getReturnTagValues()[0];
         (new RequireListForArrayLiteralRector())->narrow($value->type);
         self::assertSame('(list<array<int, string>> | null)', (string) $value->type);

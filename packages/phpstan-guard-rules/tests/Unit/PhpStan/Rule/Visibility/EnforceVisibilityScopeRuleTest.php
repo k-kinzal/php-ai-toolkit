@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Visibility;
 
 use Override;
+use PhpParser\Node;
 use PHPStan\Collectors\Collector;
+use PHPStan\Node\CollectedDataNode;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -65,7 +67,7 @@ final class EnforceVisibilityScopeRuleTest extends RuleTestCase
     }
 
     /**
-     * @return list<Collector<\PhpParser\Node, mixed>>
+     * @return list<Collector<Node, mixed>>
      */
     #[Override]
     protected function getCollectors(): array
@@ -75,7 +77,7 @@ final class EnforceVisibilityScopeRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsCollectedDataNode(): void
     {
-        self::assertSame(\PHPStan\Node\CollectedDataNode::class, $this->getRule()->getNodeType());
+        self::assertSame(CollectedDataNode::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodeReportsEveryUnusableTag(): void

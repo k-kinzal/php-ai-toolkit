@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace Tests\Unit\Reporting\Filtering;
 
 use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
 use Guard\Reporting\Filtering\FindingFilter;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Reporting\Filtering\FindingFilter
  * @uses \Guard\Diagnostic\Finding
  * @uses \Guard\Diagnostic\PolicyException
  */
-#[\PHPUnit\Framework\Attributes\CoversClass(FindingFilter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Finding::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Diagnostic\PolicyException::class)]
-final class FindingFilterTest extends \PHPUnit\Framework\TestCase
+#[CoversClass(FindingFilter::class)]
+#[UsesClass(Finding::class)]
+#[UsesClass(PolicyException::class)]
+final class FindingFilterTest extends TestCase
 {
     public function testSelectCombinesFixabilityLevelAndLiteralCaseInsensitiveQuery(): void
     {
@@ -32,7 +36,7 @@ final class FindingFilterTest extends \PHPUnit\Framework\TestCase
 
     public function testSelectRejectsUnknownSeverityInsteadOfSilentlyHidingFindings(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
+        $this->expectException(PolicyException::class);
         new FindingFilter('', 'fatal');
     }
 }

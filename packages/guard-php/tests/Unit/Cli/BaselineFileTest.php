@@ -6,9 +6,13 @@ namespace Tests\Unit\Cli;
 
 use FilesystemIterator;
 use Guard\Cli\BaselineFile;
+use Guard\Config\Schema;
 use Guard\Diagnostic\PolicyException;
 use Guard\Reporting\Baseline;
 use JsonException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
@@ -20,11 +24,11 @@ use SplFileInfo;
  * @uses \Guard\Config\Schema
  * @uses \Guard\Diagnostic\PolicyException
  */
-#[\PHPUnit\Framework\Attributes\CoversClass(BaselineFile::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Baseline::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Config\Schema::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(PolicyException::class)]
-final class BaselineFileTest extends \PHPUnit\Framework\TestCase
+#[CoversClass(BaselineFile::class)]
+#[UsesClass(Baseline::class)]
+#[UsesClass(Schema::class)]
+#[UsesClass(PolicyException::class)]
+final class BaselineFileTest extends TestCase
 {
     public function testPathResolvesFromTheSelectedPolicyDirectory(): void
     {

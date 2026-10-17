@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Toolkit\PhpStan\ErrorFormatter;
 
 use function max;
+
+use PHPStan\Analyser\Error;
+
 use function str_pad;
 
 use const STR_PAD_LEFT;
@@ -19,7 +22,7 @@ final class ErrorGutter
     /**
      * Calculates a line-number gutter width for errors in one file.
      *
-     * @param list<\PHPStan\Analyser\Error> $errors file-specific errors
+     * @param list<Error> $errors file-specific errors
      */
     public function width(array $errors): int
     {

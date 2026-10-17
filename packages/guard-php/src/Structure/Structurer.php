@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Guard\Structure;
 
 use JsonException;
+use Nette\Neon\Exception;
 use RuntimeException;
 
 /**
@@ -15,7 +16,7 @@ interface Structurer
     /** Builds the requested structure; dependencies use Source::structure().
      * @throws RuntimeException
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function structure(Source $source): Subject;
 }

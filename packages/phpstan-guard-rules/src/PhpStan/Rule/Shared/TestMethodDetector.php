@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\Shared;
 
+use PhpParser\Node\Stmt\ClassMethod;
+
 /**
  * Detects PHPUnit test methods by name or #[Test] attribute.
  */
@@ -12,7 +14,7 @@ final class TestMethodDetector
     /**
      * Reports whether the class method is a test method.
      */
-    public function isTestMethod(\PhpParser\Node\Stmt\ClassMethod $node): bool
+    public function isTestMethod(ClassMethod $node): bool
     {
         if (str_starts_with($node->name->toString(), 'test')) {
             return true;

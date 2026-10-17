@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\Shared\Path;
 
+use PhpParser\Node\Stmt\ClassLike;
+
 /**
  * Matches class-like names against restricted test namespace prefixes.
  */
@@ -29,7 +31,7 @@ final class RestrictedTestNamespaceMatcher
     /**
      * Reports whether the class-like node is in a restricted test namespace.
      */
-    public function matches(\PhpParser\Node\Stmt\ClassLike $node): bool
+    public function matches(ClassLike $node): bool
     {
         if (!isset($node->namespacedName)) {
             return false;

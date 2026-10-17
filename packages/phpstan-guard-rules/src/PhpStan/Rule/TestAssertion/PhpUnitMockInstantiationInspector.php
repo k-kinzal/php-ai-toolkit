@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\TestAssertion;
 
+use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPUnit\Framework\MockObject\Generator\Generator as MockGenerator;
@@ -28,9 +30,9 @@ final class PhpUnitMockInstantiationInspector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function errors(\PhpParser\Node\Expr\New_ $node, Scope $scope): array
+    public function errors(New_ $node, Scope $scope): array
     {
-        if (!$node->class instanceof \PhpParser\Node\Name) {
+        if (!$node->class instanceof Name) {
             return [];
         }
 

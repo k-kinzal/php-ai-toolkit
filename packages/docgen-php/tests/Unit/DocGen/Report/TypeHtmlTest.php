@@ -19,6 +19,8 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Toolkit\DocGen\Analysis\Reference\SymbolTable;
 use Toolkit\DocGen\Parse\Doc\DocBlockReader;
+use Toolkit\DocGen\Parse\Doc\MutationContract;
+use Toolkit\DocGen\Parse\Doc\MutationContractReader;
 use Toolkit\DocGen\Parse\Doc\PhpDocParserBridge;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\DocBlock;
@@ -50,8 +52,8 @@ use Toolkit\DocGen\Report\TypeRenderContext;
 #[UsesClass(SiteUrl::class)]
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TypeRenderContext::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContract::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContractReader::class)]
+#[UsesClass(MutationContract::class)]
+#[UsesClass(MutationContractReader::class)]
 final class TypeHtmlTest extends TestCase
 {
     public function testRenderPrefersAnnotatedOverNative(): void

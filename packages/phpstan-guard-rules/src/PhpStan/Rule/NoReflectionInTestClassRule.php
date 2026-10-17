@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule;
 
+use PhpParser\Node;
+use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
@@ -25,24 +28,24 @@ final class NoReflectionInTestClassRule implements Rule
     }
 
     /**
-     * @return class-string<\PhpParser\Node\Expr\New_>
+     * @return class-string<New_>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Expr\New_::class;
+        return New_::class;
     }
 
     /**
-     * @param \PhpParser\Node\Expr\New_ $node
+     * @param New_ $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         if (!$this->testClassScope->isTestClass($scope)) {
             return [];
         }
 
-        if (!$node->class instanceof \PhpParser\Node\Name) {
+        if (!$node->class instanceof Name) {
             return [];
         }
 

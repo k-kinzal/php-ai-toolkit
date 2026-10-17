@@ -6,6 +6,7 @@ namespace Toolkit\PhpStan\Rule\ControlFlow;
 
 use function count;
 
+use PhpParser\Node\Expr;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;
 
@@ -25,11 +26,11 @@ final class UnhandledVariantFinder
      * either a comparison that happens to sit on a closed type, or a subject the analyzer
      * cannot narrow, and neither is a half-finished dispatch worth pointing at.
      *
-     * @param list<\PhpParser\Node\Expr> $branchNarrowings a condition per branch, true when that branch runs
+     * @param list<Expr> $branchNarrowings a condition per branch, true when that branch runs
      * @param list<Type> $variants
      * @return list<Type>
      */
-    public function find(Scope $scope, \PhpParser\Node\Expr $subject, array $branchNarrowings, array $variants): array
+    public function find(Scope $scope, Expr $subject, array $branchNarrowings, array $variants): array
     {
         $remainingScope = $scope;
         foreach ($branchNarrowings as $branchNarrowing) {

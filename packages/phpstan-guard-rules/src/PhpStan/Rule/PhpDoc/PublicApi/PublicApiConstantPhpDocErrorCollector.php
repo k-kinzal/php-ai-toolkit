@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\PhpDoc\PublicApi;
 
+use PhpParser\Node\Const_;
+use PhpParser\Node\Stmt\ClassConst;
+use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 
@@ -15,11 +18,11 @@ final class PublicApiConstantPhpDocErrorCollector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function errors(\PhpParser\Node\Stmt\ClassLike $node, string $className): array
+    public function errors(ClassLike $node, string $className): array
     {
         $errors = [];
         foreach ($node->stmts as $stmt) {
-            if (!$stmt instanceof \PhpParser\Node\Stmt\ClassConst) {
+            if (!$stmt instanceof ClassConst) {
                 continue;
             }
 
@@ -28,7 +31,7 @@ final class PublicApiConstantPhpDocErrorCollector
             }
 
             $names = array_map(
-                static fn (\PhpParser\Node\Const_ $const): string => $const->name->toString(),
+                static fn (Const_ $const): string => $const->name->toString(),
                 $stmt->consts,
             );
 

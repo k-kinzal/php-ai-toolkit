@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule;
 
+use PhpParser\Node;
+use PhpParser\Node\Const_;
+use PhpParser\Node\Stmt\ClassConst;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
@@ -25,25 +28,25 @@ final class NoClassConstantInTestClassRule implements Rule
     }
 
     /**
-     * @return class-string<\PhpParser\Node\Stmt\ClassConst>
+     * @return class-string<ClassConst>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Stmt\ClassConst::class;
+        return ClassConst::class;
     }
 
     /**
-     * @param \PhpParser\Node\Stmt\ClassConst $node
+     * @param ClassConst $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         if (!$this->testClassScope->isRestrictedTestClass($scope)) {
             return [];
         }
 
         $names = array_map(
-            static fn (\PhpParser\Node\Const_ $const): string => $const->name->toString(),
+            static fn (Const_ $const): string => $const->name->toString(),
             $node->consts,
         );
 

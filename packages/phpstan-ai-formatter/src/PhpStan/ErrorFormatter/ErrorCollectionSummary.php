@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Toolkit\PhpStan\ErrorFormatter;
 
 use function count;
+
+use PHPStan\Analyser\Error;
+
 use function sprintf;
 
 /**
@@ -34,7 +37,7 @@ final class ErrorCollectionSummary
     /**
      * Counts unique files in file-specific errors.
      *
-     * @param list<\PHPStan\Analyser\Error> $errors file-specific errors
+     * @param list<Error> $errors file-specific errors
      */
     public function uniqueFileCount(array $errors): int
     {

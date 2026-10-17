@@ -15,6 +15,7 @@ use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use Toolkit\DocGen\Analysis\Reference\UsageIndex;
 use Toolkit\DocGen\Compare\DiffKey;
 use Toolkit\DocGen\Compare\DiffStatus;
+use Toolkit\DocGen\Parse\Doc\MutationContract;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\ConstantDoc;
 use Toolkit\DocGen\Parse\Symbol\DocBlock;
@@ -61,7 +62,7 @@ use Toolkit\DocGen\Report\SiteUrl;
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(TypeSignature::class)]
 #[UsesClass(UsageIndex::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContract::class)]
+#[UsesClass(MutationContract::class)]
 final class SearchIndexBuilderTest extends TestCase
 {
     public function testBuildEmitsEntriesForPublicSymbols(): void

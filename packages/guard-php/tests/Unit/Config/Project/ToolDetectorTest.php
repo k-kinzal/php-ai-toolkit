@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Config\Project;
 
+use Guard\Config\Project\ToolDetector;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -11,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \Guard\Config\Project\ToolDetector
  */
-#[CoversClass(\Guard\Config\Project\ToolDetector::class)]
+#[CoversClass(ToolDetector::class)]
 final class ToolDetectorTest extends TestCase
 {
     /**
@@ -23,7 +24,7 @@ final class ToolDetectorTest extends TestCase
         mkdir($root);
         file_put_contents($root . '/composer.json', '{"require-dev":{"phpunit/phpunit":"^9.6 || ^13"}}');
         file_put_contents($root . '/composer.lock', '{"packages-dev":[{"name":"phpunit/phpunit","version":"13.0.0"}]}');
-        self::assertSame('13.0.0', (new \Guard\Config\Project\ToolDetector())->packages($root)['phpunit/phpunit']);
+        self::assertSame('13.0.0', (new ToolDetector())->packages($root)['phpunit/phpunit']);
     }
 
     /**
@@ -31,7 +32,7 @@ final class ToolDetectorTest extends TestCase
      */
     public function testManifestHandlesAbsentComposerFiles(): void
     {
-        self::assertSame([], (new \Guard\Config\Project\ToolDetector())->manifest(sys_get_temp_dir(), 'absent-' . uniqid() . '.json'));
+        self::assertSame([], (new ToolDetector())->manifest(sys_get_temp_dir(), 'absent-' . uniqid() . '.json'));
     }
     /**
      * @throws JsonException
@@ -42,6 +43,6 @@ final class ToolDetectorTest extends TestCase
         mkdir($root);
         mkdir($root . '/lib');
         file_put_contents($root . '/composer.json', '{"autoload":{"psr-4":{"App\\\\":"lib/"}}}');
-        self::assertSame(['lib'], (new \Guard\Config\Project\ToolDetector())->sources($root));
+        self::assertSame(['lib'], (new ToolDetector())->sources($root));
     }
 }

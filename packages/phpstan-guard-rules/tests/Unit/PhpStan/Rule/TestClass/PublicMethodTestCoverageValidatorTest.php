@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\TestClass;
 
 use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassMethod;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -33,7 +34,7 @@ final class PublicMethodTestCoverageValidatorTest extends TestCase
 {
     public function testErrorsReturnsPublicMethodWithoutTestError(): void
     {
-        $method = new \PhpParser\Node\Stmt\ClassMethod('getResult', ['flags' => Class_::MODIFIER_PUBLIC]);
+        $method = new ClassMethod('getResult', ['flags' => Class_::MODIFIER_PUBLIC]);
         $sourceFile = __DIR__ . '/../../../../../tests/PhpStan/TestNamingConvention/src/UncoveredService.php';
 
         $errors = (new PublicMethodTestCoverageValidator())->errors($method, $sourceFile);

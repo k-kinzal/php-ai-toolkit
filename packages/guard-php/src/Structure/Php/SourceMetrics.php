@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Guard\Structure\Php;
 
+use Guard\Structure\Subject;
+
 /**
  * Metrics calculated independently of thresholds or profile assignments.
  *
@@ -12,7 +14,7 @@ namespace Guard\Structure\Php;
  * @property-read list<FunctionMetric\FunctionMetric> $functions
  * @property-read bool $readable
  */
-final class SourceMetrics implements \Guard\Structure\Subject
+final class SourceMetrics implements Subject
 {
     /**
      * @param FileMetric\FileMetric $file

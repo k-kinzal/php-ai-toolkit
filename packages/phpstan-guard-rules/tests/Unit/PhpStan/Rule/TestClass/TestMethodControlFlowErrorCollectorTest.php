@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\TestClass;
 
+use PhpParser\Node\Expr\ConstFetch;
+use PhpParser\Node\Name;
+use PhpParser\Node\Stmt\If_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +26,7 @@ final class TestMethodControlFlowErrorCollectorTest extends TestCase
 {
     public function testErrorsReturnsControlFlowErrors(): void
     {
-        $if = new \PhpParser\Node\Stmt\If_(new \PhpParser\Node\Expr\ConstFetch(new \PhpParser\Node\Name('true')));
+        $if = new If_(new ConstFetch(new Name('true')));
 
         self::assertCount(1, (new TestMethodControlFlowErrorCollector())->errors([$if], 'testExample'));
     }

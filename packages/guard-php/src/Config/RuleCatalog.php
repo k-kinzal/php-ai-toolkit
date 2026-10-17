@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Guard\Config;
 
 use Guard\Config\Reader\MetricPolicyReader;
+use Guard\Policy\Diagnostic\FieldMessage;
 use Guard\Policy\Diagnostic\RuleDescription;
 use Guard\Policy\Diagnostic\RuleMessages;
 use JsonException;
@@ -84,7 +85,7 @@ final class RuleCatalog
                 $rule->file,
                 $rule->level,
                 $rule->repairable,
-                (new \Guard\Policy\Diagnostic\FieldMessage())->render($rule),
+                (new FieldMessage())->render($rule),
                 $details
             );
         }

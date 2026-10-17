@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\PhpDoc\PublicApi;
 
+use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 
@@ -15,7 +16,7 @@ final class PublicApiPropertyPhpDocErrorCollector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function errors(\PhpParser\Node\Stmt\ClassLike $node, string $className): array
+    public function errors(ClassLike $node, string $className): array
     {
         $errors = [];
         foreach ($node->getProperties() as $property) {

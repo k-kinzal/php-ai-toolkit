@@ -175,7 +175,7 @@ configuration:
     message: 'PHP-CS-Fixer option {select} in {file} must {expectation}. {fix}'
     file: .php-cs-fixer.dist.php
     format: php
-    select: /rules/fully_qualified_strict_types
+    select: /rules/fully_qualified_strict_types/import_symbols
     level: required
     assert:
       equals: true

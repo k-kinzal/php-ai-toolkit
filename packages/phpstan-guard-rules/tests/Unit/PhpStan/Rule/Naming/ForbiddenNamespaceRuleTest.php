@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Naming;
 
 use Override;
+use PhpParser\Node\Name;
+use PhpParser\Node\Stmt\Namespace_;
 use PHPStan\Analyser\ScopeContext;
 use PHPStan\Analyser\ScopeFactory;
 use PHPStan\DependencyInjection\MissingServiceException;
@@ -52,7 +54,7 @@ final class ForbiddenNamespaceRuleTest extends RuleTestCase
      */
     public function testGetNodeTypeReturnsExpectedClass(): void
     {
-        self::assertSame(\PhpParser\Node\Stmt\Namespace_::class, $this->getRule()->getNodeType());
+        self::assertSame(Namespace_::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodeForbiddenNamespacesAreReported(): void
@@ -131,7 +133,7 @@ final class ForbiddenNamespaceRuleTest extends RuleTestCase
     {
         $rule = new ForbiddenNamespaceRule([], ['Legacy']);
         $scope = self::getContainer()->getByType(ScopeFactory::class)->create(ScopeContext::create(__FILE__));
-        $errors = $rule->processNode(new \PhpParser\Node\Stmt\Namespace_(new \PhpParser\Node\Name('App\Legacy')), $scope);
+        $errors = $rule->processNode(new Namespace_(new Name('App\Legacy')), $scope);
 
         self::assertCount(1, $errors);
         self::assertSame('customRules.forbiddenNamespace', $errors[0]->getIdentifier());
@@ -139,7 +141,7 @@ final class ForbiddenNamespaceRuleTest extends RuleTestCase
             'Namespace "App\Legacy" contains forbidden segment "Legacy". Replace this segment with a domain-specific name and update namespace declarations and references.',
             $errors[0]->getMessage(),
         );
-        self::assertSame([], $rule->processNode(new \PhpParser\Node\Stmt\Namespace_(new \PhpParser\Node\Name('App\Model')), $scope));
+        self::assertSame([], $rule->processNode(new Namespace_(new Name('App\Model')), $scope));
     }
 
     /**
@@ -150,7 +152,7 @@ final class ForbiddenNamespaceRuleTest extends RuleTestCase
         $rule = new ForbiddenNamespaceRule([], []);
 
         self::assertSame([], $rule->processNode(
-            new \PhpParser\Node\Stmt\Namespace_(new \PhpParser\Node\Name('App\Model')),
+            new Namespace_(new Name('App\Model')),
             self::getContainer()->getByType(ScopeFactory::class)->create(ScopeContext::create(__FILE__)),
         ));
     }
@@ -161,7 +163,7 @@ final class ForbiddenNamespaceRuleTest extends RuleTestCase
     public function testProcessNodeGlobalNamespaceIsAllowed(): void
     {
         self::assertSame([], $this->getRule()->processNode(
-            new \PhpParser\Node\Stmt\Namespace_(),
+            new Namespace_(),
             self::getContainer()->getByType(ScopeFactory::class)->create(ScopeContext::create(__FILE__)),
         ));
     }
@@ -172,7 +174,7 @@ final class ForbiddenNamespaceRuleTest extends RuleTestCase
     public function testProcessNodeOverlappingRestrictionsReportThePrefixOnce(): void
     {
         $errors = $this->getRule()->processNode(
-            new \PhpParser\Node\Stmt\Namespace_(new \PhpParser\Node\Name('Tests\Support\Model')),
+            new Namespace_(new Name('Tests\Support\Model')),
             self::getContainer()->getByType(ScopeFactory::class)->create(ScopeContext::create(__FILE__)),
         );
 

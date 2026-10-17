@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Rector;
 
+use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Expr\Variable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
@@ -30,12 +32,12 @@ final class RequireExceptionChainingRectorTest extends TestCase
     {
         $rule = new RequireExceptionChainingRector();
         self::assertNotEmpty($rule->getNodeTypes());
-        self::assertNull($rule->refactor(new \PhpParser\Node\Expr\Variable('unrelated')));
+        self::assertNull($rule->refactor(new Variable('unrelated')));
     }
 
     public function testAcceptsPreviousRejectsDynamicExceptionClasses(): void
     {
-        $node = new \PhpParser\Node\Expr\New_(new \PhpParser\Node\Expr\Variable('exceptionClass'));
+        $node = new New_(new Variable('exceptionClass'));
         self::assertFalse((new RequireExceptionChainingRector())->acceptsPrevious($node));
     }
 

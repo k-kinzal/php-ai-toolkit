@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Rector;
 
+use PhpParser\Comment\Doc;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Stmt\ClassMethod;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
@@ -30,13 +33,13 @@ final class ForbidSingleLinePhpDocRectorTest extends TestCase
     {
         $rule = new ForbidSingleLinePhpDocRector();
         self::assertNotEmpty($rule->getNodeTypes());
-        self::assertNull($rule->refactor(new \PhpParser\Node\Expr\Variable('unrelated')));
+        self::assertNull($rule->refactor(new Variable('unrelated')));
     }
 
     public function testExpandRetainsAllTextAndLeavesMultilineCommentsAlone(): void
     {
-        $node = new \PhpParser\Node\Stmt\ClassMethod('run');
-        $node->setDocComment(new \PhpParser\Comment\Doc('/** @return array{a: int, b: string} */'));
+        $node = new ClassMethod('run');
+        $node->setDocComment(new Doc('/** @return array{a: int, b: string} */'));
         $rule = new ForbidSingleLinePhpDocRector();
         self::assertTrue($rule->expand($node));
         self::assertSame("/**\n * @return array{a: int, b: string}\n */", $node->getDocComment()?->getText());

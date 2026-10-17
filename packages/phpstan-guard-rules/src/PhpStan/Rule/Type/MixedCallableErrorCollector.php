@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\Type;
 
+use PhpParser\Node\FunctionLike;
 use PHPStan\Node\InArrowFunctionNode;
 use PHPStan\Node\InClassMethodNode;
 use PHPStan\Node\InClosureNode;
@@ -134,7 +135,7 @@ final class MixedCallableErrorCollector
      */
     public function signatureErrors(
         ParametersAcceptor $variant,
-        \PhpParser\Node\FunctionLike $node,
+        FunctionLike $node,
         string $symbol,
         ?ClassReflection $class = null,
         ?string $methodName = null,
@@ -165,7 +166,7 @@ final class MixedCallableErrorCollector
     public function appendReturnError(
         array $errors,
         ParametersAcceptor $variant,
-        \PhpParser\Node\FunctionLike $node,
+        FunctionLike $node,
         string $symbol,
         ?ClassReflection $class,
         ?string $methodName,
@@ -186,7 +187,7 @@ final class MixedCallableErrorCollector
     /**
      * Reports whether a callable writes a native or PHPDoc return declaration.
      */
-    public function hasReturnDeclaration(\PhpParser\Node\FunctionLike $node): bool
+    public function hasReturnDeclaration(FunctionLike $node): bool
     {
         if ($node->getReturnType() !== null) {
             return true;

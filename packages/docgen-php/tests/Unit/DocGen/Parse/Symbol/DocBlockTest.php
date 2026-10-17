@@ -8,6 +8,7 @@ use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Parse\Doc\MutationContract;
 use Toolkit\DocGen\Parse\Symbol\DocBlock;
 use Toolkit\DocGen\Parse\Symbol\DocTag;
 use Toolkit\DocGen\Parse\Symbol\TemplateDoc;
@@ -23,7 +24,7 @@ use Toolkit\DocGen\Parse\Symbol\TypeAliasDoc;
 #[UsesClass(DocTag::class)]
 #[UsesClass(TemplateDoc::class)]
 #[UsesClass(TypeAliasDoc::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContract::class)]
+#[UsesClass(MutationContract::class)]
 final class DocBlockTest extends TestCase
 {
     public function testStoresDocumentationData(): void

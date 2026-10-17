@@ -12,6 +12,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
+use Toolkit\Doctest\Configuration\Configuration;
 use Toolkit\Doctest\TestCase\Legacy\LegacyDoctestRunner;
 
 /**
@@ -29,9 +30,9 @@ final class LegacyDoctestRunnerTest extends TestCase
              * Returns the configuration selecting the fixture project sources.
              */
             #[Override]
-            public static function configure(): \Toolkit\Doctest\Configuration\Configuration
+            public static function configure(): Configuration
             {
-                return new \Toolkit\Doctest\Configuration\Configuration(directories: [dirname(__DIR__, 5) . '/tests/Doctest/project/src'], excludePatterns: ['*/Nested/*']);
+                return new Configuration(directories: [dirname(__DIR__, 5) . '/tests/Doctest/project/src'], excludePatterns: ['*/Nested/*']);
             }
         };
         self::assertStringEndsWith('tests/Doctest/project/src', $suite::configure()->getDirectories()[0]);
@@ -44,9 +45,9 @@ final class LegacyDoctestRunnerTest extends TestCase
              * Returns the configuration selecting the fixture project sources.
              */
             #[Override]
-            public static function configure(): \Toolkit\Doctest\Configuration\Configuration
+            public static function configure(): Configuration
             {
-                return new \Toolkit\Doctest\Configuration\Configuration(directories: [dirname(__DIR__, 5) . '/tests/Doctest/project/src'], excludePatterns: ['*/Nested/*']);
+                return new Configuration(directories: [dirname(__DIR__, 5) . '/tests/Doctest/project/src'], excludePatterns: ['*/Nested/*']);
             }
         };
         $provided = iterator_to_array($suite::doctestProvider());
@@ -70,9 +71,9 @@ final class LegacyDoctestRunnerTest extends TestCase
              * Returns a configuration that intentionally discovers no examples.
              */
             #[Override]
-            public static function configure(): \Toolkit\Doctest\Configuration\Configuration
+            public static function configure(): Configuration
             {
-                return new \Toolkit\Doctest\Configuration\Configuration(directories: []);
+                return new Configuration(directories: []);
             }
         };
         self::assertSame(
@@ -88,9 +89,9 @@ final class LegacyDoctestRunnerTest extends TestCase
              * Returns a configuration that intentionally discovers no examples.
              */
             #[Override]
-            public static function configure(): \Toolkit\Doctest\Configuration\Configuration
+            public static function configure(): Configuration
             {
-                return new \Toolkit\Doctest\Configuration\Configuration(directories: []);
+                return new Configuration(directories: []);
             }
         };
         $this->expectNotToPerformAssertions();
@@ -106,9 +107,9 @@ final class LegacyDoctestRunnerTest extends TestCase
              * Returns the configuration selecting the fixture project sources.
              */
             #[Override]
-            public static function configure(): \Toolkit\Doctest\Configuration\Configuration
+            public static function configure(): Configuration
             {
-                return new \Toolkit\Doctest\Configuration\Configuration(directories: [dirname(__DIR__, 5) . '/tests/Doctest/project/src'], excludePatterns: ['*/Nested/*']);
+                return new Configuration(directories: [dirname(__DIR__, 5) . '/tests/Doctest/project/src'], excludePatterns: ['*/Nested/*']);
             }
         };
         $provided = iterator_to_array($suite::doctestProvider());

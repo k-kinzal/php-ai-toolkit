@@ -6,6 +6,7 @@ namespace Tests\Unit\DocGen\Report\Page\Component;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Compare\DiffStatus;
 use Toolkit\DocGen\Report\Page\Component\SymbolRow;
 
 /**
@@ -16,7 +17,7 @@ final class SymbolRowTest extends TestCase
 {
     public function testStoresKindNameFqcnPageSummaryLayersAndNamespace(): void
     {
-        $row = new SymbolRow('class', 'Engine', 'Demo\Core\Engine', 'demo/pkg/Demo/Core/class.Engine.html', 'Engine summary.', ['Domain'], 'Demo\Core', \Toolkit\DocGen\Compare\DiffStatus::SAME, ['public']);
+        $row = new SymbolRow('class', 'Engine', 'Demo\Core\Engine', 'demo/pkg/Demo/Core/class.Engine.html', 'Engine summary.', ['Domain'], 'Demo\Core', DiffStatus::SAME, ['public']);
 
         self::assertSame('class', $row->kind);
         self::assertSame('Engine', $row->name);

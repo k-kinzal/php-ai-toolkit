@@ -22,6 +22,7 @@ use Guard\Structure\Markdown\Heading;
 use Guard\Structure\Markdown\HeadingList;
 use Guard\Structure\Text;
 use JsonException;
+use Nette\Neon\Exception;
 use RuntimeException;
 
 /**
@@ -59,7 +60,7 @@ final class HeadingStructure implements Policy
     /** Checks declared files first, followed by undeclared files in pattern order.
      * @throws RuntimeException
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function evaluate(InputSet $inputs, Context $context): Plan
     {
@@ -77,7 +78,7 @@ final class HeadingStructure implements Policy
      * @return list<HeadingViolation>
      * @throws RuntimeException
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function document(int $index, DocumentConfig $document, InputSet $inputs): array
     {

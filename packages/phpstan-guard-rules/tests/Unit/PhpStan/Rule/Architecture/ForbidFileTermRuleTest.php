@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Architecture;
 
 use Override;
+use PHPStan\Node\FileNode;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -49,7 +50,7 @@ final class ForbidFileTermRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsExpectedClass(): void
     {
-        self::assertSame(\PHPStan\Node\FileNode::class, $this->getRule()->getNodeType());
+        self::assertSame(FileNode::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodeReportsTermsInCommentsStringsAndIdentifiersWithoutCaseSensitivity(): void

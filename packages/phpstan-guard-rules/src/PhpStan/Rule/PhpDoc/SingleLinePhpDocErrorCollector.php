@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\PhpDoc;
 
+use PhpParser\Node\Stmt\ClassConst;
+use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use Toolkit\PhpStan\Rule\Shared\AnonymousClassDetector;
@@ -46,7 +48,7 @@ final class SingleLinePhpDocErrorCollector
      *
      * @return list<IdentifierRuleError>
      */
-    public function errors(\PhpParser\Node\Stmt\ClassLike $node, Scope $scope): array
+    public function errors(ClassLike $node, Scope $scope): array
     {
         if ($this->anonymousClassDetector->isAnonymous($node, $scope)) {
             return [];
@@ -73,7 +75,7 @@ final class SingleLinePhpDocErrorCollector
         }
 
         foreach ($node->stmts as $stmt) {
-            if (!$stmt instanceof \PhpParser\Node\Stmt\ClassConst || !$stmt->isPublic()) {
+            if (!$stmt instanceof ClassConst || !$stmt->isPublic()) {
                 continue;
             }
 

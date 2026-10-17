@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Rector;
 
+use PhpParser\Comment\Doc;
+use PhpParser\Node\Expr\Variable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
 use Tests\Rector\RectorFixtureRunner;
+use Toolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern;
 use Toolkit\Rector\ForbiddenCommentRector;
 
 /**
@@ -30,16 +33,16 @@ final class ForbiddenCommentRectorTest extends TestCase
     {
         $rule = new ForbiddenCommentRector();
         self::assertNotEmpty($rule->getNodeTypes());
-        self::assertNull($rule->refactor(new \PhpParser\Node\Expr\Variable('unrelated')));
+        self::assertNull($rule->refactor(new Variable('unrelated')));
     }
 
     public function testWithoutSuppressionPreservesAmbiguousTagsAndProseMentions(): void
     {
-        $doc = new \PhpParser\Comment\Doc('/** @phpstan-ignore return.type @return string */');
+        $doc = new Doc('/** @phpstan-ignore return.type @return string */');
         $rule = new ForbiddenCommentRector();
-        $pattern = new \Toolkit\PhpStan\Rule\Shared\ForbiddenCommentPattern();
+        $pattern = new ForbiddenCommentPattern();
         self::assertSame($doc, $rule->withoutSuppression($doc, $pattern));
-        $prose = new \PhpParser\Comment\Doc('/** Explains @phpstan-ignore return.type usage. */');
+        $prose = new Doc('/** Explains @phpstan-ignore return.type usage. */');
         self::assertSame($prose, $rule->withoutSuppression($prose, $pattern));
     }
 }

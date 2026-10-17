@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\TestAssertion;
 
 use Override;
+use PhpParser\Node\Expr;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -29,7 +30,7 @@ final class NoRedundantAssertInstanceOfRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsExpectedClass(): void
     {
-        self::assertSame(\PhpParser\Node\Expr::class, $this->getRule()->getNodeType());
+        self::assertSame(Expr::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodeRedundantAssertInstanceOfIsReported(): void

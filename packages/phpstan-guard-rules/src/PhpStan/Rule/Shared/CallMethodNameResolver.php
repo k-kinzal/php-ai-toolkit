@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\Shared;
 
+use PhpParser\Node\Expr;
+use PhpParser\Node\Identifier;
+
 /**
  * Resolves method names from PHP-Parser call name nodes.
  */
@@ -12,9 +15,9 @@ final class CallMethodNameResolver
     /**
      * Returns the called method name when it is statically known.
      */
-    public function resolve(\PhpParser\Node\Identifier|\PhpParser\Node\Expr $name): ?string
+    public function resolve(Identifier|Expr $name): ?string
     {
-        if (!$name instanceof \PhpParser\Node\Identifier) {
+        if (!$name instanceof Identifier) {
             return null;
         }
 

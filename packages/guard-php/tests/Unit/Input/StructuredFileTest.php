@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Input;
 
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\StructuredFile;
 use JsonException;
+use Nette\Neon\Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,20 +18,20 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Input\FileRecord
  * @uses \Guard\Input\Entry
  */
-#[CoversClass(\Guard\Input\StructuredFile::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\FileRecord::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Input\Entry::class)]
+#[CoversClass(StructuredFile::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(Entry::class)]
 final class StructuredFileTest extends TestCase
 {
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testValueKeepsMissingInputDistinctFromMalformedContent(): void
     {
-        $record = new \Guard\Input\FileRecord('/missing', 'missing', new \Guard\Input\Entry(false, false, false, '/missing'));
-        self::assertNull((new \Guard\Input\StructuredFile($record, false, null, null))->value());
-        $invalid = new \Guard\Input\StructuredFile($record, true, null, new JsonException('Malformed JSON'));
+        $record = new FileRecord('/missing', 'missing', new Entry(false, false, false, '/missing'));
+        self::assertNull((new StructuredFile($record, false, null, null))->value());
+        $invalid = new StructuredFile($record, true, null, new JsonException('Malformed JSON'));
         $this->expectException(JsonException::class);
         $invalid->value();
     }

@@ -15,6 +15,7 @@ use PhpParser\NodeTraverser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite;
 use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor;
 use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
 
@@ -24,7 +25,7 @@ use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
  * @uses \Toolkit\PhpStan\Rule\Shared\ThrownExpression
  */
 #[CoversClass(ThrowSiteVisitor::class)]
-#[UsesClass(\Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite::class)]
+#[UsesClass(ThrowSite::class)]
 #[UsesClass(ThrownExpression::class)]
 final class ThrowSiteVisitorTest extends TestCase
 {

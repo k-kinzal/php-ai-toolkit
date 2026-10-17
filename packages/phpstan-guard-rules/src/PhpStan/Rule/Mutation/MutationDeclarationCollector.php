@@ -6,6 +6,10 @@ namespace Toolkit\PhpStan\Rule\Mutation;
 
 use function array_map;
 
+use PhpParser\Node;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Function_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Collectors\Collector;
 
@@ -46,19 +50,19 @@ final class MutationDeclarationCollector implements Collector
     }
 
     /**
-     * @return class-string<\PhpParser\Node>
+     * @return class-string<Node>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node::class;
+        return Node::class;
     }
 
     /**
      * @return MutationDeclaration|null
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): ?array
+    public function processNode(Node $node, Scope $scope): ?array
     {
-        if (!$node instanceof \PhpParser\Node\Stmt\Function_ && !$node instanceof \PhpParser\Node\Stmt\ClassMethod) {
+        if (!$node instanceof Function_ && !$node instanceof ClassMethod) {
             return null;
         }
 
@@ -72,7 +76,7 @@ final class MutationDeclarationCollector implements Collector
         $parameters = [];
         foreach ($node->getParams() as $parameter) {
             $parameters[] = [
-                'name' => $parameter->var instanceof \PhpParser\Node\Expr\Variable && is_string($parameter->var->name)
+                'name' => $parameter->var instanceof Variable && is_string($parameter->var->name)
                     ? $parameter->var->name
                     : '',
                 'variadic' => $parameter->variadic,
@@ -87,8 +91,8 @@ final class MutationDeclarationCollector implements Collector
             }
         }
 
-        $isStatic = $node instanceof \PhpParser\Node\Stmt\ClassMethod && $node->isStatic();
-        if ($contract->mutatesThis() && (!$node instanceof \PhpParser\Node\Stmt\ClassMethod || $isStatic)) {
+        $isStatic = $node instanceof ClassMethod && $node->isStatic();
+        if ($contract->mutatesThis() && (!$node instanceof ClassMethod || $isStatic)) {
             $problems[] = 'Remove @mutation $this because only instance methods have a $this receiver.';
         }
 
@@ -98,24 +102,24 @@ final class MutationDeclarationCollector implements Collector
             'this' => $contract->mutatesThis(),
             'global' => $contract->mutatesGlobal(),
             'problems' => $problems,
-            'prototypes' => $node instanceof \PhpParser\Node\Stmt\ClassMethod ? $this->prototypes($node, $scope) : [],
+            'prototypes' => $node instanceof ClassMethod ? $this->prototypes($node, $scope) : [],
             'static' => $isStatic,
-            'constructor' => $node instanceof \PhpParser\Node\Stmt\ClassMethod && strtolower($node->name->toString()) === '__construct',
+            'constructor' => $node instanceof ClassMethod && strtolower($node->name->toString()) === '__construct',
         ];
     }
 
     /**
      * @return array{key: string, symbol: string, line: int}|null
      */
-    public function identity(\PhpParser\Node $node, Scope $scope): ?array
+    public function identity(Node $node, Scope $scope): ?array
     {
-        if ($node instanceof \PhpParser\Node\Stmt\Function_) {
+        if ($node instanceof Function_) {
             $name = isset($node->namespacedName) ? $node->namespacedName->toString() : $node->name->toString();
 
             return ['key' => $this->ids->function($name), 'symbol' => $name . '()', 'line' => $node->getStartLine()];
         }
 
-        if (!$node instanceof \PhpParser\Node\Stmt\ClassMethod) {
+        if (!$node instanceof ClassMethod) {
             return null;
         }
 
@@ -136,7 +140,7 @@ final class MutationDeclarationCollector implements Collector
     /**
      * @return list<string>
      */
-    public function prototypes(\PhpParser\Node\Stmt\ClassMethod $node, Scope $scope): array
+    public function prototypes(ClassMethod $node, Scope $scope): array
     {
         $class = $scope->getClassReflection();
         if ($class === null) {

@@ -9,6 +9,7 @@ use Guard\Input\FileRecord;
 use Guard\Input\FileSet;
 use Guard\Input\StructuredFile;
 use JsonException;
+use Nette\Neon\Exception;
 use RuntimeException;
 
 /**
@@ -38,7 +39,7 @@ final class QueryResult
     /**
      * Keeps the first selection error for deferred policy evaluation.
      */
-    public function fail(RuntimeException|JsonException|\Nette\Neon\Exception $failure): void
+    public function fail(RuntimeException|JsonException|Exception $failure): void
     {
         $this->failure ??= $failure;
     }
@@ -75,7 +76,7 @@ final class QueryResult
     /**
      * Returns an error encountered during selection.
      */
-    public function failure(): RuntimeException|JsonException|\Nette\Neon\Exception|null
+    public function failure(): RuntimeException|JsonException|Exception|null
     {
         return $this->failure;
     }

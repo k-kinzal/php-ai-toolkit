@@ -8,8 +8,10 @@ use function array_map;
 use function implode;
 use function is_string;
 
+use PhpParser\Node;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name;
+use PhpParser\Node\Stmt\Catch_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
@@ -46,18 +48,18 @@ final class RequireExceptionChainingRule implements Rule
     }
 
     /**
-     * @return class-string<\PhpParser\Node\Stmt\Catch_>
+     * @return class-string<Catch_>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Stmt\Catch_::class;
+        return Catch_::class;
     }
 
     /**
-     * @param \PhpParser\Node\Stmt\Catch_ $node
+     * @param Catch_ $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         unset($scope);
 

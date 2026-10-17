@@ -12,6 +12,7 @@ use Guard\Structure\Structurer;
 use Guard\Structure\Text;
 use Guard\Structure\TextStructurer;
 use JsonException;
+use Nette\Neon\Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -40,7 +41,7 @@ final class ComponentLoaderTest extends TestCase
 
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testCreateLoadsAnOrdinaryStructurerWithoutOptions(): void
     {
@@ -51,7 +52,7 @@ final class ComponentLoaderTest extends TestCase
 
     /**
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function testNamedArgumentsKeepDefaultsAndDoNotDependOnYamlKeyOrder(): void
     {

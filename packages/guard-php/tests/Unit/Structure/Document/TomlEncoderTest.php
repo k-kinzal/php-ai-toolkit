@@ -4,10 +4,27 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Structure\Document;
 
+use Guard\Config\Configuration;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
+use Guard\Structure\Document\TomlEncoder;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Yosymfony\Toml\Toml;
 
 /**
  * @covers \Guard\Structure\Document\TomlEncoder
@@ -27,22 +44,22 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Diagnostic\Finding
  */
-#[CoversClass(\Guard\Structure\Document\TomlEncoder::class)]
-#[UsesClass(\Guard\Input\DirectoryListing::class)]
-#[UsesClass(\Guard\Input\FileRecord::class)]
-#[UsesClass(\Guard\Input\FileSet::class)]
-#[UsesClass(\Guard\Input\Entry::class)]
-#[UsesClass(\Guard\Input\Input::class)]
-#[UsesClass(\Guard\Input\InputSet::class)]
-#[UsesClass(\Guard\Input\Selection::class)]
-#[UsesClass(\Guard\Input\StructuredFile::class)]
-#[UsesClass(\Guard\Config\Configuration::class)]
-#[UsesClass(\Guard\Policy\Context::class)]
-#[UsesClass(\Guard\Policy\FileChange::class)]
-#[UsesClass(\Guard\Policy\Plan::class)]
-#[UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[UsesClass(\Guard\Diagnostic\Finding::class)]
+#[CoversClass(TomlEncoder::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Finding::class)]
 final class TomlEncoderTest extends TestCase
 {
     /**
@@ -50,8 +67,8 @@ final class TomlEncoderTest extends TestCase
      */
     public function testEncodeRejectsUnrepresentableNull(): void
     {
-        $this->expectException(\Guard\Diagnostic\PolicyException::class);
-        (new \Guard\Structure\Document\TomlEncoder())->encode((object) ['x' => null]);
+        $this->expectException(PolicyException::class);
+        (new TomlEncoder())->encode((object) ['x' => null]);
     }
 
     /**
@@ -59,8 +76,8 @@ final class TomlEncoderTest extends TestCase
      */
     public function testKeepsQuotedKeysAndLists(): void
     {
-        $encoded = (new \Guard\Structure\Document\TomlEncoder())->encode((object) ['a.b' => ['A', 'B']]);
-        self::assertSame(['a.b' => ['A', 'B']], \Yosymfony\Toml\Toml::parse($encoded));
+        $encoded = (new TomlEncoder())->encode((object) ['a.b' => ['A', 'B']]);
+        self::assertSame(['a.b' => ['A', 'B']], Toml::parse($encoded));
     }
 
     /**
@@ -68,7 +85,7 @@ final class TomlEncoderTest extends TestCase
      */
     public function testValueKeepsBooleanAndNumericTypes(): void
     {
-        $encoder = new \Guard\Structure\Document\TomlEncoder();
+        $encoder = new TomlEncoder();
         self::assertSame('false', $encoder->value(false));
         self::assertSame('1.0', $encoder->value(1.0));
     }
@@ -77,6 +94,6 @@ final class TomlEncoderTest extends TestCase
      */
     public function testQuoteEscapesControlCharacters(): void
     {
-        self::assertSame('"a\\nb"', (new \Guard\Structure\Document\TomlEncoder())->quote("a\nb"));
+        self::assertSame('"a\\nb"', (new TomlEncoder())->quote("a\nb"));
     }
 }

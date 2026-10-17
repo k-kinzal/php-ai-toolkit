@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Type;
 
 use Override;
+use PHPStan\Node\InClassMethodNode;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPStan\Type\ArrayType;
@@ -52,7 +53,7 @@ final class ForbidInternalMixedTypeRuleTest extends RuleTestCase
 
     public function testGetNodeTypeCoversResolvedVirtualNodes(): void
     {
-        self::assertSame(\PHPStan\Node\InClassMethodNode::class, $this->getRule()->getNodeType());
+        self::assertSame(InClassMethodNode::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodeAllowsPublicMagicAndTemplateTypes(): void

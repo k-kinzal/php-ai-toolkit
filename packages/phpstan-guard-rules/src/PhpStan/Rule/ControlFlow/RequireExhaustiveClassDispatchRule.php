@@ -6,6 +6,7 @@ namespace Toolkit\PhpStan\Rule\ControlFlow;
 
 use function in_array;
 
+use PhpParser\Node;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\CollectedDataNode;
 use PHPStan\Rules\IdentifierRuleError;
@@ -54,7 +55,7 @@ final class RequireExhaustiveClassDispatchRule implements Rule
      * @param CollectedDataNode $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         unset($scope);
         $classes = [];

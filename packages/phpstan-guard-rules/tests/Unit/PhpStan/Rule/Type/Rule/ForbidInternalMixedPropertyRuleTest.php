@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Type\Rule;
 
 use Override;
+use PHPStan\Node\ClassPropertyNode;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -32,7 +33,7 @@ final class ForbidInternalMixedPropertyRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsPropertyNode(): void
     {
-        self::assertSame(\PHPStan\Node\ClassPropertyNode::class, $this->getRule()->getNodeType());
+        self::assertSame(ClassPropertyNode::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodeHonorsStoredPropertyVisibility(): void

@@ -16,6 +16,7 @@ use Guard\Input\StructuredFile;
 use Guard\Structure\Source;
 use Guard\Structure\Structurer;
 use JsonException;
+use Nette\Neon\Exception;
 use RuntimeException;
 
 /**
@@ -65,7 +66,7 @@ final class Collector
                 if ($source !== null && $format !== null) {
                     try {
                         $data = $source->structure($format);
-                    } catch (RuntimeException|JsonException|\Nette\Neon\Exception $error) {
+                    } catch (RuntimeException|JsonException|Exception $error) {
                         $failure = $error;
                     }
                 }

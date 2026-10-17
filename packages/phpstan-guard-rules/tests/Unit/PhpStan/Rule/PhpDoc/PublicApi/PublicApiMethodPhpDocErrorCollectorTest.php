@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\PhpDoc\PublicApi;
 
 use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassMethod;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Toolkit\PhpStan\Rule\PhpDoc\PublicApi\PublicApiMethodPhpDocErrorCollector;
@@ -19,7 +20,7 @@ final class PublicApiMethodPhpDocErrorCollectorTest extends TestCase
     {
         $class = new Class_('Example', [
             'stmts' => [
-                new \PhpParser\Node\Stmt\ClassMethod('run', ['flags' => Class_::MODIFIER_PUBLIC]),
+                new ClassMethod('run', ['flags' => Class_::MODIFIER_PUBLIC]),
             ],
         ]);
 

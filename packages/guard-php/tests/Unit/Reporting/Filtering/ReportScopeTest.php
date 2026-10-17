@@ -6,14 +6,17 @@ namespace Tests\Unit\Reporting\Filtering;
 
 use Guard\Diagnostic\Finding;
 use Guard\Reporting\Filtering\ReportScope;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Guard\Reporting\Filtering\ReportScope
  * @uses \Guard\Diagnostic\Finding
  */
-#[\PHPUnit\Framework\Attributes\CoversClass(ReportScope::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(Finding::class)]
-final class ReportScopeTest extends \PHPUnit\Framework\TestCase
+#[CoversClass(ReportScope::class)]
+#[UsesClass(Finding::class)]
+final class ReportScopeTest extends TestCase
 {
     public function testNoteExplainsHiddenErrorsAndUnmatchedBaselineEntries(): void
     {

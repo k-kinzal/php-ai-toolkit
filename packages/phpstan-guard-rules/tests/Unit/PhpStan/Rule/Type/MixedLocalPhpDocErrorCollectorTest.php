@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Type;
 
 use PhpParser\Comment\Doc;
+use PhpParser\Node\Expr\Assign;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Stmt\Expression;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -27,8 +31,8 @@ final class MixedLocalPhpDocErrorCollectorTest extends TestCase
 {
     public function testErrorsUsesTheHighestPrecedenceVarTag(): void
     {
-        $node = new \PhpParser\Node\Stmt\Expression(
-            new \PhpParser\Node\Expr\Assign(new \PhpParser\Node\Expr\Variable('value'), new \PhpParser\Node\Scalar\String_('value')),
+        $node = new Expression(
+            new Assign(new Variable('value'), new String_('value')),
             ['comments' => [new Doc("/**\n * @var string \$value\n * @phpstan-var mixed \$value\n */")], 'startLine' => 8]
         );
 

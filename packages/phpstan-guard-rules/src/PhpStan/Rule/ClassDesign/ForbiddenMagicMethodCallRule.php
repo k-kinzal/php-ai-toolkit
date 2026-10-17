@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\ClassDesign;
 
+use PhpParser\Node;
+use PhpParser\Node\Expr;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
@@ -25,18 +27,18 @@ final class ForbiddenMagicMethodCallRule implements Rule
     }
 
     /**
-     * @return class-string<\PhpParser\Node\Expr>
+     * @return class-string<Expr>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Expr::class;
+        return Expr::class;
     }
 
     /**
-     * @param \PhpParser\Node\Expr $node
+     * @param Expr $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         unset($scope);
 

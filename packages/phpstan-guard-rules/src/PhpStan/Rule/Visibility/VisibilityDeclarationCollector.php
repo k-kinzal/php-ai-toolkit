@@ -6,6 +6,12 @@ namespace Toolkit\PhpStan\Rule\Visibility;
 
 use function array_merge;
 
+use PhpParser\Node;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassLike;
+use PhpParser\Node\Stmt\Enum_;
+use PhpParser\Node\Stmt\EnumCase;
+use PhpParser\Node\Stmt\Interface_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Collectors\Collector;
 
@@ -41,24 +47,24 @@ final class VisibilityDeclarationCollector implements Collector
     }
 
     /**
-     * @return class-string<\PhpParser\Node\Stmt\ClassLike>
+     * @return class-string<ClassLike>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Stmt\ClassLike::class;
+        return ClassLike::class;
     }
 
     /**
      * Returns one class-like with every member declared directly on it.
      *
-     * @param \PhpParser\Node\Stmt\ClassLike $node
+     * @param ClassLike $node
      * @return array{
      *     class: array{className: string, memberName: null, symbol: string, kind: string, namespace: string, docComment: ?string, line: int},
      *     parents: list<string>,
      *     members: list<array{className: string, memberName: string, symbol: string, kind: string, namespace: string, docComment: ?string, line: int}>
      * }|null
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): ?array
+    public function processNode(Node $node, Scope $scope): ?array
     {
         if (!isset($node->namespacedName)) {
             return null;
@@ -87,7 +93,7 @@ final class VisibilityDeclarationCollector implements Collector
      *
      * @return list<array{className: string, memberName: string, symbol: string, kind: string, namespace: string, docComment: ?string, line: int}>
      */
-    public function members(\PhpParser\Node\Stmt\ClassLike $node, string $className, string $namespace): array
+    public function members(ClassLike $node, string $className, string $namespace): array
     {
         $members = [];
         foreach ($node->getMethods() as $method) {
@@ -110,7 +116,7 @@ final class VisibilityDeclarationCollector implements Collector
         }
 
         foreach ($node->stmts as $statement) {
-            if (!$statement instanceof \PhpParser\Node\Stmt\EnumCase) {
+            if (!$statement instanceof EnumCase) {
                 continue;
             }
 
@@ -132,7 +138,7 @@ final class VisibilityDeclarationCollector implements Collector
         string $symbol,
         string $kind,
         string $namespace,
-        \PhpParser\Node $node,
+        Node $node,
     ): array {
         return [
             'className' => $className,
@@ -150,10 +156,10 @@ final class VisibilityDeclarationCollector implements Collector
      *
      * @return list<string>
      */
-    public function supertypes(\PhpParser\Node\Stmt\ClassLike $node, Scope $scope): array
+    public function supertypes(ClassLike $node, Scope $scope): array
     {
         $names = [];
-        if ($node instanceof \PhpParser\Node\Stmt\Class_) {
+        if ($node instanceof Class_) {
             if ($node->extends !== null) {
                 $names[] = $node->extends;
             }
@@ -161,11 +167,11 @@ final class VisibilityDeclarationCollector implements Collector
             $names = array_merge($names, $node->implements);
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\Interface_) {
+        if ($node instanceof Interface_) {
             $names = array_merge($names, $node->extends);
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\Enum_) {
+        if ($node instanceof Enum_) {
             $names = array_merge($names, $node->implements);
         }
 
@@ -184,7 +190,7 @@ final class VisibilityDeclarationCollector implements Collector
     /**
      * Returns a node's raw PHPDoc text, or null when it has none.
      */
-    public function docComment(\PhpParser\Node $node): ?string
+    public function docComment(Node $node): ?string
     {
         $docComment = $node->getDocComment();
 

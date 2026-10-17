@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Architecture;
 
 use Override;
+use PhpParser\Node;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -98,7 +99,7 @@ final class ForbidDependencyRuleTest extends RuleTestCase
 
     public function testGetNodeTypeChecksReferencesThroughoutTheSyntaxTree(): void
     {
-        self::assertSame(\PhpParser\Node::class, $this->getRule()->getNodeType());
+        self::assertSame(Node::class, $this->getRule()->getNodeType());
     }
 
     public function testDistributedRulesEnableDependencyChecksByDefault(): void

@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\Mutation;
 
+use PhpParser\Node;
+use PhpParser\Node\Expr\Assign;
+use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\PropertyFetch;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Scalar\LNumber;
+use PhpParser\Node\Stmt\Global_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -21,22 +28,22 @@ final class MutationOperationCollectorTest extends TestCase
 {
     public function testGetNodeTypeReturnsAnyParserNode(): void
     {
-        self::assertSame(\PhpParser\Node::class, (new MutationOperationCollector(self::createStub(ReflectionProvider::class)))->getNodeType());
+        self::assertSame(Node::class, (new MutationOperationCollector(self::createStub(ReflectionProvider::class)))->getNodeType());
     }
 
     public function testProcessNodeSkipsNodesOutsideCallables(): void
     {
         $collector = new MutationOperationCollector(self::createStub(ReflectionProvider::class));
 
-        self::assertNull($collector->processNode(new \PhpParser\Node\Scalar\LNumber(1), self::createStub(Scope::class)));
+        self::assertNull($collector->processNode(new LNumber(1), self::createStub(Scope::class)));
     }
 
     public function testRecordsCollectsAssignmentAndAlias(): void
     {
         $collector = new MutationOperationCollector(self::createStub(ReflectionProvider::class));
-        $assign = new \PhpParser\Node\Expr\Assign(
-            new \PhpParser\Node\Expr\Variable('alias'),
-            new \PhpParser\Node\Expr\Variable('input'),
+        $assign = new Assign(
+            new Variable('alias'),
+            new Variable('input'),
         );
 
         self::assertCount(2, $collector->records($assign, self::createStub(Scope::class), 'function:run', 8));
@@ -46,8 +53,8 @@ final class MutationOperationCollectorTest extends TestCase
     {
         $collector = new MutationOperationCollector(self::createStub(ReflectionProvider::class));
         $records = $collector->mutations([
-            new \PhpParser\Node\Expr\Variable('left'),
-            new \PhpParser\Node\Expr\Variable('right'),
+            new Variable('left'),
+            new Variable('right'),
         ], 'function:run', 9);
 
         self::assertSame(['var:left', 'var:right'], [$records[0]['root'], $records[1]['root']]);
@@ -57,14 +64,14 @@ final class MutationOperationCollectorTest extends TestCase
     {
         $collector = new MutationOperationCollector(self::createStub(ReflectionProvider::class));
 
-        self::assertNull($collector->assignment(new \PhpParser\Node\Scalar\LNumber(1), 'function:run', 9));
+        self::assertNull($collector->assignment(new LNumber(1), 'function:run', 9));
     }
 
     public function testPersistentAliasesTreatsImportedVariableAsGlobal(): void
     {
         $collector = new MutationOperationCollector(self::createStub(ReflectionProvider::class));
-        $global = new \PhpParser\Node\Stmt\Global_([
-            new \PhpParser\Node\Expr\Variable('cache'),
+        $global = new Global_([
+            new Variable('cache'),
         ]);
 
         self::assertSame('global', $collector->persistentAliases($global, 'function:run', 9)[0]['root'] ?? null);
@@ -73,7 +80,7 @@ final class MutationOperationCollectorTest extends TestCase
     public function testCallSkipsDynamicFunctionNames(): void
     {
         $collector = new MutationOperationCollector(self::createStub(ReflectionProvider::class));
-        $call = new \PhpParser\Node\Expr\FuncCall(new \PhpParser\Node\Expr\Variable('callable'));
+        $call = new FuncCall(new Variable('callable'));
 
         self::assertNull($collector->call($call, self::createStub(Scope::class), 'function:run', 10));
     }
@@ -88,10 +95,10 @@ final class MutationOperationCollectorTest extends TestCase
     public function testRootPreservesExternalOrigins(): void
     {
         $collector = new MutationOperationCollector(self::createStub(ReflectionProvider::class));
-        $property = new \PhpParser\Node\Expr\PropertyFetch(new \PhpParser\Node\Expr\Variable('input'), 'value');
+        $property = new PropertyFetch(new Variable('input'), 'value');
 
         self::assertSame('var:input', $collector->root($property));
-        self::assertSame('this', $collector->root(new \PhpParser\Node\Expr\Variable('this')));
-        self::assertSame('global', $collector->root(new \PhpParser\Node\Expr\Variable('GLOBALS')));
+        self::assertSame('this', $collector->root(new Variable('this')));
+        self::assertSame('global', $collector->root(new Variable('GLOBALS')));
     }
 }

@@ -4,9 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Config\Reader;
 
+use Guard\Config\Configuration;
 use Guard\Config\Reader\DeclaredHeadingReader;
+use Guard\Diagnostic\Finding;
 use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
 use Guard\Policy\Definition\DeclaredHeading;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
 use Guard\Structure\Markdown\AtxHeadingMatcher;
 use Guard\Structure\Markdown\Heading;
 use Guard\Structure\Markdown\HeadingTextNormalizer;
@@ -37,22 +51,22 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Markdown\HeadingTextNormalizer
  */
 #[CoversClass(DeclaredHeadingReader::class)]
-#[UsesClass(\Guard\Input\DirectoryListing::class)]
-#[UsesClass(\Guard\Input\FileRecord::class)]
-#[UsesClass(\Guard\Input\FileSet::class)]
-#[UsesClass(\Guard\Input\Entry::class)]
-#[UsesClass(\Guard\Input\Input::class)]
-#[UsesClass(\Guard\Input\InputSet::class)]
-#[UsesClass(\Guard\Input\Selection::class)]
-#[UsesClass(\Guard\Input\StructuredFile::class)]
-#[UsesClass(\Guard\Config\Configuration::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
 #[UsesClass(DeclaredHeading::class)]
-#[UsesClass(\Guard\Policy\Context::class)]
-#[UsesClass(\Guard\Policy\FileChange::class)]
-#[UsesClass(\Guard\Policy\Plan::class)]
-#[UsesClass(\Guard\Policy\PolicyBinding::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
 #[UsesClass(PolicyException::class)]
-#[UsesClass(\Guard\Diagnostic\Finding::class)]
+#[UsesClass(Finding::class)]
 #[UsesClass(AtxHeadingMatcher::class)]
 #[UsesClass(Heading::class)]
 #[UsesClass(HeadingTextNormalizer::class)]

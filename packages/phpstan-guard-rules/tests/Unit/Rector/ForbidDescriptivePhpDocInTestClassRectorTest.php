@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Rector;
 
+use PhpParser\Comment\Doc;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Name;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassMethod;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
@@ -30,13 +35,13 @@ final class ForbidDescriptivePhpDocInTestClassRectorTest extends TestCase
     {
         $rule = new ForbidDescriptivePhpDocInTestClassRector();
         self::assertNotEmpty($rule->getNodeTypes());
-        self::assertNull($rule->refactor(new \PhpParser\Node\Expr\Variable('unrelated')));
+        self::assertNull($rule->refactor(new Variable('unrelated')));
     }
 
     public function testRemoveProseRetainsMultilineAnnotationContinuations(): void
     {
-        $node = new \PhpParser\Node\Stmt\ClassMethod('testWork');
-        $node->setDocComment(new \PhpParser\Comment\Doc("/**\n * Description.\n * @return array{\n *   name: string\n * }\n */"));
+        $node = new ClassMethod('testWork');
+        $node->setDocComment(new Doc("/**\n * Description.\n * @return array{\n *   name: string\n * }\n */"));
         $rule = new ForbidDescriptivePhpDocInTestClassRector();
         self::assertTrue($rule->removeProse($node));
         self::assertSame("/**\n * @return array{\n *   name: string\n * }\n */", $node->getDocComment()?->getText());
@@ -47,11 +52,11 @@ final class ForbidDescriptivePhpDocInTestClassRectorTest extends TestCase
     {
         $rule = new ForbidDescriptivePhpDocInTestClassRector();
         $rule->configure(['Project\\Checks']);
-        $node = new \PhpParser\Node\Stmt\Class_('Example');
-        $node->namespacedName = new \PhpParser\Node\Name('Tests\\Unit\\Example');
-        $node->setDocComment(new \PhpParser\Comment\Doc('/** Keep this description. */'));
+        $node = new Class_('Example');
+        $node->namespacedName = new Name('Tests\\Unit\\Example');
+        $node->setDocComment(new Doc('/** Keep this description. */'));
         self::assertNull($rule->refactor($node));
-        $node->namespacedName = new \PhpParser\Node\Name('Project\\Checks\\Example');
+        $node->namespacedName = new Name('Project\\Checks\\Example');
         self::assertSame($node, $rule->refactor($node));
         self::assertNull($node->getDocComment());
     }

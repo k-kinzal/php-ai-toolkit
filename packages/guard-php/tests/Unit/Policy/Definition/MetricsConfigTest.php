@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Policy\Definition;
 
 use Guard\Policy\Definition\ApplyConfig;
+use Guard\Policy\Definition\ApplyRuleConfig;
 use Guard\Policy\Definition\LimitConfig;
 use Guard\Policy\Definition\MetricsConfig;
 use Guard\Policy\Definition\PolicyConfig;
@@ -23,7 +24,7 @@ use PHPUnit\Framework\TestCase;
  */
 #[CoversClass(MetricsConfig::class)]
 #[UsesClass(ApplyConfig::class)]
-#[UsesClass(\Guard\Policy\Definition\ApplyRuleConfig::class)]
+#[UsesClass(ApplyRuleConfig::class)]
 #[UsesClass(PolicyConfig::class)]
 #[UsesClass(LimitConfig::class)]
 #[UsesClass(ScanConfig::class)]

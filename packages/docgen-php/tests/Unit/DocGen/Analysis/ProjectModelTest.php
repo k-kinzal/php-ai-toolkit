@@ -17,6 +17,7 @@ use Toolkit\DocGen\Analysis\Reference\TestCaseIndex;
 use Toolkit\DocGen\Analysis\Reference\UsageIndex;
 use Toolkit\DocGen\Discovery\Package\ComposerManifest;
 use Toolkit\DocGen\Discovery\Package\DiscoveredPackage;
+use Toolkit\DocGen\Parse\Doc\MutationContract;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\DocBlock;
 
@@ -46,7 +47,7 @@ use Toolkit\DocGen\Parse\Symbol\DocBlock;
 #[UsesClass(SymbolTable::class)]
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(UsageIndex::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContract::class)]
+#[UsesClass(MutationContract::class)]
 final class ProjectModelTest extends TestCase
 {
     public function testStoresAnalyzedProjectData(): void

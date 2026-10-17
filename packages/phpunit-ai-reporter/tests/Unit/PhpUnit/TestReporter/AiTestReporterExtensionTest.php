@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpUnit\TestReporter;
 
 use function array_merge;
+
+use Composer\InstalledVersions;
+
 use function getenv;
 use function interface_exists;
 
@@ -37,7 +40,7 @@ final class AiTestReporterExtensionTest extends TestCase
         $environment = array_merge($environment, ['AI_AGENT' => '1']);
 
         $configurationFile = dirname(__DIR__, 4) . '/tests/TestReporter/phpunit-extension.xml.dist';
-        $phpunitPackage = \Composer\InstalledVersions::getInstallPath('phpunit/phpunit');
+        $phpunitPackage = InstalledVersions::getInstallPath('phpunit/phpunit');
         self::assertIsString($phpunitPackage);
         $pipes = [];
         $process = proc_open(
@@ -72,7 +75,7 @@ final class AiTestReporterExtensionTest extends TestCase
         $environment = array_merge($environment, ['AI_AGENT' => '1', 'PARATEST' => '1']);
 
         $configurationFile = dirname(__DIR__, 4) . '/tests/TestReporter/phpunit-extension.xml.dist';
-        $phpunitPackage = \Composer\InstalledVersions::getInstallPath('phpunit/phpunit');
+        $phpunitPackage = InstalledVersions::getInstallPath('phpunit/phpunit');
         self::assertIsString($phpunitPackage);
         $pipes = [];
         $process = proc_open(

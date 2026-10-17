@@ -6,6 +6,14 @@ namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
 use function array_map;
 
+use PhpParser\Node\Expr\ConstFetch;
+use PhpParser\Node\Expr\Match_;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\MatchArm;
+use PhpParser\Node\Name;
+use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Stmt\Case_;
+use PhpParser\Node\Stmt\Switch_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Testing\PHPStanTestCase;
@@ -53,11 +61,11 @@ final class DispatchInspectorTest extends PHPStanTestCase
             new ConstantStringType('fast'),
             new ConstantStringType('dry'),
         ));
-        $switch = new \PhpParser\Node\Stmt\Switch_(
-            new \PhpParser\Node\Expr\Variable('mode'),
+        $switch = new Switch_(
+            new Variable('mode'),
             [
-                new \PhpParser\Node\Stmt\Case_(new \PhpParser\Node\Scalar\String_('fast')),
-                new \PhpParser\Node\Stmt\Case_(null),
+                new Case_(new String_('fast')),
+                new Case_(null),
             ],
             ['startLine' => 5],
         );
@@ -82,9 +90,9 @@ final class DispatchInspectorTest extends PHPStanTestCase
             new ConstantStringType('fast'),
             new ConstantStringType('dry'),
         ));
-        $switch = new \PhpParser\Node\Stmt\Switch_(
-            new \PhpParser\Node\Expr\Variable('mode'),
-            [new \PhpParser\Node\Stmt\Case_(new \PhpParser\Node\Scalar\String_('fast'))],
+        $switch = new Switch_(
+            new Variable('mode'),
+            [new Case_(new String_('fast'))],
             ['startLine' => 8],
         );
 
@@ -108,11 +116,11 @@ final class DispatchInspectorTest extends PHPStanTestCase
             new ConstantStringType('fast'),
             new ConstantStringType('dry'),
         ));
-        $switch = new \PhpParser\Node\Stmt\Switch_(
-            new \PhpParser\Node\Expr\Variable('mode'),
+        $switch = new Switch_(
+            new Variable('mode'),
             [
-                new \PhpParser\Node\Stmt\Case_(null),
-                new \PhpParser\Node\Stmt\Case_(new \PhpParser\Node\Scalar\String_('fast')),
+                new Case_(null),
+                new Case_(new String_('fast')),
             ],
             ['startLine' => 5],
         );
@@ -137,11 +145,11 @@ final class DispatchInspectorTest extends PHPStanTestCase
             new ConstantStringType('fast'),
             new ConstantStringType('dry'),
         ));
-        $switch = new \PhpParser\Node\Stmt\Switch_(
-            new \PhpParser\Node\Expr\Variable('mode'),
+        $switch = new Switch_(
+            new Variable('mode'),
             [
-                new \PhpParser\Node\Stmt\Case_(new \PhpParser\Node\Scalar\String_('fast')),
-                new \PhpParser\Node\Stmt\Case_(new \PhpParser\Node\Scalar\String_('dry')),
+                new Case_(new String_('fast')),
+                new Case_(new String_('dry')),
             ],
             ['startLine' => 5],
         );
@@ -160,14 +168,14 @@ final class DispatchInspectorTest extends PHPStanTestCase
             new ConstantStringType('fast'),
             new ConstantStringType('dry'),
         ));
-        $node = new \PhpParser\Node\Expr\Match_(
-            new \PhpParser\Node\Expr\Variable('mode'),
+        $node = new Match_(
+            new Variable('mode'),
             [
-                new \PhpParser\Node\MatchArm(
-                    [new \PhpParser\Node\Scalar\String_('fast')],
-                    new \PhpParser\Node\Scalar\String_('f'),
+                new MatchArm(
+                    [new String_('fast')],
+                    new String_('f'),
                 ),
-                new \PhpParser\Node\MatchArm(null, new \PhpParser\Node\Scalar\String_('x')),
+                new MatchArm(null, new String_('x')),
             ],
             ['startLine' => 9],
         );
@@ -192,13 +200,13 @@ final class DispatchInspectorTest extends PHPStanTestCase
             new ConstantStringType('fast'),
             new ConstantStringType('dry'),
         ));
-        $node = new \PhpParser\Node\Expr\Match_(
-            new \PhpParser\Node\Expr\Variable('mode'),
+        $node = new Match_(
+            new Variable('mode'),
             [
-                new \PhpParser\Node\MatchArm(null, new \PhpParser\Node\Scalar\String_('x')),
-                new \PhpParser\Node\MatchArm(
-                    [new \PhpParser\Node\Scalar\String_('fast')],
-                    new \PhpParser\Node\Scalar\String_('f'),
+                new MatchArm(null, new String_('x')),
+                new MatchArm(
+                    [new String_('fast')],
+                    new String_('f'),
                 ),
             ],
             ['startLine' => 9],
@@ -224,12 +232,12 @@ final class DispatchInspectorTest extends PHPStanTestCase
             new ConstantStringType('fast'),
             new ConstantStringType('dry'),
         ));
-        $node = new \PhpParser\Node\Expr\Match_(
-            new \PhpParser\Node\Expr\Variable('mode'),
+        $node = new Match_(
+            new Variable('mode'),
             [
-                new \PhpParser\Node\MatchArm(
-                    [new \PhpParser\Node\Scalar\String_('fast')],
-                    new \PhpParser\Node\Scalar\String_('f'),
+                new MatchArm(
+                    [new String_('fast')],
+                    new String_('f'),
                 ),
             ],
             ['startLine' => 9],
@@ -245,7 +253,7 @@ final class DispatchInspectorTest extends PHPStanTestCase
         $scope->method('getType')->willReturn(new StringType());
 
         self::assertSame([], (new DispatchInspector())->unhandled(
-            new \PhpParser\Node\Expr\Variable('mode'),
+            new Variable('mode'),
             [],
             $scope,
         ));
@@ -258,7 +266,7 @@ final class DispatchInspectorTest extends PHPStanTestCase
         $scope->method('getType')->willReturn(new ConstantBooleanType(true));
 
         self::assertSame([], (new DispatchInspector())->unhandled(
-            new \PhpParser\Node\Expr\ConstFetch(new \PhpParser\Node\Name('true')),
+            new ConstFetch(new Name('true')),
             [],
             $scope,
         ));

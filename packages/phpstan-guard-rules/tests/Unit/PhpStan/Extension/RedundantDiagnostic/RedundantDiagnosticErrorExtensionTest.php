@@ -7,6 +7,7 @@ namespace Tests\Unit\PhpStan\Extension\RedundantDiagnostic;
 use function array_filter;
 
 use Override;
+use PhpParser\Node\Stmt\Nop;
 use PHPStan\Analyser\Error;
 use PHPStan\Analyser\Scope;
 use PHPStan\Testing\PHPStanTestCase;
@@ -87,8 +88,8 @@ final class RedundantDiagnosticErrorExtensionTest extends PHPStanTestCase
             false,
         );
 
-        self::assertTrue($enabled->shouldIgnore($error, new \PhpParser\Node\Stmt\Nop(), $scope));
-        self::assertFalse($disabled->shouldIgnore($error, new \PhpParser\Node\Stmt\Nop(), $scope));
+        self::assertTrue($enabled->shouldIgnore($error, new Nop(), $scope));
+        self::assertFalse($disabled->shouldIgnore($error, new Nop(), $scope));
     }
 
     public function testDistributedRulesRegisterTheExtension(): void

@@ -7,6 +7,10 @@ namespace Tests\Unit\Doctest\Scanner;
 use function array_map;
 use function iterator_to_array;
 
+use PhpParser\Comment\Doc;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Function_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -116,7 +120,7 @@ final class SourceScannerTest extends TestCase
     public function testTraverseAstPassesOverAnythingThatIsNotANode(): void
     {
         $scanner = new SourceScanner();
-        $documented = new \PhpParser\Node\Stmt\Function_('helper', [], ['comments' => [new \PhpParser\Comment\Doc('/** Docs. */')]]);
+        $documented = new Function_('helper', [], ['comments' => [new Doc('/** Docs. */')]]);
 
         $targets = iterator_to_array($scanner->traverseAst(['not a node', null, $documented], '/a.php', 'Probe', null), false);
 
@@ -127,8 +131,8 @@ final class SourceScannerTest extends TestCase
     public function testTargetsOfReportsAClassOnceAndDoesNotWalkItTwice(): void
     {
         $scanner = new SourceScanner();
-        $method = new \PhpParser\Node\Stmt\ClassMethod('run', [], ['comments' => [new \PhpParser\Comment\Doc('/** Method docs. */')]]);
-        $class = new \PhpParser\Node\Stmt\Class_('Widget', ['stmts' => [$method]], ['comments' => [new \PhpParser\Comment\Doc('/** Class docs. */')]]);
+        $method = new ClassMethod('run', [], ['comments' => [new Doc('/** Method docs. */')]]);
+        $class = new Class_('Widget', ['stmts' => [$method]], ['comments' => [new Doc('/** Class docs. */')]]);
 
         $targets = iterator_to_array($scanner->targetsOf($class, '/a.php', 'Probe', 'Outer'), false);
 
@@ -141,8 +145,8 @@ final class SourceScannerTest extends TestCase
     public function testTargetsOfDoesNotDescendIntoTheBodyOfAMethod(): void
     {
         $scanner = new SourceScanner();
-        $nested = new \PhpParser\Node\Stmt\Function_('nested', [], ['comments' => [new \PhpParser\Comment\Doc('/** Nested docs. */')]]);
-        $method = new \PhpParser\Node\Stmt\ClassMethod('run', ['stmts' => [$nested]], ['comments' => [new \PhpParser\Comment\Doc('/** Method docs. */')]]);
+        $nested = new Function_('nested', [], ['comments' => [new Doc('/** Nested docs. */')]]);
+        $method = new ClassMethod('run', ['stmts' => [$nested]], ['comments' => [new Doc('/** Method docs. */')]]);
 
         $targets = iterator_to_array($scanner->targetsOf($method, '/a.php', 'Probe', 'Widget'), false);
 
@@ -155,8 +159,8 @@ final class SourceScannerTest extends TestCase
     public function testTargetsOfDoesNotDescendIntoTheBodyOfAFunction(): void
     {
         $scanner = new SourceScanner();
-        $nested = new \PhpParser\Node\Stmt\Function_('nested', [], ['comments' => [new \PhpParser\Comment\Doc('/** Nested docs. */')]]);
-        $function = new \PhpParser\Node\Stmt\Function_('outer', ['stmts' => [$nested]], ['comments' => [new \PhpParser\Comment\Doc('/** Outer docs. */')]]);
+        $nested = new Function_('nested', [], ['comments' => [new Doc('/** Nested docs. */')]]);
+        $function = new Function_('outer', ['stmts' => [$nested]], ['comments' => [new Doc('/** Outer docs. */')]]);
 
         $targets = iterator_to_array($scanner->targetsOf($function, '/a.php', 'Probe', null), false);
 
@@ -169,8 +173,8 @@ final class SourceScannerTest extends TestCase
     public function testClassTargetsReportsOnlyTheMembersOfAnUndocumentedClass(): void
     {
         $scanner = new SourceScanner();
-        $method = new \PhpParser\Node\Stmt\ClassMethod('run', [], ['comments' => [new \PhpParser\Comment\Doc('/** Method docs. */')]]);
-        $class = new \PhpParser\Node\Stmt\Class_('Widget', ['stmts' => [$method]]);
+        $method = new ClassMethod('run', [], ['comments' => [new Doc('/** Method docs. */')]]);
+        $class = new Class_('Widget', ['stmts' => [$method]]);
 
         $targets = iterator_to_array($scanner->classTargets($class, '/a.php', 'Probe'), false);
 
@@ -183,7 +187,7 @@ final class SourceScannerTest extends TestCase
     public function testClassTargetsSkipsADocumentedAnonymousClass(): void
     {
         $scanner = new SourceScanner();
-        $class = new \PhpParser\Node\Stmt\Class_(null, [], ['comments' => [new \PhpParser\Comment\Doc('/** Class docs. */')]]);
+        $class = new Class_(null, [], ['comments' => [new Doc('/** Class docs. */')]]);
 
         self::assertSame([], iterator_to_array($scanner->classTargets($class, '/a.php', 'Probe'), false));
     }
@@ -191,16 +195,16 @@ final class SourceScannerTest extends TestCase
     public function testMethodTargetIsSkippedOutsideAClass(): void
     {
         $scanner = new SourceScanner();
-        $method = new \PhpParser\Node\Stmt\ClassMethod('run', [], ['comments' => [new \PhpParser\Comment\Doc('/** Docs. */')]]);
+        $method = new ClassMethod('run', [], ['comments' => [new Doc('/** Docs. */')]]);
 
         self::assertSame([], iterator_to_array($scanner->methodTarget($method, '/a.php', null, null), false));
-        self::assertSame([], iterator_to_array($scanner->methodTarget(new \PhpParser\Node\Stmt\ClassMethod('run'), '/a.php', null, 'Widget'), false));
+        self::assertSame([], iterator_to_array($scanner->methodTarget(new ClassMethod('run'), '/a.php', null, 'Widget'), false));
     }
 
     public function testFunctionTargetIsSkippedWithoutADocblock(): void
     {
         $scanner = new SourceScanner();
-        $function = new \PhpParser\Node\Stmt\Function_('helper');
+        $function = new Function_('helper');
 
         self::assertSame([], iterator_to_array($scanner->functionTarget($function, '/a.php', null), false));
     }
@@ -208,7 +212,7 @@ final class SourceScannerTest extends TestCase
     public function testChildrenReturnsTheNodeSubNodes(): void
     {
         $scanner = new SourceScanner();
-        $class = new \PhpParser\Node\Stmt\Class_('Widget', ['stmts' => [new \PhpParser\Node\Stmt\ClassMethod('run')]]);
+        $class = new Class_('Widget', ['stmts' => [new ClassMethod('run')]]);
 
         $children = $scanner->children($class);
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
+use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -32,7 +33,7 @@ final class TestNamingConventionRuleTest extends RuleTestCase
     {
         $rule = new TestNamingConventionRule(new TestClassScope());
 
-        self::assertSame(\PhpParser\Node\Stmt\ClassMethod::class, $rule->getNodeType());
+        self::assertSame(ClassMethod::class, $rule->getNodeType());
     }
 
 

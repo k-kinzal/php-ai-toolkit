@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\ThrowType;
 
+use PhpParser\Node\Arg;
+use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\Constant\ConstantIntegerType;
@@ -37,9 +41,9 @@ final class TokenGetAllThrowTypeExtensionTest extends TestCase
 
     public function testGetThrowTypeFromFunctionCallReturnsNullWithoutFlagsArgument(): void
     {
-        $call = new \PhpParser\Node\Expr\FuncCall(
-            new \PhpParser\Node\Name('token_get_all'),
-            [new \PhpParser\Node\Arg(new \PhpParser\Node\Expr\Variable('code'))],
+        $call = new FuncCall(
+            new Name('token_get_all'),
+            [new Arg(new Variable('code'))],
         );
 
         self::assertNull((new TokenGetAllThrowTypeExtension())->getThrowTypeFromFunctionCall(
@@ -51,11 +55,11 @@ final class TokenGetAllThrowTypeExtensionTest extends TestCase
 
     public function testGetThrowTypeFromFunctionCallReturnsNullWhenTokenParseFlagIsAbsent(): void
     {
-        $call = new \PhpParser\Node\Expr\FuncCall(
-            new \PhpParser\Node\Name('token_get_all'),
+        $call = new FuncCall(
+            new Name('token_get_all'),
             [
-                new \PhpParser\Node\Arg(new \PhpParser\Node\Expr\Variable('code')),
-                new \PhpParser\Node\Arg(new \PhpParser\Node\Expr\Variable('flags')),
+                new Arg(new Variable('code')),
+                new Arg(new Variable('flags')),
             ],
         );
         $scope = self::createStub(Scope::class);
@@ -70,11 +74,11 @@ final class TokenGetAllThrowTypeExtensionTest extends TestCase
 
     public function testGetThrowTypeFromFunctionCallReturnsParseErrorWhenTokenParseFlagIsSet(): void
     {
-        $call = new \PhpParser\Node\Expr\FuncCall(
-            new \PhpParser\Node\Name('token_get_all'),
+        $call = new FuncCall(
+            new Name('token_get_all'),
             [
-                new \PhpParser\Node\Arg(new \PhpParser\Node\Expr\Variable('code')),
-                new \PhpParser\Node\Arg(new \PhpParser\Node\Expr\Variable('flags')),
+                new Arg(new Variable('code')),
+                new Arg(new Variable('flags')),
             ],
         );
         $scope = self::createStub(Scope::class);
@@ -92,11 +96,11 @@ final class TokenGetAllThrowTypeExtensionTest extends TestCase
 
     public function testGetThrowTypeFromFunctionCallReturnsParseErrorForUnknownFlagValue(): void
     {
-        $call = new \PhpParser\Node\Expr\FuncCall(
-            new \PhpParser\Node\Name('token_get_all'),
+        $call = new FuncCall(
+            new Name('token_get_all'),
             [
-                new \PhpParser\Node\Arg(new \PhpParser\Node\Expr\Variable('code')),
-                new \PhpParser\Node\Arg(new \PhpParser\Node\Expr\Variable('flags')),
+                new Arg(new Variable('code')),
+                new Arg(new Variable('flags')),
             ],
         );
         $scope = self::createStub(Scope::class);

@@ -6,6 +6,8 @@ namespace Toolkit\PhpStan\Rule\ControlFlow;
 
 use function array_keys;
 
+use PhpParser\Node;
+use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Analyser\Scope;
 use PHPStan\Collectors\Collector;
 use PHPStan\Reflection\ReflectionProvider;
@@ -38,18 +40,18 @@ final class ClassAncestorCollector implements Collector
     }
 
     /**
-     * @return class-string<\PhpParser\Node\Stmt\ClassLike>
+     * @return class-string<ClassLike>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Stmt\ClassLike::class;
+        return ClassLike::class;
     }
 
     /**
-     * @param \PhpParser\Node\Stmt\ClassLike $node
+     * @param ClassLike $node
      * @return array{name: string, instantiable: bool, ancestors: list<string>}|null
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): ?array
+    public function processNode(Node $node, Scope $scope): ?array
     {
         unset($scope);
         if (!isset($node->namespacedName)) {

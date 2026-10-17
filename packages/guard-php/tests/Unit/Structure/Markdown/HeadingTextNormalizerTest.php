@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Structure\Markdown;
 
+use Guard\Structure\Markdown\Heading;
 use Guard\Structure\Markdown\HeadingTextNormalizer;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Markdown\Heading
  */
 #[CoversClass(HeadingTextNormalizer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Heading::class)]
+#[UsesClass(Heading::class)]
 final class HeadingTextNormalizerTest extends TestCase
 {
     public function testNormalizeCollapsesSpacesAndTabs(): void

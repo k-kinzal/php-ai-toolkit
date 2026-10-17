@@ -4,6 +4,27 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Structure\Document;
 
+use Guard\Config\Configuration;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
+use Guard\Structure\Document\Constraint;
+use Guard\Structure\Document\DocumentNode;
+use Guard\Structure\Document\PhpConfigEditor;
+use Guard\Structure\Document\PhpConfigReader;
+use Guard\Structure\Document\PhpDocument;
+use Guard\Structure\Document\Pointer;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -33,28 +54,28 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Diagnostic\Finding
  */
-#[CoversClass(\Guard\Structure\Document\PhpDocument::class)]
-#[UsesClass(\Guard\Input\DirectoryListing::class)]
-#[UsesClass(\Guard\Input\FileRecord::class)]
-#[UsesClass(\Guard\Input\FileSet::class)]
-#[UsesClass(\Guard\Input\Entry::class)]
-#[UsesClass(\Guard\Input\Input::class)]
-#[UsesClass(\Guard\Input\InputSet::class)]
-#[UsesClass(\Guard\Input\Selection::class)]
-#[UsesClass(\Guard\Input\StructuredFile::class)]
-#[UsesClass(\Guard\Config\Configuration::class)]
-#[UsesClass(\Guard\Structure\Document\DocumentNode::class)]
-#[UsesClass(\Guard\Structure\Document\PhpConfigReader::class)]
-#[UsesClass(\Guard\Structure\Document\PhpConfigEditor::class)]
-#[UsesClass(\Guard\Structure\Document\Constraint::class)]
-#[UsesClass(\Guard\Structure\Document\Pointer::class)]
+#[CoversClass(PhpDocument::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(DocumentNode::class)]
+#[UsesClass(PhpConfigReader::class)]
+#[UsesClass(PhpConfigEditor::class)]
+#[UsesClass(Constraint::class)]
+#[UsesClass(Pointer::class)]
 #[UsesClass(\Guard\Structure\Document\Selection::class)]
-#[UsesClass(\Guard\Policy\Context::class)]
-#[UsesClass(\Guard\Policy\FileChange::class)]
-#[UsesClass(\Guard\Policy\Plan::class)]
-#[UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[UsesClass(\Guard\Diagnostic\Finding::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Finding::class)]
 final class PhpDocumentTest extends TestCase
 {
     /**
@@ -62,7 +83,7 @@ final class PhpDocumentTest extends TestCase
      */
     public function testReadSelectsALiteralRule(): void
     {
-        $document = new \Guard\Structure\Document\PhpDocument("<?php (new PhpCsFixer\Config())->setRiskyAllowed(true)->setRules(['@PSR12' => true]);");
+        $document = new PhpDocument("<?php (new PhpCsFixer\Config())->setRiskyAllowed(true)->setRules(['@PSR12' => true]);");
         $selected = $document->read('/rules/@PSR12');
         self::assertTrue($selected->exists);
         self::assertTrue($selected->value);
@@ -73,7 +94,7 @@ final class PhpDocumentTest extends TestCase
      */
     public function testWriteRepairsTheSelectedLiteral(): void
     {
-        $document = new \Guard\Structure\Document\PhpDocument('<?php (new PhpCsFixer\Config())->setRiskyAllowed(false);');
+        $document = new PhpDocument('<?php (new PhpCsFixer\Config())->setRiskyAllowed(false);');
         $document->write('/riskyAllowed', true);
         self::assertTrue($document->read('/riskyAllowed')->value);
         self::assertStringContainsString('setRiskyAllowed(true)', $document->encode());
@@ -82,7 +103,7 @@ final class PhpDocumentTest extends TestCase
     public function testEncodeReturnsTheOriginalSource(): void
     {
         $source = '<?php (new PhpCsFixer\Config())->setRiskyAllowed(true);';
-        self::assertSame($source, (new \Guard\Structure\Document\PhpDocument($source))->encode());
+        self::assertSame($source, (new PhpDocument($source))->encode());
     }
 
     /**
@@ -90,7 +111,7 @@ final class PhpDocumentTest extends TestCase
      */
     public function testWriteAddsNestedRulesWithoutExecutingOrReplacingOtherSettings(): void
     {
-        $document = new \Guard\Structure\Document\PhpDocument('<?php /* keep */ return (new PhpCsFixer\Config())->setRules(["custom" => true]);');
+        $document = new PhpDocument('<?php /* keep */ return (new PhpCsFixer\Config())->setRules(["custom" => true]);');
         $document->write('/rules/array_syntax/syntax', 'short');
         self::assertSame('short', $document->read('/rules/array_syntax/syntax')->value);
         self::assertTrue($document->read('/rules/custom')->value);
@@ -102,7 +123,7 @@ final class PhpDocumentTest extends TestCase
      */
     public function testWriteCreatesMissingConfigurationCalls(): void
     {
-        $document = new \Guard\Structure\Document\PhpDocument('<?php return new PhpCsFixer\Config();');
+        $document = new PhpDocument('<?php return new PhpCsFixer\Config();');
         $document->write('/rules/@PSR12', true);
         $document->write('/riskyAllowed', true);
         self::assertTrue($document->read('/rules/@PSR12')->value);
@@ -111,7 +132,7 @@ final class PhpDocumentTest extends TestCase
 
     public function testLiteralPreservesScalarTypesAndConvertsMaps(): void
     {
-        $document = new \Guard\Structure\Document\PhpDocument('<?php return new PhpCsFixer\Config();');
+        $document = new PhpDocument('<?php return new PhpCsFixer\Config();');
         self::assertSame(['list' => [false, -1, 2.5, null]], $document->literal((object) ['list' => [false, -1, 2.5, null]]));
     }
 
@@ -121,7 +142,7 @@ final class PhpDocumentTest extends TestCase
      */
     public function testWriteArrayPreservesUnselectedKeysAndNegativeNumbers(): void
     {
-        $document = new \Guard\Structure\Document\PhpDocument('<?php /* keep */ return ["custom" => true, "number" => -2];');
+        $document = new PhpDocument('<?php /* keep */ return ["custom" => true, "number" => -2];');
         $document->writeArray('/feature/enabled', true);
         self::assertTrue($document->read('/feature/enabled')->value);
         self::assertTrue($document->read('/custom')->value);
@@ -134,7 +155,7 @@ final class PhpDocumentTest extends TestCase
      */
     public function testReadDistinguishesAMissingSetterFromAnExplicitNull(): void
     {
-        $document = new \Guard\Structure\Document\PhpDocument('<?php return (new Config())->setRules(null);');
+        $document = new PhpDocument('<?php return (new Config())->setRules(null);');
         self::assertFalse($document->read('/riskyAllowed')->exists);
         self::assertTrue($document->read('/rules')->exists);
         self::assertNull($document->read('/rules')->value);
@@ -146,7 +167,7 @@ final class PhpDocumentTest extends TestCase
      */
     public function testContainersAllowSettingsInsideAnEmptyPhpArrayWithoutChangingOtherLists(): void
     {
-        $document = new \Guard\Structure\Document\PhpDocument('<?php return ["feature" => [], "untouched" => []];');
+        $document = new PhpDocument('<?php return ["feature" => [], "untouched" => []];');
         $document->write('/feature/enabled', true);
         self::assertTrue($document->read('/feature/enabled')->value);
         self::assertSame([], $document->read('/untouched')->value);

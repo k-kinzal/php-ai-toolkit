@@ -6,6 +6,7 @@ namespace Guard\Structure;
 
 use Guard\Diagnostic\PolicyException;
 use JsonException;
+use Nette\Neon\Exception;
 use RuntimeException;
 
 /**
@@ -13,7 +14,7 @@ use RuntimeException;
  */
 final class Source
 {
-    /** @var array<string, Subject|RuntimeException|JsonException|\Nette\Neon\Exception> */
+    /** @var array<string, Subject|RuntimeException|JsonException|Exception> */
     private array $values = [];
     /** @var array<string, true> */
     private array $active = [];
@@ -33,7 +34,7 @@ final class Source
     /** Computes each requested structure at most once, including shared dependencies.
      * @throws RuntimeException
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
     public function structure(string $id): Subject
     {
@@ -47,7 +48,7 @@ final class Source
             $this->active[$id] = true;
             try {
                 $this->values[$id] = $this->structurers[$id]->structure($this);
-            } catch (RuntimeException|JsonException|\Nette\Neon\Exception $error) {
+            } catch (RuntimeException|JsonException|Exception $error) {
                 $this->values[$id] = $error;
             } finally {
                 unset($this->active[$id]);

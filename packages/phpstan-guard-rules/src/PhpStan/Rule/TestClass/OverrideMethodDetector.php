@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\TestClass;
 
+use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Analyser\Scope;
 use PHPStan\TrinaryLogic;
 use Toolkit\PhpStan\Rule\Shared\OverrideAttributeDetector;
@@ -31,7 +32,7 @@ final class OverrideMethodDetector
     /**
      * Reports whether the class method is an override allowed by test class rules.
      */
-    public function isOverride(\PhpParser\Node\Stmt\ClassMethod $node, Scope $scope): bool
+    public function isOverride(ClassMethod $node, Scope $scope): bool
     {
         $classReflection = $scope->getClassReflection();
         if ($classReflection === null) {

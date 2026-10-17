@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\ErrorFormatter;
 
 use PHPStan\Analyser\Error;
+use PHPStan\Command\Output;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +26,7 @@ final class HumanErrorPrinterTest extends TestCase
     public function testWriteEmitsFormattedErrorLines(): void
     {
         $lines = [];
-        $output = self::createStub(\PHPStan\Command\Output::class);
+        $output = self::createStub(Output::class);
         $output->method('writeLineFormatted')->willReturnCallback(static function (string $message) use (&$lines): void {
             $lines[] = $message;
         });

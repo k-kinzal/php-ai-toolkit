@@ -8,7 +8,9 @@ use PhpParser\ParserFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite;
 use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteCollector;
+use Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor;
 use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
 
 /**
@@ -18,8 +20,8 @@ use Toolkit\PhpStan\Rule\Shared\ThrownExpression;
  * @uses \Toolkit\PhpStan\Rule\Shared\ThrownExpression
  */
 #[CoversClass(ThrowSiteCollector::class)]
-#[UsesClass(\Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSite::class)]
-#[UsesClass(\Toolkit\PhpStan\Rule\ExceptionHandling\ThrowSiteVisitor::class)]
+#[UsesClass(ThrowSite::class)]
+#[UsesClass(ThrowSiteVisitor::class)]
 #[UsesClass(ThrownExpression::class)]
 final class ThrowSiteCollectorTest extends TestCase
 {

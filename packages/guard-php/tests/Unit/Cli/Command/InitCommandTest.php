@@ -6,6 +6,7 @@ namespace Tests\Unit\Cli\Command;
 
 use Guard\Cli\Command\GuardCommand;
 use Guard\Cli\Command\InitCommand;
+use Guard\Cli\FormatDetector;
 use Guard\Config\Project\Initializer;
 use Guard\Config\Project\PresetCatalog;
 use Guard\Diagnostic\PolicyException;
@@ -29,7 +30,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 #[UsesClass(Initializer::class)]
 #[UsesClass(PresetCatalog::class)]
 #[UsesClass(PolicyException::class)]
-#[UsesClass(\Guard\Cli\FormatDetector::class)]
+#[UsesClass(FormatDetector::class)]
 final class InitCommandTest extends TestCase
 {
     public function testConfigureListsThePresetsInTheHelp(): void

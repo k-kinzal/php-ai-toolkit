@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule;
 
+use PhpParser\Node;
+use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
@@ -52,18 +54,18 @@ final class RequirePhpDocOnPublicApiRule implements Rule
     }
 
     /**
-     * @return class-string<\PhpParser\Node\Stmt\ClassLike>
+     * @return class-string<ClassLike>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Stmt\ClassLike::class;
+        return ClassLike::class;
     }
 
     /**
-     * @param \PhpParser\Node\Stmt\ClassLike $node
+     * @param ClassLike $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         if ($this->anonymousClassDetector->isAnonymous($node, $scope)) {
             return [];

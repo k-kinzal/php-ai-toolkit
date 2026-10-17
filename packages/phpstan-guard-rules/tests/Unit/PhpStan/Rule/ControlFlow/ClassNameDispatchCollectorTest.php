@@ -4,6 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ControlFlow;
 
+use PhpParser\Node;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\Match_;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\MatchArm;
+use PhpParser\Node\Name;
+use PhpParser\Node\Name\FullyQualified;
+use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Stmt\Case_;
+use PhpParser\Node\Stmt\Switch_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\ObjectType;
@@ -25,13 +37,13 @@ final class ClassNameDispatchCollectorTest extends TestCase
 {
     public function testGetNodeTypeReturnsExpectedClass(): void
     {
-        self::assertSame(\PhpParser\Node::class, (new ClassNameDispatchCollector())->getNodeType());
+        self::assertSame(Node::class, (new ClassNameDispatchCollector())->getNodeType());
     }
 
     public function testProcessNodeIgnoresNodesThatBranchOnNothing(): void
     {
         self::assertNull((new ClassNameDispatchCollector())->processNode(
-            new \PhpParser\Node\Expr\Variable('payment'),
+            new Variable('payment'),
             self::createStub(Scope::class),
         ));
     }
@@ -40,22 +52,22 @@ final class ClassNameDispatchCollectorTest extends TestCase
     {
         $scope = self::createStub(Scope::class);
         $scope->method('getType')->willReturnCallback(
-            static fn (\PhpParser\Node\Expr $expression): Type => $expression instanceof \PhpParser\Node\Expr\Variable
+            static fn (Expr $expression): Type => $expression instanceof Variable
                 ? new ObjectType('App\\Payment')
-                : ($expression instanceof \PhpParser\Node\Expr\ClassConstFetch && $expression->class instanceof \PhpParser\Node\Name
+                : ($expression instanceof ClassConstFetch && $expression->class instanceof Name
                     ? new ConstantStringType('App\\Visa')
                     : new StringType()),
         );
-        $subject = new \PhpParser\Node\Expr\ClassConstFetch(
-            new \PhpParser\Node\Expr\Variable('payment'),
-            new \PhpParser\Node\Identifier('class'),
+        $subject = new ClassConstFetch(
+            new Variable('payment'),
+            new Identifier('class'),
         );
-        $node = new \PhpParser\Node\Expr\Match_($subject, [
-            new \PhpParser\Node\MatchArm(
-                [new \PhpParser\Node\Expr\ClassConstFetch(new \PhpParser\Node\Name\FullyQualified('App\\Visa'), new \PhpParser\Node\Identifier('class'))],
-                new \PhpParser\Node\Scalar\String_('visa'),
+        $node = new Match_($subject, [
+            new MatchArm(
+                [new ClassConstFetch(new FullyQualified('App\\Visa'), new Identifier('class'))],
+                new String_('visa'),
             ),
-            new \PhpParser\Node\MatchArm(null, new \PhpParser\Node\Scalar\String_('other')),
+            new MatchArm(null, new String_('other')),
         ], ['startLine' => 6]);
 
         self::assertSame(
@@ -72,14 +84,14 @@ final class ClassNameDispatchCollectorTest extends TestCase
 
     public function testProcessNodeSkipsAMatchWithoutADefaultArm(): void
     {
-        $subject = new \PhpParser\Node\Expr\ClassConstFetch(
-            new \PhpParser\Node\Expr\Variable('payment'),
-            new \PhpParser\Node\Identifier('class'),
+        $subject = new ClassConstFetch(
+            new Variable('payment'),
+            new Identifier('class'),
         );
-        $node = new \PhpParser\Node\Expr\Match_($subject, [
-            new \PhpParser\Node\MatchArm(
-                [new \PhpParser\Node\Expr\ClassConstFetch(new \PhpParser\Node\Name\FullyQualified('App\\Visa'), new \PhpParser\Node\Identifier('class'))],
-                new \PhpParser\Node\Scalar\String_('visa'),
+        $node = new Match_($subject, [
+            new MatchArm(
+                [new ClassConstFetch(new FullyQualified('App\\Visa'), new Identifier('class'))],
+                new String_('visa'),
             ),
         ], ['startLine' => 6]);
 
@@ -90,19 +102,19 @@ final class ClassNameDispatchCollectorTest extends TestCase
     {
         $scope = self::createStub(Scope::class);
         $scope->method('getType')->willReturnCallback(
-            static fn (\PhpParser\Node\Expr $expression): Type => $expression instanceof \PhpParser\Node\Expr\Variable
+            static fn (Expr $expression): Type => $expression instanceof Variable
                 ? new ObjectType('App\\Payment')
-                : ($expression instanceof \PhpParser\Node\Expr\ClassConstFetch && $expression->class instanceof \PhpParser\Node\Name
+                : ($expression instanceof ClassConstFetch && $expression->class instanceof Name
                     ? new ConstantStringType('App\\Visa')
                     : new StringType()),
         );
-        $subject = new \PhpParser\Node\Expr\ClassConstFetch(
-            new \PhpParser\Node\Expr\Variable('payment'),
-            new \PhpParser\Node\Identifier('class'),
+        $subject = new ClassConstFetch(
+            new Variable('payment'),
+            new Identifier('class'),
         );
-        $node = new \PhpParser\Node\Stmt\Switch_($subject, [
-            new \PhpParser\Node\Stmt\Case_(
-                new \PhpParser\Node\Expr\ClassConstFetch(new \PhpParser\Node\Name\FullyQualified('App\\Visa'), new \PhpParser\Node\Identifier('class')),
+        $node = new Switch_($subject, [
+            new Case_(
+                new ClassConstFetch(new FullyQualified('App\\Visa'), new Identifier('class')),
             ),
         ], ['startLine' => 9]);
 
@@ -121,7 +133,7 @@ final class ClassNameDispatchCollectorTest extends TestCase
     public function testCollectSkipsASubjectThatIsNotAClassName(): void
     {
         self::assertNull((new ClassNameDispatchCollector())->collect(
-            new \PhpParser\Node\Expr\Variable('mode'),
+            new Variable('mode'),
             [],
             true,
             ClassNameDispatchCollector::MATCH_CONSTRUCT,
@@ -134,9 +146,9 @@ final class ClassNameDispatchCollectorTest extends TestCase
     {
         $scope = self::createStub(Scope::class);
         $scope->method('getType')->willReturn(new ConstantStringType('App\\Visa'));
-        $subject = new \PhpParser\Node\Expr\ClassConstFetch(
-            new \PhpParser\Node\Expr\Variable('payment'),
-            new \PhpParser\Node\Identifier('class'),
+        $subject = new ClassConstFetch(
+            new Variable('payment'),
+            new Identifier('class'),
         );
 
         self::assertNull((new ClassNameDispatchCollector())->collect(
@@ -153,9 +165,9 @@ final class ClassNameDispatchCollectorTest extends TestCase
     {
         $scope = self::createStub(Scope::class);
         $scope->method('getType')->willReturn(new StringType());
-        $subject = new \PhpParser\Node\Expr\ClassConstFetch(
-            new \PhpParser\Node\Expr\Variable('payment'),
-            new \PhpParser\Node\Identifier('class'),
+        $subject = new ClassConstFetch(
+            new Variable('payment'),
+            new Identifier('class'),
         );
 
         self::assertNull((new ClassNameDispatchCollector())->collect(
@@ -175,7 +187,7 @@ final class ClassNameDispatchCollectorTest extends TestCase
 
         self::assertSame(
             ['App\\Visa'],
-            (new ClassNameDispatchCollector())->namedClasses([new \PhpParser\Node\Expr\Variable('anything')], $scope),
+            (new ClassNameDispatchCollector())->namedClasses([new Variable('anything')], $scope),
         );
     }
 
@@ -184,6 +196,6 @@ final class ClassNameDispatchCollectorTest extends TestCase
         $scope = self::createStub(Scope::class);
         $scope->method('getType')->willReturn(new StringType());
 
-        self::assertNull((new ClassNameDispatchCollector())->namedClasses([new \PhpParser\Node\Expr\Variable('anything')], $scope));
+        self::assertNull((new ClassNameDispatchCollector())->namedClasses([new Variable('anything')], $scope));
     }
 }

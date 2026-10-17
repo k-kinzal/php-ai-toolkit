@@ -6,6 +6,9 @@ namespace Tests\Unit\PhpUnit\TestReporter\Legacy;
 
 use function array_merge;
 use function class_implements;
+
+use Composer\InstalledVersions;
+
 use function getenv;
 
 use Override;
@@ -222,7 +225,7 @@ final class LegacyAiTestReporterListenerTest extends TestCase
         $environment = array_merge($environment, ['AI_AGENT' => '1']);
 
         $configurationFile = dirname(__DIR__, 5) . '/tests/TestReporter/phpunit-listener.xml.dist';
-        $phpunitPackage = \Composer\InstalledVersions::getInstallPath('phpunit/phpunit');
+        $phpunitPackage = InstalledVersions::getInstallPath('phpunit/phpunit');
         self::assertIsString($phpunitPackage);
         $pipes = [];
         $process = proc_open(
@@ -258,7 +261,7 @@ final class LegacyAiTestReporterListenerTest extends TestCase
         $environment = array_merge($environment, ['AI_AGENT' => '1']);
 
         $configurationFile = dirname(__DIR__, 5) . '/tests/TestReporter/phpunit-listener.xml.dist';
-        $phpunitPackage = \Composer\InstalledVersions::getInstallPath('phpunit/phpunit');
+        $phpunitPackage = InstalledVersions::getInstallPath('phpunit/phpunit');
         self::assertIsString($phpunitPackage);
         $pipes = [];
         $process = proc_open(

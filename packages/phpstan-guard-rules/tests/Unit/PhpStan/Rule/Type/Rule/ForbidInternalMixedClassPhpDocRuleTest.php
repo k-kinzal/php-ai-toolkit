@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Type\Rule;
 
 use Override;
+use PHPStan\Node\InClassNode;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPStan\Type\ArrayType;
@@ -40,7 +41,7 @@ final class ForbidInternalMixedClassPhpDocRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsClassNode(): void
     {
-        self::assertSame(\PHPStan\Node\InClassNode::class, $this->getRule()->getNodeType());
+        self::assertSame(InClassNode::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodeReportsRestrictedVirtualContracts(): void

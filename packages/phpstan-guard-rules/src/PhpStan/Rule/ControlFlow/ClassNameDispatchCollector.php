@@ -6,6 +6,10 @@ namespace Toolkit\PhpStan\Rule\ControlFlow;
 
 use function count;
 
+use PhpParser\Node;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\Match_;
+use PhpParser\Node\Stmt\Switch_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Collectors\Collector;
 
@@ -48,20 +52,20 @@ final class ClassNameDispatchCollector implements Collector
     }
 
     /**
-     * @return class-string<\PhpParser\Node>
+     * @return class-string<Node>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node::class;
+        return Node::class;
     }
 
     /**
-     * @param \PhpParser\Node $node
+     * @param Node $node
      * @return array{roots: list<string>, named: list<string>, catchAll: bool, line: int, construct: string}|null
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): ?array
+    public function processNode(Node $node, Scope $scope): ?array
     {
-        if ($node instanceof \PhpParser\Node\Expr\Match_) {
+        if ($node instanceof Match_) {
             $conditions = [];
             $catchAll = false;
             foreach ($node->arms as $arm) {
@@ -83,7 +87,7 @@ final class ClassNameDispatchCollector implements Collector
             return $this->collect($node->cond, $conditions, true, self::MATCH_CONSTRUCT, $node->getStartLine(), $scope);
         }
 
-        if (!$node instanceof \PhpParser\Node\Stmt\Switch_) {
+        if (!$node instanceof Switch_) {
             return null;
         }
 
@@ -105,10 +109,10 @@ final class ClassNameDispatchCollector implements Collector
     /**
      * Returns what one dispatch claims about a class name, or null when it claims nothing.
      *
-     * @param list<\PhpParser\Node\Expr> $conditions
+     * @param list<Expr> $conditions
      * @return array{roots: list<string>, named: list<string>, catchAll: bool, line: int, construct: string}|null
      */
-    public function collect(\PhpParser\Node\Expr $subject, array $conditions, bool $catchAll, string $construct, int $line, Scope $scope): ?array
+    public function collect(Expr $subject, array $conditions, bool $catchAll, string $construct, int $line, Scope $scope): ?array
     {
         $object = $this->subjectResolver->namedObject($subject);
         if ($object === null || $scope->getType($subject)->getFiniteTypes() !== []) {
@@ -133,7 +137,7 @@ final class ClassNameDispatchCollector implements Collector
     /**
      * Returns the class each branch names, or null when a branch names something else.
      *
-     * @param list<\PhpParser\Node\Expr> $conditions
+     * @param list<Expr> $conditions
      * @return list<string>|null
      */
     public function namedClasses(array $conditions, Scope $scope): ?array

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\ExceptionHandling;
 
+use PhpParser\Node\Stmt;
 use PhpParser\NodeTraverser;
 
 /**
@@ -14,7 +15,7 @@ final class ThrowSiteCollector
     /**
      * Returns every throw site in the statements that the method itself does not catch.
      *
-     * @param array<\PhpParser\Node\Stmt> $stmts
+     * @param array<Stmt> $stmts
      * @return list<ThrowSite>
      */
     public function collect(array $stmts): array

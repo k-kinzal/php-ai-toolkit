@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\ClassDesign;
 
+use PhpParser\Node\Stmt\ClassLike;
 use PHPStan\Analyser\Scope;
 
 /**
@@ -14,7 +15,7 @@ final class ClassLikeNameResolver
     /**
      * Resolves a displayable class-like name from the AST and current namespace.
      */
-    public function resolve(\PhpParser\Node\Stmt\ClassLike $node, Scope $scope): string
+    public function resolve(ClassLike $node, Scope $scope): string
     {
         if (isset($node->namespacedName)) {
             return $node->namespacedName->toString();

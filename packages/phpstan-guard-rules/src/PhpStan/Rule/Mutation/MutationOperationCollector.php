@@ -6,8 +6,34 @@ namespace Toolkit\PhpStan\Rule\Mutation;
 
 use function is_string;
 
+use PhpParser\Node;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\ArrayDimFetch;
+use PhpParser\Node\Expr\Assign;
+use PhpParser\Node\Expr\AssignOp;
+use PhpParser\Node\Expr\AssignRef;
+use PhpParser\Node\Expr\Clone_;
+use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Expr\NullsafeMethodCall;
+use PhpParser\Node\Expr\NullsafePropertyFetch;
+use PhpParser\Node\Expr\PostDec;
+use PhpParser\Node\Expr\PostInc;
+use PhpParser\Node\Expr\PreDec;
+use PhpParser\Node\Expr\PreInc;
+use PhpParser\Node\Expr\PropertyFetch;
+use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Expr\StaticPropertyFetch;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
+use PhpParser\Node\Stmt\Global_;
+use PhpParser\Node\Stmt\Static_;
+use PhpParser\Node\Stmt\Unset_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Collectors\Collector;
+use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ReflectionProvider;
 
 use function strtolower;
@@ -39,17 +65,17 @@ final class MutationOperationCollector implements Collector
     }
 
     /**
-     * @return class-string<\PhpParser\Node>
+     * @return class-string<Node>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node::class;
+        return Node::class;
     }
 
     /**
      * @return list<Operation>|null
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): ?array
+    public function processNode(Node $node, Scope $scope): ?array
     {
         $caller = $this->ids->current($scope);
         if ($caller === null) {
@@ -64,14 +90,14 @@ final class MutationOperationCollector implements Collector
     /**
      * @return list<Operation>
      */
-    public function records(\PhpParser\Node $node, Scope $scope, string $caller, int $line): array
+    public function records(Node $node, Scope $scope, string $caller, int $line): array
     {
         $persistentAliases = $this->persistentAliases($node, $caller, $line);
         if ($persistentAliases !== null) {
             return $persistentAliases;
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\Unset_) {
+        if ($node instanceof Unset_) {
             return $this->mutations($node->vars, $caller, $line);
         }
 
@@ -80,19 +106,19 @@ final class MutationOperationCollector implements Collector
             return $assignment;
         }
 
-        if ($node instanceof \PhpParser\Node\Expr\AssignOp
-            || $node instanceof \PhpParser\Node\Expr\PreInc
-            || $node instanceof \PhpParser\Node\Expr\PreDec
-            || $node instanceof \PhpParser\Node\Expr\PostInc
-            || $node instanceof \PhpParser\Node\Expr\PostDec) {
+        if ($node instanceof AssignOp
+            || $node instanceof PreInc
+            || $node instanceof PreDec
+            || $node instanceof PostInc
+            || $node instanceof PostDec) {
             return [['kind' => 'mutation', 'caller' => $caller, 'line' => $line, 'root' => $this->root($node->var)]];
         }
 
-        if ($node instanceof \PhpParser\Node\Expr\FuncCall
-            || $node instanceof \PhpParser\Node\Expr\MethodCall
-            || $node instanceof \PhpParser\Node\Expr\NullsafeMethodCall
-            || $node instanceof \PhpParser\Node\Expr\StaticCall
-            || $node instanceof \PhpParser\Node\Expr\New_) {
+        if ($node instanceof FuncCall
+            || $node instanceof MethodCall
+            || $node instanceof NullsafeMethodCall
+            || $node instanceof StaticCall
+            || $node instanceof New_) {
             $call = $this->call($node, $scope, $caller, $line);
 
             return $call === null ? [] : [$call];
@@ -106,14 +132,14 @@ final class MutationOperationCollector implements Collector
      *
      * @return list<AliasOperation>|null
      */
-    public function persistentAliases(\PhpParser\Node $node, string $caller, int $line): ?array
+    public function persistentAliases(Node $node, string $caller, int $line): ?array
     {
-        if (!$node instanceof \PhpParser\Node\Stmt\Global_ && !$node instanceof \PhpParser\Node\Stmt\Static_) {
+        if (!$node instanceof Global_ && !$node instanceof Static_) {
             return null;
         }
 
         $variables = [];
-        if ($node instanceof \PhpParser\Node\Stmt\Global_) {
+        if ($node instanceof Global_) {
             $variables = $node->vars;
         } else {
             foreach ($node->vars as $staticVariable) {
@@ -122,7 +148,7 @@ final class MutationOperationCollector implements Collector
         }
         $records = [];
         foreach ($variables as $variable) {
-            if ($variable instanceof \PhpParser\Node\Expr\Variable && is_string($variable->name)) {
+            if ($variable instanceof Variable && is_string($variable->name)) {
                 $records[] = ['kind' => 'alias', 'caller' => $caller, 'line' => $line, 'variable' => $variable->name, 'root' => 'global'];
             }
         }
@@ -135,14 +161,14 @@ final class MutationOperationCollector implements Collector
      *
      * @return list<Operation>|null
      */
-    public function assignment(\PhpParser\Node $node, string $caller, int $line): ?array
+    public function assignment(Node $node, string $caller, int $line): ?array
     {
-        if (!$node instanceof \PhpParser\Node\Expr\Assign && !$node instanceof \PhpParser\Node\Expr\AssignRef) {
+        if (!$node instanceof Assign && !$node instanceof AssignRef) {
             return null;
         }
 
         $records = [['kind' => 'mutation', 'caller' => $caller, 'line' => $line, 'root' => $this->root($node->var)]];
-        if ($node->var instanceof \PhpParser\Node\Expr\Variable && is_string($node->var->name)) {
+        if ($node->var instanceof Variable && is_string($node->var->name)) {
             $records[] = ['kind' => 'alias', 'caller' => $caller, 'line' => $line, 'variable' => $node->var->name, 'root' => $this->root($node->expr)];
         }
 
@@ -150,7 +176,7 @@ final class MutationOperationCollector implements Collector
     }
 
     /**
-     * @param array<\PhpParser\Node\Expr> $expressions
+     * @param array<Expr> $expressions
      * @return list<MutationOperation>
      */
     public function mutations(array $expressions, string $caller, int $line): array
@@ -164,28 +190,28 @@ final class MutationOperationCollector implements Collector
     }
 
     /**
-     * @param \PhpParser\Node\Expr\FuncCall|\PhpParser\Node\Expr\MethodCall|\PhpParser\Node\Expr\NullsafeMethodCall|\PhpParser\Node\Expr\StaticCall|\PhpParser\Node\Expr\New_ $node
+     * @param FuncCall|MethodCall|NullsafeMethodCall|StaticCall|New_ $node
      * @return CallOperation|null
      */
-    public function call(\PhpParser\Node\Expr $node, Scope $scope, string $caller, int $line): ?array
+    public function call(Expr $node, Scope $scope, string $caller, int $line): ?array
     {
         $callees = [];
         $receiver = 'local';
-        if ($node instanceof \PhpParser\Node\Expr\FuncCall && $node->name instanceof \PhpParser\Node\Name) {
+        if ($node instanceof FuncCall && $node->name instanceof Name) {
             $functionName = $this->reflectionProvider->resolveFunctionName($node->name, $scope);
             if ($functionName !== null) {
                 $callees[] = $this->ids->function($functionName);
             }
-        } elseif (($node instanceof \PhpParser\Node\Expr\MethodCall || $node instanceof \PhpParser\Node\Expr\NullsafeMethodCall)
-            && $node->name instanceof \PhpParser\Node\Identifier) {
+        } elseif (($node instanceof MethodCall || $node instanceof NullsafeMethodCall)
+            && $node->name instanceof Identifier) {
             $receiver = $this->root($node->var);
             $callees = $this->methodCallees($scope->getType($node->var)->getObjectClassReflections(), $node->name->toString(), $scope);
-        } elseif ($node instanceof \PhpParser\Node\Expr\StaticCall && $node->name instanceof \PhpParser\Node\Identifier) {
-            $type = $node->class instanceof \PhpParser\Node\Name
+        } elseif ($node instanceof StaticCall && $node->name instanceof Identifier) {
+            $type = $node->class instanceof Name
                 ? $scope->resolveTypeByName($node->class)
                 : $scope->getType($node->class);
             $callees = $this->methodCallees($type->getObjectClassReflections(), $node->name->toString(), $scope);
-        } elseif ($node instanceof \PhpParser\Node\Expr\New_ && $node->class instanceof \PhpParser\Node\Name) {
+        } elseif ($node instanceof New_ && $node->class instanceof Name) {
             $callees = $this->methodCallees($scope->getType($node)->getObjectClassReflections(), '__construct', $scope);
         }
 
@@ -197,7 +223,7 @@ final class MutationOperationCollector implements Collector
         foreach ($node->getArgs() as $index => $argument) {
             $arguments[] = [
                 'index' => $index,
-                'name' => $argument->name instanceof \PhpParser\Node\Identifier ? $argument->name->toString() : null,
+                'name' => $argument->name instanceof Identifier ? $argument->name->toString() : null,
                 'root' => $this->root($argument->value),
             ];
         }
@@ -213,7 +239,7 @@ final class MutationOperationCollector implements Collector
     }
 
     /**
-     * @param list<\PHPStan\Reflection\ClassReflection> $classes
+     * @param list<ClassReflection> $classes
      * @return list<string>
      */
     public function methodCallees(array $classes, string $method, Scope $scope): array
@@ -232,9 +258,9 @@ final class MutationOperationCollector implements Collector
     /**
      * Reduces an expression to its externally visible mutation root.
      */
-    public function root(\PhpParser\Node $expression): string
+    public function root(Node $expression): string
     {
-        if ($expression instanceof \PhpParser\Node\Expr\Variable && is_string($expression->name)) {
+        if ($expression instanceof Variable && is_string($expression->name)) {
             if ($expression->name === 'this') {
                 return 'this';
             }
@@ -246,21 +272,21 @@ final class MutationOperationCollector implements Collector
             return 'var:' . $expression->name;
         }
 
-        if ($expression instanceof \PhpParser\Node\Expr\ArrayDimFetch
-            || $expression instanceof \PhpParser\Node\Expr\PropertyFetch
-            || $expression instanceof \PhpParser\Node\Expr\NullsafePropertyFetch) {
+        if ($expression instanceof ArrayDimFetch
+            || $expression instanceof PropertyFetch
+            || $expression instanceof NullsafePropertyFetch) {
             return $this->root($expression->var);
         }
 
-        if ($expression instanceof \PhpParser\Node\Expr\StaticPropertyFetch) {
+        if ($expression instanceof StaticPropertyFetch) {
             return 'global';
         }
 
-        if ($expression instanceof \PhpParser\Node\Expr\Clone_) {
+        if ($expression instanceof Clone_) {
             return $this->root($expression->expr);
         }
 
-        return $expression instanceof \PhpParser\Node\Expr\New_ ? 'local' : 'unknown';
+        return $expression instanceof New_ ? 'local' : 'unknown';
     }
 
     /** @var list<string> */

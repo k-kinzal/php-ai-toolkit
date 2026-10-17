@@ -13,6 +13,7 @@ use function mb_strimwidth;
 
 use Toolkit\DocGen\Analysis\ProjectModel;
 use Toolkit\DocGen\Compare\DiffKey;
+use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Report\Diff\DiffHtml;
 
 /**
@@ -111,7 +112,7 @@ final class SearchIndexBuilder
      *
      * @return list<array{n: string, f: string, k: string, u: string, s: string, d?: string}>
      */
-    public function memberItems(\Toolkit\DocGen\Parse\Symbol\ClassLikeDoc $classLike, string $page, ?DiffHtml $diff = null, bool $publicApi = false): array
+    public function memberItems(ClassLikeDoc $classLike, string $page, ?DiffHtml $diff = null, bool $publicApi = false): array
     {
         $diff ??= new DiffHtml();
         $items = [];

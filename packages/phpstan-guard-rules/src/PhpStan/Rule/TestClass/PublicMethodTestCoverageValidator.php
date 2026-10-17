@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\TestClass;
 
+use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Rules\IdentifierRuleError;
 use Toolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver;
 
@@ -37,7 +38,7 @@ final class PublicMethodTestCoverageValidator
     /**
      * @return list<IdentifierRuleError>
      */
-    public function errors(\PhpParser\Node\Stmt\ClassMethod $node, string $sourceFile): array
+    public function errors(ClassMethod $node, string $sourceFile): array
     {
         if (!$node->isPublic() || $node->isAbstract()) {
             return [];

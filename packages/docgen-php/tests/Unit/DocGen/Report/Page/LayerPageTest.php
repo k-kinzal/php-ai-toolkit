@@ -18,6 +18,7 @@ use Toolkit\DocGen\Compare\DiffKey;
 use Toolkit\DocGen\Compare\DiffStatus;
 use Toolkit\DocGen\Discovery\Package\ComposerManifest;
 use Toolkit\DocGen\Discovery\Package\DiscoveredPackage;
+use Toolkit\DocGen\Parse\Doc\MutationContract;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\DocBlock;
 use Toolkit\DocGen\Report\Diff\DiffHtml;
@@ -116,7 +117,7 @@ use Toolkit\DocGen\Report\TypeHtml;
 #[UsesClass(TestCaseIndex::class)]
 #[UsesClass(TypeHtml::class)]
 #[UsesClass(UsageIndex::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContract::class)]
+#[UsesClass(MutationContract::class)]
 final class LayerPageTest extends TestCase
 {
     public function testRenderProducesCompleteDocumentWithLayerCrumbAndListing(): void

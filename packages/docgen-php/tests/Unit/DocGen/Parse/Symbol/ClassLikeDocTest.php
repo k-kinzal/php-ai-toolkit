@@ -7,6 +7,7 @@ namespace Tests\Unit\DocGen\Parse\Symbol;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Parse\Doc\MutationContract;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\ConstantDoc;
 use Toolkit\DocGen\Parse\Symbol\DocBlock;
@@ -31,7 +32,7 @@ use Toolkit\DocGen\Parse\Symbol\TypeSignature;
 #[UsesClass(MethodDoc::class)]
 #[UsesClass(PropertyDoc::class)]
 #[UsesClass(TypeSignature::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContract::class)]
+#[UsesClass(MutationContract::class)]
 final class ClassLikeDocTest extends TestCase
 {
     public function testStoresDeclarationData(): void

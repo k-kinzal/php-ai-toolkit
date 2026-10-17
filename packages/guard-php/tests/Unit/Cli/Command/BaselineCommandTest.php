@@ -6,12 +6,46 @@ namespace Tests\Unit\Cli\Command;
 
 use Closure;
 use FilesystemIterator;
+use Guard\Cli\BaselineFile;
+use Guard\Cli\CheckRun;
+use Guard\Cli\Command\BaselineCommand;
+use Guard\Cli\Command\GuardCommand;
+use Guard\Cli\FormatDetector;
 use Guard\Cli\PolicyRun;
+use Guard\Collect\Collector;
+use Guard\Collect\Filesystem\Discovery;
+use Guard\Collect\Filesystem\Snapshot;
+use Guard\Collect\Filesystem\WalkQueue;
+use Guard\Config\ComponentLoader;
+use Guard\Config\Configuration;
+use Guard\Config\ConfigurationLoader;
+use Guard\Config\DocumentMerger;
+use Guard\Config\ImportResolver;
+use Guard\Config\Reader\ExtensionConfigReader;
+use Guard\Config\RuleReader;
+use Guard\Config\Schema;
 use Guard\Diagnostic\Finding;
 use Guard\Diagnostic\PolicyException;
+use Guard\Execution\Pipeline;
 use Guard\Execution\Registry;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Policy\Context;
+use Guard\Policy\Diagnostic\RuleMessages;
+use Guard\Policy\FieldConstraints;
 use Guard\Policy\FileChange;
 use Guard\Policy\Plan;
+use Guard\Policy\Policy;
+use Guard\Policy\PolicyBinding;
+use Guard\Repair\AtomicWriter;
+use Guard\Repair\ChangeSet;
+use Guard\Reporting\Baseline;
+use Guard\Reporting\BaselineMatch;
+use Guard\Reporting\ChangeDiff;
+use Guard\Reporting\Filtering\FindingFilter;
+use Guard\Reporting\Filtering\ReportScope;
+use Guard\Reporting\Reporter;
+use Guard\Structure\Document\DataDocument;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -60,44 +94,44 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @uses \Guard\Reporting\Filtering\FindingFilter
  * @uses \Guard\Reporting\Filtering\ReportScope
  */
-#[CoversClass(\Guard\Cli\Command\BaselineCommand::class)]
-#[UsesClass(\Guard\Collect\Filesystem\Discovery::class)]
-#[UsesClass(\Guard\Collect\Filesystem\Snapshot::class)]
-#[UsesClass(\Guard\Collect\Filesystem\WalkQueue::class)]
-#[UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
-#[UsesClass(\Guard\Config\RuleReader::class)]
-#[UsesClass(\Guard\Config\ComponentLoader::class)]
-#[UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[UsesClass(\Guard\Policy\FieldConstraints::class)]
-#[UsesClass(\Guard\Cli\Command\GuardCommand::class)]
+#[CoversClass(BaselineCommand::class)]
+#[UsesClass(Discovery::class)]
+#[UsesClass(Snapshot::class)]
+#[UsesClass(WalkQueue::class)]
+#[UsesClass(ExtensionConfigReader::class)]
+#[UsesClass(RuleReader::class)]
+#[UsesClass(ComponentLoader::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(FieldConstraints::class)]
+#[UsesClass(GuardCommand::class)]
 #[UsesClass(PolicyRun::class)]
-#[UsesClass(\Guard\Collect\Collector::class)]
-#[UsesClass(\Guard\Input\InputSet::class)]
-#[UsesClass(\Guard\Config\Configuration::class)]
-#[UsesClass(\Guard\Config\ConfigurationLoader::class)]
-#[UsesClass(\Guard\Config\DocumentMerger::class)]
-#[UsesClass(\Guard\Config\ImportResolver::class)]
-#[UsesClass(\Guard\Config\Schema::class)]
-#[UsesClass(\Guard\Structure\Document\DataDocument::class)]
-#[UsesClass(\Guard\Repair\AtomicWriter::class)]
-#[UsesClass(\Guard\Repair\ChangeSet::class)]
-#[UsesClass(\Guard\Policy\Context::class)]
+#[UsesClass(Collector::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(ConfigurationLoader::class)]
+#[UsesClass(DocumentMerger::class)]
+#[UsesClass(ImportResolver::class)]
+#[UsesClass(Schema::class)]
+#[UsesClass(DataDocument::class)]
+#[UsesClass(AtomicWriter::class)]
+#[UsesClass(ChangeSet::class)]
+#[UsesClass(Context::class)]
 #[UsesClass(FileChange::class)]
-#[UsesClass(\Guard\Execution\Pipeline::class)]
+#[UsesClass(Pipeline::class)]
 #[UsesClass(Plan::class)]
 #[UsesClass(Registry::class)]
 #[UsesClass(PolicyException::class)]
 #[UsesClass(Finding::class)]
-#[UsesClass(\Guard\Reporting\Reporter::class)]
-#[UsesClass(\Guard\Reporting\ChangeDiff::class)]
-#[UsesClass(\Guard\Policy\Diagnostic\RuleMessages::class)]
-#[UsesClass(\Guard\Cli\FormatDetector::class)]
-#[UsesClass(\Guard\Cli\CheckRun::class)]
-#[UsesClass(\Guard\Cli\BaselineFile::class)]
-#[UsesClass(\Guard\Reporting\Baseline::class)]
-#[UsesClass(\Guard\Reporting\BaselineMatch::class)]
-#[UsesClass(\Guard\Reporting\Filtering\FindingFilter::class)]
-#[UsesClass(\Guard\Reporting\Filtering\ReportScope::class)]
+#[UsesClass(Reporter::class)]
+#[UsesClass(ChangeDiff::class)]
+#[UsesClass(RuleMessages::class)]
+#[UsesClass(FormatDetector::class)]
+#[UsesClass(CheckRun::class)]
+#[UsesClass(BaselineFile::class)]
+#[UsesClass(Baseline::class)]
+#[UsesClass(BaselineMatch::class)]
+#[UsesClass(FindingFilter::class)]
+#[UsesClass(ReportScope::class)]
 final class BaselineCommandTest extends TestCase
 {
     public function testExecuteCapturesAllDiagnosticsAndNeverRepairsProjectFiles(): void
@@ -141,23 +175,23 @@ final class BaselineCommandTest extends TestCase
         };
         $finding = new Finding('a.txt', 'problem', 'required', 'Old content. Replace it with new.', true);
         $registry = new Registry();
-        $registry->addPolicy('test', new class ([], static fn (): Plan => new Plan([$finding], [new FileChange($project->root . '/a.txt', 'old', 'new')])) implements \Guard\Policy\Policy {
-            /** @param array<string, \Guard\Input\Input> $inputs
-             * @param Closure(\Guard\Input\InputSet, \Guard\Policy\Context): Plan $callback
+        $registry->addPolicy('test', new class ([], static fn (): Plan => new Plan([$finding], [new FileChange($project->root . '/a.txt', 'old', 'new')])) implements Policy {
+            /** @param array<string, Input> $inputs
+             * @param Closure(InputSet, Context): Plan $callback
              */
             public function __construct(private array $inputs, private Closure $callback)
             {
             }
-            public function inputs(\Guard\Policy\Context $context): array
+            public function inputs(Context $context): array
             {
                 return $this->inputs;
             }
-            public function evaluate(\Guard\Input\InputSet $inputs, \Guard\Policy\Context $context): Plan
+            public function evaluate(InputSet $inputs, Context $context): Plan
             {
                 return ($this->callback)($inputs, $context);
             }
         });
-        $tester = new CommandTester(new \Guard\Cli\Command\BaselineCommand($project->root, $registry));
+        $tester = new CommandTester(new BaselineCommand($project->root, $registry));
         try {
             self::assertSame(0, $tester->execute(['--format' => 'json', '--output' => 'custom.json']));
             self::assertStringContainsString('"count": 1', $tester->getDisplay());
@@ -214,25 +248,25 @@ final class BaselineCommandTest extends TestCase
         $registry = new Registry();
         $registry->addPolicy('test', new class ([], static function (): Plan {
             throw new PolicyException('Invalid input. Correct it.');
-        }) implements \Guard\Policy\Policy
+        }) implements Policy
         {
-            /** @param array<string, \Guard\Input\Input> $inputs
-             * @param Closure(\Guard\Input\InputSet, \Guard\Policy\Context): Plan $callback
+            /** @param array<string, Input> $inputs
+             * @param Closure(InputSet, Context): Plan $callback
              */
             public function __construct(private array $inputs, private Closure $callback)
             {
             }
-            public function inputs(\Guard\Policy\Context $context): array
+            public function inputs(Context $context): array
             {
                 return $this->inputs;
             }
-            public function evaluate(\Guard\Input\InputSet $inputs, \Guard\Policy\Context $context): Plan
+            public function evaluate(InputSet $inputs, Context $context): Plan
             {
                 return ($this->callback)($inputs, $context);
             }
         });
         try {
-            $tester = new CommandTester(new \Guard\Cli\Command\BaselineCommand($project->root, $registry));
+            $tester = new CommandTester(new BaselineCommand($project->root, $registry));
             self::assertSame(2, $tester->execute([]));
             self::assertSame('{"version":1,"entries":[]}', file_get_contents($project->root . '/guard-baseline.json'));
         } finally {

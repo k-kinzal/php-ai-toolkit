@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
+use PhpParser\Comment\Doc;
+use PhpParser\Node\Stmt\Class_;
 use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -33,8 +35,8 @@ final class SingleLinePhpDocErrorCollectorTest extends TestCase
 {
     public function testErrorsReturnsClassDocError(): void
     {
-        $class = new \PhpParser\Node\Stmt\Class_('Example');
-        $class->setDocComment(new \PhpParser\Comment\Doc('/** doc */', 3));
+        $class = new Class_('Example');
+        $class->setDocComment(new Doc('/** doc */', 3));
 
         $errors = (new SingleLinePhpDocErrorCollector())->errors($class, self::createStub(Scope::class));
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\TestClass;
 
+use PhpParser\Node;
 use PhpParser\Node\Expr\Match_;
 use PhpParser\Node\Stmt\Do_;
 use PhpParser\Node\Stmt\For_;
@@ -20,7 +21,7 @@ final class ControlFlowTypeResolver
     /**
      * Returns the control-flow label for a prohibited node.
      */
-    public function type(\PhpParser\Node $node): ?string
+    public function type(Node $node): ?string
     {
         if ($node instanceof If_) {
             return 'if';

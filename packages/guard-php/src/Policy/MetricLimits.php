@@ -6,9 +6,14 @@ namespace Guard\Policy;
 
 use Guard\Diagnostic\Finding;
 use Guard\Diagnostic\PolicyException;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
 use Guard\Policy\Assignment\FilePolicyAssigner;
+use Guard\Structure\Php\FileMetric\FileMetric;
 use Guard\Structure\Php\SourceMetrics;
 use JsonException;
+use Nette\Neon\Exception;
 use RuntimeException;
 
 /**
@@ -23,14 +28,14 @@ final class MetricLimits implements Policy
     {
     }
     /**
-     * @return array<string, \Guard\Input\Input>
+     * @return array<string, Input>
      */
     public function inputs(Context $context): array
     {
         if ($context->scope !== null) {
-            return ['sources' => new \Guard\Input\Input(new \Guard\Input\Selection('patterns', ['**/*.php']), 'php.metrics')];
+            return ['sources' => new Input(new Selection('patterns', ['**/*.php']), 'php.metrics')];
         }
-        return ['sources' => new \Guard\Input\Input(new \Guard\Input\Selection(
+        return ['sources' => new Input(new Selection(
             'descendants',
             $this->config->scan->roots,
             $this->config->scan->exclude,
@@ -42,9 +47,9 @@ final class MetricLimits implements Policy
     /** Evaluates profile assignments against shared, already-measured source.
      * @throws RuntimeException
      * @throws JsonException
-     * @throws \Nette\Neon\Exception
+     * @throws Exception
      */
-    public function evaluate(\Guard\Input\InputSet $inputs, Context $context): Plan
+    public function evaluate(InputSet $inputs, Context $context): Plan
     {
         $files = [];
         $values = [];
@@ -63,7 +68,7 @@ final class MetricLimits implements Policy
             if (!$metrics instanceof SourceMetrics) {
                 throw new PolicyException('MetricLimits requires php.metrics to return SourceMetrics. Register MetricParser for that structure.');
             }
-            $metrics = new SourceMetrics(new \Guard\Structure\Php\FileMetric\FileMetric($assignment->relativePath, $metrics->file->physicalLines, $metrics->file->nonCommentLines), $metrics->classes, $metrics->functions, true);
+            $metrics = new SourceMetrics(new FileMetric($assignment->relativePath, $metrics->file->physicalLines, $metrics->file->nonCommentLines), $metrics->classes, $metrics->functions, true);
             foreach ((new Limit\MetricLimitInspector())->violations($metrics, $assignment->policy->limits, $assignment->policy->name) as $violation) {
                 $findings[] = new Finding($violation->path, 'metrics.' . $violation->rule, 'required', (new Diagnostic\RuleMessages())->diagnostic('metrics.' . $violation->rule, $violation->message));
             }

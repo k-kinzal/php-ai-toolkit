@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\PhpDoc;
 
+use PhpParser\Node;
+use PhpParser\Node\FunctionLike;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Function_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
@@ -47,24 +51,24 @@ final class ForbidMixedArrayReturnTypeRule implements Rule
     }
 
     /**
-     * @return class-string<\PhpParser\Node\FunctionLike>
+     * @return class-string<FunctionLike>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\FunctionLike::class;
+        return FunctionLike::class;
     }
 
     /**
-     * @param \PhpParser\Node\FunctionLike $node
+     * @param FunctionLike $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         if ($this->pathMatcher->matches($scope->getFile())) {
             return [];
         }
 
-        if (!$node instanceof \PhpParser\Node\Stmt\ClassMethod && !$node instanceof \PhpParser\Node\Stmt\Function_) {
+        if (!$node instanceof ClassMethod && !$node instanceof Function_) {
             return [];
         }
 
@@ -95,7 +99,7 @@ final class ForbidMixedArrayReturnTypeRule implements Rule
     /**
      * Names one callable precisely enough to fix its return declaration.
      */
-    public function callableName(\PhpParser\Node\Stmt\ClassMethod|\PhpParser\Node\Stmt\Function_ $node): string
+    public function callableName(ClassMethod|Function_ $node): string
     {
         return sprintf('%s()', $node->name->toString());
     }

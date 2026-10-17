@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule;
 
+use PhpParser\Node;
+use PhpParser\Node\Name;
+use PhpParser\Node\Stmt\TraitUse;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
@@ -25,25 +28,25 @@ final class NoTraitUseInTestClassRule implements Rule
     }
 
     /**
-     * @return class-string<\PhpParser\Node\Stmt\TraitUse>
+     * @return class-string<TraitUse>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Stmt\TraitUse::class;
+        return TraitUse::class;
     }
 
     /**
-     * @param \PhpParser\Node\Stmt\TraitUse $node
+     * @param TraitUse $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
         if (!$this->testClassScope->isRestrictedTestClass($scope)) {
             return [];
         }
 
         $names = array_map(
-            static fn (\PhpParser\Node\Name $trait): string => $trait->toString(),
+            static fn (Name $trait): string => $trait->toString(),
             $node->traits,
         );
 

@@ -4,7 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Structure\Markdown;
 
+use Guard\Structure\Markdown\AtxHeadingMatcher;
+use Guard\Structure\Markdown\Block\BlockLineScanner;
+use Guard\Structure\Markdown\BlockMarkerMatcher;
+use Guard\Structure\Markdown\Fence;
+use Guard\Structure\Markdown\FenceMatcher;
+use Guard\Structure\Markdown\Heading;
+use Guard\Structure\Markdown\HeadingList;
+use Guard\Structure\Markdown\HeadingParser;
+use Guard\Structure\Markdown\HeadingTextNormalizer;
+use Guard\Structure\Markdown\HtmlBlockMatcher;
+use Guard\Structure\Markdown\LineIndentation;
+use Guard\Structure\Markdown\LineScanner;
+use Guard\Structure\Markdown\MarkdownLineSplitter;
+use Guard\Structure\Markdown\ParserState;
+use Guard\Structure\Markdown\SetextUnderlineMatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -24,27 +40,27 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Markdown\ParserState
  * @uses \Guard\Structure\Markdown\SetextUnderlineMatcher
  */
-#[CoversClass(\Guard\Structure\Markdown\HeadingList::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\AtxHeadingMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\BlockMarkerMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Block\BlockLineScanner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Fence::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\FenceMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\Heading::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingParser::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HeadingTextNormalizer::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\HtmlBlockMatcher::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\LineIndentation::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\LineScanner::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\MarkdownLineSplitter::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\ParserState::class)]
-#[\PHPUnit\Framework\Attributes\UsesClass(\Guard\Structure\Markdown\SetextUnderlineMatcher::class)]
+#[CoversClass(HeadingList::class)]
+#[UsesClass(AtxHeadingMatcher::class)]
+#[UsesClass(BlockMarkerMatcher::class)]
+#[UsesClass(BlockLineScanner::class)]
+#[UsesClass(Fence::class)]
+#[UsesClass(FenceMatcher::class)]
+#[UsesClass(Heading::class)]
+#[UsesClass(HeadingParser::class)]
+#[UsesClass(HeadingTextNormalizer::class)]
+#[UsesClass(HtmlBlockMatcher::class)]
+#[UsesClass(LineIndentation::class)]
+#[UsesClass(LineScanner::class)]
+#[UsesClass(MarkdownLineSplitter::class)]
+#[UsesClass(ParserState::class)]
+#[UsesClass(SetextUnderlineMatcher::class)]
 final class HeadingListTest extends TestCase
 {
     public function testAllRetainsHeadingOrderIncludingDuplicates(): void
     {
-        $headings = (new \Guard\Structure\Markdown\HeadingParser())->parse("# Same\n\n# Same\n");
-        self::assertSame($headings, (new \Guard\Structure\Markdown\HeadingList($headings))->all());
+        $headings = (new HeadingParser())->parse("# Same\n\n# Same\n");
+        self::assertSame($headings, (new HeadingList($headings))->all());
         self::assertCount(2, $headings);
     }
 }

@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Toolkit\PhpStan\Rule\Type\Rule;
 
+use PhpParser\Node;
+use PhpParser\Node\Stmt;
+use PhpParser\Node\Stmt\ClassConst;
+use PhpParser\Node\Stmt\ClassLike;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\EnumCase;
+use PhpParser\Node\Stmt\Function_;
+use PhpParser\Node\Stmt\Property;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
@@ -31,25 +39,25 @@ final class ForbidInternalMixedLocalVarRule implements Rule
     }
 
     /**
-     * @return class-string<\PhpParser\Node\Stmt>
+     * @return class-string<Stmt>
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Stmt::class;
+        return Stmt::class;
     }
 
     /**
-     * @param \PhpParser\Node\Stmt $node
+     * @param Stmt $node
      * @return list<IdentifierRuleError>
      */
-    public function processNode(\PhpParser\Node $node, Scope $scope): array
+    public function processNode(Node $node, Scope $scope): array
     {
-        if ($node instanceof \PhpParser\Node\Stmt\ClassLike
-            || $node instanceof \PhpParser\Node\Stmt\ClassMethod
-            || $node instanceof \PhpParser\Node\Stmt\Function_
-            || $node instanceof \PhpParser\Node\Stmt\Property
-            || $node instanceof \PhpParser\Node\Stmt\ClassConst
-            || $node instanceof \PhpParser\Node\Stmt\EnumCase) {
+        if ($node instanceof ClassLike
+            || $node instanceof ClassMethod
+            || $node instanceof Function_
+            || $node instanceof Property
+            || $node instanceof ClassConst
+            || $node instanceof EnumCase) {
             return [];
         }
 

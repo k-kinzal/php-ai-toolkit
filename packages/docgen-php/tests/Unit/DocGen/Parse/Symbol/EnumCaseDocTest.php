@@ -7,6 +7,7 @@ namespace Tests\Unit\DocGen\Parse\Symbol;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Toolkit\DocGen\Parse\Doc\MutationContract;
 use Toolkit\DocGen\Parse\Symbol\DocBlock;
 use Toolkit\DocGen\Parse\Symbol\EnumCaseDoc;
 
@@ -16,7 +17,7 @@ use Toolkit\DocGen\Parse\Symbol\EnumCaseDoc;
  */
 #[CoversClass(EnumCaseDoc::class)]
 #[UsesClass(DocBlock::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContract::class)]
+#[UsesClass(MutationContract::class)]
 final class EnumCaseDocTest extends TestCase
 {
     public function testStoresDeclarationData(): void

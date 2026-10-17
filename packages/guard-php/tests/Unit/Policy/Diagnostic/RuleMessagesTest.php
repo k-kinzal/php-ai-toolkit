@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policy\Diagnostic;
 
+use Guard\Policy\Diagnostic\RuleMessages;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+
 /**
  * @covers \Guard\Policy\Diagnostic\RuleMessages
  */
-#[\PHPUnit\Framework\Attributes\CoversClass(\Guard\Policy\Diagnostic\RuleMessages::class)]
+#[CoversClass(RuleMessages::class)]
 
-final class RuleMessagesTest extends \PHPUnit\Framework\TestCase
+final class RuleMessagesTest extends TestCase
 {
     public function testForRuleNamesTheProblemAndAnActionForEachFamily(): void
     {
-        $messages = new \Guard\Policy\Diagnostic\RuleMessages();
+        $messages = new RuleMessages();
         self::assertStringContainsString('Simplify conditional branches', $messages->forRule('metrics.cyclomatic_complexity'));
         self::assertStringContainsString('Split unrelated responsibilities', $messages->forRule('metrics.file_lines'));
         self::assertStringContainsString('Rename or remove', $messages->forRule('structure.denied_dir'));
@@ -24,7 +29,7 @@ final class RuleMessagesTest extends \PHPUnit\Framework\TestCase
 
     public function testDiagnosticPreservesTheSpecificProblemAndFix(): void
     {
-        $text = (new \Guard\Policy\Diagnostic\RuleMessages())->diagnostic('metrics.cyclomatic_complexity', 'Method A::run has complexity 25; maximum 20. Extract independent operations.');
+        $text = (new RuleMessages())->diagnostic('metrics.cyclomatic_complexity', 'Method A::run has complexity 25; maximum 20. Extract independent operations.');
         self::assertStringStartsWith('Method A::run has complexity 25; maximum 20. Extract independent operations.', $text);
         self::assertStringContainsString('harder to reason about and test', $text);
     }
@@ -32,10 +37,10 @@ final class RuleMessagesTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider providerBuiltInRules
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('providerBuiltInRules')]
+    #[DataProvider('providerBuiltInRules')]
     public function testRationaleExplainsEveryBuiltInFamily(string $id): void
     {
-        $messages = new \Guard\Policy\Diagnostic\RuleMessages();
+        $messages = new RuleMessages();
         self::assertNotSame('', $messages->rationale($id), $id);
         self::assertStringContainsString($messages->rationale($id), $messages->forRule($id));
         self::assertStringNotContainsString('custom rule', $messages->forRule($id));

@@ -31,6 +31,8 @@ use Toolkit\DocGen\Parallel\WorkerCount;
 use Toolkit\DocGen\Parallel\WorkerPool;
 use Toolkit\DocGen\Parallel\WorkScheduler;
 use Toolkit\DocGen\Parse\Doc\DocBlockReader;
+use Toolkit\DocGen\Parse\Doc\MutationContract;
+use Toolkit\DocGen\Parse\Doc\MutationContractReader;
 use Toolkit\DocGen\Parse\Doc\PhpDocParserBridge;
 use Toolkit\DocGen\Parse\ParsedProject;
 use Toolkit\DocGen\Parse\Symbol\DocBlock;
@@ -212,8 +214,8 @@ use Toolkit\DocGen\Report\TypeRenderContext;
 #[UsesClass(WorkScheduler::class)]
 #[UsesClass(WorkerCount::class)]
 #[UsesClass(WorkerPool::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContract::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContractReader::class)]
+#[UsesClass(MutationContract::class)]
+#[UsesClass(MutationContractReader::class)]
 #[UsesClass(SourceSelection::class)]
 #[UsesClass(SourceFile::class)]
 #[UsesClass(SourceSet::class)]

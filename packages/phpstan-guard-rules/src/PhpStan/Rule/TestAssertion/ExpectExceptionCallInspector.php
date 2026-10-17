@@ -6,6 +6,9 @@ namespace Toolkit\PhpStan\Rule\TestAssertion;
 
 use function count;
 
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\IdentifierRuleError;
 use Toolkit\PhpStan\Rule\Shared\CallArgumentResolver;
@@ -58,9 +61,9 @@ final class ExpectExceptionCallInspector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function errors(\PhpParser\Node\Expr $node, Scope $scope): array
+    public function errors(Expr $node, Scope $scope): array
     {
-        if ($node instanceof \PhpParser\Node\Expr\MethodCall) {
+        if ($node instanceof MethodCall) {
             if (!$this->targetMatcher->isThisMethodCall($node)) {
                 return [];
             }
@@ -73,7 +76,7 @@ final class ExpectExceptionCallInspector
             );
         }
 
-        if ($node instanceof \PhpParser\Node\Expr\StaticCall) {
+        if ($node instanceof StaticCall) {
             if (!$this->targetMatcher->isStaticCallOnCurrentTestClass($node, $scope)) {
                 return [];
             }
@@ -92,7 +95,7 @@ final class ExpectExceptionCallInspector
     /**
      * @return list<IdentifierRuleError>
      */
-    public function errorsForCall(?string $methodName, ?\PhpParser\Node\Expr $firstArg, int $line, Scope $scope): array
+    public function errorsForCall(?string $methodName, ?Expr $firstArg, int $line, Scope $scope): array
     {
         if ($methodName !== 'expectException' && $methodName !== 'expectExceptionObject') {
             return [];
@@ -120,7 +123,7 @@ final class ExpectExceptionCallInspector
     /**
      * Returns the single statically known class of an expected exception instance.
      */
-    public function expectedObjectClassName(\PhpParser\Node\Expr $expression, Scope $scope): ?string
+    public function expectedObjectClassName(Expr $expression, Scope $scope): ?string
     {
         $classNames = $scope->getType($expression)->getObjectClassNames();
 

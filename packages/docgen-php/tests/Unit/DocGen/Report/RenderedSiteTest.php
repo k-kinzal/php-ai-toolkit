@@ -37,6 +37,7 @@ use Toolkit\DocGen\Parallel\CpuCoreCounter;
 use Toolkit\DocGen\Parallel\WorkerCount;
 use Toolkit\DocGen\Parallel\WorkerPool;
 use Toolkit\DocGen\Parallel\WorkScheduler;
+use Toolkit\DocGen\Parse\Doc\MutationContract;
 use Toolkit\DocGen\Parse\ParsedProject;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeDoc;
 use Toolkit\DocGen\Parse\Symbol\ClassLikeKind;
@@ -290,7 +291,7 @@ use Toolkit\DocGen\Report\TypeRenderContext;
 #[UsesClass(WorkScheduler::class)]
 #[UsesClass(WorkerCount::class)]
 #[UsesClass(WorkerPool::class)]
-#[UsesClass(\Toolkit\DocGen\Parse\Doc\MutationContract::class)]
+#[UsesClass(MutationContract::class)]
 #[UsesClass(SourceSelection::class)]
 #[UsesClass(SourceFile::class)]
 #[UsesClass(SourceSet::class)]

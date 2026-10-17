@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule;
 
 use Override;
+use PhpParser\Node\Stmt\Property;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -29,7 +30,7 @@ final class NoPropertyInTestClassRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsExpectedClass(): void
     {
-        self::assertSame(\PhpParser\Node\Stmt\Property::class, $this->getRule()->getNodeType());
+        self::assertSame(Property::class, $this->getRule()->getNodeType());
     }
 
     public function testProcessNodePropertyInRestrictedTestClassIsReported(): void

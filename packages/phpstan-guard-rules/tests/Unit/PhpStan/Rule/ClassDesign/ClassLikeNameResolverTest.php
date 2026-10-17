@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Rule\ClassDesign;
 
+use PhpParser\Node\Stmt\Class_;
 use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -20,6 +21,6 @@ final class ClassLikeNameResolverTest extends TestCase
         $scope = self::createStub(Scope::class);
         $scope->method('getNamespace')->willReturn('App\\Domain');
 
-        self::assertSame('App\\Domain\\User', (new ClassLikeNameResolver())->resolve(new \PhpParser\Node\Stmt\Class_('User'), $scope));
+        self::assertSame('App\\Domain\\User', (new ClassLikeNameResolver())->resolve(new Class_('User'), $scope));
     }
 }

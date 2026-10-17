@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Extension\Visibility;
 
+use PhpParser\Node\Stmt\Nop;
 use PHPStan\Analyser\Error;
 use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -50,7 +51,7 @@ final class VisibilityPublicUnusedErrorExtensionTest extends TestCase
 
         self::assertTrue((new VisibilityPublicUnusedErrorExtension())->shouldIgnore(
             $error,
-            new \PhpParser\Node\Stmt\Nop(),
+            new Nop(),
             self::createStub(Scope::class),
         ));
     }
@@ -76,7 +77,7 @@ final class VisibilityPublicUnusedErrorExtensionTest extends TestCase
 
         self::assertFalse((new VisibilityPublicUnusedErrorExtension())->shouldIgnore(
             $error,
-            new \PhpParser\Node\Stmt\Nop(),
+            new Nop(),
             self::createStub(Scope::class),
         ));
     }
@@ -102,7 +103,7 @@ final class VisibilityPublicUnusedErrorExtensionTest extends TestCase
 
         self::assertFalse((new VisibilityPublicUnusedErrorExtension())->shouldIgnore(
             $error,
-            new \PhpParser\Node\Stmt\Nop(),
+            new Nop(),
             self::createStub(Scope::class),
         ));
     }

@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace Guard\Policy;
 
+use Guard\Diagnostic\Finding;
+
 /**
  * A repair plan evaluated before any file writes.
  *
- * @property-read list<\Guard\Diagnostic\Finding> $findings
+ * @property-read list<Finding> $findings
  * @property-read list<FileChange> $changes
- * @property-read list<\Guard\Diagnostic\Finding> $blockingFindings
+ * @property-read list<Finding> $blockingFindings
  */
 final class Plan
 {
     /**
      * Creates the immutable value.
-     * @param list<\Guard\Diagnostic\Finding> $findings
+     * @param list<Finding> $findings
      * @param list<FileChange> $changes
-     * @param list<\Guard\Diagnostic\Finding> $blockingFindings
+     * @param list<Finding> $blockingFindings
      */
     public function __construct(
         /** @readonly */

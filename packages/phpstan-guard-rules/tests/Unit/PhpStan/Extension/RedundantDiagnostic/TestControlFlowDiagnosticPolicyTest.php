@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PhpStan\Extension\RedundantDiagnostic;
 
+use PhpParser\Node\Expr\ConstFetch;
+use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\If_;
 use PhpParser\Node\Stmt\Nop;
 use PHPStan\Analyser\Scope;
@@ -30,9 +32,9 @@ final class TestControlFlowDiagnosticPolicyTest extends PHPStanTestCase
 
         $policy = new TestControlFlowDiagnosticPolicy();
 
-        self::assertTrue($policy->isRedundant(new If_(new \PhpParser\Node\Expr\ConstFetch(new \PhpParser\Node\Name('true'))), $scope, true));
+        self::assertTrue($policy->isRedundant(new If_(new ConstFetch(new Name('true'))), $scope, true));
         self::assertFalse($policy->isRedundant(new Nop(), $scope, true));
-        self::assertFalse($policy->isRedundant(new If_(new \PhpParser\Node\Expr\ConstFetch(new \PhpParser\Node\Name('true'))), $scope, false));
+        self::assertFalse($policy->isRedundant(new If_(new ConstFetch(new Name('true'))), $scope, false));
     }
 
     public function testIsTestMethodRecognizesAttributeAndRejectsProvider(): void

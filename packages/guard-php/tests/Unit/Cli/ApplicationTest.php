@@ -5,6 +5,208 @@ declare(strict_types=1);
 namespace Tests\Unit\Cli;
 
 use FilesystemIterator;
+use Guard\Cli\Application;
+use Guard\Cli\BaselineFile;
+use Guard\Cli\CheckRun;
+use Guard\Cli\ClosureOutput;
+use Guard\Cli\Command\BaselineCommand;
+use Guard\Cli\Command\CheckCommand;
+use Guard\Cli\Command\FixCommand;
+use Guard\Cli\Command\GuardCommand;
+use Guard\Cli\Command\InitCommand;
+use Guard\Cli\Command\RulesCommand;
+use Guard\Cli\FormatDetector;
+use Guard\Cli\GuardConsole;
+use Guard\Cli\PolicyRun;
+use Guard\Collect\Collector;
+use Guard\Collect\Filesystem\DirectoryTraversal;
+use Guard\Collect\Filesystem\Discovery;
+use Guard\Collect\Filesystem\NativeFilesystem;
+use Guard\Collect\Filesystem\PatternRoots;
+use Guard\Collect\Filesystem\QueryResult;
+use Guard\Collect\Filesystem\Route;
+use Guard\Collect\Filesystem\SelectionRoots;
+use Guard\Collect\Filesystem\Snapshot;
+use Guard\Collect\Filesystem\TargetPath;
+use Guard\Collect\Filesystem\WalkQueue;
+use Guard\Collect\Matching\GlobMatcher;
+use Guard\Collect\Matching\SelectionFilter;
+use Guard\Config\ComponentLoader;
+use Guard\Config\Configuration;
+use Guard\Config\ConfigurationLoader;
+use Guard\Config\DocumentMerger;
+use Guard\Config\ImportResolver;
+use Guard\Config\Profile\ApplyConfigReader;
+use Guard\Config\Profile\ApplyPolicyUsageValidator;
+use Guard\Config\Profile\ApplyRuleConfigReader;
+use Guard\Config\Profile\ApplyRuleListConfigReader;
+use Guard\Config\Profile\PolicyConfigReader;
+use Guard\Config\Profile\PolicyDefinition;
+use Guard\Config\Profile\PolicyListConfigReader;
+use Guard\Config\Profile\PolicyResolver;
+use Guard\Config\Project\Initializer;
+use Guard\Config\Project\Legacy\DirectoryConfiguration;
+use Guard\Config\Project\Legacy\DirectoryReportConfig;
+use Guard\Config\Project\Legacy\DirectoryReportReader;
+use Guard\Config\Project\Legacy\HeadingConfiguration;
+use Guard\Config\Project\Legacy\HeadingReportConfig;
+use Guard\Config\Project\Legacy\HeadingReportReader;
+use Guard\Config\Project\Legacy\MetricConfiguration;
+use Guard\Config\Project\Legacy\MetricReportConfig;
+use Guard\Config\Project\Legacy\MetricReportReader;
+use Guard\Config\Project\LegacyMigration;
+use Guard\Config\Project\PresetCatalog;
+use Guard\Config\Project\PresetOverrides;
+use Guard\Config\Project\PresetSelector;
+use Guard\Config\Project\Recommendations;
+use Guard\Config\Project\ToolDetector;
+use Guard\Config\Reader\DeclaredHeadingReader;
+use Guard\Config\Reader\DirectoryPolicyReader;
+use Guard\Config\Reader\DirectoryRuleConfigReader;
+use Guard\Config\Reader\DirectoryRuleListConfigReader;
+use Guard\Config\Reader\DocumentConfigReader;
+use Guard\Config\Reader\DocumentListConfigReader;
+use Guard\Config\Reader\ExtensionConfigReader;
+use Guard\Config\Reader\HeadingPolicyReader;
+use Guard\Config\Reader\LimitConfigReader;
+use Guard\Config\Reader\MetricPolicyReader;
+use Guard\Config\Reader\ScanConfigReader;
+use Guard\Config\RuleReader;
+use Guard\Config\Schema;
+use Guard\Config\Validation\DirectoryConfigScalarReader;
+use Guard\Config\Validation\DirectoryConfigStringListReader;
+use Guard\Config\Validation\HeadingConfigKeyValidator;
+use Guard\Config\Validation\HeadingConfigStringListReader;
+use Guard\Config\Validation\MetricConfigKeyValidator;
+use Guard\Config\Validation\MetricConfigScalarReader;
+use Guard\Config\Validation\MetricConfigStringListReader;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Execution\Pipeline;
+use Guard\Execution\Registry;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Path;
+use Guard\Input\PathPatternMatcher;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Assignment\ApplyRuleMatcher;
+use Guard\Policy\Assignment\FilePolicyAssigner;
+use Guard\Policy\Assignment\FilePolicyAssignment;
+use Guard\Policy\Comparison\HeadingHunkClassifier;
+use Guard\Policy\Comparison\HeadingSequenceAligner;
+use Guard\Policy\Comparison\HeadingStructureComparator;
+use Guard\Policy\Context;
+use Guard\Policy\Definition\ApplyConfig;
+use Guard\Policy\Definition\ApplyRuleConfig;
+use Guard\Policy\Definition\DeclaredHeading;
+use Guard\Policy\Definition\DirectoryRuleConfig;
+use Guard\Policy\Definition\DocumentationConfig;
+use Guard\Policy\Definition\DocumentConfig;
+use Guard\Policy\Definition\LimitConfig;
+use Guard\Policy\Definition\MetricsConfig;
+use Guard\Policy\Definition\PolicyConfig;
+use Guard\Policy\Definition\ScanConfig;
+use Guard\Policy\Definition\StructureConfig;
+use Guard\Policy\Diagnostic\DirectoryViolation;
+use Guard\Policy\Diagnostic\FieldMessage;
+use Guard\Policy\Diagnostic\HeadingViolation;
+use Guard\Policy\Diagnostic\HeadingViolationFactory;
+use Guard\Policy\Diagnostic\MetricViolation;
+use Guard\Policy\Diagnostic\RuleMessages;
+use Guard\Policy\DirectoryEntries;
+use Guard\Policy\FieldConstraints;
+use Guard\Policy\FileChange;
+use Guard\Policy\HeadingStructure;
+use Guard\Policy\Inspection\CaseConventionMatcher;
+use Guard\Policy\Inspection\ChildCountInspector;
+use Guard\Policy\Inspection\DepthInspector;
+use Guard\Policy\Inspection\DirectoryPatternMatcher;
+use Guard\Policy\Inspection\DirectoryRuleInspector;
+use Guard\Policy\Inspection\DirNameInspector;
+use Guard\Policy\Inspection\EmptyDirectoryInspector;
+use Guard\Policy\Inspection\FileNameInspector;
+use Guard\Policy\Inspection\RequiredFileInspector;
+use Guard\Policy\Inspection\TotalFileCountInspector;
+use Guard\Policy\Limit\ClassLikeMetricLimit;
+use Guard\Policy\Limit\ClassLikeMetricViolationBuilder;
+use Guard\Policy\Limit\FileMetricViolationBuilder;
+use Guard\Policy\Limit\FunctionComplexityViolationBuilder;
+use Guard\Policy\Limit\FunctionLineViolationBuilder;
+use Guard\Policy\Limit\FunctionMetricViolationBuilder;
+use Guard\Policy\Limit\MetricLimitInspector;
+use Guard\Policy\MetricLimits;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
+use Guard\Policy\Rule;
+use Guard\Policy\RuleEvaluator;
+use Guard\Repair\AtomicWriter;
+use Guard\Repair\ChangeSet;
+use Guard\Reporting\Baseline;
+use Guard\Reporting\BaselineMatch;
+use Guard\Reporting\ChangeDiff;
+use Guard\Reporting\Filtering\FindingFilter;
+use Guard\Reporting\Filtering\ReportScope;
+use Guard\Reporting\Reporter;
+use Guard\Structure\Document\Constraint;
+use Guard\Structure\Document\DataDocument;
+use Guard\Structure\Document\DocumentFailure;
+use Guard\Structure\Document\DocumentNode;
+use Guard\Structure\Document\Json5Reader;
+use Guard\Structure\Document\PhpConfigReader;
+use Guard\Structure\Document\PhpDocument;
+use Guard\Structure\Document\Pointer;
+use Guard\Structure\Document\TomlEncoder;
+use Guard\Structure\Document\XmlDocument;
+use Guard\Structure\DocumentStructurer;
+use Guard\Structure\Markdown\AtxHeadingMatcher;
+use Guard\Structure\Markdown\Block\BlockLineScanner;
+use Guard\Structure\Markdown\BlockMarkerMatcher;
+use Guard\Structure\Markdown\Fence;
+use Guard\Structure\Markdown\FenceMatcher;
+use Guard\Structure\Markdown\Heading;
+use Guard\Structure\Markdown\HeadingList;
+use Guard\Structure\Markdown\HeadingParser;
+use Guard\Structure\Markdown\HeadingStructurer;
+use Guard\Structure\Markdown\HeadingTextNormalizer;
+use Guard\Structure\Markdown\HtmlBlockMatcher;
+use Guard\Structure\Markdown\LineIndentation;
+use Guard\Structure\Markdown\LineScanner;
+use Guard\Structure\Markdown\MarkdownLineSplitter;
+use Guard\Structure\Markdown\ParserState;
+use Guard\Structure\Markdown\SetextUnderlineMatcher;
+use Guard\Structure\ParsedDocument;
+use Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader;
+use Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric;
+use Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser;
+use Guard\Structure\Php\Complexity\CyclomaticComplexityCalculator;
+use Guard\Structure\Php\Complexity\CyclomaticComplexityState;
+use Guard\Structure\Php\Complexity\CyclomaticDecisionWeight;
+use Guard\Structure\Php\FileMetric\FileMetric;
+use Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary;
+use Guard\Structure\Php\FunctionMetric\ArrowFunctionMetricReader;
+use Guard\Structure\Php\FunctionMetric\BlockFunctionMetricReader;
+use Guard\Structure\Php\FunctionMetric\FunctionBodyLocator;
+use Guard\Structure\Php\FunctionMetric\FunctionLineParser;
+use Guard\Structure\Php\FunctionMetric\FunctionMetric;
+use Guard\Structure\Php\FunctionMetric\FunctionMetricComplexityAssigner;
+use Guard\Structure\Php\FunctionMetric\FunctionMetricParser;
+use Guard\Structure\Php\FunctionMetric\FunctionNameReader;
+use Guard\Structure\Php\FunctionMetric\FunctionScanState;
+use Guard\Structure\Php\FunctionMetric\NestedFunctionMetricRange;
+use Guard\Structure\Php\MetricParser;
+use Guard\Structure\Php\SourceMetrics;
+use Guard\Structure\Php\Token\ClassLikeTokenMatcher;
+use Guard\Structure\Php\Token\CodeTokenLineResolver;
+use Guard\Structure\Php\Token\PhpTokenNavigator;
+use Guard\Structure\Php\Token\TokenLineCounter;
+use Guard\Structure\Php\TokenParser;
+use Guard\Structure\Php\Tokens;
+use Guard\Structure\Source;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -13,6 +215,7 @@ use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * @covers \Guard\Cli\Application
@@ -219,209 +422,209 @@ use SplFileInfo;
  * @uses \Guard\Reporting\Filtering\FindingFilter
  * @uses \Guard\Reporting\Filtering\ReportScope
  */
-#[CoversClass(\Guard\Cli\Application::class)]
-#[UsesClass(\Guard\Cli\ClosureOutput::class)]
-#[UsesClass(\Guard\Cli\Command\FixCommand::class)]
-#[UsesClass(\Guard\Cli\Command\CheckCommand::class)]
-#[UsesClass(\Guard\Cli\Command\GuardCommand::class)]
-#[UsesClass(\Guard\Cli\Command\InitCommand::class)]
-#[UsesClass(\Guard\Cli\GuardConsole::class)]
-#[UsesClass(\Guard\Cli\PolicyRun::class)]
-#[UsesClass(\Guard\Collect\Collector::class)]
-#[UsesClass(\Guard\Input\DirectoryListing::class)]
-#[UsesClass(\Guard\Input\FileRecord::class)]
-#[UsesClass(\Guard\Input\FileSet::class)]
-#[UsesClass(\Guard\Collect\Filesystem\DirectoryTraversal::class)]
-#[UsesClass(\Guard\Collect\Filesystem\Discovery::class)]
-#[UsesClass(\Guard\Input\Entry::class)]
-#[UsesClass(\Guard\Collect\Filesystem\NativeFilesystem::class)]
-#[UsesClass(\Guard\Input\Path::class)]
-#[UsesClass(\Guard\Collect\Filesystem\PatternRoots::class)]
-#[UsesClass(\Guard\Collect\Filesystem\QueryResult::class)]
-#[UsesClass(\Guard\Collect\Filesystem\Route::class)]
-#[UsesClass(\Guard\Collect\Filesystem\SelectionRoots::class)]
-#[UsesClass(\Guard\Collect\Filesystem\Snapshot::class)]
-#[UsesClass(\Guard\Collect\Filesystem\WalkQueue::class)]
-#[UsesClass(\Guard\Input\Input::class)]
-#[UsesClass(\Guard\Input\InputSet::class)]
-#[UsesClass(\Guard\Collect\Matching\GlobMatcher::class)]
-#[UsesClass(\Guard\Input\PathPatternMatcher::class)]
-#[UsesClass(\Guard\Collect\Matching\SelectionFilter::class)]
-#[UsesClass(\Guard\Input\Selection::class)]
-#[UsesClass(\Guard\Input\StructuredFile::class)]
-#[UsesClass(\Guard\Policy\Assignment\ApplyRuleMatcher::class)]
-#[UsesClass(\Guard\Policy\Assignment\FilePolicyAssigner::class)]
-#[UsesClass(\Guard\Policy\Assignment\FilePolicyAssignment::class)]
-#[UsesClass(\Guard\Config\Configuration::class)]
-#[UsesClass(\Guard\Config\ConfigurationLoader::class)]
-#[UsesClass(\Guard\Config\DocumentMerger::class)]
-#[UsesClass(\Guard\Config\ImportResolver::class)]
-#[UsesClass(\Guard\Policy\Definition\ApplyConfig::class)]
-#[UsesClass(\Guard\Config\Profile\ApplyConfigReader::class)]
-#[UsesClass(\Guard\Config\Profile\ApplyPolicyUsageValidator::class)]
-#[UsesClass(\Guard\Policy\Definition\ApplyRuleConfig::class)]
-#[UsesClass(\Guard\Config\Profile\ApplyRuleConfigReader::class)]
-#[UsesClass(\Guard\Config\Profile\ApplyRuleListConfigReader::class)]
-#[UsesClass(\Guard\Policy\Definition\PolicyConfig::class)]
-#[UsesClass(\Guard\Config\Profile\PolicyConfigReader::class)]
-#[UsesClass(\Guard\Config\Profile\PolicyDefinition::class)]
-#[UsesClass(\Guard\Config\Profile\PolicyListConfigReader::class)]
-#[UsesClass(\Guard\Config\Profile\PolicyResolver::class)]
-#[UsesClass(\Guard\Config\Reader\DeclaredHeadingReader::class)]
-#[UsesClass(\Guard\Config\Reader\DirectoryPolicyReader::class)]
-#[UsesClass(\Guard\Config\Reader\DirectoryRuleConfigReader::class)]
-#[UsesClass(\Guard\Config\Reader\DirectoryRuleListConfigReader::class)]
-#[UsesClass(\Guard\Config\Reader\DocumentConfigReader::class)]
-#[UsesClass(\Guard\Config\Reader\DocumentListConfigReader::class)]
-#[UsesClass(\Guard\Config\Reader\ExtensionConfigReader::class)]
-#[UsesClass(\Guard\Config\Reader\HeadingPolicyReader::class)]
-#[UsesClass(\Guard\Config\Reader\LimitConfigReader::class)]
-#[UsesClass(\Guard\Config\Reader\MetricPolicyReader::class)]
-#[UsesClass(\Guard\Config\Reader\ScanConfigReader::class)]
-#[UsesClass(\Guard\Config\RuleReader::class)]
-#[UsesClass(\Guard\Config\Schema::class)]
-#[UsesClass(\Guard\Config\Validation\DirectoryConfigScalarReader::class)]
-#[UsesClass(\Guard\Config\Validation\DirectoryConfigStringListReader::class)]
-#[UsesClass(\Guard\Config\Validation\HeadingConfigKeyValidator::class)]
-#[UsesClass(\Guard\Config\Validation\HeadingConfigStringListReader::class)]
-#[UsesClass(\Guard\Config\Validation\MetricConfigKeyValidator::class)]
-#[UsesClass(\Guard\Config\Validation\MetricConfigScalarReader::class)]
-#[UsesClass(\Guard\Config\Validation\MetricConfigStringListReader::class)]
-#[UsesClass(\Guard\Policy\Definition\DeclaredHeading::class)]
-#[UsesClass(\Guard\Policy\Definition\DirectoryRuleConfig::class)]
-#[UsesClass(\Guard\Policy\Definition\DocumentConfig::class)]
-#[UsesClass(\Guard\Policy\Definition\DocumentationConfig::class)]
-#[UsesClass(\Guard\Policy\Definition\LimitConfig::class)]
-#[UsesClass(\Guard\Policy\Definition\MetricsConfig::class)]
-#[UsesClass(\Guard\Policy\Definition\ScanConfig::class)]
-#[UsesClass(\Guard\Policy\Definition\StructureConfig::class)]
-#[UsesClass(\Guard\Structure\Document\DataDocument::class)]
-#[UsesClass(\Guard\Structure\Document\DocumentFailure::class)]
-#[UsesClass(\Guard\Structure\Document\DocumentNode::class)]
-#[UsesClass(\Guard\Structure\Document\Json5Reader::class)]
-#[UsesClass(\Guard\Structure\Document\PhpConfigReader::class)]
-#[UsesClass(\Guard\Structure\Document\PhpDocument::class)]
-#[UsesClass(\Guard\Structure\Document\Pointer::class)]
+#[CoversClass(Application::class)]
+#[UsesClass(ClosureOutput::class)]
+#[UsesClass(FixCommand::class)]
+#[UsesClass(CheckCommand::class)]
+#[UsesClass(GuardCommand::class)]
+#[UsesClass(InitCommand::class)]
+#[UsesClass(GuardConsole::class)]
+#[UsesClass(PolicyRun::class)]
+#[UsesClass(Collector::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(DirectoryTraversal::class)]
+#[UsesClass(Discovery::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(NativeFilesystem::class)]
+#[UsesClass(Path::class)]
+#[UsesClass(PatternRoots::class)]
+#[UsesClass(QueryResult::class)]
+#[UsesClass(Route::class)]
+#[UsesClass(SelectionRoots::class)]
+#[UsesClass(Snapshot::class)]
+#[UsesClass(WalkQueue::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(GlobMatcher::class)]
+#[UsesClass(PathPatternMatcher::class)]
+#[UsesClass(SelectionFilter::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(ApplyRuleMatcher::class)]
+#[UsesClass(FilePolicyAssigner::class)]
+#[UsesClass(FilePolicyAssignment::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(ConfigurationLoader::class)]
+#[UsesClass(DocumentMerger::class)]
+#[UsesClass(ImportResolver::class)]
+#[UsesClass(ApplyConfig::class)]
+#[UsesClass(ApplyConfigReader::class)]
+#[UsesClass(ApplyPolicyUsageValidator::class)]
+#[UsesClass(ApplyRuleConfig::class)]
+#[UsesClass(ApplyRuleConfigReader::class)]
+#[UsesClass(ApplyRuleListConfigReader::class)]
+#[UsesClass(PolicyConfig::class)]
+#[UsesClass(PolicyConfigReader::class)]
+#[UsesClass(PolicyDefinition::class)]
+#[UsesClass(PolicyListConfigReader::class)]
+#[UsesClass(PolicyResolver::class)]
+#[UsesClass(DeclaredHeadingReader::class)]
+#[UsesClass(DirectoryPolicyReader::class)]
+#[UsesClass(DirectoryRuleConfigReader::class)]
+#[UsesClass(DirectoryRuleListConfigReader::class)]
+#[UsesClass(DocumentConfigReader::class)]
+#[UsesClass(DocumentListConfigReader::class)]
+#[UsesClass(ExtensionConfigReader::class)]
+#[UsesClass(HeadingPolicyReader::class)]
+#[UsesClass(LimitConfigReader::class)]
+#[UsesClass(MetricPolicyReader::class)]
+#[UsesClass(ScanConfigReader::class)]
+#[UsesClass(RuleReader::class)]
+#[UsesClass(Schema::class)]
+#[UsesClass(DirectoryConfigScalarReader::class)]
+#[UsesClass(DirectoryConfigStringListReader::class)]
+#[UsesClass(HeadingConfigKeyValidator::class)]
+#[UsesClass(HeadingConfigStringListReader::class)]
+#[UsesClass(MetricConfigKeyValidator::class)]
+#[UsesClass(MetricConfigScalarReader::class)]
+#[UsesClass(MetricConfigStringListReader::class)]
+#[UsesClass(DeclaredHeading::class)]
+#[UsesClass(DirectoryRuleConfig::class)]
+#[UsesClass(DocumentConfig::class)]
+#[UsesClass(DocumentationConfig::class)]
+#[UsesClass(LimitConfig::class)]
+#[UsesClass(MetricsConfig::class)]
+#[UsesClass(ScanConfig::class)]
+#[UsesClass(StructureConfig::class)]
+#[UsesClass(DataDocument::class)]
+#[UsesClass(DocumentFailure::class)]
+#[UsesClass(DocumentNode::class)]
+#[UsesClass(Json5Reader::class)]
+#[UsesClass(PhpConfigReader::class)]
+#[UsesClass(PhpDocument::class)]
+#[UsesClass(Pointer::class)]
 #[UsesClass(\Guard\Structure\Document\Selection::class)]
-#[UsesClass(\Guard\Structure\Document\TomlEncoder::class)]
-#[UsesClass(\Guard\Structure\Document\XmlDocument::class)]
-#[UsesClass(\Guard\Repair\AtomicWriter::class)]
-#[UsesClass(\Guard\Repair\ChangeSet::class)]
-#[UsesClass(\Guard\Policy\Context::class)]
-#[UsesClass(\Guard\Policy\FileChange::class)]
-#[UsesClass(\Guard\Execution\Pipeline::class)]
-#[UsesClass(\Guard\Policy\Plan::class)]
-#[UsesClass(\Guard\Collect\Filesystem\TargetPath::class)]
-#[UsesClass(\Guard\Execution\Registry::class)]
-#[UsesClass(\Guard\Config\ComponentLoader::class)]
-#[UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[UsesClass(\Guard\Config\Project\Initializer::class)]
-#[UsesClass(\Guard\Config\Project\LegacyMigration::class)]
-#[UsesClass(\Guard\Config\Project\Legacy\DirectoryConfiguration::class)]
-#[UsesClass(\Guard\Config\Project\Legacy\DirectoryReportConfig::class)]
-#[UsesClass(\Guard\Config\Project\Legacy\DirectoryReportReader::class)]
-#[UsesClass(\Guard\Config\Project\Legacy\HeadingConfiguration::class)]
-#[UsesClass(\Guard\Config\Project\Legacy\HeadingReportConfig::class)]
-#[UsesClass(\Guard\Config\Project\Legacy\HeadingReportReader::class)]
-#[UsesClass(\Guard\Config\Project\Legacy\MetricConfiguration::class)]
-#[UsesClass(\Guard\Config\Project\Legacy\MetricReportConfig::class)]
-#[UsesClass(\Guard\Config\Project\Legacy\MetricReportReader::class)]
-#[UsesClass(\Guard\Config\Project\PresetCatalog::class)]
-#[UsesClass(\Guard\Config\Project\PresetOverrides::class)]
-#[UsesClass(\Guard\Config\Project\PresetSelector::class)]
-#[UsesClass(\Guard\Config\Project\Recommendations::class)]
-#[UsesClass(\Guard\Config\Project\ToolDetector::class)]
-#[UsesClass(\Guard\Policy\Comparison\HeadingHunkClassifier::class)]
-#[UsesClass(\Guard\Policy\Comparison\HeadingSequenceAligner::class)]
-#[UsesClass(\Guard\Policy\Comparison\HeadingStructureComparator::class)]
-#[UsesClass(\Guard\Structure\Document\Constraint::class)]
-#[UsesClass(\Guard\Policy\DirectoryEntries::class)]
-#[UsesClass(\Guard\Policy\FieldConstraints::class)]
-#[UsesClass(\Guard\Policy\HeadingStructure::class)]
-#[UsesClass(\Guard\Policy\Inspection\CaseConventionMatcher::class)]
-#[UsesClass(\Guard\Policy\Inspection\ChildCountInspector::class)]
-#[UsesClass(\Guard\Policy\Inspection\DepthInspector::class)]
-#[UsesClass(\Guard\Policy\Inspection\DirNameInspector::class)]
-#[UsesClass(\Guard\Policy\Inspection\DirectoryPatternMatcher::class)]
-#[UsesClass(\Guard\Policy\Inspection\DirectoryRuleInspector::class)]
-#[UsesClass(\Guard\Policy\Inspection\EmptyDirectoryInspector::class)]
-#[UsesClass(\Guard\Policy\Inspection\FileNameInspector::class)]
-#[UsesClass(\Guard\Policy\Inspection\RequiredFileInspector::class)]
-#[UsesClass(\Guard\Policy\Inspection\TotalFileCountInspector::class)]
-#[UsesClass(\Guard\Policy\Limit\ClassLikeMetricLimit::class)]
-#[UsesClass(\Guard\Policy\Limit\ClassLikeMetricViolationBuilder::class)]
-#[UsesClass(\Guard\Policy\Limit\FileMetricViolationBuilder::class)]
-#[UsesClass(\Guard\Policy\Limit\FunctionComplexityViolationBuilder::class)]
-#[UsesClass(\Guard\Policy\Limit\FunctionLineViolationBuilder::class)]
-#[UsesClass(\Guard\Policy\Limit\FunctionMetricViolationBuilder::class)]
-#[UsesClass(\Guard\Policy\Limit\MetricLimitInspector::class)]
-#[UsesClass(\Guard\Policy\MetricLimits::class)]
-#[UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[UsesClass(\Guard\Policy\Rule::class)]
-#[UsesClass(\Guard\Policy\RuleEvaluator::class)]
-#[UsesClass(\Guard\Policy\Diagnostic\DirectoryViolation::class)]
-#[UsesClass(\Guard\Diagnostic\Finding::class)]
-#[UsesClass(\Guard\Policy\Diagnostic\HeadingViolation::class)]
-#[UsesClass(\Guard\Policy\Diagnostic\HeadingViolationFactory::class)]
-#[UsesClass(\Guard\Policy\Diagnostic\MetricViolation::class)]
-#[UsesClass(\Guard\Reporting\Reporter::class)]
-#[UsesClass(\Guard\Structure\DocumentStructurer::class)]
-#[UsesClass(\Guard\Structure\Markdown\AtxHeadingMatcher::class)]
-#[UsesClass(\Guard\Structure\Markdown\BlockMarkerMatcher::class)]
-#[UsesClass(\Guard\Structure\Markdown\Block\BlockLineScanner::class)]
-#[UsesClass(\Guard\Structure\Markdown\Fence::class)]
-#[UsesClass(\Guard\Structure\Markdown\FenceMatcher::class)]
-#[UsesClass(\Guard\Structure\Markdown\Heading::class)]
-#[UsesClass(\Guard\Structure\Markdown\HeadingList::class)]
-#[UsesClass(\Guard\Structure\Markdown\HeadingParser::class)]
-#[UsesClass(\Guard\Structure\Markdown\HeadingStructurer::class)]
-#[UsesClass(\Guard\Structure\Markdown\HeadingTextNormalizer::class)]
-#[UsesClass(\Guard\Structure\Markdown\HtmlBlockMatcher::class)]
-#[UsesClass(\Guard\Structure\Markdown\LineIndentation::class)]
-#[UsesClass(\Guard\Structure\Markdown\LineScanner::class)]
-#[UsesClass(\Guard\Structure\Markdown\MarkdownLineSplitter::class)]
-#[UsesClass(\Guard\Structure\Markdown\ParserState::class)]
-#[UsesClass(\Guard\Structure\Markdown\SetextUnderlineMatcher::class)]
-#[UsesClass(\Guard\Structure\ParsedDocument::class)]
-#[UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeDeclarationReader::class)]
-#[UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetric::class)]
-#[UsesClass(\Guard\Structure\Php\ClassLikeMetric\ClassLikeMetricParser::class)]
-#[UsesClass(\Guard\Structure\Php\Complexity\CyclomaticComplexityCalculator::class)]
-#[UsesClass(\Guard\Structure\Php\Complexity\CyclomaticComplexityState::class)]
-#[UsesClass(\Guard\Structure\Php\Complexity\CyclomaticDecisionWeight::class)]
-#[UsesClass(\Guard\Structure\Php\FileMetric\FileMetric::class)]
-#[UsesClass(\Guard\Structure\Php\FunctionMetric\ArrowExpressionBoundary::class)]
-#[UsesClass(\Guard\Structure\Php\FunctionMetric\ArrowFunctionMetricReader::class)]
-#[UsesClass(\Guard\Structure\Php\FunctionMetric\BlockFunctionMetricReader::class)]
-#[UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionBodyLocator::class)]
-#[UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionLineParser::class)]
-#[UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetric::class)]
-#[UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetricComplexityAssigner::class)]
-#[UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionMetricParser::class)]
-#[UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionNameReader::class)]
-#[UsesClass(\Guard\Structure\Php\FunctionMetric\FunctionScanState::class)]
-#[UsesClass(\Guard\Structure\Php\FunctionMetric\NestedFunctionMetricRange::class)]
-#[UsesClass(\Guard\Structure\Php\MetricParser::class)]
-#[UsesClass(\Guard\Structure\Php\SourceMetrics::class)]
-#[UsesClass(\Guard\Structure\Php\TokenParser::class)]
-#[UsesClass(\Guard\Structure\Php\Token\ClassLikeTokenMatcher::class)]
-#[UsesClass(\Guard\Structure\Php\Token\CodeTokenLineResolver::class)]
-#[UsesClass(\Guard\Structure\Php\Token\PhpTokenNavigator::class)]
-#[UsesClass(\Guard\Structure\Php\Token\TokenLineCounter::class)]
-#[UsesClass(\Guard\Structure\Php\Tokens::class)]
-#[UsesClass(\Guard\Structure\Source::class)]
-#[UsesClass(\Guard\Reporting\ChangeDiff::class)]
-#[UsesClass(\Guard\Policy\Diagnostic\RuleMessages::class)]
-#[UsesClass(\Guard\Cli\FormatDetector::class)]
-#[UsesClass(\Guard\Cli\Command\RulesCommand::class)]
-#[UsesClass(\Guard\Policy\Diagnostic\FieldMessage::class)]
-#[UsesClass(\Guard\Cli\CheckRun::class)]
-#[UsesClass(\Guard\Cli\BaselineFile::class)]
-#[UsesClass(\Guard\Cli\Command\BaselineCommand::class)]
-#[UsesClass(\Guard\Reporting\Baseline::class)]
-#[UsesClass(\Guard\Reporting\BaselineMatch::class)]
-#[UsesClass(\Guard\Reporting\Filtering\FindingFilter::class)]
-#[UsesClass(\Guard\Reporting\Filtering\ReportScope::class)]
+#[UsesClass(TomlEncoder::class)]
+#[UsesClass(XmlDocument::class)]
+#[UsesClass(AtomicWriter::class)]
+#[UsesClass(ChangeSet::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Pipeline::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(TargetPath::class)]
+#[UsesClass(Registry::class)]
+#[UsesClass(ComponentLoader::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(Initializer::class)]
+#[UsesClass(LegacyMigration::class)]
+#[UsesClass(DirectoryConfiguration::class)]
+#[UsesClass(DirectoryReportConfig::class)]
+#[UsesClass(DirectoryReportReader::class)]
+#[UsesClass(HeadingConfiguration::class)]
+#[UsesClass(HeadingReportConfig::class)]
+#[UsesClass(HeadingReportReader::class)]
+#[UsesClass(MetricConfiguration::class)]
+#[UsesClass(MetricReportConfig::class)]
+#[UsesClass(MetricReportReader::class)]
+#[UsesClass(PresetCatalog::class)]
+#[UsesClass(PresetOverrides::class)]
+#[UsesClass(PresetSelector::class)]
+#[UsesClass(Recommendations::class)]
+#[UsesClass(ToolDetector::class)]
+#[UsesClass(HeadingHunkClassifier::class)]
+#[UsesClass(HeadingSequenceAligner::class)]
+#[UsesClass(HeadingStructureComparator::class)]
+#[UsesClass(Constraint::class)]
+#[UsesClass(DirectoryEntries::class)]
+#[UsesClass(FieldConstraints::class)]
+#[UsesClass(HeadingStructure::class)]
+#[UsesClass(CaseConventionMatcher::class)]
+#[UsesClass(ChildCountInspector::class)]
+#[UsesClass(DepthInspector::class)]
+#[UsesClass(DirNameInspector::class)]
+#[UsesClass(DirectoryPatternMatcher::class)]
+#[UsesClass(DirectoryRuleInspector::class)]
+#[UsesClass(EmptyDirectoryInspector::class)]
+#[UsesClass(FileNameInspector::class)]
+#[UsesClass(RequiredFileInspector::class)]
+#[UsesClass(TotalFileCountInspector::class)]
+#[UsesClass(ClassLikeMetricLimit::class)]
+#[UsesClass(ClassLikeMetricViolationBuilder::class)]
+#[UsesClass(FileMetricViolationBuilder::class)]
+#[UsesClass(FunctionComplexityViolationBuilder::class)]
+#[UsesClass(FunctionLineViolationBuilder::class)]
+#[UsesClass(FunctionMetricViolationBuilder::class)]
+#[UsesClass(MetricLimitInspector::class)]
+#[UsesClass(MetricLimits::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Rule::class)]
+#[UsesClass(RuleEvaluator::class)]
+#[UsesClass(DirectoryViolation::class)]
+#[UsesClass(Finding::class)]
+#[UsesClass(HeadingViolation::class)]
+#[UsesClass(HeadingViolationFactory::class)]
+#[UsesClass(MetricViolation::class)]
+#[UsesClass(Reporter::class)]
+#[UsesClass(DocumentStructurer::class)]
+#[UsesClass(AtxHeadingMatcher::class)]
+#[UsesClass(BlockMarkerMatcher::class)]
+#[UsesClass(BlockLineScanner::class)]
+#[UsesClass(Fence::class)]
+#[UsesClass(FenceMatcher::class)]
+#[UsesClass(Heading::class)]
+#[UsesClass(HeadingList::class)]
+#[UsesClass(HeadingParser::class)]
+#[UsesClass(HeadingStructurer::class)]
+#[UsesClass(HeadingTextNormalizer::class)]
+#[UsesClass(HtmlBlockMatcher::class)]
+#[UsesClass(LineIndentation::class)]
+#[UsesClass(LineScanner::class)]
+#[UsesClass(MarkdownLineSplitter::class)]
+#[UsesClass(ParserState::class)]
+#[UsesClass(SetextUnderlineMatcher::class)]
+#[UsesClass(ParsedDocument::class)]
+#[UsesClass(ClassLikeDeclarationReader::class)]
+#[UsesClass(ClassLikeMetric::class)]
+#[UsesClass(ClassLikeMetricParser::class)]
+#[UsesClass(CyclomaticComplexityCalculator::class)]
+#[UsesClass(CyclomaticComplexityState::class)]
+#[UsesClass(CyclomaticDecisionWeight::class)]
+#[UsesClass(FileMetric::class)]
+#[UsesClass(ArrowExpressionBoundary::class)]
+#[UsesClass(ArrowFunctionMetricReader::class)]
+#[UsesClass(BlockFunctionMetricReader::class)]
+#[UsesClass(FunctionBodyLocator::class)]
+#[UsesClass(FunctionLineParser::class)]
+#[UsesClass(FunctionMetric::class)]
+#[UsesClass(FunctionMetricComplexityAssigner::class)]
+#[UsesClass(FunctionMetricParser::class)]
+#[UsesClass(FunctionNameReader::class)]
+#[UsesClass(FunctionScanState::class)]
+#[UsesClass(NestedFunctionMetricRange::class)]
+#[UsesClass(MetricParser::class)]
+#[UsesClass(SourceMetrics::class)]
+#[UsesClass(TokenParser::class)]
+#[UsesClass(ClassLikeTokenMatcher::class)]
+#[UsesClass(CodeTokenLineResolver::class)]
+#[UsesClass(PhpTokenNavigator::class)]
+#[UsesClass(TokenLineCounter::class)]
+#[UsesClass(Tokens::class)]
+#[UsesClass(Source::class)]
+#[UsesClass(ChangeDiff::class)]
+#[UsesClass(RuleMessages::class)]
+#[UsesClass(FormatDetector::class)]
+#[UsesClass(RulesCommand::class)]
+#[UsesClass(FieldMessage::class)]
+#[UsesClass(CheckRun::class)]
+#[UsesClass(BaselineFile::class)]
+#[UsesClass(BaselineCommand::class)]
+#[UsesClass(Baseline::class)]
+#[UsesClass(BaselineMatch::class)]
+#[UsesClass(FindingFilter::class)]
+#[UsesClass(ReportScope::class)]
 final class ApplicationTest extends TestCase
 {
     public function testInitRejectsNewDocsIncludingEmptyDirectories(): void
@@ -430,7 +633,7 @@ final class ApplicationTest extends TestCase
         mkdir($root . '/vendor/example/docs', 0777, true);
         mkdir($root . '/packages/example/docs', 0777, true);
         $output = '';
-        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+        $app = new Application($root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(0, $app->run(['init']));
@@ -455,7 +658,7 @@ final class ApplicationTest extends TestCase
         mkdir($root . '/docs', 0777, true);
         file_put_contents($root . '/docs/guide.md', "# Guide\n");
         $output = '';
-        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+        $app = new Application($root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(0, $app->run(['init']));
@@ -475,7 +678,7 @@ final class ApplicationTest extends TestCase
         mkdir($root . '/scripts');
         mkdir($root . '/vendor/example/docs', 0777, true);
         $output = '';
-        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+        $app = new Application($root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(0, $app->run(['init', '--import=' . $imports]));
@@ -502,7 +705,7 @@ final class ApplicationTest extends TestCase
         file_put_contents($root . '/src/Example.php', "<?php\n");
         file_put_contents($root . '/tree.yaml', "paths: [src]\nrules: [{path: 'src/**', allow: ['*.php']}]\n");
         $output = '';
-        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+        $app = new Application($root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(0, $app->run(['init']));
@@ -525,7 +728,7 @@ final class ApplicationTest extends TestCase
         file_put_contents($root . '/app.json', '{"workers":0,"other":"keep"}');
         file_put_contents($root . '/guard.yaml', "version: 1\nconfiguration:\n  - id: workers\n    file: app.json\n    select: /workers\n    assert: {min: 1}\n    repair: 1\n");
         $output = '';
-        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+        $app = new Application($root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(1, $app->run(['check']));
@@ -550,7 +753,7 @@ final class ApplicationTest extends TestCase
         file_put_contents($root . '/app.json', '{"mode":"B"}');
         file_put_contents($root . '/guard.yaml', "version: 1\nconfiguration:\n  - id: mode\n    file: app.json\n    select: /mode\n    level: recommended\n    assert: {equals: A}\n");
         $output = '';
-        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+        $app = new Application($root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(0, $app->run(['check']));
@@ -567,7 +770,7 @@ final class ApplicationTest extends TestCase
         file_put_contents($root . '/b.json', '{"mode":"C"}');
         file_put_contents($root . '/guard.yaml', "version: 1\nconfiguration:\n  - {id: first, file: a.json, select: /mode, assert: {equals: A}}\n  - {id: second, file: b.json, select: /mode, assert: {equals: A}}\n  - {id: conflict, file: b.json, select: /mode, assert: {equals: B}}\n");
         $output = '';
-        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+        $app = new Application($root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(1, $app->run(['fix']));
@@ -579,7 +782,7 @@ final class ApplicationTest extends TestCase
     public function testRunListsTheCommandsForHelpWithoutACommand(): void
     {
         $output = '';
-        $app = new \Guard\Cli\Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
+        $app = new Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(0, $app->run(['--help']));
@@ -592,7 +795,7 @@ final class ApplicationTest extends TestCase
     public function testRunShowsTheHelpOfOneCommand(): void
     {
         $output = '';
-        $app = new \Guard\Cli\Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
+        $app = new Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(0, $app->run(['init', '--help']));
@@ -602,7 +805,7 @@ final class ApplicationTest extends TestCase
     public function testRunReportsTheVersion(): void
     {
         $output = '';
-        $app = new \Guard\Cli\Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
+        $app = new Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(0, $app->run(['--version']));
@@ -611,7 +814,7 @@ final class ApplicationTest extends TestCase
     public function testRunRejectsAnUnknownOptionWithAPointerToTheCommandHelp(): void
     {
         $output = '';
-        $app = new \Guard\Cli\Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
+        $app = new Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(2, $app->run(['fix', '--bogus']));
@@ -623,7 +826,7 @@ final class ApplicationTest extends TestCase
         mkdir($root);
         file_put_contents($root . '/team.yaml', "version: 1\n");
         $output = '';
-        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+        $app = new Application($root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(0, $app->run(['check', '-c', 'team.yaml', '--format', 'json']));
@@ -635,7 +838,7 @@ final class ApplicationTest extends TestCase
         mkdir($root);
         file_put_contents($root . '/guard.yaml', "version: 1\n");
         $output = '';
-        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+        $app = new Application($root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(0, $app->run(['check', '--quiet']));
@@ -647,7 +850,7 @@ final class ApplicationTest extends TestCase
     }
     public function testConsoleHasTheGuardCommands(): void
     {
-        $console = (new \Guard\Cli\Application(sys_get_temp_dir()))->console();
+        $console = (new Application(sys_get_temp_dir()))->console();
         self::assertSame('guard', $console->getName());
         self::assertTrue($console->has('check'));
         self::assertTrue($console->has('fix'));
@@ -655,12 +858,12 @@ final class ApplicationTest extends TestCase
     }
     public function testOutputWritesToTheProcessStreamsWithoutAnInjectedSink(): void
     {
-        self::assertInstanceOf(\Symfony\Component\Console\Output\ConsoleOutput::class, (new \Guard\Cli\Application(sys_get_temp_dir()))->output());
+        self::assertInstanceOf(ConsoleOutput::class, (new Application(sys_get_temp_dir()))->output());
     }
     public function testOutputWritesToTheInjectedSink(): void
     {
         $output = '';
-        (new \Guard\Cli\Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
+        (new Application(sys_get_temp_dir(), static function (string $text) use (&$output): void {
             $output .= $text;
         }))->output()->writeln('<info>raw</info>');
         self::assertSame("raw\n", $output);
@@ -673,7 +876,7 @@ final class ApplicationTest extends TestCase
         file_put_contents($root . '/b.json', '{');
         file_put_contents($root . '/guard.yaml', "version: 1\nconfiguration:\n  - {id: first, file: a.json, select: /mode, assert: {equals: A}}\n  - {id: broken, file: b.json, select: /mode, assert: {equals: A}}\n");
         $output = '';
-        $app = new \Guard\Cli\Application($root, static function (string $text) use (&$output): void {
+        $app = new Application($root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         self::assertSame(2, $app->run(['fix']));
@@ -723,7 +926,7 @@ final class ApplicationTest extends TestCase
             }
         };
         $output = '';
-        $application = new \Guard\Cli\Application($project->root, static function (string $text) use (&$output): void {
+        $application = new Application($project->root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         try {
@@ -789,7 +992,7 @@ final class ApplicationTest extends TestCase
         };
         $before = getenv('AI_AGENT');
         $output = '';
-        $application = new \Guard\Cli\Application($project->root, static function (string $text) use (&$output): void {
+        $application = new Application($project->root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         try {
@@ -849,7 +1052,7 @@ final class ApplicationTest extends TestCase
             }
         };
         $output = '';
-        $app = new \Guard\Cli\Application($project->root, static function (string $text) use (&$output): void {
+        $app = new Application($project->root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         try {
@@ -920,7 +1123,7 @@ final class ApplicationTest extends TestCase
             }
         };
         $output = '';
-        $app = new \Guard\Cli\Application($project->root, static function (string $text) use (&$output): void {
+        $app = new Application($project->root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         try {
@@ -976,7 +1179,7 @@ final class ApplicationTest extends TestCase
             }
         };
         $output = '';
-        $app = new \Guard\Cli\Application($project->root, static function (string $text) use (&$output): void {
+        $app = new Application($project->root, static function (string $text) use (&$output): void {
             $output .= $text;
         });
         try {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\ErrorFormatter;
 
 use PHPStan\Analyser\Error;
+use PHPStan\Command\Output;
 use PHPStan\File\RelativePathHelper;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -31,7 +32,7 @@ final class HumanFileErrorPrinterTest extends TestCase
         $relativePathHelper = self::createStub(RelativePathHelper::class);
         $relativePathHelper->method('getRelativePath')->willReturn('SampleSource.php');
         $lines = [];
-        $output = self::createStub(\PHPStan\Command\Output::class);
+        $output = self::createStub(Output::class);
         $output->method('writeLineFormatted')->willReturnCallback(static function (string $message) use (&$lines): void {
             $lines[] = $message;
         });

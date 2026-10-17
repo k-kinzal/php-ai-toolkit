@@ -4,6 +4,29 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Config\Reader;
 
+use Guard\Config\Configuration;
+use Guard\Config\Reader\DirectoryPolicyReader;
+use Guard\Config\Reader\DirectoryRuleConfigReader;
+use Guard\Config\Reader\DirectoryRuleListConfigReader;
+use Guard\Config\Schema;
+use Guard\Config\Validation\DirectoryConfigScalarReader;
+use Guard\Config\Validation\DirectoryConfigStringListReader;
+use Guard\Diagnostic\Finding;
+use Guard\Diagnostic\PolicyException;
+use Guard\Input\DirectoryListing;
+use Guard\Input\Entry;
+use Guard\Input\FileRecord;
+use Guard\Input\FileSet;
+use Guard\Input\Input;
+use Guard\Input\InputSet;
+use Guard\Input\Selection;
+use Guard\Input\StructuredFile;
+use Guard\Policy\Context;
+use Guard\Policy\Definition\DirectoryRuleConfig;
+use Guard\Policy\Definition\StructureConfig;
+use Guard\Policy\FileChange;
+use Guard\Policy\Plan;
+use Guard\Policy\PolicyBinding;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -33,34 +56,34 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Diagnostic\PolicyException
  * @uses \Guard\Diagnostic\Finding
  */
-#[CoversClass(\Guard\Config\Reader\DirectoryPolicyReader::class)]
-#[UsesClass(\Guard\Input\DirectoryListing::class)]
-#[UsesClass(\Guard\Input\FileRecord::class)]
-#[UsesClass(\Guard\Input\FileSet::class)]
-#[UsesClass(\Guard\Input\Entry::class)]
-#[UsesClass(\Guard\Input\Input::class)]
-#[UsesClass(\Guard\Input\InputSet::class)]
-#[UsesClass(\Guard\Input\Selection::class)]
-#[UsesClass(\Guard\Input\StructuredFile::class)]
-#[UsesClass(\Guard\Config\Configuration::class)]
-#[UsesClass(\Guard\Config\Reader\DirectoryRuleConfigReader::class)]
-#[UsesClass(\Guard\Config\Reader\DirectoryRuleListConfigReader::class)]
-#[UsesClass(\Guard\Config\Schema::class)]
-#[UsesClass(\Guard\Config\Validation\DirectoryConfigScalarReader::class)]
-#[UsesClass(\Guard\Config\Validation\DirectoryConfigStringListReader::class)]
-#[UsesClass(\Guard\Policy\Definition\DirectoryRuleConfig::class)]
-#[UsesClass(\Guard\Policy\Definition\StructureConfig::class)]
-#[UsesClass(\Guard\Policy\Context::class)]
-#[UsesClass(\Guard\Policy\FileChange::class)]
-#[UsesClass(\Guard\Policy\Plan::class)]
-#[UsesClass(\Guard\Policy\PolicyBinding::class)]
-#[UsesClass(\Guard\Diagnostic\PolicyException::class)]
-#[UsesClass(\Guard\Diagnostic\Finding::class)]
+#[CoversClass(DirectoryPolicyReader::class)]
+#[UsesClass(DirectoryListing::class)]
+#[UsesClass(FileRecord::class)]
+#[UsesClass(FileSet::class)]
+#[UsesClass(Entry::class)]
+#[UsesClass(Input::class)]
+#[UsesClass(InputSet::class)]
+#[UsesClass(Selection::class)]
+#[UsesClass(StructuredFile::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(DirectoryRuleConfigReader::class)]
+#[UsesClass(DirectoryRuleListConfigReader::class)]
+#[UsesClass(Schema::class)]
+#[UsesClass(DirectoryConfigScalarReader::class)]
+#[UsesClass(DirectoryConfigStringListReader::class)]
+#[UsesClass(DirectoryRuleConfig::class)]
+#[UsesClass(StructureConfig::class)]
+#[UsesClass(Context::class)]
+#[UsesClass(FileChange::class)]
+#[UsesClass(Plan::class)]
+#[UsesClass(PolicyBinding::class)]
+#[UsesClass(PolicyException::class)]
+#[UsesClass(Finding::class)]
 final class DirectoryPolicyReaderTest extends TestCase
 {
     public function testReadRetainsAllDirectoryRules(): void
     {
-        $config = (new \Guard\Config\Reader\DirectoryPolicyReader())->read(['directories' => [['path' => '**', 'max_files' => 15, 'deny' => ['*Helper.php']]]], '/project');
+        $config = (new DirectoryPolicyReader())->read(['directories' => [['path' => '**', 'max_files' => 15, 'deny' => ['*Helper.php']]]], '/project');
         self::assertSame(15, $config->rules[0]->maxFiles);
         self::assertSame(['*Helper.php'], $config->rules[0]->deny);
     }

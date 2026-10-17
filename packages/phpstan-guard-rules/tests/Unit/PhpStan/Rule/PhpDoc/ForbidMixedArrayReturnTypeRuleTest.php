@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\PhpDoc;
 
 use Override;
+use PhpParser\Node\FunctionLike;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Function_;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -43,15 +46,15 @@ final class ForbidMixedArrayReturnTypeRuleTest extends RuleTestCase
 
     public function testGetNodeTypeReturnsExpectedClass(): void
     {
-        self::assertSame(\PhpParser\Node\FunctionLike::class, $this->getRule()->getNodeType());
+        self::assertSame(FunctionLike::class, $this->getRule()->getNodeType());
     }
 
     public function testCallableNameNamesMethodsAndFunctions(): void
     {
         $rule = new ForbidMixedArrayReturnTypeRule();
 
-        self::assertSame('load()', $rule->callableName(new \PhpParser\Node\Stmt\ClassMethod('load')));
-        self::assertSame('decode()', $rule->callableName(new \PhpParser\Node\Stmt\Function_('decode')));
+        self::assertSame('load()', $rule->callableName(new ClassMethod('load')));
+        self::assertSame('decode()', $rule->callableName(new Function_('decode')));
     }
 
     public function testProcessNodeMixedArrayReturnsAreReported(): void

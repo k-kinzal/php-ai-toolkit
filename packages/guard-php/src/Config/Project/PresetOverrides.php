@@ -74,7 +74,7 @@ final class PresetOverrides
     }
 
     /**
-     * Returns id and file overrides when a detected config path differs from the preset.
+     * Returns id and file overrides when a detected config path differs from the preset, with the project-specific PHPUnit rules.
      *
      * @param list<string> $names
      * @return list<array<string, mixed>>
@@ -92,7 +92,45 @@ final class PresetOverrides
             }
         }
 
-        return array_merge($rules, $this->pbtExcludes($root, $names));
+        return array_merge($rules, $this->pbtExcludes($root, $names), $this->testSuites($root, $names));
+    }
+
+    /**
+     * Requires a unit and an integration test suite in each selected PHPUnit configuration for the test directories that exist.
+     *
+     * A tests/Unit directory needs a suite named unit, and tests/Integration one named integration, so every test the project
+     * keeps is run and can be selected with --testsuite. A directory the project does not have adds no rule.
+     *
+     * @param list<string> $names
+     * @return list<array<string, mixed>>
+     */
+    public function testSuites(string $root, array $names): array
+    {
+        $directories = ['unit' => 'tests/Unit', 'integration' => 'tests/Integration'];
+        $catalog = new PresetCatalog();
+        $rules = [];
+        foreach ($names as $preset) {
+            if (preg_match('/^phpunit\d+$/', $preset) !== 1) {
+                continue;
+            }
+            $file = $this->actual($root, $preset) ?? $catalog->defaults()[$preset];
+            foreach ($directories as $suite => $directory) {
+                if (!is_dir($root . '/' . $directory)) {
+                    continue;
+                }
+                $rules[] = [
+                    'id' => $preset . '.testsuite.' . $suite,
+                    'message' => 'PHPUnit must run the tests in ' . $directory . ' through a test suite named "' . $suite . '": {select} in {file} must {expectation}. {fix}',
+                    'file' => $file,
+                    'format' => 'xml',
+                    'select' => '/phpunit/testsuites/testsuite[@name="' . $suite . '"]/directory',
+                    'level' => 'required',
+                    'assert' => ['equals' => $directory],
+                ];
+            }
+        }
+
+        return $rules;
     }
 
     /**

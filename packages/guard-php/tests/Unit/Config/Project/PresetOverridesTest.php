@@ -323,4 +323,75 @@ final class PresetOverridesTest extends TestCase
     {
         self::assertSame([], (new PresetOverrides())->refile(['composer'], ['phpstan'], 'phpstan.neon.dist'));
     }
+
+    public function testTestSuitesRequiresASuiteForEachExistingTestDirectory(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-override-suites-' . uniqid();
+        mkdir($root . '/tests/Unit', 0777, true);
+        mkdir($root . '/tests/Integration', 0777, true);
+        file_put_contents($root . '/phpunit.xml.dist', '<phpunit/>');
+        $rules = (new PresetOverrides())->testSuites($root, ['phpunit13', 'composer']);
+        self::assertSame([
+            [
+                'id' => 'phpunit13.testsuite.unit',
+                'message' => 'PHPUnit must run the tests in tests/Unit through a test suite named "unit": {select} in {file} must {expectation}. {fix}',
+                'file' => 'phpunit.xml.dist',
+                'format' => 'xml',
+                'select' => '/phpunit/testsuites/testsuite[@name="unit"]/directory',
+                'level' => 'required',
+                'assert' => ['equals' => 'tests/Unit'],
+            ],
+            [
+                'id' => 'phpunit13.testsuite.integration',
+                'message' => 'PHPUnit must run the tests in tests/Integration through a test suite named "integration": {select} in {file} must {expectation}. {fix}',
+                'file' => 'phpunit.xml.dist',
+                'format' => 'xml',
+                'select' => '/phpunit/testsuites/testsuite[@name="integration"]/directory',
+                'level' => 'required',
+                'assert' => ['equals' => 'tests/Integration'],
+            ],
+        ], $rules);
+    }
+
+    public function testTestSuitesSkipsMissingDirectoriesAndPointsAtTheDetectedFile(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-override-suites-unit-' . uniqid();
+        mkdir($root . '/tests/Unit', 0777, true);
+        file_put_contents($root . '/tests/Integration', 'a file, not a directory');
+        file_put_contents($root . '/phpunit.xml', '<phpunit/>');
+        $rules = (new PresetOverrides())->testSuites($root, ['phpunit10', 'doctest10']);
+        self::assertCount(1, $rules);
+        self::assertSame('phpunit10.testsuite.unit', $rules[0]['id']);
+        self::assertSame('phpunit.xml', $rules[0]['file']);
+        self::assertSame([], (new PresetOverrides())->testSuites($root, ['composer']));
+    }
+
+    public function testTestSuitesUsesThePresetDefaultWhenNoPhpUnitFileExists(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-override-suites-default-' . uniqid();
+        mkdir($root . '/tests/Integration', 0777, true);
+        $rules = (new PresetOverrides())->testSuites($root, ['phpunit9']);
+        self::assertCount(1, $rules);
+        self::assertSame('phpunit9.testsuite.integration', $rules[0]['id']);
+        self::assertSame('phpunit9.xml.dist', $rules[0]['file']);
+        self::assertSame([], (new PresetOverrides())->testSuites(sys_get_temp_dir() . '/guard-override-no-tests-' . uniqid(), ['phpunit9']));
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testApplyWritesTestSuiteRulesAfterTheFileOverrides(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-override-apply-suites-' . uniqid();
+        mkdir($root . '/tests/Unit', 0777, true);
+        file_put_contents($root . '/phpunit.xml', '<phpunit/>');
+        $document = (new PresetOverrides())->apply($root, ['phpunit12'], ['version' => 1]);
+        $rules = $document['configuration'];
+        self::assertIsArray($rules);
+        $last = end($rules);
+        self::assertIsArray($last);
+        self::assertSame('phpunit12.testsuite.unit', $last['id']);
+        self::assertSame('phpunit.xml', $last['file']);
+        self::assertSame(['id' => 'phpunit12.beStrictAboutChangesToGlobalState', 'file' => 'phpunit.xml'], $rules[0]);
+    }
 }

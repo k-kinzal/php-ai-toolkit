@@ -106,7 +106,7 @@ imports:
   - vendor/k-kinzal/guard-php/rules/doctest13.yaml
 ```
 
-Starting with an existing `phpunit.xml.dist`, these rules can add the reporter extension, Doctest suite and extension, source-directory parameter, and PHPUnit settings. Existing suites and extension parameters are retained. The Doctest suite repair points at `vendor/k-kinzal/doctest-php/`; the source-directory repair defaults to `src`. Override the corresponding rule's `repair` to choose another default; a directory value already present remains unchanged. Install the corresponding Composer packages before running PHPUnit. Guard configures their activation; it does not install dependencies.
+Starting with an existing `phpunit.xml.dist`, these rules can add the reporter extension, Doctest suite and extension, source-directory parameter, and PHPUnit settings. Existing suites and extension parameters are retained. A project created with [`guard init`](cli.md#init) also carries a `unit` and an `integration` suite rule for each of `tests/Unit` and `tests/Integration` that exists, and `fix` adds the missing suite. The Doctest suite repair points at `vendor/k-kinzal/doctest-php/`; the source-directory repair defaults to `src`. Override the corresponding rule's `repair` to choose another default; a directory value already present remains unchanged. Install the corresponding Composer packages before running PHPUnit. Guard configures their activation; it does not install dependencies.
 
 ### Writing
 

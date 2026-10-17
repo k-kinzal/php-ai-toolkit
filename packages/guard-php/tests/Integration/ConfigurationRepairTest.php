@@ -113,6 +113,38 @@ final class ConfigurationRepairTest extends TestCase
     }
 
     /**
+     * @dataProvider providerPhpUnitVersions
+     */
+    #[DataProvider('providerPhpUnitVersions')]
+    public function testInitRequiresAndRepairsTheSuitesOfExistingTestDirectories(int $major, string $file): void
+    {
+        $root = sys_get_temp_dir() . '/guard-phpunit-suites-' . uniqid('', true);
+        mkdir($root . '/tests/Unit', 0777, true);
+        mkdir($root . '/tests/Integration', 0777, true);
+        file_put_contents($root . '/' . $file, '<phpunit/>');
+        $application = new Application($root, static function (string $text): void {
+        });
+        try {
+            self::assertSame(0, $application->run(['init', '--import=phpunit' . $major]));
+            self::assertSame(1, $application->run(['check', '--query=testsuite']));
+            self::assertSame(0, $application->run(['fix']));
+            self::assertSame(0, $application->run(['check']));
+            $fixed = file_get_contents($root . '/' . $file);
+            self::assertIsString($fixed);
+            $document = new XmlDocument($fixed);
+            self::assertSame('tests/Unit', $document->read('/phpunit/testsuites/testsuite[@name="unit"]/directory')->value);
+            self::assertSame('tests/Integration', $document->read('/phpunit/testsuites/testsuite[@name="integration"]/directory')->value);
+        } finally {
+            unlink($root . '/' . $file);
+            unlink($root . '/guard.yaml');
+            rmdir($root . '/tests/Unit');
+            rmdir($root . '/tests/Integration');
+            rmdir($root . '/tests');
+            rmdir($root);
+        }
+    }
+
+    /**
      * @return iterable<string, array{int, string}>
      */
     public static function providerPhpUnitVersions(): iterable

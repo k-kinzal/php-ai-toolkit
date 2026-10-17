@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M54ZG7XXY262BRHYFZREMPCD",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/guard-php/docs/cli.md",
+    "packages/guard-php/docs/fields.md",
+    "packages/guard-php/src/Config/Project/PresetOverrides.php",
+    "packages/guard-php/tests/Integration/ConfigurationRepairTest.php",
+    "packages/guard-php/tests/Unit/Config/Project/PresetOverridesTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 770,
+    "cache_creation_tokens": 142253,
+    "cache_read_tokens": 2245697,
+    "output_tokens": 21065,
+    "api_call_count": 25
+  }
+}

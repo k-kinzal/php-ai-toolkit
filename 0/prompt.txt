@@ -1,0 +1,1 @@
+PHPUnit用のルールでtests/UnitがあるならUnitのtest suite、IntegrationがあるならIntegration用のtest suiteを入れるGuardのデフォルトルールの強化を実施ください。修正はmainブランチでそのままコミットください。

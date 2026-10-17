@@ -1,0 +1,50 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M54CGZ3K0758X4JV04CYNVTG",
+  "session_id": "1aa9ffc7-4faa-46f3-a836-f49479abc031",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-17T07:34:23.474143Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/docgen-php/.php-cs-fixer.dist.php",
+    "packages/doctest-php/.php-cs-fixer.dist.php",
+    "packages/guard-php/.php-cs-fixer.dist.php",
+    "packages/guard-php/rules/php-cs-fixer.yaml",
+    "packages/phpstan-ai-formatter/.php-cs-fixer.dist.php",
+    "packages/phpstan-guard-rules/.php-cs-fixer.dist.php",
+    "packages/phpunit-ai-reporter/.php-cs-fixer.dist.php"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5-1",
+  "turn_id": "cc6068626304",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 482,
+    "cache_creation_tokens": 83230,
+    "cache_read_tokens": 843341,
+    "output_tokens": 19739,
+    "api_call_count": 16
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-17T07:34:23.431417Z",
+    "agent_lines": 7,
+    "agent_removed": 7,
+    "human_added": 12720,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 12727,
+    "total_lines_changed": 19659,
+    "agent_percentage": 0.07121420214659953,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

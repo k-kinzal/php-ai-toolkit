@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M54CGZ3K0758X4JV04CYNVTG",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/docgen-php/.php-cs-fixer.dist.php",
+    "packages/doctest-php/.php-cs-fixer.dist.php",
+    "packages/guard-php/.php-cs-fixer.dist.php",
+    "packages/guard-php/rules/php-cs-fixer.yaml",
+    "packages/phpstan-ai-formatter/.php-cs-fixer.dist.php",
+    "packages/phpstan-guard-rules/.php-cs-fixer.dist.php",
+    "packages/phpunit-ai-reporter/.php-cs-fixer.dist.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 482,
+    "cache_creation_tokens": 83230,
+    "cache_read_tokens": 843341,
+    "output_tokens": 19739,
+    "api_call_count": 16
+  }
+}

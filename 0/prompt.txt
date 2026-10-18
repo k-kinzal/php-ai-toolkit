@@ -1,0 +1,1 @@
+JEV/OpenAI以外にもOpen系モデルなどの対応（OllamaやLocalAIなど）があるのでサポートを増やしてください。また各AI ProviderのFake実装を作成しテストではそちらを利用してください。

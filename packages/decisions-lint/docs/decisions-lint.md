@@ -9,7 +9,7 @@ A static analyser can prove that a method is too long or that a type does not ma
 3. The linter reads every file once, extracts the declarations, and groups every question about the same declaration into one request. The model reads the declaration together with its class or file and answers every question at once.
 4. An answer that matches one of the rule's `violations` becomes a finding. The message and the fix are templates the rule author wrote, filled with the declaration's name, class and the answer, so the finding tells the reader what to change rather than only that something is wrong.
 
-Decision APIs return a probability for a predicate, a probability over the options for a choice, and a probability-weighted level for a score. A rule sets the `threshold` the model must reach before an answer counts as a violation, so a hesitant answer is not reported.
+Decision APIs return a probability for a predicate, a probability over the options for a choice, and a probability-weighted level for a score. A rule sets the `threshold` the model must reach before an answer counts as a violation, so a hesitant answer is not reported. A local chat model served by Ollama, LocalAI or any OpenAI-compatible server can answer the same questions through a JSON schema; see [providers](providers.md).
 
 ## Why decision models
 

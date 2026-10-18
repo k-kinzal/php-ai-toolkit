@@ -18,7 +18,7 @@ use JsonException;
 final class JsonEndpoint
 {
     /**
-     * Creates an endpoint for one provider over a transport.
+     * Creates an endpoint for one provider over a transport; an empty key sends no Authorization header.
      */
     public function __construct(private Transport $transport, private ProviderSettings $settings, private string $apiKey)
     {
@@ -61,8 +61,9 @@ final class JsonEndpoint
             throw new LintException(sprintf('Could not encode a request for %s: %s. Make sure the linted files are valid UTF-8.', $this->settings->name, $exception->getMessage()), 0, $exception);
         }
 
-        return new HttpRequest('POST', rtrim($this->settings->baseUrl, '/') . $path, [
-            'Authorization' => 'Bearer ' . $this->apiKey,
+        $headers = $this->apiKey === '' ? [] : ['Authorization' => 'Bearer ' . $this->apiKey];
+
+        return new HttpRequest('POST', rtrim($this->settings->baseUrl, '/') . $path, $headers + [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
             'User-Agent' => 'decisions-lint',

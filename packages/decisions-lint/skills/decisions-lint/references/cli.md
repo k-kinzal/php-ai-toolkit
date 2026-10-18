@@ -21,7 +21,7 @@ Invoke `vendor/bin/decisions-lint COMMAND` from the project root. No command mea
 | `plan`, `rules` | `--format=text\|json` | |
 | `check`, `plan` | `-r`, `--rule=ID` | Run one rule; repeat for several. |
 | `check` | `--fail-on=error\|warning\|info\|never` | Weakest severity that exits `1`; default `fail_on` in the configuration, then `error`. |
-| `init` | `--provider=jev\|openai`, `-p`, `--path=DIR` | Provider and directories for the new file. |
+| `init` | `--provider=jev\|openai\|ollama\|localai\|openai-compatible`, `-p`, `--path=DIR` | Provider and directories for the new file. |
 
 ## Output
 

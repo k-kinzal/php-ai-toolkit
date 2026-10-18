@@ -39,12 +39,26 @@ use DecisionsLint\Lint\Linter;
 use DecisionsLint\Lint\Plan;
 use DecisionsLint\Lint\Planner;
 use DecisionsLint\Lint\Report;
+use DecisionsLint\Provider\Chat\ChatAnswerReader;
+use DecisionsLint\Provider\Chat\ChatPrompt;
+use DecisionsLint\Provider\Fake\AnswerScript;
+use DecisionsLint\Provider\Fake\ChatRequestReader;
+use DecisionsLint\Provider\Fake\FakeChatCompletionsTransport;
+use DecisionsLint\Provider\Fake\FakeJevTransport;
+use DecisionsLint\Provider\Fake\FakeOllamaTransport;
+use DecisionsLint\Provider\Fake\FakeOpenAiTransport;
+use DecisionsLint\Provider\Fake\FakeTransport;
+use DecisionsLint\Provider\Fake\RequestBody;
 use DecisionsLint\Provider\Jev\JevClient;
 use DecisionsLint\Provider\Jev\JevDecision;
 use DecisionsLint\Provider\JsonEndpoint;
+use DecisionsLint\Provider\Ollama\OllamaClient;
+use DecisionsLint\Provider\Ollama\OllamaDecision;
 use DecisionsLint\Provider\OpenAi\InputRenderer;
 use DecisionsLint\Provider\OpenAi\OpenAiClient;
 use DecisionsLint\Provider\OpenAi\OpenAiDecision;
+use DecisionsLint\Provider\OpenAiCompatible\ChatCompletionsClient;
+use DecisionsLint\Provider\OpenAiCompatible\ChatCompletionsDecision;
 use DecisionsLint\Provider\Payload;
 use DecisionsLint\Provider\ProviderFactory;
 use DecisionsLint\Provider\ProviderSettings;
@@ -72,8 +86,8 @@ use DecisionsLint\Source\Target;
 use DecisionsLint\Source\TargetExtractor;
 use DecisionsLint\Source\Tokens;
 use FilesystemIterator;
-use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -117,12 +131,26 @@ use SplFileInfo;
  * @uses \DecisionsLint\Lint\Plan
  * @uses \DecisionsLint\Lint\Planner
  * @uses \DecisionsLint\Lint\Report
+ * @uses \DecisionsLint\Provider\Chat\ChatAnswerReader
+ * @uses \DecisionsLint\Provider\Chat\ChatPrompt
+ * @uses \DecisionsLint\Provider\Fake\AnswerScript
+ * @uses \DecisionsLint\Provider\Fake\ChatRequestReader
+ * @uses \DecisionsLint\Provider\Fake\FakeChatCompletionsTransport
+ * @uses \DecisionsLint\Provider\Fake\FakeJevTransport
+ * @uses \DecisionsLint\Provider\Fake\FakeOllamaTransport
+ * @uses \DecisionsLint\Provider\Fake\FakeOpenAiTransport
+ * @uses \DecisionsLint\Provider\Fake\FakeTransport
+ * @uses \DecisionsLint\Provider\Fake\RequestBody
  * @uses \DecisionsLint\Provider\Jev\JevClient
  * @uses \DecisionsLint\Provider\Jev\JevDecision
  * @uses \DecisionsLint\Provider\JsonEndpoint
+ * @uses \DecisionsLint\Provider\Ollama\OllamaClient
+ * @uses \DecisionsLint\Provider\Ollama\OllamaDecision
  * @uses \DecisionsLint\Provider\OpenAi\InputRenderer
  * @uses \DecisionsLint\Provider\OpenAi\OpenAiClient
  * @uses \DecisionsLint\Provider\OpenAi\OpenAiDecision
+ * @uses \DecisionsLint\Provider\OpenAiCompatible\ChatCompletionsClient
+ * @uses \DecisionsLint\Provider\OpenAiCompatible\ChatCompletionsDecision
  * @uses \DecisionsLint\Provider\Payload
  * @uses \DecisionsLint\Provider\ProviderFactory
  * @uses \DecisionsLint\Provider\ProviderSettings
@@ -185,12 +213,26 @@ use SplFileInfo;
 #[UsesClass(Plan::class)]
 #[UsesClass(Planner::class)]
 #[UsesClass(Report::class)]
+#[UsesClass(ChatAnswerReader::class)]
+#[UsesClass(ChatPrompt::class)]
+#[UsesClass(AnswerScript::class)]
+#[UsesClass(ChatRequestReader::class)]
+#[UsesClass(FakeChatCompletionsTransport::class)]
+#[UsesClass(FakeJevTransport::class)]
+#[UsesClass(FakeOllamaTransport::class)]
+#[UsesClass(FakeOpenAiTransport::class)]
+#[UsesClass(FakeTransport::class)]
+#[UsesClass(RequestBody::class)]
 #[UsesClass(JevClient::class)]
 #[UsesClass(JevDecision::class)]
 #[UsesClass(JsonEndpoint::class)]
+#[UsesClass(OllamaClient::class)]
+#[UsesClass(OllamaDecision::class)]
 #[UsesClass(InputRenderer::class)]
 #[UsesClass(OpenAiClient::class)]
 #[UsesClass(OpenAiDecision::class)]
+#[UsesClass(ChatCompletionsClient::class)]
+#[UsesClass(ChatCompletionsDecision::class)]
 #[UsesClass(Payload::class)]
 #[UsesClass(ProviderFactory::class)]
 #[UsesClass(ProviderSettings::class)]
@@ -219,9 +261,6 @@ use SplFileInfo;
 #[UsesClass(Tokens::class)]
 final class BehaviorTest extends TestCase
 {
-    /**
-     * @throws JsonException
-     */
     public function testRunLintsAProjectWithTheShippedRulesAgainstAFakeJev(): void
     {
         $project = new class ([
@@ -263,31 +302,14 @@ final class BehaviorTest extends TestCase
                 rmdir($this->root);
             }
         };
-        $transport = new class () implements Transport {
-            /** @var list<string> */
-            public array $bodies = [];
-            public function send(array $requests): array
-            {
-                $responses = [];
-                foreach ($requests as $request) {
-                    $this->bodies[] = $request->body;
-                    $body = json_decode($request->body, true, 512, JSON_THROW_ON_ERROR);
-                    $answers = [];
-                    foreach ($body['questions'] as $name => $question) {
-                        $subject = $body['state']['name'];
-                        if ($question['type'] === 'noul') {
-                            $answers[$name] = ['type' => 'noul', 'noul' => str_contains($subject, 'sendReport') ? 0.05 : 0.97];
-                        } else {
-                            $choice = str_contains($subject, 'handle') ? 'domain_rule' : 'orchestration';
-                            $answers[$name] = ['type' => 'choice', 'choice' => $choice, 'confidence' => 0.88, 'probabilities' => [$choice => 0.9, 'infrastructure' => 0.1]];
-                        }
-                    }
-                    $responses[] = new HttpResponse(200, json_encode(['model' => 'jev-1.13.0', 'answers' => $answers, 'usage' => ['input_tokens' => 100, 'output_tokens' => 10]], JSON_THROW_ON_ERROR));
-                }
-
-                return $responses;
+        $transport = new FakeJevTransport(new AnswerScript(static function (Question $question, array $subject): Answer {
+            if ($question->type === Question::PREDICATE) {
+                return Answer::predicate(str_contains($subject['name'], 'sendReport') ? 0.05 : 0.97);
             }
-        };
+            $choice = str_contains($subject['name'], 'handle') ? 'domain_rule' : 'orchestration';
+
+            return Answer::choice($choice, 0.88, [$choice => 0.9, 'infrastructure' => 0.1]);
+        }));
         $before = getenv('DECISIONS_BEHAVIOR_KEY');
         $output = '';
         $app = new Application($project->root, static function (string $text) use (&$output): void {
@@ -302,17 +324,17 @@ final class BehaviorTest extends TestCase
             self::assertStringContainsString('src/Analysis/Analyzer.php:6:5 method App\Analysis\Analyzer::analyze (class) <- cohesion.method-belongs-to-class', $output);
             self::assertStringContainsString('src/UseCase/PlaceOrder.php:6:5 method App\UseCase\PlaceOrder::handle (class) <- cohesion.method-belongs-to-class, ddd.usecase-domain-leak', $output);
             self::assertStringContainsString('2 files, 3 targets, 3 requests, 4 questions. Nothing was sent.', $output);
-            self::assertSame([], $transport->bodies);
+            self::assertSame([], $transport->requests);
             $output = '';
             self::assertSame(1, $app->run(['check', '--format=json']));
-            $decoded = json_decode($output, true, 512, JSON_THROW_ON_ERROR);
-            self::assertSame(['src/Analysis/Analyzer.php:11 cohesion.method-belongs-to-class error', 'src/UseCase/PlaceOrder.php:6 ddd.usecase-domain-leak error'], array_map(static fn (array $finding): string => $finding['path'] . ':' . $finding['line'] . ' ' . $finding['rule'] . ' ' . $finding['severity'], $decoded['findings']));
-            self::assertSame('Method sendReport() does not belong to Analyzer: it is not part of the responsibility the class name promises.', $decoded['findings'][0]['message']);
-            self::assertSame('Move the rule into the entity, value object or domain service it describes, and have handle() call that method so the use case only orchestrates.', $decoded['findings'][1]['fix']);
-            self::assertSame(3, $decoded['requests']);
-            self::assertSame(['jev-1.13.0'], $decoded['models']);
-            self::assertCount(3, $transport->bodies);
-            self::assertStringContainsString('"class_source":"', $transport->bodies[0]);
+            self::assertStringContainsString("\"path\": \"src/Analysis/Analyzer.php\",\n            \"line\": 11,\n            \"column\": 5,\n            \"rule\": \"cohesion.method-belongs-to-class\",\n            \"severity\": \"error\"", $output);
+            self::assertStringContainsString("\"path\": \"src/UseCase/PlaceOrder.php\",\n            \"line\": 6,\n            \"column\": 5,\n            \"rule\": \"ddd.usecase-domain-leak\",\n            \"severity\": \"error\"", $output);
+            self::assertStringContainsString('"message": "Method sendReport() does not belong to Analyzer: it is not part of the responsibility the class name promises."', $output);
+            self::assertStringContainsString('"fix": "Move the rule into the entity, value object or domain service it describes, and have handle() call that method so the use case only orchestrates."', $output);
+            self::assertStringContainsString('"requests": 3', $output);
+            self::assertStringContainsString('"jev-1.13.0"', $output);
+            self::assertCount(3, $transport->requests);
+            self::assertStringContainsString('"class_source":"', $transport->requests[0]->body);
             $output = '';
             self::assertSame(0, $app->run(['check', '--format=checkstyle', '--rule=cohesion.method-belongs-to-class', 'src/UseCase']));
             self::assertStringContainsString('<checkstyle version="decisions-lint">', $output);
@@ -333,24 +355,64 @@ final class BehaviorTest extends TestCase
         }
     }
 
-    public function testRunUsesOpenAiWhenConfiguredAndReportsProviderFailures(): void
+    /**
+     * @dataProvider providerFakeProviders
+     */
+    #[DataProvider('providerFakeProviders')]
+    public function testRunReportsTheSameFindingWhicheverProviderAnswers(string $provider, Transport $transport, string $model): void
+    {
+        $root = sys_get_temp_dir() . '/decisions-provider-' . uniqid();
+        mkdir($root . '/src', 0777, true);
+        file_put_contents($root . '/src/A.php', "<?php\nclass A {\n    public function doIt(): void {}\n    public function calculateTotal(): int { return 1; }\n}\n");
+        file_put_contents($root . '/decisions.yaml', "version: 1\nprovider: {name: $provider, api_key_env: DECISIONS_PROVIDER_KEY}\nrules:\n  naming:\n    target: {kind: method}\n    context: declaration\n    decision: {type: score, instructions: 'Rate {name}.', levels: [bad, ok, good]}\n    violations: [{max_score: 0.5, message: 'Bad {name} ({score}).', fix: 'Rename {name}.'}]\n  leak:\n    target: {kind: method}\n    context: declaration\n    decision: {type: choice, instructions: 'Classify {name}.', choices: {fine: ok, leak: bad}}\n    violations: [{answer: leak, message: 'Leak in {name}.', fix: 'Move {name}.'}]\n");
+        $before = getenv('DECISIONS_PROVIDER_KEY');
+        $output = '';
+        $app = new Application($root, static function (string $text) use (&$output): void {
+            $output .= $text;
+        }, $transport);
+        try {
+            putenv('DECISIONS_PROVIDER_KEY=secret');
+            self::assertSame(1, $app->run(['check', '--format=ai']));
+            self::assertStringContainsString('error: src/A.php:3:5 [naming] A::doIt confidence=0.90 Bad doIt (0.00). Fix: Rename doIt.', $output);
+            self::assertStringContainsString('error: src/A.php:3:5 [leak] A::doIt confidence=0.80 Leak in doIt. Fix: Move doIt.', $output);
+            self::assertStringNotContainsString('calculateTotal', $output);
+            self::assertStringContainsString('2 requests to ' . $model . '.', $output);
+        } finally {
+            putenv($before === false ? 'DECISIONS_PROVIDER_KEY' : 'DECISIONS_PROVIDER_KEY=' . $before);
+            unlink($root . '/src/A.php');
+            unlink($root . '/decisions.yaml');
+            rmdir($root . '/src');
+            rmdir($root);
+        }
+    }
+
+    /**
+     * @return iterable<string, array{string, Transport, string}>
+     */
+    public static function providerFakeProviders(): iterable
+    {
+        $script = new AnswerScript(static function (Question $question, array $subject): ?Answer {
+            $text = implode("\n", $subject);
+            if (!str_contains($text, 'doIt')) {
+                return null;
+            }
+
+            return $question->type === Question::SCORE ? Answer::score(0.0, 0.9, ['0' => 0.9]) : Answer::choice('leak', 0.8, ['leak' => 0.8]);
+        });
+        yield 'jev' => ['jev', new FakeJevTransport($script, 'jev-1.13.0'), 'jev-1.13.0'];
+        yield 'openai' => ['openai', new FakeOpenAiTransport($script, 'gpt-6-luna'), 'gpt-6-luna'];
+        yield 'ollama' => ['ollama', new FakeOllamaTransport($script, 'llama3.1:8b'), 'llama3.1:8b'];
+        yield 'localai' => ['localai', new FakeChatCompletionsTransport($script, 'gpt-4'), 'gpt-4'];
+        yield 'openai-compatible' => ['openai-compatible', new FakeChatCompletionsTransport($script, 'qwen'), 'qwen'];
+    }
+
+    public function testRunReportsProviderFailuresAndMissingKeys(): void
     {
         $root = sys_get_temp_dir() . '/decisions-openai-' . uniqid();
         mkdir($root . '/src', 0777, true);
         file_put_contents($root . '/src/A.php', "<?php\nclass A {\n    public function f(): void {}\n}\n");
-        file_put_contents($root . '/decisions.yaml', "version: 1\nprovider: {name: openai, api_key_env: DECISIONS_OPENAI_KEY}\nrules:\n  r:\n    target: {kind: method}\n    decision: {type: score, instructions: 'Rate {name}.', levels: [bad, ok, good]}\n    violations: [{max_score: 0.5, message: 'Bad {name} ({score}).', fix: 'Improve {name}.'}]\n");
-        $transport = new class () implements Transport {
-            public int $calls = 0;
-            public function send(array $requests): array
-            {
-                ++$this->calls;
-                if ($this->calls === 1) {
-                    return [new HttpResponse(200, '{"model":"gpt-6-luna","answers":[{"type":"score","name":"r","score":0.2,"confidence":0.9,"probabilities":[{"value":"0","label":"0","probability":0.8},{"value":"1","label":"1","probability":0.2}]}]}')];
-                }
-
-                return [new HttpResponse(429, '{"error":{"message":"Rate limit reached"}}')];
-            }
-        };
+        file_put_contents($root . '/decisions.yaml', "version: 1\nprovider: {name: openai, api_key_env: DECISIONS_OPENAI_KEY}\nrules:\n  r:\n    target: {kind: method}\n    decision: {type: predicate, instructions: 'Fits {name}?'}\n    violations: [{answer: false, message: 'Bad {name}.', fix: 'Improve {name}.'}]\n");
+        $transport = new FakeTransport([new HttpResponse(429, '{"error":{"message":"Rate limit reached"}}')]);
         $before = getenv('DECISIONS_OPENAI_KEY');
         $output = '';
         $app = new Application($root, static function (string $text) use (&$output): void {
@@ -358,10 +420,6 @@ final class BehaviorTest extends TestCase
         }, $transport);
         try {
             putenv('DECISIONS_OPENAI_KEY=secret');
-            self::assertSame(1, $app->run(['check', '--format=ai']));
-            self::assertStringContainsString('error: src/A.php:3:5 [r] A::f confidence=0.90 Bad f (0.20). Fix: Improve f.', $output);
-            self::assertStringContainsString('1 request to gpt-6-luna.', $output);
-            $output = '';
             self::assertSame(2, $app->run(['check']));
             self::assertSame("Decisions error: openai returned HTTP 429 for POST https://api.openai.com/v1/decisions: Rate limit reached. Lower provider.concurrency in decisions.yaml or retry later.\n", $output);
             putenv('DECISIONS_OPENAI_KEY');
@@ -386,11 +444,11 @@ final class BehaviorTest extends TestCase
             $output .= $text;
         });
         try {
-            self::assertSame(0, $app->run(['init']));
+            self::assertSame(0, $app->run(['init', '--provider=ollama']));
             self::assertStringContainsString('Wrote ' . $root . '/decisions.yaml.', $output);
             $output = '';
             self::assertSame(0, $app->run(['validate']));
-            self::assertStringContainsString('decisions.yaml is valid: 5 rules, 5 enabled, provider jev (jev-latest).', $output);
+            self::assertStringContainsString('decisions.yaml is valid: 5 rules, 5 enabled, provider ollama (llama3.1).', $output);
             $output = '';
             self::assertSame(0, $app->run(['plan', '--format=json']));
             self::assertStringContainsString('"requests": []', $output);

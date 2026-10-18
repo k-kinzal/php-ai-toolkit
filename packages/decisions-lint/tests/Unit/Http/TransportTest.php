@@ -6,7 +6,7 @@ namespace Tests\Unit\Http;
 
 use DecisionsLint\Http\HttpRequest;
 use DecisionsLint\Http\HttpResponse;
-use DecisionsLint\Http\Transport;
+use DecisionsLint\Provider\Fake\FakeTransport;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 
@@ -18,19 +18,10 @@ final class TransportTest extends TestCase
 {
     public function testSendReturnsOneResponsePerRequestInOrder(): void
     {
-        $transport = new class () implements Transport {
-            public function send(array $requests): array
-            {
-                $responses = [];
-                foreach ($requests as $request) {
-                    $responses[] = new HttpResponse(200, $request->body);
-                }
-
-                return $responses;
-            }
-        };
-        $responses = $transport->send([new HttpRequest('POST', 'https://a.test/', [], 'first'), new HttpRequest('POST', 'https://a.test/', [], 'second')]);
+        $transport = new FakeTransport([new HttpResponse(200, 'first'), new HttpResponse(200, 'second')]);
+        $responses = $transport->send([new HttpRequest('POST', 'https://a.test/', [], '1'), new HttpRequest('POST', 'https://a.test/', [], '2')]);
         self::assertSame('first', $responses[0]->body);
         self::assertSame('second', $responses[1]->body);
+        self::assertCount(2, $transport->requests);
     }
 }

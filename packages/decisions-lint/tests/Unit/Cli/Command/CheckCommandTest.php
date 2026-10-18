@@ -26,12 +26,14 @@ use DecisionsLint\Diagnostic\LintException;
 use DecisionsLint\Diagnostic\Severity;
 use DecisionsLint\Http\HttpRequest;
 use DecisionsLint\Http\HttpResponse;
-use DecisionsLint\Http\Transport;
 use DecisionsLint\Lint\Assignment;
 use DecisionsLint\Lint\Linter;
 use DecisionsLint\Lint\Plan;
 use DecisionsLint\Lint\Planner;
 use DecisionsLint\Lint\Report;
+use DecisionsLint\Provider\Fake\AnswerScript;
+use DecisionsLint\Provider\Fake\FakeJevTransport;
+use DecisionsLint\Provider\Fake\RequestBody;
 use DecisionsLint\Provider\Jev\JevClient;
 use DecisionsLint\Provider\Jev\JevDecision;
 use DecisionsLint\Provider\JsonEndpoint;
@@ -87,6 +89,9 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @uses \DecisionsLint\Lint\Plan
  * @uses \DecisionsLint\Lint\Planner
  * @uses \DecisionsLint\Lint\Report
+ * @uses \DecisionsLint\Provider\Fake\AnswerScript
+ * @uses \DecisionsLint\Provider\Fake\FakeJevTransport
+ * @uses \DecisionsLint\Provider\Fake\RequestBody
  * @uses \DecisionsLint\Provider\Jev\JevClient
  * @uses \DecisionsLint\Provider\Jev\JevDecision
  * @uses \DecisionsLint\Provider\JsonEndpoint
@@ -137,6 +142,9 @@ use Symfony\Component\Console\Tester\CommandTester;
 #[UsesClass(Plan::class)]
 #[UsesClass(Planner::class)]
 #[UsesClass(Report::class)]
+#[UsesClass(AnswerScript::class)]
+#[UsesClass(FakeJevTransport::class)]
+#[UsesClass(RequestBody::class)]
 #[UsesClass(JevClient::class)]
 #[UsesClass(JevDecision::class)]
 #[UsesClass(JsonEndpoint::class)]
@@ -177,12 +185,7 @@ final class CheckCommandTest extends TestCase
         mkdir($root . '/src', 0777, true);
         file_put_contents($root . '/src/A.php', "<?php\nclass A {\n    public function f(): void {}\n}\n");
         file_put_contents($root . '/decisions.yaml', "version: 1\nprovider: {api_key_env: DECISIONS_CHECK_KEY}\nrules:\n  r:\n    target: {kind: method}\n    decision: {type: predicate, instructions: 'Q?'}\n    violations: [{answer: false, message: 'Bad {name}.', fix: 'Fix {name}.'}]\n");
-        $transport = new class () implements Transport {
-            public function send(array $requests): array
-            {
-                return [new HttpResponse(200, '{"model":"jev-1.13.0","answers":{"r":{"type":"noul","noul":0.0}}}')];
-            }
-        };
+        $transport = new FakeJevTransport(new AnswerScript(static fn (): Answer => Answer::predicate(0.0)));
         $before = getenv('DECISIONS_CHECK_KEY');
         try {
             putenv('DECISIONS_CHECK_KEY=secret');

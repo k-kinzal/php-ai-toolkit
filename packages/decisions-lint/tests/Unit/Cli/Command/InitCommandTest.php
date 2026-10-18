@@ -42,9 +42,13 @@ final class InitCommandTest extends TestCase
             self::assertSame(LintCommand::INVALID, $tester->execute([]));
             self::assertStringContainsString('already exists. Edit it, or pass --config to write another file.', $tester->getDisplay());
             self::assertSame(LintCommand::INVALID, $tester->execute(['--config' => 'other.yaml', '--provider' => 'anthropic']));
-            self::assertStringContainsString('Unsupported --provider "anthropic". Use --provider=jev or openai.', $tester->getDisplay());
+            self::assertStringContainsString('Unsupported --provider "anthropic". Use --provider=jev, openai, ollama, localai, openai-compatible.', $tester->getDisplay());
+            self::assertSame(0, $tester->execute(['--config' => 'local.yaml', '--provider' => 'ollama']));
+            self::assertStringContainsString('Make sure a ollama server answers at http://localhost:11434, review the imported rules', $tester->getDisplay());
+            self::assertStringContainsString("provider:\n  name: ollama\n  model: llama3.1\n", (string) file_get_contents($root . '/local.yaml'));
         } finally {
             unlink($root . '/decisions.yaml');
+            unlink($root . '/local.yaml');
             unlink($root . '/vendor/k-kinzal/decisions-lint/rules/cohesion.yaml');
             rmdir($root . '/vendor/k-kinzal/decisions-lint/rules');
             rmdir($root . '/vendor/k-kinzal/decisions-lint');

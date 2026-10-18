@@ -7,7 +7,7 @@ namespace Tests\Unit\Provider;
 use DecisionsLint\Diagnostic\LintException;
 use DecisionsLint\Http\HttpRequest;
 use DecisionsLint\Http\HttpResponse;
-use DecisionsLint\Http\Transport;
+use DecisionsLint\Provider\Fake\FakeTransport;
 use DecisionsLint\Provider\JsonEndpoint;
 use DecisionsLint\Provider\ProviderSettings;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -20,48 +20,31 @@ use PHPUnit\Framework\TestCase;
  * @uses \DecisionsLint\Diagnostic\LintException
  * @uses \DecisionsLint\Http\HttpRequest
  * @uses \DecisionsLint\Http\HttpResponse
+ * @uses \DecisionsLint\Provider\Fake\FakeTransport
  * @uses \DecisionsLint\Provider\ProviderSettings
  */
 #[CoversClass(JsonEndpoint::class)]
 #[UsesClass(LintException::class)]
 #[UsesClass(HttpRequest::class)]
 #[UsesClass(HttpResponse::class)]
+#[UsesClass(FakeTransport::class)]
 #[UsesClass(ProviderSettings::class)]
 final class JsonEndpointTest extends TestCase
 {
     public function testPostSendsEveryPayloadAndDecodesTheResponsesInOrder(): void
     {
-        $transport = new class () implements Transport {
-            /** @var list<HttpRequest> */
-            public array $sent = [];
-            public function send(array $requests): array
-            {
-                $this->sent = $requests;
-                $responses = [];
-                foreach ($requests as $index => $request) {
-                    $responses[] = new HttpResponse(200, '{"index":' . $index . '}');
-                }
-
-                return $responses;
-            }
-        };
+        $transport = new FakeTransport([new HttpResponse(200, '{"index":0}'), new HttpResponse(200, '{"index":1}')]);
         $endpoint = new JsonEndpoint($transport, ProviderSettings::defaults('jev'), 'secret');
         $documents = $endpoint->post('/v1/systemone', [['a' => 1], ['a' => 2]]);
         self::assertSame([['index' => 0], ['index' => 1]], $documents);
-        self::assertCount(2, $transport->sent);
-        self::assertSame('https://api.typesafe.ai/v1/systemone', $transport->sent[0]->url);
-        self::assertSame('{"a":2}', $transport->sent[1]->body);
+        self::assertCount(2, $transport->requests);
+        self::assertSame('https://api.typesafe.ai/v1/systemone', $transport->requests[0]->url);
+        self::assertSame('{"a":2}', $transport->requests[1]->body);
     }
 
     public function testRequestCarriesTheBearerTokenAndJsonHeaders(): void
     {
-        $transport = new class () implements Transport {
-            public function send(array $requests): array
-            {
-                return [];
-            }
-        };
-        $request = (new JsonEndpoint($transport, new ProviderSettings('openai', 'gpt-6-luna', 'OPENAI_API_KEY', 'https://proxy.test/'), 'k'))->request('/v1/decisions', ['model' => 'gpt-6-luna', 'text' => 'ü/']);
+        $request = (new JsonEndpoint(new FakeTransport(), new ProviderSettings('openai', 'gpt-6-luna', 'OPENAI_API_KEY', 'https://proxy.test/'), 'k'))->request('/v1/decisions', ['model' => 'gpt-6-luna', 'text' => 'ü/']);
         self::assertSame('POST', $request->method);
         self::assertSame('https://proxy.test/v1/decisions', $request->url);
         self::assertSame('Bearer k', $request->headers['Authorization']);
@@ -69,28 +52,23 @@ final class JsonEndpointTest extends TestCase
         self::assertSame('{"model":"gpt-6-luna","text":"ü/"}', $request->body);
     }
 
+    public function testRequestOmitsTheAuthorizationHeaderWithoutAKey(): void
+    {
+        $request = (new JsonEndpoint(new FakeTransport(), ProviderSettings::defaults('ollama'), ''))->request('/api/chat', ['model' => 'llama3.1']);
+        self::assertArrayNotHasKey('Authorization', $request->headers);
+        self::assertSame('application/json', $request->headers['Accept']);
+    }
+
     public function testRequestRejectsAPayloadThatCannotBeEncoded(): void
     {
-        $transport = new class () implements Transport {
-            public function send(array $requests): array
-            {
-                return [];
-            }
-        };
         $this->expectException(LintException::class);
         $this->expectExceptionMessage('Could not encode a request for jev');
-        (new JsonEndpoint($transport, ProviderSettings::defaults('jev'), 'k'))->request('/v1/systemone', ['bad' => "\xB1\x31"]);
+        (new JsonEndpoint(new FakeTransport(), ProviderSettings::defaults('jev'), 'k'))->request('/v1/systemone', ['bad' => "\xB1\x31"]);
     }
 
     public function testDecodeReturnsTheObjectOfASuccessfulResponse(): void
     {
-        $transport = new class () implements Transport {
-            public function send(array $requests): array
-            {
-                return [];
-            }
-        };
-        $endpoint = new JsonEndpoint($transport, ProviderSettings::defaults('jev'), 'k');
+        $endpoint = new JsonEndpoint(new FakeTransport(), ProviderSettings::defaults('jev'), 'k');
         $request = new HttpRequest('POST', 'https://api.typesafe.ai/v1/systemone', [], '{}');
         self::assertSame(['model' => 'jev-1.13.0'], $endpoint->decode(new HttpResponse(200, '{"model":"jev-1.13.0"}'), $request));
     }
@@ -101,13 +79,7 @@ final class JsonEndpointTest extends TestCase
     #[DataProvider('providerDecodeFailures')]
     public function testDecodeExplainsFailures(HttpResponse $response, string $expected): void
     {
-        $transport = new class () implements Transport {
-            public function send(array $requests): array
-            {
-                return [];
-            }
-        };
-        $endpoint = new JsonEndpoint($transport, ProviderSettings::defaults('jev'), 'k');
+        $endpoint = new JsonEndpoint(new FakeTransport(), ProviderSettings::defaults('jev'), 'k');
         $this->expectException(LintException::class);
         $this->expectExceptionMessage($expected);
         $endpoint->decode($response, new HttpRequest('POST', 'https://api.typesafe.ai/v1/systemone', [], '{}'));
@@ -130,13 +102,7 @@ final class JsonEndpointTest extends TestCase
     #[DataProvider('providerFailureHints')]
     public function testFailureAddsTheHintForTheStatus(int $status, string $hint): void
     {
-        $transport = new class () implements Transport {
-            public function send(array $requests): array
-            {
-                return [];
-            }
-        };
-        $endpoint = new JsonEndpoint($transport, ProviderSettings::defaults('openai'), 'k');
+        $endpoint = new JsonEndpoint(new FakeTransport(), ProviderSettings::defaults('openai'), 'k');
         $message = $endpoint->failure(new HttpResponse($status, ''), new HttpRequest('POST', 'https://api.openai.com/v1/decisions', [], '{}'), []);
         self::assertStringContainsString($hint, $message);
         self::assertStringStartsWith(sprintf('openai returned HTTP %d for POST https://api.openai.com/v1/decisions. ', $status), $message);
@@ -158,13 +124,7 @@ final class JsonEndpointTest extends TestCase
 
     public function testDetailPrefersTheErrorMessageAndFallsBackToAnExcerpt(): void
     {
-        $transport = new class () implements Transport {
-            public function send(array $requests): array
-            {
-                return [];
-            }
-        };
-        $endpoint = new JsonEndpoint($transport, ProviderSettings::defaults('jev'), 'k');
+        $endpoint = new JsonEndpoint(new FakeTransport(), ProviderSettings::defaults('jev'), 'k');
         self::assertSame('nope', $endpoint->detail(['error' => 'nope'], ''));
         self::assertSame('nested', $endpoint->detail(['error' => ['detail' => 'nested']], ''));
         self::assertSame('plain', $endpoint->detail(['message' => 'plain'], ''));

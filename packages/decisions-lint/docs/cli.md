@@ -17,7 +17,7 @@ $ vendor/bin/decisions-lint check src/UseCase --rule=ddd.usecase-domain-leak --f
 | `-r`, `--rule=ID` | Run only this rule; repeat for several. An unknown id exits `2`. |
 | `--fail-on=SEVERITY` | The weakest severity that exits `1`: `error`, `warning`, `info` or `never`. Defaults to `fail_on` in the configuration, which defaults to `error`. |
 
-The API key is read from the environment variable `provider.api_key_env` names, `TYPESAFE_API_KEY` for Jev and `OPENAI_API_KEY` for OpenAI by default. A missing key exits `2` before anything is sent.
+The API key is read from the environment variable `provider.api_key_env` names, `TYPESAFE_API_KEY` for Jev and `OPENAI_API_KEY` for OpenAI by default. A missing key for those two exits `2` before anything is sent; the local providers (`ollama`, `localai`, `openai-compatible`) run without a key and send one only when their variable is set.
 
 ### Output formats
 
@@ -63,7 +63,7 @@ Writes `decisions.yaml` with the chosen provider, the paths to lint, and an impo
 
 | Option | Meaning |
 |--------|---------|
-| `--provider=NAME` | `jev` (default) or `openai`. |
+| `--provider=NAME` | `jev` (default), `openai`, `ollama`, `localai` or `openai-compatible`. |
 | `-p`, `--path=DIR` | A directory to lint; repeat for several. Defaults to `src`. |
 | `-c`, `--config=FILE` | Where to write the file; default `decisions.yaml`. |
 

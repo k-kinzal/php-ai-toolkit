@@ -41,12 +41,12 @@ The imports supply the rules; `rules` changes only what this project does differ
 |-----|----------|---------|-------------|
 | `version` | yes | | Always `1`. |
 | `provider` | no | Jev | The decision API. See [providers](providers.md). |
-| `provider.name` | no | `jev` | `jev` or `openai`. |
-| `provider.model` | no | per provider | The model identifier, such as `jev-latest`, `jev-1.13.0` or `gpt-6-luna`. |
-| `provider.api_key_env` | no | per provider | The environment variable that holds the API key. The key itself never goes into the file. |
-| `provider.base_url` | no | per provider | The scheme and host of the API, for a proxy or a compatible endpoint. |
-| `provider.timeout` | no | `60` | Seconds to wait for one response. |
-| `provider.concurrency` | no | `8` | How many requests are in flight at once, from 1 to 64. |
+| `provider.name` | no | `jev` | `jev`, `openai`, `ollama`, `localai` or `openai-compatible`. |
+| `provider.model` | no | per provider | The model identifier, such as `jev-latest`, `gpt-6-luna` or `llama3.1`. |
+| `provider.api_key_env` | no | per provider | The environment variable that holds the API key. The key itself never goes into the file. Local servers run without one. |
+| `provider.base_url` | no | per provider | The scheme and host of the API, for a proxy, a compatible endpoint or a local server. |
+| `provider.timeout` | no | `60`, `300` for chat models | Seconds to wait for one response. |
+| `provider.concurrency` | no | `8`, `2` for chat models | How many requests are in flight at once, from 1 to 64. |
 | `paths` | no | `[src]` | Directories, files or globs to lint, relative to `decisions.yaml`. |
 | `exclude` | no | `[]` | Globs to leave out, relative to `decisions.yaml`. |
 | `fail_on` | no | `error` | The weakest severity that makes `check` exit `1`: `error`, `warning`, `info` or `never`. |

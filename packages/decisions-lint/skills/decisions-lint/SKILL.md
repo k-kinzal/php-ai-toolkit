@@ -2,9 +2,10 @@
 name: decisions-lint
 description: >-
   Lint PHP code against nuanced, natural-language rules with the decisions-lint
-  CLI (k-kinzal/decisions-lint) and a decision model such as Jev or the OpenAI
-  Decisions API. Use for decisions-lint commands, findings and their fixes,
-  decisions.yaml changes, writing or tuning rule files, or running the check in CI.
+  CLI (k-kinzal/decisions-lint) and a decision model such as Jev, the OpenAI
+  Decisions API, or a local model served by Ollama or LocalAI. Use for
+  decisions-lint commands, findings and their fixes, decisions.yaml changes,
+  writing or tuning rule files, provider setup, or running the check in CI.
 ---
 
 # Decisions Lint
@@ -12,7 +13,8 @@ description: >-
 Run the installed CLI from the target project's root. Read its `decisions.yaml`
 to learn the provider, the linted paths and the imported rule files. The API key
 comes from the environment variable `provider.api_key_env` names; never write a
-key into a file.
+key into a file. `ollama`, `localai` and `openai-compatible` need a running
+server at `provider.base_url` instead of a key.
 
 ```bash
 vendor/bin/decisions-lint --help

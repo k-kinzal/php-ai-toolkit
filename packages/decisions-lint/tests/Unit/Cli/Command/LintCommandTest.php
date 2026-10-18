@@ -8,7 +8,7 @@ use DecisionsLint\Cli\Command\CheckCommand;
 use DecisionsLint\Cli\Command\LintCommand;
 use DecisionsLint\Cli\FormatDetector;
 use DecisionsLint\Diagnostic\LintException;
-use DecisionsLint\Http\Transport;
+use DecisionsLint\Provider\Fake\FakeTransport;
 use DecisionsLint\Reporting\ReporterFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -24,11 +24,13 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @uses \DecisionsLint\Cli\Command\CheckCommand
  * @uses \DecisionsLint\Cli\FormatDetector
  * @uses \DecisionsLint\Diagnostic\LintException
+ * @uses \DecisionsLint\Provider\Fake\FakeTransport
  */
 #[CoversClass(LintCommand::class)]
 #[UsesClass(CheckCommand::class)]
 #[UsesClass(FormatDetector::class)]
 #[UsesClass(LintException::class)]
+#[UsesClass(FakeTransport::class)]
 final class LintCommandTest extends TestCase
 {
     public function testRunReportsACommandLineItCannotRead(): void
@@ -57,12 +59,7 @@ final class LintCommandTest extends TestCase
     public function testTransportReturnsTheInjectedTransportOrNull(): void
     {
         self::assertNull((new CheckCommand('/project'))->transport());
-        $transport = new class () implements Transport {
-            public function send(array $requests): array
-            {
-                return [];
-            }
-        };
+        $transport = new FakeTransport();
         self::assertSame($transport, (new CheckCommand('/project', $transport))->transport());
     }
 

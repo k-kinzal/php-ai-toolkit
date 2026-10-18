@@ -32,7 +32,7 @@ final class InitCommand extends LintCommand
     {
         $this->setDescription('Create a decisions.yaml that imports the shipped rule files');
         $this->addConfigOption();
-        $this->addOption('provider', null, InputOption::VALUE_REQUIRED, 'Decision API: ' . implode(' or ', ProviderSettings::NAMES), ProviderSettings::JEV);
+        $this->addOption('provider', null, InputOption::VALUE_REQUIRED, 'Decision API: ' . implode(', ', ProviderSettings::NAMES), ProviderSettings::JEV);
         $this->addOption('path', 'p', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Directory to lint; repeat for several', ['src']);
     }
 
@@ -50,7 +50,7 @@ final class InitCommand extends LintCommand
         }
         $provider = $input->getOption('provider');
         if (!is_string($provider) || !in_array($provider, ProviderSettings::NAMES, true)) {
-            throw new LintException(sprintf('Unsupported --provider "%s". Use --provider=%s.', is_string($provider) ? $provider : '', implode(' or ', ProviderSettings::NAMES)));
+            throw new LintException(sprintf('Unsupported --provider "%s". Use --provider=%s.', is_string($provider) ? $provider : '', implode(', ', ProviderSettings::NAMES)));
         }
         $paths = [];
         foreach (is_array($input->getOption('path')) ? $input->getOption('path') : [] as $entry) {
@@ -62,7 +62,9 @@ final class InitCommand extends LintCommand
         if (file_put_contents($path, $content) === false) {
             throw new LintException(sprintf('Could not write %s. Check the directory permissions.', $path));
         }
-        $output->writeln(sprintf('Wrote %s. Export %s, review the imported rules with decisions-lint rules, then run decisions-lint check.', $path, ProviderSettings::defaults($provider)->apiKeyEnv), OutputInterface::OUTPUT_RAW);
+        $settings = ProviderSettings::defaults($provider);
+        $key = $settings->requiresApiKey() ? sprintf('Export %s, ', $settings->apiKeyEnv) : sprintf('Make sure a %s server answers at %s, ', $provider, $settings->baseUrl);
+        $output->writeln(sprintf('Wrote %s. %sreview the imported rules with decisions-lint rules, then run decisions-lint check.', $path, $key), OutputInterface::OUTPUT_RAW);
 
         return 0;
     }

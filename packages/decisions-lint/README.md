@@ -13,7 +13,9 @@ seconds, and each violation comes with the change that resolves it.
 
 - PHP 8.0 or later with the cURL extension
 - An API key for [Jev](https://docs.typesafe.ai) (TypeSafe AI) or the
-  [OpenAI Decisions API](https://developers.openai.com/api/docs/guides/decisions)
+  [OpenAI Decisions API](https://developers.openai.com/api/docs/guides/decisions),
+  or a local chat model served by [Ollama](https://ollama.com), [LocalAI](https://localai.io)
+  or any OpenAI-compatible server with JSON schema output
 
 ## Getting Started
 

@@ -56,11 +56,11 @@ final class SchemaValidatorTest extends TestCase
         yield 'missing version' => [[], 'decisions.yaml: the document is missing the key "version". Add it: the configuration format version; always 1.'];
         yield 'wrong version' => [['version' => 2], 'decisions.yaml: version must be 1. Set it to 1.'];
         yield 'unknown key' => [['version' => 1, 'pahts' => ['src']], 'decisions.yaml: the document has the unknown key "pahts". Remove it or rename it to one of: version, provider, paths, exclude, fail_on, imports, rules.'];
-        yield 'enum' => [['version' => 1, 'provider' => ['name' => 'anthropic']], 'decisions.yaml: provider.name must be one of "jev", "openai", not "anthropic". Replace it with one of those values.'];
+        yield 'enum' => [['version' => 1, 'provider' => ['name' => 'anthropic']], 'decisions.yaml: provider.name must be one of "jev", "openai", "ollama", "localai", "openai-compatible", not "anthropic". Replace it with one of those values.'];
         yield 'type' => [['version' => 1, 'provider' => ['timeout' => 'fast']], 'decisions.yaml: provider.timeout must be an integer, not "fast". Change the value to an integer.'];
         yield 'minimum' => [['version' => 1, 'provider' => ['timeout' => 0]], 'decisions.yaml: provider.timeout must be at least 1, not 0. Raise the value.'];
         yield 'maximum' => [['version' => 1, 'provider' => ['concurrency' => 65]], 'decisions.yaml: provider.concurrency must be at most 64, not 65. Lower the value.'];
-        yield 'pattern' => [['version' => 1, 'provider' => ['api_key_env' => '1BAD']], 'decisions.yaml: provider.api_key_env must be the environment variable that holds the API key; never the key itself, not "1BAD". Change the value.'];
+        yield 'pattern' => [['version' => 1, 'provider' => ['api_key_env' => '1BAD']], 'decisions.yaml: provider.api_key_env must be the environment variable that holds the API key, never the key itself; local servers run without one, not "1BAD". Change the value.'];
         yield 'min length' => [['version' => 1, 'paths' => ['']], 'decisions.yaml: paths[0] must not be empty. Write a value.'];
         yield 'min items' => [['version' => 1, 'paths' => []], 'decisions.yaml: paths must have at least 1 entry, not 0. Add entries.'];
         yield 'list expected' => [['version' => 1, 'paths' => 'src'], 'decisions.yaml: paths must be a list, not "src". Change the value to a list.'];

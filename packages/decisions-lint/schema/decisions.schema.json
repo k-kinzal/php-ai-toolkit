@@ -17,18 +17,18 @@
             "description": "The decision API that answers the rule questions.",
             "properties": {
                 "name": {
-                    "enum": ["jev", "openai"],
-                    "description": "jev for TypeSafe AI System One, openai for the OpenAI Decisions API."
+                    "enum": ["jev", "openai", "ollama", "localai", "openai-compatible"],
+                    "description": "jev for TypeSafe AI System One, openai for the OpenAI Decisions API, ollama for a local Ollama server, localai for LocalAI, openai-compatible for any chat completions server with JSON schema output."
                 },
                 "model": {
                     "type": "string",
                     "minLength": 1,
-                    "description": "The model identifier, such as jev-latest or gpt-6-luna."
+                    "description": "The model identifier, such as jev-latest, gpt-6-luna or llama3.1."
                 },
                 "api_key_env": {
                     "type": "string",
                     "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
-                    "description": "The environment variable that holds the API key; never the key itself."
+                    "description": "The environment variable that holds the API key, never the key itself; local servers run without one."
                 },
                 "base_url": {
                     "type": "string",

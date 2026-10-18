@@ -24,12 +24,15 @@ use DecisionsLint\Diagnostic\Severity;
 use DecisionsLint\Http\CurlTransport;
 use DecisionsLint\Http\HttpRequest;
 use DecisionsLint\Http\HttpResponse;
-use DecisionsLint\Http\Transport;
 use DecisionsLint\Lint\Assignment;
 use DecisionsLint\Lint\Linter;
 use DecisionsLint\Lint\Plan;
 use DecisionsLint\Lint\Planner;
 use DecisionsLint\Lint\Report;
+use DecisionsLint\Provider\Fake\AnswerScript;
+use DecisionsLint\Provider\Fake\FakeJevTransport;
+use DecisionsLint\Provider\Fake\FakeTransport;
+use DecisionsLint\Provider\Fake\RequestBody;
 use DecisionsLint\Provider\Jev\JevClient;
 use DecisionsLint\Provider\Jev\JevDecision;
 use DecisionsLint\Provider\JsonEndpoint;
@@ -86,6 +89,10 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * @uses \DecisionsLint\Lint\Plan
  * @uses \DecisionsLint\Lint\Planner
  * @uses \DecisionsLint\Lint\Report
+ * @uses \DecisionsLint\Provider\Fake\AnswerScript
+ * @uses \DecisionsLint\Provider\Fake\FakeJevTransport
+ * @uses \DecisionsLint\Provider\Fake\FakeTransport
+ * @uses \DecisionsLint\Provider\Fake\RequestBody
  * @uses \DecisionsLint\Provider\Jev\JevClient
  * @uses \DecisionsLint\Provider\Jev\JevDecision
  * @uses \DecisionsLint\Provider\JsonEndpoint
@@ -136,6 +143,10 @@ use Symfony\Component\Console\Output\BufferedOutput;
 #[UsesClass(Plan::class)]
 #[UsesClass(Planner::class)]
 #[UsesClass(Report::class)]
+#[UsesClass(AnswerScript::class)]
+#[UsesClass(FakeJevTransport::class)]
+#[UsesClass(FakeTransport::class)]
+#[UsesClass(RequestBody::class)]
 #[UsesClass(JevClient::class)]
 #[UsesClass(JevDecision::class)]
 #[UsesClass(JsonEndpoint::class)]
@@ -171,18 +182,7 @@ final class CheckRunTest extends TestCase
         mkdir($root . '/src', 0777, true);
         file_put_contents($root . '/src/Analyzer.php', "<?php\nnamespace App;\nclass Analyzer {\n    public function analyze(): void {}\n    public function sendMail(): void {}\n}\n");
         file_put_contents($root . '/decisions.yaml', "version: 1\nprovider: {name: jev, api_key_env: DECISIONS_RUN_KEY}\npaths: [src]\nrules:\n  cohesion.method:\n    severity: warning\n    target: {kind: method}\n    decision: {type: predicate, instructions: 'Does {name} belong to {class}?', threshold: 0.7}\n    violations: [{answer: false, message: '{name}() is misplaced in {class}.', fix: 'Move {name}().'}]\n");
-        $transport = new class () implements Transport {
-            public function send(array $requests): array
-            {
-                $responses = [];
-                foreach ($requests as $request) {
-                    $probability = str_contains($request->body, 'Analyzer::sendMail"') ? '0.1' : '0.95';
-                    $responses[] = new HttpResponse(200, '{"model":"jev-1.13.0","answers":{"cohesion.method":{"type":"noul","noul":' . $probability . '}}}');
-                }
-
-                return $responses;
-            }
-        };
+        $transport = new FakeJevTransport(new AnswerScript(static fn (Question $question, array $subject): Answer => Answer::predicate($subject['name'] === 'App\Analyzer::sendMail' ? 0.1 : 0.95)));
         $before = getenv('DECISIONS_RUN_KEY');
         $output = new BufferedOutput();
         try {
@@ -210,12 +210,7 @@ final class CheckRunTest extends TestCase
     {
         $configuration = new Configuration('/p/decisions.yaml', new ProviderSettings('jev', 'jev-latest', 'K', 'https://a.test', 5, 2), ['src'], [], 'error', []);
         self::assertInstanceOf(CurlTransport::class, (new CheckRun())->transport($configuration));
-        $transport = new class () implements Transport {
-            public function send(array $requests): array
-            {
-                return [];
-            }
-        };
+        $transport = new FakeTransport();
         self::assertSame($transport, (new CheckRun($transport))->transport($configuration));
     }
 

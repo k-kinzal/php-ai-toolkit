@@ -2,12 +2,13 @@
 
 Development takes place on `main` in `k-kinzal/php-ai-toolkit`. Each directory in
 `packages/` has a public mirror at `https://github.com/k-kinzal/<directory>`.
-Submit these six mirror URLs to [Packagist](https://packagist.org/packages/submit),
+Submit these seven mirror URLs to [Packagist](https://packagist.org/packages/submit),
 not the monorepo URL. Submit `docgen-php`, `doctest-php`, `guard-php`, and
 `phpunit-ai-reporter` before the PHPStan packages, which depend on them.
+`decisions-lint` depends on no other toolkit package at runtime.
 
 The [Split Monorepo workflow](../.github/workflows/split.yml) validates the
-distribution archives and installs all six packages in a fresh consumer project
+distribution archives and installs all seven packages in a fresh consumer project
 on PHP 8.0 and 8.5 before publishing. It runs on pushes to `main`, stable `v*`
 tags, and manual dispatches. Pull requests only run validation.
 
@@ -17,7 +18,7 @@ Each mirror contains the committed package directory, with these changes:
 
 - Remove monorepo path repositories and every development lock file.
 - Set internal package dependencies to `dev-main` on main, or `^MAJOR.MINOR.PATCH`
-  for a release. All six packages share the same release version.
+  for a release. All seven packages share the same release version.
 - Add documentation, source, and issue tracker URLs to Composer metadata.
 - Add a mirror notice to the README and omit tests and development tool
   configuration from GitHub distribution archives using `.gitattributes`.
@@ -34,6 +35,7 @@ The corresponding private key is a repository Actions secret in the monorepo:
 
 | Mirror | Actions secret |
 | --- | --- |
+| `decisions-lint` | `SPLIT_DECISIONS_LINT_SSH_KEY` |
 | `docgen-php` | `SPLIT_DOCGEN_PHP_SSH_KEY` |
 | `doctest-php` | `SPLIT_DOCTEST_PHP_SSH_KEY` |
 | `guard-php` | `SPLIT_GUARD_PHP_SSH_KEY` |
@@ -59,7 +61,7 @@ git tag -a v0.1.0 -m 'Release v0.1.0'
 git push origin v0.1.0
 ```
 
-The split workflow creates the same tag in all six mirrors. Tag snapshots do not
+The split workflow creates the same tag in all seven mirrors. Tag snapshots do not
 move mirror `main` branches, so publishing an older release cannot roll back
 development. Re-running a tag succeeds if its files already match and fails if
 the tag would change. Publish a new version instead of moving existing tags.

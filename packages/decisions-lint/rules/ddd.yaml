@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=../schema/rules.schema.json
+# Domain-driven design keeps business rules in the domain layer. These rules
+# ask the decision model what kind of knowledge each use case and repository
+# method encodes, which no static analyser can tell from the syntax.
+version: 1
+rules:
+  ddd.usecase-domain-leak:
+    description: A use case coordinates the domain; it does not encode business rules or talk to infrastructure itself.
+    severity: error
+    paths:
+      - 'src/**/UseCase/**/*.php'
+      - 'src/**/UseCases/**/*.php'
+      - 'src/**/Application/**/*.php'
+      - 'src/**/*UseCase.php'
+      - 'src/**/*Handler.php'
+    target:
+      kind: method
+      visibility: [public]
+      exclude_names: ['__*']
+    context: class
+    decision:
+      type: choice
+      instructions: >-
+        {class}::{name} is a use case method in an application layer. Classify
+        the knowledge its body encodes. Delegating to repositories, domain
+        services, entities and value objects is orchestration. A conditional,
+        calculation or validation that expresses a business policy, such as a
+        discount, an eligibility check or a state transition, is a domain
+        rule. Building SQL, HTTP calls, file paths or framework specifics is
+        infrastructure.
+      choices:
+        orchestration: Loads domain objects, calls their behaviour, persists results and returns; contains no business policy of its own.
+        domain_rule: Encodes a business rule, invariant, calculation or policy that belongs in an entity, value object or domain service.
+        infrastructure: Contains database, HTTP, file system or framework details that belong behind a repository or gateway interface.
+      threshold: 0.6
+    violations:
+      - answer: domain_rule
+        message: 'Use case {class}::{name} encodes a business rule that belongs in the domain layer.'
+        fix: 'Move the rule into the entity, value object or domain service it describes, and have {name}() call that method so the use case only orchestrates.'
+      - answer: infrastructure
+        message: 'Use case {class}::{name} talks to infrastructure directly.'
+        fix: 'Put the database, HTTP or file access behind a repository or gateway interface in the domain layer, inject the interface into {class}, and call it from {name}().'
+
+  ddd.repository-business-rule:
+    description: A repository loads and stores aggregates; it does not decide business outcomes.
+    severity: warning
+    paths:
+      - 'src/**/*Repository.php'
+    exclude:
+      - 'src/**/*RepositoryInterface.php'
+    target:
+      kind: method
+      visibility: [public]
+      exclude_names: ['__*']
+    context: class
+    decision:
+      type: predicate
+      instructions: >-
+        {class} is a repository. Judge whether the method {name} stays within
+        persistence: finding, loading, saving, deleting or counting aggregates,
+        including query criteria. Yes when it does. No when it applies a
+        business policy, such as deciding eligibility, computing a price or
+        changing an aggregate's state based on a rule.
+      threshold: 0.7
+    violations:
+      - answer: false
+        message: 'Repository method {class}::{name} applies a business rule instead of only persisting aggregates.'
+        fix: 'Move the decision into the aggregate or a domain service, and reduce {name}() to loading or storing what that code needs.'

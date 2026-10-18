@@ -23,6 +23,7 @@ the synchronization workflow, repository credentials, and submission steps.
 | Package | Purpose |
 | --- | --- |
 | [guard-php](packages/guard-php/README.md) | Check and repair source, structure, documentation, and configuration policies. |
+| [decisions-lint](packages/decisions-lint/README.md) | Lint code against nuanced, natural-language rules with a decision model. |
 | [docgen-php](packages/docgen-php/README.md) | Generate PHP API documentation and coverage sites. |
 | [phpstan-guard-rules](packages/phpstan-guard-rules/README.md) | Detect PHP and test patterns that need stricter analysis. |
 | [doctest-php](packages/doctest-php/README.md) | Run PHPDoc examples as PHPUnit tests. |

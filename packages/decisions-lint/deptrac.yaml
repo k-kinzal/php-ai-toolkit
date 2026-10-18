@@ -1,0 +1,57 @@
+# Runtime sequence: Cli -> Config -> Lint -> (Source, Rule, Provider -> Http) -> Reporting.
+# Decision holds the interface and values every provider adapter produces; it knows only Diagnostic.
+deptrac:
+  paths:
+    - ./src
+  layers:
+    - name: Diagnostic
+      collectors:
+        - type: directory
+          value: 'src/Diagnostic/.*'
+    - name: Decision
+      collectors:
+        - type: directory
+          value: 'src/Decision/.*'
+    - name: Source
+      collectors:
+        - type: directory
+          value: 'src/Source/.*'
+    - name: Http
+      collectors:
+        - type: directory
+          value: 'src/Http/.*'
+    - name: Provider
+      collectors:
+        - type: directory
+          value: 'src/Provider/.*'
+    - name: Rule
+      collectors:
+        - type: directory
+          value: 'src/Rule/.*'
+    - name: Config
+      collectors:
+        - type: directory
+          value: 'src/Config/.*'
+    - name: Lint
+      collectors:
+        - type: directory
+          value: 'src/Lint/.*'
+    - name: Reporting
+      collectors:
+        - type: directory
+          value: 'src/Reporting/.*'
+    - name: Cli
+      collectors:
+        - type: directory
+          value: 'src/Cli/.*'
+  ruleset:
+    Diagnostic: []
+    Decision: [Diagnostic]
+    Source: [Diagnostic]
+    Http: [Diagnostic]
+    Provider: [Diagnostic, Decision, Http]
+    Rule: [Diagnostic, Decision, Source]
+    Config: [Diagnostic, Decision, Rule, Provider]
+    Lint: [Diagnostic, Decision, Source, Rule, Config, Provider]
+    Reporting: [Diagnostic, Lint, Rule, Config]
+    Cli: [Diagnostic, Decision, Http, Provider, Config, Lint, Reporting]

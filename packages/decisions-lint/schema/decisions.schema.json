@@ -1,0 +1,91 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://k-kinzal.github.io/php-ai-toolkit/decisions-lint/decisions.schema.json",
+    "title": "decisions-lint configuration",
+    "description": "The decisions.yaml of a project: the decision API to use, the files to lint, the rule files to import, and the rule values this project changes.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["version"],
+    "properties": {
+        "version": {
+            "const": 1,
+            "description": "The configuration format version; always 1."
+        },
+        "provider": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The decision API that answers the rule questions.",
+            "properties": {
+                "name": {
+                    "enum": ["jev", "openai"],
+                    "description": "jev for TypeSafe AI System One, openai for the OpenAI Decisions API."
+                },
+                "model": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The model identifier, such as jev-latest or gpt-6-luna."
+                },
+                "api_key_env": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+                    "description": "The environment variable that holds the API key; never the key itself."
+                },
+                "base_url": {
+                    "type": "string",
+                    "pattern": "^https?://",
+                    "description": "The scheme and host of the API, for a proxy or a compatible endpoint."
+                },
+                "timeout": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Seconds to wait for one response."
+                },
+                "concurrency": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 64,
+                    "description": "How many requests are in flight at once."
+                }
+            }
+        },
+        "paths": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "string",
+                "minLength": 1
+            },
+            "description": "Directories, files or globs relative to decisions.yaml to lint."
+        },
+        "exclude": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "minLength": 1
+            },
+            "description": "Globs relative to decisions.yaml to leave out."
+        },
+        "fail_on": {
+            "enum": ["error", "warning", "info", "never"],
+            "description": "The weakest severity that makes the check exit 1; error when omitted."
+        },
+        "imports": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "minLength": 1
+            },
+            "description": "Rule files to load, relative to decisions.yaml; later files override earlier ones."
+        },
+        "rules": {
+            "type": "object",
+            "propertyNames": {
+                "$ref": "rules.schema.json#/$defs/ruleId"
+            },
+            "additionalProperties": {
+                "$ref": "rules.schema.json#/$defs/ruleFields"
+            },
+            "description": "Rules this project defines or changes, keyed by rule id; an entry for an imported rule overrides only the keys it sets."
+        }
+    }
+}

@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=../schema/rules.schema.json
+# A class name is a promise about what the class does. These rules ask the
+# decision model whether each public member keeps that promise.
+version: 1
+rules:
+  cohesion.method-belongs-to-class:
+    description: A public method does the kind of work its class name promises.
+    severity: warning
+    target:
+      kind: method
+      visibility: [public]
+      exclude_names: ['__*']
+    context: class
+    decision:
+      type: predicate
+      instructions: >-
+        The class {class} is named for one responsibility. Read the whole class,
+        then judge whether the public method {name} is an operation a reader
+        would expect {class} to own. Yes when the method is part of the
+        responsibility the class name states, or supports it directly. No when
+        the method serves another concept and would read as misplaced, such as
+        a method that formats output, sends mail or persists data in a class
+        named for analysis.
+      threshold: 0.7
+    violations:
+      - answer: false
+        message: 'Method {name}() does not belong to {class}: it is not part of the responsibility the class name promises.'
+        fix: 'Move {name}() to the class that owns that responsibility and have {class} call it, or rename {class} so its name covers {name}().'
+
+  cohesion.property-belongs-to-class:
+    description: A property holds state the class needs for its own responsibility.
+    severity: info
+    target:
+      kind: property
+    context: class
+    decision:
+      type: predicate
+      instructions: >-
+        Read the class {class}. Judge whether the property {name} holds state
+        {class} needs to carry out the responsibility its name states. Yes
+        when the methods of the class read or write it for that purpose. No
+        when it exists only to pass data through to another concept, caches
+        something unrelated, or is never used by the class's own behaviour.
+      threshold: 0.75
+    violations:
+      - answer: false
+        message: 'Property {name} of {class} holds state that is not part of the class''s responsibility.'
+        fix: 'Move {name} to the class whose behaviour uses it, or pass the value as a parameter where it is needed.'

@@ -33,6 +33,7 @@ jobs:
       fail-fast: false
       matrix:
         package:
+          - decisions-lint
           - docgen-php
           - doctest-php
           - guard-php

@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../schema/rules.schema.json
+# A name is read far more often than its body. These rules ask the decision
+# model how well each name states what the code actually does.
+version: 1
+rules:
+  naming.method-says-what-it-does:
+    description: A method name states what the method does, so a caller need not read the body.
+    severity: warning
+    target:
+      kind: method
+      visibility: [public, protected]
+      exclude_names: ['__*']
+    context: declaration
+    decision:
+      type: score
+      instructions: >-
+        Read the method {name} of {class} with its signature and body. Rate how
+        well the name tells a caller what the method does and returns.
+      levels:
+        - The name misleads; the body does something the name does not say, or omits a side effect such as writing or sending.
+        - The name is vague; words such as handle, process, manage, do or data leave the caller to read the body.
+        - The name states what the method does and what it returns; the body matches it.
+      threshold: 0.5
+    violations:
+      - max_score: 0.5
+        message: 'Method {name}() of {class} does something its name does not say.'
+        fix: 'Rename {name}() after what the body actually does, including any side effect, or split the body so one name covers it.'
+      - min_score: 0.5
+        max_score: 1.5
+        message: 'Method name {name}() is too vague to tell a caller what it does.'
+        fix: 'Rename {name}() with a verb and object that state the effect and the result, such as calculateTotal or sendInvoice.'

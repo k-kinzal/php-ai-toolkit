@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>k-kinzal/decisions-lint — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/decisions-lint/">
+<meta name="description" content="Lint PHP code against nuanced, natural-language rules with decision models such as Jev and the OpenAI Decisions API">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="k-kinzal/decisions-lint — php-ai-toolkit">
+<meta property="og:description" content="Lint PHP code against nuanced, natural-language rules with decision models such as Jev and the OpenAI Decisions API">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/decisions-lint/">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../k-kinzal/decisions-lint/index.html">k-kinzal/decisions-lint</a></div><nav class="sidebar-section"><div class="sidebar-title">On this page</div><ul class="sidebar-list"><li><a href="#public-api">Public API</a></li><li><a href="#namespaces">Namespaces</a></li><li><a href="#documents">Documents</a></li><li><a href="#readme">README</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../k-kinzal/decisions-lint/all-items.html">All items</a></li><li><a href="../../k-kinzal/decisions-lint/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Cli/index.html" title="DecisionsLint\Cli">DecisionsLint\Cli</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Cli/Command/index.html" title="DecisionsLint\Cli\Command">DecisionsLint\Cli\Command</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Config/index.html" title="DecisionsLint\Config">DecisionsLint\Config</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Decision/index.html" title="DecisionsLint\Decision">DecisionsLint\Decision</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Diagnostic/index.html" title="DecisionsLint\Diagnostic">DecisionsLint\Diagnostic</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Http/index.html" title="DecisionsLint\Http">DecisionsLint\Http</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Lint/index.html" title="DecisionsLint\Lint">DecisionsLint\Lint</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/index.html" title="DecisionsLint\Provider">DecisionsLint\Provider</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/Chat/index.html" title="DecisionsLint\Provider\Chat">DecisionsLint\Provider\Chat</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/Fake/index.html" title="DecisionsLint\Provider\Fake">DecisionsLint\Provider\Fake</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/Jev/index.html" title="DecisionsLint\Provider\Jev">DecisionsLint\Provider\Jev</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/Ollama/index.html" title="DecisionsLint\Provider\Ollama">DecisionsLint\Provider\Ollama</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAi/index.html" title="DecisionsLint\Provider\OpenAi">DecisionsLint\Provider\OpenAi</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAiCompatible/index.html" title="DecisionsLint\Provider\OpenAiCompatible">DecisionsLint\Provider\OpenAiCompatible</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Reporting/index.html" title="DecisionsLint\Reporting">DecisionsLint\Reporting</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Rule/index.html" title="DecisionsLint\Rule">DecisionsLint\Rule</a></li><li><a href="../../k-kinzal/decisions-lint/DecisionsLint/Source/index.html" title="DecisionsLint\Source">DecisionsLint\Source</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><span class="breadcrumb-current">k-kinzal/decisions-lint</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-package">package</span>k-kinzal/decisions-lint</h1></div>
+<p class="lede">Lint PHP code against nuanced, natural-language rules with decision models such as Jev and the OpenAI Decisions API</p>
+<section class="items" id="public-api"><h2>Public API <span class="count">0</span><a class="anchor" href="#public-api">§</a></h2><p class="section-note">Declarations explicitly marked <code>@visibility public</code> in this scope.</p><p class="section-note">No declarations in this scope are marked as public API.</p></section>
+<div class="relation-row"><span class="relation-label">Depends on</span> <a href="../../k-kinzal/docgen-php/index.html">k-kinzal/docgen-php</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/doctest-php/index.html">k-kinzal/doctest-php</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/phpstan-ai-formatter/index.html">k-kinzal/phpstan-ai-formatter</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a> <span class="chip chip-sm chip-ghost">require-dev</span>, <a href="../../k-kinzal/phpunit-ai-reporter/index.html">k-kinzal/phpunit-ai-reporter</a> <span class="chip chip-sm chip-ghost">require-dev</span></div>
+<div class="relation-row"><span class="relation-label">External dependencies</span> <code>symfony/console</code> <span class="dep-constraint">^5.4 || ^6.4 || ^7.4 || ^8.0</span>, <code>symfony/yaml</code> <span class="dep-constraint">^5.4 || ^6.4 || ^7.4 || ^8.0</span></div>
+<section><h2 id="namespaces">Namespaces<a class="anchor" href="#namespaces">§</a></h2><div class="table-wrap"><table class="symbol-table"><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Cli/index.html">DecisionsLint\Cli</a></td><td class="ns-counts"> <span class="ns-count k-class">5 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Cli/Command/index.html">DecisionsLint\Cli\Command</a></td><td class="ns-counts"> <span class="ns-count k-class">6 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Config/index.html">DecisionsLint\Config</a></td><td class="ns-counts"> <span class="ns-count k-class">9 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Decision/index.html">DecisionsLint\Decision</a></td><td class="ns-counts"> <span class="ns-count k-interface">1 interface</span> <span class="ns-count k-class">4 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Diagnostic/index.html">DecisionsLint\Diagnostic</a></td><td class="ns-counts"> <span class="ns-count k-class">3 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Http/index.html">DecisionsLint\Http</a></td><td class="ns-counts"> <span class="ns-count k-interface">1 interface</span> <span class="ns-count k-class">3 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Lint/index.html">DecisionsLint\Lint</a></td><td class="ns-counts"> <span class="ns-count k-class">5 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/index.html">DecisionsLint\Provider</a></td><td class="ns-counts"> <span class="ns-count k-class">4 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/Chat/index.html">DecisionsLint\Provider\Chat</a></td><td class="ns-counts"> <span class="ns-count k-class">2 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/Fake/index.html">DecisionsLint\Provider\Fake</a></td><td class="ns-counts"> <span class="ns-count k-class">9 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/Jev/index.html">DecisionsLint\Provider\Jev</a></td><td class="ns-counts"> <span class="ns-count k-class">2 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/Ollama/index.html">DecisionsLint\Provider\Ollama</a></td><td class="ns-counts"> <span class="ns-count k-class">2 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAi/index.html">DecisionsLint\Provider\OpenAi</a></td><td class="ns-counts"> <span class="ns-count k-class">3 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAiCompatible/index.html">DecisionsLint\Provider\OpenAiCompatible</a></td><td class="ns-counts"> <span class="ns-count k-class">2 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Reporting/index.html">DecisionsLint\Reporting</a></td><td class="ns-counts"> <span class="ns-count k-interface">1 interface</span> <span class="ns-count k-class">9 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Rule/index.html">DecisionsLint\Rule</a></td><td class="ns-counts"> <span class="ns-count k-class">7 classes</span></td></tr><tr><td><a href="../../k-kinzal/decisions-lint/DecisionsLint/Source/index.html">DecisionsLint\Source</a></td><td class="ns-counts"> <span class="ns-count k-class">7 classes</span></td></tr></table></div></section>
+<section><h2 id="documents">Documents <span class="count">10</span><a class="anchor" href="#documents">§</a></h2><div class="table-wrap"><table class="symbol-table"><tr><td><a href="../../k-kinzal/decisions-lint/doc/README.md.html">decisions-lint</a></td><td class="item-ns">README.md</td></tr><tr><td><a href="../../k-kinzal/decisions-lint/doc/docs/cli.md.html">Command line</a></td><td class="item-ns">docs/cli.md</td></tr><tr><td><a href="../../k-kinzal/decisions-lint/doc/docs/configuration.md.html">Configuration</a></td><td class="item-ns">docs/configuration.md</td></tr><tr><td><a href="../../k-kinzal/decisions-lint/doc/docs/decisions-lint.md.html">Decisions Lint</a></td><td class="item-ns">docs/decisions-lint.md</td></tr><tr><td><a href="../../k-kinzal/decisions-lint/doc/docs/providers.md.html">Providers</a></td><td class="item-ns">docs/providers.md</td></tr><tr><td><a href="../../k-kinzal/decisions-lint/doc/docs/rules.md.html">Rules</a></td><td class="item-ns">docs/rules.md</td></tr><tr><td><a href="../../k-kinzal/decisions-lint/doc/skills/decisions-lint/SKILL.md.html">Decisions Lint</a></td><td class="item-ns">skills/decisions-lint/SKILL.md</td></tr><tr><td><a href="../../k-kinzal/decisions-lint/doc/skills/decisions-lint/references/cli.md.html">decisions-lint CLI</a></td><td class="item-ns">skills/decisions-lint/references/cli.md</td></tr><tr><td><a href="../../k-kinzal/decisions-lint/doc/skills/decisions-lint/references/configuration.md.html">decisions.yaml</a></td><td class="item-ns">skills/decisions-lint/references/configuration.md</td></tr><tr><td><a href="../../k-kinzal/decisions-lint/doc/skills/decisions-lint/references/rules.md.html">Rule authoring</a></td><td class="item-ns">skills/decisions-lint/references/rules.md</td></tr></table></div></section>
+<section class="readme prose"><h2 id="readme">README<a class="anchor" href="#readme">§</a></h2><h2>decisions-lint</h2>
+<p><a href="https://www.php.net/"><span class="md-target" title="https://img.shields.io/badge/php-8.0%2B-777bb4?logo=php&amp;logoColor=white">PHP</span></a> <span class="md-target" title="LICENSE"><span class="md-target" title="https://img.shields.io/badge/license-MIT-blue">License</span></span></p>
+<p>Lint PHP code against rules no static analyser can check: whether a method belongs to the class that holds it, whether a use case leaks a business rule, whether a name says what the code does. Each rule is a typed question a decision model answers in one short request, so a run over a code base takes seconds, and each violation comes with the change that resolves it.</p>
+<h3>Requirements</h3>
+<ul><li>PHP 8.0 or later with the cURL extension</li><li>An API key for <a href="https://docs.typesafe.ai">Jev</a> (TypeSafe AI) or the <a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions API</a>, or a local chat model served by <a href="https://ollama.com">Ollama</a>, <a href="https://localai.io">LocalAI</a> or any OpenAI-compatible server with JSON schema output</li></ul>
+<h3>Getting Started</h3>
+<pre class="code"><code>$ composer require --dev k-kinzal/decisions-lint
+$ vendor/bin/decisions-lint init
+$ export TYPESAFE_API_KEY=...
+$ vendor/bin/decisions-lint --help
+decisions-lint 1.0.0
+
+Judges PHP code against nuanced rules with a decision model, as configured in decisions.yaml. Running decisions-lint without a command runs check.
+
+Usage:
+  command [options] [arguments]
+
+Options:
+  -h, --help            Display help for the given command, or list the commands when none is given
+      --silent          Do not output any message
+  -q, --quiet           Only errors are displayed. All other output is suppressed
+  -V, --version         Display this application version
+      --ansi|--no-ansi  Force (or disable --no-ansi) ANSI output
+  -n, --no-interaction  Do not ask any interactive question
+  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Available commands:
+  check       Judge the configured files against the rules with the decision model and report violations
+  completion  Dump the shell completion script
+  help        Display help for a command
+  init        Create a decisions.yaml that imports the shipped rule files
+  list        List commands
+  plan        List the declarations each rule would judge and the requests that takes, without calling the provider
+  rules       List the effective rules after imports and overrides, with their severity, target and decision
+  validate    Check the configuration and its imports, and any rule file given, against their schemas</code></pre>
+<p><code>decisions-lint plan</code> shows what a run would ask before anything is sent. <code>decisions-lint check</code> asks the model and reports each violation with its file, line, column, rule, message and fix, as text, <code>ai</code>, <code>json</code>, <code>checkstyle</code> or <code>github</code> output. See <a href="../../k-kinzal/decisions-lint/doc/docs/decisions-lint.md.html">the documentation</a> for the configuration, the rule format and the providers.</p>
+<h3>License</h3>
+<p><span class="md-target" title="LICENSE">MIT</span></p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../assets/search-index.js" defer></script>
+<script src="../../assets/app.js" defer></script>
+</body>
+</html>

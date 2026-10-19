@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Providers — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/decisions-lint/doc/docs/providers.md.html">
+<meta name="description" content="Providers, a document of the k-kinzal/decisions-lint package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Providers — php-ai-toolkit">
+<meta property="og:description" content="Providers, a document of the k-kinzal/decisions-lint package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/decisions-lint/doc/docs/providers.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../k-kinzal/decisions-lint/index.html">k-kinzal/decisions-lint</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/decisions-lint/all-items.html">All items</a></li><li><a href="../../../../k-kinzal/decisions-lint/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Cli/index.html" title="DecisionsLint\Cli">DecisionsLint\Cli</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Cli/Command/index.html" title="DecisionsLint\Cli\Command">DecisionsLint\Cli\Command</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Config/index.html" title="DecisionsLint\Config">DecisionsLint\Config</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Decision/index.html" title="DecisionsLint\Decision">DecisionsLint\Decision</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Diagnostic/index.html" title="DecisionsLint\Diagnostic">DecisionsLint\Diagnostic</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Http/index.html" title="DecisionsLint\Http">DecisionsLint\Http</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Lint/index.html" title="DecisionsLint\Lint">DecisionsLint\Lint</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/index.html" title="DecisionsLint\Provider">DecisionsLint\Provider</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Chat/index.html" title="DecisionsLint\Provider\Chat">DecisionsLint\Provider\Chat</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Fake/index.html" title="DecisionsLint\Provider\Fake">DecisionsLint\Provider\Fake</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Jev/index.html" title="DecisionsLint\Provider\Jev">DecisionsLint\Provider\Jev</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Ollama/index.html" title="DecisionsLint\Provider\Ollama">DecisionsLint\Provider\Ollama</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAi/index.html" title="DecisionsLint\Provider\OpenAi">DecisionsLint\Provider\OpenAi</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAiCompatible/index.html" title="DecisionsLint\Provider\OpenAiCompatible">DecisionsLint\Provider\OpenAiCompatible</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Reporting/index.html" title="DecisionsLint\Reporting">DecisionsLint\Reporting</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Rule/index.html" title="DecisionsLint\Rule">DecisionsLint\Rule</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Source/index.html" title="DecisionsLint\Source">DecisionsLint\Source</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../k-kinzal/decisions-lint/index.html">k-kinzal/decisions-lint</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/providers.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Providers</h1><div class="symbol-meta"><span class="source-link">docs/providers.md</span></div></div>
+<section class="readme prose"><h2>Providers</h2>
+<p>decisions-lint asks a model typed questions and reads back probabilities. Two kinds of provider answer them. A <strong>decision API</strong> (Jev, OpenAI Decisions) is built for exactly this and answers in one short request. A <strong>chat model</strong> served locally (Ollama, LocalAI, or any OpenAI-compatible server) is asked the same questions in a prompt and constrained to answer with one JSON object that follows a schema; it is slower and its numbers are self-reported, but it runs on your own hardware with any open model. Every provider sees the same questions and the same source; the adapter translates between the linter&#039;s <code>Decision</code> interface and the API.</p>
+<div class="table-wrap"><table><thead><tr><th><code>provider.name</code></th><th>Kind</th><th>Default endpoint</th><th>Default model</th><th>API key</th></tr></thead><tbody><tr><td><code>jev</code></td><td>decision API</td><td><code>https://api.typesafe.ai/v1/systemone</code></td><td><code>jev-latest</code></td><td>required, <code>TYPESAFE_API_KEY</code></td></tr><tr><td><code>openai</code></td><td>decision API</td><td><code>https://api.openai.com/v1/decisions</code></td><td><code>gpt-6-luna</code></td><td>required, <code>OPENAI_API_KEY</code></td></tr><tr><td><code>ollama</code></td><td>chat model</td><td><code>http://localhost:11434/api/chat</code></td><td><code>llama3.1</code></td><td>optional, <code>OLLAMA_API_KEY</code></td></tr><tr><td><code>localai</code></td><td>chat model</td><td><code>http://localhost:8080/v1/chat/completions</code></td><td><code>gpt-4</code></td><td>optional, <code>LOCALAI_API_KEY</code></td></tr><tr><td><code>openai-compatible</code></td><td>chat model</td><td><code>http://localhost:8000/v1/chat/completions</code></td><td><code>default</code></td><td>optional, <code>OPENAI_COMPATIBLE_API_KEY</code></td></tr></tbody></table></div>
+<p>Hosted decision APIs default to a 60-second timeout and eight requests in flight. Local chat models generate their answer token by token, so they default to a 300-second timeout and two requests in flight; raise <code>provider.concurrency</code> when the server has the capacity.</p>
+<h3>Jev (TypeSafe AI)</h3>
+<pre class="code"><code>provider:
+  name: jev
+  model: jev-latest
+  api_key_env: TYPESAFE_API_KEY</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Setting</th><th>Default</th></tr></thead><tbody><tr><td>Endpoint</td><td><code>POST https://api.typesafe.ai/v1/systemone</code></td></tr><tr><td>Models</td><td><code>jev-latest</code>, <code>jev-preview</code>, or a version such as <code>jev-1.13.0</code></td></tr><tr><td>Key</td><td><code>TYPESAFE_API_KEY</code></td></tr></tbody></table></div>
+<p>The subject sections become the request&#039;s <code>state</code> object, so the model sees <code>file</code>, <code>kind</code>, <code>name</code>, <code>signature</code>, <code>declaration</code> and the <code>class_source</code> or <code>file_source</code> under their own names. A predicate is sent as a <code>noul</code>, a choice keeps its options as <code>criteria</code>, and a score lists its levels as <code>criteria</code>. Jev answers every question of a request in parallel, so a request with five rules costs the same latency as one with one rule.</p>
+<p>Jev&#039;s default limit is about 32,000 tokens for the state and one question. A class that large should be excluded or judged with <code>context: declaration</code>.</p>
+<h3>OpenAI Decisions API</h3>
+<pre class="code"><code>provider:
+  name: openai
+  model: gpt-6-luna
+  api_key_env: OPENAI_API_KEY</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Setting</th><th>Default</th></tr></thead><tbody><tr><td>Endpoint</td><td><code>POST https://api.openai.com/v1/decisions</code></td></tr><tr><td>Models</td><td><code>gpt-6-luna</code></td></tr><tr><td>Key</td><td><code>OPENAI_API_KEY</code></td></tr></tbody></table></div>
+<p>The subject sections are rendered into one Markdown input, with source sections fenced as PHP. A predicate is sent as a <code>predicate</code>, a choice as <code>choices</code> of <code>{value, description}</code>, and a score as <code>levels</code> of <code>{label, description}</code>. Answers are read back by question name; a <code>refusal</code> answer is treated as no answer, so no finding is reported for it.</p>
+<h3>Ollama</h3>
+<pre class="code"><code>provider:
+  name: ollama
+  model: llama3.1
+  base_url: http://localhost:11434</code></pre>
+<p>The adapter posts to Ollama&#039;s native chat endpoint, <code>/api/chat</code>, with <code>stream: false</code>, a zero temperature and the answer schema as <code>format</code>, which Ollama enforces during generation. Pull the model first (<code>ollama pull llama3.1</code>). An <code>OLLAMA_API_KEY</code> variable, when set, is sent as a bearer token for Ollama Cloud or a protected proxy; it is not needed for a local server.</p>
+<h3>LocalAI and other OpenAI-compatible servers</h3>
+<pre class="code"><code>provider:
+  name: localai
+  model: gpt-4
+  base_url: http://localhost:8080</code></pre>
+<p><code>localai</code> and <code>openai-compatible</code> share one adapter that posts to <code>/v1/chat/completions</code> with a <code>response_format</code> of type <code>json_schema</code>, <code>strict: true</code> and a zero temperature. LocalAI&#039;s all-in-one images alias <code>gpt-4</code> to a bundled model; set <code>provider.model</code> to the model your server loads. The same adapter works with vLLM, llama.cpp&#039;s server, LM Studio and hosted gateways that implement the API; use <code>openai-compatible</code> with the server&#039;s <code>base_url</code> and, when it needs one, an API key in <code>OPENAI_COMPATIBLE_API_KEY</code>.</p>
+<h4>How a chat model is asked</h4>
+<p>The conversation opens with a fixed system message that asks for calibrated probabilities and nothing but JSON. The user message holds the subject sections (file, kind, name, signature, declaration, and the class or file source) followed by a <code>## Questions</code> section that writes out each rule&#039;s instructions and, for a choice, the options with their descriptions, or for a score, the numbered levels. The schema requires one object per question:</p>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Object</th></tr></thead><tbody><tr><td>predicate</td><td><code>{&quot;probability&quot;: 0..1}</code></td></tr><tr><td>choice</td><td><code>{&quot;choice&quot;: &quot;&lt;option&gt;&quot;, &quot;confidence&quot;: 0..1}</code></td></tr><tr><td>score</td><td><code>{&quot;score&quot;: &lt;level&gt;, &quot;confidence&quot;: 0..1}</code></td></tr></tbody></table></div>
+<p>A model that answers with text instead of JSON, or with an option the question did not list, is reported or treated as a refusal rather than guessed at. Small models are weaker judges than a decision model; start with <code>severity: warning</code>, compare findings against your own judgement, and raise <code>threshold</code> until they are ones you would act on.</p>
+<h3>Fakes for tests</h3>
+<p><code>DecisionsLint\Provider\Fake</code> ships one fake per provider so a rule set, a reporter or a CI pipeline can be exercised without a server: <code>FakeJevTransport</code>, <code>FakeOpenAiTransport</code>, <code>FakeOllamaTransport</code> and <code>FakeChatCompletionsTransport</code> each read a real request of their API and answer in that API&#039;s shape; <code>FakeDecision</code> answers in memory, and <code>FakeTransport</code> replays canned HTTP responses. An <code>AnswerScript</code> decides the answers from the question and the subject, and defaults to the answer that never violates a rule. Inject a fake through <code>Application</code>&#039;s third constructor argument or <code>CheckRun</code>&#039;s first.</p>
+<h3>Requests, concurrency and failures</h3>
+<p>The linter sends one request per judged declaration and context, with every rule&#039;s question in it. Requests are sent <code>provider.concurrency</code> at a time over cURL, with <code>provider.timeout</code> seconds per request. <code>decisions-lint plan</code> prints how many requests a run will make before any is sent.</p>
+<p>A failed request stops the run with exit <code>2</code> and a message that names the status, the provider&#039;s own error text and the setting to check:</p>
+<div class="table-wrap"><table><thead><tr><th>Status</th><th>Hint</th></tr></thead><tbody><tr><td>401, 403</td><td>Check the API key in the configured environment variable.</td></tr><tr><td>404</td><td>Check <code>provider.base_url</code>.</td></tr><tr><td>400, 422</td><td>Check <code>provider.model</code> and the rule questions.</td></tr><tr><td>429</td><td>Lower <code>provider.concurrency</code> or retry later.</td></tr><tr><td>5xx</td><td>The provider is unavailable; retry later.</td></tr></tbody></table></div>
+<p>A response in a shape the adapter does not understand is reported with the field that was missing or malformed.</p>
+<h3>Adding a provider</h3>
+<p>The Provider layer separates the API client from the adapter:</p>
+<ul><li><code>Provider\Jev\JevClient</code>, <code>Provider\OpenAi\OpenAiClient</code>, <code>Provider\Ollama\OllamaClient</code> and <code>Provider\OpenAiCompatible\ChatCompletionsClient</code> build and post the provider&#039;s own request documents through a shared <code>JsonEndpoint</code>.</li><li><code>Provider\Jev\JevDecision</code>, <code>Provider\OpenAi\OpenAiDecision</code>, <code>Provider\Ollama\OllamaDecision</code> and <code>Provider\OpenAiCompatible\ChatCompletionsDecision</code> implement <code>Decision\Decision</code>: they turn each <code>Inquiry</code> into a client request and each response into a <code>Verdict</code> of typed <code>Answer</code>s. The chat adapters share <code>Provider\Chat\ChatPrompt</code> and <code>Provider\Chat\ChatAnswerReader</code>.</li><li><code>Provider\ProviderFactory</code> picks the adapter from <code>provider.name</code> and reads the API key from the environment.</li></ul>
+<p>A new provider adds a client, an adapter that implements <code>Decision</code>, a <code>ProviderSettings::defaults()</code> entry, a case in the factory, the name in <code>schema/decisions.schema.json</code>, and a fake transport for its tests. The linter, the rules and the reporters do not change.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../assets/search-index.js" defer></script>
+<script src="../../../../assets/app.js" defer></script>
+</body>
+</html>

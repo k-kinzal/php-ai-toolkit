@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rules — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/decisions-lint/doc/docs/rules.md.html">
+<meta name="description" content="Rules, a document of the k-kinzal/decisions-lint package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Rules — php-ai-toolkit">
+<meta property="og:description" content="Rules, a document of the k-kinzal/decisions-lint package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/decisions-lint/doc/docs/rules.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../k-kinzal/decisions-lint/index.html">k-kinzal/decisions-lint</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/decisions-lint/all-items.html">All items</a></li><li><a href="../../../../k-kinzal/decisions-lint/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Cli/index.html" title="DecisionsLint\Cli">DecisionsLint\Cli</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Cli/Command/index.html" title="DecisionsLint\Cli\Command">DecisionsLint\Cli\Command</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Config/index.html" title="DecisionsLint\Config">DecisionsLint\Config</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Decision/index.html" title="DecisionsLint\Decision">DecisionsLint\Decision</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Diagnostic/index.html" title="DecisionsLint\Diagnostic">DecisionsLint\Diagnostic</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Http/index.html" title="DecisionsLint\Http">DecisionsLint\Http</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Lint/index.html" title="DecisionsLint\Lint">DecisionsLint\Lint</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/index.html" title="DecisionsLint\Provider">DecisionsLint\Provider</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Chat/index.html" title="DecisionsLint\Provider\Chat">DecisionsLint\Provider\Chat</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Fake/index.html" title="DecisionsLint\Provider\Fake">DecisionsLint\Provider\Fake</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Jev/index.html" title="DecisionsLint\Provider\Jev">DecisionsLint\Provider\Jev</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Ollama/index.html" title="DecisionsLint\Provider\Ollama">DecisionsLint\Provider\Ollama</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAi/index.html" title="DecisionsLint\Provider\OpenAi">DecisionsLint\Provider\OpenAi</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAiCompatible/index.html" title="DecisionsLint\Provider\OpenAiCompatible">DecisionsLint\Provider\OpenAiCompatible</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Reporting/index.html" title="DecisionsLint\Reporting">DecisionsLint\Reporting</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Rule/index.html" title="DecisionsLint\Rule">DecisionsLint\Rule</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Source/index.html" title="DecisionsLint\Source">DecisionsLint\Source</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../k-kinzal/decisions-lint/index.html">k-kinzal/decisions-lint</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Rules</h1><div class="symbol-meta"><span class="source-link">docs/rules.md</span></div></div>
+<section class="readme prose"><h2>Rules</h2>
+<p>A rule names the declarations it judges, the question it asks about each, and which answers are violations. Rules live in YAML files that <code>decisions.yaml</code> imports, so a team can ship its conventions as a package and every project can adjust severities and thresholds.</p>
+<h3>Example</h3>
+<pre class="code"><code># yaml-language-server: $schema=vendor/k-kinzal/decisions-lint/schema/rules.schema.json
+version: 1
+rules:
+  cohesion.method-belongs-to-class:
+    description: A public method does the kind of work its class name promises.
+    severity: warning
+    target:
+      kind: method
+      visibility: [public]
+      exclude_names: [&#039;__*&#039;]
+    context: class
+    decision:
+      type: predicate
+      instructions: &gt;-
+        The class {class} is named for one responsibility. Read the whole
+        class, then judge whether the public method {name} is an operation a
+        reader would expect {class} to own. Yes when the method is part of
+        that responsibility. No when it serves another concept.
+      threshold: 0.7
+    violations:
+      - answer: false
+        message: &#039;Method {name}() does not belong to {class}: it is not part of the responsibility the class name promises.&#039;
+        fix: &#039;Move {name}() to the class that owns that responsibility and have {class} call it, or rename {class} so its name covers {name}().&#039;</code></pre>
+<h3>Keys</h3>
+<div class="table-wrap"><table><thead><tr><th>Key</th><th>Required</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>description</code></td><td>no</td><td><code>&#039;&#039;</code></td><td>What the rule protects, shown by <code>rules</code>.</td></tr><tr><td><code>severity</code></td><td>no</td><td><code>error</code></td><td><code>error</code>, <code>warning</code> or <code>info</code>.</td></tr><tr><td><code>enabled</code></td><td>no</td><td><code>true</code></td><td>Whether the rule runs.</td></tr><tr><td><code>paths</code></td><td>no</td><td>the configured paths</td><td>File globs, relative to <code>decisions.yaml</code>, the rule applies to.</td></tr><tr><td><code>exclude</code></td><td>no</td><td><code>[]</code></td><td>File globs the rule skips.</td></tr><tr><td><code>target</code></td><td>yes</td><td></td><td>Which declarations are judged. See <a href="#targets">targets</a>.</td></tr><tr><td><code>context</code></td><td>no</td><td><code>class</code></td><td>How much source the model reads with the declaration. See <a href="#context">context</a>.</td></tr><tr><td><code>decision</code></td><td>yes</td><td></td><td>The question. See <a href="#decisions">decisions</a>.</td></tr><tr><td><code>violations</code></td><td>yes</td><td></td><td>The answers that violate the rule. See <a href="#violations">violations</a>.</td></tr></tbody></table></div>
+<p>Rule ids are lower-case letters, digits, dots and hyphens, such as <code>ddd.usecase-domain-leak</code>. The part before the first dot groups related rules.</p>
+<h3>Targets</h3>
+<div class="table-wrap"><table><thead><tr><th>Key</th><th>Description</th></tr></thead><tbody><tr><td><code>kind</code></td><td><code>file</code>, <code>class</code>, <code>interface</code>, <code>trait</code>, <code>enum</code>, <code>method</code>, <code>function</code> or <code>property</code>.</td></tr><tr><td><code>visibility</code></td><td>Keep only <code>public</code>, <code>protected</code> or <code>private</code> members.</td></tr><tr><td><code>names</code></td><td>Keep only declarations whose short name matches one of these globs.</td></tr><tr><td><code>exclude_names</code></td><td>Drop declarations whose short name matches one of these globs, such as <code>__*</code> for magic methods.</td></tr><tr><td><code>static</code></td><td><code>true</code> keeps static members only, <code>false</code> non-static only.</td></tr></tbody></table></div>
+<p>Declarations are found by tokenizing the file, without executing it. Methods and functions inside other bodies, closures and anonymous classes are not targets. The reported line and column are those of the declaration&#039;s first keyword or modifier, so a method is reported at its <code>public</code>.</p>
+<p><code>kind: file</code> judges each matching file once, as a whole, and reports at line 1. It also works for files that are not PHP, such as Markdown, so a rule can judge documentation.</p>
+<h3>Context</h3>
+<p>The model reads the declaration itself, including its docblock, and one of:</p>
+<div class="table-wrap"><table><thead><tr><th><code>context</code></th><th>Source sent with the declaration</th><th>Use when</th></tr></thead><tbody><tr><td><code>declaration</code></td><td>Nothing more.</td><td>The judgement depends only on the declaration, such as a name against its body.</td></tr><tr><td><code>class</code></td><td>The whole enclosing class, or the whole file for a function.</td><td>The judgement needs the siblings, such as whether a method fits its class.</td></tr><tr><td><code>file</code></td><td>The whole file.</td><td>The judgement needs imports or other declarations in the file.</td></tr></tbody></table></div>
+<p>Rules that judge the same declaration with the same context share one request. A rule with a different context costs one more request per declaration, so prefer <code>class</code> unless a rule needs more or less.</p>
+<h3>Decisions</h3>
+<div class="table-wrap"><table><thead><tr><th>Key</th><th>Description</th></tr></thead><tbody><tr><td><code>type</code></td><td><code>predicate</code>, <code>choice</code> or <code>score</code>.</td></tr><tr><td><code>instructions</code></td><td>The question, with <a href="#placeholders">placeholders</a>. State the boundary between the answers in words the model can apply.</td></tr><tr><td><code>choices</code></td><td>For <code>choice</code>: option name to description. Give every option a description and add an <code>other</code> option when the list may not cover every input.</td></tr><tr><td><code>levels</code></td><td>For <code>score</code>: 2 to 10 level descriptions, from the lowest (level 0) to the highest.</td></tr><tr><td><code>threshold</code></td><td>From 0 to 1; default <code>0.5</code>. The probability a predicate answer needs, or the confidence a choice or score needs, before it counts as a violation.</td></tr></tbody></table></div>
+<p>Phrase a predicate so that <em>yes</em> is the unremarkable case and <em>no</em> is the violation, as the shipped rules do, and state in the instructions what counts as each. A choice should have options that are exclusive and together cover every input. A score should have levels whose descriptions a reader could apply without seeing the others.</p>
+<h3>Violations</h3>
+<p>Each entry of <code>violations</code> describes one answer and what to report for it. The first entry the answer satisfies is reported.</p>
+<div class="table-wrap"><table><thead><tr><th>Key</th><th>Required</th><th>Description</th></tr></thead><tbody><tr><td><code>answer</code></td><td>predicate, choice</td><td><code>true</code> or <code>false</code> for a predicate; an option name for a choice.</td></tr><tr><td><code>min_score</code></td><td>score</td><td>The lowest score that violates, inclusive.</td></tr><tr><td><code>max_score</code></td><td>score</td><td>The highest score that violates, inclusive. At least one bound is required.</td></tr><tr><td><code>message</code></td><td>yes</td><td>What is wrong, as a template.</td></tr><tr><td><code>fix</code></td><td>yes</td><td>What to change so the rule passes, as a template.</td></tr></tbody></table></div>
+<p>A predicate violation with <code>answer: false</code> fires when <code>1 - probability</code> reaches <code>threshold</code>; with <code>answer: true</code> when <code>probability</code> does. A choice violation fires when the model picked that option with at least <code>threshold</code> confidence. A score violation fires when the probability-weighted score is within the bounds and the confidence reaches <code>threshold</code>.</p>
+<p>Write <code>fix</code> as an instruction a reader or an agent can carry out without further context: name the method, say where it should go or what it should be called. A finding without a fix only says that something is wrong; the fix is what makes it actionable.</p>
+<h3>Placeholders</h3>
+<p><code>instructions</code>, <code>message</code> and <code>fix</code> may use these placeholders. An unknown placeholder is reported when the rule is read.</p>
+<div class="table-wrap"><table><thead><tr><th>Placeholder</th><th>Value</th></tr></thead><tbody><tr><td><code>{file}</code></td><td>The path relative to <code>decisions.yaml</code>.</td></tr><tr><td><code>{line}</code>, <code>{column}</code></td><td>The position of the declaration.</td></tr><tr><td><code>{kind}</code></td><td><code>method</code>, <code>class</code>, <code>file</code> and so on.</td></tr><tr><td><code>{name}</code></td><td>The short name: <code>analyze</code>, <code>Analyzer</code>, <code>README.md</code>.</td></tr><tr><td><code>{class}</code></td><td>The short name of the class the declaration is or belongs to; empty for a function or a file.</td></tr><tr><td><code>{namespace}</code></td><td>The namespace without a leading backslash.</td></tr><tr><td><code>{qualified_name}</code></td><td><code>App\Analysis\Analyzer::analyze</code>.</td></tr><tr><td><code>{signature}</code></td><td>The declaration without its body, on one line.</td></tr><tr><td><code>{visibility}</code></td><td><code>public</code>, <code>protected</code> or <code>private</code>.</td></tr><tr><td><code>{rule}</code></td><td>The rule id.</td></tr><tr><td><code>{answer}</code></td><td>In messages: <code>yes</code> or <code>no</code>, the chosen option, or the score.</td></tr><tr><td><code>{probability}</code>, <code>{confidence}</code>, <code>{choice}</code>, <code>{score}</code></td><td>In messages: the answer&#039;s numbers, two decimals.</td></tr><tr><td><code>{threshold}</code></td><td>The rule&#039;s threshold.</td></tr></tbody></table></div>
+<h3>Shipped rule files</h3>
+<div class="table-wrap"><table><thead><tr><th>File</th><th>Rules</th></tr></thead><tbody><tr><td><code>rules/cohesion.yaml</code></td><td><code>cohesion.method-belongs-to-class</code> (predicate, warning), <code>cohesion.property-belongs-to-class</code> (predicate, info): members do the kind of work their class name promises.</td></tr><tr><td><code>rules/ddd.yaml</code></td><td><code>ddd.usecase-domain-leak</code> (choice, error): a use case orchestrates and does not encode business rules or infrastructure. <code>ddd.repository-business-rule</code> (predicate, warning): a repository persists and does not decide. Both are scoped to conventional paths; override <code>paths</code> to match the project.</td></tr><tr><td><code>rules/naming.yaml</code></td><td><code>naming.method-says-what-it-does</code> (score, warning): a method name states what the method does.</td></tr></tbody></table></div>
+<p>Import them from <code>vendor/k-kinzal/decisions-lint/rules/</code> and override what the project does differently.</p>
+<h3>Writing a rule</h3>
+<ol><li>Write the question as you would ask a reviewer, then cut it to the decision: one predicate, one choice among exclusive options, or one scale.</li><li>Choose the narrowest <code>target</code> and <code>context</code> that let the model answer.</li><li>Write <code>message</code> and <code>fix</code> so that a reader who sees only the finding knows what to do.</li><li>Run <code>decisions-lint validate rules/team.yaml</code>, then <code>decisions-lint plan</code> to see what the rule selects.</li><li>Run <code>decisions-lint check --rule=team.rule --format=json</code> on code you know, compare the findings with your own judgement, and raise <code>threshold</code> until the findings are ones you would act on.</li></ol>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../assets/search-index.js" defer></script>
+<script src="../../../../assets/app.js" defer></script>
+</body>
+</html>

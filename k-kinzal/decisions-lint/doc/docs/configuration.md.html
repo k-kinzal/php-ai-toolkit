@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Configuration — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/decisions-lint/doc/docs/configuration.md.html">
+<meta name="description" content="Configuration, a document of the k-kinzal/decisions-lint package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Configuration — php-ai-toolkit">
+<meta property="og:description" content="Configuration, a document of the k-kinzal/decisions-lint package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/decisions-lint/doc/docs/configuration.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../k-kinzal/decisions-lint/index.html">k-kinzal/decisions-lint</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/decisions-lint/all-items.html">All items</a></li><li><a href="../../../../k-kinzal/decisions-lint/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Cli/index.html" title="DecisionsLint\Cli">DecisionsLint\Cli</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Cli/Command/index.html" title="DecisionsLint\Cli\Command">DecisionsLint\Cli\Command</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Config/index.html" title="DecisionsLint\Config">DecisionsLint\Config</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Decision/index.html" title="DecisionsLint\Decision">DecisionsLint\Decision</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Diagnostic/index.html" title="DecisionsLint\Diagnostic">DecisionsLint\Diagnostic</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Http/index.html" title="DecisionsLint\Http">DecisionsLint\Http</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Lint/index.html" title="DecisionsLint\Lint">DecisionsLint\Lint</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/index.html" title="DecisionsLint\Provider">DecisionsLint\Provider</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Chat/index.html" title="DecisionsLint\Provider\Chat">DecisionsLint\Provider\Chat</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Fake/index.html" title="DecisionsLint\Provider\Fake">DecisionsLint\Provider\Fake</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Jev/index.html" title="DecisionsLint\Provider\Jev">DecisionsLint\Provider\Jev</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Ollama/index.html" title="DecisionsLint\Provider\Ollama">DecisionsLint\Provider\Ollama</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAi/index.html" title="DecisionsLint\Provider\OpenAi">DecisionsLint\Provider\OpenAi</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAiCompatible/index.html" title="DecisionsLint\Provider\OpenAiCompatible">DecisionsLint\Provider\OpenAiCompatible</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Reporting/index.html" title="DecisionsLint\Reporting">DecisionsLint\Reporting</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Rule/index.html" title="DecisionsLint\Rule">DecisionsLint\Rule</a></li><li><a href="../../../../k-kinzal/decisions-lint/DecisionsLint/Source/index.html" title="DecisionsLint\Source">DecisionsLint\Source</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../k-kinzal/decisions-lint/index.html">k-kinzal/decisions-lint</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/configuration.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Configuration</h1><div class="symbol-meta"><span class="source-link">docs/configuration.md</span></div></div>
+<section class="readme prose"><h2>Configuration</h2>
+<p><code>decisions.yaml</code> declares what a run lints, which rules it applies, and which decision API answers. <code>decisions-lint init</code> writes a starting file; this page describes every key.</p>
+<h3>Example</h3>
+<pre class="code"><code># yaml-language-server: $schema=vendor/k-kinzal/decisions-lint/schema/decisions.schema.json
+version: 1
+provider:
+  name: jev
+  model: jev-latest
+  api_key_env: TYPESAFE_API_KEY
+  concurrency: 8
+paths:
+  - src
+exclude:
+  - &#039;src/Generated/**&#039;
+fail_on: error
+imports:
+  - vendor/k-kinzal/decisions-lint/rules/cohesion.yaml
+  - vendor/k-kinzal/decisions-lint/rules/ddd.yaml
+  - rules/team.yaml
+rules:
+  cohesion.method-belongs-to-class:
+    severity: error
+    decision:
+      threshold: 0.8
+  cohesion.property-belongs-to-class:
+    enabled: false
+  ddd.usecase-domain-leak:
+    paths:
+      - &#039;src/Application/**/*.php&#039;</code></pre>
+<p>The imports supply the rules; <code>rules</code> changes only what this project does differently. Here one imported rule becomes an error with a stricter threshold, another is switched off, and a third is pointed at the directory where this project keeps its use cases.</p>
+<h3>Keys</h3>
+<div class="table-wrap"><table><thead><tr><th>Key</th><th>Required</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>version</code></td><td>yes</td><td></td><td>Always <code>1</code>.</td></tr><tr><td><code>provider</code></td><td>no</td><td>Jev</td><td>The decision API. See <a href="../../../../k-kinzal/decisions-lint/doc/docs/providers.md.html">providers</a>.</td></tr><tr><td><code>provider.name</code></td><td>no</td><td><code>jev</code></td><td><code>jev</code>, <code>openai</code>, <code>ollama</code>, <code>localai</code> or <code>openai-compatible</code>.</td></tr><tr><td><code>provider.model</code></td><td>no</td><td>per provider</td><td>The model identifier, such as <code>jev-latest</code>, <code>gpt-6-luna</code> or <code>llama3.1</code>.</td></tr><tr><td><code>provider.api_key_env</code></td><td>no</td><td>per provider</td><td>The environment variable that holds the API key. The key itself never goes into the file. Local servers run without one.</td></tr><tr><td><code>provider.base_url</code></td><td>no</td><td>per provider</td><td>The scheme and host of the API, for a proxy, a compatible endpoint or a local server.</td></tr><tr><td><code>provider.timeout</code></td><td>no</td><td><code>60</code>, <code>300</code> for chat models</td><td>Seconds to wait for one response.</td></tr><tr><td><code>provider.concurrency</code></td><td>no</td><td><code>8</code>, <code>2</code> for chat models</td><td>How many requests are in flight at once, from 1 to 64.</td></tr><tr><td><code>paths</code></td><td>no</td><td><code>[src]</code></td><td>Directories, files or globs to lint, relative to <code>decisions.yaml</code>.</td></tr><tr><td><code>exclude</code></td><td>no</td><td><code>[]</code></td><td>Globs to leave out, relative to <code>decisions.yaml</code>.</td></tr><tr><td><code>fail_on</code></td><td>no</td><td><code>error</code></td><td>The weakest severity that makes <code>check</code> exit <code>1</code>: <code>error</code>, <code>warning</code>, <code>info</code> or <code>never</code>.</td></tr><tr><td><code>imports</code></td><td>no</td><td><code>[]</code></td><td>Rule files to load, relative to <code>decisions.yaml</code>.</td></tr><tr><td><code>rules</code></td><td>no</td><td><code>{}</code></td><td>Rule definitions and overrides, keyed by rule id.</td></tr></tbody></table></div>
+<p>Globs use <code>*</code> within one path segment, <code>**</code> across segments and <code>?</code> for one character. A pattern without a wildcard names a file, or a directory with everything below it.</p>
+<h3>Imports and overrides</h3>
+<p>Rule files are read in the order of <code>imports</code>. A rule id that appears in a later file overrides the earlier definition key by key. The entries of <code>rules</code> in <code>decisions.yaml</code> are applied last, in the same way.</p>
+<p>An override keeps every value it does not mention:</p>
+<div class="table-wrap"><table><thead><tr><th>Value</th><th>Merged by</th></tr></thead><tbody><tr><td>Mappings such as <code>target</code>, <code>decision</code> and <code>decision.choices</code></td><td>Key by key; <code>decision: {threshold: 0.8}</code> keeps the imported instructions and type.</td></tr><tr><td>Lists such as <code>paths</code>, <code>exclude</code>, <code>violations</code>, <code>decision.levels</code> and <code>target.visibility</code></td><td>Replaced as a whole when set.</td></tr><tr><td>Scalars such as <code>severity</code>, <code>enabled</code>, <code>context</code> and <code>description</code></td><td>Replaced when set.</td></tr></tbody></table></div>
+<p>Set <code>enabled: false</code> to switch an imported rule off. A rule written only in <code>decisions.yaml</code> must be complete: <code>target</code>, <code>decision</code> and <code>violations</code> are required, and a partial entry for an id no import defines is reported as an error naming the missing part.</p>
+<h3>Schemas</h3>
+<p>The package ships JSON schemas in <code>schema/</code>:</p>
+<div class="table-wrap"><table><thead><tr><th>Schema</th><th>Validates</th></tr></thead><tbody><tr><td><code>schema/decisions.schema.json</code></td><td><code>decisions.yaml</code>. Rule entries may be partial.</td></tr><tr><td><code>schema/rules.schema.json</code></td><td>A rule file. Every rule must be complete.</td></tr></tbody></table></div>
+<p>Every document is validated against its schema before it is read, by <code>check</code>, <code>plan</code>, <code>rules</code> and <code>validate</code> alike. An unknown key, a wrong type, a value outside its range, a misnamed rule id or a missing required key stops the run with exit <code>2</code> and a message that names the path and the fix:</p>
+<pre class="code"><code>Decisions error: decisions.yaml: provider.name must be one of &quot;jev&quot;, &quot;openai&quot;, not &quot;anthropic&quot;. Replace it with one of those values.
+Decisions error: rules/team.yaml: rules.team.one is missing the key &quot;violations&quot;. Add it: the answers that violate the rule, each with the message and the fix to report.
+Decisions error: decisions.yaml: rules has the key &quot;Team One&quot;, which is not a rule id made of lower-case letters, digits, dots and hyphens, such as cohesion.method-belongs-to-class. Rename the key.</code></pre>
+<p>Point an editor at the schema with the <code># yaml-language-server: $schema=…</code> comment <code>init</code> writes, and the same checks run while typing. What the schema cannot express, such as a <code>choice</code> violation naming an option the decision does not list, is checked when the rules are read and reported in the same form.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../assets/search-index.js" defer></script>
+<script src="../../../../assets/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rule authoring — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/decisions-lint/doc/skills/decisions-lint/references/rules.md.html">
+<meta name="description" content="Rule authoring, a document of the k-kinzal/decisions-lint package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="Rule authoring — php-ai-toolkit">
+<meta property="og:description" content="Rule authoring, a document of the k-kinzal/decisions-lint package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/decisions-lint/doc/skills/decisions-lint/references/rules.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../../k-kinzal/decisions-lint/index.html">k-kinzal/decisions-lint</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../../k-kinzal/decisions-lint/all-items.html">All items</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Cli/index.html" title="DecisionsLint\Cli">DecisionsLint\Cli</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Cli/Command/index.html" title="DecisionsLint\Cli\Command">DecisionsLint\Cli\Command</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Config/index.html" title="DecisionsLint\Config">DecisionsLint\Config</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Decision/index.html" title="DecisionsLint\Decision">DecisionsLint\Decision</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Diagnostic/index.html" title="DecisionsLint\Diagnostic">DecisionsLint\Diagnostic</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Http/index.html" title="DecisionsLint\Http">DecisionsLint\Http</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Lint/index.html" title="DecisionsLint\Lint">DecisionsLint\Lint</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/index.html" title="DecisionsLint\Provider">DecisionsLint\Provider</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Chat/index.html" title="DecisionsLint\Provider\Chat">DecisionsLint\Provider\Chat</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Fake/index.html" title="DecisionsLint\Provider\Fake">DecisionsLint\Provider\Fake</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Jev/index.html" title="DecisionsLint\Provider\Jev">DecisionsLint\Provider\Jev</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Ollama/index.html" title="DecisionsLint\Provider\Ollama">DecisionsLint\Provider\Ollama</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAi/index.html" title="DecisionsLint\Provider\OpenAi">DecisionsLint\Provider\OpenAi</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAiCompatible/index.html" title="DecisionsLint\Provider\OpenAiCompatible">DecisionsLint\Provider\OpenAiCompatible</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Reporting/index.html" title="DecisionsLint\Reporting">DecisionsLint\Reporting</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Rule/index.html" title="DecisionsLint\Rule">DecisionsLint\Rule</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Source/index.html" title="DecisionsLint\Source">DecisionsLint\Source</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../../k-kinzal/decisions-lint/index.html">k-kinzal/decisions-lint</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">skills/decisions-lint/references/rules.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>Rule authoring</h1><div class="symbol-meta"><span class="source-link">skills/decisions-lint/references/rules.md</span></div></div>
+<section class="readme prose"><h2>Rule authoring</h2>
+<p>A rule file is YAML with <code>version: 1</code> and <code>rules</code>, keyed by id (<code>group.name</code>, lower case, dots and hyphens). Validate it with <code>decisions-lint validate FILE</code>.</p>
+<pre class="code"><code>version: 1
+rules:
+  ddd.usecase-domain-leak:
+    description: A use case coordinates the domain; it does not encode business rules.
+    severity: error
+    paths: [&#039;src/**/UseCase/**/*.php&#039;]
+    target: {kind: method, visibility: [public], exclude_names: [&#039;__*&#039;]}
+    context: class
+    decision:
+      type: choice
+      instructions: &gt;-
+        {class}::{name} is a use case method. Classify the knowledge its body
+        encodes: delegating to repositories and domain objects is orchestration;
+        a conditional or calculation expressing a business policy is a domain
+        rule; SQL, HTTP or framework details are infrastructure.
+      choices:
+        orchestration: Loads domain objects, calls their behaviour, persists results.
+        domain_rule: Encodes a rule, invariant or calculation that belongs in the domain.
+        infrastructure: Contains database, HTTP, file or framework details.
+      threshold: 0.6
+    violations:
+      - answer: domain_rule
+        message: &#039;Use case {class}::{name} encodes a business rule that belongs in the domain layer.&#039;
+        fix: &#039;Move the rule into the entity, value object or domain service it describes, and have {name}() call it.&#039;</code></pre>
+<h3>Parts</h3>
+<div class="table-wrap"><table><thead><tr><th>Key</th><th>Notes</th></tr></thead><tbody><tr><td><code>target.kind</code></td><td><code>file</code>, <code>class</code>, <code>interface</code>, <code>trait</code>, <code>enum</code>, <code>method</code>, <code>function</code>, <code>property</code>. <code>visibility</code>, <code>names</code>, <code>exclude_names</code>, <code>static</code> narrow it.</td></tr><tr><td><code>context</code></td><td><code>declaration</code> (the declaration only), <code>class</code> (default; the enclosing class or the file for a function), <code>file</code>. Same declaration and context across rules share one request.</td></tr><tr><td><code>decision.type</code></td><td><code>predicate</code> (yes/no with probability), <code>choice</code> (<code>choices</code> name: description), <code>score</code> (<code>levels</code> 2–10, lowest first, level 0 upward).</td></tr><tr><td><code>decision.threshold</code></td><td>0–1, default 0.5: the probability a predicate needs, or the confidence a choice or score needs, to count as a violation.</td></tr><tr><td><code>violations[]</code></td><td><code>answer: true|false</code> (predicate), <code>answer: option</code> (choice), <code>min_score</code>/<code>max_score</code> (score); <code>message</code> and <code>fix</code> are required templates. The first matching entry is reported.</td></tr></tbody></table></div>
+<p>Placeholders for <code>instructions</code>, <code>message</code>, <code>fix</code>: <code>{file}</code>, <code>{line}</code>, <code>{column}</code>, <code>{kind}</code>, <code>{name}</code>, <code>{class}</code>, <code>{namespace}</code>, <code>{qualified_name}</code>, <code>{signature}</code>, <code>{visibility}</code>, <code>{rule}</code>, <code>{threshold}</code>; in messages also <code>{answer}</code>, <code>{probability}</code>, <code>{confidence}</code>, <code>{choice}</code>, <code>{score}</code>. An unknown placeholder is rejected when the rule is read.</p>
+<h3>Writing instructions</h3>
+<ul><li>Ask one judgement. Split a question with two conditions into two rules.</li><li>State the boundary: what counts as yes and what counts as no, with the kind of code that falls on each side.</li><li>Phrase a predicate so that yes is the acceptable case and <code>answer: false</code> is the violation, as the shipped rules do.</li><li>Give every choice option a description, make the options exclusive, and add an <code>other</code> option when inputs may fall outside the list.</li><li>Describe score levels so each can be applied on its own; level 0 is the lowest.</li></ul>
+<h3>Writing message and fix</h3>
+<ul><li><code>message</code> says what is wrong about this declaration: name it with <code>{class}</code> and <code>{name}</code>.</li><li><code>fix</code> says what to change, as an instruction that can be carried out without reading the rule: where to move the method, what to rename it to, which interface to introduce.</li></ul>
+<h3>Tuning</h3>
+<ol><li><code>decisions-lint plan --rule=ID</code> to confirm what the rule selects and how many requests it costs.</li><li><code>decisions-lint check --rule=ID --format=json</code> on code whose verdict you know.</li><li>Compare the findings and their <code>confidence</code> with your judgement. Raise <code>threshold</code> to drop hesitant answers; sharpen <code>instructions</code> when confident answers are wrong; narrow <code>target</code> or <code>paths</code> when the rule judges declarations it should not.</li><li>Start with <code>severity: warning</code>; make the rule an <code>error</code> once its findings are ones the team acts on.</li></ol>
+<h3>Overriding from decisions.yaml</h3>
+<p>Under <code>rules</code> in <code>decisions.yaml</code>, an entry for an imported id overrides only the keys it sets: mappings merge key by key, lists and scalars replace. <code>enabled: false</code> switches a rule off. A rule defined only in <code>decisions.yaml</code> must be complete.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../../assets/app.js" defer></script>
+</body>
+</html>

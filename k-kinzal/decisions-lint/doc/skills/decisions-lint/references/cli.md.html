@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>decisions-lint CLI — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/decisions-lint/doc/skills/decisions-lint/references/cli.md.html">
+<meta name="description" content="decisions-lint CLI, a document of the k-kinzal/decisions-lint package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="decisions-lint CLI — php-ai-toolkit">
+<meta property="og:description" content="decisions-lint CLI, a document of the k-kinzal/decisions-lint package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/decisions-lint/doc/skills/decisions-lint/references/cli.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../../k-kinzal/decisions-lint/index.html">k-kinzal/decisions-lint</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../../k-kinzal/decisions-lint/all-items.html">All items</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Cli/index.html" title="DecisionsLint\Cli">DecisionsLint\Cli</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Cli/Command/index.html" title="DecisionsLint\Cli\Command">DecisionsLint\Cli\Command</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Config/index.html" title="DecisionsLint\Config">DecisionsLint\Config</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Decision/index.html" title="DecisionsLint\Decision">DecisionsLint\Decision</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Diagnostic/index.html" title="DecisionsLint\Diagnostic">DecisionsLint\Diagnostic</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Http/index.html" title="DecisionsLint\Http">DecisionsLint\Http</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Lint/index.html" title="DecisionsLint\Lint">DecisionsLint\Lint</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/index.html" title="DecisionsLint\Provider">DecisionsLint\Provider</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Chat/index.html" title="DecisionsLint\Provider\Chat">DecisionsLint\Provider\Chat</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Fake/index.html" title="DecisionsLint\Provider\Fake">DecisionsLint\Provider\Fake</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Jev/index.html" title="DecisionsLint\Provider\Jev">DecisionsLint\Provider\Jev</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/Ollama/index.html" title="DecisionsLint\Provider\Ollama">DecisionsLint\Provider\Ollama</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAi/index.html" title="DecisionsLint\Provider\OpenAi">DecisionsLint\Provider\OpenAi</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Provider/OpenAiCompatible/index.html" title="DecisionsLint\Provider\OpenAiCompatible">DecisionsLint\Provider\OpenAiCompatible</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Reporting/index.html" title="DecisionsLint\Reporting">DecisionsLint\Reporting</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Rule/index.html" title="DecisionsLint\Rule">DecisionsLint\Rule</a></li><li><a href="../../../../../../k-kinzal/decisions-lint/DecisionsLint/Source/index.html" title="DecisionsLint\Source">DecisionsLint\Source</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../../k-kinzal/decisions-lint/index.html">k-kinzal/decisions-lint</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">skills/decisions-lint/references/cli.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>decisions-lint CLI</h1><div class="symbol-meta"><span class="source-link">skills/decisions-lint/references/cli.md</span></div></div>
+<section class="readme prose"><h2>decisions-lint CLI</h2>
+<p>Invoke <code>vendor/bin/decisions-lint COMMAND</code> from the project root. No command means <code>check</code>.</p>
+<h3>Commands</h3>
+<div class="table-wrap"><table><thead><tr><th>Command</th><th>Behavior</th></tr></thead><tbody><tr><td><code>check [paths...]</code></td><td>Judge the configured files, or the given paths, and report violations.</td></tr><tr><td><code>plan [paths...]</code></td><td>List each judged declaration with its rules and the request count; nothing is sent.</td></tr><tr><td><code>rules</code></td><td>List the effective rules after imports and overrides.</td></tr><tr><td><code>validate [files...]</code></td><td>Validate <code>decisions.yaml</code> with its imports, and any rule file given, against the schemas.</td></tr><tr><td><code>init</code></td><td>Write a <code>decisions.yaml</code> importing the shipped rule files; refuse to overwrite.</td></tr></tbody></table></div>
+<h3>Options</h3>
+<div class="table-wrap"><table><thead><tr><th>Applies to</th><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>All</td><td><code>-c</code>, <code>--config=FILE</code></td><td>Configuration relative to the working directory; default <code>decisions.yaml</code>. Paths resolve relative to its directory.</td></tr><tr><td><code>check</code></td><td><code>--format=text|human|ai|json|checkstyle|github</code></td><td>Default <code>ai</code> in agent sessions, otherwise <code>text</code>.</td></tr><tr><td><code>plan</code>, <code>rules</code></td><td><code>--format=text|json</code></td><td></td></tr><tr><td><code>check</code>, <code>plan</code></td><td><code>-r</code>, <code>--rule=ID</code></td><td>Run one rule; repeat for several.</td></tr><tr><td><code>check</code></td><td><code>--fail-on=error|warning|info|never</code></td><td>Weakest severity that exits <code>1</code>; default <code>fail_on</code> in the configuration, then <code>error</code>.</td></tr><tr><td><code>init</code></td><td><code>--provider=jev|openai|ollama|localai|openai-compatible</code>, <code>-p</code>, <code>--path=DIR</code></td><td>Provider and directories for the new file.</td></tr></tbody></table></div>
+<h3>Output</h3>
+<p><code>ai</code> prints one line per finding:</p>
+<pre class="code"><code>error: src/UseCase/PlaceOrder.php:6:5 [ddd.usecase-domain-leak] App\UseCase\PlaceOrder::handle confidence=0.88 Use case PlaceOrder::handle encodes a business rule that belongs in the domain layer. Fix: Move the rule into the entity, value object or domain service it describes, and have handle() call that method so the use case only orchestrates.
+1 error, 0 warnings, 0 infos, 1 file with findings, 3 targets, 3 requests to jev-1.13.0.
+Decisions check failed: a finding is at least error and fail_on is error.</code></pre>
+<p><code>json</code> returns <code>findings[]</code> with <code>path</code>, <code>line</code>, <code>column</code>, <code>rule</code>, <code>severity</code>, <code>symbol</code>, <code>message</code>, <code>fix</code>, <code>confidence</code>, plus <code>summary</code>, <code>files</code>, <code>targets</code>, <code>requests</code>, <code>models</code>, <code>fail_on</code> and <code>success</code>. <code>success: false</code> corresponds to exit <code>1</code>.</p>
+<h3>Exit codes</h3>
+<div class="table-wrap"><table><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><td><code>0</code></td><td>Completed; for <code>check</code>, no finding reaches <code>fail_on</code>.</td></tr><tr><td><code>1</code></td><td><code>check</code> found a finding at or above <code>fail_on</code>.</td></tr><tr><td><code>2</code></td><td>Invalid command line, configuration, rule file, input file or provider response, or the provider is unreachable. Read <code>Decisions error:</code> on stderr; stdout is empty.</td></tr></tbody></table></div>
+<p>For exit <code>2</code>, correct what the message names and rerun. A missing API key, an HTTP 401 and an HTTP 429 are each reported with the setting or variable to check.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../../assets/app.js" defer></script>
+</body>
+</html>

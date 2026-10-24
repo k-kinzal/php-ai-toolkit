@@ -122,6 +122,16 @@ use SplFileInfo;
 #[UsesClass(FieldMessage::class)]
 final class RuleCatalogTest extends TestCase
 {
+    public function testBenchmarksDescribesConfigurationRepairsAndSourceFindings(): void
+    {
+        $rules = (new RuleCatalog())->benchmarks();
+        self::assertCount(9, $rules);
+        self::assertSame('phpbench.autoload', $rules[0]->id);
+        self::assertTrue($rules[0]->fixable);
+        self::assertSame('phpbench.namespace', $rules[7]->id);
+        self::assertFalse($rules[7]->fixable);
+    }
+
     /**
      * @throws JsonException
      */

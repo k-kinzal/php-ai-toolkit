@@ -10,6 +10,7 @@ use Guard\Input\Input;
 use Guard\Input\InputSet;
 use Guard\Input\Selection;
 use Guard\Input\StructuredFile;
+use Guard\Policy\Benchmark\BenchmarkRules;
 use Guard\Policy\TestDependency\TestDependencyRules;
 use Guard\Structure\Document\DataDocument;
 use Guard\Structure\Document\DocumentFailure;
@@ -30,7 +31,7 @@ final class FieldConstraints implements Policy
     /**
      * @param list<Rule> $rules
      */
-    public function __construct(array $rules, private ?TestDependencyRules $testDependencies = null)
+    public function __construct(array $rules, private ?TestDependencyRules $testDependencies = null, private bool $benchmarks = false)
     {
         $groups = [];
         foreach ($rules as $rule) {
@@ -42,6 +43,9 @@ final class FieldConstraints implements Policy
             foreach ($this->testDependencies->files() as $file => $format) {
                 $groups[$file] ??= ['file' => $file, 'format' => $format, 'rules' => []];
             }
+        }
+        if ($this->benchmarks) {
+            $groups['composer.json'] ??= ['file' => 'composer.json', 'format' => 'json', 'rules' => []];
         }
         $this->groups = array_values($groups);
     }
@@ -57,6 +61,9 @@ final class FieldConstraints implements Policy
         }
         if ($this->testDependencies !== null) {
             $inputs['test-directories'] = new Input(new Selection('directories', ['.'], ['*/*']));
+        }
+        if ($this->benchmarks) {
+            $inputs['bench-directory'] = (new BenchmarkFiles())->directory();
         }
         return $inputs;
     }
@@ -77,6 +84,9 @@ final class FieldConstraints implements Policy
                 continue;
             }
             $generated = $this->dependencyRules($file, $directories);
+            if ($this->benchmarks && $group['file'] === 'composer.json') {
+                $generated = array_merge($generated, (new BenchmarkRules())->rules($inputs->get('bench-directory')->directories['bench']->fileNames ?? []));
+            }
             $rules = array_merge($rules, $generated);
             if ($rules === []) {
                 continue;

@@ -10,6 +10,7 @@ use Guard\Config\Reader\HeadingPolicyReader;
 use Guard\Config\Reader\MetricPolicyReader;
 use Guard\Config\Reader\ScopeConfigReader;
 use Guard\Diagnostic\PolicyException;
+use Guard\Policy\BenchmarkFiles;
 use Guard\Policy\DirectoryEntries;
 use Guard\Policy\FieldConstraints;
 use Guard\Policy\HeadingStructure;
@@ -31,6 +32,13 @@ final class ConfigurationLoader
         $data = (new ImportResolver())->resolve($path);
         $root = dirname($path);
         $policies = [];
+        $benchmarks = $data['benchmarks'] ?? false;
+        if (!is_bool($benchmarks) || (array_key_exists('benchmarks', $data) && $data['benchmarks'] === null)) {
+            throw new PolicyException('benchmarks must be true or false. Set benchmarks: true to check the bench/ directory and its Composer commands.');
+        }
+        if ($benchmarks) {
+            $policies[] = new PolicyBinding('benchmark-files', new BenchmarkFiles(), 25);
+        }
         if (array_key_exists('metrics', $data)) {
             $policies[] = new PolicyBinding('metric-limits', new MetricLimits((new MetricPolicyReader())->read($data['metrics'], $root)), 0);
         }
@@ -44,7 +52,7 @@ final class ConfigurationLoader
         /**
          * Field failures historically take precedence, while source findings are reported first.
          */
-        array_unshift($policies, new PolicyBinding('field-constraints', new FieldConstraints($rules, array_key_exists('test_dependencies', $data) ? (new Reader\TestDependencyConfigReader())->read($data['test_dependencies']) : null), 30));
+        array_unshift($policies, new PolicyBinding('field-constraints', new FieldConstraints($rules, array_key_exists('test_dependencies', $data) ? (new Reader\TestDependencyConfigReader())->read($data['test_dependencies']) : null, $benchmarks), 30));
         $scope = array_key_exists('collect', $data) ? (new ScopeConfigReader())->read($data['collect']) : null;
         return new Configuration($root, $policies, (new ExtensionConfigReader())->read($data['extensions'] ?? []), $scope);
     }

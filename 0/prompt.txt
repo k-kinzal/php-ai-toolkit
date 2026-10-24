@@ -1,0 +1,8 @@
+PBTを使うProject向けに下記の制約を入れようと思います
+・tests/Property以下にPBTを入れる
+・クラス名は<Name>Propertiesでextends TestCaseをする形に
+・メソッド名はsatisfies<見たいしたい性質名>でこれ以外のメソッド名は禁止
+・Unitと同じようにprivate/protectedメソッドやプロパティ、メソッドなどは禁止。他にもUnitで行っていたようなルールでPBTでも同じ問題が起きそうなのは対象範囲内にしてください
+　・Mock禁止は不要です
+
+こちらのPHPStanルールとガードでの適用の実施を行ってください。

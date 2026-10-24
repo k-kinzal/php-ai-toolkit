@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M5Q5H5TZSBPFPBQET1TGSK31",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/guard-php/docs/benchmarks.md",
+    "packages/guard-php/docs/configuration.md",
+    "packages/guard-php/docs/policies.md",
+    "packages/guard-php/rules/phpbench.yaml",
+    "packages/guard-php/src/Config/ConfigurationLoader.php",
+    "packages/guard-php/src/Config/DocumentMerger.php",
+    "packages/guard-php/src/Config/ImportResolver.php",
+    "packages/guard-php/src/Config/RuleCatalog.php",
+    "packages/guard-php/src/Policy/Benchmark/BenchmarkLayout.php",
+    "packages/guard-php/src/Policy/Benchmark/BenchmarkRules.php",
+    "packages/guard-php/src/Policy/BenchmarkFiles.php",
+    "packages/guard-php/src/Policy/FieldConstraints.php",
+    "packages/guard-php/src/Structure/Php/PhpBenchReference.php",
+    "packages/guard-php/tests/Integration/BenchmarksTest.php",
+    "packages/guard-php/tests/Unit/Config/RuleCatalogTest.php",
+    "packages/guard-php/tests/Unit/Policy/Benchmark/BenchmarkLayoutTest.php",
+    "packages/guard-php/tests/Unit/Policy/Benchmark/BenchmarkRulesTest.php",
+    "packages/guard-php/tests/Unit/Policy/BenchmarkFilesTest.php",
+    "packages/guard-php/tests/Unit/Structure/Php/PhpBenchReferenceTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 109701,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2089728,
+    "output_tokens": 24608,
+    "api_call_count": 26
+  }
+}

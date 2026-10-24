@@ -1,0 +1,11 @@
+PHPBenchを実行するbenchディレクトリを制限できるようにします。
+・composer.jsonでbenchと\Benchがマッピングされること
+・composer.jsonのscriptsでcomposer benchコマンドが定義されること
+・benchの中にはphpファイルだけであること
+・benchの中が1つならそれはBench.phpであること
+・benchの中が複数のファイルならXxxBench.phpという名前であること
+・benchの中が複数のファイルならcomposer bench:xxxでXxxBench実行が全て定義されていること
+・BenchのPHPファイル内でPhpBenchのNamespaceの呼び出しがあること（一度自作Benchになっていたことを防ぐのが目的です）
+
+GuardやRuleを作ってこれらを制限、チェック、修復可能な状態にしてください。
+mainで変更し、完了したら変更内容をコミットください。

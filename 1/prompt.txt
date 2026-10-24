@@ -1,0 +1,12 @@
+テスト関係の依存関係をguardで制限したいです。
+よく使うものとしてbench/fuzz/spec/testsディレクトリがルートに入りますが、それぞれ独立し、それぞれが参照できるのはsrcのみになります。
+また、逆にsrcがそれぞれを参照することはありません。
+
+・composer.jsonレベルでbenchがあれば\Bench、fuzzは\Fuzz、specは\Spec、testsは\TestsにPSR-4のマッピングを入れる
+・deptracレベルでBench、fuzzは\Fuzz、specは\Spec、testsは\Testsを含んだレイヤリングの設定
+
+これを検査、セットアップできるようにしてください。
+
+---
+
+変更内容だけコミットください。

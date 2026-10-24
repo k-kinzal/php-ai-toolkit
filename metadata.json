@@ -3,26 +3,38 @@
   "checkpoint_id": "01M5Q4ATVZBJM3S08NFGEK0051",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "packages/guard-php/docs/cli.md",
     "packages/guard-php/docs/configuration.md",
     "packages/guard-php/docs/fields.md",
     "packages/guard-php/docs/policies.md",
+    "packages/guard-php/rules/test-dependencies.yaml",
     "packages/guard-php/src/Config/ConfigurationLoader.php",
     "packages/guard-php/src/Config/DocumentMerger.php",
     "packages/guard-php/src/Config/ImportResolver.php",
     "packages/guard-php/src/Config/Project/Initializer.php",
     "packages/guard-php/src/Config/Project/PresetCatalog.php",
     "packages/guard-php/src/Config/Project/PresetSelector.php",
+    "packages/guard-php/src/Config/Project/TestDependencySetup.php",
+    "packages/guard-php/src/Config/Reader/TestDependencyConfigReader.php",
     "packages/guard-php/src/Config/RuleCatalog.php",
     "packages/guard-php/src/Policy/FieldConstraints.php",
     "packages/guard-php/src/Policy/FileChange.php",
     "packages/guard-php/src/Policy/Rule.php",
+    "packages/guard-php/src/Policy/TestDependency/DeptracLayers.php",
+    "packages/guard-php/src/Policy/TestDependency/DeptracRules.php",
+    "packages/guard-php/src/Policy/TestDependency/TestDependencyRules.php",
     "packages/guard-php/src/Repair/AtomicWriter.php",
     "packages/guard-php/src/Reporting/ChangeDiff.php",
+    "packages/guard-php/tests/Integration/TestDependenciesTest.php",
+    "packages/guard-php/tests/Unit/Config/Project/TestDependencySetupTest.php",
+    "packages/guard-php/tests/Unit/Config/Reader/TestDependencyConfigReaderTest.php",
     "packages/guard-php/tests/Unit/Policy/FieldConstraintsTest.php",
     "packages/guard-php/tests/Unit/Policy/RuleTest.php",
+    "packages/guard-php/tests/Unit/Policy/TestDependency/DeptracLayersTest.php",
+    "packages/guard-php/tests/Unit/Policy/TestDependency/DeptracRulesTest.php",
+    "packages/guard-php/tests/Unit/Policy/TestDependency/TestDependencyRulesTest.php",
     "packages/guard-php/tests/Unit/Repair/AtomicWriterTest.php"
   ],
   "sessions": [
@@ -32,13 +44,20 @@
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
       "prompt": "/0/prompt.txt"
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
+      "prompt": "/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 138619,
+    "input_tokens": 269434,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 4023936,
-    "output_tokens": 29549,
-    "api_call_count": 41
+    "cache_read_tokens": 10981888,
+    "output_tokens": 73287,
+    "api_call_count": 98
   }
 }

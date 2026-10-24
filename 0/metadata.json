@@ -1,0 +1,57 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M5Q4YTBWJQAP8CFRBRC9F59B",
+  "session_id": "01a16e45-bc93-7e30-a092-c499a2596013",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-24T14:27:42.141151Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/guard-php/docs/structure.md",
+    "packages/guard-php/rules/structure.yaml",
+    "packages/guard-php/skills/guard/references/structure.md",
+    "packages/guard-php/src/Config/Reader/DirectoryRuleConfigReader.php",
+    "packages/guard-php/src/Config/RuleCatalog.php",
+    "packages/guard-php/src/Policy/Definition/DirectoryRuleConfig.php",
+    "packages/guard-php/src/Policy/Diagnostic/RuleMessages.php",
+    "packages/guard-php/src/Policy/Inspection/DirectoryRuleInspector.php",
+    "packages/guard-php/src/Policy/Inspection/RequiredDirectoryInspector.php",
+    "packages/guard-php/tests/Integration/SpecStructureTest.php",
+    "packages/guard-php/tests/Unit/Config/Reader/DirectoryRuleConfigReaderTest.php",
+    "packages/guard-php/tests/Unit/Config/RuleCatalogTest.php",
+    "packages/guard-php/tests/Unit/Policy/Inspection/DirectoryRuleInspectorTest.php",
+    "packages/guard-php/tests/Unit/Policy/Inspection/RequiredDirectoryInspectorTest.php"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "f7124c7e9ddc",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 72438,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2243456,
+    "output_tokens": 16744,
+    "api_call_count": 30
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-24T14:27:42.041513Z",
+    "agent_lines": 444,
+    "agent_removed": 4,
+    "human_added": 61,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 505,
+    "total_lines_changed": 510,
+    "agent_percentage": 87.84313725490196,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

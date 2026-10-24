@@ -55,7 +55,8 @@ final class NoControlFlowInTestMethodRule implements Rule
             return [];
         }
 
-        if (!$this->testMethodDetector->isTestMethod($node)) {
+        if (!$this->testMethodDetector->isTestMethod($node)
+            && !($this->testClassScope->isPropertyTestClass($scope) && str_starts_with($node->name->toString(), 'satisfies'))) {
             return [];
         }
 

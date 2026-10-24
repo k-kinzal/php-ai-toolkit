@@ -41,7 +41,7 @@ final class RequirePhpDocOnPublicApiRule implements Rule
      * @param list<string> $restrictedTestNamespacePrefixes namespace prefixes to exclude from checks
      */
     public function __construct(
-        array $restrictedTestNamespacePrefixes = ['Tests\\Unit', 'Tests\\Integration'],
+        array $restrictedTestNamespacePrefixes = ['Tests\\Unit', 'Tests\\Integration', 'Tests\\Property'],
         ?AnonymousClassDetector $anonymousClassDetector = null,
         ?RestrictedTestNamespaceMatcher $restrictedTestNamespaceMatcher = null,
         ?ClassLikeKindLabel $kindLabel = null,

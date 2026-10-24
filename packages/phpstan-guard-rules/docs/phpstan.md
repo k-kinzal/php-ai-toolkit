@@ -63,6 +63,7 @@ Rules applied to test classes in the `Tests\Unit` / `Tests\Integration` namespac
 | [NoBrokenCodeExpectationRule](rules/NoBrokenCodeExpectationRule.md) `*` | Forbids `expectException()` / `expectExceptionObject()` for `Throwable` and the `LogicException`/`Error` families | `customRules.noBrokenCodeExpectation` | [Unavailable](rules/NoBrokenCodeExpectationRule.md#rector) |
 | [PhpUnitMockApiRule](rules/PhpUnitMockApiRule.md) `*` | Restricts mock API and enforces interface-only mocking | `customRules.phpUnitMockApi` | [Unavailable](rules/PhpUnitMockApiRule.md#rector) |
 | [ForbidDescriptivePhpDocInTestClassRule](rules/ForbidDescriptivePhpDocInTestClassRule.md) | Forbids descriptive PHPDoc text in test classes | `customRules.forbidDescriptivePhpDocInTestClass` | [Risky](rules/ForbidDescriptivePhpDocInTestClassRule.md#rector) |
+| [PropertyTestConventionRule](rules/PropertyTestConventionRule.md) | Requires `tests/Property`, `<Name>Properties extends TestCase`, and executable public `satisfies<PropertyName>` methods | `customRules.propertyTestLocation`, `customRules.propertyTestClassName`, `customRules.propertyTestExtends`, `customRules.propertyTestMethodName`, `customRules.propertyTestMethodSignature`, `customRules.propertyTestDiscovery` | [Unavailable](rules/PropertyTestConventionRule.md#rector) |
 | [TestNamingConventionRule](rules/TestNamingConventionRule.md) | Enforces naming conventions for test methods and data providers | `customRules.testNamingConvention` | [Unavailable](rules/TestNamingConventionRule.md#rector) |
 
 ## Enabling and Disabling Rules
@@ -112,7 +113,7 @@ The following values can be customized under `parameters.toolkit` in a project's
 | Parameter | Default | Description |
 |-----------|---------|-------------|
 | `testNamespacePrefixes` | `['Tests']` | Test namespace prefixes |
-| `restrictedTestNamespacePrefixes` | `['Tests\Unit', 'Tests\Integration']` | Test namespaces where strict rules apply |
+| `restrictedTestNamespacePrefixes` | `['Tests\Unit', 'Tests\Integration', 'Tests\Property']` | Test namespaces where strict rules apply |
 | `visibilityExemptNamespacePrefixes` | `['Tests']` | Namespace subtrees allowed to reference declarations across `@visibility` boundaries |
 | `srcUnitTestPairExcludePatterns` | `[]` | Patterns to exclude from test pair checks |
 | `srcMarker` | `'/src/'` | Source code path marker |

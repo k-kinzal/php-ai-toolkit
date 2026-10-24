@@ -69,4 +69,11 @@ final class NoControlFlowInTestMethodRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoControlFlowInTestMethod/NonTestClass.php'], []);
     }
+
+    public function testProcessNodeAppliesToPropertyTests(): void
+    {
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/PropertyTestConvention/tests/Property/RestrictionsProperties.php'], [
+            ['Split test method satisfiesBehavior() so it contains no "if" statement. Use separate tests or a data provider for each case.', 18],
+        ]);
+    }
 }

@@ -7,6 +7,8 @@
 | Rector | Unavailable |
 | Configurable | Yes (namespace prefixes) |
 
+Property tests are exempt from this rule, including concrete-class mocks. See [PropertyTestConventionRule](PropertyTestConventionRule.md).
+
 ## What It Detects
 
 This rule enforces interface-only mocking by restricting how PHPUnit's mock API is used.

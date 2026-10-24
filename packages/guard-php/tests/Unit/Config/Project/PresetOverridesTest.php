@@ -394,4 +394,28 @@ final class PresetOverridesTest extends TestCase
         self::assertSame('phpunit.xml', $last['file']);
         self::assertSame(['id' => 'phpunit12.beStrictAboutChangesToGlobalState', 'file' => 'phpunit.xml'], $rules[0]);
     }
+
+    public function testTestSuitesDiscoversPropertyFilesInVersionedConfiguration(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-property-suite-' . uniqid();
+        mkdir($root . '/tests/Property', 0777, true);
+        file_put_contents($root . '/phpunit11.xml.dist', '<phpunit/>');
+        $rules = (new PresetOverrides())->testSuites($root, ['phpunit11']);
+        self::assertCount(2, $rules);
+        self::assertSame('phpunit11.testsuite.property', $rules[0]['id']);
+        self::assertSame('phpunit11.xml.dist', $rules[0]['file']);
+        self::assertSame(['equals' => 'tests/Property'], $rules[0]['assert']);
+        self::assertSame('/phpunit/testsuites/testsuite[@name="property"]/directory/@suffix', $rules[1]['select']);
+        self::assertSame(['equals' => 'Properties.php'], $rules[1]['assert']);
+    }
+
+    public function testTestSuitesRequiresPropertySuiteWhenPbtIsSelectedBeforeDirectoryCreation(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-property-empty-' . uniqid();
+        mkdir($root);
+        $rules = (new PresetOverrides())->testSuites($root, ['phpunit9', 'pbt']);
+        self::assertCount(2, $rules);
+        self::assertSame('phpunit9.xml.dist', $rules[0]['file']);
+        self::assertSame(['equals' => 'tests/Property'], $rules[0]['assert']);
+    }
 }

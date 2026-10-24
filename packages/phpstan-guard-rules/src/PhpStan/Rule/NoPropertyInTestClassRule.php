@@ -52,7 +52,7 @@ final class NoPropertyInTestClassRule implements Rule
         return [
             RuleErrorBuilder::message(
                 sprintf(
-                    'Move property %s into local variables inside the test methods that use it. Tests\\Unit and Tests\\Integration classes must not declare properties.',
+                    'Move property %s into local variables inside the test methods that use it. Restricted test classes must not declare properties.',
                     implode(', ', $names)
                 )
             )

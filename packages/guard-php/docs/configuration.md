@@ -78,7 +78,8 @@ The package ships presets in `vendor/k-kinzal/guard-php/rules/`. Import only tho
 | `doctest9.yaml` … `doctest13.yaml` | The doctest suite in the PHPUnit configuration of each major. |
 | `php-cs-fixer.yaml`, `phpcs.yaml`, `deptrac.yaml`, `infection.yaml`, `composer.yaml` | The configuration of each tool. |
 | `github-actions.yaml`, `mutation.yaml` | The CI workflow and the scheduled mutation workflow. |
-| `pbt.yaml`, `fuzz.yaml`, `phpbench.yaml`, `docgen.yaml` | The configuration of each tool, for projects that use it. |
+| `pbt.yaml` | Property tests under `tests/Property` with `*Properties.php` filenames and Composer scripts selecting the `unit` and `property` PHPUnit suites. `guard init` adds the property suite and suffix requirements to each selected PHPUnit configuration. |
+| `fuzz.yaml`, `phpbench.yaml`, `docgen.yaml` | The configuration of each tool, for projects that use it. |
 
 ## Collection scope
 

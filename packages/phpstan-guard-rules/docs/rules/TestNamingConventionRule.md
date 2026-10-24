@@ -7,6 +7,8 @@
 | Rector | Unavailable |
 | Configurable | Yes (namespace prefixes, path markers) |
 
+Property test methods are checked by [PropertyTestConventionRule](PropertyTestConventionRule.md), which permits only `satisfies<PropertyName>` declarations.
+
 ## What It Detects
 
 This rule enforces naming conventions for test methods and data providers in restricted test classes, prohibits testing constructors/destructors directly, and ensures every public method in source classes has a corresponding test method.

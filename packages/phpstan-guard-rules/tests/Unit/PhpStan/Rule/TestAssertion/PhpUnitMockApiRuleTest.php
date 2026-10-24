@@ -74,4 +74,9 @@ final class PhpUnitMockApiRuleTest extends RuleTestCase
             ],
         ]);
     }
+
+    public function testProcessNodeAllowsConcreteMocksInPropertyTests(): void
+    {
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/PropertyTestConvention/tests/Property/RestrictionsProperties.php'], []);
+    }
 }

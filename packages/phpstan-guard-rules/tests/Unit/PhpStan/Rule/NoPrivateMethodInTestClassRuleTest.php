@@ -37,7 +37,7 @@ final class NoPrivateMethodInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoPrivateMethodInTestClass/WithPrivateMethod.php'], [
             [
-                'Inline private method helper() into the test method or move it to a dedicated collaborator. Tests\\Unit and Tests\\Integration classes may contain only test methods, data providers, and framework overrides.',
+                'Inline private method helper() into the test method or move it to a dedicated collaborator. Restricted test classes must not declare private methods.',
                 16,
             ],
         ]);

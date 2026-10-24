@@ -37,7 +37,7 @@ final class NoClassConstantInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoClassConstantInTestClass/WithConstant.php'], [
             [
-                'Inline class constant FOO inside the test methods that use it. Tests\\Unit and Tests\\Integration classes must not declare constants.',
+                'Inline class constant FOO inside the test methods that use it. Restricted test classes must not declare constants.',
                 11,
             ],
         ]);
@@ -46,5 +46,12 @@ final class NoClassConstantInTestClassRuleTest extends RuleTestCase
     public function testProcessNodeConstantInNonTestClassIsNotReported(): void
     {
         $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoClassConstantInTestClass/NonTestWithConstant.php'], []);
+    }
+
+    public function testProcessNodeAppliesToPropertyTests(): void
+    {
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/PropertyTestConvention/tests/Property/RestrictionsProperties.php'], [
+            ['Inline class constant VALUE inside the test methods that use it. Restricted test classes must not declare constants.', 12],
+        ]);
     }
 }

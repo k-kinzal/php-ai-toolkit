@@ -29,7 +29,7 @@ final class TestClassScope
      */
     public function __construct(
         array $testNamespacePrefixes = ['Tests'],
-        array $restrictedTestNamespacePrefixes = ['Tests\\Unit', 'Tests\\Integration'],
+        array $restrictedTestNamespacePrefixes = ['Tests\\Unit', 'Tests\\Integration', 'Tests\\Property'],
     ) {
         $this->testNamespacePrefixes = array_map(
             static fn (string $prefix): string => rtrim($prefix, '\\') . '\\',
@@ -46,6 +46,10 @@ final class TestClassScope
      */
     public function isTestClass(Scope $scope): bool
     {
+        if ($this->isPropertyTestClass($scope)) {
+            return true;
+        }
+
         $classReflection = $scope->getClassReflection();
         if ($classReflection === null) {
             return false;
@@ -67,6 +71,10 @@ final class TestClassScope
      */
     public function isRestrictedTestClass(Scope $scope): bool
     {
+        if ($this->isPropertyTestClass($scope)) {
+            return true;
+        }
+
         if (!$this->isTestClass($scope)) {
             return false;
         }
@@ -85,5 +93,27 @@ final class TestClassScope
         }
 
         return false;
+    }
+
+    /**
+     * Identifies named property tests by directory, namespace, or PHPUnit class convention.
+     */
+    public function isPropertyTestClass(Scope $scope): bool
+    {
+        $class = $scope->getClassReflection();
+        if ($class === null || $class->isAnonymous()) {
+            return false;
+        }
+
+        if (str_contains('/' . str_replace('\\', '/', $scope->getFile()), '/tests/Property/')
+            || str_starts_with($class->getName(), 'Tests\\Property\\')) {
+            return true;
+        }
+
+        if (!$class->isSubclassOf('PHPUnit\\Framework\\TestCase')) {
+            return false;
+        }
+
+        return str_ends_with($class->getName(), 'Properties') || $class->hasTraitUse('Eris\\TestTrait');
     }
 }

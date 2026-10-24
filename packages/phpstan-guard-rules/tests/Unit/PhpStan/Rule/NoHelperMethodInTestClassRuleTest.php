@@ -57,4 +57,9 @@ final class NoHelperMethodInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoHelperMethodInTestClass/CleanTestClass.php'], []);
     }
+
+    public function testProcessNodeLeavesPropertyMethodsToTheirConventionRule(): void
+    {
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/PropertyTestConvention/tests/Property/InvalidTest.php'], []);
+    }
 }

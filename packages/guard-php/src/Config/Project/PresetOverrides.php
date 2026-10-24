@@ -96,17 +96,18 @@ final class PresetOverrides
     }
 
     /**
-     * Requires a unit and an integration test suite in each selected PHPUnit configuration for the test directories that exist.
+     * Requires unit, integration, and property test suites in each selected PHPUnit configuration for the test directories that exist.
      *
      * A tests/Unit directory needs a suite named unit, and tests/Integration one named integration, so every test the project
-     * keeps is run and can be selected with --testsuite. A directory the project does not have adds no rule.
+     * keeps is run and can be selected with --testsuite. Property tests use Properties.php discovery.
+     * Selecting pbt also requires the property suite before tests/Property has been created.
      *
      * @param list<string> $names
      * @return list<array<string, mixed>>
      */
     public function testSuites(string $root, array $names): array
     {
-        $directories = ['unit' => 'tests/Unit', 'integration' => 'tests/Integration'];
+        $directories = ['unit' => 'tests/Unit', 'integration' => 'tests/Integration', 'property' => 'tests/Property'];
         $catalog = new PresetCatalog();
         $rules = [];
         foreach ($names as $preset) {
@@ -115,7 +116,7 @@ final class PresetOverrides
             }
             $file = $this->actual($root, $preset) ?? $catalog->defaults()[$preset];
             foreach ($directories as $suite => $directory) {
-                if (!is_dir($root . '/' . $directory)) {
+                if (!is_dir($root . '/' . $directory) && !($suite === 'property' && in_array('pbt', $names, true))) {
                     continue;
                 }
                 $rules[] = [
@@ -127,6 +128,17 @@ final class PresetOverrides
                     'level' => 'required',
                     'assert' => ['equals' => $directory],
                 ];
+                if ($suite === 'property') {
+                    $rules[] = [
+                        'id' => $preset . '.testsuite.property.suffix',
+                        'message' => 'PHPUnit must discover *Properties.php files in tests/Property: {select} in {file} must {expectation}. {fix}',
+                        'file' => $file,
+                        'format' => 'xml',
+                        'select' => '/phpunit/testsuites/testsuite[@name="property"]/directory/@suffix',
+                        'level' => 'required',
+                        'assert' => ['equals' => 'Properties.php'],
+                    ];
+                }
             }
         }
 

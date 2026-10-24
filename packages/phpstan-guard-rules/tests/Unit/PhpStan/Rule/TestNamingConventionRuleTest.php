@@ -133,4 +133,9 @@ final class TestNamingConventionRuleTest extends RuleTestCase
             ],
         ]);
     }
+
+    public function testProcessNodeLeavesPropertyMethodsToTheirConventionRule(): void
+    {
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/PropertyTestConvention/tests/Property/InvalidTest.php'], []);
+    }
 }

@@ -27,6 +27,7 @@ parametersSchema:
         forbidNonDocComment: structure([enabled: bool()])
         forbidDescriptivePhpDocInTestClass: structure([enabled: bool()])
         testNamingConvention: structure([enabled: bool()])
+        propertyTestConvention: structure([enabled: bool()])
         forbidEmptyCatch: structure([enabled: bool()])
         requireThrowsTagOnDirectThrow: structure([enabled: bool()])
         requireExceptionChaining: structure([enabled: bool()])
@@ -121,6 +122,8 @@ parameters:
             enabled: %toolkit.allRules%
         forbidDescriptivePhpDocInTestClass:
             enabled: %toolkit.allRules%
+        propertyTestConvention:
+            enabled: %toolkit.allRules%
         testNamingConvention:
             enabled: %toolkit.allRules%
         forbidEmptyCatch:
@@ -148,6 +151,7 @@ parameters:
         restrictedTestNamespacePrefixes:
             - 'Tests\Unit'
             - 'Tests\Integration'
+            - 'Tests\Property'
         visibilityExemptNamespacePrefixes:
             - 'Tests'
         srcUnitTestPairExcludePatterns: []
@@ -362,6 +366,11 @@ services:
         arguments:
             restrictedTestNamespacePrefixes: %toolkit.restrictedTestNamespacePrefixes%
 
+    toolkit.rule.propertyTestConvention:
+        class: Toolkit\PhpStan\Rule\TestClass\PropertyTestConventionRule
+        arguments:
+            testClassScope: @toolkit.support.testClassScope
+
     toolkit.rule.testNamingConvention:
         class: Toolkit\PhpStan\Rule\TestNamingConventionRule
         arguments:
@@ -535,6 +544,8 @@ conditionalTags:
         phpstan.rules.rule: %toolkit.forbidNonDocComment.enabled%
     Toolkit\PhpStan\Rule\ForbidDescriptivePhpDocInTestClassRule:
         phpstan.rules.rule: %toolkit.forbidDescriptivePhpDocInTestClass.enabled%
+    Toolkit\PhpStan\Rule\TestClass\PropertyTestConventionRule:
+        phpstan.rules.rule: %toolkit.propertyTestConvention.enabled%
     Toolkit\PhpStan\Rule\TestNamingConventionRule:
         phpstan.rules.rule: %toolkit.testNamingConvention.enabled%
     Toolkit\PhpStan\Rule\ExceptionHandling\ForbidEmptyCatchRule:

@@ -1,3 +1,19 @@
+structure:
+  paths:
+    - .
+  exclude:
+    - vendor
+    - .git
+  directories:
+    -
+      path: 'tests/Property/**'
+      forbid_empty: true
+      allow:
+        - '*Properties.php'
+      file_case: pascal
+      dir_case: pascal
+      max_files: 15
+      max_dirs: 20
 configuration:
   -
     id: pbt.test-unit
@@ -7,7 +23,7 @@ configuration:
     select: /scripts/test:unit
     level: required
     assert:
-      contains: '--exclude-group=pbt'
+      contains: '--testsuite=unit'
   -
     id: pbt.test-pbt
     message: 'Configuration field {select} in {file} must {expectation}. {fix}'
@@ -16,4 +32,4 @@ configuration:
     select: /scripts/test:pbt
     level: required
     assert:
-      contains: '--group=pbt'
+      contains: '--testsuite=property'

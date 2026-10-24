@@ -30,7 +30,7 @@ final class ForbidDescriptivePhpDocInTestClassRule implements Rule
      * @param list<string> $restrictedTestNamespacePrefixes namespace prefixes for test classes
      */
     public function __construct(
-        array $restrictedTestNamespacePrefixes = ['Tests\\Unit', 'Tests\\Integration'],
+        array $restrictedTestNamespacePrefixes = ['Tests\\Unit', 'Tests\\Integration', 'Tests\\Property'],
     ) {
         $this->errorCollector = new DescriptivePhpDocErrorCollector(new RestrictedTestNamespaceMatcher($restrictedTestNamespacePrefixes));
     }

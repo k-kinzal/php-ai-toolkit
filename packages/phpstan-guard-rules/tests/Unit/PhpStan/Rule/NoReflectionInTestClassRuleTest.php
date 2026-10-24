@@ -51,4 +51,11 @@ final class NoReflectionInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoReflectionInTestClass/NonTestWithReflection.php'], []);
     }
+
+    public function testProcessNodeAppliesToPropertyTests(): void
+    {
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/PropertyTestConvention/tests/Property/RestrictionsProperties.php'], [
+            ['Replace ReflectionClass usage with assertions against public behavior. Test classes must not use Reflection.', 21],
+        ]);
+    }
 }

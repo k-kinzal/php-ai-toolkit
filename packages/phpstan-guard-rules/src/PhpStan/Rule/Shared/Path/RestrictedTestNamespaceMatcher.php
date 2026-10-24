@@ -20,7 +20,7 @@ final class RestrictedTestNamespaceMatcher
     /**
      * @param list<string> $prefixes namespace prefixes for restricted test classes
      */
-    public function __construct(array $prefixes = ['Tests\\Unit', 'Tests\\Integration'])
+    public function __construct(array $prefixes = ['Tests\\Unit', 'Tests\\Integration', 'Tests\\Property'])
     {
         $this->prefixes = array_map(
             static fn (string $prefix): string => rtrim($prefix, '\\') . '\\',

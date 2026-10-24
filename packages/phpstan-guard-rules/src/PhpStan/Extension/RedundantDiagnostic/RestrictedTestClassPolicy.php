@@ -27,7 +27,7 @@ final class RestrictedTestClassPolicy
      */
     public function __construct(
         array $testNamespacePrefixes = ['Tests'],
-        array $restrictedTestNamespacePrefixes = ['Tests\\Unit', 'Tests\\Integration'],
+        array $restrictedTestNamespacePrefixes = ['Tests\\Unit', 'Tests\\Integration', 'Tests\\Property'],
     ) {
         $normalize = static fn (string $prefix): string => rtrim($prefix, '\\') . '\\';
         $this->testNamespacePrefixes = array_map($normalize, $testNamespacePrefixes);

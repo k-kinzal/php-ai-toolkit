@@ -77,6 +77,10 @@ final class TestNamingConventionRule implements Rule
      */
     public function processNode(Node $node, Scope $scope): array
     {
+        if ($this->testClassScope->isPropertyTestClass($scope)) {
+            return [];
+        }
+
         $file = $this->pathNormalizer->normalize($scope->getFile());
 
         if ($this->sourceFileMatcher->isSourceFile($file, $this->srcMarker)) {

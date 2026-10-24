@@ -53,7 +53,7 @@ final class PhpUnitMockApiRule implements Rule
      */
     public function processNode(Node $node, Scope $scope): array
     {
-        if (!$this->testClassScope->isTestClass($scope)) {
+        if (!$this->testClassScope->isTestClass($scope) || $this->testClassScope->isPropertyTestClass($scope)) {
             return [];
         }
 

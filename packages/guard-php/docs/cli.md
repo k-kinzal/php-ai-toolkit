@@ -191,6 +191,7 @@ Resolved or changed entries are counted as `unmatched` and reported without fail
 - The current README headings under `documentation.files`, with `scan: [README.md]`.
 - An `id` and `file` override for each tool rule whose configuration file is not the preset's default, such as `phpstan.neon.dist`.
 - For each selected PHPUnit preset, a rule `phpunit<major>.testsuite.unit` when `tests/Unit` exists and `phpunit<major>.testsuite.integration` when `tests/Integration` exists. Each requires a `<testsuite>` named `unit` or `integration` whose `<directory>` is that path, and `guard fix` adds the missing suite.
+- For each selected PHPUnit preset, `phpunit<major>.testsuite.property` and `.property.suffix` when `tests/Property` exists or `pbt` is selected. These require a `property` suite reading `tests/Property` with `suffix="Properties.php"`, so PHPUnit discovers the files. The `pbt` preset also restricts that directory to `*Properties.php` and selects the `unit` and `property` suites in the Composer scripts `test:unit` and `test:pbt`.
 - The settings of legacy `loc.yaml`, `tree.yaml` and `doc-guard.yaml` files. A legacy `loc.yaml` or `tree.yaml` replaces the `metrics` or `structure` import, so its thresholds stay as they were.
 
 The written file records the project as it is today. Review it before committing: a recorded heading list or a detected preset is a starting point, not a decision.

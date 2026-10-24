@@ -87,4 +87,21 @@ final class TestClassScopeTest extends PHPStanTestCase
 
         self::assertFalse($testClassScope->isRestrictedTestClass($scope));
     }
+
+    public function testIsPropertyTestClassRecognizesDirectoryWithCustomNamespace(): void
+    {
+        $scope = self::createStub(Scope::class);
+        $scope->method('getClassReflection')->willReturn(self::createReflectionProvider()->getClass('Tests\\PhpStan\\TestClassScope\\ClassInTestNamespace'));
+        $scope->method('getFile')->willReturn('C:\\project\\tests\\Property\\ExampleProperties.php');
+        $detector = new TestClassScope();
+        self::assertTrue($detector->isPropertyTestClass($scope));
+        self::assertTrue($detector->isRestrictedTestClass($scope));
+    }
+
+    public function testIsPropertyTestClassRecognizesMisplacedPhpUnitProperties(): void
+    {
+        $scope = self::createStub(Scope::class);
+        $scope->method('getClassReflection')->willReturn(self::createReflectionProvider()->getClass('Tests\\Unit\\Fixture\\MisplacedProperties'));
+        self::assertTrue((new TestClassScope())->isPropertyTestClass($scope));
+    }
 }

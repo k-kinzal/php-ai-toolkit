@@ -671,4 +671,24 @@ final class InitializerTest extends TestCase
         self::assertStringContainsString('*Helper.php', json_encode($structure, JSON_THROW_ON_ERROR));
         self::assertStringContainsString('"max_files":15', json_encode($structure, JSON_THROW_ON_ERROR));
     }
+
+    /**
+     * @throws JsonException
+     * @throws Exception
+     */
+    public function testWriteAppliesPropertyStructureAndSuiteDiscovery(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-init-property-' . uniqid();
+        mkdir($root . '/tests/Property', 0777, true);
+        file_put_contents($root . '/composer.json', '{"scripts":{"test:unit":"phpunit --testsuite=unit","test:pbt":"phpunit --testsuite=property"}}');
+        file_put_contents($root . '/tests/Property/ExampleTest.php', '<?php');
+        (new Initializer())->write($root . '/guard.yaml', ['pbt']);
+        $config = (new ConfigurationLoader())->load($root . '/guard.yaml');
+        $plan = (new Pipeline())->run($config, $root . '/guard.yaml', false);
+        self::assertCount(1, $plan->findings);
+        self::assertSame('structure.disallowed_file', $plan->findings[0]->rule);
+        rename($root . '/tests/Property/ExampleTest.php', $root . '/tests/Property/ExampleProperties.php');
+        $valid = (new Pipeline())->run($config, $root . '/guard.yaml', false);
+        self::assertSame([], $valid->findings);
+    }
 }

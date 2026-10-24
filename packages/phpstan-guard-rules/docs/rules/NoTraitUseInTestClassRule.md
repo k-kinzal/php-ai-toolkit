@@ -7,6 +7,8 @@
 | Rector | Unavailable |
 | Configurable | Yes (namespace prefixes) |
 
+Property tests also prohibit helper traits, but allow `Eris\TestTrait` without adaptations to supply the PBT framework.
+
 ## What It Detects
 
 Reports `use` statements for traits inside test classes within `Tests\Unit` and `Tests\Integration` namespaces.

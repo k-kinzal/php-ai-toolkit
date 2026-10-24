@@ -50,10 +50,17 @@ final class NoTraitUseInTestClassRule implements Rule
             $node->traits,
         );
 
+        if ($this->testClassScope->isPropertyTestClass($scope) && $node->adaptations === []) {
+            $names = array_values(array_filter($names, static fn (string $name): bool => $name !== 'Eris\\TestTrait'));
+            if ($names === []) {
+                return [];
+            }
+        }
+
         return [
             RuleErrorBuilder::message(
                 sprintf(
-                    'Move trait %s behavior to a dedicated collaborator and call it explicitly. Tests\\Unit and Tests\\Integration classes must not use traits.',
+                    'Move trait %s behavior to a dedicated collaborator and call it explicitly. Restricted test classes must not use traits.',
                     implode(', ', $names)
                 )
             )

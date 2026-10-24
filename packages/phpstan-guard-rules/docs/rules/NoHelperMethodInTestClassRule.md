@@ -7,6 +7,8 @@
 | Rector | Unavailable |
 | Configurable | Yes (namespace prefixes) |
 
+Property test methods are checked by [PropertyTestConventionRule](PropertyTestConventionRule.md), which permits only `satisfies<PropertyName>` declarations.
+
 ## What It Detects
 
 Reports methods in test classes that are not:

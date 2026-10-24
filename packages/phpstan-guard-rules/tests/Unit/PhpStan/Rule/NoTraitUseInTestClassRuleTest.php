@@ -37,7 +37,7 @@ final class NoTraitUseInTestClassRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoTraitUseInTestClass/WithTrait.php'], [
             [
-                'Move trait Tests\\Unit\\Fixture\\NoTraitUseInTestClass\\HelperTrait behavior to a dedicated collaborator and call it explicitly. Tests\\Unit and Tests\\Integration classes must not use traits.',
+                'Move trait Tests\\Unit\\Fixture\\NoTraitUseInTestClass\\HelperTrait behavior to a dedicated collaborator and call it explicitly. Restricted test classes must not use traits.',
                 19,
             ],
         ]);
@@ -46,5 +46,10 @@ final class NoTraitUseInTestClassRuleTest extends RuleTestCase
     public function testProcessNodeTraitUseInNonTestClassIsNotReported(): void
     {
         $this->analyse([__DIR__ . '/../../../../tests/PhpStan/NoTraitUseInTestClass/NonTestWithTrait.php'], []);
+    }
+
+    public function testProcessNodeAllowsErisFrameworkTraitInPropertyTests(): void
+    {
+        $this->analyse([__DIR__ . '/../../../../tests/PhpStan/PropertyTestConvention/tests/Property/TraitProperties.php'], []);
     }
 }

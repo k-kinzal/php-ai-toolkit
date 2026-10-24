@@ -51,7 +51,7 @@ final class NoPrivateMethodInTestClassRule implements Rule
         return [
             RuleErrorBuilder::message(
                 sprintf(
-                    'Inline private method %s() into the test method or move it to a dedicated collaborator. Tests\\Unit and Tests\\Integration classes may contain only test methods, data providers, and framework overrides.',
+                    'Inline private method %s() into the test method or move it to a dedicated collaborator. Restricted test classes must not declare private methods.',
                     $node->name->toString()
                 )
             )

@@ -52,6 +52,10 @@ final class NoHelperMethodInTestClassRule implements Rule
      */
     public function processNode(Node $node, Scope $scope): array
     {
+        if ($this->testClassScope->isPropertyTestClass($scope)) {
+            return [];
+        }
+
         if (!$this->testClassScope->isRestrictedTestClass($scope)) {
             return [];
         }

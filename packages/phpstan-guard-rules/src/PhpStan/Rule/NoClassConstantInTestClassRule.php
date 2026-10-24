@@ -53,7 +53,7 @@ final class NoClassConstantInTestClassRule implements Rule
         return [
             RuleErrorBuilder::message(
                 sprintf(
-                    'Inline class constant %s inside the test methods that use it. Tests\\Unit and Tests\\Integration classes must not declare constants.',
+                    'Inline class constant %s inside the test methods that use it. Restricted test classes must not declare constants.',
                     implode(', ', $names)
                 )
             )

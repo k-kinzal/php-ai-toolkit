@@ -1,0 +1,3 @@
+test_dependencies:
+  deptrac: deptrac.yaml
+  source_layers: [Src]

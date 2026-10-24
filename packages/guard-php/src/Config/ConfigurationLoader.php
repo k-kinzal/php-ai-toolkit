@@ -44,7 +44,7 @@ final class ConfigurationLoader
         /**
          * Field failures historically take precedence, while source findings are reported first.
          */
-        array_unshift($policies, new PolicyBinding('field-constraints', new FieldConstraints($rules), 30));
+        array_unshift($policies, new PolicyBinding('field-constraints', new FieldConstraints($rules, array_key_exists('test_dependencies', $data) ? (new Reader\TestDependencyConfigReader())->read($data['test_dependencies']) : null), 30));
         $scope = array_key_exists('collect', $data) ? (new ScopeConfigReader())->read($data['collect']) : null;
         return new Configuration($root, $policies, (new ExtensionConfigReader())->read($data['extensions'] ?? []), $scope);
     }

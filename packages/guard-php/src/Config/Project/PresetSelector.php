@@ -70,6 +70,12 @@ final class PresetSelector
         if (is_file($root . '/composer.json')) {
             $names[] = 'composer';
         }
+        foreach (['bench', 'fuzz', 'spec', 'tests'] as $directory) {
+            if (is_dir($root . '/' . $directory)) {
+                $names[] = 'test-dependencies';
+                break;
+            }
+        }
         foreach ($this->documentPresets($root) as $name) {
             $names[] = $name;
         }

@@ -62,6 +62,9 @@ final class Initializer
             $document['documentation'] = $readme;
         }
         $document = (new PresetOverrides())->apply($root, $names, $document);
+        if (in_array('test-dependencies', $names, true)) {
+            $document['test_dependencies'] = (new TestDependencySetup())->settings($root);
+        }
 
         return (new LegacyMigration())->migrate($root, $document, in_array('disable-doc', $names, true));
     }

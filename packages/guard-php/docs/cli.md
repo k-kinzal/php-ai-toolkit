@@ -160,7 +160,7 @@ Resolved or changed entries are counted as `unmatched` and reported without fail
 
 `fix` plans every configuration repair before writing. While a required configuration rule cannot be satisfied, nothing is written and the report says `blocked`. Its diffs describe proposals, not completed changes. Metric, structure and document findings do not block configuration repairs; they remain required failures after `fix`.
 
-`check` never writes. A required configuration violation that `fix` can repair still fails `check`. Missing target files, rules without repair values and conflicting repairs require manual changes. All supported configuration formats can be repaired. `fixable` indicates automatic repair support, not permission to ignore a blocking violation elsewhere.
+`check` never writes. A required configuration violation that `fix` can repair still fails `check`. Missing target files (except the Deptrac file created by `test_dependencies`), rules without repair values and conflicting repairs require manual changes. All supported configuration formats can be repaired. `fixable` indicates automatic repair support, not permission to ignore a blocking violation elsewhere.
 
 ## Init
 
@@ -179,6 +179,7 @@ Resolved or changed entries are counted as `unmatched` and reported without fail
 | `deptrac` | `deptrac/deptrac` is installed and `deptrac.yaml` or `deptrac.yml` exists. |
 | `infection` | `infection.json5` exists. |
 | `composer` | `composer.json` exists. |
+| `test-dependencies` | Any root directory `bench/`, `fuzz/`, `spec/`, or `tests/` exists. |
 | `github-actions`, `mutation` | `.github/workflows/ci.yml` or `.github/workflows/mutation.yml` exists. |
 | `pbt`, `fuzz`, `phpbench`, `docgen` | `giorgiosironi/eris`, `nikic/php-fuzzer`, `phpbench/phpbench` or `k-kinzal/docgen-php` is installed. |
 | `agents-md` | `AGENTS.md` or `CLAUDE.md` exists. |
@@ -192,6 +193,7 @@ Resolved or changed entries are counted as `unmatched` and reported without fail
 - An `id` and `file` override for each tool rule whose configuration file is not the preset's default, such as `phpstan.neon.dist`.
 - For each selected PHPUnit preset, a rule `phpunit<major>.testsuite.unit` when `tests/Unit` exists and `phpunit<major>.testsuite.integration` when `tests/Integration` exists. Each requires a `<testsuite>` named `unit` or `integration` whose `<directory>` is that path, and `guard fix` adds the missing suite.
 - For each selected PHPUnit preset, `phpunit<major>.testsuite.property` and `.property.suffix` when `tests/Property` exists or `pbt` is selected. These require a `property` suite reading `tests/Property` with `suffix="Properties.php"`, so PHPUnit discovers the files. The `pbt` preset also restricts that directory to `*Properties.php` and selects the `unit` and `property` suites in the Composer scripts `test:unit` and `test:pbt`.
+- For `test-dependencies`, the detected `deptrac.yaml` or `deptrac.yml` filename and existing production layers with `src/` directory collectors. Other production collectors can be listed explicitly in `test_dependencies.source_layers`. `Src` covers remaining production code. Directory detection happens again on every `check` and `fix`.
 - The settings of legacy `loc.yaml`, `tree.yaml` and `doc-guard.yaml` files. A legacy `loc.yaml` or `tree.yaml` replaces the `metrics` or `structure` import, so its thresholds stay as they were.
 
 The written file records the project as it is today. Review it before committing: a recorded heading list or a detected preset is a starting point, not a decision.

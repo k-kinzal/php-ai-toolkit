@@ -30,7 +30,7 @@ final class AtomicWriter
      */
     public function verify(FileChange $change): void
     {
-        if (is_link($change->path) || file_get_contents($change->path) !== $change->original) {
+        if (is_link($change->path) || ($change->original === null ? file_exists($change->path) : !is_file($change->path) || file_get_contents($change->path) !== $change->original)) {
             throw new PolicyException('Target changed during planning: ' . $change->path . '. Run guard again.');
         }
     }
@@ -45,13 +45,14 @@ final class AtomicWriter
             throw new PolicyException('Cannot create a temporary file beside ' . $change->path . '. Check directory permissions.');
         }
         try {
-            $permissions = fileperms($change->path);
+            $permissions = $change->original === null ? 0666 & ~umask() : fileperms($change->path);
             if (file_put_contents($temporary, $change->replacement) !== strlen($change->replacement)
                 || $permissions === false || !chmod($temporary, $permissions & 0777)) {
                 throw new PolicyException('Cannot stage ' . $change->path . '. Check available space and permissions.');
             }
             $this->verify($change);
-            if (!rename($temporary, $change->path)) {
+            $written = $change->original === null ? link($temporary, $change->path) : rename($temporary, $change->path);
+            if (!$written) {
                 throw new PolicyException('Cannot replace ' . $change->path . '. Check directory permissions.');
             }
         } finally {

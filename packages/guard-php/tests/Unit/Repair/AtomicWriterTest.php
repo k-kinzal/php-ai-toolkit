@@ -88,4 +88,28 @@ final class AtomicWriterTest extends TestCase
         (new AtomicWriter())->write(new FileChange($path, 'A', 'B'));
         self::assertSame('B', file_get_contents($path));
     }
+
+    public function testApplyCreatesANewConfigurationFile(): void
+    {
+        $root = sys_get_temp_dir() . '/guard-create-' . uniqid();
+        mkdir($root);
+        $path = $root . '/deptrac.yaml';
+        (new AtomicWriter())->apply([new FileChange($path, null, "deptrac: {}\n")]);
+        self::assertSame("deptrac: {}\n", file_get_contents($path));
+        unlink($path);
+        rmdir($root);
+    }
+
+    public function testVerifyRejectsAFileCreatedAfterPlanning(): void
+    {
+        $path = tempnam(sys_get_temp_dir(), 'guard-concurrent-create-');
+        self::assertIsString($path);
+        $change = new FileChange($path, null, 'replacement');
+        $this->expectException(PolicyException::class);
+        try {
+            (new AtomicWriter())->verify($change);
+        } finally {
+            unlink($path);
+        }
+    }
 }

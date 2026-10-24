@@ -8,7 +8,7 @@ namespace Guard\Policy;
  * A validated replacement with the original content retained for concurrency checks.
  *
  * @property-read string $path
- * @property-read string $original
+ * @property-read ?string $original
  * @property-read string $replacement
  */
 final class FileChange
@@ -16,14 +16,14 @@ final class FileChange
     /**
      * Creates the immutable value.
      * @param string $path
-     * @param string $original
+     * @param ?string $original
      * @param string $replacement
      */
     public function __construct(
         /** @readonly */
         private string $path,
         /** @readonly */
-        private string $original,
+        private ?string $original,
         /** @readonly */
         private string $replacement,
     ) {

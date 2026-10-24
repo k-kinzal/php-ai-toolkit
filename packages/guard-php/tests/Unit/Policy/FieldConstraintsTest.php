@@ -110,6 +110,7 @@ use Guard\Policy\Plan;
 use Guard\Policy\PolicyBinding;
 use Guard\Policy\Rule;
 use Guard\Policy\RuleEvaluator;
+use Guard\Policy\TestDependency\TestDependencyRules;
 use Guard\Structure\Document\Constraint;
 use Guard\Structure\Document\DataDocument;
 use Guard\Structure\Document\DocumentFailure;
@@ -831,5 +832,33 @@ final class FieldConstraintsTest extends TestCase
         $context = new Context('/none', '/none/guard.yaml', false);
         $inputs = $policy->inputs($context);
         self::assertSame('xml', $inputs['file0']->structure);
+    }
+
+    /**
+     * @throws JsonException
+     * @throws Exception
+     */
+    public function testDependencyRulesUsesOnlyCollectedExistingDirectories(): void
+    {
+        $file = new StructuredFile(new FileRecord('/project/composer.json', 'composer.json', new Entry(false, true, false, '/project/composer.json')), true, new ParsedDocument(new DataDocument('json', '{}'), '{}'), null);
+        $policy = new FieldConstraints([], new TestDependencyRules('deptrac.yaml', ['Src']));
+        self::assertSame([], $policy->dependencyRules($file, ['src']));
+        $rules = $policy->dependencyRules($file, ['tests']);
+        self::assertCount(2, $rules);
+        self::assertSame('test-dependencies.autoload.tests', $rules[0]->id);
+    }
+
+    /**
+     * @throws JsonException
+     * @throws Exception
+     */
+    public function testCreateMarksANewFileWithoutPretendingItAlreadyExists(): void
+    {
+        $file = new StructuredFile(new FileRecord('/project/deptrac.yaml', 'deptrac.yaml', new Entry(false, false, false, '/project/deptrac.yaml')), false, null, null);
+        $rule = new Rule('deptrac', 'deptrac.yaml', 'yaml', '/deptrac/paths', 'required', ['equals' => ['src']], ['src'], true);
+        $plan = (new FieldConstraints([]))->create($file, [$rule], true);
+        self::assertSame([], $plan->findings);
+        self::assertNull($plan->changes[0]->original);
+        self::assertStringContainsString('src', $plan->changes[0]->replacement);
     }
 }

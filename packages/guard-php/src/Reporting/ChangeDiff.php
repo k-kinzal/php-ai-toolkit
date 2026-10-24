@@ -19,7 +19,7 @@ final class ChangeDiff
         if ($change->original === $change->replacement) {
             return '';
         }
-        $before = $this->lines($change->original);
+        $before = $this->lines($change->original ?? '');
         $after = $this->lines($change->replacement);
         $prefix = 0;
         $length = min(count($before), count($after));

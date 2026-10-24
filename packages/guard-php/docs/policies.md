@@ -10,6 +10,7 @@ An AI agent that is asked to make a test pass will also lengthen a method, add a
 | `structure` | What each directory may contain, how entries are named, and how many there are. See [structure](structure.md). | `structure.*` | no |
 | `documentation` | The headings, outline, badges or exact content of Markdown files, and Markdown files nobody declared. See [documents](documents.md). | `documentation.*` | no |
 | `configuration` | Values in the configuration files of other tools, such as `phpstan.neon` or `phpunit.xml.dist`. See [configuration fields](fields.md). | the rule's `id` | yes, when the rule has a repair |
+| `test_dependencies` | Composer development namespaces and Deptrac dependency boundaries for test directories. See [test dependencies](fields.md#test-dependencies). | `test-dependencies.*` | yes, including a missing Deptrac file |
 | `extensions` | Whatever a project or a package adds. See [extensions](extensions.md). | chosen by the extension | when the extension proposes a change |
 
 A section that `guard.yaml` neither writes nor [imports](configuration.md#imports) is not checked.

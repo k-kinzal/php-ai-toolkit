@@ -115,3 +115,43 @@ A file that does not change keeps every byte. A changed JSON, JSON5, YAML, NEON 
 Guard writes each file to a temporary file in the same directory and replaces the original atomically, keeping its permissions, and refuses to write when the file changed since it was read. Each replacement is atomic, but a failure in the middle of several files can leave the earlier ones written; fix the cause and run `guard check` again.
 
 Targets must be regular files inside the project. Paths that leave the project or pass through a symbolic link are rejected, and a rule cannot edit `guard.yaml` itself.
+
+## Test dependencies
+
+Import the dedicated preset to isolate the root `bench/`, `fuzz/`, `spec/`, and `tests/` directories:
+
+```yaml
+version: 1
+imports:
+  - vendor/k-kinzal/guard-php/rules/test-dependencies.yaml
+```
+
+For a new policy, `guard init` selects this preset whenever any of those directories exists. To select only this policy, use `guard init --import=test-dependencies`. For an existing policy, add the import above. Then run:
+
+```console
+vendor/bin/guard check
+vendor/bin/guard fix --dry-run
+vendor/bin/guard fix
+composer dump-autoload
+composer deptrac
+```
+
+Each existing directory requires its own entry in `composer.json` under `autoload-dev.psr-4`: `Bench\: bench/`, `Fuzz\: fuzz/`, `Spec\: spec/`, and `Tests\: tests/`. Missing directories do not require mappings or new layers. Guard detects directories on every run, so adding `fuzz/` after initialization activates its checks automatically. The normal collection scope applies: include the test directories and both configuration files when using `collect`.
+
+`fix` adds the directories and `src/` to Deptrac's analysis paths, configures class and standalone-file dependency analysis, and creates independent layers with namespace and directory collectors. Tests within one directory may refer to each other. References between different test directories and references from production code to a test directory are forbidden. Each test layer may depend on production layers only. Dependencies in PHP code are checked by `composer deptrac`; Guard checks that its configuration enforces these boundaries. The policy adds or repairs the Composer `deptrac` script to run the selected file.
+
+By default, `Src` collects all production code under `src/`. Existing projects with more specific production layers can name them explicitly:
+
+```yaml
+test_dependencies:
+  deptrac: deptrac.yml
+  source_layers: [Domain, Application, Infrastructure]
+```
+
+`deptrac` must be a YAML filename in the project root; the default is `deptrac.yaml`. `source_layers` defaults to `[Src]`. Named custom layers must already have collectors. Guard confines those collectors to `src/`, retains their internal dependency rules, removes permissions to reference test layers (including `+Tests`), and lets each test layer refer to all named production layers. The reserved `Src` layer collects production code not matched by those custom layers, without overlapping them. Test layer collectors and their allowed destinations are managed by this policy; other layer settings are preserved.
+
+The findings use `test-dependencies.autoload.<directory>` for each namespace mapping, and `test-dependencies.deptrac.*` for paths, layers, ruleset, analysis types, script and bypass checks. `guard rules --query=test-dependencies` lists the policy's capability without reading the target files.
+
+The preset requires an existing `composer.json`. It can create a missing Deptrac YAML file; dry-run previews that file without creating it. As with other repairs, conflicting required rules block every write. Repeated successful repairs leave the files byte-identical. Install `deptrac/deptrac` separately before running its Composer script; Guard does not install packages.
+
+Deptrac `exclude_files` is cleared so test dependencies cannot disappear from analysis. Baseline entries involving the four test namespaces are removed; unrelated entries remain. Non-empty Deptrac `imports` requires a manual change: inline those settings into the selected file before fixing, so Guard can check the complete ruleset. Guard reports that condition and writes nothing. Existing configurations using extensions that change Deptrac's analysis require their own review.

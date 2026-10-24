@@ -37,6 +37,7 @@ The imports supply the shipped rules; the rest of the file changes only what thi
 | `structure` | no | Directory rules. See [structure](structure.md). |
 | `documentation` | no | Markdown document declarations. See [documents](documents.md). |
 | `configuration` | no | Rules for values in tool configuration files. See [configuration fields](fields.md). |
+| `test_dependencies` | no | PSR-4 mappings and Deptrac boundaries for root test directories. See [test dependencies](fields.md#test-dependencies). |
 | `extensions` | no | Extension classes and their options, as `Class: {options}`. See [extensions](extensions.md). |
 
 Unknown keys, invalid types, contradictory bounds and two `configuration` rules with the same `id` in one file are errors with exit code `2`. Error messages name a section by the file it came from historically, such as `tree.yaml` for `structure` or `doc-guard.yaml` for `documentation`.
@@ -57,6 +58,7 @@ An override keeps every imported value it does not mention:
 | `documentation.files` | Document path. A declaration replaces only the keys it sets, so a project can add `headings` to a document whose `outlines` come from a preset. |
 | `documentation.scan`, `documentation.exclude` | Each replaces the imported list when set. |
 | `configuration` | `id`. A rule replaces only the keys it sets; a new `id` is added. |
+| `test_dependencies` | The whole settings mapping is replaced; omitted settings use their defaults. |
 | `extensions` | Class name. A later declaration replaces that class's whole option mapping and keeps its position. |
 
 To drop an imported rule, remove the import and write the rules you want in the project file instead. A policy without `imports` is a complete custom policy.
@@ -78,6 +80,7 @@ The package ships presets in `vendor/k-kinzal/guard-php/rules/`. Import only tho
 | `doctest9.yaml` … `doctest13.yaml` | The doctest suite in the PHPUnit configuration of each major. |
 | `php-cs-fixer.yaml`, `phpcs.yaml`, `deptrac.yaml`, `infection.yaml`, `composer.yaml` | The configuration of each tool. |
 | `github-actions.yaml`, `mutation.yaml` | The CI workflow and the scheduled mutation workflow. |
+| `test-dependencies.yaml` | Independent `bench/`, `fuzz/`, `spec/`, and `tests/` namespaces and Deptrac layers, each allowed to depend only on production layers under `src/`. |
 | `pbt.yaml` | Property tests under `tests/Property` with `*Properties.php` filenames and Composer scripts selecting the `unit` and `property` PHPUnit suites. `guard init` adds the property suite and suffix requirements to each selected PHPUnit configuration. |
 | `fuzz.yaml`, `phpbench.yaml`, `docgen.yaml` | The configuration of each tool, for projects that use it. |
 

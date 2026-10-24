@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Guard\Policy;
 
 use JsonException;
+use stdClass;
 
 /**
  * A required constraint or a non-fatal recommendation for a document field.
@@ -67,13 +68,16 @@ final class Rule
      */
     public function __get(string $name): mixed
     {
+        if ($name === 'assertions') {
+            $assertions = json_decode($this->assertionsJson, false, 512, JSON_THROW_ON_ERROR);
+            return $assertions instanceof stdClass ? get_object_vars($assertions) : [];
+        }
         return match ($name) {
             'id' => $this->id,
             'file' => $this->file,
             'format' => $this->format,
             'select' => $this->select,
             'level' => $this->level,
-            'assertions' => json_decode($this->assertionsJson, true, 512, JSON_THROW_ON_ERROR),
             'repair' => json_decode($this->repairJson, false, 512, JSON_THROW_ON_ERROR),
             'repairable' => $this->repairable,
             'message' => $this->message,

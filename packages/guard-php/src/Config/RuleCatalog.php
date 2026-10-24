@@ -37,6 +37,10 @@ final class RuleCatalog
         $configuration = (new ConfigurationLoader())->load($path);
         $data = (new ImportResolver())->resolve($path);
         $rules = $this->fields($data['configuration'] ?? []);
+        if (array_key_exists('test_dependencies', $data)) {
+            $dependencyRules = (new Reader\TestDependencyConfigReader())->read($data['test_dependencies']);
+            $rules[] = new RuleDescription('test-dependencies', implode(', ', array_keys($dependencyRules->files())), 'required', true, 'For each existing bench/, fuzz/, spec/, or tests/ directory, require its autoload-dev PSR-4 mapping and an independent Deptrac layer that can depend only on src/ production layers. Run guard fix to configure the boundaries.', ['directories' => $dependencyRules->directories()]);
+        }
         if (array_key_exists('metrics', $data)) {
             $rules = array_merge($rules, $this->metrics($data['metrics'], dirname($path)));
         }

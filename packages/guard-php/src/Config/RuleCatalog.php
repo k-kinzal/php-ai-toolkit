@@ -139,7 +139,7 @@ final class RuleCatalog
         $data = (new Schema())->mapping($value, ['paths', 'exclude', 'directories'], 'structure');
         $rules = [];
         $ids = ['allow' => 'disallowed_file', 'deny' => 'denied_file', 'allow_dirs' => 'disallowed_dir', 'deny_dirs' => 'denied_dir',
-            'require' => 'missing_required_file', 'forbid_empty' => 'empty_directory'];
+            'require' => 'missing_required_file', 'require_dirs' => 'missing_required_dir', 'forbid_empty' => 'empty_directory'];
         $entries = $data['directories'] ?? [];
         if (!is_array($entries)) {
             return [];
@@ -149,7 +149,7 @@ final class RuleCatalog
                 continue;
             }
             foreach ($entry as $key => $constraint) {
-                if (!is_string($key) || $key === 'path' || $constraint === null || $constraint === false) {
+                if (!is_string($key) || $key === 'path' || $key === 'when_files' || $constraint === null || $constraint === false) {
                     continue;
                 }
                 $id = 'structure.' . ($ids[$key] ?? $key);
@@ -159,7 +159,10 @@ final class RuleCatalog
                     'required',
                     false,
                     (new RuleMessages())->forRule($id),
-                    [$key => $constraint, 'paths' => $data['paths'] ?? ['.'], 'exclude' => $data['exclude'] ?? []]
+                    array_merge(
+                        [$key => $constraint, 'paths' => $data['paths'] ?? ['.'], 'exclude' => $data['exclude'] ?? []],
+                        array_key_exists('when_files', $entry) ? ['when_files' => $entry['when_files']] : []
+                    )
                 );
             }
         }

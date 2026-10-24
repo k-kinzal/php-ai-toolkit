@@ -130,6 +130,7 @@ use Guard\Policy\Inspection\DirectoryRuleInspector;
 use Guard\Policy\Inspection\DirNameInspector;
 use Guard\Policy\Inspection\EmptyDirectoryInspector;
 use Guard\Policy\Inspection\FileNameInspector;
+use Guard\Policy\Inspection\RequiredDirectoryInspector;
 use Guard\Policy\Inspection\RequiredFileInspector;
 use Guard\Policy\Inspection\TotalFileCountInspector;
 use Guard\Policy\Limit\ClassLikeMetricLimit;
@@ -346,6 +347,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  * @uses \Guard\Policy\Inspection\DirectoryRuleInspector
  * @uses \Guard\Policy\Inspection\EmptyDirectoryInspector
  * @uses \Guard\Policy\Inspection\FileNameInspector
+ * @uses \Guard\Policy\Inspection\RequiredDirectoryInspector
  * @uses \Guard\Policy\Inspection\RequiredFileInspector
  * @uses \Guard\Policy\Inspection\TotalFileCountInspector
  * @uses \Guard\Policy\Limit\ClassLikeMetricLimit
@@ -549,6 +551,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 #[UsesClass(DirectoryRuleInspector::class)]
 #[UsesClass(EmptyDirectoryInspector::class)]
 #[UsesClass(FileNameInspector::class)]
+#[UsesClass(RequiredDirectoryInspector::class)]
 #[UsesClass(RequiredFileInspector::class)]
 #[UsesClass(TotalFileCountInspector::class)]
 #[UsesClass(ClassLikeMetricLimit::class)]

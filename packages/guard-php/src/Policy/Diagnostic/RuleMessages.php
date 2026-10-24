@@ -22,6 +22,7 @@ final class RuleMessages
         'structure.disallowed_dir' => 'A directory name does not match any allowed pattern. Rename or move the directory to a permitted location.',
         'structure.denied_dir' => 'A directory name matches a denied pattern. Rename or remove that directory and move any needed contents to a permitted location.',
         'structure.missing_required_file' => 'A required file is missing. Create the named file in the directory matched by the rule.',
+        'structure.missing_required_dir' => 'A required subdirectory is missing. Create the named directory directly inside the directory matched by the rule.',
         'structure.empty_directory' => 'An empty directory is forbidden. Remove the directory or add its intended contents.',
         'structure.file_case' => 'A file name violates the configured case convention. Rename the file to match that convention and update references to it.',
         'structure.dir_case' => 'A directory name violates the configured case convention. Rename the directory to match that convention and update references to it.',
@@ -83,6 +84,7 @@ final class RuleMessages
             'structure.disallowed_file', 'structure.denied_file', 'structure.disallowed_dir', 'structure.denied_dir' => 'The declared directory layout keeps files within their intended architectural boundaries.',
             'structure.file_case', 'structure.dir_case' => 'Consistent names make paths predictable and reduce mistakes when referring to files across platforms.',
             'structure.missing_required_file' => 'Required files provide the entry points or project guidance expected at this location.',
+            'structure.missing_required_dir' => 'Required subdirectories keep related implementations in their expected locations.',
             'structure.empty_directory' => 'Empty directories imply a structure without an implementation and are not retained by Git.',
             default => '',
         };

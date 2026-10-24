@@ -36,6 +36,9 @@ final class DirectoryRuleInspector
     /** @readonly */
     private EmptyDirectoryInspector $emptyDirectoryInspector;
 
+    /** @readonly */
+    private RequiredDirectoryInspector $requiredDirectoryInspector;
+
     /**
      * Creates a rule inspector from the individual constraint inspectors.
      */
@@ -47,6 +50,7 @@ final class DirectoryRuleInspector
         ?DirNameInspector $dirNameInspector = null,
         ?RequiredFileInspector $requiredFileInspector = null,
         ?EmptyDirectoryInspector $emptyDirectoryInspector = null,
+        ?RequiredDirectoryInspector $requiredDirectoryInspector = null,
     ) {
         $this->childCountInspector = $childCountInspector ?? new ChildCountInspector();
         $this->totalFileCountInspector = $totalFileCountInspector ?? new TotalFileCountInspector();
@@ -55,6 +59,7 @@ final class DirectoryRuleInspector
         $this->dirNameInspector = $dirNameInspector ?? new DirNameInspector();
         $this->requiredFileInspector = $requiredFileInspector ?? new RequiredFileInspector();
         $this->emptyDirectoryInspector = $emptyDirectoryInspector ?? new EmptyDirectoryInspector();
+        $this->requiredDirectoryInspector = $requiredDirectoryInspector ?? new RequiredDirectoryInspector();
     }
 
     /**
@@ -65,6 +70,10 @@ final class DirectoryRuleInspector
      */
     public function inspect(DirectoryRuleConfig $rule, DirectoryListing $listing, array $listings): array
     {
+        if (!$this->matchesCondition($rule, $listing)) {
+            return [];
+        }
+
         return array_merge(
             $this->childCountInspector->inspect($rule, $listing),
             $this->totalFileCountInspector->inspect($rule, $listing, $listings),
@@ -73,6 +82,24 @@ final class DirectoryRuleInspector
             $this->dirNameInspector->inspect($rule, $listing),
             $this->requiredFileInspector->inspect($rule, $listing),
             $this->emptyDirectoryInspector->inspect($rule, $listing),
+            $this->requiredDirectoryInspector->inspect($rule, $listing),
         );
+    }
+
+    /**
+     * Activates a conditional rule when any direct file matches any configured glob.
+     */
+    public function matchesCondition(DirectoryRuleConfig $rule, DirectoryListing $listing): bool
+    {
+        if ($rule->whenFiles === null) {
+            return true;
+        }
+        foreach ($listing->fileNames as $name) {
+            if ($this->fileNameInspector->matchesAny($rule->whenFiles, $name)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

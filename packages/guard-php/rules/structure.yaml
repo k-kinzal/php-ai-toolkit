@@ -26,6 +26,19 @@ structure:
       allow: []
       max_dirs: 20
     -
+      path: 'spec/**'
+      when_files:
+        - '*.feature'
+      allow:
+        - '*.feature'
+      require_dirs:
+        - Context
+    -
+      path: 'spec/**/Context/**'
+      allow:
+        - '?*Context.php'
+      file_case: pascal
+    -
       path: tests
       deny_dirs:
         - Fixture

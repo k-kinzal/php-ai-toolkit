@@ -23,6 +23,8 @@ namespace Guard\Policy\Definition;
  * @property-read bool $forbidEmpty
  * @property-read ?string $fileCase
  * @property-read ?string $dirCase
+ * @property-read ?list<string> $requireDirs
+ * @property-read ?list<string> $whenFiles
  */
 final class DirectoryRuleConfig
 {
@@ -34,6 +36,8 @@ final class DirectoryRuleConfig
      * @param ?list<string> $allowDirs
      * @param ?list<string> $denyDirs
      * @param ?list<string> $require
+     * @param ?list<string> $requireDirs
+     * @param ?list<string> $whenFiles
      */
     public function __construct(
         /** @readonly */
@@ -62,6 +66,10 @@ final class DirectoryRuleConfig
         private ?string $fileCase,
         /** @readonly */
         private ?string $dirCase,
+        /** @readonly */
+        private ?array $requireDirs = null,
+        /** @readonly */
+        private ?array $whenFiles = null,
     ) {
     }
 
@@ -86,6 +94,8 @@ final class DirectoryRuleConfig
             'forbidEmpty' => $this->forbidEmpty,
             'fileCase' => $this->fileCase,
             'dirCase' => $this->dirCase,
+            'requireDirs' => $this->requireDirs,
+            'whenFiles' => $this->whenFiles,
             default => null,
         };
     }

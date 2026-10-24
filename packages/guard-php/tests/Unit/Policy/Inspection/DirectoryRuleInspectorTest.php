@@ -15,6 +15,7 @@ use Guard\Policy\Inspection\DirectoryRuleInspector;
 use Guard\Policy\Inspection\DirNameInspector;
 use Guard\Policy\Inspection\EmptyDirectoryInspector;
 use Guard\Policy\Inspection\FileNameInspector;
+use Guard\Policy\Inspection\RequiredDirectoryInspector;
 use Guard\Policy\Inspection\RequiredFileInspector;
 use Guard\Policy\Inspection\TotalFileCountInspector;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -32,6 +33,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Policy\Inspection\DirNameInspector
  * @uses \Guard\Policy\Inspection\EmptyDirectoryInspector
  * @uses \Guard\Policy\Inspection\FileNameInspector
+ * @uses \Guard\Policy\Inspection\RequiredDirectoryInspector
  * @uses \Guard\Policy\Inspection\RequiredFileInspector
  * @uses \Guard\Policy\Inspection\TotalFileCountInspector
  * @uses \Guard\Policy\Diagnostic\DirectoryViolation
@@ -46,6 +48,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(DirNameInspector::class)]
 #[UsesClass(EmptyDirectoryInspector::class)]
 #[UsesClass(FileNameInspector::class)]
+#[UsesClass(RequiredDirectoryInspector::class)]
 #[UsesClass(RequiredFileInspector::class)]
 #[UsesClass(TotalFileCountInspector::class)]
 #[UsesClass(DirectoryViolation::class)]
@@ -77,5 +80,32 @@ final class DirectoryRuleInspectorTest extends TestCase
         $listing = new DirectoryListing('src', ['One.php'], []);
 
         self::assertSame([], (new DirectoryRuleInspector())->inspect($rule, $listing, ['src' => $listing]));
+    }
+
+    public function testMatchingAnyDirectFileActivatesEveryConstraint(): void
+    {
+        $rule = new DirectoryRuleConfig('spec/**', 1, null, null, null, ['*.feature'], null, null, null, null, false, null, null, ['Context'], ['*.story', '*.feature']);
+        $listing = new DirectoryListing('spec/Account', ['notes.txt', 'login.feature'], []);
+
+        $violations = (new DirectoryRuleInspector())->inspect($rule, $listing, []);
+
+        self::assertSame(['max_files', 'disallowed_file', 'missing_required_dir'], array_map(static fn (DirectoryViolation $violation): string => $violation->rule, $violations));
+    }
+
+    public function testConditionIgnoresDirectoryNamesAndDescendantFiles(): void
+    {
+        $rule = new DirectoryRuleConfig('spec/**', null, null, null, null, [], null, null, null, null, false, null, null, ['Context'], ['*.feature']);
+        $listing = new DirectoryListing('spec', ['notes.txt'], ['Account', 'login.feature']);
+        $listings = ['spec/Account' => new DirectoryListing('spec/Account', ['login.feature'], [])];
+
+        self::assertSame([], (new DirectoryRuleInspector())->inspect($rule, $listing, $listings));
+    }
+
+    public function testMatchesConditionRejectsEmptyPatternList(): void
+    {
+        $rule = new DirectoryRuleConfig('spec/**', null, null, null, null, [], null, null, null, null, false, null, null, ['Context'], []);
+        $listing = new DirectoryListing('spec', ['login.feature'], []);
+
+        self::assertFalse((new DirectoryRuleInspector())->matchesCondition($rule, $listing));
     }
 }

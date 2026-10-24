@@ -38,7 +38,7 @@ No directory anywhere may be called `scripts`. `src` holds only directories, and
 
 `.` scans the project root itself, which is how a rule reaches the root, dotted directories such as `.github`, and everything outside the source roots. The root is reported as `.`, and every directory below keeps its path relative to the root, such as `src` or `.github/workflows`, whether the scan starts at `.` or at `src`. When [`collect`](configuration.md#collection-scope) is set, it replaces `paths` and `exclude`.
 
-Every rule whose `path` matches a directory applies to it. Overlapping rules do not override or merge; each reports its own findings. Unknown keys in a rule are errors, so a typo such as `max_file` cannot switch a check off.
+Every rule whose `path` matches a directory applies to it, subject to its optional `when_files` condition. Overlapping rules do not override or merge; each reports its own findings. Unknown keys in a rule are errors, so a typo such as `max_file` cannot switch a check off.
 
 ## Patterns
 
@@ -57,6 +57,12 @@ A rule `path` matches the whole directory path, one segment at a time:
 
 `exclude` entries are matched differently: each is an `fnmatch` glob over the whole relative path, so `*` may cross `/`.
 
+## Conditional rules
+
+`when_files` is an optional list of filename globs. The rule applies only when at least one file directly in the matched directory matches at least one glob. Subdirectory names and files deeper in the tree do not activate it. Matching uses the collected entries after exclusions, including exclusions from `collect` when set.
+
+Omitting `when_files` applies the rule unconditionally; `when_files: []` never activates it. The condition gates every constraint in that rule. Other rules matching the same directory still apply independently. `guard rules` includes the condition in each constraint's details; it is not a separate violation.
+
 ## Constraints
 
 | Key | Value | Checks | Rule ID |
@@ -70,6 +76,7 @@ A rule `path` matches the whole directory path, one segment at a time:
 | `allow_dirs` | globs | Every subdirectory name matches one of them. | `structure.disallowed_dir` |
 | `deny_dirs` | globs | No subdirectory name matches any of them. | `structure.denied_dir` |
 | `require` | names | Each named file exists directly in the directory. | `structure.missing_required_file` |
+| `require_dirs` | names | Each named subdirectory exists directly in the directory. A same-named file does not satisfy this check. | `structure.missing_required_dir` |
 | `forbid_empty` | `true` | The directory has at least one entry after exclusions. | `structure.empty_directory` |
 | `file_case` | `pascal`, `camel`, `snake`, `kebab` | File names follow the convention. | `structure.file_case` |
 | `dir_case` | `pascal`, `camel`, `snake`, `kebab` | Subdirectory names follow the convention. | `structure.dir_case` |
@@ -83,6 +90,43 @@ To require a directory to hold exactly one manifest, combine `require` and `allo
   require: [module.yaml]
   allow: [module.yaml]
 ```
+
+### Behat specifications
+
+The shipped `rules/structure.yaml` includes these rules:
+
+```yaml
+- path: 'spec/**'
+  when_files: ['*.feature']
+  allow: ['*.feature']
+  require_dirs: [Context]
+- path: 'spec/**/Context/**'
+  allow: ['?*Context.php']
+  file_case: pascal
+```
+
+Feature files can live directly in `spec/` or in categories at any depth. Every directory containing a `.feature` file may contain only `.feature` files and must have its own direct `Context/` subdirectory. A context directory in a parent or sibling does not satisfy that requirement. Directories without feature files do not acquire these conditional constraints.
+
+Every file in `Context/` and its descendants must have a PascalCase name ending in `Context.php`, with a non-empty prefix, such as `AccountContext.php`. These filename constraints apply even before a feature file exists. For example, both layouts pass:
+
+```text
+spec/
+  login.feature
+  Context/
+    AccountContext.php
+
+spec/
+  Account/
+    login.feature
+    Context/
+      AccountContext.php
+  Billing/
+    pay.feature
+    Context/
+      BillingContext.php
+```
+
+Import `rules/test-dependencies.yaml` as well to require the Composer development mapping `"Spec\\": "spec/"` and enforce the existing test dependency boundaries. For an initial configuration, use `guard init --import=structure,test-dependencies`. With that mapping, `spec/Account/Context/AccountContext.php` belongs to `Spec\Account\Context`. See [test dependencies](fields.md#test-dependencies) for mapping repairs and Deptrac rules.
 
 ### Case conventions
 

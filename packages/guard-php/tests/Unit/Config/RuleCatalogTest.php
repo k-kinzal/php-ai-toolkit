@@ -210,4 +210,19 @@ final class RuleCatalogTest extends TestCase
         self::assertSame('documentation.undeclared_document', $rules[count($rules) - 1]->id);
     }
 
+    public function testStructureListsConditionsAsDetailsOfEachConstraint(): void
+    {
+        $rules = (new RuleCatalog())->structure(['directories' => [['path' => 'spec/**', 'when_files' => ['*.feature'], 'allow' => ['*.feature'], 'require_dirs' => ['Context']]]]);
+
+        self::assertCount(2, $rules);
+        self::assertSame('structure.disallowed_file', $rules[0]->id);
+        self::assertSame('structure.missing_required_dir', $rules[1]->id);
+        self::assertSame(['*.feature'], $rules[0]->details['when_files']);
+        self::assertSame(['*.feature'], $rules[1]->details['when_files']);
+        self::assertSame('spec/**', $rules[0]->target);
+        self::assertSame('spec/**', $rules[1]->target);
+        self::assertSame(['Context'], $rules[1]->details['require_dirs']);
+        self::assertStringContainsString('Create the named directory', $rules[1]->message);
+    }
+
 }

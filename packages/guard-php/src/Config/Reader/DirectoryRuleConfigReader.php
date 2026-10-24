@@ -36,6 +36,8 @@ final class DirectoryRuleConfigReader
         'forbid_empty',
         'file_case',
         'dir_case',
+        'require_dirs',
+        'when_files',
     ];
 
     /** @readonly */
@@ -89,6 +91,8 @@ final class DirectoryRuleConfigReader
             $this->scalarReader->bool($value, 'forbid_empty', false, $context),
             $this->scalarReader->optionalCase($value, 'file_case', $context),
             $this->scalarReader->optionalCase($value, 'dir_case', $context),
+            $this->stringListReader->readOptional($value, 'require_dirs', $context),
+            $this->stringListReader->readOptional($value, 'when_files', $context),
         );
     }
 }

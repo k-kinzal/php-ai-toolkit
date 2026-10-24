@@ -24,6 +24,7 @@ use Guard\Policy\FileChange;
 use Guard\Policy\Plan;
 use Guard\Policy\PolicyBinding;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
@@ -85,6 +86,8 @@ final class DirectoryRuleConfigReaderTest extends TestCase
             'forbid_empty' => true,
             'file_case' => 'pascal',
             'dir_case' => 'kebab',
+            'require_dirs' => ['Context'],
+            'when_files' => ['*.feature'],
         ], 0);
 
         self::assertSame('src/**', $rule->path);
@@ -100,6 +103,8 @@ final class DirectoryRuleConfigReaderTest extends TestCase
         self::assertTrue($rule->forbidEmpty);
         self::assertSame('pascal', $rule->fileCase);
         self::assertSame('kebab', $rule->dirCase);
+        self::assertSame(['Context'], $rule->requireDirs);
+        self::assertSame(['*.feature'], $rule->whenFiles);
     }
 
     public function testReadLeavesAbsentConstraintsUnchecked(): void
@@ -119,6 +124,8 @@ final class DirectoryRuleConfigReaderTest extends TestCase
         self::assertFalse($rule->forbidEmpty);
         self::assertNull($rule->fileCase);
         self::assertNull($rule->dirCase);
+        self::assertNull($rule->requireDirs);
+        self::assertNull($rule->whenFiles);
     }
 
     public function testReadDistinguishesEmptyAllowFromAbsent(): void
@@ -151,5 +158,30 @@ final class DirectoryRuleConfigReaderTest extends TestCase
         $this->expectExceptionMessage('Invalid tree.yaml: "rules[0].path" must be a non-empty string.');
 
         (new DirectoryRuleConfigReader())->read(['max_files' => 25], 0);
+    }
+
+    /**
+     * @dataProvider providerInvalidLists
+     */
+    #[DataProvider('providerInvalidLists')]
+    public function testReadRejectsInvalidConditionalAndDirectoryLists(string $key, mixed $value): void
+    {
+        $this->expectException(PolicyException::class);
+        $this->expectExceptionMessage('rules[0].' . $key);
+
+        (new DirectoryRuleConfigReader())->read(['path' => 'spec/**', $key => $value], 0);
+    }
+
+    /**
+     * @return iterable<string, array{string, mixed}>
+     */
+    public static function providerInvalidLists(): iterable
+    {
+        foreach (['when_files', 'require_dirs'] as $key) {
+            yield $key . ' scalar' => [$key, '*.feature'];
+            yield $key . ' null' => [$key, null];
+            yield $key . ' empty entry' => [$key, ['']];
+            yield $key . ' non-string entry' => [$key, [1]];
+        }
     }
 }

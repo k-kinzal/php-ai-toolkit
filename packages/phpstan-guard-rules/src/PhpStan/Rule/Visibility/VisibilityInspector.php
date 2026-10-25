@@ -127,7 +127,12 @@ final class VisibilityInspector
     {
         $member = $reference['memberName'] === null
             ? null
-            : $index->memberDeclaration($reference['className'], $reference['memberName']);
+            : $index->memberDeclaration($reference['className'], $reference['memberName'], match ($reference['kind']) {
+                'instance call', 'static call', 'instantiation' => 'method',
+                'instance property access', 'static property access' => 'property',
+                'constant access' => 'constant',
+                default => null,
+            });
         if ($member !== null && !$this->scopeOf($member)->permits($reference['namespace'])) {
             return $this->outOfScope($member, $reference);
         }

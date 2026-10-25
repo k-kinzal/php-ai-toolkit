@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\PhpStan\Rule\Visibility;
 
 use PhpParser\Node;
+use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Expr\NullsafePropertyFetch;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name;
@@ -13,6 +15,10 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Nop;
 use PhpParser\Node\UnionType;
 use PHPStan\Analyser\Scope;
+use PHPStan\Type\MixedType;
+use PHPStan\Type\NullType;
+use PHPStan\Type\ObjectType;
+use PHPStan\Type\TypeCombinator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -113,5 +119,29 @@ final class VisibilityReferenceCollectorTest extends TestCase
     public function testMemberNameRejectsComputedName(): void
     {
         self::assertNull((new VisibilityReferenceCollector())->memberName(new Variable('method')));
+    }
+
+    public function testInstanceReferenceResolvesNullablePropertyReceiver(): void
+    {
+        $scope = self::createStub(Scope::class);
+        $scope->method('getType')->willReturn(TypeCombinator::union(new ObjectType('App\Domain\Order'), new NullType()));
+        $scope->method('getNamespace')->willReturn('App\Http');
+        $references = (new VisibilityReferenceCollector())->fromExpression(new NullsafePropertyFetch(new Variable('order'), 'value', ['startLine' => 12]), $scope);
+        self::assertSame([['className' => 'App\Domain\Order', 'memberName' => 'value', 'kind' => 'instance property access', 'namespace' => 'App\Http', 'line' => 12]], $references);
+    }
+
+    public function testInstanceReferenceSkipsAmbiguousReceiverTypes(): void
+    {
+        $scope = self::createStub(Scope::class);
+        $scope->method('getType')->willReturn(TypeCombinator::union(new ObjectType('App\One'), new ObjectType('App\Two')));
+        self::assertSame([], (new VisibilityReferenceCollector())->fromExpression(new MethodCall(new Variable('object'), 'run'), $scope));
+    }
+
+    public function testInstanceReferenceSkipsUnknownReceiversAndDynamicMembers(): void
+    {
+        $scope = self::createStub(Scope::class);
+        $scope->method('getType')->willReturn(new MixedType());
+        self::assertSame([], (new VisibilityReferenceCollector())->fromExpression(new MethodCall(new Variable('object'), new Variable('method')), $scope));
+        self::assertSame([], (new VisibilityReferenceCollector())->fromExpression(new MethodCall(new Variable('object'), 'run'), $scope));
     }
 }

@@ -105,6 +105,10 @@ final class EnforceVisibilityScopeRuleTest extends RuleTestCase
             __DIR__ . '/../../../../../tests/PhpStan/VisibilityScope/project/src/Outside/OutsideCaller.php',
         ], [
             [
+                'Class Tests\PhpStan\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\PhpStan\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Package" and its sub-namespaces. Move this instance property access into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope".',
+                17,
+            ],
+            [
                 'Class Tests\PhpStan\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\PhpStan\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Package" and its sub-namespaces. Move this instantiation into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope".',
                 17,
             ],
@@ -115,6 +119,10 @@ final class EnforceVisibilityScopeRuleTest extends RuleTestCase
             [
                 'Class Tests\PhpStan\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\PhpStan\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Package" and its sub-namespaces. Move this static property access into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope".',
                 27,
+            ],
+            [
+                'Class Tests\PhpStan\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\PhpStan\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Package" and its sub-namespaces. Move this instance property access into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope".',
+                32,
             ],
             [
                 'Class Tests\PhpStan\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\PhpStan\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Package" and its sub-namespaces. Move this static call into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope".',
@@ -128,6 +136,16 @@ final class EnforceVisibilityScopeRuleTest extends RuleTestCase
                 'Class Tests\PhpStan\VisibilityScope\Package\NamespaceScoped is not visible from namespace "Tests\PhpStan\VisibilityScope\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Package" and its sub-namespaces. Move this class name reference into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope".',
                 42,
             ],
+        ]);
+    }
+
+    public function testProcessNodeChecksInheritedAndNullsafeInstanceMembers(): void
+    {
+        $this->analyse([__DIR__ . '/../../../../../tests/PhpStan/VisibilityScope/project/src/InstanceAccess.php'], [
+            ['Method Tests\PhpStan\VisibilityScope\Instances\Package\Service::internal() is not visible from namespace "Tests\PhpStan\VisibilityScope\Instances\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Instances\Package" and its sub-namespaces. Move this instance call into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope\Instances".', 19],
+            ['Property Tests\PhpStan\VisibilityScope\Instances\Package\Service::$state is not visible from namespace "Tests\PhpStan\VisibilityScope\Instances\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Instances\Package" and its sub-namespaces. Move this instance property access into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope\Instances".', 20],
+            ['Method Tests\PhpStan\VisibilityScope\Instances\Package\Service::internal() is not visible from namespace "Tests\PhpStan\VisibilityScope\Instances\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Instances\Package" and its sub-namespaces. Move this instance call into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope\Instances".', 21],
+            ['Property Tests\PhpStan\VisibilityScope\Instances\Package\Service::$state is not visible from namespace "Tests\PhpStan\VisibilityScope\Instances\Outside": the declaration is marked "@visibility namespace", so it may only be named from namespace "Tests\PhpStan\VisibilityScope\Instances\Package" and its sub-namespaces. Move this instance property access into that namespace, or widen the declaration to "@visibility Tests\PhpStan\VisibilityScope\Instances".', 22],
         ]);
     }
 }

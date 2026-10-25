@@ -3,7 +3,7 @@
 | Property | Value |
 |----------|-------|
 | Identifiers | `customRules.visibilityInvalidScope`, `customRules.visibilityOutOfScope` |
-| Scope | Class-like declarations, members, and written class-like references in PHPStan's analysed files |
+| Scope | Class-like declarations, members, and written class-like references and resolved instance accesses in PHPStan's analysed files |
 | Rector | Unavailable |
 | Configurable | Yes |
 
@@ -46,16 +46,17 @@ A member cannot widen its containing type: both a member scope and its class-lik
 
 ## References Checked
 
-The rule deliberately resolves written names, preserving the former standalone check's module-boundary semantics:
+The rule checks written class names and definite instance receivers:
 
 - instantiation, static calls, static property access, constants, enum cases, and `::class`;
 - `instanceof`, `extends`, `implements`, and trait use;
 - parameter, return, property, and catch types;
-- attributes.
+- attributes;
+- instance method calls and property reads/writes, including `?->`.
 
-`self`, `static`, and `parent` are not reported. Member scopes are enforced for named static access and constructors.
-An instance call such as `$writer->append()` is not a written class name and is not resolved by this rule. Inherited
-member lookups follow parents, interfaces, and traits collected from the analysed files.
+`self`, `static`, and `parent` are not reported. Member scopes are enforced for named static access, constructors, and instance access such as `$writer->append()`. Inherited member lookups follow parents, interfaces, and traits collected from the analysed files. Method names are case-insensitive; properties and constants remain case-sensitive and are indexed separately.
+
+Instance access is checked only when PHPStan resolves a single object class after removing null and the member name is literal. Mixed/unknown receivers, multi-class unions or intersections, and computed member names are skipped. Nullable receivers and nullsafe access are checked once. This rule does not impose a separate restriction on which types a public API may return.
 
 ## Invalid Scopes
 

@@ -11,7 +11,11 @@ use PhpParser\Node\Attribute;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\Instanceof_;
+use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Expr\NullsafeMethodCall;
+use PhpParser\Node\Expr\NullsafePropertyFetch;
+use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\StaticPropertyFetch;
 use PhpParser\Node\FunctionLike;
@@ -27,6 +31,7 @@ use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\TraitUse;
 use PHPStan\Analyser\Scope;
 use PHPStan\Collectors\Collector;
+use PHPStan\Type\TypeCombinator;
 
 use function strtolower;
 
@@ -116,6 +121,10 @@ final class VisibilityReferenceCollector implements Collector
      */
     public function fromExpression(Expr $node, Scope $scope): array
     {
+        if ($node instanceof MethodCall || $node instanceof NullsafeMethodCall || $node instanceof PropertyFetch || $node instanceof NullsafePropertyFetch) {
+            return $this->instanceReference($node, $scope);
+        }
+
         if ($node instanceof New_) {
             return $this->reference($node->class, '__construct', 'instantiation', $scope);
         }
@@ -225,5 +234,31 @@ final class VisibilityReferenceCollector implements Collector
     public function memberName(Node $nameNode): ?string
     {
         return $nameNode instanceof Identifier ? $nameNode->toString() : null;
+    }
+
+    /**
+     * Records instance access only when PHPStan resolves one definite receiver class.
+     *
+     * @return list<array{className: string, memberName: ?string, kind: string, namespace: string, line: int}>
+     */
+    public function instanceReference(MethodCall|NullsafeMethodCall|PropertyFetch|NullsafePropertyFetch $node, Scope $scope): array
+    {
+        if ($node->getAttribute('virtualNullsafeMethodCall') === true || $node->getAttribute('virtualNullsafePropertyFetch') === true) {
+            return [];
+        }
+        $member = $this->memberName($node->name);
+        $type = TypeCombinator::removeNull($scope->getType($node->var));
+        $classes = $type->getObjectClassNames();
+        if ($member === null || !$type->isObject()->yes() || count($classes) !== 1) {
+            return [];
+        }
+
+        return [[
+            'className' => $classes[0],
+            'memberName' => $member,
+            'kind' => $node instanceof MethodCall || $node instanceof NullsafeMethodCall ? 'instance call' : 'instance property access',
+            'namespace' => $scope->getNamespace() ?? '',
+            'line' => $node->getStartLine(),
+        ]];
     }
 }

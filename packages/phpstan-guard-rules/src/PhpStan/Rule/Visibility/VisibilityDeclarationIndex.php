@@ -44,7 +44,8 @@ final class VisibilityDeclarationIndex
 
         foreach ($collected['members'] as $member) {
             $declaration = $member + ['file' => $file];
-            $this->members[$this->memberKey($member['className'], $member['memberName'])] = $declaration;
+            $name = $member['kind'] === 'method' ? strtolower($member['memberName']) : $member['memberName'];
+            $this->members[$member['kind'] . ':' . $this->memberKey($member['className'], $name)] = $declaration;
             $this->declarations[] = $declaration;
         }
     }
@@ -64,7 +65,7 @@ final class VisibilityDeclarationIndex
      *
      * @return array{className: string, memberName: ?string, symbol: string, kind: string, namespace: string, docComment: ?string, line: int, file: string}|null
      */
-    public function memberDeclaration(string $className, string $memberName): ?array
+    public function memberDeclaration(string $className, string $memberName, ?string $kind = null): ?array
     {
         $seen = [];
         $queue = [$className];
@@ -77,9 +78,12 @@ final class VisibilityDeclarationIndex
             }
 
             $seen[$key] = true;
-            $declaration = $this->members[$this->memberKey($current, $memberName)] ?? null;
-            if ($declaration !== null) {
-                return $declaration;
+            foreach ($kind === null ? ['method', 'property', 'constant', 'enum case'] : ($kind === 'constant' ? ['constant', 'enum case'] : [$kind]) as $memberKind) {
+                $name = $memberKind === 'method' ? strtolower($memberName) : $memberName;
+                $declaration = $this->members[$memberKind . ':' . $this->memberKey($current, $name)] ?? null;
+                if ($declaration !== null) {
+                    return $declaration;
+                }
             }
 
             foreach ($this->parents[$key] ?? [] as $parent) {

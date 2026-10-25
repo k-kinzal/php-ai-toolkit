@@ -1,0 +1,47 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M5S4VNNGW3G8VEC3NS4VR5HW",
+  "session_id": "01a1724c-78a1-7dd0-b17a-299fffe5745c",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-25T09:04:27.618481Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/docgen-php/src/DocGen/Parse/Reference/UsageCollector.php"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "36074d7b56fe",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 14873,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 54912,
+    "output_tokens": 642,
+    "api_call_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-25T09:04:27.545309Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "total_lines_changed": 0,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 4,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "packages/docgen-php/src/DocGen/Parse/Reference/UsageCollector.php": 4
+      }
+    }
+  ]
+}

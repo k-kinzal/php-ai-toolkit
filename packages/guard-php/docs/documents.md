@@ -142,3 +142,23 @@ To add a check to a shipped declaration, declare the same path in the project fi
 ## Monorepos
 
 Each package declares its documents in its own `guard.yaml`, and a root policy declares the root files. `guard check --config=../../guard.yaml` checks the root policy from a package directory; its paths stay relative to the root policy.
+
+## Local links
+
+Import `rules/markdown-links.yaml` to check relative links and images in Markdown independently of any heading or outline declarations. The general preset works with any project; it has no Kinzal-specific layout requirements.
+
+```yaml
+version: 1
+imports:
+  - vendor/k-kinzal/guard-php/rules/markdown-links.yaml
+extensions:
+  Guard\Policy\MarkdownLocalLinks:
+    paths: ['README.md', 'docs/**/*.md']
+    exclude: ['docs/generated/**']
+```
+
+CommonMark parsing recognizes inline and reference-style links, including images, escaped destinations, parentheses, and percent-encoded paths. Code spans, fenced and indented code, raw HTML, YAML front matter, and unused reference definitions do not become links. Paths resolve from the containing Markdown file. Files and directories are valid targets; a missing target produces `documentation.missing_link_target` with the source, destination, and containing block's starting line.
+
+Only the file or directory is checked. Query strings and fragments are removed; heading anchors, external URLs, URI schemes, site-root routes such as `/docs`, and raw HTML `href` attributes are not checked. References outside the policy root, outside `collect`, or through a symlink are skipped. Target metadata is collected without reading target contents or traversing the entire project. The preset excludes Markdown under `vendor` and `.git`, including nested packages. Use `collect.exclude` to exclude linked targets as well as source files.
+
+The policy never rewrites links. Configure it through the preset import or `extensions`; it does not require a `documentation.files` outline declaration.

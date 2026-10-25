@@ -65,6 +65,8 @@ final class PresetCatalogTest extends TestCase
     {
         $names = (new PresetCatalog())->names();
         self::assertContains('metrics', $names);
+        self::assertContains('markdown-links', $names);
+        self::assertContains('generated-artifacts', $names);
         self::assertContains('disable-doc', $names);
         self::assertContains('phpstan-guard-rules', $names);
         self::assertContains('phpunit9', $names);

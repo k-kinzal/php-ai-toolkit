@@ -37,6 +37,10 @@ final class Discovery
                 continue;
             }
             try {
+                if ($input->selection->mode === 'git-tracked') {
+                    (new GitTrackedFiles())->collect($root, $input->selection, $result, $scope);
+                    continue;
+                }
                 (new SelectionRoots($this->snapshot, $scope))->seed($root, $id, $input->selection, $queue, $result);
             } catch (PolicyException $error) {
                 $result->fail($error);

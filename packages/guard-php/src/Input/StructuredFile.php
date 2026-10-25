@@ -16,6 +16,7 @@ use RuntimeException;
  * @property-read bool $readable
  * @property-read ?Subject $data
  * @property-read RuntimeException|JsonException|Exception|null $failure
+ * @property-read array<string, FileRecord> $references
  */
 final class StructuredFile
 {
@@ -25,6 +26,7 @@ final class StructuredFile
      * @param bool $readable
      * @param ?Subject $data
      * @param RuntimeException|JsonException|Exception|null $failure
+     * @param array<string, FileRecord> $references
      */
     public function __construct(
         /** @readonly */
@@ -35,6 +37,8 @@ final class StructuredFile
         private ?Subject $data,
         /** @readonly */
         private RuntimeException|JsonException|Exception|null $failure,
+        /** @readonly */
+        private array $references = [],
     ) {
     }
 
@@ -48,6 +52,7 @@ final class StructuredFile
             'readable' => $this->readable,
             'data' => $this->data,
             'failure' => $this->failure,
+            'references' => $this->references,
             default => null,
         };
     }

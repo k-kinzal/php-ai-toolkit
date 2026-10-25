@@ -12,6 +12,8 @@ An AI agent that is asked to make a test pass will also lengthen a method, add a
 | `configuration` | Values in the configuration files of other tools, such as `phpstan.neon` or `phpunit.xml.dist`. See [configuration fields](fields.md). | the rule's `id` | yes, when the rule has a repair |
 | `test_dependencies` | Composer development namespaces and Deptrac dependency boundaries for test directories. See [test dependencies](fields.md#test-dependencies). | `test-dependencies.*` | yes, including a missing Deptrac file |
 | `benchmarks` | PHPBench directory contents, filenames, namespace references and Composer commands. See [benchmarks](benchmarks.md). | `phpbench.*` | Composer fields only |
+| `extensions` with `MarkdownLocalLinks` | Relative Markdown link and image targets. See [local links](documents.md#local-links). | `documentation.missing_link_target` | no |
+| `extensions` with `UntrackedFiles` | Git tracking of explicitly declared generated paths. See [generated artifacts](#generated-artifacts). | `git.tracked_generated_file` | no |
 | `extensions` | Whatever a project or a package adds. See [extensions](extensions.md). | chosen by the extension | when the extension proposes a change |
 
 A section that `guard.yaml` neither writes nor [imports](configuration.md#imports) is not checked.
@@ -37,3 +39,21 @@ Each message names the offending file and symbol, what the policy expects, and h
 ## What it does not prove
 
 Guard checks shape: sizes, names, headings and values. A short method can still be wrong, and a README with the declared sections can still be out of date. Passing `guard check` means the project has not drifted from what was decided, not that the decisions are good.
+
+## Generated artifacts
+
+The general `generated-artifacts.yaml` preset rejects tracked PHPUnit/PHPStan/PHP-CS-Fixer caches and coverage output at the explicitly listed paths. It does not infer that arbitrary `resources`, snapshots, or generated source files are unwanted. Projects can declare their own generated paths and intentional exceptions:
+
+```yaml
+version: 1
+imports:
+  - vendor/k-kinzal/guard-php/rules/generated-artifacts.yaml
+extensions:
+  Guard\Policy\UntrackedFiles:
+    paths: ['build/coverage/**', 'resources/generated-grammar/**']
+    exclude: ['resources/generated-grammar/README.md']
+```
+
+The project list replaces the preset list. Patterns are relative to the directory containing `guard.yaml`, including when it is a package within a monorepo or a Git worktree. The collector reads `git ls-files --cached -z`; untracked output on disk is allowed, while staged additions and tracked files deleted only from disk are still checked. Both selection exclusions and the `collect` boundary apply. Git must be installed and the selected project must be inside a working tree; an unavailable index is reported as an operational error, not a clean check.
+
+`git.tracked_generated_file` identifies each tracked artifact. Remove it from the index with `git rm --cached` and update `.gitignore`, or declare an intentional exception. `guard fix` never edits the index or deletes output. This policy can also be registered directly through `extensions` without importing the preset.

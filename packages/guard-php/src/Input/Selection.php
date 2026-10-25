@@ -50,8 +50,8 @@ final class Selection
         /** @readonly */
         private string $forbiddenMessage = '',
     ) {
-        if (!in_array($mode, ['files', 'patterns', 'descendants', 'directories'], true)) {
-            throw new PolicyException('Selection mode "' . $mode . '" is unsupported. Use files, patterns, descendants or directories.');
+        if (!in_array($mode, ['files', 'patterns', 'descendants', 'directories', 'git-tracked'], true)) {
+            throw new PolicyException('Selection mode "' . $mode . '" is unsupported. Use files, patterns, descendants, directories or git-tracked.');
         }
     }
 

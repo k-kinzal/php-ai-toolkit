@@ -1,0 +1,5 @@
+version: 1
+extensions:
+  Guard\Policy\MarkdownLocalLinks:
+    paths: ['**/*.md']
+    exclude: ['**/vendor/**', '**/.git/**']

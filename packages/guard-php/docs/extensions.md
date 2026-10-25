@@ -73,6 +73,7 @@ final class StrictTypesPolicy implements Policy
 | `new Selection('files', ['README.md'])` | Exact paths. A missing file is still listed, so the policy can report it. |
 | `new Selection('patterns', ['docs/**/*.md'])` | Files matching globs. `*` stays within one segment and `**` matches any number. |
 | `new Selection('descendants', ['src'], [], '.php')` | Files below directories, optionally limited to a name suffix. |
+| `new Selection('git-tracked', ['build/**'])` | Paths in the Git index, including working-tree deletions. Metadata only; no file contents are read. |
 | `new Selection('directories', ['.'])` | Directory listings with their file and subdirectory names. |
 
 The third argument lists exclusions. Paths are relative to the main `guard.yaml`. Every selection is intersected with the [collection scope](configuration.md#collection-scope), so a policy cannot read outside it, and a file outside it is simply absent from the result.
@@ -99,6 +100,7 @@ Write messages the way the built-in ones are written: name the file and the offe
 |----|-------|
 | `text` | `Guard\Structure\Text`: the bytes of the file, from `content()`. |
 | `php.tokens`, `php.metrics` | PHP tokens, and the line and complexity metrics built from them. |
+| `markdown.links` | `Guard\Structure\Markdown\Link\LinkList`: local link destinations. The collector resolves their target metadata in `StructuredFile::references`. |
 | `markdown.headings`, `markdown.badges` | The headings of a Markdown file, and the badge block under its title. |
 | `json`, `json5`, `yaml`, `yml`, `neon`, `toml`, `xml`, `php` | `Guard\Structure\ParsedDocument`. `copy()` returns a private editable document; `original()` returns the bytes. |
 
@@ -114,6 +116,8 @@ interface Structurer
 ```
 
 `Source::text()` returns the bytes, and `Source::structure($id)` builds another registered structure to depend on, such as `markdown.headings`. A circular dependency is an error. Treat shared values as read-only; use `copy()` before changing a parsed document.
+
+A structure implementing `Guard\Structure\LocalReferences` exposes relative filesystem targets through `paths()`. The collector resolves them relative to the source file and populates `StructuredFile::references`, keyed by the original relative path. Existing and missing admitted targets have `FileRecord` values; targets outside the root or collection scope and paths through symlinks are absent. No referenced contents are read. Policies can distinguish a missing target from an intentionally uncollected one without filesystem access.
 
 ## Registering extensions
 

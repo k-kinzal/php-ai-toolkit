@@ -10,6 +10,7 @@ use Guard\Policy\PolicyBinding;
 use Guard\Structure\DocumentStructurer;
 use Guard\Structure\Markdown\Badge\BadgeStructurer;
 use Guard\Structure\Markdown\HeadingStructurer;
+use Guard\Structure\Markdown\Link\LinkStructurer;
 use Guard\Structure\Php\MetricParser;
 use Guard\Structure\Php\TokenParser;
 use Guard\Structure\Structurer;
@@ -30,6 +31,7 @@ final class Registry
         $registry->addStructure('php.tokens', new TokenParser());
         $registry->addStructure('php.metrics', new MetricParser());
         $registry->addStructure('markdown.headings', new HeadingStructurer());
+        $registry->addStructure('markdown.links', new LinkStructurer());
         $registry->addStructure('markdown.badges', new BadgeStructurer());
         $registry->addStructure('text', new TextStructurer());
         foreach (['json', 'json5', 'yaml', 'yml', 'neon', 'toml', 'xml', 'php'] as $format) {

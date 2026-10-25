@@ -7,12 +7,14 @@ namespace Guard\Collect;
 use Guard\Collect\Filesystem\Discovery;
 use Guard\Collect\Filesystem\Filesystem;
 use Guard\Collect\Filesystem\NativeFilesystem;
+use Guard\Collect\Filesystem\ReferenceTargets;
 use Guard\Collect\Filesystem\Snapshot;
 use Guard\Input\FileRecord;
 use Guard\Input\FileSet;
 use Guard\Input\Input;
 use Guard\Input\Scope;
 use Guard\Input\StructuredFile;
+use Guard\Structure\LocalReferences;
 use Guard\Structure\Source;
 use Guard\Structure\Structurer;
 use JsonException;
@@ -70,7 +72,8 @@ final class Collector
                         $failure = $error;
                     }
                 }
-                $values[$id][$key] = new StructuredFile($file, $format === null || $source !== null, $data, $failure);
+                $references = $data instanceof LocalReferences ? (new ReferenceTargets($snapshot))->resolve($root, $file, $data, $scope) : [];
+                $values[$id][$key] = new StructuredFile($file, $format === null || $source !== null, $data, $failure, $references);
             }
         }
         $result = [];

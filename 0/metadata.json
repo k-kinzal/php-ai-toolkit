@@ -1,0 +1,49 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M5S41CGV5Q3YDQKHSED9NKTA",
+  "session_id": "01a17207-ab8b-76e2-bd44-08b504acb6e0",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-25T08:50:09.010235Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "packages/guard-php/rules/generated-artifacts.yaml",
+    "packages/guard-php/rules/markdown-links.yaml",
+    "packages/guard-php/src/Collect/Collector.php",
+    "packages/guard-php/src/Collect/Filesystem/Discovery.php",
+    "packages/guard-php/src/Collect/Filesystem/GitTrackedFiles.php",
+    "packages/guard-php/src/Collect/Filesystem/ReferenceTargets.php",
+    "packages/guard-php/src/Execution/Registry.php",
+    "packages/guard-php/src/Input/Selection.php",
+    "packages/guard-php/src/Input/StructuredFile.php",
+    "packages/guard-php/src/Policy/MarkdownLocalLinks.php",
+    "packages/guard-php/src/Policy/UntrackedFiles.php",
+    "packages/guard-php/src/Structure/LocalReferences.php",
+    "packages/guard-php/src/Structure/Markdown/Link/LinkStructurer.php",
+    "packages/guard-php/tests/Unit/Structure/Markdown/Link/LinkStructurerTest.php"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "eb41b07dd9ad",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 351625,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 13523328,
+    "output_tokens": 75248,
+    "api_call_count": 96
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-25T08:50:08.469628Z",
+    "agent_lines": 390,
+    "agent_removed": 3,
+    "human_added": 1106,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1496,
+    "total_lines_changed": 1635,
+    "agent_percentage": 24.036697247706424,
+    "metric_version": 2
+  }
+}

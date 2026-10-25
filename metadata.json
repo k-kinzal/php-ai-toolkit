@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M5S41CGV5Q3YDQKHSED9NKTA",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/guard-php/rules/generated-artifacts.yaml",
+    "packages/guard-php/rules/markdown-links.yaml",
+    "packages/guard-php/src/Collect/Collector.php",
+    "packages/guard-php/src/Collect/Filesystem/Discovery.php",
+    "packages/guard-php/src/Collect/Filesystem/GitTrackedFiles.php",
+    "packages/guard-php/src/Collect/Filesystem/ReferenceTargets.php",
+    "packages/guard-php/src/Execution/Registry.php",
+    "packages/guard-php/src/Input/Selection.php",
+    "packages/guard-php/src/Input/StructuredFile.php",
+    "packages/guard-php/src/Policy/MarkdownLocalLinks.php",
+    "packages/guard-php/src/Policy/UntrackedFiles.php",
+    "packages/guard-php/src/Structure/LocalReferences.php",
+    "packages/guard-php/src/Structure/Markdown/Link/LinkStructurer.php",
+    "packages/guard-php/tests/Unit/Structure/Markdown/Link/LinkStructurerTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 351625,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 13523328,
+    "output_tokens": 75248,
+    "api_call_count": 96
+  }
+}

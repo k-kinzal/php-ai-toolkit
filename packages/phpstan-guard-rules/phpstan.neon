@@ -12,3 +12,7 @@ parameters:
         - tests/PhpStan
     toolkit:
         allRules: true
+        classPairExclude:
+            - Tests\Unit\Compatibility\ClassAliasesTest
+            - Tests\Unit\PhpStan\Rule\Naming\ForbidClassLikeNameSuffixRuleWithoutConfiguredSuffixesTest
+            - Tests\Unit\PhpStan\Rule\Naming\ForbiddenNamespaceRuleWithoutConfiguredPrefixesTest

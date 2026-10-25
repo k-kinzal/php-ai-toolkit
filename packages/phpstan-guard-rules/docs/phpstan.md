@@ -28,7 +28,7 @@ Rules applied to all code.
 | [ForbiddenMagicMethodCallRule](rules/ForbiddenMagicMethodCallRule.md) | Forbids direct calls to magic methods | `customRules.forbiddenMagicMethodCall` | [Risky](rules/ForbiddenMagicMethodCallRule.md#rector) |
 | [ForbiddenNamespaceRule](rules/ForbiddenNamespaceRule.md) | Forbids configured namespace prefixes and whole segments at any depth, including `Model`, `Models`, `Infrastructure`, and `Infrastructures` by default | `customRules.forbiddenNamespace` | [Unavailable](rules/ForbiddenNamespaceRule.md#rector) |
 | [OverrideMustHaveAttributeRule](rules/OverrideMustHaveAttributeRule.md) | Requires `#[Override]` attribute on overridden methods | `customRules.overrideMustHaveAttribute` | [Safe](rules/OverrideMustHaveAttributeRule.md#rector) |
-| [SrcUnitTestPairRule](rules/SrcUnitTestPairRule.md) | Enforces 1:1 pairing between `src/` classes and `tests/Unit/` test classes | `customRules.srcUnitTestPair` | [Unavailable](rules/SrcUnitTestPairRule.md#rector) |
+| [RequireClassPairRule](rules/RequireClassPairRule.md) | Requires a paired class for every class matching a configured name template; by default each class under the namespace of `src/` needs a `Test` class under the namespace of `tests/Unit/`, both read from `composer.json` | `customRules.classPairMissing`, `customRules.classPairOrphaned` | [Unavailable](rules/RequireClassPairRule.md#rector) |
 | [RequirePhpDocOnPublicApiRule](rules/RequirePhpDocOnPublicApiRule.md) | Requires PHPDoc on all public API elements | `customRules.requirePhpDocOnPublicApi` | [Unavailable](rules/RequirePhpDocOnPublicApiRule.md#rector) |
 | [RequireExampleOnPublicApiRule](rules/RequireExampleOnPublicApiRule.md) | Requires a runnable `@example` on declarations marked `@visibility public` | `customRules.requireExampleOnClass`, `customRules.requireExampleOnMethod`, `customRules.requireExampleOnProperty`, `customRules.requireExampleOnConstant`, `customRules.requireExampleOnEnumCase` | [Unavailable](rules/RequireExampleOnPublicApiRule.md#rector) |
 | [EnforceVisibilityScopeRule](rules/EnforceVisibilityScopeRule.md) | Enforces namespace visibility scopes declared with `@visibility` and treats explicitly public API as externally used | `customRules.visibilityInvalidScope`, `customRules.visibilityOutOfScope` | [Unavailable](rules/EnforceVisibilityScopeRule.md#rector) |
@@ -115,9 +115,11 @@ The following values can be customized under `parameters.toolkit` in a project's
 | `testNamespacePrefixes` | `['Tests']` | Test namespace prefixes |
 | `restrictedTestNamespacePrefixes` | `['Tests\Unit', 'Tests\Integration', 'Tests\Property']` | Test namespaces where strict rules apply |
 | `visibilityExemptNamespacePrefixes` | `['Tests']` | Namespace subtrees allowed to reference declarations across `@visibility` boundaries |
-| `srcUnitTestPairExcludePatterns` | `[]` | Patterns to exclude from test pair checks |
-| `srcMarker` | `'/src/'` | Source code path marker |
-| `unitTestMarker` | `'/tests/Unit/'` | Unit test path marker |
+| `classPairProjectRoot` | `%currentWorkingDirectory%` | Directory whose `composer.json` resolves `${directory}` placeholders in `classPairs` |
+| `classPairs` | `${src}\{name}` paired with `${tests/Unit}\{name}Test` | Class name templates that must exist in pairs, each with an optional `exclude` list of class name globs |
+| `classPairExclude` | `[]` | Class name globs that no class pair checks |
+| `srcMarker` | `'/src/'` | Source code path marker used by `TestNamingConventionRule` |
+| `unitTestMarker` | `'/tests/Unit/'` | Unit test path marker used by `TestNamingConventionRule` |
 | `forbiddenTermsByPath` | `[]` | Map of restricted file path patterns to case-insensitive literal terms forbidden anywhere in matching files |
 | `dependencyProjectRoot` | `%currentWorkingDirectory%` | Absolute root for dependency boundary patterns |
 | `forbiddenDependencies` | Root directories may depend on themselves and `src/**`; `vendor/**` and root files are exempt | Directed `from`/`to` path policies with optional `excludeFrom`, `excludeTo`, and `allowSameRootDirectory` |

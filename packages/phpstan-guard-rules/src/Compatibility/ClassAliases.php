@@ -55,13 +55,8 @@ use Toolkit\PhpStan\Rule\Shared\Path\SrcUnitTestRelativePathMapper;
 use Toolkit\PhpStan\Rule\TestAssertion\NoBrokenCodeExpectationRule;
 use Toolkit\PhpStan\Rule\TestAssertion\NoRedundantAssertInstanceOfRule;
 use Toolkit\PhpStan\Rule\TestAssertion\PhpUnitMockApiRule;
-use Toolkit\PhpStan\Rule\TestClass\Pairing\FilenameExclusionMatcher;
 use Toolkit\PhpStan\Rule\TestClass\Pairing\SourceFileRuleMatcher;
-use Toolkit\PhpStan\Rule\TestClass\Pairing\SourceFileUnitTestPairInspector;
 use Toolkit\PhpStan\Rule\TestClass\Pairing\SourceUnitTestFileResolver;
-use Toolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairErrorBuilder;
-use Toolkit\PhpStan\Rule\TestClass\Pairing\SrcUnitTestPairFileInspector;
-use Toolkit\PhpStan\Rule\TestClass\Pairing\UnitTestSourcePairInspector;
 use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueAiFormatter;
 use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueBlockIndenter;
 use Toolkit\PhpUnit\TestReporter\Presentation\TestIssueFormatter;
@@ -109,13 +104,8 @@ $classAliases = [
     'Toolkit\\PhpStan\\Rule\\Shared\\RulePathMatcher' => RulePathMatcher::class,
     'Toolkit\\PhpStan\\Rule\\Shared\\RulePathNormalizer' => RulePathNormalizer::class,
     'Toolkit\\PhpStan\\Rule\\Shared\\SrcUnitTestRelativePathMapper' => SrcUnitTestRelativePathMapper::class,
-    'Toolkit\\PhpStan\\Rule\\TestClass\\FilenameExclusionMatcher' => FilenameExclusionMatcher::class,
     'Toolkit\\PhpStan\\Rule\\TestClass\\SourceFileRuleMatcher' => SourceFileRuleMatcher::class,
-    'Toolkit\\PhpStan\\Rule\\TestClass\\SourceFileUnitTestPairInspector' => SourceFileUnitTestPairInspector::class,
     'Toolkit\\PhpStan\\Rule\\TestClass\\SourceUnitTestFileResolver' => SourceUnitTestFileResolver::class,
-    'Toolkit\\PhpStan\\Rule\\TestClass\\SrcUnitTestPairErrorBuilder' => SrcUnitTestPairErrorBuilder::class,
-    'Toolkit\\PhpStan\\Rule\\TestClass\\SrcUnitTestPairFileInspector' => SrcUnitTestPairFileInspector::class,
-    'Toolkit\\PhpStan\\Rule\\TestClass\\UnitTestSourcePairInspector' => UnitTestSourcePairInspector::class,
     'Toolkit\\PhpUnit\\TestReporter\\TestIssueAiFormatter' => TestIssueAiFormatter::class,
     'Toolkit\\PhpUnit\\TestReporter\\TestIssueBlockIndenter' => TestIssueBlockIndenter::class,
     'Toolkit\\PhpUnit\\TestReporter\\TestIssueFormatter' => TestIssueFormatter::class,

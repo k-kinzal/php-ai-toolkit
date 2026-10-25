@@ -20,7 +20,7 @@ parametersSchema:
         noRedundantAssertInstanceOf: structure([enabled: bool()])
         noBrokenCodeExpectation: structure([enabled: bool()])
         noTraitUseInTestClass: structure([enabled: bool()])
-        srcUnitTestPair: structure([enabled: bool()])
+        classPair: structure([enabled: bool()])
         requirePhpDocOnPublicApi: structure([enabled: bool()])
         requireExampleOnPublicApi: structure([enabled: bool()])
         forbidSingleLinePhpDoc: structure([enabled: bool()])
@@ -41,7 +41,13 @@ parametersSchema:
         testNamespacePrefixes: listOf(string())
         restrictedTestNamespacePrefixes: listOf(string())
         visibilityExemptNamespacePrefixes: listOf(string())
-        srcUnitTestPairExcludePatterns: listOf(string())
+        classPairProjectRoot: string()
+        classPairs: listOf(structure([
+            from: string()
+            to: string()
+            ?exclude: listOf(string())
+        ]))
+        classPairExclude: listOf(string())
         srcMarker: string()
         unitTestMarker: string()
         forbiddenTermsByPath: arrayOf(listOf(string()))
@@ -110,7 +116,7 @@ parameters:
             enabled: %toolkit.allRules%
         noTraitUseInTestClass:
             enabled: %toolkit.allRules%
-        srcUnitTestPair:
+        classPair:
             enabled: %toolkit.allRules%
         requirePhpDocOnPublicApi:
             enabled: %toolkit.allRules%
@@ -154,7 +160,12 @@ parameters:
             - 'Tests\Property'
         visibilityExemptNamespacePrefixes:
             - 'Tests'
-        srcUnitTestPairExcludePatterns: []
+        classPairProjectRoot: %currentWorkingDirectory%
+        classPairs:
+            -
+                from: '${src}\{name}'
+                to: '${tests/Unit}\{name}Test'
+        classPairExclude: []
         srcMarker: '/src/'
         unitTestMarker: '/tests/Unit/'
         forbiddenTermsByPath: []
@@ -338,12 +349,12 @@ services:
         arguments:
             testClassScope: @toolkit.support.testClassScope
 
-    toolkit.rule.srcUnitTestPair:
-        class: Toolkit\PhpStan\Rule\SrcUnitTestPairRule
+    toolkit.rule.classPair:
+        class: Toolkit\PhpStan\Rule\ClassPair\RequireClassPairRule
         arguments:
-            excludePatterns: %toolkit.srcUnitTestPairExcludePatterns%
-            srcMarker: %toolkit.srcMarker%
-            unitTestMarker: %toolkit.unitTestMarker%
+            classPairProjectRoot: %toolkit.classPairProjectRoot%
+            classPairs: %toolkit.classPairs%
+            classPairExclude: %toolkit.classPairExclude%
 
     toolkit.rule.requirePhpDocOnPublicApi:
         class: Toolkit\PhpStan\Rule\RequirePhpDocOnPublicApiRule
@@ -532,8 +543,8 @@ conditionalTags:
         phpstan.rules.rule: %toolkit.noBrokenCodeExpectation.enabled%
     Toolkit\PhpStan\Rule\NoTraitUseInTestClassRule:
         phpstan.rules.rule: %toolkit.noTraitUseInTestClass.enabled%
-    Toolkit\PhpStan\Rule\SrcUnitTestPairRule:
-        phpstan.rules.rule: %toolkit.srcUnitTestPair.enabled%
+    Toolkit\PhpStan\Rule\ClassPair\RequireClassPairRule:
+        phpstan.rules.rule: %toolkit.classPair.enabled%
     Toolkit\PhpStan\Rule\RequirePhpDocOnPublicApiRule:
         phpstan.rules.rule: %toolkit.requirePhpDocOnPublicApi.enabled%
     Toolkit\PhpStan\Rule\RequireExampleOnPublicApiRule:

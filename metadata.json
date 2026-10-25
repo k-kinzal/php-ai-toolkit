@@ -3,7 +3,7 @@
   "checkpoint_id": "01M5S4VNNGW3G8VEC3NS4VR5HW",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "packages/docgen-php/src/DocGen/Parse/Reference/UsageCollector.php"
   ],
@@ -14,13 +14,20 @@
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
       "prompt": "/0/prompt.txt"
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
+      "prompt": "/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 14873,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 54912,
-    "output_tokens": 642,
-    "api_call_count": 3
+    "input_tokens": 15337,
+    "cache_creation_tokens": 106463,
+    "cache_read_tokens": 1110959,
+    "output_tokens": 18252,
+    "api_call_count": 26
   }
 }

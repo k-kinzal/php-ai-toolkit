@@ -1,0 +1,57 @@
+{
+  "cli_version": "0.10.3",
+  "checkpoint_id": "01M5RFSGM030QAWQEG47WJW8EA",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/phpstan-guard-rules/docs/phpstan.md",
+    "packages/phpstan-guard-rules/docs/rules/RequireClassPairRule.md",
+    "packages/phpstan-guard-rules/phpstan.neon",
+    "packages/phpstan-guard-rules/rules.neon",
+    "packages/phpstan-guard-rules/src/Compatibility/ClassAliases.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/ClassPair/AutoloadPlaceholderExpander.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/ClassPair/ClassNameGlob.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/ClassPair/ClassNamePattern.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/ClassPair/ClassPair.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/ClassPair/ClassPairErrorBuilder.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/ClassPair/ClassPairSet.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/ClassPair/ComposerAutoloadMap.php",
+    "packages/phpstan-guard-rules/src/PhpStan/Rule/ClassPair/RequireClassPairRule.php",
+    "packages/phpstan-guard-rules/tests/PhpStan/ClassPair/Empty/composer.json",
+    "packages/phpstan-guard-rules/tests/PhpStan/ClassPair/Project/composer.json",
+    "packages/phpstan-guard-rules/tests/PhpStan/ClassPair/Project/src/Nested/Deep.php",
+    "packages/phpstan-guard-rules/tests/PhpStan/ClassPair/Project/src/Paired.php",
+    "packages/phpstan-guard-rules/tests/PhpStan/ClassPair/Project/src/Skipped.php",
+    "packages/phpstan-guard-rules/tests/PhpStan/ClassPair/Project/src/Unpaired.php",
+    "packages/phpstan-guard-rules/tests/PhpStan/ClassPair/Project/src/functions.php",
+    "packages/phpstan-guard-rules/tests/PhpStan/ClassPair/Project/tests/Unit/Nested/DeepTest.php",
+    "packages/phpstan-guard-rules/tests/PhpStan/ClassPair/Project/tests/Unit/OrphanedTest.php",
+    "packages/phpstan-guard-rules/tests/PhpStan/ClassPair/Project/tests/Unit/PairedTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/Compatibility/ClassAliasesTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/ClassPair/AutoloadPlaceholderExpanderTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/ClassPair/ClassNameGlobTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/ClassPair/ClassNamePatternTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/ClassPair/ClassPairErrorBuilderTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/ClassPair/ClassPairSetTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/ClassPair/ClassPairTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/ClassPair/ComposerAutoloadMapTest.php",
+    "packages/phpstan-guard-rules/tests/Unit/PhpStan/Rule/ClassPair/RequireClassPairRuleTest.php"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 962,
+    "cache_creation_tokens": 222839,
+    "cache_read_tokens": 3743309,
+    "output_tokens": 103516,
+    "api_call_count": 31
+  }
+}

@@ -402,6 +402,10 @@ final class UsageCollector implements NodeVisitor
      */
     public function typeNames(?Node $node): array
     {
+        if ($node === null) {
+            return [];
+        }
+
         if ($node instanceof Name) {
             return [$node];
         }

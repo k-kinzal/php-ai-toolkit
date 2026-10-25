@@ -15,23 +15,26 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Nop;
 use PhpParser\Node\UnionType;
 use PHPStan\Analyser\Scope;
+use PHPStan\Testing\PHPStanTestCase;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\TypeCombinator;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
-use PHPUnit\Framework\TestCase;
 use Toolkit\PhpStan\Rule\Visibility\TypeNameReader;
 use Toolkit\PhpStan\Rule\Visibility\VisibilityReferenceCollector;
 
 /**
  * @covers \Toolkit\PhpStan\Rule\Visibility\VisibilityReferenceCollector
  * @uses \Toolkit\PhpStan\Rule\Visibility\TypeNameReader
+ * @medium
  */
 #[CoversClass(VisibilityReferenceCollector::class)]
 #[UsesClass(TypeNameReader::class)]
-final class VisibilityReferenceCollectorTest extends TestCase
+#[Medium]
+final class VisibilityReferenceCollectorTest extends PHPStanTestCase
 {
     public function testGetNodeTypeReturnsBaseNode(): void
     {

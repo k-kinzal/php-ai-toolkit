@@ -340,6 +340,7 @@ use SplFileInfo;
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
  * @uses \Guard\Policy\Diagnostic\FieldMessage
+ * @uses \Guard\Policy\TestDependency\TestDependencyRules
  */
 #[CoversClass(FieldConstraints::class)]
 #[UsesClass(Collector::class)]
@@ -503,6 +504,7 @@ use SplFileInfo;
 #[UsesClass(Tokens::class)]
 #[UsesClass(Source::class)]
 #[UsesClass(FieldMessage::class)]
+#[UsesClass(TestDependencyRules::class)]
 final class FieldConstraintsTest extends TestCase
 {
     /**

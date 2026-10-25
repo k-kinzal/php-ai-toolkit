@@ -103,6 +103,7 @@ use Guard\Policy\Diagnostic\FieldMessage;
 use Guard\Policy\Diagnostic\HeadingViolation;
 use Guard\Policy\Diagnostic\HeadingViolationFactory;
 use Guard\Policy\Diagnostic\MetricViolation;
+use Guard\Policy\Diagnostic\RuleMessages;
 use Guard\Policy\DirectoryEntries;
 use Guard\Policy\FieldConstraints;
 use Guard\Policy\FileChange;
@@ -376,6 +377,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \Guard\Structure\Php\Tokens
  * @uses \Guard\Structure\Source
  * @uses \Guard\Policy\Diagnostic\FieldMessage
+ * @uses \Guard\Policy\Diagnostic\RuleMessages
  */
 #[CoversClass(Initializer::class)]
 #[UsesClass(Collector::class)]
@@ -560,6 +562,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Tokens::class)]
 #[UsesClass(Source::class)]
 #[UsesClass(FieldMessage::class)]
+#[UsesClass(RuleMessages::class)]
 final class InitializerTest extends TestCase
 {
     /**

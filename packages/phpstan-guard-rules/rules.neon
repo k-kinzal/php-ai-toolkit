@@ -382,6 +382,9 @@ services:
         arguments:
             testClassScope: @toolkit.support.testClassScope
 
+    toolkit.rule.propertyTestDeclaration:
+        class: Toolkit\PhpStan\Rule\TestClass\PropertyTestDeclarationRule
+
     toolkit.rule.testNamingConvention:
         class: Toolkit\PhpStan\Rule\TestNamingConventionRule
         arguments:
@@ -556,6 +559,8 @@ conditionalTags:
     Toolkit\PhpStan\Rule\ForbidDescriptivePhpDocInTestClassRule:
         phpstan.rules.rule: %toolkit.forbidDescriptivePhpDocInTestClass.enabled%
     Toolkit\PhpStan\Rule\TestClass\PropertyTestConventionRule:
+        phpstan.rules.rule: %toolkit.propertyTestConvention.enabled%
+    Toolkit\PhpStan\Rule\TestClass\PropertyTestDeclarationRule:
         phpstan.rules.rule: %toolkit.propertyTestConvention.enabled%
     Toolkit\PhpStan\Rule\TestNamingConventionRule:
         phpstan.rules.rule: %toolkit.testNamingConvention.enabled%

@@ -2,7 +2,7 @@
 
 | Property | Value |
 |----------|-------|
-| Identifiers | `customRules.propertyTestLocation`, `customRules.propertyTestClassName`, `customRules.propertyTestExtends`, `customRules.propertyTestMethodName`, `customRules.propertyTestMethodSignature`, `customRules.propertyTestDiscovery` |
+| Identifiers | `customRules.propertyTestLocation`, `customRules.propertyTestClassName`, `customRules.propertyTestExtends`, `customRules.propertyTestMethodName`, `customRules.propertyTestMethodSignature`, `customRules.propertyTestDiscovery`, `customRules.propertyTestDeclaration`, `customRules.propertyTestEmpty`, `customRules.propertyTestExecution` |
 | Scope | Classes under `tests/Property`, in `Tests\Property`, or PHPUnit subclasses named `*Properties` or using `Eris\TestTrait` |
 | Rector | Unavailable |
 | Configuration | `toolkit.propertyTestConvention.enabled` (inherits `allRules`) |
@@ -10,6 +10,8 @@
 ## What it checks
 
 Property tests belong under `tests/Property`, with a class named `<Name>Properties` extending `PHPUnit\Framework\TestCase` directly. Guard's `pbt` preset restricts their filenames to `*Properties.php`.
+
+Only concrete classes belong in this property-test scope: traits, interfaces, enums, and abstract helpers must live elsewhere. Each class must declare at least one test method; empty classes are reported. These are general property-test conventions, independent of project ownership.
 
 Every method declared in the class must be named `satisfies<PropertyName>`, with an uppercase letter after `satisfies`. The method must be public, concrete, non-static, and have no parameters. Generate inputs inside the method. Helpers, constructors, lifecycle overrides such as `setUp`, and data providers cannot be declared in a property test class.
 
@@ -38,6 +40,12 @@ final class IntegerProperties extends TestCase
     }
 }
 ```
+
+## Eris execution
+
+When the class uses `Eris\TestTrait`, each valid property method must execute a quantifier from `$this->forAll(...)` with at least one generator. Both `->then($assertion)` and the quantifier's callable form are accepted. Quantifiers may be assigned to local variables, aliased, and configured with Eris's `when` (including its `and` alias), `withMaxSize`, `hook`, `stopOn`, or `disableShrinking` methods. Assigning the result of execution is also accepted.
+
+The check examines top-level expression and return statements, matching the existing prohibition on control flow in test methods. An unexecuted closure, a first-class callable reference, a quantifier overwritten by another value, and a call after a return do not satisfy the check. Classes using another PBT framework are not required to use Eris. The rule checks execution form, not the strength of assertions or the generators' domain coverage.
 
 ## Shared test rules
 

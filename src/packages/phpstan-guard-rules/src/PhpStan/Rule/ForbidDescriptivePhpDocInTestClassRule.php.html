@@ -67,7 +67,7 @@
 <span class="src-line" id="L30"><a class="ln" href="#L30">30</a><span class="tok-com">     * @param list&lt;string&gt; $restrictedTestNamespacePrefixes namespace prefixes for test classes</span></span>
 <span class="src-line" id="L31"><a class="ln" href="#L31">31</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">__construct</span>(</span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-kw">array</span> <span class="tok-var">$restrictedTestNamespacePrefixes</span> = [<span class="tok-str">&#039;Tests\\Unit&#039;</span>, <span class="tok-str">&#039;Tests\\Integration&#039;</span>],</span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-kw">array</span> <span class="tok-var">$restrictedTestNamespacePrefixes</span> = [<span class="tok-str">&#039;Tests\\Unit&#039;</span>, <span class="tok-str">&#039;Tests\\Integration&#039;</span>, <span class="tok-str">&#039;Tests\\Property&#039;</span>],</span>
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a>    ) {</span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">errorCollector</span> = <span class="tok-kw">new</span> <span class="tok-id">DescriptivePhpDocErrorCollector</span>(<span class="tok-kw">new</span> <span class="tok-id">RestrictedTestNamespaceMatcher</span>(<span class="tok-var">$restrictedTestNamespacePrefixes</span>));</span>
 <span class="src-line" id="L36"><a class="ln" href="#L36">36</a>    }</span>

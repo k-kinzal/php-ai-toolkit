@@ -67,7 +67,7 @@
 <span class="src-line" id="L30"><a class="ln" href="#L30">30</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L31"><a class="ln" href="#L31">31</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">verify</span>(<span class="tok-id">FileChange</span> <span class="tok-var">$change</span>): <span class="tok-id">void</span></span>
 <span class="src-line" id="L32"><a class="ln" href="#L32">32</a>    {</span>
-<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-kw">if</span> (<span class="tok-id">is_link</span>(<span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span>) || <span class="tok-id">file_get_contents</span>(<span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span>) !== <span class="tok-var">$change</span>-&gt;<span class="tok-id">original</span>) {</span>
+<span class="src-line" id="L33"><a class="ln" href="#L33">33</a>        <span class="tok-kw">if</span> (<span class="tok-id">is_link</span>(<span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span>) || (<span class="tok-var">$change</span>-&gt;<span class="tok-id">original</span> === <span class="tok-id">null</span> ? <span class="tok-id">file_exists</span>(<span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span>) : !<span class="tok-id">is_file</span>(<span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span>) || <span class="tok-id">file_get_contents</span>(<span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span>) !== <span class="tok-var">$change</span>-&gt;<span class="tok-id">original</span>)) {</span>
 <span class="src-line" id="L34"><a class="ln" href="#L34">34</a>            <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">PolicyException</span>(<span class="tok-str">&#039;Target changed during planning: &#039;</span> . <span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span> . <span class="tok-str">&#039;. Run guard again.&#039;</span>);</span>
 <span class="src-line" id="L35"><a class="ln" href="#L35">35</a>        }</span>
 <span class="src-line" id="L36"><a class="ln" href="#L36">36</a>    }</span>
@@ -82,23 +82,24 @@
 <span class="src-line" id="L45"><a class="ln" href="#L45">45</a>            <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">PolicyException</span>(<span class="tok-str">&#039;Cannot create a temporary file beside &#039;</span> . <span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span> . <span class="tok-str">&#039;. Check directory permissions.&#039;</span>);</span>
 <span class="src-line" id="L46"><a class="ln" href="#L46">46</a>        }</span>
 <span class="src-line" id="L47"><a class="ln" href="#L47">47</a>        <span class="tok-kw">try</span> {</span>
-<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>            <span class="tok-var">$permissions</span> = <span class="tok-id">fileperms</span>(<span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span>);</span>
+<span class="src-line" id="L48"><a class="ln" href="#L48">48</a>            <span class="tok-var">$permissions</span> = <span class="tok-var">$change</span>-&gt;<span class="tok-id">original</span> === <span class="tok-id">null</span> ? <span class="tok-num">0666</span> &amp; ~<span class="tok-id">umask</span>() : <span class="tok-id">fileperms</span>(<span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span>);</span>
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a>            <span class="tok-kw">if</span> (<span class="tok-id">file_put_contents</span>(<span class="tok-var">$temporary</span>, <span class="tok-var">$change</span>-&gt;<span class="tok-id">replacement</span>) !== <span class="tok-id">strlen</span>(<span class="tok-var">$change</span>-&gt;<span class="tok-id">replacement</span>)</span>
 <span class="src-line" id="L50"><a class="ln" href="#L50">50</a>                || <span class="tok-var">$permissions</span> === <span class="tok-id">false</span> || !<span class="tok-id">chmod</span>(<span class="tok-var">$temporary</span>, <span class="tok-var">$permissions</span> &amp; <span class="tok-num">0777</span>)) {</span>
 <span class="src-line" id="L51"><a class="ln" href="#L51">51</a>                <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">PolicyException</span>(<span class="tok-str">&#039;Cannot stage &#039;</span> . <span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span> . <span class="tok-str">&#039;. Check available space and permissions.&#039;</span>);</span>
 <span class="src-line" id="L52"><a class="ln" href="#L52">52</a>            }</span>
 <span class="src-line" id="L53"><a class="ln" href="#L53">53</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">verify</span>(<span class="tok-var">$change</span>);</span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>            <span class="tok-kw">if</span> (!<span class="tok-id">rename</span>(<span class="tok-var">$temporary</span>, <span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span>)) {</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>                <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">PolicyException</span>(<span class="tok-str">&#039;Cannot replace &#039;</span> . <span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span> . <span class="tok-str">&#039;. Check directory permissions.&#039;</span>);</span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>            }</span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>        } <span class="tok-kw">finally</span> {</span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>            <span class="tok-kw">if</span> (<span class="tok-id">is_file</span>(<span class="tok-var">$temporary</span>)) {</span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>                <span class="tok-id">unlink</span>(<span class="tok-var">$temporary</span>);</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>            }</span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>        }</span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>    }</span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>}</span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a></span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>            <span class="tok-var">$written</span> = <span class="tok-var">$change</span>-&gt;<span class="tok-id">original</span> === <span class="tok-id">null</span> ? <span class="tok-id">link</span>(<span class="tok-var">$temporary</span>, <span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span>) : <span class="tok-id">rename</span>(<span class="tok-var">$temporary</span>, <span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span>);</span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>            <span class="tok-kw">if</span> (!<span class="tok-var">$written</span>) {</span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>                <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">PolicyException</span>(<span class="tok-str">&#039;Cannot replace &#039;</span> . <span class="tok-var">$change</span>-&gt;<span class="tok-id">path</span> . <span class="tok-str">&#039;. Check directory permissions.&#039;</span>);</span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>            }</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>        } <span class="tok-kw">finally</span> {</span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>            <span class="tok-kw">if</span> (<span class="tok-id">is_file</span>(<span class="tok-var">$temporary</span>)) {</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>                <span class="tok-id">unlink</span>(<span class="tok-var">$temporary</span>);</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>            }</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>        }</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>    }</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>}</span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

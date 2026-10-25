@@ -87,20 +87,27 @@
 <span class="src-line" id="L50"><a class="ln" href="#L50">50</a>            <span class="tok-var">$node</span>-&gt;<span class="tok-id">traits</span>,</span>
 <span class="src-line" id="L51"><a class="ln" href="#L51">51</a>        );</span>
 <span class="src-line" id="L52"><a class="ln" href="#L52">52</a></span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-kw">return</span> [</span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>            <span class="tok-id">RuleErrorBuilder</span>::<span class="tok-id">message</span>(</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>                <span class="tok-id">sprintf</span>(</span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>                    <span class="tok-str">&#039;Move trait %s behavior to a dedicated collaborator and call it explicitly. Tests\\Unit and Tests\\Integration classes must not use traits.&#039;</span>,</span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>                    <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, <span class="tok-var">$names</span>)</span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>                )</span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>            )</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>                -&gt;<span class="tok-id">identifier</span>(<span class="tok-str">&#039;customRules.testClassTraitUse&#039;</span>)</span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>                -&gt;<span class="tok-id">line</span>(<span class="tok-var">$node</span>-&gt;<span class="tok-id">getStartLine</span>())</span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>                -&gt;<span class="tok-id">build</span>(),</span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>        ];</span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>    }</span>
-<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>}</span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a></span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">testClassScope</span>-&gt;<span class="tok-id">isPropertyTestClass</span>(<span class="tok-var">$scope</span>) &amp;&amp; <span class="tok-var">$node</span>-&gt;<span class="tok-id">adaptations</span> === []) {</span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>            <span class="tok-var">$names</span> = <span class="tok-id">array_values</span>(<span class="tok-id">array_filter</span>(<span class="tok-var">$names</span>, <span class="tok-kw">static</span> <span class="tok-kw">fn</span> (<span class="tok-id">string</span> <span class="tok-var">$name</span>): <span class="tok-id">bool</span> =&gt; <span class="tok-var">$name</span> !== <span class="tok-str">&#039;Eris\\TestTrait&#039;</span>));</span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>            <span class="tok-kw">if</span> (<span class="tok-var">$names</span> === []) {</span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>                <span class="tok-kw">return</span> [];</span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>            }</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>        }</span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a></span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        <span class="tok-kw">return</span> [</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>            <span class="tok-id">RuleErrorBuilder</span>::<span class="tok-id">message</span>(</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>                <span class="tok-id">sprintf</span>(</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>                    <span class="tok-str">&#039;Move trait %s behavior to a dedicated collaborator and call it explicitly. Restricted test classes must not use traits.&#039;</span>,</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>                    <span class="tok-id">implode</span>(<span class="tok-str">&#039;, &#039;</span>, <span class="tok-var">$names</span>)</span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>                )</span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>            )</span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>                -&gt;<span class="tok-id">identifier</span>(<span class="tok-str">&#039;customRules.testClassTraitUse&#039;</span>)</span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>                -&gt;<span class="tok-id">line</span>(<span class="tok-var">$node</span>-&gt;<span class="tok-id">getStartLine</span>())</span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>                -&gt;<span class="tok-id">build</span>(),</span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>        ];</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>    }</span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>}</span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

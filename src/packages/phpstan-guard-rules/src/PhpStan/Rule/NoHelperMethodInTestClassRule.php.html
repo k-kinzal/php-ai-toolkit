@@ -89,42 +89,46 @@
 <span class="src-line" id="L52"><a class="ln" href="#L52">52</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L53"><a class="ln" href="#L53">53</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">processNode</span>(<span class="tok-id">Node</span> <span class="tok-var">$node</span>, <span class="tok-id">Scope</span> <span class="tok-var">$scope</span>): <span class="tok-kw">array</span></span>
 <span class="src-line" id="L54"><a class="ln" href="#L54">54</a>    {</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$this</span>-&gt;<span class="tok-id">testClassScope</span>-&gt;<span class="tok-id">isRestrictedTestClass</span>(<span class="tok-var">$scope</span>)) {</span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>        <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">testClassScope</span>-&gt;<span class="tok-id">isPropertyTestClass</span>(<span class="tok-var">$scope</span>)) {</span>
 <span class="src-line" id="L56"><a class="ln" href="#L56">56</a>            <span class="tok-kw">return</span> [];</span>
 <span class="src-line" id="L57"><a class="ln" href="#L57">57</a>        }</span>
 <span class="src-line" id="L58"><a class="ln" href="#L58">58</a></span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>        <span class="tok-var">$methodName</span> = <span class="tok-var">$node</span>-&gt;<span class="tok-id">name</span>-&gt;<span class="tok-id">toString</span>();</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a></span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>        <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">testMethodDetector</span>-&gt;<span class="tok-id">isTestMethod</span>(<span class="tok-var">$node</span>)) {</span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>            <span class="tok-kw">return</span> [];</span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>        }</span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$this</span>-&gt;<span class="tok-id">testClassScope</span>-&gt;<span class="tok-id">isRestrictedTestClass</span>(<span class="tok-var">$scope</span>)) {</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>            <span class="tok-kw">return</span> [];</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>        }</span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a></span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>        <span class="tok-var">$methodName</span> = <span class="tok-var">$node</span>-&gt;<span class="tok-id">name</span>-&gt;<span class="tok-id">toString</span>();</span>
 <span class="src-line" id="L64"><a class="ln" href="#L64">64</a></span>
-<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>        <span class="tok-kw">if</span> (<span class="tok-id">str_starts_with</span>(<span class="tok-var">$methodName</span>, <span class="tok-str">&#039;provider&#039;</span>)) {</span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>        <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">testMethodDetector</span>-&gt;<span class="tok-id">isTestMethod</span>(<span class="tok-var">$node</span>)) {</span>
 <span class="src-line" id="L66"><a class="ln" href="#L66">66</a>            <span class="tok-kw">return</span> [];</span>
 <span class="src-line" id="L67"><a class="ln" href="#L67">67</a>        }</span>
 <span class="src-line" id="L68"><a class="ln" href="#L68">68</a></span>
-<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">overrideMethodDetector</span>-&gt;<span class="tok-id">isOverride</span>(<span class="tok-var">$node</span>, <span class="tok-var">$scope</span>)) {</span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        <span class="tok-kw">if</span> (<span class="tok-id">str_starts_with</span>(<span class="tok-var">$methodName</span>, <span class="tok-str">&#039;provider&#039;</span>)) {</span>
 <span class="src-line" id="L70"><a class="ln" href="#L70">70</a>            <span class="tok-kw">return</span> [];</span>
 <span class="src-line" id="L71"><a class="ln" href="#L71">71</a>        }</span>
 <span class="src-line" id="L72"><a class="ln" href="#L72">72</a></span>
-<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>        <span class="tok-var">$classReflection</span> = <span class="tok-var">$scope</span>-&gt;<span class="tok-id">getClassReflection</span>();</span>
-<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>        <span class="tok-var">$className</span> = <span class="tok-var">$classReflection</span> !== <span class="tok-id">null</span> ? <span class="tok-var">$classReflection</span>-&gt;<span class="tok-id">getName</span>() : <span class="tok-str">&#039;(unknown)&#039;</span>;</span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a></span>
-<span class="src-line" id="L76"><a class="ln" href="#L76">76</a>        <span class="tok-kw">return</span> [</span>
-<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>            <span class="tok-id">RuleErrorBuilder</span>::<span class="tok-id">message</span>(</span>
-<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>                <span class="tok-id">sprintf</span>(</span>
-<span class="src-line" id="L79"><a class="ln" href="#L79">79</a>                    <span class="tok-str">&#039;Move method %s() out of %s or make it a test, data provider, or framework override.&#039;</span>,</span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>                    <span class="tok-var">$methodName</span>,</span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>                    <span class="tok-var">$className</span></span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>                )</span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>            )</span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>                -&gt;<span class="tok-id">identifier</span>(<span class="tok-str">&#039;customRules.testClassNonOverrideMethod&#039;</span>)</span>
-<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>                -&gt;<span class="tok-id">line</span>(<span class="tok-var">$node</span>-&gt;<span class="tok-id">getStartLine</span>())</span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>            -&gt;<span class="tok-id">build</span>(),</span>
-<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>        ];</span>
-<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>    }</span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>}</span>
-<span class="src-line" id="L90"><a class="ln" href="#L90">90</a></span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>        <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">overrideMethodDetector</span>-&gt;<span class="tok-id">isOverride</span>(<span class="tok-var">$node</span>, <span class="tok-var">$scope</span>)) {</span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>            <span class="tok-kw">return</span> [];</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>        }</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a></span>
+<span class="src-line" id="L77"><a class="ln" href="#L77">77</a>        <span class="tok-var">$classReflection</span> = <span class="tok-var">$scope</span>-&gt;<span class="tok-id">getClassReflection</span>();</span>
+<span class="src-line" id="L78"><a class="ln" href="#L78">78</a>        <span class="tok-var">$className</span> = <span class="tok-var">$classReflection</span> !== <span class="tok-id">null</span> ? <span class="tok-var">$classReflection</span>-&gt;<span class="tok-id">getName</span>() : <span class="tok-str">&#039;(unknown)&#039;</span>;</span>
+<span class="src-line" id="L79"><a class="ln" href="#L79">79</a></span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>        <span class="tok-kw">return</span> [</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>            <span class="tok-id">RuleErrorBuilder</span>::<span class="tok-id">message</span>(</span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>                <span class="tok-id">sprintf</span>(</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>                    <span class="tok-str">&#039;Move method %s() out of %s or make it a test, data provider, or framework override.&#039;</span>,</span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>                    <span class="tok-var">$methodName</span>,</span>
+<span class="src-line" id="L85"><a class="ln" href="#L85">85</a>                    <span class="tok-var">$className</span></span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>                )</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>            )</span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>                -&gt;<span class="tok-id">identifier</span>(<span class="tok-str">&#039;customRules.testClassNonOverrideMethod&#039;</span>)</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>                -&gt;<span class="tok-id">line</span>(<span class="tok-var">$node</span>-&gt;<span class="tok-id">getStartLine</span>())</span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>            -&gt;<span class="tok-id">build</span>(),</span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>        ];</span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a>    }</span>
+<span class="src-line" id="L93"><a class="ln" href="#L93">93</a>}</span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

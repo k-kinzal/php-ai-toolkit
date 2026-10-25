@@ -439,48 +439,52 @@
 <span class="src-line" id="L402"><a class="ln" href="#L402">402</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L403"><a class="ln" href="#L403">403</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">typeNames</span>(?<span class="tok-id">Node</span> <span class="tok-var">$node</span>): <span class="tok-kw">array</span></span>
 <span class="src-line" id="L404"><a class="ln" href="#L404">404</a>    {</span>
-<span class="src-line" id="L405"><a class="ln" href="#L405">405</a>        <span class="tok-kw">if</span> (<span class="tok-var">$node</span> <span class="tok-kw">instanceof</span> <span class="tok-id">Name</span>) {</span>
-<span class="src-line" id="L406"><a class="ln" href="#L406">406</a>            <span class="tok-kw">return</span> [<span class="tok-var">$node</span>];</span>
+<span class="src-line" id="L405"><a class="ln" href="#L405">405</a>        <span class="tok-kw">if</span> (<span class="tok-var">$node</span> === <span class="tok-id">null</span>) {</span>
+<span class="src-line" id="L406"><a class="ln" href="#L406">406</a>            <span class="tok-kw">return</span> [];</span>
 <span class="src-line" id="L407"><a class="ln" href="#L407">407</a>        }</span>
 <span class="src-line" id="L408"><a class="ln" href="#L408">408</a></span>
-<span class="src-line" id="L409"><a class="ln" href="#L409">409</a>        <span class="tok-kw">if</span> (<span class="tok-var">$node</span> <span class="tok-kw">instanceof</span> <span class="tok-id">NullableType</span>) {</span>
-<span class="src-line" id="L410"><a class="ln" href="#L410">410</a>            <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">typeNames</span>(<span class="tok-var">$node</span>-&gt;<span class="tok-id">type</span>);</span>
+<span class="src-line" id="L409"><a class="ln" href="#L409">409</a>        <span class="tok-kw">if</span> (<span class="tok-var">$node</span> <span class="tok-kw">instanceof</span> <span class="tok-id">Name</span>) {</span>
+<span class="src-line" id="L410"><a class="ln" href="#L410">410</a>            <span class="tok-kw">return</span> [<span class="tok-var">$node</span>];</span>
 <span class="src-line" id="L411"><a class="ln" href="#L411">411</a>        }</span>
 <span class="src-line" id="L412"><a class="ln" href="#L412">412</a></span>
-<span class="src-line" id="L413"><a class="ln" href="#L413">413</a>        <span class="tok-kw">if</span> (<span class="tok-var">$node</span> <span class="tok-kw">instanceof</span> <span class="tok-id">UnionType</span> || <span class="tok-var">$node</span> <span class="tok-kw">instanceof</span> <span class="tok-id">IntersectionType</span>) {</span>
-<span class="src-line" id="L414"><a class="ln" href="#L414">414</a>            <span class="tok-var">$names</span> = [];</span>
-<span class="src-line" id="L415"><a class="ln" href="#L415">415</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$node</span>-&gt;<span class="tok-id">types</span> <span class="tok-kw">as</span> <span class="tok-var">$type</span>) {</span>
-<span class="src-line" id="L416"><a class="ln" href="#L416">416</a>                <span class="tok-kw">foreach</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">typeNames</span>(<span class="tok-var">$type</span>) <span class="tok-kw">as</span> <span class="tok-var">$name</span>) {</span>
-<span class="src-line" id="L417"><a class="ln" href="#L417">417</a>                    <span class="tok-var">$names</span>[] = <span class="tok-var">$name</span>;</span>
-<span class="src-line" id="L418"><a class="ln" href="#L418">418</a>                }</span>
-<span class="src-line" id="L419"><a class="ln" href="#L419">419</a>            }</span>
-<span class="src-line" id="L420"><a class="ln" href="#L420">420</a></span>
-<span class="src-line" id="L421"><a class="ln" href="#L421">421</a>            <span class="tok-kw">return</span> <span class="tok-var">$names</span>;</span>
-<span class="src-line" id="L422"><a class="ln" href="#L422">422</a>        }</span>
-<span class="src-line" id="L423"><a class="ln" href="#L423">423</a></span>
-<span class="src-line" id="L424"><a class="ln" href="#L424">424</a>        <span class="tok-kw">return</span> [];</span>
-<span class="src-line" id="L425"><a class="ln" href="#L425">425</a>    }</span>
-<span class="src-line" id="L426"><a class="ln" href="#L426">426</a></span>
-<span class="src-line" id="L427"><a class="ln" href="#L427">427</a>    <span class="tok-com">/**</span></span>
-<span class="src-line" id="L428"><a class="ln" href="#L428">428</a><span class="tok-com">     * Appends one usage with the current scope as its origin.</span></span>
-<span class="src-line" id="L429"><a class="ln" href="#L429">429</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L430"><a class="ln" href="#L430">430</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">record</span>(<span class="tok-id">string</span> <span class="tok-var">$targetFqcn</span>, ?<span class="tok-id">string</span> <span class="tok-var">$member</span>, <span class="tok-id">string</span> <span class="tok-var">$kind</span>, <span class="tok-id">int</span> <span class="tok-var">$line</span>): <span class="tok-id">void</span></span>
-<span class="src-line" id="L431"><a class="ln" href="#L431">431</a>    {</span>
-<span class="src-line" id="L432"><a class="ln" href="#L432">432</a>        <span class="tok-var">$current</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">classStack</span>[<span class="tok-id">array_key_last</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">classStack</span>) ?? <span class="tok-num">0</span>] ?? <span class="tok-id">null</span>;</span>
-<span class="src-line" id="L433"><a class="ln" href="#L433">433</a></span>
-<span class="src-line" id="L434"><a class="ln" href="#L434">434</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">usages</span>[] = <span class="tok-kw">new</span> <span class="tok-id">Usage</span>(</span>
-<span class="src-line" id="L435"><a class="ln" href="#L435">435</a>            <span class="tok-var">$targetFqcn</span>,</span>
-<span class="src-line" id="L436"><a class="ln" href="#L436">436</a>            <span class="tok-var">$member</span>,</span>
-<span class="src-line" id="L437"><a class="ln" href="#L437">437</a>            <span class="tok-var">$kind</span>,</span>
-<span class="src-line" id="L438"><a class="ln" href="#L438">438</a>            <span class="tok-var">$current</span> !== <span class="tok-id">null</span> &amp;&amp; <span class="tok-var">$current</span>[<span class="tok-str">&#039;fqcn&#039;</span>] !== <span class="tok-str">&#039;&#039;</span> ? <span class="tok-var">$current</span>[<span class="tok-str">&#039;fqcn&#039;</span>] : <span class="tok-id">null</span>,</span>
-<span class="src-line" id="L439"><a class="ln" href="#L439">439</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">memberStack</span>[<span class="tok-id">array_key_last</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">memberStack</span>) ?? <span class="tok-num">0</span>] ?? <span class="tok-id">null</span>,</span>
-<span class="src-line" id="L440"><a class="ln" href="#L440">440</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">file</span>,</span>
-<span class="src-line" id="L441"><a class="ln" href="#L441">441</a>            <span class="tok-var">$line</span>,</span>
-<span class="src-line" id="L442"><a class="ln" href="#L442">442</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">fromDev</span>,</span>
-<span class="src-line" id="L443"><a class="ln" href="#L443">443</a>        );</span>
-<span class="src-line" id="L444"><a class="ln" href="#L444">444</a>    }</span>
-<span class="src-line" id="L445"><a class="ln" href="#L445">445</a>}</span>
-<span class="src-line" id="L446"><a class="ln" href="#L446">446</a></span>
+<span class="src-line" id="L413"><a class="ln" href="#L413">413</a>        <span class="tok-kw">if</span> (<span class="tok-var">$node</span> <span class="tok-kw">instanceof</span> <span class="tok-id">NullableType</span>) {</span>
+<span class="src-line" id="L414"><a class="ln" href="#L414">414</a>            <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">typeNames</span>(<span class="tok-var">$node</span>-&gt;<span class="tok-id">type</span>);</span>
+<span class="src-line" id="L415"><a class="ln" href="#L415">415</a>        }</span>
+<span class="src-line" id="L416"><a class="ln" href="#L416">416</a></span>
+<span class="src-line" id="L417"><a class="ln" href="#L417">417</a>        <span class="tok-kw">if</span> (<span class="tok-var">$node</span> <span class="tok-kw">instanceof</span> <span class="tok-id">UnionType</span> || <span class="tok-var">$node</span> <span class="tok-kw">instanceof</span> <span class="tok-id">IntersectionType</span>) {</span>
+<span class="src-line" id="L418"><a class="ln" href="#L418">418</a>            <span class="tok-var">$names</span> = [];</span>
+<span class="src-line" id="L419"><a class="ln" href="#L419">419</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$node</span>-&gt;<span class="tok-id">types</span> <span class="tok-kw">as</span> <span class="tok-var">$type</span>) {</span>
+<span class="src-line" id="L420"><a class="ln" href="#L420">420</a>                <span class="tok-kw">foreach</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">typeNames</span>(<span class="tok-var">$type</span>) <span class="tok-kw">as</span> <span class="tok-var">$name</span>) {</span>
+<span class="src-line" id="L421"><a class="ln" href="#L421">421</a>                    <span class="tok-var">$names</span>[] = <span class="tok-var">$name</span>;</span>
+<span class="src-line" id="L422"><a class="ln" href="#L422">422</a>                }</span>
+<span class="src-line" id="L423"><a class="ln" href="#L423">423</a>            }</span>
+<span class="src-line" id="L424"><a class="ln" href="#L424">424</a></span>
+<span class="src-line" id="L425"><a class="ln" href="#L425">425</a>            <span class="tok-kw">return</span> <span class="tok-var">$names</span>;</span>
+<span class="src-line" id="L426"><a class="ln" href="#L426">426</a>        }</span>
+<span class="src-line" id="L427"><a class="ln" href="#L427">427</a></span>
+<span class="src-line" id="L428"><a class="ln" href="#L428">428</a>        <span class="tok-kw">return</span> [];</span>
+<span class="src-line" id="L429"><a class="ln" href="#L429">429</a>    }</span>
+<span class="src-line" id="L430"><a class="ln" href="#L430">430</a></span>
+<span class="src-line" id="L431"><a class="ln" href="#L431">431</a>    <span class="tok-com">/**</span></span>
+<span class="src-line" id="L432"><a class="ln" href="#L432">432</a><span class="tok-com">     * Appends one usage with the current scope as its origin.</span></span>
+<span class="src-line" id="L433"><a class="ln" href="#L433">433</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L434"><a class="ln" href="#L434">434</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">record</span>(<span class="tok-id">string</span> <span class="tok-var">$targetFqcn</span>, ?<span class="tok-id">string</span> <span class="tok-var">$member</span>, <span class="tok-id">string</span> <span class="tok-var">$kind</span>, <span class="tok-id">int</span> <span class="tok-var">$line</span>): <span class="tok-id">void</span></span>
+<span class="src-line" id="L435"><a class="ln" href="#L435">435</a>    {</span>
+<span class="src-line" id="L436"><a class="ln" href="#L436">436</a>        <span class="tok-var">$current</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">classStack</span>[<span class="tok-id">array_key_last</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">classStack</span>) ?? <span class="tok-num">0</span>] ?? <span class="tok-id">null</span>;</span>
+<span class="src-line" id="L437"><a class="ln" href="#L437">437</a></span>
+<span class="src-line" id="L438"><a class="ln" href="#L438">438</a>        <span class="tok-var">$this</span>-&gt;<span class="tok-id">usages</span>[] = <span class="tok-kw">new</span> <span class="tok-id">Usage</span>(</span>
+<span class="src-line" id="L439"><a class="ln" href="#L439">439</a>            <span class="tok-var">$targetFqcn</span>,</span>
+<span class="src-line" id="L440"><a class="ln" href="#L440">440</a>            <span class="tok-var">$member</span>,</span>
+<span class="src-line" id="L441"><a class="ln" href="#L441">441</a>            <span class="tok-var">$kind</span>,</span>
+<span class="src-line" id="L442"><a class="ln" href="#L442">442</a>            <span class="tok-var">$current</span> !== <span class="tok-id">null</span> &amp;&amp; <span class="tok-var">$current</span>[<span class="tok-str">&#039;fqcn&#039;</span>] !== <span class="tok-str">&#039;&#039;</span> ? <span class="tok-var">$current</span>[<span class="tok-str">&#039;fqcn&#039;</span>] : <span class="tok-id">null</span>,</span>
+<span class="src-line" id="L443"><a class="ln" href="#L443">443</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">memberStack</span>[<span class="tok-id">array_key_last</span>(<span class="tok-var">$this</span>-&gt;<span class="tok-id">memberStack</span>) ?? <span class="tok-num">0</span>] ?? <span class="tok-id">null</span>,</span>
+<span class="src-line" id="L444"><a class="ln" href="#L444">444</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">file</span>,</span>
+<span class="src-line" id="L445"><a class="ln" href="#L445">445</a>            <span class="tok-var">$line</span>,</span>
+<span class="src-line" id="L446"><a class="ln" href="#L446">446</a>            <span class="tok-var">$this</span>-&gt;<span class="tok-id">fromDev</span>,</span>
+<span class="src-line" id="L447"><a class="ln" href="#L447">447</a>        );</span>
+<span class="src-line" id="L448"><a class="ln" href="#L448">448</a>    }</span>
+<span class="src-line" id="L449"><a class="ln" href="#L449">449</a>}</span>
+<span class="src-line" id="L450"><a class="ln" href="#L450">450</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

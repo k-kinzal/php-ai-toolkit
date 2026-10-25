@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PropertyTestConventionRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/PropertyTestConventionRule.md.html">
+<meta name="description" content="PropertyTestConventionRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="PropertyTestConventionRule — php-ai-toolkit">
+<meta property="og:description" content="PropertyTestConventionRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/PropertyTestConventionRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/Dependency/index.html" title="Toolkit\PhpStan\Rule\Architecture\Dependency">Toolkit\PhpStan\Rule\Architecture\Dependency</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassPair/index.html" title="Toolkit\PhpStan\Rule\ClassPair">Toolkit\PhpStan\Rule\ClassPair</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Rector/index.html" title="Toolkit\Rector">Toolkit\Rector</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/PropertyTestConventionRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>PropertyTestConventionRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/PropertyTestConventionRule.md</span></div></div>
+<section class="readme prose"><h2>PropertyTestConventionRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifiers</td><td><code>customRules.propertyTestLocation</code>, <code>customRules.propertyTestClassName</code>, <code>customRules.propertyTestExtends</code>, <code>customRules.propertyTestMethodName</code>, <code>customRules.propertyTestMethodSignature</code>, <code>customRules.propertyTestDiscovery</code>, <code>customRules.propertyTestDeclaration</code>, <code>customRules.propertyTestEmpty</code>, <code>customRules.propertyTestExecution</code></td></tr><tr><td>Scope</td><td>Classes under <code>tests/Property</code>, in <code>Tests\Property</code>, or PHPUnit subclasses named <code>*Properties</code> or using <code>Eris\TestTrait</code></td></tr><tr><td>Rector</td><td>Unavailable</td></tr><tr><td>Configuration</td><td><code>toolkit.propertyTestConvention.enabled</code> (inherits <code>allRules</code>)</td></tr></tbody></table></div>
+<h3>What it checks</h3>
+<p>Property tests belong under <code>tests/Property</code>, with a class named <code>&lt;Name&gt;Properties</code> extending <code>PHPUnit\Framework\TestCase</code> directly. Guard&#039;s <code>pbt</code> preset restricts their filenames to <code>*Properties.php</code>.</p>
+<p>Only concrete classes belong in this property-test scope: traits, interfaces, enums, and abstract helpers must live elsewhere. Each class must declare at least one test method; empty classes are reported. These are general property-test conventions, independent of project ownership.</p>
+<p>Every method declared in the class must be named <code>satisfies&lt;PropertyName&gt;</code>, with an uppercase letter after <code>satisfies</code>. The method must be public, concrete, non-static, and have no parameters. Generate inputs inside the method. Helpers, constructors, lifecycle overrides such as <code>setUp</code>, and data providers cannot be declared in a property test class.</p>
+<p>Mark each method with PHPUnit&#039;s <code>#[Test]</code> attribute so it runs despite not starting with <code>test</code>. Projects using PHPUnit 9 must use <code>@test</code>; projects supporting both versions can carry both markers. The rule requires the attribute when PHPUnit 10+ is installed and accepts the annotation on PHPUnit 9.</p>
+<pre class="code"><code>&lt;?<span class="tok-id">php</span>
+
+<span class="tok-kw">namespace</span> <span class="tok-id">Tests\Property</span>;
+
+<span class="tok-kw">use</span> <span class="tok-id">Eris\Generators</span>;
+<span class="tok-kw">use</span> <span class="tok-id">Eris\TestTrait</span>;
+<span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\Attributes\Test</span>;
+<span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;
+
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">IntegerProperties</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span>
+{
+    <span class="tok-kw">use</span> <span class="tok-id">TestTrait</span>;
+
+    #[<span class="tok-id">Test</span>]
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">satisfiesAdditionIdentity</span>(): <span class="tok-id">void</span>
+    {
+        <span class="tok-var">$this</span>-&gt;<span class="tok-id">forAll</span>(<span class="tok-id">Generators</span>::<span class="tok-id">int</span>())-&gt;<span class="tok-id">then</span>(<span class="tok-kw">function</span> (<span class="tok-id">int</span> <span class="tok-var">$value</span>): <span class="tok-id">void</span> {
+            <span class="tok-id">self</span>::<span class="tok-id">assertSame</span>(<span class="tok-var">$value</span>, <span class="tok-var">$value</span> + <span class="tok-num">0</span>);
+        });
+    }
+}</code></pre>
+<h3>Eris execution</h3>
+<p>When the class uses <code>Eris\TestTrait</code>, each valid property method must execute a quantifier from <code>$this-&gt;forAll(...)</code> with at least one generator. Both <code>-&gt;then($assertion)</code> and the quantifier&#039;s callable form are accepted. Quantifiers may be assigned to local variables, aliased, and configured with Eris&#039;s <code>when</code> (including its <code>and</code> alias), <code>withMaxSize</code>, <code>hook</code>, <code>stopOn</code>, or <code>disableShrinking</code> methods. Assigning the result of execution is also accepted.</p>
+<p>The check examines top-level expression and return statements, matching the existing prohibition on control flow in test methods. An unexecuted closure, a first-class callable reference, a quantifier overwritten by another value, and a call after a return do not satisfy the check. Classes using another PBT framework are not required to use Eris. The rule checks execution form, not the strength of assertions or the generators&#039; domain coverage.</p>
+<h3>Shared test rules</h3>
+<p>Property tests also receive the existing restrictions on declared properties, class constants, private methods, helper traits, Reflection, broken-code expectations, redundant assertions, and control flow in test methods. The control-flow rule keeps its existing boundary: nested closures and anonymous classes are separate scopes. <code>Tests\Property</code> is included in the default restricted namespaces for descriptive PHPDoc and public API documentation rules.</p>
+<p><code>Eris\TestTrait</code> is allowed without trait adaptations because it supplies the PBT framework. Other traits remain prohibited. PHPUnit mock API restrictions do not apply to property tests, including concrete-class mocks. The Unit naming and source/test pairing conventions are not imposed on property test methods; property tests do not replace Unit test coverage requirements.</p>
+<h3>Guard configuration</h3>
+<p>Import <code>vendor/k-kinzal/guard-php/rules/pbt.yaml</code>, alongside the project&#039;s PHPUnit and PHPStan presets. <code>guard init</code> selects it automatically when <code>giorgiosironi/eris</code> is installed. The preset requires Composer scripts containing <code>--testsuite=unit</code> for <code>test:unit</code> and <code>--testsuite=property</code> for <code>test:pbt</code>.</p>
+<p>For each selected PHPUnit preset, <code>guard init</code> adds a property suite requirement when <code>tests/Property</code> exists or the <code>pbt</code> preset is selected. It also requires the discovery suffix:</p>
+<pre class="code"><code>&lt;testsuite name=&quot;property&quot;&gt;
+    &lt;directory suffix=&quot;Properties.php&quot;&gt;tests/Property&lt;/directory&gt;
+&lt;/testsuite&gt;</code></pre>
+<p>Existing Guard configurations must add these suite requirements when adopting PBT; importing <code>pbt.yaml</code> alone does not regenerate project-specific PHPUnit rules. Keep <code>tests/Property</code> in PHPStan&#039;s analysis paths.</p>
+<h3>Rector</h3>
+<p>No automatic rewrite is provided: the property name and the move of setup behavior require a test author to choose the intended semantics.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

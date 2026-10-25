@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PHPBench benchmarks — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/benchmarks.md.html">
+<meta name="description" content="PHPBench benchmarks, a document of the k-kinzal/guard-php package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="PHPBench benchmarks — php-ai-toolkit">
+<meta property="og:description" content="PHPBench benchmarks, a document of the k-kinzal/guard-php package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/guard-php/doc/docs/benchmarks.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/all-items.html">All items</a></li><li><a href="../../../../k-kinzal/guard-php/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../k-kinzal/guard-php/Guard/Cli/index.html" title="Guard\Cli">Guard\Cli</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Cli/Command/index.html" title="Guard\Cli\Command">Guard\Cli\Command</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/index.html" title="Guard\Collect">Guard\Collect</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/Filesystem/index.html" title="Guard\Collect\Filesystem">Guard\Collect\Filesystem</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Collect/Matching/index.html" title="Guard\Collect\Matching">Guard\Collect\Matching</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/index.html" title="Guard\Config">Guard\Config</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Profile/index.html" title="Guard\Config\Profile">Guard\Config\Profile</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Project/index.html" title="Guard\Config\Project">Guard\Config\Project</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Project/Legacy/index.html" title="Guard\Config\Project\Legacy">Guard\Config\Project\Legacy</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Reader/index.html" title="Guard\Config\Reader">Guard\Config\Reader</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Config/Validation/index.html" title="Guard\Config\Validation">Guard\Config\Validation</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Diagnostic/index.html" title="Guard\Diagnostic">Guard\Diagnostic</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Execution/index.html" title="Guard\Execution">Guard\Execution</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Input/index.html" title="Guard\Input">Guard\Input</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/index.html" title="Guard\Policy">Guard\Policy</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Assignment/index.html" title="Guard\Policy\Assignment">Guard\Policy\Assignment</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Benchmark/index.html" title="Guard\Policy\Benchmark">Guard\Policy\Benchmark</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Comparison/index.html" title="Guard\Policy\Comparison">Guard\Policy\Comparison</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Definition/index.html" title="Guard\Policy\Definition">Guard\Policy\Definition</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Diagnostic/index.html" title="Guard\Policy\Diagnostic">Guard\Policy\Diagnostic</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Inspection/index.html" title="Guard\Policy\Inspection">Guard\Policy\Inspection</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/Limit/index.html" title="Guard\Policy\Limit">Guard\Policy\Limit</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Policy/TestDependency/index.html" title="Guard\Policy\TestDependency">Guard\Policy\TestDependency</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Repair/index.html" title="Guard\Repair">Guard\Repair</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Reporting/index.html" title="Guard\Reporting">Guard\Reporting</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Reporting/Filtering/index.html" title="Guard\Reporting\Filtering">Guard\Reporting\Filtering</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/index.html" title="Guard\Structure">Guard\Structure</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Document/index.html" title="Guard\Structure\Document">Guard\Structure\Document</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/index.html" title="Guard\Structure\Markdown">Guard\Structure\Markdown</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Badge/index.html" title="Guard\Structure\Markdown\Badge">Guard\Structure\Markdown\Badge</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Block/index.html" title="Guard\Structure\Markdown\Block">Guard\Structure\Markdown\Block</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Markdown/Link/index.html" title="Guard\Structure\Markdown\Link">Guard\Structure\Markdown\Link</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/index.html" title="Guard\Structure\Php">Guard\Structure\Php</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/ClassLikeMetric/index.html" title="Guard\Structure\Php\ClassLikeMetric">Guard\Structure\Php\ClassLikeMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/Complexity/index.html" title="Guard\Structure\Php\Complexity">Guard\Structure\Php\Complexity</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/FileMetric/index.html" title="Guard\Structure\Php\FileMetric">Guard\Structure\Php\FileMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/FunctionMetric/index.html" title="Guard\Structure\Php\FunctionMetric">Guard\Structure\Php\FunctionMetric</a></li><li><a href="../../../../k-kinzal/guard-php/Guard/Structure/Php/Token/index.html" title="Guard\Structure\Php\Token">Guard\Structure\Php\Token</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../k-kinzal/guard-php/index.html">k-kinzal/guard-php</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/benchmarks.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>PHPBench benchmarks</h1><div class="symbol-meta"><span class="source-link">docs/benchmarks.md</span></div></div>
+<section class="readme prose"><h2>PHPBench benchmarks</h2>
+<p>Import <code>phpbench.yaml</code> to check benchmarks in the project-root <code>bench/</code> directory:</p>
+<pre class="code"><code>version: 1
+imports:
+  - vendor/k-kinzal/guard-php/rules/phpbench.yaml</code></pre>
+<p>The preset enables <code>benchmarks: true</code>. You can also declare that setting directly. <code>guard init</code> selects the preset when <code>phpbench/phpbench</code> is installed, or you can select it with <code>guard init --import=phpbench</code>. The directory must exist and contain at least one PHP benchmark. An explicit <code>benchmarks: false</code> overrides an imported setting.</p>
+<h3>Directory and source rules</h3>
+<p>Only <code>.php</code> files may appear directly inside <code>bench/</code>. Subdirectories, data files and hidden files such as <code>.gitkeep</code> are violations. The number of direct files determines their names:</p>
+<div class="table-wrap"><table><thead><tr><th>Files in <code>bench/</code></th><th>Required names</th><th>Composer commands</th></tr></thead><tbody><tr><td>One</td><td><code>Bench.php</code></td><td><code>bench</code></td></tr><tr><td>Multiple</td><td><code>XxxBench.php</code>, with a non-empty PascalCase prefix</td><td><code>bench</code> and one <code>bench:xxx</code> per file</td></tr></tbody></table></div>
+<p>For individual commands, Guard converts the prefix to kebab-case: <code>ParserBench.php</code> becomes <code>bench:parser</code>, <code>HttpClientBench.php</code> becomes <code>bench:http-client</code>, and <code>XMLBench.php</code> becomes <code>bench:xml</code>. Names that produce the same command are reported as collisions; Guard does not choose one of the files.</p>
+<p>Every benchmark PHP file must reference the <code>PhpBench</code> namespace in PHP syntax. Imports, including aliased and grouped imports, and qualified references count. Comments, string literals, and a declaration such as <code>namespace PhpBench;</code> do not count. Guard tokenizes the file without executing it. This detects custom runners that have no PHPBench reference; it does not prove that an imported symbol is used or that a benchmark measures meaningful work.</p>
+<p>For example, <code>bench/Bench.php</code> can contain:</p>
+<pre class="code"><code>&lt;?<span class="tok-id">php</span>
+
+<span class="tok-kw">declare</span>(<span class="tok-id">strict_types</span>=<span class="tok-num">1</span>);
+
+<span class="tok-kw">namespace</span> <span class="tok-id">Bench</span>;
+
+<span class="tok-kw">use</span> <span class="tok-id">PhpBench\Attributes</span> <span class="tok-kw">as</span> <span class="tok-id">Benchmark</span>;
+
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">Bench</span>
+{
+    #[<span class="tok-id">Benchmark\Revs</span>(<span class="tok-num">1000</span>)]
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">benchHash</span>(): <span class="tok-id">void</span>
+    {
+        <span class="tok-id">hash</span>(<span class="tok-str">&#039;sha256&#039;</span>, <span class="tok-str">&#039;example&#039;</span>);
+    }
+}</code></pre>
+<h3>Composer repairs</h3>
+<p><code>guard fix</code> sets the following fields in the existing <code>composer.json</code>:</p>
+<pre class="code"><code>{
+    &quot;autoload-dev&quot;: {
+        &quot;psr-4&quot;: {
+            &quot;Bench\\&quot;: &quot;bench/&quot;
+        }
+    },
+    &quot;scripts&quot;: {
+        &quot;bench&quot;: &quot;phpbench run bench --bootstrap=vendor/autoload.php&quot;
+    }
+}</code></pre>
+<p>For multiple files it also sets each individual command to the exact file path, for example:</p>
+<pre class="code"><code>{
+    &quot;scripts&quot;: {
+        &quot;bench:parser&quot;: &quot;phpbench run bench/ParserBench.php --bootstrap=vendor/autoload.php&quot;,
+        &quot;bench:http-client&quot;: &quot;phpbench run bench/HttpClientBench.php --bootstrap=vendor/autoload.php&quot;
+    }
+}</code></pre>
+<p>These are exact command constraints. Existing values, including custom options, are replaced with the canonical commands. Unrelated Composer fields and scripts are preserved. The directory is inspected on every run, so adding a benchmark introduces a required command. Commands left over after a file is removed are not deleted automatically.</p>
+<p>PHPBench accepts a directory or file path and an explicit bootstrap through its <a href="https://phpbench.readthedocs.io/en/latest/guides/benchmark-runner.html">benchmark runner</a>. The preset therefore no longer requires <code>phpbench.json.dist</code> or its <code>runner.path</code> field; existing PHPBench configuration files are left intact. Install <code>phpbench/phpbench</code> as a development dependency and run <code>composer dump-autoload</code> after repairing the mapping.</p>
+<p>Use <code>guard check</code> to report violations, <code>guard fix --dry-run</code> to preview Composer changes, and <code>guard fix</code> to apply them. Filename and source violations include manual remediation and remain errors after configuration repair. Guard does not rename classes, delete files or fabricate benchmarks. A missing <code>composer.json</code> must be created manually. The policy can be combined with <code>test_dependencies</code> and ordinary configuration constraints; incompatible field constraints block writes.</p>
+<h3>Diagnostics</h3>
+<div class="table-wrap"><table><thead><tr><th>Rule</th><th>Meaning</th><th>Automatic repair</th></tr></thead><tbody><tr><td><code>phpbench.autoload</code></td><td>Incorrect or missing <code>Bench\</code> development mapping</td><td>yes</td></tr><tr><td><code>phpbench.script</code></td><td>Incorrect or missing main command</td><td>yes</td></tr><tr><td><code>phpbench.script.bench:xxx</code></td><td>Incorrect or missing command for a named file</td><td>yes</td></tr><tr><td><code>phpbench.empty</code></td><td>No benchmark files</td><td>no</td></tr><tr><td><code>phpbench.directory</code></td><td>Subdirectory inside <code>bench/</code></td><td>no</td></tr><tr><td><code>phpbench.extension</code></td><td>Non-PHP file</td><td>no</td></tr><tr><td><code>phpbench.filename</code></td><td>Filename does not match the file count</td><td>no</td></tr><tr><td><code>phpbench.namespace</code></td><td>No PHPBench reference in PHP syntax</td><td>no</td></tr><tr><td><code>phpbench.command_collision</code></td><td>Multiple files map to the same individual command</td><td>no</td></tr></tbody></table></div>
+<p><code>guard rules --query=phpbench</code> lists these constraints without requiring the benchmark files to exist. As with other policies, an explicit <code>collect</code> scope limits what Guard can inspect. Include <code>composer.json</code> and the whole <code>bench/</code> directory to check and repair the complete convention.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../assets/search-index.js" defer></script>
+<script src="../../../../assets/app.js" defer></script>
+</body>
+</html>

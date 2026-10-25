@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RequireClassPairRule — php-ai-toolkit</title>
+<link rel="canonical" href="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/RequireClassPairRule.md.html">
+<meta name="description" content="RequireClassPairRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="php-ai-toolkit">
+<meta property="og:title" content="RequireClassPairRule — php-ai-toolkit">
+<meta property="og:description" content="RequireClassPairRule, a document of the k-kinzal/phpstan-guard-rules package.">
+<meta property="og:url" content="https://k-kinzal.github.io/php-ai-toolkit/k-kinzal/phpstan-guard-rules/doc/docs/rules/RequireClassPairRule.md.html">
+<meta property="og:image" content="https://k-kinzal.github.io/php-ai-toolkit/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="php-ai-toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../../../assets/document-design-v1.2.1.css">
+<link rel="stylesheet" href="../../../../../assets/style.css">
+<script>try{var t=localStorage.getItem("docgen-theme");if(t){document.documentElement.dataset.ddTheme=t}}catch(e){}</script>
+</head>
+<body data-root="../../../../../">
+<a class="skip" href="#content">Skip to content</a><div class="doc">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation"><div class="sidebar-header"><a class="sidebar-site" href="../../../../../index.html">php-ai-toolkit</a></div><div class="sidebar-header sidebar-package"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a></div><nav class="sidebar-section"><div class="sidebar-title">Package</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/all-items.html">All items</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html#documents">Documents</a></li></ul></nav><nav class="sidebar-section"><div class="sidebar-title">Namespaces</div><ul class="sidebar-list"><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Compatibility/index.html" title="Toolkit\Compatibility">Toolkit\Compatibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/RedundantDiagnostic/index.html" title="Toolkit\PhpStan\Extension\RedundantDiagnostic">Toolkit\PhpStan\Extension\RedundantDiagnostic</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Extension/Visibility/index.html" title="Toolkit\PhpStan\Extension\Visibility">Toolkit\PhpStan\Extension\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/index.html" title="Toolkit\PhpStan\Rule">Toolkit\PhpStan\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/index.html" title="Toolkit\PhpStan\Rule\Architecture">Toolkit\PhpStan\Rule\Architecture</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Architecture/Dependency/index.html" title="Toolkit\PhpStan\Rule\Architecture\Dependency">Toolkit\PhpStan\Rule\Architecture\Dependency</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassDesign/index.html" title="Toolkit\PhpStan\Rule\ClassDesign">Toolkit\PhpStan\Rule\ClassDesign</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ClassPair/index.html" title="Toolkit\PhpStan\Rule\ClassPair">Toolkit\PhpStan\Rule\ClassPair</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ControlFlow/index.html" title="Toolkit\PhpStan\Rule\ControlFlow">Toolkit\PhpStan\Rule\ControlFlow</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/ExceptionHandling/index.html" title="Toolkit\PhpStan\Rule\ExceptionHandling">Toolkit\PhpStan\Rule\ExceptionHandling</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Mutation/index.html" title="Toolkit\PhpStan\Rule\Mutation">Toolkit\PhpStan\Rule\Mutation</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Naming/index.html" title="Toolkit\PhpStan\Rule\Naming">Toolkit\PhpStan\Rule\Naming</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/index.html" title="Toolkit\PhpStan\Rule\PhpDoc">Toolkit\PhpStan\Rule\PhpDoc</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/PhpDoc/PublicApi/index.html" title="Toolkit\PhpStan\Rule\PhpDoc\PublicApi">Toolkit\PhpStan\Rule\PhpDoc\PublicApi</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/index.html" title="Toolkit\PhpStan\Rule\Shared">Toolkit\PhpStan\Rule\Shared</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Shared/Path/index.html" title="Toolkit\PhpStan\Rule\Shared\Path">Toolkit\PhpStan\Rule\Shared\Path</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestAssertion/index.html" title="Toolkit\PhpStan\Rule\TestAssertion">Toolkit\PhpStan\Rule\TestAssertion</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/index.html" title="Toolkit\PhpStan\Rule\TestClass">Toolkit\PhpStan\Rule\TestClass</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/TestClass/Pairing/index.html" title="Toolkit\PhpStan\Rule\TestClass\Pairing">Toolkit\PhpStan\Rule\TestClass\Pairing</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/index.html" title="Toolkit\PhpStan\Rule\Type">Toolkit\PhpStan\Rule\Type</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Type/Rule/index.html" title="Toolkit\PhpStan\Rule\Type\Rule">Toolkit\PhpStan\Rule\Type\Rule</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/index.html" title="Toolkit\PhpStan\Rule\Visibility">Toolkit\PhpStan\Rule\Visibility</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Rule/Visibility/Scope/index.html" title="Toolkit\PhpStan\Rule\Visibility\Scope">Toolkit\PhpStan\Rule\Visibility\Scope</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/Support/index.html" title="Toolkit\PhpStan\Support">Toolkit\PhpStan\Support</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/PhpStan/ThrowType/index.html" title="Toolkit\PhpStan\ThrowType">Toolkit\PhpStan\ThrowType</a></li><li><a href="../../../../../k-kinzal/phpstan-guard-rules/Toolkit/Rector/index.html" title="Toolkit\Rector">Toolkit\Rector</a></li></ul></nav></aside>
+<div class="main">
+<header class="topbar">
+<button class="btn nav-toggle" id="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" title="Toggle navigation">☰</button>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../../../../k-kinzal/phpstan-guard-rules/index.html">k-kinzal/phpstan-guard-rules</a><span class="breadcrumb-sep">::</span><span class="breadcrumb-current">docs/rules/RequireClassPairRule.md</span></nav>
+<div class="topbar-tools">
+<input class="input input-search" type="search" id="search" aria-label="Search documentation" placeholder="Search… ( / )" autocomplete="off" spellcheck="false">
+<button class="btn" type="button" id="theme-toggle" title="Toggle theme">◐</button>
+</div>
+</header>
+<div class="search-results" id="search-results" hidden></div>
+<main class="content" id="content">
+<div class="symbol-head"><h1><span class="chip chip-kind k-document">document</span>RequireClassPairRule</h1><div class="symbol-meta"><span class="source-link">docs/rules/RequireClassPairRule.md</span></div></div>
+<section class="readme prose"><h2>RequireClassPairRule</h2>
+<div class="table-wrap"><table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Identifiers</td><td><code>customRules.classPairMissing</code>, <code>customRules.classPairOrphaned</code></td></tr><tr><td>Scope</td><td>Every named class, interface, trait, and enum declaration in the analyzed paths</td></tr><tr><td>Rector</td><td>Unavailable</td></tr><tr><td>Configurable</td><td>Yes (<code>classPairs</code>, <code>classPairExclude</code>, <code>classPairProjectRoot</code>)</td></tr></tbody></table></div>
+<h3>What It Detects</h3>
+<p>A class pair declares that when a class matching one name template exists, a class matching a second template must exist too. The shipped pair requires a unit test class for every production class:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        classPairs:
+            -
+                from: &#039;${src}\{name}&#039;
+                to: &#039;${tests/Unit}\{name}Test&#039;</code></pre>
+<p><code>${src}</code> and <code>${tests/Unit}</code> are read from the PSR-4 sections of <code>composer.json</code>. With <code>&quot;App\\&quot;: &quot;src/&quot;</code> under <code>autoload</code> and <code>&quot;Tests\\&quot;: &quot;tests/&quot;</code> under <code>autoload-dev</code>, the pair becomes <code>App\{name}</code> and <code>Tests\Unit\{name}Test</code>. <code>{name}</code> stands for the rest of the class name, including nested namespaces, so <code>App\Service\UserService</code> needs <code>Tests\Unit\Service\UserServiceTest</code>.</p>
+<h4>1. Class without its counterpart (<code>customRules.classPairMissing</code>)</h4>
+<pre class="code"><code>src/Service/UserService.php      &lt;-- ERROR: no Tests\Unit\Service\UserServiceTest
+src/Service/OrderService.php     &lt;-- OK
+tests/Unit/Service/OrderServiceTest.php</code></pre>
+<pre class="code"><code>Create class &quot;Tests\Unit\Service\UserServiceTest&quot; in tests/Unit/Service/UserServiceTest.php
+for class &quot;App\Service\UserService&quot;: every class matching &quot;App\{name}&quot; needs a class
+matching &quot;Tests\Unit\{name}Test&quot;.</code></pre>
+<h4>2. Counterpart without its origin (<code>customRules.classPairOrphaned</code>)</h4>
+<pre class="code"><code>src/Service/OrderService.php
+tests/Unit/Service/OrderServiceTest.php    &lt;-- OK
+tests/Unit/Service/LegacyServiceTest.php   &lt;-- ERROR: no App\Service\LegacyService</code></pre>
+<pre class="code"><code>Create class &quot;App\Service\LegacyService&quot; in src/Service/LegacyService.php for class
+&quot;Tests\Unit\Service\LegacyServiceTest&quot;, or remove &quot;Tests\Unit\Service\LegacyServiceTest&quot;:
+every class matching &quot;Tests\Unit\{name}Test&quot; needs a class matching &quot;App\{name}&quot;.</code></pre>
+<p>The file in the message is where PSR-4 expects the missing class. It is omitted when no <code>composer.json</code> entry covers the namespace.</p>
+<h3>Why This Is an Error</h3>
+<h4>Missing counterparts</h4>
+<p>Every production class should have a unit test that pins its behavior. AI code generators often create production code without tests, or create tests for some classes but not others. Declaring the pair makes the gap visible at analysis time rather than during code review, and the same mechanism can require a fake for every interface or a factory for every entity.</p>
+<h4>Orphaned counterparts</h4>
+<p>When a class is renamed or deleted, its test may be left behind. Orphaned tests waste CI time, inflate coverage, and mislead the next reader about which classes exist.</p>
+<h3>How to Fix</h3>
+<h4>For a missing counterpart</h4>
+<p>Create the class named in the message at the file named in the message:</p>
+<pre class="code"><code><span class="tok-com">// tests/Unit/Service/UserServiceTest.php</span>
+<span class="tok-kw">namespace</span> <span class="tok-id">Tests\Unit\Service</span>;
+
+<span class="tok-kw">use</span> <span class="tok-id">App\Service\UserService</span>;
+<span class="tok-kw">use</span> <span class="tok-id">PHPUnit\Framework\TestCase</span>;
+
+<span class="tok-kw">final</span> <span class="tok-kw">class</span> <span class="tok-id">UserServiceTest</span> <span class="tok-kw">extends</span> <span class="tok-id">TestCase</span>
+{
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">testCreatePersistsUser</span>(): <span class="tok-id">void</span>
+    {
+        <span class="tok-com">// ...</span>
+    }
+}</code></pre>
+<h4>For an orphaned counterpart</h4>
+<p>Either delete the stale class or rename it to match the current origin:</p>
+<pre class="code"><code># If the origin was renamed
+git mv tests/Unit/Service/LegacyServiceTest.php tests/Unit/Service/ModernServiceTest.php
+
+# If the origin was deleted
+git rm tests/Unit/Service/LegacyServiceTest.php</code></pre>
+<h3>Configuration</h3>
+<h4>Templates</h4>
+<p><code>from</code> and <code>to</code> are fully qualified class name templates. Each contains one <code>{name}</code> placeholder; text before it is a required prefix and text after it a required suffix. A template without <code>{name}</code> is a namespace prefix, so <code>from: &#039;${src}&#039;</code> means <code>${src}\{name}</code>. Matching is case-sensitive and <code>{name}</code> only matches valid class name segments, so <code>Tests\Unit\Test</code> never matches <code>Tests\Unit\{name}Test</code>.</p>
+<p>Each pair is checked in both directions: a class matching <code>from</code> needs the class produced by <code>to</code>, and a class matching <code>to</code> needs the class produced by <code>from</code>. Pairs whose two templates produce the same class name for a class are ignored.</p>
+<h4>Placeholders from <code>composer.json</code></h4>
+<p><code>${directory}</code> is replaced with the namespace that the <code>autoload</code> or <code>autoload-dev</code> PSR-4 section maps to that root-relative directory. A subdirectory of a mapped directory receives the mapped namespace plus one segment per path component, which is how <code>${tests/Unit}</code> resolves to <code>Tests\Unit</code>. The longest mapped directory wins. The <code>composer.json</code> is read from <code>classPairProjectRoot</code>, which defaults to <code>%currentWorkingDirectory%</code>; set it when PHPStan runs from another directory:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        classPairProjectRoot: %rootDir%/../../..</code></pre>
+<p>A pair whose placeholder names a directory without a PSR-4 mapping is skipped, so the shipped default is inert in a project without a <code>src/</code> namespace. Write the namespaces literally when the project autoloads through a classmap.</p>
+<h4>Adding pairs</h4>
+<p>PHPStan merges lists, so a project adds pairs without repeating the default:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        classPairs:
+            -
+                from: &#039;${src}\{name}Interface&#039;
+                to: &#039;${src}\Fake\Fake{name}&#039;
+            -
+                from: &#039;${src}\Entity\{name}&#039;
+                to: &#039;${tests/Unit}\Entity\{name}FactoryTest&#039;</code></pre>
+<p>Use <code>classPairs!:</code> to replace the whole list, or <code>classPairs!: []</code> to keep the rule enabled with no pairs.</p>
+<h4>Excluding classes</h4>
+<p><code>classPairExclude</code> lists class name globs that no pair checks, in either direction. <code>*</code> matches any text including namespace separators, <code>?</code> matches one character, and <code>${directory}</code> placeholders are expanded. Because PHPStan merges lists, this is how a project exempts classes from the shipped pair without restating it:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        classPairExclude:
+            - &#039;${src}\Generated\*&#039;
+            - &#039;*Interface&#039;
+            - &#039;${tests/Unit}\Compatibility\ClassAliasesTest&#039;</code></pre>
+<p>A pair&#039;s own <code>exclude</code> list applies to that pair only:</p>
+<pre class="code"><code>parameters:
+    toolkit:
+        classPairs:
+            -
+                from: &#039;${src}\{name}Interface&#039;
+                to: &#039;${src}\Fake\Fake{name}&#039;
+                exclude:
+                    - &#039;${src}\Legacy\*&#039;</code></pre>
+<p>A test class that covers a file without a class, or a second test class declared in an existing test file, has no origin and is reported as orphaned. Exclude it by name when it is deliberate.</p>
+<h4>Disabling</h4>
+<pre class="code"><code>parameters:
+    toolkit:
+        classPair:
+            enabled: false</code></pre>
+<h3>Rector</h3>
+<p><strong>Unavailable</strong> — no automatic transformation is provided.</p>
+<p>A meaningful counterpart carries behavior of its own. Generating an empty class would only hide the violation.</p>
+</section>
+</main>
+<footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>
+</div></div>
+<script src="../../../../../assets/search-index.js" defer></script>
+<script src="../../../../../assets/app.js" defer></script>
+</body>
+</html>

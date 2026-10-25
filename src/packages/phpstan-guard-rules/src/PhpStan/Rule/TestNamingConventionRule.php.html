@@ -114,28 +114,32 @@
 <span class="src-line" id="L77"><a class="ln" href="#L77">77</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L78"><a class="ln" href="#L78">78</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">processNode</span>(<span class="tok-id">Node</span> <span class="tok-var">$node</span>, <span class="tok-id">Scope</span> <span class="tok-var">$scope</span>): <span class="tok-kw">array</span></span>
 <span class="src-line" id="L79"><a class="ln" href="#L79">79</a>    {</span>
-<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>        <span class="tok-var">$file</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">pathNormalizer</span>-&gt;<span class="tok-id">normalize</span>(<span class="tok-var">$scope</span>-&gt;<span class="tok-id">getFile</span>());</span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a></span>
-<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>        <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">sourceFileMatcher</span>-&gt;<span class="tok-id">isSourceFile</span>(<span class="tok-var">$file</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">srcMarker</span>)) {</span>
-<span class="src-line" id="L83"><a class="ln" href="#L83">83</a>            <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">publicMethodValidator</span>-&gt;<span class="tok-id">errors</span>(<span class="tok-var">$node</span>, <span class="tok-var">$file</span>);</span>
-<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>        }</span>
+<span class="src-line" id="L80"><a class="ln" href="#L80">80</a>        <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">testClassScope</span>-&gt;<span class="tok-id">isPropertyTestClass</span>(<span class="tok-var">$scope</span>)) {</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>            <span class="tok-kw">return</span> [];</span>
+<span class="src-line" id="L82"><a class="ln" href="#L82">82</a>        }</span>
+<span class="src-line" id="L83"><a class="ln" href="#L83">83</a></span>
+<span class="src-line" id="L84"><a class="ln" href="#L84">84</a>        <span class="tok-var">$file</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">pathNormalizer</span>-&gt;<span class="tok-id">normalize</span>(<span class="tok-var">$scope</span>-&gt;<span class="tok-id">getFile</span>());</span>
 <span class="src-line" id="L85"><a class="ln" href="#L85">85</a></span>
-<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">testClassScope</span>-&gt;<span class="tok-id">isRestrictedTestClass</span>(<span class="tok-var">$scope</span>)) {</span>
-<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>            <span class="tok-var">$methodName</span> = <span class="tok-var">$node</span>-&gt;<span class="tok-id">name</span>-&gt;<span class="tok-id">toString</span>();</span>
-<span class="src-line" id="L88"><a class="ln" href="#L88">88</a></span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>            <span class="tok-kw">if</span> (<span class="tok-id">str_starts_with</span>(<span class="tok-var">$methodName</span>, <span class="tok-str">&#039;test&#039;</span>)) {</span>
-<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>                <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">testMethodNameValidator</span>-&gt;<span class="tok-id">errors</span>(<span class="tok-var">$methodName</span>, <span class="tok-var">$node</span>-&gt;<span class="tok-id">getStartLine</span>());</span>
-<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>            }</span>
+<span class="src-line" id="L86"><a class="ln" href="#L86">86</a>        <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">sourceFileMatcher</span>-&gt;<span class="tok-id">isSourceFile</span>(<span class="tok-var">$file</span>, <span class="tok-var">$this</span>-&gt;<span class="tok-id">srcMarker</span>)) {</span>
+<span class="src-line" id="L87"><a class="ln" href="#L87">87</a>            <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">publicMethodValidator</span>-&gt;<span class="tok-id">errors</span>(<span class="tok-var">$node</span>, <span class="tok-var">$file</span>);</span>
+<span class="src-line" id="L88"><a class="ln" href="#L88">88</a>        }</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a></span>
+<span class="src-line" id="L90"><a class="ln" href="#L90">90</a>        <span class="tok-kw">if</span> (<span class="tok-var">$this</span>-&gt;<span class="tok-id">testClassScope</span>-&gt;<span class="tok-id">isRestrictedTestClass</span>(<span class="tok-var">$scope</span>)) {</span>
+<span class="src-line" id="L91"><a class="ln" href="#L91">91</a>            <span class="tok-var">$methodName</span> = <span class="tok-var">$node</span>-&gt;<span class="tok-id">name</span>-&gt;<span class="tok-id">toString</span>();</span>
 <span class="src-line" id="L92"><a class="ln" href="#L92">92</a></span>
-<span class="src-line" id="L93"><a class="ln" href="#L93">93</a>            <span class="tok-kw">if</span> (<span class="tok-id">str_starts_with</span>(<span class="tok-var">$methodName</span>, <span class="tok-str">&#039;provider&#039;</span>)) {</span>
-<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>                <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">providerNameValidator</span>-&gt;<span class="tok-id">errors</span>(<span class="tok-var">$methodName</span>, <span class="tok-var">$node</span>-&gt;<span class="tok-id">getStartLine</span>());</span>
+<span class="src-line" id="L93"><a class="ln" href="#L93">93</a>            <span class="tok-kw">if</span> (<span class="tok-id">str_starts_with</span>(<span class="tok-var">$methodName</span>, <span class="tok-str">&#039;test&#039;</span>)) {</span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>                <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">testMethodNameValidator</span>-&gt;<span class="tok-id">errors</span>(<span class="tok-var">$methodName</span>, <span class="tok-var">$node</span>-&gt;<span class="tok-id">getStartLine</span>());</span>
 <span class="src-line" id="L95"><a class="ln" href="#L95">95</a>            }</span>
-<span class="src-line" id="L96"><a class="ln" href="#L96">96</a>        }</span>
-<span class="src-line" id="L97"><a class="ln" href="#L97">97</a></span>
-<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>        <span class="tok-kw">return</span> [];</span>
-<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>    }</span>
-<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>}</span>
+<span class="src-line" id="L96"><a class="ln" href="#L96">96</a></span>
+<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>            <span class="tok-kw">if</span> (<span class="tok-id">str_starts_with</span>(<span class="tok-var">$methodName</span>, <span class="tok-str">&#039;provider&#039;</span>)) {</span>
+<span class="src-line" id="L98"><a class="ln" href="#L98">98</a>                <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">providerNameValidator</span>-&gt;<span class="tok-id">errors</span>(<span class="tok-var">$methodName</span>, <span class="tok-var">$node</span>-&gt;<span class="tok-id">getStartLine</span>());</span>
+<span class="src-line" id="L99"><a class="ln" href="#L99">99</a>            }</span>
+<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>        }</span>
 <span class="src-line" id="L101"><a class="ln" href="#L101">101</a></span>
+<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>        <span class="tok-kw">return</span> [];</span>
+<span class="src-line" id="L103"><a class="ln" href="#L103">103</a>    }</span>
+<span class="src-line" id="L104"><a class="ln" href="#L104">104</a>}</span>
+<span class="src-line" id="L105"><a class="ln" href="#L105">105</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

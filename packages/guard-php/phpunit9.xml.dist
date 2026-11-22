@@ -37,6 +37,12 @@
             <file>vendor/k-kinzal/doctest-php/src/Doctest/Legacy/LegacyDoctestSuite.php</file>
         </testsuite>
     </testsuites>
+    <!-- PHPUnit 9 only runs with the PHP 8.0 lock, where deptrac/deptrac 0.24 installs no executable. -->
+    <groups>
+        <exclude>
+            <group>deptrac</group>
+        </exclude>
+    </groups>
     <php>
         <env name="DOCTEST_DIRECTORIES" value="src"/>
     </php>

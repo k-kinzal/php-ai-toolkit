@@ -8,6 +8,7 @@ use FilesystemIterator;
 use Guard\Cli\Application;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
@@ -122,8 +123,10 @@ final class TestDependenciesTest extends TestCase
 
     /**
      * @dataProvider providerFuzzEntrypoints
+     * @group deptrac
      */
     #[DataProvider('providerFuzzEntrypoints')]
+    #[Group('deptrac')]
     public function testStandaloneFuzzFilesCannotReferenceTests(string $source): void
     {
         $root = $this->project(['fuzz', 'tests']);
@@ -148,8 +151,10 @@ final class TestDependenciesTest extends TestCase
 
     /**
      * @dataProvider providerDependencies
+     * @group deptrac
      */
     #[DataProvider('providerDependencies')]
+    #[Group('deptrac')]
     public function testGeneratedConfigurationEnforcesDependenciesInDeptrac(string $from, string $to, int $expected): void
     {
         $root = $this->project(['bench', 'fuzz', 'spec', 'tests']);

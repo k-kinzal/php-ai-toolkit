@@ -31,6 +31,7 @@ jobs:
       actions: write
     env:
       COMPOSER_NO_INTERACTION: '1'
+      COMPOSER_ROOT_VERSION: dev-main
     steps:
       - name: Check out the Renovate revision
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1

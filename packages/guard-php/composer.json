@@ -7,7 +7,7 @@
         "php": "^8.0",
         "ext-dom": "*",
         "league/commonmark": "^2.7",
-        "nette/neon": "^3.4",
+        "nette/neon": "^3.4 || ^4.0",
         "symfony/console": "^5.4 || ^6.4 || ^7.4 || ^8.0",
         "symfony/yaml": "^5.4 || ^6.4 || ^7.4 || ^8.0",
         "yosymfony/toml": "^1.0"

@@ -23,7 +23,7 @@ final class DocumentFailure
             return new JsonException('Invalid JSON value in ' . $path . '. Correct the document or repair value: ' . $exception->getMessage(), 0, $exception);
         }
         if ($exception instanceof NeonException) {
-            return new NeonException('Invalid NEON value in ' . $path . '. Correct the document or repair value: ' . $exception->getMessage(), 0, $exception);
+            return new NeonException('Invalid NEON value in ' . $path . '. Correct the document or repair value: ' . $exception->getMessage(), previous: $exception);
         }
         return new PolicyException('Cannot process ' . $path . ': ' . $exception->getMessage(), 0, $exception);
     }

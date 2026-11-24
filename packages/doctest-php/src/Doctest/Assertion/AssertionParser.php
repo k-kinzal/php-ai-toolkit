@@ -60,7 +60,7 @@ final class AssertionParser
         $lineNum = 0;
 
         foreach ($lines as $index => $line) {
-            $trimmed = trim($line);
+            $trimmed = trim($line, " \n\r\t\v\0");
             if ($trimmed === '') {
                 continue;
             }
@@ -83,7 +83,7 @@ final class AssertionParser
         }
 
         if ($currentCode !== '') {
-            $statements[] = new Statement(trim($currentCode), null, $lineNum);
+            $statements[] = new Statement(trim($currentCode, " \n\r\t\v\0"), null, $lineNum);
         }
 
         return new ParsedExample($example, $statements);
@@ -100,17 +100,17 @@ final class AssertionParser
     {
         $matches = [];
         if (preg_match('/^(.+?)\s*\/\/\s*=>\s*(.+)$/', $trimmed, $matches) === 1) {
-            return new Statement($currentCode . trim($matches[1]), new Assertion(AssertionKind::RETURN_VALUE, trim($matches[2])), $lineNum);
+            return new Statement($currentCode . trim($matches[1], " \n\r\t\v\0"), new Assertion(AssertionKind::RETURN_VALUE, trim($matches[2], " \n\r\t\v\0")), $lineNum);
         }
 
         if (preg_match('/^(.+?)\s*\/\/\s*Output:\s*(.*)$/', $trimmed, $matches) === 1) {
-            return new Statement($currentCode . trim($matches[1]), new Assertion(AssertionKind::OUTPUT, $matches[2]), $lineNum);
+            return new Statement($currentCode . trim($matches[1], " \n\r\t\v\0"), new Assertion(AssertionKind::OUTPUT, $matches[2]), $lineNum);
         }
 
         if (preg_match('/^(.+?)\s*\/\/\s*throws\s+(\S+?)(?::\s*(.*))?$/', $trimmed, $matches) === 1) {
-            $message = isset($matches[3]) ? trim($matches[3]) : null;
+            $message = isset($matches[3]) ? trim($matches[3], " \n\r\t\v\0") : null;
 
-            return new Statement($currentCode . trim($matches[1]), new Assertion(AssertionKind::EXCEPTION, $matches[2], $message), $lineNum);
+            return new Statement($currentCode . trim($matches[1], " \n\r\t\v\0"), new Assertion(AssertionKind::EXCEPTION, $matches[2], $message), $lineNum);
         }
 
         return null;

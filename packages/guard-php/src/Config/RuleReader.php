@@ -63,7 +63,7 @@ final class RuleReader
             throw new PolicyException($id . ': repair must satisfy every assertion. Correct the repair or conflicting assertions.');
         }
         $message = array_key_exists('message', $data) ? $schema->string($data['message'], $id . '.message') : '';
-        if (array_key_exists('message', $data) && trim($message) === '') {
+        if (array_key_exists('message', $data) && trim($message, " \n\r\t\v\0") === '') {
             throw new PolicyException($id . '.message must describe the problem and how to fix it.');
         }
         return new Rule($id, $file, $format, $select, $level, $assertions, $repair, $repairable, $message);

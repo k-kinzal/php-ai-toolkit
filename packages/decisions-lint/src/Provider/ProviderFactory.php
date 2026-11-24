@@ -47,13 +47,13 @@ final class ProviderFactory
     public function apiKey(ProviderSettings $settings): string
     {
         $key = getenv($settings->apiKeyEnv);
-        if ($key === false || trim($key) === '') {
+        if ($key === false || trim($key, " \n\r\t\v\0") === '') {
             if (!$settings->requiresApiKey()) {
                 return '';
             }
             throw new LintException(sprintf('The %s environment variable is not set. Export the %s API key in it, or set provider.api_key_env in decisions.yaml to the variable that holds the key.', $settings->apiKeyEnv, $settings->name));
         }
 
-        return trim($key);
+        return trim($key, " \n\r\t\v\0");
     }
 }

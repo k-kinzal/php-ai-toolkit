@@ -52,7 +52,7 @@ final class MutationContractReader
         $thisTarget = false;
         $globalTarget = false;
         foreach ($node->getTagsByName('@mutation') as $tag) {
-            $value = trim((string) $tag->value);
+            $value = trim((string) $tag->value, " \n\r\t\v\0");
             if ($value === '') {
                 $problems[] = 'Give @mutation one or both targets: $this or global.';
 
@@ -78,7 +78,7 @@ final class MutationContractReader
      */
     public function isMutableDescription(string $description): bool
     {
-        return preg_match('/^\+mut(?:\s+|$)/', trim($description)) === 1;
+        return preg_match('/^\+mut(?:\s+|$)/', trim($description, " \n\r\t\v\0")) === 1;
     }
 
     /**
@@ -86,11 +86,11 @@ final class MutationContractReader
      */
     public function cleanDescription(string $description): string
     {
-        $description = trim($description);
+        $description = trim($description, " \n\r\t\v\0");
         if (!$this->isMutableDescription($description)) {
             return $description;
         }
 
-        return trim((string) preg_replace('/^\+mut(?:\s+|$)/', '', $description, 1));
+        return trim((string) preg_replace('/^\+mut(?:\s+|$)/', '', $description, 1), " \n\r\t\v\0");
     }
 }

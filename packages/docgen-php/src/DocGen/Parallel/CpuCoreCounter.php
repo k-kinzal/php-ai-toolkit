@@ -91,7 +91,7 @@ final class CpuCoreCounter
             return null;
         }
 
-        $trimmed = trim($value);
+        $trimmed = trim($value, " \n\r\t\v\0");
 
         return preg_match('/^[1-9]\d*$/', $trimmed) === 1 ? (int) $trimmed : null;
     }

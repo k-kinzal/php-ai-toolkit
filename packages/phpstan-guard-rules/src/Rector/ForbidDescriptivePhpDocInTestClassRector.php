@@ -82,7 +82,7 @@ final class ForbidDescriptivePhpDocInTestClassRector extends AbstractRector impl
         }
         $body = substr($doc->getText(), 3, -2);
         if (preg_match('/(?:^|\R)[\t *]*(@[a-zA-Z][\s\S]*)/', $body, $match) === 1) {
-            $node->setDocComment(new Doc("/**\n * " . rtrim($match[1]) . "\n */"));
+            $node->setDocComment(new Doc("/**\n * " . rtrim($match[1], " \n\r\t\v\0") . "\n */"));
         } else {
             $node->setAttribute('comments', array_values(array_filter($node->getComments(), static fn ($comment): bool => $comment !== $doc)));
         }

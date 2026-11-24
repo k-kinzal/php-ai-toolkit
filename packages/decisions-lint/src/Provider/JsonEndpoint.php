@@ -134,7 +134,7 @@ final class JsonEndpoint
         if (is_string($error) && $error !== '') {
             return $error;
         }
-        $excerpt = trim((string) preg_replace('/\s+/', ' ', $body));
+        $excerpt = trim((string) preg_replace('/\s+/', ' ', $body), " \n\r\t\v\0");
 
         return strlen($excerpt) > 200 ? substr($excerpt, 0, 200) . '…' : $excerpt;
     }

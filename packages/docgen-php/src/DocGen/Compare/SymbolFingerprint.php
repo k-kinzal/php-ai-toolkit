@@ -190,10 +190,10 @@ final class SymbolFingerprint
             return '';
         }
 
-        $text = preg_replace('#^\s*/\*+#', '', trim($docBlock->raw)) ?? $docBlock->raw;
+        $text = preg_replace('#^\s*/\*+#', '', trim($docBlock->raw, " \n\r\t\v\0")) ?? $docBlock->raw;
         $text = preg_replace('#\*+/\s*$#', '', $text) ?? $text;
         $text = preg_replace('#^[ \t]*\*+[ \t]?#m', '', $text) ?? $text;
 
-        return trim(preg_replace('/\s+/', ' ', $text) ?? $text);
+        return trim(preg_replace('/\s+/', ' ', $text) ?? $text, " \n\r\t\v\0");
     }
 }

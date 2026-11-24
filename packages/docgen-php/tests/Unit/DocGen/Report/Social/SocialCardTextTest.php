@@ -56,7 +56,7 @@ final class SocialCardTextTest extends TestCase
         $lines = (new SocialCardText())->wrap($font, 26.0, 'one two three four five six seven eight nine ten', 400, 10);
 
         self::assertGreaterThan(1, count($lines));
-        self::assertSame('one two three four five six seven eight nine ten', trim(implode(' ', $lines)));
+        self::assertSame('one two three four five six seven eight nine ten', trim(implode(' ', $lines), " \n\r\t\v\0"));
     }
 
     public function testWrapEndsTheLastKeptLineWithAnEllipsis(): void

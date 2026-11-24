@@ -62,7 +62,7 @@ final class ForbidSingleLinePhpDocRector extends AbstractRector
             return false;
         }
 
-        $node->setDocComment(new Doc("/**\n * " . trim(substr($doc->getText(), 3, -2)) . "\n */"));
+        $node->setDocComment(new Doc("/**\n * " . trim(substr($doc->getText(), 3, -2), " \n\r\t\v\0") . "\n */"));
 
         return true;
     }

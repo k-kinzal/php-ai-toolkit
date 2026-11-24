@@ -292,7 +292,7 @@ final class MemberHtml
             $items .= '<code>' . $services->escaper->e($target) . '</code> ';
         }
 
-        return $this->block('Mutates', '<div class="type-row">' . trim($items) . '</div>');
+        return $this->block('Mutates', '<div class="type-row">' . trim($items, " \n\r\t\v\0") . '</div>');
     }
 
     /**

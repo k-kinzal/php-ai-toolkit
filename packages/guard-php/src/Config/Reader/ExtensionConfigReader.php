@@ -23,7 +23,7 @@ final class ExtensionConfigReader
         }
         $extensions = [];
         foreach ($value as $class => $options) {
-            if (!is_string($class) || $class === '' || trim($class) !== $class) {
+            if (!is_string($class) || $class === '' || trim($class, " \n\r\t\v\0") !== $class) {
                 throw new PolicyException('guard.yaml.extensions must use non-empty extension class names as keys. Use a class-to-options mapping instead of a list.');
             }
             $extensions[$class] = $this->options($options, $class);

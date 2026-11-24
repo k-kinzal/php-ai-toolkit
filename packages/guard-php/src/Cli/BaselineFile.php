@@ -24,7 +24,7 @@ final class BaselineFile
      */
     public function path(string $config, ?string $path): string
     {
-        if ($path !== null && trim($path) === '') {
+        if ($path !== null && trim($path, " \n\r\t\v\0") === '') {
             throw new PolicyException('Provide a non-empty baseline path, such as ' . self::NAME . '.');
         }
         $path = $path ?? self::NAME;

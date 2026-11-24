@@ -86,7 +86,7 @@ final class DoctestExtractor
 
         $examples = [];
         foreach ($parts as $part) {
-            if (!str_starts_with(trim($part), '@example')) {
+            if (!str_starts_with(trim($part, " \n\r\t\v\0"), '@example')) {
                 continue;
             }
 
@@ -94,27 +94,27 @@ final class DoctestExtractor
             $firstLine = array_shift($lines);
             $description = null;
             if (preg_match('/@example\s+(.+)$/', $firstLine, $match) === 1) {
-                $description = trim($match[1]);
+                $description = trim($match[1], " \n\r\t\v\0");
             }
 
             $body = [];
             foreach ($lines as $line) {
-                if (preg_match('/^@\w+/', trim($line)) === 1) {
+                if (preg_match('/^@\w+/', trim($line, " \n\r\t\v\0")) === 1) {
                     break;
                 }
 
-                if ($body === [] && trim($line) === '') {
+                if ($body === [] && trim($line, " \n\r\t\v\0") === '') {
                     continue;
                 }
 
                 $body[] = $line;
             }
 
-            while ($body !== [] && trim($body[count($body) - 1]) === '') {
+            while ($body !== [] && trim($body[count($body) - 1], " \n\r\t\v\0") === '') {
                 array_pop($body);
             }
 
-            $code = trim(implode("\n", $body));
+            $code = trim(implode("\n", $body), " \n\r\t\v\0");
             if ($code !== '') {
                 $examples[] = ['description' => $description, 'code' => $code, 'source' => 'tag'];
             } elseif ($description !== null) {
@@ -135,7 +135,7 @@ final class DoctestExtractor
         preg_match_all('/```php\s*\n(.*?)```/s', $cleaned, $matches, PREG_SET_ORDER);
         $examples = [];
         foreach ($matches as $match) {
-            $code = trim($match[1]);
+            $code = trim($match[1], " \n\r\t\v\0");
             if ($code !== '') {
                 $examples[] = $code;
             }

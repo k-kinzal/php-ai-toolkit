@@ -60,7 +60,7 @@ final class RequireThrowsTagOnDirectThrowRector extends AbstractRector
         }
 
         $text = $node->getDocComment()?->getText() ?? "/**\n */";
-        $text = rtrim(substr($text, 0, -2));
+        $text = rtrim(substr($text, 0, -2), " \n\r\t\v\0");
         foreach (array_keys($missing) as $name) {
             $tag = '@throws \\' . $name;
             if (preg_match('/' . preg_quote($tag, '/') . '(?=\s|\*\/|$)/i', $text) !== 1) {

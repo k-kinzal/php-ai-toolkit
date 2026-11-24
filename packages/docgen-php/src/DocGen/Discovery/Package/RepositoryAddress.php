@@ -21,7 +21,7 @@ final class RepositoryAddress
             return null;
         }
 
-        $trimmed = trim($value);
+        $trimmed = trim($value, " \n\r\t\v\0");
         if (preg_match('#^https?://[^\s/?\#]+(/[^\s?\#]*)?$#', $trimmed) !== 1) {
             return null;
         }

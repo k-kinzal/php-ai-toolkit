@@ -60,13 +60,13 @@ final class MarkdownRenderer
      */
     public function render(string $markdown, ?Closure $fence = null): string
     {
-        $lines = explode("\n", str_replace("\r\n", "\n", rtrim($markdown)));
+        $lines = explode("\n", str_replace("\r\n", "\n", rtrim($markdown, " \n\r\t\v\0")));
         $html = '';
         $index = 0;
         $total = count($lines);
         while ($index < $total) {
             $line = $lines[$index];
-            if (trim($line) === '') {
+            if (trim($line, " \n\r\t\v\0") === '') {
                 $index++;
                 continue;
             }
@@ -93,7 +93,7 @@ final class MarkdownRenderer
      */
     public function fenceBlock(array $lines, int $index, ?Closure $fence): ?array
     {
-        if (preg_match('/^```([A-Za-z0-9+-]*)\s*$/', trim($lines[$index]), $match) !== 1) {
+        if (preg_match('/^```([A-Za-z0-9+-]*)\s*$/', trim($lines[$index], " \n\r\t\v\0"), $match) !== 1) {
             return null;
         }
 
@@ -101,7 +101,7 @@ final class MarkdownRenderer
         $code = [];
         $index++;
         foreach (array_slice($lines, $index, count($lines) - $index, true) as $lineIndex => $line) {
-            if (trim($line) === '```') {
+            if (trim($line, " \n\r\t\v\0") === '```') {
                 $index = $lineIndex;
                 break;
             }
@@ -126,7 +126,7 @@ final class MarkdownRenderer
      */
     public function headingBlock(array $lines, int $index): ?array
     {
-        $line = trim($lines[$index]);
+        $line = trim($lines[$index], " \n\r\t\v\0");
         if (preg_match('/^(#{1,6})\s+(.*)$/', $line, $match) === 1) {
             $level = strlen($match[1]) + 1;
             $level = min($level, 6);
@@ -185,7 +185,7 @@ final class MarkdownRenderer
             $text = $item[3];
             $index++;
             while ($index < count($lines) && preg_match('/^\s{2,}\S/', $lines[$index]) === 1 && preg_match('/^(\s*)([-*+]|\d+\.)\s+/', $lines[$index]) !== 1) {
-                $text .= ' ' . trim($lines[$index]);
+                $text .= ' ' . trim($lines[$index], " \n\r\t\v\0");
                 $index++;
             }
 
@@ -254,7 +254,7 @@ final class MarkdownRenderer
         $header = $this->tableCells($lines[$index]);
         $index += 2;
         $rows = [];
-        while ($index < count($lines) && preg_match('/\|/', $lines[$index]) === 1 && trim($lines[$index]) !== '') {
+        while ($index < count($lines) && preg_match('/\|/', $lines[$index]) === 1 && trim($lines[$index], " \n\r\t\v\0") !== '') {
             $rows[] = $this->tableCells($lines[$index]);
             $index++;
         }
@@ -279,9 +279,9 @@ final class MarkdownRenderer
      */
     public function tableCells(string $line): array
     {
-        $cells = preg_split('/(?<!\\\\)\|/', trim(trim($line), '|'));
+        $cells = preg_split('/(?<!\\\\)\|/', trim(trim($line, " \n\r\t\v\0"), '|'));
 
-        return array_map(static fn (string $cell): string => str_replace('\\|', '|', trim($cell)), $cells === false ? [] : $cells);
+        return array_map(static fn (string $cell): string => str_replace('\\|', '|', trim($cell, " \n\r\t\v\0")), $cells === false ? [] : $cells);
     }
 
     /**
@@ -294,12 +294,12 @@ final class MarkdownRenderer
     public function paragraphBlock(array $lines, int $index): array
     {
         $content = [];
-        while ($index < count($lines) && trim($lines[$index]) !== '') {
+        while ($index < count($lines) && trim($lines[$index], " \n\r\t\v\0") !== '') {
             if ($content !== [] && preg_match('/^(```|#{1,6}\s|\s*>|(\s*)([-*+]|\d+\.)\s)/', $lines[$index]) === 1) {
                 break;
             }
 
-            $content[] = trim($lines[$index]);
+            $content[] = trim($lines[$index], " \n\r\t\v\0");
             $index++;
         }
 

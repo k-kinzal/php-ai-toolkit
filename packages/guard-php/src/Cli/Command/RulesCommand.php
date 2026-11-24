@@ -45,7 +45,7 @@ final class RulesCommand extends GuardCommand
     {
         $format = $this->format($input);
         $query = $input->getOption('query');
-        if ($query !== null && (!is_string($query) || trim($query) === '')) {
+        if ($query !== null && (!is_string($query) || trim($query, " \n\r\t\v\0") === '')) {
             throw new PolicyException('Provide non-empty search text for --query, such as --query=phpstan.');
         }
         $reporter = new RuleReporter();

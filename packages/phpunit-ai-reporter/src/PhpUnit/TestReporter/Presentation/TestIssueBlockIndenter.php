@@ -19,7 +19,7 @@ final class TestIssueBlockIndenter
     public function indent(string $block): string
     {
         $output = '';
-        $lines = explode("\n", trim($block));
+        $lines = explode("\n", trim($block, " \n\r\t\v\0"));
         foreach ($lines as $line) {
             $output .= sprintf("  %s\n", $line);
         }

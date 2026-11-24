@@ -56,7 +56,7 @@ final class AgentDetector
             if ($value === false) {
                 continue;
             }
-            if ($envVar === 'AI_AGENT' && trim($value) === '') {
+            if ($envVar === 'AI_AGENT' && trim($value, " \n\r\t\v\0") === '') {
                 continue;
             }
 

@@ -47,7 +47,7 @@ final class ChatAnswerReader
      */
     public function decode(string $content, string $provider): array
     {
-        $text = trim($content);
+        $text = trim($content, " \n\r\t\v\0");
         if (preg_match('/^```[a-zA-Z]*\s*(.*?)\s*```$/s', $text, $matches) === 1) {
             $text = $matches[1];
         }
@@ -102,7 +102,7 @@ final class ChatAnswerReader
      */
     public function excerpt(string $text): string
     {
-        $flat = trim((string) preg_replace('/\s+/', ' ', $text));
+        $flat = trim((string) preg_replace('/\s+/', ' ', $text), " \n\r\t\v\0");
 
         return strlen($flat) > 120 ? substr($flat, 0, 120) . '…' : $flat;
     }

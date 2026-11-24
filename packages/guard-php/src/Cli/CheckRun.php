@@ -38,7 +38,7 @@ final class CheckRun
     public function run(string $path, string $format, InputInterface $input, OutputInterface $output): int
     {
         $query = $input->getOption('query');
-        if ($query !== null && (!is_string($query) || trim($query) === '')) {
+        if ($query !== null && (!is_string($query) || trim($query, " \n\r\t\v\0") === '')) {
             throw new PolicyException('Provide non-empty search text for --query, such as --query=metrics.');
         }
         $level = $input->getOption('level');

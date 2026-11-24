@@ -54,8 +54,8 @@ final class InitCommand extends LintCommand
         }
         $paths = [];
         foreach (is_array($input->getOption('path')) ? $input->getOption('path') : [] as $entry) {
-            if (is_string($entry) && trim($entry) !== '') {
-                $paths[] = trim($entry);
+            if (is_string($entry) && trim($entry, " \n\r\t\v\0") !== '') {
+                $paths[] = trim($entry, " \n\r\t\v\0");
             }
         }
         $content = $this->document(ProviderSettings::defaults($provider), $paths === [] ? ['src'] : $paths, $this->imports(dirname($path)));

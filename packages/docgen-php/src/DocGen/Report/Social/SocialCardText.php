@@ -101,7 +101,7 @@ final class SocialCardText
      */
     public function lines(string $font, float $size, string $text, int $maxWidth): array
     {
-        $words = preg_split('/\s+/', trim($text), -1, PREG_SPLIT_NO_EMPTY);
+        $words = preg_split('/\s+/', trim($text, " \n\r\t\v\0"), -1, PREG_SPLIT_NO_EMPTY);
         if ($words === false || $words === []) {
             return [];
         }

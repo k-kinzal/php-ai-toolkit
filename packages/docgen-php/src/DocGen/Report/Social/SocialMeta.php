@@ -134,12 +134,12 @@ final class SocialMeta
      */
     public function summary(string $text): string
     {
-        $plain = trim((string) preg_replace('/\s+/', ' ', strip_tags($text)));
+        $plain = trim((string) preg_replace('/\s+/', ' ', strip_tags($text)), " \n\r\t\v\0");
         $characters = preg_split('//u', $plain, -1, PREG_SPLIT_NO_EMPTY);
         if ($characters === false || count($characters) <= self::SUMMARY_LENGTH) {
             return $plain;
         }
 
-        return trim(implode('', array_slice($characters, 0, self::SUMMARY_LENGTH))) . '…';
+        return trim(implode('', array_slice($characters, 0, self::SUMMARY_LENGTH)), " \n\r\t\v\0") . '…';
     }
 }

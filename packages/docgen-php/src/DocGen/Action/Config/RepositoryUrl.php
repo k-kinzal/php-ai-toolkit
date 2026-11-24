@@ -33,7 +33,7 @@ final class RepositoryUrl
      */
     public function normalize(?string $value): ?string
     {
-        if ($value === null || trim($value) === '') {
+        if ($value === null || trim($value, " \n\r\t\v\0") === '') {
             return null;
         }
 
@@ -41,7 +41,7 @@ final class RepositoryUrl
         if ($url === null) {
             throw new DocGenException(sprintf(
                 'Invalid --repository value: %s. Use the absolute address of the repository the project lives in, such as https://github.com/example/project.',
-                trim($value),
+                trim($value, " \n\r\t\v\0"),
             ));
         }
 

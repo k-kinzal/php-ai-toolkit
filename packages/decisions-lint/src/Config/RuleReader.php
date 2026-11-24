@@ -87,7 +87,7 @@ final class RuleReader
             throw new LintException(sprintf('%s: decision.type is missing. Set it to predicate, choice or score.', $context));
         }
         $instructions = $decision['instructions'] ?? null;
-        if (!is_string($instructions) || trim($instructions) === '') {
+        if (!is_string($instructions) || trim($instructions, " \n\r\t\v\0") === '') {
             throw new LintException(sprintf('%s: decision.instructions is missing. Write the question the model answers about each target.', $context));
         }
         $template = $this->template ?? new Template();

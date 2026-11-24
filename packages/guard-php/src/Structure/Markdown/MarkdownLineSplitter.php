@@ -39,13 +39,13 @@ final class MarkdownLineSplitter
      */
     public function frontMatterLength(array $lines): int
     {
-        if ($lines === [] || rtrim($lines[0]) !== '---') {
+        if ($lines === [] || rtrim($lines[0], " \n\r\t\v\0") !== '---') {
             return 0;
         }
 
         $count = count($lines);
         for ($index = 1; $index < $count; $index++) {
-            if (in_array(rtrim($lines[$index]), ['---', '...'], true)) {
+            if (in_array(rtrim($lines[$index], " \n\r\t\v\0"), ['---', '...'], true)) {
                 return $index + 1;
             }
         }

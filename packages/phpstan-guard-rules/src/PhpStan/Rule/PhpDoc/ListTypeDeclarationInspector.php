@@ -132,7 +132,7 @@ final class ListTypeDeclarationInspector
 
         $keyType = $type->genericTypes[0];
 
-        return strtolower($type->type->name) === 'array'
+        return strtolower((string) $type->type) === 'array'
             && $keyType instanceof IdentifierTypeNode
             && strtolower($keyType->name) === 'int';
     }

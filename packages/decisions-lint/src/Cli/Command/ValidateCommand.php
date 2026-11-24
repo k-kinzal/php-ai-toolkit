@@ -74,8 +74,8 @@ final class ValidateCommand extends LintCommand
     {
         $files = [];
         foreach (is_array($input->getArgument('files')) ? $input->getArgument('files') : [] as $file) {
-            if (is_string($file) && trim($file) !== '') {
-                $files[] = trim($file);
+            if (is_string($file) && trim($file, " \n\r\t\v\0") !== '') {
+                $files[] = trim($file, " \n\r\t\v\0");
             }
         }
 

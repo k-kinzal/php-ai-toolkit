@@ -19,15 +19,15 @@ final class StackTraceFrameLocationParser
      */
     public function parse(string $frame): ?array
     {
-        $frame = trim($frame);
+        $frame = trim($frame, " \n\r\t\v\0");
         $matches = [];
 
         if (preg_match('/^(.+):(\d+)$/', $frame, $matches) === 1) {
-            return ['file' => trim($matches[1]), 'line' => (int) $matches[2]];
+            return ['file' => trim($matches[1], " \n\r\t\v\0"), 'line' => (int) $matches[2]];
         }
 
         if (preg_match('/^#\d+\s+(.+)\((\d+)\):/', $frame, $matches) === 1) {
-            return ['file' => trim($matches[1]), 'line' => (int) $matches[2]];
+            return ['file' => trim($matches[1], " \n\r\t\v\0"), 'line' => (int) $matches[2]];
         }
 
         return null;

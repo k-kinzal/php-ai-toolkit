@@ -61,6 +61,7 @@ final class ClassNameDispatchCollector implements Collector
 
     /**
      * @param Node $node
+     * @param Scope $scope
      * @return array{roots: list<string>, named: list<string>, catchAll: bool, line: int, construct: string}|null
      */
     public function processNode(Node $node, Scope $scope): ?array

@@ -126,7 +126,7 @@
 <span class="src-line" id="L89"><a class="ln" href="#L89">89</a>    {</span>
 <span class="src-line" id="L90"><a class="ln" href="#L90">90</a>        <span class="tok-var">$count</span> = <span class="tok-id">count</span>(<span class="tok-var">$lines</span>);</span>
 <span class="src-line" id="L91"><a class="ln" href="#L91">91</a>        <span class="tok-var">$index</span> = <span class="tok-var">$start</span>;</span>
-<span class="src-line" id="L92"><a class="ln" href="#L92">92</a>        <span class="tok-kw">while</span> (<span class="tok-var">$index</span> &lt; <span class="tok-var">$count</span> &amp;&amp; <span class="tok-id">trim</span>(<span class="tok-var">$lines</span>[<span class="tok-var">$index</span>]) === <span class="tok-str">&#039;&#039;</span>) {</span>
+<span class="src-line" id="L92"><a class="ln" href="#L92">92</a>        <span class="tok-kw">while</span> (<span class="tok-var">$index</span> &lt; <span class="tok-var">$count</span> &amp;&amp; <span class="tok-id">trim</span>(<span class="tok-var">$lines</span>[<span class="tok-var">$index</span>], <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>) === <span class="tok-str">&#039;&#039;</span>) {</span>
 <span class="src-line" id="L93"><a class="ln" href="#L93">93</a>            <span class="tok-var">$index</span>++;</span>
 <span class="src-line" id="L94"><a class="ln" href="#L94">94</a>        }</span>
 <span class="src-line" id="L95"><a class="ln" href="#L95">95</a>        <span class="tok-var">$badges</span> = [];</span>

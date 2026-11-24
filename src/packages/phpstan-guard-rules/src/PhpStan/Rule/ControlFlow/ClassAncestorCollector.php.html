@@ -86,30 +86,31 @@
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a></span>
 <span class="src-line" id="L50"><a class="ln" href="#L50">50</a>    <span class="tok-com">/**</span></span>
 <span class="src-line" id="L51"><a class="ln" href="#L51">51</a><span class="tok-com">     * @param ClassLike $node</span></span>
-<span class="src-line" id="L52"><a class="ln" href="#L52">52</a><span class="tok-com">     * @return array{name: string, instantiable: bool, ancestors: list&lt;string&gt;}|null</span></span>
-<span class="src-line" id="L53"><a class="ln" href="#L53">53</a><span class="tok-com">     */</span></span>
-<span class="src-line" id="L54"><a class="ln" href="#L54">54</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">processNode</span>(<span class="tok-id">Node</span> <span class="tok-var">$node</span>, <span class="tok-id">Scope</span> <span class="tok-var">$scope</span>): ?<span class="tok-kw">array</span></span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>    {</span>
-<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>        <span class="tok-kw">unset</span>(<span class="tok-var">$scope</span>);</span>
-<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>        <span class="tok-kw">if</span> (!<span class="tok-kw">isset</span>(<span class="tok-var">$node</span>-&gt;<span class="tok-id">namespacedName</span>)) {</span>
-<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>            <span class="tok-kw">return</span> <span class="tok-id">null</span>;</span>
-<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>        }</span>
-<span class="src-line" id="L60"><a class="ln" href="#L60">60</a></span>
-<span class="src-line" id="L61"><a class="ln" href="#L61">61</a>        <span class="tok-var">$name</span> = <span class="tok-var">$node</span>-&gt;<span class="tok-id">namespacedName</span>-&gt;<span class="tok-id">toString</span>();</span>
-<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$this</span>-&gt;<span class="tok-id">reflectionProvider</span>-&gt;<span class="tok-id">hasClass</span>(<span class="tok-var">$name</span>)) {</span>
-<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>            <span class="tok-kw">return</span> <span class="tok-id">null</span>;</span>
-<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>        }</span>
-<span class="src-line" id="L65"><a class="ln" href="#L65">65</a></span>
-<span class="src-line" id="L66"><a class="ln" href="#L66">66</a>        <span class="tok-var">$class</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">reflectionProvider</span>-&gt;<span class="tok-id">getClass</span>(<span class="tok-var">$name</span>);</span>
-<span class="src-line" id="L67"><a class="ln" href="#L67">67</a></span>
-<span class="src-line" id="L68"><a class="ln" href="#L68">68</a>        <span class="tok-kw">return</span> [</span>
-<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>            <span class="tok-str">&#039;name&#039;</span> =&gt; <span class="tok-var">$class</span>-&gt;<span class="tok-id">getName</span>(),</span>
-<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>            <span class="tok-str">&#039;instantiable&#039;</span> =&gt; !<span class="tok-var">$class</span>-&gt;<span class="tok-id">isAbstract</span>() &amp;&amp; !<span class="tok-var">$class</span>-&gt;<span class="tok-id">isInterface</span>() &amp;&amp; !<span class="tok-var">$class</span>-&gt;<span class="tok-id">isTrait</span>(),</span>
-<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>            <span class="tok-str">&#039;ancestors&#039;</span> =&gt; <span class="tok-id">array_keys</span>(<span class="tok-var">$class</span>-&gt;<span class="tok-id">getAncestors</span>()),</span>
-<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>        ];</span>
-<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>    }</span>
-<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>}</span>
-<span class="src-line" id="L75"><a class="ln" href="#L75">75</a></span>
+<span class="src-line" id="L52"><a class="ln" href="#L52">52</a><span class="tok-com">     * @param Scope $scope</span></span>
+<span class="src-line" id="L53"><a class="ln" href="#L53">53</a><span class="tok-com">     * @return array{name: string, instantiable: bool, ancestors: list&lt;string&gt;}|null</span></span>
+<span class="src-line" id="L54"><a class="ln" href="#L54">54</a><span class="tok-com">     */</span></span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">processNode</span>(<span class="tok-id">Node</span> <span class="tok-var">$node</span>, <span class="tok-id">Scope</span> <span class="tok-var">$scope</span>): ?<span class="tok-kw">array</span></span>
+<span class="src-line" id="L56"><a class="ln" href="#L56">56</a>    {</span>
+<span class="src-line" id="L57"><a class="ln" href="#L57">57</a>        <span class="tok-kw">unset</span>(<span class="tok-var">$scope</span>);</span>
+<span class="src-line" id="L58"><a class="ln" href="#L58">58</a>        <span class="tok-kw">if</span> (!<span class="tok-kw">isset</span>(<span class="tok-var">$node</span>-&gt;<span class="tok-id">namespacedName</span>)) {</span>
+<span class="src-line" id="L59"><a class="ln" href="#L59">59</a>            <span class="tok-kw">return</span> <span class="tok-id">null</span>;</span>
+<span class="src-line" id="L60"><a class="ln" href="#L60">60</a>        }</span>
+<span class="src-line" id="L61"><a class="ln" href="#L61">61</a></span>
+<span class="src-line" id="L62"><a class="ln" href="#L62">62</a>        <span class="tok-var">$name</span> = <span class="tok-var">$node</span>-&gt;<span class="tok-id">namespacedName</span>-&gt;<span class="tok-id">toString</span>();</span>
+<span class="src-line" id="L63"><a class="ln" href="#L63">63</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$this</span>-&gt;<span class="tok-id">reflectionProvider</span>-&gt;<span class="tok-id">hasClass</span>(<span class="tok-var">$name</span>)) {</span>
+<span class="src-line" id="L64"><a class="ln" href="#L64">64</a>            <span class="tok-kw">return</span> <span class="tok-id">null</span>;</span>
+<span class="src-line" id="L65"><a class="ln" href="#L65">65</a>        }</span>
+<span class="src-line" id="L66"><a class="ln" href="#L66">66</a></span>
+<span class="src-line" id="L67"><a class="ln" href="#L67">67</a>        <span class="tok-var">$class</span> = <span class="tok-var">$this</span>-&gt;<span class="tok-id">reflectionProvider</span>-&gt;<span class="tok-id">getClass</span>(<span class="tok-var">$name</span>);</span>
+<span class="src-line" id="L68"><a class="ln" href="#L68">68</a></span>
+<span class="src-line" id="L69"><a class="ln" href="#L69">69</a>        <span class="tok-kw">return</span> [</span>
+<span class="src-line" id="L70"><a class="ln" href="#L70">70</a>            <span class="tok-str">&#039;name&#039;</span> =&gt; <span class="tok-var">$class</span>-&gt;<span class="tok-id">getName</span>(),</span>
+<span class="src-line" id="L71"><a class="ln" href="#L71">71</a>            <span class="tok-str">&#039;instantiable&#039;</span> =&gt; !<span class="tok-var">$class</span>-&gt;<span class="tok-id">isAbstract</span>() &amp;&amp; !<span class="tok-var">$class</span>-&gt;<span class="tok-id">isInterface</span>() &amp;&amp; !<span class="tok-var">$class</span>-&gt;<span class="tok-id">isTrait</span>(),</span>
+<span class="src-line" id="L72"><a class="ln" href="#L72">72</a>            <span class="tok-str">&#039;ancestors&#039;</span> =&gt; <span class="tok-id">array_keys</span>(<span class="tok-var">$class</span>-&gt;<span class="tok-id">getAncestors</span>()),</span>
+<span class="src-line" id="L73"><a class="ln" href="#L73">73</a>        ];</span>
+<span class="src-line" id="L74"><a class="ln" href="#L74">74</a>    }</span>
+<span class="src-line" id="L75"><a class="ln" href="#L75">75</a>}</span>
+<span class="src-line" id="L76"><a class="ln" href="#L76">76</a></span>
 </code></pre>
 </main>
 <footer class="doc-footer">Generated by <a href="https://github.com/k-kinzal/php-ai-toolkit">php-ai-toolkit</a> docgen</footer>

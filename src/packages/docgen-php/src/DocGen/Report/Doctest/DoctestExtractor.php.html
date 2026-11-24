@@ -123,7 +123,7 @@
 <span class="src-line" id="L86"><a class="ln" href="#L86">86</a></span>
 <span class="src-line" id="L87"><a class="ln" href="#L87">87</a>        <span class="tok-var">$examples</span> = [];</span>
 <span class="src-line" id="L88"><a class="ln" href="#L88">88</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$parts</span> <span class="tok-kw">as</span> <span class="tok-var">$part</span>) {</span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>            <span class="tok-kw">if</span> (!<span class="tok-id">str_starts_with</span>(<span class="tok-id">trim</span>(<span class="tok-var">$part</span>), <span class="tok-str">&#039;@example&#039;</span>)) {</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>            <span class="tok-kw">if</span> (!<span class="tok-id">str_starts_with</span>(<span class="tok-id">trim</span>(<span class="tok-var">$part</span>, <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>), <span class="tok-str">&#039;@example&#039;</span>)) {</span>
 <span class="src-line" id="L90"><a class="ln" href="#L90">90</a>                <span class="tok-kw">continue</span>;</span>
 <span class="src-line" id="L91"><a class="ln" href="#L91">91</a>            }</span>
 <span class="src-line" id="L92"><a class="ln" href="#L92">92</a></span>
@@ -131,27 +131,27 @@
 <span class="src-line" id="L94"><a class="ln" href="#L94">94</a>            <span class="tok-var">$firstLine</span> = <span class="tok-id">array_shift</span>(<span class="tok-var">$lines</span>);</span>
 <span class="src-line" id="L95"><a class="ln" href="#L95">95</a>            <span class="tok-var">$description</span> = <span class="tok-id">null</span>;</span>
 <span class="src-line" id="L96"><a class="ln" href="#L96">96</a>            <span class="tok-kw">if</span> (<span class="tok-id">preg_match</span>(<span class="tok-str">&#039;/@example\s+(.+)$/&#039;</span>, <span class="tok-var">$firstLine</span>, <span class="tok-var">$match</span>) === <span class="tok-num">1</span>) {</span>
-<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>                <span class="tok-var">$description</span> = <span class="tok-id">trim</span>(<span class="tok-var">$match</span>[<span class="tok-num">1</span>]);</span>
+<span class="src-line" id="L97"><a class="ln" href="#L97">97</a>                <span class="tok-var">$description</span> = <span class="tok-id">trim</span>(<span class="tok-var">$match</span>[<span class="tok-num">1</span>], <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>);</span>
 <span class="src-line" id="L98"><a class="ln" href="#L98">98</a>            }</span>
 <span class="src-line" id="L99"><a class="ln" href="#L99">99</a></span>
 <span class="src-line" id="L100"><a class="ln" href="#L100">100</a>            <span class="tok-var">$body</span> = [];</span>
 <span class="src-line" id="L101"><a class="ln" href="#L101">101</a>            <span class="tok-kw">foreach</span> (<span class="tok-var">$lines</span> <span class="tok-kw">as</span> <span class="tok-var">$line</span>) {</span>
-<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>                <span class="tok-kw">if</span> (<span class="tok-id">preg_match</span>(<span class="tok-str">&#039;/^@\w+/&#039;</span>, <span class="tok-id">trim</span>(<span class="tok-var">$line</span>)) === <span class="tok-num">1</span>) {</span>
+<span class="src-line" id="L102"><a class="ln" href="#L102">102</a>                <span class="tok-kw">if</span> (<span class="tok-id">preg_match</span>(<span class="tok-str">&#039;/^@\w+/&#039;</span>, <span class="tok-id">trim</span>(<span class="tok-var">$line</span>, <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>)) === <span class="tok-num">1</span>) {</span>
 <span class="src-line" id="L103"><a class="ln" href="#L103">103</a>                    <span class="tok-kw">break</span>;</span>
 <span class="src-line" id="L104"><a class="ln" href="#L104">104</a>                }</span>
 <span class="src-line" id="L105"><a class="ln" href="#L105">105</a></span>
-<span class="src-line" id="L106"><a class="ln" href="#L106">106</a>                <span class="tok-kw">if</span> (<span class="tok-var">$body</span> === [] &amp;&amp; <span class="tok-id">trim</span>(<span class="tok-var">$line</span>) === <span class="tok-str">&#039;&#039;</span>) {</span>
+<span class="src-line" id="L106"><a class="ln" href="#L106">106</a>                <span class="tok-kw">if</span> (<span class="tok-var">$body</span> === [] &amp;&amp; <span class="tok-id">trim</span>(<span class="tok-var">$line</span>, <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>) === <span class="tok-str">&#039;&#039;</span>) {</span>
 <span class="src-line" id="L107"><a class="ln" href="#L107">107</a>                    <span class="tok-kw">continue</span>;</span>
 <span class="src-line" id="L108"><a class="ln" href="#L108">108</a>                }</span>
 <span class="src-line" id="L109"><a class="ln" href="#L109">109</a></span>
 <span class="src-line" id="L110"><a class="ln" href="#L110">110</a>                <span class="tok-var">$body</span>[] = <span class="tok-var">$line</span>;</span>
 <span class="src-line" id="L111"><a class="ln" href="#L111">111</a>            }</span>
 <span class="src-line" id="L112"><a class="ln" href="#L112">112</a></span>
-<span class="src-line" id="L113"><a class="ln" href="#L113">113</a>            <span class="tok-kw">while</span> (<span class="tok-var">$body</span> !== [] &amp;&amp; <span class="tok-id">trim</span>(<span class="tok-var">$body</span>[<span class="tok-id">count</span>(<span class="tok-var">$body</span>) - <span class="tok-num">1</span>]) === <span class="tok-str">&#039;&#039;</span>) {</span>
+<span class="src-line" id="L113"><a class="ln" href="#L113">113</a>            <span class="tok-kw">while</span> (<span class="tok-var">$body</span> !== [] &amp;&amp; <span class="tok-id">trim</span>(<span class="tok-var">$body</span>[<span class="tok-id">count</span>(<span class="tok-var">$body</span>) - <span class="tok-num">1</span>], <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>) === <span class="tok-str">&#039;&#039;</span>) {</span>
 <span class="src-line" id="L114"><a class="ln" href="#L114">114</a>                <span class="tok-id">array_pop</span>(<span class="tok-var">$body</span>);</span>
 <span class="src-line" id="L115"><a class="ln" href="#L115">115</a>            }</span>
 <span class="src-line" id="L116"><a class="ln" href="#L116">116</a></span>
-<span class="src-line" id="L117"><a class="ln" href="#L117">117</a>            <span class="tok-var">$code</span> = <span class="tok-id">trim</span>(<span class="tok-id">implode</span>(<span class="tok-str">&quot;\n&quot;</span>, <span class="tok-var">$body</span>));</span>
+<span class="src-line" id="L117"><a class="ln" href="#L117">117</a>            <span class="tok-var">$code</span> = <span class="tok-id">trim</span>(<span class="tok-id">implode</span>(<span class="tok-str">&quot;\n&quot;</span>, <span class="tok-var">$body</span>), <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>);</span>
 <span class="src-line" id="L118"><a class="ln" href="#L118">118</a>            <span class="tok-kw">if</span> (<span class="tok-var">$code</span> !== <span class="tok-str">&#039;&#039;</span>) {</span>
 <span class="src-line" id="L119"><a class="ln" href="#L119">119</a>                <span class="tok-var">$examples</span>[] = [<span class="tok-str">&#039;description&#039;</span> =&gt; <span class="tok-var">$description</span>, <span class="tok-str">&#039;code&#039;</span> =&gt; <span class="tok-var">$code</span>, <span class="tok-str">&#039;source&#039;</span> =&gt; <span class="tok-str">&#039;tag&#039;</span>];</span>
 <span class="src-line" id="L120"><a class="ln" href="#L120">120</a>            } <span class="tok-kw">elseif</span> (<span class="tok-var">$description</span> !== <span class="tok-id">null</span>) {</span>
@@ -172,7 +172,7 @@
 <span class="src-line" id="L135"><a class="ln" href="#L135">135</a>        <span class="tok-id">preg_match_all</span>(<span class="tok-str">&#039;/```php\s*\n(.*?)```/s&#039;</span>, <span class="tok-var">$cleaned</span>, <span class="tok-var">$matches</span>, <span class="tok-id">PREG_SET_ORDER</span>);</span>
 <span class="src-line" id="L136"><a class="ln" href="#L136">136</a>        <span class="tok-var">$examples</span> = [];</span>
 <span class="src-line" id="L137"><a class="ln" href="#L137">137</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$matches</span> <span class="tok-kw">as</span> <span class="tok-var">$match</span>) {</span>
-<span class="src-line" id="L138"><a class="ln" href="#L138">138</a>            <span class="tok-var">$code</span> = <span class="tok-id">trim</span>(<span class="tok-var">$match</span>[<span class="tok-num">1</span>]);</span>
+<span class="src-line" id="L138"><a class="ln" href="#L138">138</a>            <span class="tok-var">$code</span> = <span class="tok-id">trim</span>(<span class="tok-var">$match</span>[<span class="tok-num">1</span>], <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>);</span>
 <span class="src-line" id="L139"><a class="ln" href="#L139">139</a>            <span class="tok-kw">if</span> (<span class="tok-var">$code</span> !== <span class="tok-str">&#039;&#039;</span>) {</span>
 <span class="src-line" id="L140"><a class="ln" href="#L140">140</a>                <span class="tok-var">$examples</span>[] = <span class="tok-var">$code</span>;</span>
 <span class="src-line" id="L141"><a class="ln" href="#L141">141</a>            }</span>

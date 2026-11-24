@@ -191,7 +191,7 @@
 <span class="src-line" id="L154"><a class="ln" href="#L154">154</a>            <span class="tok-kw">return</span> <span class="tok-id">null</span>;</span>
 <span class="src-line" id="L155"><a class="ln" href="#L155">155</a>        }</span>
 <span class="src-line" id="L156"><a class="ln" href="#L156">156</a></span>
-<span class="src-line" id="L157"><a class="ln" href="#L157">157</a>        <span class="tok-kw">if</span> (!<span class="tok-id">is_string</span>(<span class="tok-var">$value</span>) || <span class="tok-id">trim</span>(<span class="tok-var">$value</span>) === <span class="tok-str">&#039;&#039;</span>) {</span>
+<span class="src-line" id="L157"><a class="ln" href="#L157">157</a>        <span class="tok-kw">if</span> (!<span class="tok-id">is_string</span>(<span class="tok-var">$value</span>) || <span class="tok-id">trim</span>(<span class="tok-var">$value</span>, <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>) === <span class="tok-str">&#039;&#039;</span>) {</span>
 <span class="src-line" id="L158"><a class="ln" href="#L158">158</a>            <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">DocGenException</span>(<span class="tok-id">sprintf</span>(<span class="tok-str">&#039;Option --%s requires a value, such as --%s=VALUE.&#039;</span>, <span class="tok-var">$name</span>, <span class="tok-var">$name</span>));</span>
 <span class="src-line" id="L159"><a class="ln" href="#L159">159</a>        }</span>
 <span class="src-line" id="L160"><a class="ln" href="#L160">160</a></span>
@@ -288,7 +288,7 @@
 <span class="src-line" id="L251"><a class="ln" href="#L251">251</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">revisionRange</span>(<span class="tok-kw">array</span> <span class="tok-var">$options</span>, <span class="tok-id">string</span> <span class="tok-var">$value</span>): <span class="tok-kw">array</span></span>
 <span class="src-line" id="L252"><a class="ln" href="#L252">252</a>    {</span>
 <span class="src-line" id="L253"><a class="ln" href="#L253">253</a>        <span class="tok-var">$parts</span> = <span class="tok-id">explode</span>(<span class="tok-str">&#039;..&#039;</span>, <span class="tok-var">$value</span>, <span class="tok-num">2</span>);</span>
-<span class="src-line" id="L254"><a class="ln" href="#L254">254</a>        <span class="tok-var">$base</span> = <span class="tok-id">trim</span>(<span class="tok-var">$parts</span>[<span class="tok-num">0</span>]);</span>
+<span class="src-line" id="L254"><a class="ln" href="#L254">254</a>        <span class="tok-var">$base</span> = <span class="tok-id">trim</span>(<span class="tok-var">$parts</span>[<span class="tok-num">0</span>], <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>);</span>
 <span class="src-line" id="L255"><a class="ln" href="#L255">255</a>        <span class="tok-kw">if</span> (<span class="tok-var">$base</span> === <span class="tok-str">&#039;&#039;</span>) {</span>
 <span class="src-line" id="L256"><a class="ln" href="#L256">256</a>            <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-id">DocGenException</span>(<span class="tok-id">sprintf</span>(</span>
 <span class="src-line" id="L257"><a class="ln" href="#L257">257</a>                <span class="tok-str">&#039;Invalid --diff range: %s. Use BASE to compare against the working tree, or BASE..HEAD to compare two revisions.&#039;</span>,</span>
@@ -296,7 +296,7 @@
 <span class="src-line" id="L259"><a class="ln" href="#L259">259</a>            ));</span>
 <span class="src-line" id="L260"><a class="ln" href="#L260">260</a>        }</span>
 <span class="src-line" id="L261"><a class="ln" href="#L261">261</a></span>
-<span class="src-line" id="L262"><a class="ln" href="#L262">262</a>        <span class="tok-var">$head</span> = <span class="tok-id">count</span>(<span class="tok-var">$parts</span>) === <span class="tok-num">2</span> ? <span class="tok-id">trim</span>(<span class="tok-var">$parts</span>[<span class="tok-num">1</span>]) : <span class="tok-str">&#039;&#039;</span>;</span>
+<span class="src-line" id="L262"><a class="ln" href="#L262">262</a>        <span class="tok-var">$head</span> = <span class="tok-id">count</span>(<span class="tok-var">$parts</span>) === <span class="tok-num">2</span> ? <span class="tok-id">trim</span>(<span class="tok-var">$parts</span>[<span class="tok-num">1</span>], <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>) : <span class="tok-str">&#039;&#039;</span>;</span>
 <span class="src-line" id="L263"><a class="ln" href="#L263">263</a>        <span class="tok-var">$options</span>[<span class="tok-str">&#039;base&#039;</span>] = <span class="tok-var">$base</span>;</span>
 <span class="src-line" id="L264"><a class="ln" href="#L264">264</a>        <span class="tok-var">$options</span>[<span class="tok-str">&#039;head&#039;</span>] = <span class="tok-var">$head</span> === <span class="tok-str">&#039;&#039;</span> ? <span class="tok-var">$options</span>[<span class="tok-str">&#039;head&#039;</span>] : <span class="tok-var">$head</span>;</span>
 <span class="src-line" id="L265"><a class="ln" href="#L265">265</a></span>
@@ -335,7 +335,7 @@
 <span class="src-line" id="L298"><a class="ln" href="#L298">298</a>    {</span>
 <span class="src-line" id="L299"><a class="ln" href="#L299">299</a>        <span class="tok-var">$globs</span> = [];</span>
 <span class="src-line" id="L300"><a class="ln" href="#L300">300</a>        <span class="tok-kw">foreach</span> (<span class="tok-id">explode</span>(<span class="tok-str">&#039;,&#039;</span>, <span class="tok-var">$value</span>) <span class="tok-kw">as</span> <span class="tok-var">$glob</span>) {</span>
-<span class="src-line" id="L301"><a class="ln" href="#L301">301</a>            <span class="tok-var">$trimmed</span> = <span class="tok-id">trim</span>(<span class="tok-var">$glob</span>);</span>
+<span class="src-line" id="L301"><a class="ln" href="#L301">301</a>            <span class="tok-var">$trimmed</span> = <span class="tok-id">trim</span>(<span class="tok-var">$glob</span>, <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>);</span>
 <span class="src-line" id="L302"><a class="ln" href="#L302">302</a>            <span class="tok-kw">if</span> (<span class="tok-var">$trimmed</span> !== <span class="tok-str">&#039;&#039;</span>) {</span>
 <span class="src-line" id="L303"><a class="ln" href="#L303">303</a>                <span class="tok-var">$globs</span>[] = <span class="tok-var">$trimmed</span>;</span>
 <span class="src-line" id="L304"><a class="ln" href="#L304">304</a>            }</span>

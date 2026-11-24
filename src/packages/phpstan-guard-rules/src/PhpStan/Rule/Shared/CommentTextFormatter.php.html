@@ -51,7 +51,7 @@
 <span class="src-line" id="L14"><a class="ln" href="#L14">14</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L15"><a class="ln" href="#L15">15</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">truncate</span>(<span class="tok-id">string</span> <span class="tok-var">$text</span>): <span class="tok-id">string</span></span>
 <span class="src-line" id="L16"><a class="ln" href="#L16">16</a>    {</span>
-<span class="src-line" id="L17"><a class="ln" href="#L17">17</a>        <span class="tok-var">$trimmed</span> = <span class="tok-id">trim</span>(<span class="tok-var">$text</span>);</span>
+<span class="src-line" id="L17"><a class="ln" href="#L17">17</a>        <span class="tok-var">$trimmed</span> = <span class="tok-id">trim</span>(<span class="tok-var">$text</span>, <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>);</span>
 <span class="src-line" id="L18"><a class="ln" href="#L18">18</a>        <span class="tok-kw">if</span> (<span class="tok-id">mb_strlen</span>(<span class="tok-var">$trimmed</span>) &gt; <span class="tok-num">80</span>) {</span>
 <span class="src-line" id="L19"><a class="ln" href="#L19">19</a>            <span class="tok-kw">return</span> <span class="tok-id">mb_substr</span>(<span class="tok-var">$trimmed</span>, <span class="tok-num">0</span>, <span class="tok-num">80</span>) . <span class="tok-str">&#039;...&#039;</span>;</span>
 <span class="src-line" id="L20"><a class="ln" href="#L20">20</a>        }</span>

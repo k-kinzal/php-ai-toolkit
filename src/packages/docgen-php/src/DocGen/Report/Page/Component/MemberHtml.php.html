@@ -329,7 +329,7 @@
 <span class="src-line" id="L292"><a class="ln" href="#L292">292</a>            <span class="tok-var">$items</span> .= <span class="tok-str">&#039;&lt;code&gt;&#039;</span> . <span class="tok-var">$services</span>-&gt;<span class="tok-id">escaper</span>-&gt;<span class="tok-id">e</span>(<span class="tok-var">$target</span>) . <span class="tok-str">&#039;&lt;/code&gt; &#039;</span>;</span>
 <span class="src-line" id="L293"><a class="ln" href="#L293">293</a>        }</span>
 <span class="src-line" id="L294"><a class="ln" href="#L294">294</a></span>
-<span class="src-line" id="L295"><a class="ln" href="#L295">295</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">block</span>(<span class="tok-str">&#039;Mutates&#039;</span>, <span class="tok-str">&#039;&lt;div class=&quot;type-row&quot;&gt;&#039;</span> . <span class="tok-id">trim</span>(<span class="tok-var">$items</span>) . <span class="tok-str">&#039;&lt;/div&gt;&#039;</span>);</span>
+<span class="src-line" id="L295"><a class="ln" href="#L295">295</a>        <span class="tok-kw">return</span> <span class="tok-var">$this</span>-&gt;<span class="tok-id">block</span>(<span class="tok-str">&#039;Mutates&#039;</span>, <span class="tok-str">&#039;&lt;div class=&quot;type-row&quot;&gt;&#039;</span> . <span class="tok-id">trim</span>(<span class="tok-var">$items</span>, <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>) . <span class="tok-str">&#039;&lt;/div&gt;&#039;</span>);</span>
 <span class="src-line" id="L296"><a class="ln" href="#L296">296</a>    }</span>
 <span class="src-line" id="L297"><a class="ln" href="#L297">297</a></span>
 <span class="src-line" id="L298"><a class="ln" href="#L298">298</a>    <span class="tok-com">/**</span></span>

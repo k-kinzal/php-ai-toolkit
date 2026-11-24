@@ -89,7 +89,7 @@
 <span class="src-line" id="L52"><a class="ln" href="#L52">52</a>        <span class="tok-var">$thisTarget</span> = <span class="tok-id">false</span>;</span>
 <span class="src-line" id="L53"><a class="ln" href="#L53">53</a>        <span class="tok-var">$globalTarget</span> = <span class="tok-id">false</span>;</span>
 <span class="src-line" id="L54"><a class="ln" href="#L54">54</a>        <span class="tok-kw">foreach</span> (<span class="tok-var">$node</span>-&gt;<span class="tok-id">getTagsByName</span>(<span class="tok-str">&#039;@mutation&#039;</span>) <span class="tok-kw">as</span> <span class="tok-var">$tag</span>) {</span>
-<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>            <span class="tok-var">$value</span> = <span class="tok-id">trim</span>((string) <span class="tok-var">$tag</span>-&gt;<span class="tok-id">value</span>);</span>
+<span class="src-line" id="L55"><a class="ln" href="#L55">55</a>            <span class="tok-var">$value</span> = <span class="tok-id">trim</span>((string) <span class="tok-var">$tag</span>-&gt;<span class="tok-id">value</span>, <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>);</span>
 <span class="src-line" id="L56"><a class="ln" href="#L56">56</a>            <span class="tok-kw">if</span> (<span class="tok-var">$value</span> === <span class="tok-str">&#039;&#039;</span>) {</span>
 <span class="src-line" id="L57"><a class="ln" href="#L57">57</a>                <span class="tok-var">$problems</span>[] = <span class="tok-str">&#039;Give @mutation one or both targets: $this or global.&#039;</span>;</span>
 <span class="src-line" id="L58"><a class="ln" href="#L58">58</a></span>
@@ -115,7 +115,7 @@
 <span class="src-line" id="L78"><a class="ln" href="#L78">78</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L79"><a class="ln" href="#L79">79</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">isMutableDescription</span>(<span class="tok-id">string</span> <span class="tok-var">$description</span>): <span class="tok-id">bool</span></span>
 <span class="src-line" id="L80"><a class="ln" href="#L80">80</a>    {</span>
-<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>        <span class="tok-kw">return</span> <span class="tok-id">preg_match</span>(<span class="tok-str">&#039;/^\+mut(?:\s+|$)/&#039;</span>, <span class="tok-id">trim</span>(<span class="tok-var">$description</span>)) === <span class="tok-num">1</span>;</span>
+<span class="src-line" id="L81"><a class="ln" href="#L81">81</a>        <span class="tok-kw">return</span> <span class="tok-id">preg_match</span>(<span class="tok-str">&#039;/^\+mut(?:\s+|$)/&#039;</span>, <span class="tok-id">trim</span>(<span class="tok-var">$description</span>, <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>)) === <span class="tok-num">1</span>;</span>
 <span class="src-line" id="L82"><a class="ln" href="#L82">82</a>    }</span>
 <span class="src-line" id="L83"><a class="ln" href="#L83">83</a></span>
 <span class="src-line" id="L84"><a class="ln" href="#L84">84</a>    <span class="tok-com">/**</span></span>
@@ -123,12 +123,12 @@
 <span class="src-line" id="L86"><a class="ln" href="#L86">86</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L87"><a class="ln" href="#L87">87</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">cleanDescription</span>(<span class="tok-id">string</span> <span class="tok-var">$description</span>): <span class="tok-id">string</span></span>
 <span class="src-line" id="L88"><a class="ln" href="#L88">88</a>    {</span>
-<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>        <span class="tok-var">$description</span> = <span class="tok-id">trim</span>(<span class="tok-var">$description</span>);</span>
+<span class="src-line" id="L89"><a class="ln" href="#L89">89</a>        <span class="tok-var">$description</span> = <span class="tok-id">trim</span>(<span class="tok-var">$description</span>, <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>);</span>
 <span class="src-line" id="L90"><a class="ln" href="#L90">90</a>        <span class="tok-kw">if</span> (!<span class="tok-var">$this</span>-&gt;<span class="tok-id">isMutableDescription</span>(<span class="tok-var">$description</span>)) {</span>
 <span class="src-line" id="L91"><a class="ln" href="#L91">91</a>            <span class="tok-kw">return</span> <span class="tok-var">$description</span>;</span>
 <span class="src-line" id="L92"><a class="ln" href="#L92">92</a>        }</span>
 <span class="src-line" id="L93"><a class="ln" href="#L93">93</a></span>
-<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>        <span class="tok-kw">return</span> <span class="tok-id">trim</span>((string) <span class="tok-id">preg_replace</span>(<span class="tok-str">&#039;/^\+mut(?:\s+|$)/&#039;</span>, <span class="tok-str">&#039;&#039;</span>, <span class="tok-var">$description</span>, <span class="tok-num">1</span>));</span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>        <span class="tok-kw">return</span> <span class="tok-id">trim</span>((string) <span class="tok-id">preg_replace</span>(<span class="tok-str">&#039;/^\+mut(?:\s+|$)/&#039;</span>, <span class="tok-str">&#039;&#039;</span>, <span class="tok-var">$description</span>, <span class="tok-num">1</span>), <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>);</span>
 <span class="src-line" id="L95"><a class="ln" href="#L95">95</a>    }</span>
 <span class="src-line" id="L96"><a class="ln" href="#L96">96</a>}</span>
 <span class="src-line" id="L97"><a class="ln" href="#L97">97</a></span>

@@ -134,7 +134,7 @@
 <span class="src-line" id="L97"><a class="ln" href="#L97">97</a>            <span class="tok-kw">return</span> <span class="tok-id">false</span>;</span>
 <span class="src-line" id="L98"><a class="ln" href="#L98">98</a>        }</span>
 <span class="src-line" id="L99"><a class="ln" href="#L99">99</a></span>
-<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>        <span class="tok-var">$arrayName</span> = <span class="tok-id">strtolower</span>(<span class="tok-var">$type</span>-&gt;<span class="tok-id">type</span>-&gt;<span class="tok-id">name</span>);</span>
+<span class="src-line" id="L100"><a class="ln" href="#L100">100</a>        <span class="tok-var">$arrayName</span> = <span class="tok-id">strtolower</span>((string) <span class="tok-var">$type</span>-&gt;<span class="tok-id">type</span>);</span>
 <span class="src-line" id="L101"><a class="ln" href="#L101">101</a>        <span class="tok-kw">if</span> (<span class="tok-var">$arrayName</span> !== <span class="tok-str">&#039;array&#039;</span> &amp;&amp; <span class="tok-var">$arrayName</span> !== <span class="tok-str">&#039;non-empty-array&#039;</span>) {</span>
 <span class="src-line" id="L102"><a class="ln" href="#L102">102</a>            <span class="tok-kw">return</span> <span class="tok-id">false</span>;</span>
 <span class="src-line" id="L103"><a class="ln" href="#L103">103</a>        }</span>

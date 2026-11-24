@@ -297,7 +297,7 @@
 <span class="src-line" id="L260"><a class="ln" href="#L260">260</a>        }</span>
 <span class="src-line" id="L261"><a class="ln" href="#L261">261</a></span>
 <span class="src-line" id="L262"><a class="ln" href="#L262">262</a>        <span class="tok-var">$expected</span> = <span class="tok-var">$assertion</span>-&gt;<span class="tok-id">expectedRaw</span>;</span>
-<span class="src-line" id="L263"><a class="ln" href="#L263">263</a>        <span class="tok-kw">if</span> (<span class="tok-var">$expected</span> === <span class="tok-var">$actualOutput</span> || <span class="tok-var">$expected</span> === <span class="tok-id">rtrim</span>(<span class="tok-var">$actualOutput</span>)) {</span>
+<span class="src-line" id="L263"><a class="ln" href="#L263">263</a>        <span class="tok-kw">if</span> (<span class="tok-var">$expected</span> === <span class="tok-var">$actualOutput</span> || <span class="tok-var">$expected</span> === <span class="tok-id">rtrim</span>(<span class="tok-var">$actualOutput</span>, <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>)) {</span>
 <span class="src-line" id="L264"><a class="ln" href="#L264">264</a>            <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-id">AssertionResult</span>(<span class="tok-id">true</span>, <span class="tok-str">&#039;&#039;</span>, <span class="tok-var">$statement</span>);</span>
 <span class="src-line" id="L265"><a class="ln" href="#L265">265</a>        }</span>
 <span class="src-line" id="L266"><a class="ln" href="#L266">266</a></span>

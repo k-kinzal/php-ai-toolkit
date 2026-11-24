@@ -128,7 +128,7 @@
 <span class="src-line" id="L91"><a class="ln" href="#L91">91</a>            <span class="tok-kw">return</span> <span class="tok-id">null</span>;</span>
 <span class="src-line" id="L92"><a class="ln" href="#L92">92</a>        }</span>
 <span class="src-line" id="L93"><a class="ln" href="#L93">93</a></span>
-<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>        <span class="tok-var">$trimmed</span> = <span class="tok-id">trim</span>(<span class="tok-var">$value</span>);</span>
+<span class="src-line" id="L94"><a class="ln" href="#L94">94</a>        <span class="tok-var">$trimmed</span> = <span class="tok-id">trim</span>(<span class="tok-var">$value</span>, <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>);</span>
 <span class="src-line" id="L95"><a class="ln" href="#L95">95</a></span>
 <span class="src-line" id="L96"><a class="ln" href="#L96">96</a>        <span class="tok-kw">return</span> <span class="tok-id">preg_match</span>(<span class="tok-str">&#039;/^[1-9]\d*$/&#039;</span>, <span class="tok-var">$trimmed</span>) === <span class="tok-num">1</span> ? (int) <span class="tok-var">$trimmed</span> : <span class="tok-id">null</span>;</span>
 <span class="src-line" id="L97"><a class="ln" href="#L97">97</a>    }</span>

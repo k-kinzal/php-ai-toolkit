@@ -80,7 +80,7 @@
 <span class="src-line" id="L43"><a class="ln" href="#L43">43</a>            <span class="tok-var">$status</span> = <span class="tok-num">0</span>;</span>
 <span class="src-line" id="L44"><a class="ln" href="#L44">44</a>            <span class="tok-id">exec</span>(<span class="tok-var">$command</span> . <span class="tok-str">&#039; 2&gt;&amp;1&#039;</span>, <span class="tok-var">$lines</span>, <span class="tok-var">$status</span>);</span>
 <span class="src-line" id="L45"><a class="ln" href="#L45">45</a></span>
-<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>            <span class="tok-kw">return</span> [<span class="tok-str">&#039;status&#039;</span> =&gt; <span class="tok-var">$status</span>, <span class="tok-str">&#039;output&#039;</span> =&gt; <span class="tok-id">trim</span>(<span class="tok-id">implode</span>(<span class="tok-str">&quot;\n&quot;</span>, <span class="tok-var">$lines</span>))];</span>
+<span class="src-line" id="L46"><a class="ln" href="#L46">46</a>            <span class="tok-kw">return</span> [<span class="tok-str">&#039;status&#039;</span> =&gt; <span class="tok-var">$status</span>, <span class="tok-str">&#039;output&#039;</span> =&gt; <span class="tok-id">trim</span>(<span class="tok-id">implode</span>(<span class="tok-str">&quot;\n&quot;</span>, <span class="tok-var">$lines</span>), <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>)];</span>
 <span class="src-line" id="L47"><a class="ln" href="#L47">47</a>        };</span>
 <span class="src-line" id="L48"><a class="ln" href="#L48">48</a>    }</span>
 <span class="src-line" id="L49"><a class="ln" href="#L49">49</a></span>

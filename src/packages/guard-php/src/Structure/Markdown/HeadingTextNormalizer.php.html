@@ -54,7 +54,7 @@
 <span class="src-line" id="L17"><a class="ln" href="#L17">17</a><span class="tok-com">     */</span></span>
 <span class="src-line" id="L18"><a class="ln" href="#L18">18</a>    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-id">normalize</span>(<span class="tok-id">string</span> <span class="tok-var">$text</span>): <span class="tok-id">string</span></span>
 <span class="src-line" id="L19"><a class="ln" href="#L19">19</a>    {</span>
-<span class="src-line" id="L20"><a class="ln" href="#L20">20</a>        <span class="tok-kw">return</span> <span class="tok-id">trim</span>(<span class="tok-id">preg_replace</span>(<span class="tok-str">&#039;/[ \t]+/&#039;</span>, <span class="tok-str">&#039; &#039;</span>, <span class="tok-var">$text</span>) ?? <span class="tok-var">$text</span>);</span>
+<span class="src-line" id="L20"><a class="ln" href="#L20">20</a>        <span class="tok-kw">return</span> <span class="tok-id">trim</span>(<span class="tok-id">preg_replace</span>(<span class="tok-str">&#039;/[ \t]+/&#039;</span>, <span class="tok-str">&#039; &#039;</span>, <span class="tok-var">$text</span>) ?? <span class="tok-var">$text</span>, <span class="tok-str">&quot; \n\r\t\v\0&quot;</span>);</span>
 <span class="src-line" id="L21"><a class="ln" href="#L21">21</a>    }</span>
 <span class="src-line" id="L22"><a class="ln" href="#L22">22</a>}</span>
 <span class="src-line" id="L23"><a class="ln" href="#L23">23</a></span>

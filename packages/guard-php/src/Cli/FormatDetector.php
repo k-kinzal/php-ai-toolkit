@@ -25,7 +25,7 @@ final class FormatDetector
     {
         foreach (self::MARKERS as $marker) {
             $value = getenv($marker);
-            if ($value !== false && ($marker !== 'AI_AGENT' || trim($value) !== '')) {
+            if ($value !== false && ($marker !== 'AI_AGENT' || trim($value, " \n\r\t\v\0") !== '')) {
                 return 'ai';
             }
         }

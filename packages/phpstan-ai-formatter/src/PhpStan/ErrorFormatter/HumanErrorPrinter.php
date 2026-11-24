@@ -40,9 +40,9 @@ final class HumanErrorPrinter
         $codeLine = $line !== null ? $this->sourceReader->read($error->getTraitFilePath() ?? $file, $line) : null;
         $output->writeLineFormatted('');
         if ($codeLine !== null) {
-            $trimmedCode = ltrim($codeLine);
+            $trimmedCode = ltrim($codeLine, " \n\r\t\v\0");
             $leadingSpaces = strlen($codeLine) - strlen($trimmedCode);
-            $caretLength = max(1, strlen(rtrim($trimmedCode)));
+            $caretLength = max(1, strlen(rtrim($trimmedCode, " \n\r\t\v\0")));
             $output->writeLineFormatted(sprintf('  <fg=blue>%s</> | %s', $this->gutter->line((string) $line, $gutterWidth), $codeLine));
             $output->writeLineFormatted(sprintf('  %s | <fg=red>%s</>', str_repeat(' ', $gutterWidth), str_repeat(' ', $leadingSpaces) . str_repeat('^', $caretLength)));
         }

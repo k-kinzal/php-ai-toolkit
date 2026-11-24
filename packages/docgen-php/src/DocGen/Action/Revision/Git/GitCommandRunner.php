@@ -43,7 +43,7 @@ final class GitCommandRunner
             $status = 0;
             exec($command . ' 2>&1', $lines, $status);
 
-            return ['status' => $status, 'output' => trim(implode("\n", $lines))];
+            return ['status' => $status, 'output' => trim(implode("\n", $lines), " \n\r\t\v\0")];
         };
     }
 

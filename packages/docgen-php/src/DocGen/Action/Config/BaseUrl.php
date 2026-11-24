@@ -36,7 +36,7 @@ final class BaseUrl
             return null;
         }
 
-        $trimmed = trim($value);
+        $trimmed = trim($value, " \n\r\t\v\0");
         if ($trimmed === '') {
             return null;
         }

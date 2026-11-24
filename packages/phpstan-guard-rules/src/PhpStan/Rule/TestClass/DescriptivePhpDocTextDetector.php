@@ -42,6 +42,6 @@ final class DescriptivePhpDocTextDetector
         $line = preg_replace('#^\s*\*/?#', '', $line) ?? $line;
         $line = preg_replace('#\s*\*/$#', '', $line) ?? $line;
 
-        return trim($line);
+        return trim($line, " \n\r\t\v\0");
     }
 }

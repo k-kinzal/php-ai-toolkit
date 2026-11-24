@@ -99,12 +99,12 @@ final class MarkdownDiffHtml
      */
     public function blocks(MarkdownRenderer $renderer, string $markdown, ?Closure $fence): array
     {
-        $lines = explode("\n", str_replace("\r\n", "\n", rtrim($markdown)));
+        $lines = explode("\n", str_replace("\r\n", "\n", rtrim($markdown, " \n\r\t\v\0")));
         $blocks = [];
         $index = 0;
         $total = count($lines);
         while ($index < $total) {
-            if (trim($lines[$index]) === '') {
+            if (trim($lines[$index], " \n\r\t\v\0") === '') {
                 $index++;
                 continue;
             }

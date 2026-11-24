@@ -59,7 +59,7 @@ final class TargetExtractor
         $class = $owner ?? ($declaration->kind === 'function' ? '' : $declaration->name);
         $qualified = ($namespace === '' ? '' : $namespace . '\\') . ($owner === null ? $declaration->name : $owner . ($declaration->kind === 'property' ? '::$' : '::') . $declaration->name);
         $enclosing = $owner === null ? ($declaration->kind === 'function' ? $code : $tokens->text($declaration->docStart, $declaration->end)) : ($owners[$owner] ?? $code);
-        $signature = trim((string) preg_replace('/\s+/', ' ', $tokens->text($declaration->start, $declaration->nameEnd)));
+        $signature = trim((string) preg_replace('/\s+/', ' ', $tokens->text($declaration->start, $declaration->nameEnd)), " \n\r\t\v\0");
 
         return new Target($declaration->kind, $declaration->name, $qualified, $namespace, $class, $path, $tokens->at($declaration->start)->line, $tokens->column($declaration->start), $signature, $declaration->visibility(), $declaration->modifiers, $tokens->text($declaration->docStart, $declaration->end), $enclosing, $code);
     }

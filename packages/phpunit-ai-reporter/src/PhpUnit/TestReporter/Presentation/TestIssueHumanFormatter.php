@@ -118,9 +118,9 @@ final class TestIssueHumanFormatter
         $codeLine = $issue->testLine > 0 ? $this->sourceReader->read($issue->testFile, $issue->testLine) : null;
 
         if ($codeLine !== null) {
-            $trimmedCode = ltrim($codeLine);
+            $trimmedCode = ltrim($codeLine, " \n\r\t\v\0");
             $leadingSpaces = strlen($codeLine) - strlen($trimmedCode);
-            $caretLength = max(1, strlen(trim($trimmedCode)));
+            $caretLength = max(1, strlen(trim($trimmedCode, " \n\r\t\v\0")));
             $output .= sprintf("  <fg=blue>%s</> | %s\n", $this->gutter->line($lineStr, $gutterWidth), $codeLine);
             $output .= sprintf("  %s | <fg=red>%s</>\n", $emptyGutter, str_repeat(' ', $leadingSpaces) . str_repeat('^', $caretLength));
         }
@@ -128,7 +128,7 @@ final class TestIssueHumanFormatter
         $output .= sprintf("  <fg=%s>%s</>: %s\n", $this->typePresentation->color($issue->type), $this->typePresentation->label($issue->type), $issue->testName);
         $output .= sprintf("  %s\n", $issue->message);
 
-        if ($issue->diff !== null && trim($issue->diff) !== '') {
+        if ($issue->diff !== null && trim($issue->diff, " \n\r\t\v\0") !== '') {
             $output .= $this->blockIndenter->indent($issue->diff);
         }
 

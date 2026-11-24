@@ -154,7 +154,7 @@ final class DocGenCliArgumentParser
             return null;
         }
 
-        if (!is_string($value) || trim($value) === '') {
+        if (!is_string($value) || trim($value, " \n\r\t\v\0") === '') {
             throw new DocGenException(sprintf('Option --%s requires a value, such as --%s=VALUE.', $name, $name));
         }
 
@@ -251,7 +251,7 @@ final class DocGenCliArgumentParser
     public function revisionRange(array $options, string $value): array
     {
         $parts = explode('..', $value, 2);
-        $base = trim($parts[0]);
+        $base = trim($parts[0], " \n\r\t\v\0");
         if ($base === '') {
             throw new DocGenException(sprintf(
                 'Invalid --diff range: %s. Use BASE to compare against the working tree, or BASE..HEAD to compare two revisions.',
@@ -259,7 +259,7 @@ final class DocGenCliArgumentParser
             ));
         }
 
-        $head = count($parts) === 2 ? trim($parts[1]) : '';
+        $head = count($parts) === 2 ? trim($parts[1], " \n\r\t\v\0") : '';
         $options['base'] = $base;
         $options['head'] = $head === '' ? $options['head'] : $head;
 
@@ -298,7 +298,7 @@ final class DocGenCliArgumentParser
     {
         $globs = [];
         foreach (explode(',', $value) as $glob) {
-            $trimmed = trim($glob);
+            $trimmed = trim($glob, " \n\r\t\v\0");
             if ($trimmed !== '') {
                 $globs[] = $trimmed;
             }

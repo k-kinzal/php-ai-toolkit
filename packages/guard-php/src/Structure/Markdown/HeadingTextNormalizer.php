@@ -17,6 +17,6 @@ final class HeadingTextNormalizer
      */
     public function normalize(string $text): string
     {
-        return trim(preg_replace('/[ \t]+/', ' ', $text) ?? $text);
+        return trim(preg_replace('/[ \t]+/', ' ', $text) ?? $text, " \n\r\t\v\0");
     }
 }

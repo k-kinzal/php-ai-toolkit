@@ -261,7 +261,7 @@ final class TypeHtml
             $arguments[] = $prefix . $this->node($argument, $context);
         }
 
-        return $this->identifier($type->type, $context) . '&lt;' . implode(', ', $arguments) . '&gt;';
+        return $this->identifier(new IdentifierTypeNode((string) $type->type), $context) . '&lt;' . implode(', ', $arguments) . '&gt;';
     }
 
     /**
@@ -327,7 +327,7 @@ final class TypeHtml
             $parameters[] = $text;
         }
 
-        return $this->identifier($type->identifier, $context)
+        return $this->identifier(new IdentifierTypeNode((string) $type->identifier), $context)
             . '(' . implode(', ', $parameters) . '): ' . $this->node($type->returnType, $context);
     }
 

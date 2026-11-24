@@ -97,7 +97,7 @@ final class MixedArrayReturnTypeInspector
             return false;
         }
 
-        $arrayName = strtolower($type->type->name);
+        $arrayName = strtolower((string) $type->type);
         if ($arrayName !== 'array' && $arrayName !== 'non-empty-array') {
             return false;
         }

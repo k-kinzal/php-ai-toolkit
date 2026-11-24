@@ -32,6 +32,8 @@ final class TokenGetAllThrowTypeExtension implements DynamicFunctionThrowTypeExt
 
     /**
      * Returns ParseError when the TOKEN_PARSE flag may be set, or null otherwise.
+     *
+     * @param Scope $scope
      */
     public function getThrowTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {

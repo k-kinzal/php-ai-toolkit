@@ -49,6 +49,7 @@ final class ClassAncestorCollector implements Collector
 
     /**
      * @param ClassLike $node
+     * @param Scope $scope
      * @return array{name: string, instantiable: bool, ancestors: list<string>}|null
      */
     public function processNode(Node $node, Scope $scope): ?array

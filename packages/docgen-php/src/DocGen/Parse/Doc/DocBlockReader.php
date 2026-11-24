@@ -62,7 +62,7 @@ final class DocBlockReader
      */
     public function read(?string $docComment): ?DocBlock
     {
-        if ($docComment === null || trim($docComment) === '') {
+        if ($docComment === null || trim($docComment, " \n\r\t\v\0") === '') {
             return null;
         }
 
@@ -101,7 +101,7 @@ final class DocBlockReader
     {
         $scopes = [];
         foreach ($node->getTagsByName('@visibility') as $tag) {
-            $value = trim((string) $tag->value);
+            $value = trim((string) $tag->value, " \n\r\t\v\0");
             if ($value !== '') {
                 $scopes[] = $value;
             }
@@ -128,7 +128,7 @@ final class DocBlockReader
             }
         }
 
-        $text = trim(implode("\n", $lines));
+        $text = trim(implode("\n", $lines), " \n\r\t\v\0");
         if ($text === '') {
             return ['', ''];
         }
@@ -138,7 +138,7 @@ final class DocBlockReader
             $paragraphs = [$text];
         }
 
-        return [trim($paragraphs[0]), isset($paragraphs[1]) ? trim($paragraphs[1]) : ''];
+        return [trim($paragraphs[0], " \n\r\t\v\0"), isset($paragraphs[1]) ? trim($paragraphs[1], " \n\r\t\v\0") : ''];
     }
 
     /**
@@ -260,7 +260,7 @@ final class DocBlockReader
                     $aliases[] = new TypeAliasDoc(
                         $tag->value->importedAs ?? $tag->value->importedAlias,
                         null,
-                        $tag->value->importedFrom->name,
+                        (string) $tag->value->importedFrom,
                     );
                 }
             }

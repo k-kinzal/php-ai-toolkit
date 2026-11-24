@@ -84,7 +84,7 @@ final class AiErrorRenderer
 
             $codeLine = $error->getLine() !== null ? $this->sourceReader->read($error->getTraitFilePath() ?? $error->getFile(), $error->getLine()) : null;
             if ($codeLine !== null) {
-                $output->writeRaw(sprintf("  > %s\n", trim($codeLine)));
+                $output->writeRaw(sprintf("  > %s\n", trim($codeLine, " \n\r\t\v\0")));
             }
 
             if ($error->getTip() !== null) {
@@ -107,7 +107,7 @@ final class AiErrorRenderer
             foreach ($groupErrors as $error) {
                 $line = $error->getLine() ?? 0;
                 $codeLine = $error->getLine() !== null ? $this->sourceReader->read($error->getTraitFilePath() ?? $error->getFile(), $error->getLine()) : null;
-                $output->writeRaw(sprintf("  %s:%d%s\n", $this->relativePathHelper->getRelativePath($error->getFile()), $line, $codeLine !== null ? ' -- ' . trim($codeLine) : ''));
+                $output->writeRaw(sprintf("  %s:%d%s\n", $this->relativePathHelper->getRelativePath($error->getFile()), $line, $codeLine !== null ? ' -- ' . trim($codeLine, " \n\r\t\v\0") : ''));
             }
 
             $output->writeRaw(sprintf("  Message: %s\n", $groupErrors[0]->getMessage()));

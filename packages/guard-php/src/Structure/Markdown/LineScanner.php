@@ -54,7 +54,7 @@ final class LineScanner
             return null;
         }
 
-        $blank = trim($line) === '';
+        $blank = trim($line, " \n\r\t\v\0") === '';
         if ($state->htmlEnd !== null) {
             if ($state->htmlEnd === HtmlBlockMatcher::BLANK_LINE ? $blank : $this->htmlBlockMatcher->ends($state->htmlEnd, $line)) {
                 $state->htmlEnd = null;

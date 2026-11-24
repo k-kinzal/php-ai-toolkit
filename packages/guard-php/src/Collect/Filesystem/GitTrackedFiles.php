@@ -57,7 +57,7 @@ final class GitTrackedFiles
         fclose($pipes[1]);
         fclose($pipes[2]);
         if (proc_close($process) !== 0 || $output === false) {
-            throw new PolicyException('Cannot read Git index for ' . $root . ': ' . trim($error === false ? '' : $error) . '. Run this policy inside a Git working tree with Git installed.');
+            throw new PolicyException('Cannot read Git index for ' . $root . ': ' . trim($error === false ? '' : $error, " \n\r\t\v\0") . '. Run this policy inside a Git working tree with Git installed.');
         }
         return array_values(array_unique(array_filter(explode("\0", $output), static fn (string $path): bool => $path !== '')));
     }

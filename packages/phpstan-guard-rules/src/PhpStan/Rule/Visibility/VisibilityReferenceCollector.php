@@ -65,6 +65,7 @@ final class VisibilityReferenceCollector implements Collector
      * Returns every declaration reference written by one node.
      *
      * @param Node $node
+     * @param Scope $scope
      * @return list<array{className: string, memberName: ?string, kind: string, namespace: string, line: int}>|null
      */
     public function processNode(Node $node, Scope $scope): ?array

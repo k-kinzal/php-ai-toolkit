@@ -24,7 +24,7 @@ final class XmlDocument
      */
     public function __construct(string $source)
     {
-        if (trim($source) === '') {
+        if (trim($source, " \n\r\t\v\0") === '') {
             throw new PolicyException('XML document is empty. Add a root element before running guard.');
         }
         if (stripos($source, '<!DOCTYPE') !== false || stripos($source, '<!ENTITY') !== false) {

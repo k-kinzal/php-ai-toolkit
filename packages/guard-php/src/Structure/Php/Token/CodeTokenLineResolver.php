@@ -36,7 +36,7 @@ final class CodeTokenLineResolver
         $lines = [];
         $parts = explode("\n", $token->text);
         foreach ($parts as $offset => $part) {
-            if (trim($part) !== '') {
+            if (trim($part, " \n\r\t\v\0") !== '') {
                 $lines[] = $token->line + $offset;
             }
         }

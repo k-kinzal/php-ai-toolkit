@@ -56,10 +56,10 @@ final class TestIssueAiFormatter
 
             $codeLine = $this->sourceReader->read($issue->testFile, $issue->testLine);
             if ($codeLine !== null) {
-                $output .= sprintf("  > %s\n", trim($codeLine));
+                $output .= sprintf("  > %s\n", trim($codeLine, " \n\r\t\v\0"));
             }
 
-            if ($issue->diff !== null && trim($issue->diff) !== '') {
+            if ($issue->diff !== null && trim($issue->diff, " \n\r\t\v\0") !== '') {
                 $output .= $this->blockIndenter->indent($issue->diff);
             }
 

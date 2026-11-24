@@ -114,7 +114,7 @@ final class ExpressionEvaluator implements ExpressionEvaluation
      */
     public function codeNeedsReturn(string $code): bool
     {
-        $trimmed = trim($code);
+        $trimmed = trim($code, " \n\r\t\v\0");
         foreach (self::NO_RETURN_PATTERNS as $pattern) {
             if (preg_match($pattern, $trimmed) === 1) {
                 return false;

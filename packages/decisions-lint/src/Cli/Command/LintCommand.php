@@ -138,10 +138,10 @@ abstract class LintCommand extends Command
     {
         $ids = [];
         foreach (is_array($input->getOption('rule')) ? $input->getOption('rule') : [] as $id) {
-            if (!is_string($id) || trim($id) === '') {
+            if (!is_string($id) || trim($id, " \n\r\t\v\0") === '') {
                 throw new LintException('Provide a rule id for --rule, such as --rule=cohesion.method-belongs-to-class.');
             }
-            $ids[] = trim($id);
+            $ids[] = trim($id, " \n\r\t\v\0");
         }
 
         return $ids;
@@ -156,8 +156,8 @@ abstract class LintCommand extends Command
     {
         $paths = [];
         foreach (is_array($input->getArgument('paths')) ? $input->getArgument('paths') : [] as $path) {
-            if (is_string($path) && trim($path) !== '') {
-                $paths[] = trim($path);
+            if (is_string($path) && trim($path, " \n\r\t\v\0") !== '') {
+                $paths[] = trim($path, " \n\r\t\v\0");
             }
         }
 

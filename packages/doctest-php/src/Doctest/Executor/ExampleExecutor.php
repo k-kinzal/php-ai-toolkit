@@ -260,7 +260,7 @@ final class ExampleExecutor
         }
 
         $expected = $assertion->expectedRaw;
-        if ($expected === $actualOutput || $expected === rtrim($actualOutput)) {
+        if ($expected === $actualOutput || $expected === rtrim($actualOutput, " \n\r\t\v\0")) {
             return new AssertionResult(true, '', $statement);
         }
 

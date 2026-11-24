@@ -58,6 +58,7 @@ final class VisibilityDeclarationCollector implements Collector
      * Returns one class-like with every member declared directly on it.
      *
      * @param ClassLike $node
+     * @param Scope $scope
      * @return array{
      *     class: array{className: string, memberName: null, symbol: string, kind: string, namespace: string, docComment: ?string, line: int},
      *     parents: list<string>,

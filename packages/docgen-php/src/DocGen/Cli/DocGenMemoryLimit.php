@@ -47,7 +47,7 @@ final class DocGenMemoryLimit
      */
     public function bytes(string $limit): int
     {
-        $value = trim($limit);
+        $value = trim($limit, " \n\r\t\v\0");
         if ($value === '-1') {
             return -1;
         }

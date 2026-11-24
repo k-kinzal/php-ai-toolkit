@@ -58,6 +58,7 @@ final class MutationDeclarationCollector implements Collector
     }
 
     /**
+     * @param Scope $scope
      * @return MutationDeclaration|null
      */
     public function processNode(Node $node, Scope $scope): ?array

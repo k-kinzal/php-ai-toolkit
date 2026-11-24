@@ -36,17 +36,17 @@ final class AssertionScanner
      */
     public function scanLine(string $line): AssertionLine
     {
-        $trimmed = trim($line);
+        $trimmed = trim($line, " \n\r\t\v\0");
         if (preg_match('/^(.+?)\s*\/\/\s*=>\s*(.+)$/', $trimmed, $match) === 1) {
-            return new AssertionLine($line, trim($match[1]), 'return', trim($match[2]), null);
+            return new AssertionLine($line, trim($match[1], " \n\r\t\v\0"), 'return', trim($match[2], " \n\r\t\v\0"), null);
         }
 
         if (preg_match('/^(.+?)\s*\/\/\s*Output:\s*(.*)$/', $trimmed, $match) === 1) {
-            return new AssertionLine($line, trim($match[1]), 'output', $match[2], null);
+            return new AssertionLine($line, trim($match[1], " \n\r\t\v\0"), 'output', $match[2], null);
         }
 
         if (preg_match('/^(.+?)\s*\/\/\s*throws\s+(\S+)(?::\s*(.*))?$/', $trimmed, $match) === 1) {
-            return new AssertionLine($line, trim($match[1]), 'throws', $match[2], isset($match[3]) ? trim($match[3]) : null);
+            return new AssertionLine($line, trim($match[1], " \n\r\t\v\0"), 'throws', $match[2], isset($match[3]) ? trim($match[3], " \n\r\t\v\0") : null);
         }
 
         return new AssertionLine($line, $trimmed, null, null, null);

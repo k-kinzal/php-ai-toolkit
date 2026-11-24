@@ -88,7 +88,7 @@ final class ExampleExtractor
         }
 
         foreach ($parts as $part) {
-            if (!str_starts_with(trim($part), '@example')) {
+            if (!str_starts_with(trim($part, " \n\r\t\v\0"), '@example')) {
                 continue;
             }
 
@@ -118,7 +118,7 @@ final class ExampleExtractor
         $firstLine = array_shift($lines);
         $match = [];
         if (preg_match('/@example\s+(.+)$/', $firstLine, $match) === 1) {
-            $description = trim($match[1]);
+            $description = trim($match[1], " \n\r\t\v\0");
 
             return $description === '' ? null : $description;
         }
@@ -136,7 +136,7 @@ final class ExampleExtractor
 
         $codeLines = [];
         foreach ($lines as $line) {
-            $trimmedLine = trim($line);
+            $trimmedLine = trim($line, " \n\r\t\v\0");
             if (preg_match('/^@\w+/', $trimmedLine) === 1) {
                 break;
             }
@@ -148,11 +148,11 @@ final class ExampleExtractor
             $codeLines[] = $line;
         }
 
-        while ($codeLines !== [] && trim(end($codeLines)) === '') {
+        while ($codeLines !== [] && trim(end($codeLines), " \n\r\t\v\0") === '') {
             array_pop($codeLines);
         }
 
-        return trim(implode("\n", $codeLines));
+        return trim(implode("\n", $codeLines), " \n\r\t\v\0");
     }
 
     /**
@@ -169,7 +169,7 @@ final class ExampleExtractor
         }
 
         foreach ($matches as $match) {
-            $code = trim($match[1][0]);
+            $code = trim($match[1][0], " \n\r\t\v\0");
             if ($code === '') {
                 continue;
             }

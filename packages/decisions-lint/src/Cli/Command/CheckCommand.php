@@ -51,10 +51,10 @@ final class CheckCommand extends LintCommand
     protected function handle(InputInterface $input, OutputInterface $output): int
     {
         $failOn = $input->getOption('fail-on');
-        if ($failOn !== null && (!is_string($failOn) || trim($failOn) === '')) {
+        if ($failOn !== null && (!is_string($failOn) || trim($failOn, " \n\r\t\v\0") === '')) {
             throw new LintException('Provide a severity for --fail-on, such as --fail-on=warning.');
         }
 
-        return (new CheckRun($this->transport()))->run($this->configPath($input), $this->format($input, ReporterFactory::FORMATS), $this->paths($input), $this->ruleIds($input), is_string($failOn) ? trim($failOn) : null, $output);
+        return (new CheckRun($this->transport()))->run($this->configPath($input), $this->format($input, ReporterFactory::FORMATS), $this->paths($input), $this->ruleIds($input), is_string($failOn) ? trim($failOn, " \n\r\t\v\0") : null, $output);
     }
 }

@@ -89,7 +89,7 @@ final class BadgeStructurer implements Structurer
     {
         $count = count($lines);
         $index = $start;
-        while ($index < $count && trim($lines[$index]) === '') {
+        while ($index < $count && trim($lines[$index], " \n\r\t\v\0") === '') {
             $index++;
         }
         $badges = [];

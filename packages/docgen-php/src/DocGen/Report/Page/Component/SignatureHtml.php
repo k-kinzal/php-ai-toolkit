@@ -92,7 +92,7 @@ final class SignatureHtml
         foreach ($names as $name) {
             $shown = false;
             foreach ($covered as $type) {
-                $base = $type instanceof GenericTypeNode ? $type->type->name : ($type instanceof IdentifierTypeNode ? $type->name : null);
+                $base = $type instanceof GenericTypeNode ? (string) $type->type : ($type instanceof IdentifierTypeNode ? $type->name : null);
                 if ($base !== null && strcasecmp($services->typeHtml->resolve($base, $context), $name) === 0) {
                     $shown = true;
                     break;

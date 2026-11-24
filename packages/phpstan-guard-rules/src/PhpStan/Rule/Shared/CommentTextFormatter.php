@@ -14,7 +14,7 @@ final class CommentTextFormatter
      */
     public function truncate(string $text): string
     {
-        $trimmed = trim($text);
+        $trimmed = trim($text, " \n\r\t\v\0");
         if (mb_strlen($trimmed) > 80) {
             return mb_substr($trimmed, 0, 80) . '...';
         }

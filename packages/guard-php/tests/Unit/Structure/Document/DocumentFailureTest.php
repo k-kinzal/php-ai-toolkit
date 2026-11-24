@@ -80,7 +80,7 @@ final class DocumentFailureTest extends TestCase
     {
         $failure = new DocumentFailure();
         self::assertInstanceOf(JsonException::class, $failure->at('json', new JsonException()));
-        self::assertInstanceOf(NeonException::class, $failure->at('neon', new NeonException()));
+        self::assertInstanceOf(NeonException::class, $failure->at('neon', new NeonException('bad NEON')));
         self::assertInstanceOf(PolicyException::class, $failure->at('other', new RuntimeException()));
     }
 

@@ -178,7 +178,11 @@ final class TypeHtml
      */
     public function identifier(IdentifierTypeNode $type, TypeRenderContext $context): string
     {
-        $name = $type->name;
+        return $this->identifierName($type->name, $context);
+    }
+
+    private function identifierName(string $name, TypeRenderContext $context): string
+    {
         if (in_array(strtolower($name), self::KEYWORDS, true)) {
             return '<span class="t-key">' . $this->escaper->e($name) . '</span>';
         }
@@ -261,7 +265,7 @@ final class TypeHtml
             $arguments[] = $prefix . $this->node($argument, $context);
         }
 
-        return $this->identifier($type->type, $context) . '&lt;' . implode(', ', $arguments) . '&gt;';
+        return $this->identifierName((string) $type->type, $context) . '&lt;' . implode(', ', $arguments) . '&gt;';
     }
 
     /**
@@ -327,7 +331,7 @@ final class TypeHtml
             $parameters[] = $text;
         }
 
-        return $this->identifier($type->identifier, $context)
+        return $this->identifierName((string) $type->identifier, $context)
             . '(' . implode(', ', $parameters) . '): ' . $this->node($type->returnType, $context);
     }
 

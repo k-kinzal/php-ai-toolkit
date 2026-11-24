@@ -260,7 +260,7 @@ final class DocBlockReader
                     $aliases[] = new TypeAliasDoc(
                         $tag->value->importedAs ?? $tag->value->importedAlias,
                         null,
-                        $tag->value->importedFrom->name,
+                        (string) $tag->value->importedFrom,
                     );
                 }
             }
